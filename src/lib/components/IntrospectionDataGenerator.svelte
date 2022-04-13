@@ -110,7 +110,7 @@
 	let sortingArray = [];
 	$: sortingArray = sortingInputValue.split(' ');
 	const handleData = () => {
-		//handle rootTypes --
+		//handle rootTypes -- s
 		rootTypes = [...$queryStore?.data?.__schema?.types];
 		//sort
 		rootTypes = rootTypes.sort((a, b) => {
