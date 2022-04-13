@@ -45,14 +45,6 @@
 						</tr>
 					{/each}
 				</tbody>
-				<tfoot class="sticky bottom-0">
-					<tr>
-						<th />
-						{#each columns as column}
-							<th>{column}</th>
-						{/each}
-					</tr>
-				</tfoot>
 			</table>
 		</div>
 		<div class="drawer-side overflow-x-none w-full flex-none">
