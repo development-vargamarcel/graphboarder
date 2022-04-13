@@ -3,6 +3,10 @@
 	import { goto } from '$app/navigation';
 	let queries = $introspectionResult.queryFields;
 	console.log(queries);
+	import { getStores, navigating, page, session, updated } from '$app/stores';
+	let origin = $page.url.origin;
+	console.log($page);
+	console.log(origin);
 </script>
 
 <div class="drawer  drawer-mobile ">
@@ -39,12 +43,12 @@
 				<label for="my-drawer-3" class=""
 					><li>
 						<a
-							href="http://localhost:3000/queries/{query.name}"
+							href="{origin}/queries/{query.name}"
 							on:mousedown={() => {
-								goto('http://localhost:3000/queries/');
+								goto(`${origin}/queries/`);
 							}}
 							on:click={() => {
-								goto(`http://localhost:3000/queries/${query.name}`, { replaceState: true });
+								goto(`${origin}/queries/${query.name}`, { replaceState: true });
 							}}>{query.name}</a
 						>
 					</li></label
