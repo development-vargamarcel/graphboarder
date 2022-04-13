@@ -157,6 +157,7 @@
 		//output
 	};
 	$: if (!$queryStore.fetching) {
+		console.log($queryStore.data);
 		handleData();
 	}
 </script>
