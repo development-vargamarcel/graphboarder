@@ -126,7 +126,7 @@
 		//handle queries --
 		queries = rootTypes.find((type) => {
 			return type?.name == 'Query';
-		}).fields;
+		})?.fields;
 		//sort
 		queries = queries.sort((a, b) => {
 			if (a?.name < b?.name) {
@@ -141,7 +141,7 @@
 		//handle mutations --
 		mutations = rootTypes.find((type) => {
 			return type?.name == 'Mutation';
-		}).fields;
+		})?.fields;
 		//sort
 		mutations = mutations.sort((a, b) => {
 			if (a?.name < b?.name) {
