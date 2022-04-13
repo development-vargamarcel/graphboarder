@@ -2,7 +2,7 @@
 import { createClient, fetchExchange } from '@urql/svelte';
 import { amp, browser, dev, mode, prerendering } from '$app/env';
 export default createClient({
-    url: import.meta.env.VITE_DIRECTUS_URL_GRAPHQL,
+    url: 'https://mdunpmb9.directus.app/graphql',
     fetchOptions: () => {
         const token = getToken();
         return {
