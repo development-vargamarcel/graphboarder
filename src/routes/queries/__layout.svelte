@@ -14,7 +14,12 @@
 	<div class="drawer-content flex flex-col ">
 		<!-- Navbar -->
 		<div class="w-full navbar bg-base-300">
-			<div class="flex-none lg:hidden">
+			<div
+				class="flex-none lg:hidden"
+				on:click={() => {
+					goto(`${origin}/queries/`);
+				}}
+			>
 				<label for="my-drawer-3" class="btn btn-square btn-ghost">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
