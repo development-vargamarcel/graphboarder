@@ -4,9 +4,23 @@
 
 	export let index;
 	export let type;
+	let names = [];
 	let name = type?.type?.ofType?.name || type?.type?.name || type?.name;
 	let nameToDisplay = type?.name || type?.type?.name || type?.type?.ofType?.name;
 	let kinds = [];
+
+	if (type?.name) {
+		names.push(type?.name);
+	}
+	if (type?.type?.name) {
+		names.push(type?.type?.name);
+	}
+	if (type?.ofType?.name) {
+		names.push(type?.ofType?.name);
+	}
+	if (type?.type?.ofType?.name) {
+		names.push(type?.type?.ofType?.name);
+	}
 
 	if (type?.kind) {
 		kinds.push(type?.kind);
@@ -55,21 +69,44 @@
 			<div class="bg-secondary p-1 rounded ">{kinds.join(' of ')}</div>
 		</div>
 
-		<div class="w-1/2">
-			<div
-				class="btn btn-xs btn-info normal-case font-light "
-				on:click={() => {
-					console.log(type);
-				}}
-			>
-				{nameToDisplay}
+		<div class="w-1/2 ">
+			<div class="flex">
+				<div
+					class="btn btn-xs btn-info normal-case font-light "
+					on:click={() => {
+						console.log(type);
+						console.log(names);
+					}}
+				>
+					{nameToDisplay}
+				</div>
+				{#if !canExpand}
+					{#if nameToDisplay == names[names.length - 1]}
+						{''}
+					{:else}
+						<div class="bg-base-200 p-1 rounded">
+							{names[names.length - 1]}
+						</div>
+					{/if}
+				{/if}
+			</div>
+
+			<div class="flex">
+				{#if canExpand}
+					<div class="btn btn-xs  p-1 rounded normal-case" on:click={expand}>expand</div>
+					<div class="bg-base-200  rounded px-2 py-1">
+						{#if names[0] !== nameToDisplay}
+							({names[0]})
+						{:else if names[1] && names[1] !== nameToDisplay}
+							({names[1]})
+						{:else}
+							{''}
+						{/if}
+					</div>
+				{/if}
 			</div>
 		</div>
-		<div class="w-1/8">
-			{#if canExpand}
-				<div class="btn btn-xs  p-1 rounded" on:click={expand}>expand</div>
-			{/if}
-		</div>
+		<div class="w-1/8 text-center text-xs" />
 	</div>
 
 	{#if showExpand}
