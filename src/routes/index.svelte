@@ -4,6 +4,7 @@
 
 <script lang="ts">
 	import { introspectionResult } from '$lib/stores/introspectionResult';
+	console.log($introspectionResult);
 	import Types from '$lib/components/Types.svelte';
 
 	let rootTypes = $introspectionResult.rootTypes;
