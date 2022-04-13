@@ -13,9 +13,6 @@
 	});
 </script>
 
-<IntrospectionDataGenerator />
-
-<!-- 
 <header />
 
 <main class="bg-base-300">
@@ -26,6 +23,7 @@
 	{/if}
 </main>
 
-<footer /> -->
+<footer />
+
 <style>
 </style>

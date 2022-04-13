@@ -157,8 +157,14 @@
 		//output
 	};
 	$: if (!$queryStore.fetching) {
-		console.log($queryStore?.data);
-		handleData();
+		if (queryStore?.data) {
+			console.log($queryStore?.data);
+			handleData();
+		} else if ($queryStore?.error) {
+			console.log($queryStore?.error);
+		} else {
+			console.log('no data');
+		}
 	}
 </script>
 
