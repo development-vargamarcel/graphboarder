@@ -113,7 +113,7 @@
 		//handle rootTypes -- s
 		rootTypes = [...$queryStore?.data?.__schema?.types];
 		//sort
-		rootTypes = rootTypes.sort((a, b) => {
+		rootTypes = rootTypes?.sort((a, b) => {
 			if (a?.name < b?.name) {
 				return -1;
 			}
@@ -124,11 +124,11 @@
 		});
 		$introspectionResult.rootTypes = rootTypes;
 		//handle queries --
-		queries = rootTypes.find((type) => {
+		queries = rootTypes?.find((type) => {
 			return type?.name == 'Query';
 		})?.fields;
 		//sort
-		queries = queries.sort((a, b) => {
+		queries = queries?.sort((a, b) => {
 			if (a?.name < b?.name) {
 				return -1;
 			}
@@ -139,11 +139,11 @@
 		});
 		$introspectionResult.queryFields = queries;
 		//handle mutations --
-		mutations = rootTypes.find((type) => {
+		mutations = rootTypes?.find((type) => {
 			return type?.name == 'Mutation';
 		})?.fields;
 		//sort
-		mutations = mutations.sort((a, b) => {
+		mutations = mutations?.sort((a, b) => {
 			if (a?.name < b?.name) {
 				return -1;
 			}
