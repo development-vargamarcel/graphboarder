@@ -3,66 +3,67 @@
 </script>
 
 <script lang="ts">
-	import { introspectionResult } from '$lib/stores/introspectionResult';
-	console.log($introspectionResult);
-	import Types from '$lib/components/Types.svelte';
+	// import { introspectionResult } from '$lib/stores/introspectionResult';
+	// console.log($introspectionResult);
+	// import Types from '$lib/components/Types.svelte';
 
-	let rootTypes = $introspectionResult.rootTypes;
-	let queries = $introspectionResult.queryFields;
-	let mutations = $introspectionResult.mutationFields;
-	let whatIsShown = '-';
-	let whatToShow = [];
-	let sortingInputValue = '';
-	let sortingArray = [];
-	$: sortingArray = sortingInputValue.split(' ');
+	// let rootTypes = $introspectionResult.rootTypes;
+	// let queries = $introspectionResult.queryFields;
+	// let mutations = $introspectionResult.mutationFields;
+	// let whatIsShown = '-';
+	// let whatToShow = [];
+	// let sortingInputValue = '';
+	// let sortingArray = [];
+	// $: sortingArray = sortingInputValue.split(' ');
 
-	const filterByWord = () => {
-		rootTypes = rootTypes.filter((type) => {
-			if (sortingArray.length == 1 && sortingArray[0] == '') {
-				return true;
-			} else {
-				return sortingArray.includes(type.kind);
-			}
-		});
+	// const filterByWord = () => {
+	// 	rootTypes = rootTypes.filter((type) => {
+	// 		if (sortingArray.length == 1 && sortingArray[0] == '') {
+	// 			return true;
+	// 		} else {
+	// 			return sortingArray.includes(type.kind);
+	// 		}
+	// 	});
 
-		showRootTypes();
-	};
-	const showRootTypes = () => {
-		console.log(rootTypes);
-		whatToShow = rootTypes;
-		whatIsShown = 'rootTypes';
-	};
-	showRootTypes();
-	const showQueries = () => {
-		console.log(queries);
-		whatToShow = queries;
-		whatIsShown = 'queryFields';
-	};
+	// 	showRootTypes();
+	// };
+	// const showRootTypes = () => {
+	// 	console.log(rootTypes);
+	// 	whatToShow = rootTypes;
+	// 	whatIsShown = 'rootTypes';
+	// };
+	// showRootTypes();
+	// const showQueries = () => {
+	// 	console.log(queries);
+	// 	whatToShow = queries;
+	// 	whatIsShown = 'queryFields';
+	// };
 
-	const showMutations = () => {
-		console.log(mutations);
-		whatToShow = mutations;
-		whatIsShown = 'mutationFields';
-	};
+	// const showMutations = () => {
+	// 	console.log(mutations);
+	// 	whatToShow = mutations;
+	// 	whatIsShown = 'mutationFields';
+	// };
 
-	console.log($introspectionResult);
-	const rootTypeByName = (name) => {
-		return $introspectionResult.rootTypes.filter((item) => {
-			return item.name == name;
-		})[0];
-	};
-	const queryFieldByName = (name) => {
-		return $introspectionResult.queryFields.filter((item) => {
-			return item.name == name;
-		})[0];
-	};
-	const mutationFieldByName = (name) => {
-		return $introspectionResult.mutationFields.filter((item) => {
-			return item.name == name;
-		})[0];
-	};
+	// console.log($introspectionResult);
+	// const rootTypeByName = (name) => {
+	// 	return $introspectionResult.rootTypes.filter((item) => {
+	// 		return item.name == name;
+	// 	})[0];
+	// };
+	// const queryFieldByName = (name) => {
+	// 	return $introspectionResult.queryFields.filter((item) => {
+	// 		return item.name == name;
+	// 	})[0];
+	// };
+	// const mutationFieldByName = (name) => {
+	// 	return $introspectionResult.mutationFields.filter((item) => {
+	// 		return item.name == name;
+	// 	})[0];
+	// };
 </script>
 
+<!-- 
 <svelte:head>
 	<title>Home</title>
 </svelte:head>
@@ -87,7 +88,6 @@
 	<br />
 
 	<Types {whatToShow} {whatIsShown} />
-</section>
-
+</section> -->
 <style>
 </style>
