@@ -46,19 +46,19 @@
 				<tbody class="z-0">
 					{#each rows as row, index}
 						<tr
-							class="bg-base-100 hover:bg-base-300 cursor-pointer hover"
+							class="bg-base-100 hover:bg-base-300 cursor-pointer hover z-0"
 							on:click={() => {
 								document.getElementById('my-drawer-4').click();
 							}}
 						>
-							<th on:click|stopPropagation={() => {}}>
+							<th class="z-0" on:click|stopPropagation={() => {}}>
 								<label>
 									<input type="checkbox" class="checkbox" />
 								</label>
 							</th>
-							<th>{index + 1}</th>
+							<th class="z-0">{index + 1}</th>
 							{#each columns as column}
-								<td class="">
+								<td class="z-0">
 									{truncateText(row[column], 20, true)}
 								</td>{/each}
 						</tr>
