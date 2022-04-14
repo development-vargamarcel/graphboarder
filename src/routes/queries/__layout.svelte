@@ -11,7 +11,7 @@
 
 <div class="drawer  drawer-mobile ">
 	<input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
-	<div class="drawer-content flex flex-col ">
+	<div class="drawer-content flex flex-col  w-full">
 		<!-- Navbar -->
 		<div class="w-full navbar bg-base-300">
 			<div
@@ -37,7 +37,9 @@
 			</div>
 			<div class="flex-1 px-2 mx-2"><a href="/queries">back to queries</a></div>
 		</div>
-		<slot />
+		<div class="w-full overflow-x-auto">
+			<slot />
+		</div>
 	</div>
 	<div class="drawer-side ">
 		<label for="my-drawer-3" class="drawer-overlay" />
