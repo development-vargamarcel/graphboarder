@@ -33,16 +33,21 @@ export const getQueryFromRootTypes = (rootTypes, queryNameForType) => {
     })[0];
 }
 export const getScalarFieldsNames = (query) => {
-    let scalarFields = query?.fields?.filter((field) => {
-        if (field?.type?.kind == 'SCALAR' || field.type?.ofType?.kind == 'SCALAR') {
+    let scalarFields = []
+    scalarFields = query?.fields?.filter((field) => {
+        let isSCALAR = false
+        isSCALAR = field?.type?.kind == 'SCALAR' || field?.type?.ofType?.kind == 'SCALAR'
+        if (isSCALAR) {
             return true;
         }
     });
     let scalarFieldsNames = []
-    if (scalarFields.length >= 1) {
+    if (scalarFields?.length >= 1) {
         scalarFieldsNames = scalarFields?.map((field) => {
             return field?.name;
         });
+    } else {
+        scalarFieldsNames = []
     }
     return scalarFieldsNames
 }

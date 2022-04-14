@@ -30,7 +30,7 @@
 	if (currentQuery_fields_SCALAR_names.length == 0) {
 		queryNameDisplay = queryNameDisplay + ' (...)';
 		queryTitleDisplay = `${queryTitleDisplay} \n ${JSON.stringify(
-			currentQueryFromRootTypes.fields
+			currentQueryFromRootTypes?.fields
 		)} `;
 	}
 </script>
