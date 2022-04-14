@@ -60,7 +60,7 @@
 			<label for="my-drawer-4" class="drawer-overlay" />
 			<div class="menu  overflow-y-auto bg-primary/0  text-base-content w-full">
 				<div class="flex h-full ">
-					<label for="my-drawer-4" class="w-20 ">
+					<label for="my-drawer-4" class="sm:w-20 ">
 						<div class="bg-primary/0" />
 					</label>
 					<div class="flex space-x-2 bg-base-100 w-full">

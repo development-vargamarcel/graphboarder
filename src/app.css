@@ -115,3 +115,22 @@ button:focus:not(:focus-visible) {
 @tailwind components;
 
 @tailwind utilities;
+/* width */
+::-webkit-scrollbar {
+	@apply sm:w-[6px] sm:h-[6px];
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	@apply bg-base-100;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	@apply bg-base-200;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	@apply bg-base-300;
+}
