@@ -20,8 +20,8 @@
 		<input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
 		<div class="drawer-content">
 			<table class="table table-compact w-full ">
-				<thead class="sticky top-0 ">
-					<tr class="">
+				<thead class="sticky top-0 z-20">
+					<tr class="sticky top-0 ">
 						<th>
 							<label>
 								<input type="checkbox" class="checkbox" />
@@ -33,7 +33,7 @@
 						{/each}
 					</tr>
 				</thead>
-				<tbody>
+				<tbody class="z-0">
 					{#each rows as row, index}
 						<tr
 							class="bg-base-100 hover:bg-base-300 cursor-pointer hover"
