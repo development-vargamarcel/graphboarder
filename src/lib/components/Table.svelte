@@ -21,7 +21,7 @@
 		<div class="drawer-content">
 			<table class="table table-compact w-full ">
 				<thead class="sticky top-0 ">
-					<tr>
+					<tr class="">
 						<th>
 							<label>
 								<input type="checkbox" class="checkbox" />
