@@ -48,6 +48,10 @@
 		store_auth_token();
 		store_graphqlEndpointURL();
 	};
+	const deleteAll = () => {
+		localStorage.removeItem('auth_token');
+		localStorage.removeItem('graphqlEndpointURL');
+	};
 </script>
 
 <header />
@@ -65,7 +69,7 @@
 		<div
 			class="fixed bottom-0 bg-base-200 w-screen h-screen overscroll-none overflow-y-auto p-4 mx-auto"
 		>
-			<div class="form-control w-full max-w-xs">
+			<div class="form-control w-full max-w-xs mt-20">
 				<label class="label">
 					<span class="label-text">graphqlEndpointURL</span>
 				</label>
@@ -87,6 +91,9 @@
 
 				<button class="btn bg-primary btn-sm normal-case w-content-min mt-2" on:click={storeAll}
 					>update</button
+				>
+				<button class="btn bg-warning btn-sm normal-case w-content-min mt-14" on:click={deleteAll}
+					>delete all</button
 				>
 			</div>
 		</div>
