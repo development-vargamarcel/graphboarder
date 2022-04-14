@@ -48,6 +48,7 @@
 	const storeAll = () => {
 		store_auth_token();
 		store_graphqlEndpointURL();
+		editButtonClick();
 	};
 	const deleteAll = () => {
 		auth_token = '';
