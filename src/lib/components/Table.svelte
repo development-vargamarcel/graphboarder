@@ -28,7 +28,7 @@
 <div class="overflow-x-auto  ">
 	<div class="drawer drawer-end 	">
 		<input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
-		<div class="drawer-content overscroll-y-contain pb-20">
+		<div class="drawer-content overscroll-y-contain pb-60">
 			<table class="table table-compact w-full rounded-none">
 				<thead class="sticky top-0 z-20">
 					<tr class="sticky top-0 ">
