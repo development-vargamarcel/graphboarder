@@ -3,15 +3,14 @@
 	export let rows = [];
 	console.log(columns);
 	console.log(rows);
-	const truncateText = (text = '', length) => {
-		if (typeof text === 'string') {
-			if (text == text.substr(0, length)) {
-				return text;
-			}
-			return `${text.substr(0, length)}...`;
-		} else {
-			return text;
+	const truncateText = (data = '', length) => {
+		let string = '';
+		typeof data === 'string' ? (string = data) : (string = JSON.stringify(data));
+
+		if (string == string.substring(0, length)) {
+			return string;
 		}
+		return `${string.substring(0, length)}...`;
 	};
 </script>
 
@@ -48,7 +47,7 @@
 							</th>
 							<th>{index + 1}</th>
 							{#each columns as column}
-								<td>
+								<td class="">
 									{truncateText(row[column], 40)}
 								</td>{/each}
 						</tr>
