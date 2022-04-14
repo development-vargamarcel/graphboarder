@@ -10,7 +10,7 @@
 	};
 </script>
 
-<div class="w-full mx-auto">
+<div class="w-full mx-auto my-4">
 	<div class="flex w-1/2 mx-auto space-x-2">
 		<input type="text" class="input input-sm " placeholder="jwt token" bind:value={auth_token} />
 		<button class="btn bg-primary btn-sm normal-case" on:click={store_auth_token}
