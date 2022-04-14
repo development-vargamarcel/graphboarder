@@ -37,7 +37,7 @@
 			</div>
 			<div class="flex-1 px-2 mx-2"><a href="/queries">back to queries</a></div>
 		</div>
-		<div class="w-full overflow-auto h-screen">
+		<div class="w-full overflow-auto h-full">
 			<slot />
 		</div>
 	</div>
