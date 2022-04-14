@@ -8,7 +8,6 @@
 	console.log($urqlClient);
 	setClient($urqlClient);
 	let queryName = $page.params.queryName;
-	console.log('-----------', queryName);
 
 	let currentQuery = $introspectionResult.rootTypes.filter((query) => {
 		return query.name == queryName;

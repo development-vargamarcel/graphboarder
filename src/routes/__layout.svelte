@@ -43,6 +43,11 @@
 			localStorage.setItem('graphqlEndpointURL', graphqlEndpointURL);
 		}
 	};
+
+	const storeAll = () => {
+		store_auth_token();
+		store_graphqlEndpointURL();
+	};
 </script>
 
 <header />
@@ -60,22 +65,28 @@
 		<div
 			class="fixed bottom-0 bg-base-200 w-screen h-screen overscroll-none overflow-y-auto p-4 mx-auto"
 		>
-			<div class="flex mx-auto  w-max p-4  space-x-2 overflow-auto w-1/2 ">
-				<input class="input input-sm w-40" type="text" bind:value={graphqlEndpointURL} />
-				<button class="btn btn-sm normal-case w-content-min" on:click={store_graphqlEndpointURL}
-					>change <br /> graphqlEndpointURL</button
-				>
-			</div>
-			<div class="flex mx-auto  w-max p-4  space-x-2 overflow-auto w-full ">
+			<div class="form-control w-full max-w-xs">
+				<label class="label">
+					<span class="label-text">graphqlEndpointURL</span>
+				</label>
 				<input
 					type="text"
-					class="input input-sm w-40"
-					placeholder="jwt token"
+					placeholder="Type here"
+					class="input input-bordered input-sm w-full max-w-xs "
+					bind:value={graphqlEndpointURL}
+				/>
+				<label class="label">
+					<span class="label-text">graphqlEndpointURL</span>
+				</label>
+				<input
+					type="text"
+					placeholder="Type here"
+					class="input input-bordered input-sm w-full max-w-xs "
 					bind:value={auth_token}
 				/>
 
-				<button class="btn bg-primary btn-sm normal-case w-content-min" on:click={store_auth_token}
-					>change <br /> auth_token</button
+				<button class="btn bg-primary btn-sm normal-case w-content-min mt-2" on:click={storeAll}
+					>update</button
 				>
 			</div>
 		</div>
