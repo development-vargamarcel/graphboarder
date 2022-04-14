@@ -51,7 +51,7 @@
 								document.getElementById('my-drawer-4').click();
 							}}
 						>
-							<th>
+							<th on:click|stopPropagation={() => {}}>
 								<label>
 									<input type="checkbox" class="checkbox" />
 								</label>
