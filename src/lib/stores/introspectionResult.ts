@@ -2,7 +2,7 @@ import { writable } from "svelte/store";
 
 export const Create_introspectionResult = () => {
 
-    const store = writable({ rootTypes: [], queryFields: [], mutationFields: [] })
+    const store = writable({ rootTypes: [], queryFields: [], mutationFields: [], schema: {} })
     const { subscribe, set, update } = store
 
     return {

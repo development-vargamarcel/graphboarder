@@ -3,6 +3,9 @@
 	export let rows = [];
 	console.log(columns);
 	console.log(rows);
+	if (!rows?.length) {
+		rows = [rows];
+	}
 	const truncateText = (data = '', length, alwaysStringyfy = true) => {
 		let string = '';
 		let resultingString = '';

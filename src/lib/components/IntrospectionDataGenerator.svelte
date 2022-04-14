@@ -138,11 +138,15 @@
 	let rootTypes = [];
 	let queries = [];
 	let mutations = [];
+	let schema = {};
 	let sortingInputValue = '';
 	let sortingArray = [];
 	$: sortingArray = sortingInputValue.split(' ');
 	const handleData = () => {
-		//handle rootTypes -- s
+		//handle schema --
+		schema = $queryStore?.data?.__schema;
+		$introspectionResult.schema = schema;
+		//handle rootTypes --
 		rootTypes = [...$queryStore?.data?.__schema?.types];
 		//sort
 		rootTypes = rootTypes?.sort((a, b) => {
@@ -156,35 +160,39 @@
 		});
 		$introspectionResult.rootTypes = rootTypes;
 		//handle queries --
-		queries = rootTypes?.find((type) => {
-			return type?.name == 'Query';
-		})?.fields;
-		//sort
-		queries = queries?.sort((a, b) => {
-			if (a?.name < b?.name) {
-				return -1;
-			}
-			if (a?.name > b?.name) {
-				return 1;
-			}
-			return 0;
-		});
-		$introspectionResult.queryFields = queries;
+		if (schema?.queryType?.name) {
+			queries = rootTypes?.find((type) => {
+				return type?.name == schema?.queryType?.name;
+			})?.fields;
+			//sort
+			queries = queries?.sort((a, b) => {
+				if (a?.name < b?.name) {
+					return -1;
+				}
+				if (a?.name > b?.name) {
+					return 1;
+				}
+				return 0;
+			});
+			$introspectionResult.queryFields = queries;
+		}
 		//handle mutations --
-		mutations = rootTypes?.find((type) => {
-			return type?.name == 'Mutation';
-		})?.fields;
-		//sort
-		mutations = mutations?.sort((a, b) => {
-			if (a?.name < b?.name) {
-				return -1;
-			}
-			if (a?.name > b?.name) {
-				return 1;
-			}
-			return 0;
-		});
-		$introspectionResult.mutationFields = mutations;
+		if (schema?.mutationType?.name) {
+			mutations = rootTypes?.find((type) => {
+				return type?.name == schema?.mutationType?.name;
+			})?.fields;
+			//sort
+			mutations = mutations?.sort((a, b) => {
+				if (a?.name < b?.name) {
+					return -1;
+				}
+				if (a?.name > b?.name) {
+					return 1;
+				}
+				return 0;
+			});
+			$introspectionResult.mutationFields = mutations;
+		}
 
 		//output
 	};
