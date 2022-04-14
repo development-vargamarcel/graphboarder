@@ -101,7 +101,7 @@
 					bind:value={graphqlEndpointURL}
 				/>
 				<label class="label">
-					<span class="label-text">graphqlEndpointURL</span>
+					<span class="label-text">auth_token</span>
 				</label>
 				<input
 					type="text"
