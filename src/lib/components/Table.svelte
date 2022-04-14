@@ -31,7 +31,7 @@
 		<div class="drawer-content overscroll-y-contain pb-60">
 			<table class="table table-compact w-full rounded-none">
 				<thead class="sticky top-0 z-20">
-					<tr class="sticky top-0 ">
+					<tr class="sticky top-0 z-20">
 						<th>
 							<label>
 								<input type="checkbox" class="checkbox" />
