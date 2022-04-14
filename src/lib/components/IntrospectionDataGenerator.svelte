@@ -3,11 +3,43 @@
 </script>
 
 <script lang="ts">
+	////
+	import { onDestroy, setContext } from 'svelte';
+	export let graphqlEndpointURL = 'https://mdunpmb9.directus.app/graphql';
+
+	import { createClient, fetchExchange } from '@urql/svelte';
+	import { amp, browser, dev, mode, prerendering } from '$app/env';
+	let client = createClient({
+		url: graphqlEndpointURL,
+		fetchOptions: () => {
+			const token = getToken();
+			let authorizationHeader = {};
+			if (token) {
+				authorizationHeader = { authorization: token ? `Bearer ${token}` : '' };
+			}
+
+			return {
+				headers: { ...authorizationHeader }
+			};
+		},
+		exchanges: [fetchExchange]
+	});
+
+	let getToken = () => {
+		console.log('get token run');
+		if (browser) {
+			return localStorage.getItem('auth_token');
+		} else {
+			return null;
+		}
+	};
+
+	///
 	import { setClient, operationStore, query } from '@urql/svelte';
 	import { introspectionResult } from '$lib/stores/introspectionResult';
-	import client from '$lib/utils/urql_client';
-	import Type from '$lib/components/Type.svelte';
-	import Types from '$lib/components/Types.svelte';
+
+	import { urqlClient } from '$lib/stores/urqlClient';
+	urqlClient.set(client);
 	setClient(client);
 	const queryStore = operationStore(`
     query IntrospectionQuery {

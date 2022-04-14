@@ -2,11 +2,9 @@
 	import { introspectionResult } from '$lib/stores/introspectionResult';
 	import { goto } from '$app/navigation';
 	let queries = $introspectionResult.queryFields;
-	console.log(queries);
+	console.log('queries: ', queries);
 	import { getStores, navigating, page, session, updated } from '$app/stores';
 	let origin = $page.url.origin;
-	console.log($page);
-	console.log(origin);
 </script>
 
 <div class="drawer  drawer-mobile ">
@@ -35,7 +33,7 @@
 					>
 				</label>
 			</div>
-			<div class="flex-1 px-2 mx-2"><a href="/queries">back to setup</a></div>
+			<div class="flex-1 px-2 mx-2"><a href="/">go home</a></div>
 		</div>
 		<div class="w-full overflow-auto h-full">
 			<slot />

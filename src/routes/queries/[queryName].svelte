@@ -1,10 +1,12 @@
 <script>
 	import { getStores, navigating, page, session, updated } from '$app/stores';
-	import { setClient, operationStore, query } from '@urql/svelte';
+	import { setClient, getClient, operationStore, query } from '@urql/svelte';
 	import { introspectionResult } from '$lib/stores/introspectionResult';
 	import client from '$lib/utils/urql_client';
 	import Table from '$lib/components/Table.svelte';
-	setClient(client);
+	import { urqlClient } from '$lib/stores/urqlClient';
+	console.log($urqlClient);
+	setClient($urqlClient);
 	let queryName = $page.params.queryName;
 	console.log('-----------', queryName);
 

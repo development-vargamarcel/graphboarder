@@ -53,7 +53,6 @@
 		whatIsShown = 'mutationFields';
 	};
 
-	console.log($introspectionResult);
 	const rootTypeByName = (name) => {
 		return $introspectionResult.rootTypes.filter((item) => {
 			return item.name == name;
