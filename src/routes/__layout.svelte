@@ -50,18 +50,34 @@
 		store_graphqlEndpointURL();
 	};
 	const deleteAll = () => {
+		auth_token = '';
+		graphqlEndpointURL = '';
+
 		localStorage.removeItem('auth_token');
 		localStorage.removeItem('graphqlEndpointURL');
 	};
+	const editButtonClick = () => {
+		if (editText == 'edit') {
+			editText = 'done';
+		} else {
+			editText = 'edit';
+		}
+		if (!showEdit) {
+			gotData = false;
+		}
+
+		showEdit = !showEdit;
+		show_IntrospectionDataGenerator = !show_IntrospectionDataGenerator;
+	};
 	if (!graphqlEndpointURL) {
-		showEdit = true;
+		editButtonClick();
 	}
 </script>
 
 <header />
 
 <main class="bg-base-300 w-full">
-	{#if graphqlEndpointURL}
+	{#if graphqlEndpointURL && graphqlEndpointURL !== ''}
 		{#if show_IntrospectionDataGenerator}
 			{#if gotData}
 				<slot />
@@ -103,22 +119,7 @@
 		</div>
 	{/if}
 	<div class="fixed bottom-0 right-0 p-2">
-		<button
-			class="btn btn-sm "
-			on:click={() => {
-				if (editText == 'edit') {
-					editText = 'done';
-				} else {
-					editText = 'edit';
-				}
-				if (!showEdit) {
-					gotData = false;
-				}
-
-				showEdit = !showEdit;
-				show_IntrospectionDataGenerator = !show_IntrospectionDataGenerator;
-			}}>{editText}</button
-		>
+		<button class="btn btn-sm " on:click={editButtonClick}>{editText}</button>
 	</div>
 </main>
 
