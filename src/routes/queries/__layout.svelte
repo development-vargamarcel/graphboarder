@@ -4,6 +4,7 @@
 	let queries = $introspectionResult.queryFields;
 	console.log('queries: ', queries);
 	import { getStores, navigating, page, session, updated } from '$app/stores';
+	import QueryLink from '$lib/components/QueryLink.svelte';
 	let origin = $page.url.origin;
 </script>
 
@@ -47,15 +48,7 @@
 				<!-- svelte-ignore a11y-missing-attribute -->
 				<label for="my-drawer-3" class=""
 					><li>
-						<a
-							href="{origin}/queries/{query.name}"
-							on:mousedown={() => {
-								goto(`${origin}/queries/`);
-							}}
-							on:click={() => {
-								goto(`${origin}/queries/${query.name}`, { replaceState: true });
-							}}>{query.name}</a
-						>
+						<QueryLink {query} {origin} />
 					</li></label
 				>
 			{/each}

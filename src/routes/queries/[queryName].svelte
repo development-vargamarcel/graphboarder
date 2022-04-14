@@ -5,31 +5,32 @@
 	import client from '$lib/utils/urql_client';
 	import Table from '$lib/components/Table.svelte';
 	import { urqlClient } from '$lib/stores/urqlClient';
-	console.log($urqlClient);
 	setClient($urqlClient);
 	let queryName = $page.params.queryName;
 
-	let currentQuery = $introspectionResult.rootTypes.filter((query) => {
+	let currentQueryInfo = $introspectionResult.queryFields.filter((query) => {
 		return query.name == queryName;
 	})[0];
-	let currentQuery_fields = currentQuery.fields;
-	let currentQuery_fields_SCALAR = currentQuery_fields.filter((field) => {
+	let currentQueryNameForType =
+		currentQueryInfo?.type?.ofType?.name || currentQueryInfo?.type?.name || currentQueryInfo?.name;
+	let currentQuery = $introspectionResult.rootTypes.filter((query) => {
+		return query.name == currentQueryNameForType;
+	})[0];
+
+	let currentQuery_fields = currentQuery?.fields;
+	let currentQuery_fields_SCALAR = currentQuery_fields?.filter((field) => {
 		if (field?.type?.kind == 'SCALAR' || field.type?.ofType?.kind == 'SCALAR') {
 			return true;
 		}
 	});
-	console.log(currentQuery);
-	console.log(currentQuery_fields);
-	console.log(currentQuery_fields_SCALAR);
-	let currentQuery_fields_SCALAR_name = currentQuery_fields_SCALAR.map((field) => {
-		return field.name;
+	let currentQuery_fields_SCALAR_name = currentQuery_fields_SCALAR?.map((field) => {
+		return field?.name;
 	});
 
-	console.log(currentQuery_fields_SCALAR_name);
 	let queryBody = `
     query MyQuery {
   ${queryName} {
-${currentQuery_fields_SCALAR_name.join('\n')}
+${currentQuery_fields_SCALAR_name?.join('\n')}
   }
 }
     `;
