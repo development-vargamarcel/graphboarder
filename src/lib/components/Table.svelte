@@ -25,10 +25,10 @@
 	};
 </script>
 
-<div class="overflow-x-auto  ">
+<div class="  ">
 	<div class="drawer drawer-end 	">
 		<input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
-		<div class="drawer-content overscroll-y-contain pb-60">
+		<div class="drawer-content overscroll-contain pb-60">
 			<table class="table table-compact w-full rounded-none	">
 				<thead class="sticky top-0 z-20">
 					<tr class="sticky top-0 z-20">
@@ -66,10 +66,11 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="drawer-side  w-full flex-none ">
-			<label for="my-drawer-4" class="drawer-overlay" />
+
+		<div class="drawer-side  w-full flex-none h-full overscroll-contain">
+			<label for="my-drawer-4" class="drawer-overlay h-full" />
 			<div class="menu   bg-primary/0   text-base-content w-full ">
-				<div class="flex h-full  overflow-auto">
+				<div class="flex h-full  ">
 					<label for="my-drawer-4" class="sm:w-20 ">
 						<div class="bg-primary/0" />
 					</label>
@@ -80,12 +81,13 @@
 							>
 							<div class="btn btn-success mb-40">ok</div>
 						</div>
+						<div class="">
+							<div class="mb-60">s</div>
 
-						<div class="mb-60">s</div>
-
-						<label for="my-drawer-4" class="drawer-button btn btn-primary w-min rounded-full"
-							>X</label
-						>
+							<label for="my-drawer-4" class="drawer-button btn btn-primary w-min rounded-full"
+								>X</label
+							>
+						</div>
 					</div>
 				</div>
 			</div>
