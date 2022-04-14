@@ -69,10 +69,6 @@
 			return item.name == name;
 		})[0];
 	};
-	let auth_token = '';
-	const store_auth_token = () => {
-		localStorage.setItem('auth_token', auth_token);
-	};
 </script>
 
 <svelte:head>
@@ -80,8 +76,6 @@
 </svelte:head>
 
 <section class="">
-	<input type="text" class="input input-sm" bind:value={auth_token} />
-	<button class="btn bg-primary btn-sm" on:click={store_auth_token}>store_auth_token</button>
 	<br />
 	<br />
 	<button
