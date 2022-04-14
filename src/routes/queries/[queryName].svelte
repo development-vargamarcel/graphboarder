@@ -16,8 +16,11 @@
 
 	let currentQueryInfo = getQueryInfo($introspectionResult.queryFields, queryName);
 	let currentQueryNameForType = getCurrentQueryNameForType(currentQueryInfo);
-	let currentQuery = getQueryFromRootTypes($introspectionResult.rootTypes, currentQueryNameForType);
-	let currentQuery_fields_SCALAR_names = getScalarFieldsNames(currentQuery);
+	let currentQueryFromRootTypes = getQueryFromRootTypes(
+		$introspectionResult.rootTypes,
+		currentQueryNameForType
+	);
+	let currentQuery_fields_SCALAR_names = getScalarFieldsNames(currentQueryFromRootTypes);
 
 	let queryBody = `
     query MyQuery {
