@@ -36,7 +36,7 @@
 				<tbody>
 					{#each rows as row, index}
 						<tr
-							class="bg-base-100hover:bg-base-300"
+							class="bg-base-100 hover:bg-base-300 cursor-pointer hover"
 							on:click={() => {
 								document.getElementById('my-drawer-4').click();
 							}}
