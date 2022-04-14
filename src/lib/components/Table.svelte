@@ -25,11 +25,11 @@
 	};
 </script>
 
-<div class="overflow-x-auto h-full">
-	<div class="drawer drawer-end h-full">
+<div class="overflow-x-auto  ">
+	<div class="drawer drawer-end 	">
 		<input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
-		<div class="drawer-content">
-			<table class="table table-compact w-full ">
+		<div class="drawer-content overscroll-y-contain pb-20">
+			<table class="table table-compact w-full rounded-none">
 				<thead class="sticky top-0 z-20">
 					<tr class="sticky top-0 ">
 						<th>
