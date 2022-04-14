@@ -73,7 +73,7 @@
 					<label for="my-drawer-4" class="sm:w-20 ">
 						<div class="bg-primary/0" />
 					</label>
-					<div class="flex space-x-2 bg-base-100 w-full">
+					<div class="flex space-x-2 bg-base-100 w-full p-2">
 						<label for="my-drawer-4" class="drawer-button btn btn-primary w-min rounded-full"
 							>X</label
 						>
