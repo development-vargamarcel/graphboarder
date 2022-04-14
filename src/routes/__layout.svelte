@@ -15,7 +15,7 @@
 
 <header />
 
-<main class="bg-base-300">
+<main class="bg-base-300 w-full">
 	<IntrospectionDataGenerator />
 
 	{#if gotData}

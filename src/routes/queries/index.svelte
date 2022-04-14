@@ -10,8 +10,8 @@
 	};
 </script>
 
-<div class="w-full  my-4 px-4">
-	<div class="flex w-1/4  space-x-2">
+<div class="w-full mx-auto  my-4   overflow-auto ">
+	<div class="flex mx-auto  w-max  space-x-2 overflow-auto w-full ">
 		<input
 			type="text"
 			class="input input-sm w-40"

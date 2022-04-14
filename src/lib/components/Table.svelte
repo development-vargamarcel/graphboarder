@@ -22,7 +22,12 @@
 			<table class="table table-compact w-full ">
 				<thead class="sticky top-0 ">
 					<tr>
-						<th /><th />
+						<th>
+							<label>
+								<input type="checkbox" class="checkbox" />
+							</label>
+						</th>
+						<th>#</th>
 						{#each columns as column}
 							<th>{column}</th>
 						{/each}
@@ -36,8 +41,12 @@
 								document.getElementById('my-drawer-4').click();
 							}}
 						>
-							<td class="cursor-pointer">edit</td>
-							<td>{index}</td>
+							<th>
+								<label>
+									<input type="checkbox" class="checkbox" />
+								</label>
+							</th>
+							<th>{index + 1}</th>
 							{#each columns as column}
 								<td>
 									{truncateText(row[column], 40)}
