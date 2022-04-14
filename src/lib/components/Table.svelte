@@ -74,20 +74,19 @@
 					<label for="my-drawer-4" class="sm:w-20 ">
 						<div class="bg-primary/0" />
 					</label>
-					<div class="  bg-base-100 w-full p-2  pb-80">
-						<div class="flex space-x-2">
-							<label for="my-drawer-4" class="drawer-button btn btn-primary w-min rounded-full"
-								>X</label
-							>
-							<div class="btn btn-success mb-40">ok</div>
+					<div class="  bg-base-100 w-full ">
+						<div class="flex space-x-2 sticky top-0 bg-base-100 shadow-md p-2">
+							<div class="flex-none w-14 h-14 ...">
+								<label for="my-drawer-4" class="drawer-button btn btn-primary w-min rounded-full"
+									>X</label
+								>
+							</div>
+							<div class="grow h-14 ..." />
+							<div class="flex-none w-14 h-14 ...">
+								<div class="btn btn-success mb-40">ok</div>
+							</div>
 						</div>
-						<div class="">
-							<div class="mb-60">s</div>
-
-							<label for="my-drawer-4" class="drawer-button btn btn-primary w-min rounded-full"
-								>X</label
-							>
-						</div>
+						<div class="px-2 mt-4 pb-40">content here</div>
 					</div>
 				</div>
 			</div>
