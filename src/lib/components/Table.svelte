@@ -66,18 +66,26 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="drawer-side overflow-x-none w-full flex-none">
+		<div class="drawer-side  w-full flex-none ">
 			<label for="my-drawer-4" class="drawer-overlay" />
-			<div class="menu  overflow-y-auto bg-primary/0  text-base-content w-full">
-				<div class="flex h-full ">
+			<div class="menu   bg-primary/0   text-base-content w-full ">
+				<div class="flex h-full  overflow-auto">
 					<label for="my-drawer-4" class="sm:w-20 ">
 						<div class="bg-primary/0" />
 					</label>
-					<div class="flex space-x-2 bg-base-100 w-full p-2">
+					<div class="  bg-base-100 w-full p-2  pb-80">
+						<div class="flex space-x-2">
+							<label for="my-drawer-4" class="drawer-button btn btn-primary w-min rounded-full"
+								>X</label
+							>
+							<div class="btn btn-success mb-40">ok</div>
+						</div>
+
+						<div class="mb-60">s</div>
+
 						<label for="my-drawer-4" class="drawer-button btn btn-primary w-min rounded-full"
 							>X</label
 						>
-						<div class="btn btn-success">ok</div>
 					</div>
 				</div>
 			</div>
