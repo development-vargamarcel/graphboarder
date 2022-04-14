@@ -18,6 +18,7 @@
 	let showEdit = false;
 	let show_IntrospectionDataGenerator = true;
 	let graphqlEndpointURL = '';
+
 	let auth_token = '';
 	let editText = 'edit';
 	if (browser && localStorage.getItem('auth_token')) {
@@ -52,6 +53,9 @@
 		localStorage.removeItem('auth_token');
 		localStorage.removeItem('graphqlEndpointURL');
 	};
+	if (!graphqlEndpointURL) {
+		showEdit = true;
+	}
 </script>
 
 <header />
@@ -69,7 +73,7 @@
 		<div
 			class="fixed bottom-0 bg-base-200 w-screen h-screen overscroll-none overflow-y-auto p-4 mx-auto"
 		>
-			<div class="form-control w-full max-w-xs mt-20">
+			<div class="form-control w-full max-w-xs mt-40">
 				<label class="label">
 					<span class="label-text">graphqlEndpointURL</span>
 				</label>
