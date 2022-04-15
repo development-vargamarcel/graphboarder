@@ -129,7 +129,7 @@
 	};
 </script>
  
-<li on:click|self={expand} 
+<li 
 	class="my-0 p-1 bg-accent/5 rounded-r-sm rounded-l-none shadow-none  space-x-2 py-2 normal-case text-xs {showExpand
 		? ' border-l-2 '
 		: ''}"
@@ -146,7 +146,7 @@
 			<div class="bg-secondary p-1 rounded">{index + 1}</div>
 <div
 					class="btn btn-xs btn-info normal-case font-light "
-					on:click|stopPropagation ={() => {
+					on:click ={() => {
 						console.log(type);
 						console.log(names);
 					}}
