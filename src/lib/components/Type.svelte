@@ -160,8 +160,7 @@
 			<div class="flex">
 				<div class="bg-secondary p-1 rounded ">{kinds.join(' of ')}</div>
 		
-				{#if !canExpand}
-					{/if}
+				
 					</div>
 
 {#if nameToDisplay == names[names.length - 1]}
@@ -172,7 +171,7 @@
 						</div>
 					{/if}
 
-{:else} 
+{#if canExpand}
 <div class="bg-base-200  rounded px-2 py-1">
 						{#if names[0] !== nameToDisplay}
 							({names[0]})
