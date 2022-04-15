@@ -181,9 +181,9 @@
 							{'as above'}
 						
 
-				{/if}
+				
 			</div>
-
+{/if}
 			<div class="flex">
 				{#if canExpand}
 					
