@@ -171,8 +171,9 @@
 						</div>
 					{/if}
 
-{#if canExpand}
+
 <div class="bg-base-200  rounded px-2 py-1">
+{#if canExpand}
 						{#if names[0] !== nameToDisplay}
 							({names[0]})
 						{:else if names[1] && names[1] !== nameToDisplay}
@@ -182,8 +183,9 @@
 						
 
 				
-			</div>
+			
 {/if}
+</div>
 			<div class="flex">
 				{#if canExpand}
 					
