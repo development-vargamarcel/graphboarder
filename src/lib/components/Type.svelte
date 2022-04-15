@@ -5,7 +5,56 @@
 	export let index;
 	export let type;
 	let names = [];
-	let name = type?.type?.ofType?.name || type?.type?.name || type?.name;
+	//!!!!!
+	//let name = type?.type?.ofType?.name || type?.type?.name || type?.name; //!!! can be more levels deep,like bellow:
+	let exampleOfDeeperObject = {
+		name: 'distinct',
+		description: null,
+		args: [
+			{
+				name: 'field',
+				description: null,
+				type: {
+					kind: 'NON_NULL',
+					name: null,
+					ofType: {
+						kind: 'ENUM',
+						name: 'DirectoryFieldsEnum',
+						ofType: null
+					}
+				},
+				defaultValue: null
+			}
+		],
+		type: {
+			kind: 'NON_NULL',
+			name: null,
+			ofType: {
+				kind: 'LIST',
+				name: null,
+				ofType: {
+					kind: 'NON_NULL',
+					name: null,
+					ofType: {
+						kind: 'SCALAR',
+						name: 'String',
+						ofType: null
+					}
+				}
+			}
+		},
+		isDeprecated: false,
+		deprecationReason: null
+	};
+	//will try this then...
+	let name =
+		type?.type?.ofType?.ofType?.ofType?.name ||
+		type?.type?.ofType?.ofType?.name ||
+		type?.type?.ofType?.name ||
+		type?.type?.name ||
+		type?.name; //will likely always give a name unlike the above one but can be more useful the above,will give scalar most likely
+	//!!!!!
+
 	let nameToDisplay = type?.name || type?.type?.name || type?.type?.ofType?.name;
 	let kinds = [];
 
@@ -34,6 +83,19 @@
 	if (type?.type?.ofType?.kind) {
 		kinds.push(type?.type?.ofType?.kind);
 	}
+	if (type?.ofType?.ofType?.kind) {
+		kinds.push(type?.ofType?.ofType?.kind);
+	}
+	if (type?.type?.ofType?.ofType?.kind) {
+		kinds.push(type?.type?.ofType?.ofType?.kind);
+	}
+	if (type?.ofType?.ofType?.ofType?.kind) {
+		kinds.push(type?.ofType?.ofType?.ofType?.kind);
+	}
+	if (type?.type?.ofType?.ofType?.ofType?.kind) {
+		kinds.push(type?.type?.ofType?.ofType?.ofType?.kind);
+	}
+
 	const rootTypeByName = (name) => {
 		return $introspectionResult.rootTypes.filter((item) => {
 			return item.name == name;
@@ -58,6 +120,7 @@
 	const expand = () => {
 		console.log('name', name);
 		expandData = rootTypeByName(name);
+
 		if (expandData) {
 			showExpand = true;
 		}
