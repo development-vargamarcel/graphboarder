@@ -169,10 +169,7 @@
 						</div>
 					{/if}
 				{/if}
-			</div>
-
-			<div class="flex">
-				{#if canExpand}
+{#if canExpand}
 					<div class="bg-base-200  rounded px-2 py-1">
 						{#if names[0] !== nameToDisplay}
 							({names[0]})
@@ -183,6 +180,10 @@
 						{/if}
 					</div>
 				{/if}
+			</div>
+
+			<div class="flex">
+				
 			</div>
 		</div>
 		<div class="w-1/8 text-center text-xs" />
