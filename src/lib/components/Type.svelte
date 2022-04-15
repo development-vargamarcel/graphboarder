@@ -56,9 +56,13 @@
 		canExpand = true;
 	}
 	const expand = () => {
-		showExpand = true;
+		console.log('name', name);
 		expandData = rootTypeByName(name);
-		console.log(expandData);
+		if (expandData) {
+			showExpand = true;
+		}
+
+		console.log('expandData', expandData);
 	};
 </script>
 
