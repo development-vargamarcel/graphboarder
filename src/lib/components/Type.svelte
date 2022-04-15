@@ -160,35 +160,28 @@
 			<div class="flex">
 				<div class="bg-secondary p-1 rounded ">{kinds.join(' of ')}</div>
 		
-				
-					</div>
-
-{#if nameToDisplay == names[names.length - 1]}
+				{#if !canExpand}
+					{#if nameToDisplay == names[names.length - 1]}
 						{''}
 					{:else}
 						<div class="bg-base-200 p-1 rounded">
 							{names[names.length - 1]}
 						</div>
 					{/if}
+				{/if}
+			</div>
 
-
-<div class="bg-base-200  rounded px-2 py-1">
-{#if canExpand}
+			<div class="flex">
+				{#if canExpand}
+					<div class="bg-base-200  rounded px-2 py-1">
 						{#if names[0] !== nameToDisplay}
 							({names[0]})
 						{:else if names[1] && names[1] !== nameToDisplay}
 							({names[1]})
 						{:else}
 							{'as above'}
-						
-
-				
-			
-{/if}
-
-			<div class="flex">
-				{#if canExpand}
-					
+						{/if}
+					</div>
 				{/if}
 			</div>
 		</div>
@@ -200,3 +193,4 @@
 		<Types whatToShow={expandData.fields} whatIsShown="" />
 	{/if}
 </li>
+
