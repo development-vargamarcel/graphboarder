@@ -128,8 +128,8 @@
 		console.log('expandData', expandData);
 	};
 </script>
-
-<li
+ 
+<li on:click={expand} 
 	class="my-0 p-1 bg-accent/5 rounded-r-sm rounded-l-none shadow-none  space-x-2 py-2 normal-case text-xs {showExpand
 		? ' border-l-2 '
 		: ''}"
@@ -176,7 +176,7 @@
 						{:else if names[1] && names[1] !== nameToDisplay}
 							({names[1]})
 						{:else}
-							{'as above'}
+							{'same'}
 						{/if}
 					</div>
 				{/if}
