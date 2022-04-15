@@ -161,13 +161,7 @@
 				<div class="bg-secondary p-1 rounded ">{kinds.join(' of ')}</div>
 		
 				{#if !canExpand}
-					{#if nameToDisplay == names[names.length - 1]}
-						{''}
-					{:else}
-						<div class="bg-base-200 p-1 rounded">
-							{names[names.length - 1]}
-						</div>
-					{/if}
+					
 				{/if}
 			</div>
 
@@ -182,6 +176,15 @@
 							{'as above'}
 						{/if}
 					</div>
+
+{#if nameToDisplay == names[names.length - 1]}
+						{''}
+					{:else}
+						<div class="bg-base-200 p-1 rounded">
+							{names[names.length - 1]}
+						</div>
+					{/if}
+
 				{/if}
 			</div>
 		</div>
