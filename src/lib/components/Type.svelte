@@ -130,7 +130,7 @@
 </script>
 
 <li
-	class="my-0 p-1 bg-accent/5 rounded-sm shadow-none  space-x-2 py-2 normal-case text-xs {showExpand
+	class="my-0 p-1 bg-accent/5 rounded-r-sm rounded-l-none shadow-none  space-x-2 py-2 normal-case text-xs {showExpand
 		? ' border-l-2 '
 		: ''}"
 >
@@ -144,12 +144,7 @@
 				<div class="btn btn-xs  p-1 rounded normal-case btn-disabled" on:click={expand}>+</div>
 			{/if}
 			<div class="bg-secondary p-1 rounded">{index + 1}</div>
-			<div class="bg-secondary p-1 rounded ">{kinds.join(' of ')}</div>
-		</div>
-
-		<div class="w-1/2 ">
-			<div class="flex">
-				<div
+<div
 					class="btn btn-xs btn-info normal-case font-light "
 					on:click={() => {
 						console.log(type);
@@ -157,7 +152,14 @@
 					}}
 				>
 					{nameToDisplay}
-				</div>
+				</div> 
+
+			</div>
+
+		<div class="w-1/2 ">
+			<div class="flex">
+				<div class="bg-secondary p-1 rounded ">{kinds.join(' of ')}</div>
+		
 				{#if !canExpand}
 					{#if nameToDisplay == names[names.length - 1]}
 						{''}
