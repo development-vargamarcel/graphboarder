@@ -146,7 +146,7 @@
 			<div class="bg-secondary p-1 rounded">{index + 1}</div>
 <div
 					class="btn btn-xs btn-info normal-case font-light "
-					on:click={() => {
+					on:click|stopPropagation ={() => {
 						console.log(type);
 						console.log(names);
 					}}
