@@ -129,7 +129,7 @@
 	};
 </script>
  
-<li on:click={expand} 
+<li on:click|self={expand} 
 	class="my-0 p-1 bg-accent/5 rounded-r-sm rounded-l-none shadow-none  space-x-2 py-2 normal-case text-xs {showExpand
 		? ' border-l-2 '
 		: ''}"
