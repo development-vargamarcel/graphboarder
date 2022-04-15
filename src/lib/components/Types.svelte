@@ -14,7 +14,7 @@
 		</h1>
 	{/if}
 
-	<ul>
+	<ul class="">
 		{#each whatToShow as type, index (index + whatIsShown)}
 			<Type {index} {type} />
 		{/each}

@@ -122,17 +122,21 @@
 		expandData = rootTypeByName(name);
 
 		if (expandData) {
-			showExpand = true;
+			showExpand = !showExpand;
 		}
 
 		console.log('expandData', expandData);
 	};
 </script>
 
-<li class="my-1 p-1 bg-base-300 rounded  space-x-2 py-2 normal-case text-xs">
+<li
+	class="my-0 p-1 bg-accent/5 rounded-sm shadow-none  space-x-2 py-2 normal-case text-xs {showExpand
+		? ' border-t-[1px] border-l-2 '
+		: ''}"
+>
 	<div class="flex space-x-2">
 		<div class="flex space-x-2 w-1/3">
-			<div class="bg-secondary p-1 rounded">{index}</div>
+			<div class="bg-secondary p-1 rounded">{index + 1}</div>
 			<div class="bg-secondary p-1 rounded ">{kinds.join(' of ')}</div>
 		</div>
 
@@ -160,7 +164,9 @@
 
 			<div class="flex">
 				{#if canExpand}
-					<div class="btn btn-xs  p-1 rounded normal-case" on:click={expand}>expand</div>
+					<div class="btn btn-xs  p-1 rounded normal-case" on:click={expand}>
+						{showExpand ? 'shrink' : 'expand'}
+					</div>
 					<div class="bg-base-200  rounded px-2 py-1">
 						{#if names[0] !== nameToDisplay}
 							({names[0]})
