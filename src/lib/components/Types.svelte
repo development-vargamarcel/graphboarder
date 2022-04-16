@@ -14,7 +14,7 @@
 		</h1>
 	{/if}
 
-	<ul class="pt-2 space-y-2">
+	<ul class="pt-2">
 		{#each whatToShow as type, index (index + whatIsShown)}
 			<Type {index} {type} />
 		{/each}
