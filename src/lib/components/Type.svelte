@@ -129,7 +129,7 @@
 	};
 </script>
  
-<li 
+<div
 	class="mb-4 bg-primary/5 pb-0 pl-1 pr-0  rounded-r-sm rounded-l-none shadow-none  space-x-2  normal-case text-xs {showExpand
 		? ''
 		: ''}"
@@ -193,5 +193,5 @@
 <div class="mb-2 text-center text-xs" />
 		<Types whatToShow={expandData.fields} whatIsShown="" />
 	{/if}
-</li>
+</div>
 
