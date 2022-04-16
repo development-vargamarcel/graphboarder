@@ -131,9 +131,9 @@
  
 
 <li 
-	class=" bg-primary/5 pb-0 pl-1 pr-0  rounded-r-sm rounded-l-none shadow-none  space-x-2  normal-case text-xs {showExpand
+	class="  pb-0 pl-1 pr-0  rounded-r-sm rounded-l-none shadow-none  space-x-2  normal-case text-xs {showExpand
 		? ''
-		: 'mb-2 border-b-4 border/primary/0'}"
+		: ''}"
 >
 
 	<div class="flex space-x-2">
