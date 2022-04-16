@@ -197,7 +197,6 @@
 	{/if}
 </li>
 {#if !showExpand}
-<li class="py-2 text-center text-xs">
- - - 
+<li class="pt-2 text-center text-xs">
 </li>
 {/if}
