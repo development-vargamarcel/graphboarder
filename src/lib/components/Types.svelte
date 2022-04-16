@@ -5,7 +5,7 @@
 	export let whatToShow = '';
 </script>
 
-<div class="border-l-2">
+<div class="border-l-2 bg-accent/5">
 	{#if whatIsShown !== ''}
 		<h1
 			class="py-1 my-1 px-2 bg-base-content rounded-r-full text-base-300 text-center text-md w-1/2"
