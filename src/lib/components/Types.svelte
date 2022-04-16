@@ -14,7 +14,7 @@
 		</h1>
 	{/if}
 
-	<ul class="">
+	<ul class="py-2">
 		{#each whatToShow as type, index (index + whatIsShown)}
 			<Type {index} {type} />
 		{/each}
