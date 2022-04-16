@@ -130,8 +130,8 @@
 </script>
  
 <li 
-	class="my-0 mt-1 pb-0 pl-1 pr-0  rounded-r-sm rounded-l-none shadow-none  space-x-2  normal-case text-xs {showExpand
-		? 'mb-1 '
+	class="my-1  pb-0 pl-1 pr-0  rounded-r-sm rounded-l-none shadow-none  space-x-2  normal-case text-xs {showExpand
+		? 'mb-2 '
 		: ''}"
 >
 	<div class="flex space-x-2">
