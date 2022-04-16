@@ -200,4 +200,7 @@
 		<Types whatToShow={expandData.fields} whatIsShown="" />
 	{/if}
 </div>
-
+{#if !showExpand}
+<div class="pt-2 text-center text-xs">
+</div>
+{/if}
