@@ -197,5 +197,7 @@
 	{/if}
 </li>
 {#if !showExpand}
-<div class="mb-2 text-center text-xs" />
+<li class="py-2 text-center text-xs">
+ - - 
+</li>
 {/if}
