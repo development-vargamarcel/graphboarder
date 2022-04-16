@@ -196,4 +196,6 @@
 		<Types whatToShow={expandData.fields} whatIsShown="" />
 	{/if}
 </li>
-
+{#if !showExpand}
+<div class="mb-2 text-center text-xs" />
+{/if}
