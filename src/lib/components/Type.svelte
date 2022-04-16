@@ -128,9 +128,9 @@
 		console.log('expandData', expandData);
 	};
 </script>
- 
-<div
-	class="mb-4 bg-primary/5 pb-0 pl-1 pr-0  rounded-r-sm rounded-l-none shadow-none  space-x-2  normal-case text-xs {showExpand
+ <div class="mb-2 text-center text-xs" />
+<li
+	class=" bg-primary/5 pb-0 pl-1 pr-0  rounded-r-sm rounded-l-none shadow-none  space-x-2  normal-case text-xs {showExpand
 		? ''
 		: ''}"
 >
@@ -187,8 +187,8 @@
 			</div>
 		</div>
 		<div class="w-1/8 text-center text-xs" />
-	</div>
-
+	</li>
+<div class="mb-2 text-center text-xs" />
 	{#if showExpand}
 <div class="mb-2 text-center text-xs" />
 		<Types whatToShow={expandData.fields} whatIsShown="" />
