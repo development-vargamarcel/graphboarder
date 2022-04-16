@@ -131,7 +131,7 @@
  
 <li 
 	class="my-0 pt-1 pb-0 pl-1 pr-0 bg-accent/5 rounded-r-sm rounded-l-none shadow-none  space-x-2 py-2 normal-case text-xs {showExpand
-		? ' pl-2 '
+		? ' '
 		: ''}"
 >
 	<div class="flex space-x-2">
