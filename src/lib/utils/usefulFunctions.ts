@@ -27,6 +27,69 @@ export const getQueryInfo = (queryFields, queryName) => {
 export const getCurrentQueryNameForType = (queryInfo) => {
     return queryInfo?.type?.ofType?.name || queryInfo?.type?.name || queryInfo?.name;
 }
+
+
+export const getKindsArrayForType = (type) => {
+    let kinds = [];
+
+    if (type?.kind) {
+        kinds.push(type?.kind);
+    }
+    if (type?.type?.kind) {
+        kinds.push(type?.type?.kind);
+    }
+    if (type?.ofType?.kind) {
+        kinds.push(type?.ofType?.kind);
+    }
+    if (type?.type?.ofType?.kind) {
+        kinds.push(type?.type?.ofType?.kind);
+    }
+    if (type?.ofType?.ofType?.kind) {
+        kinds.push(type?.ofType?.ofType?.kind);
+    }
+    if (type?.type?.ofType?.ofType?.kind) {
+        kinds.push(type?.type?.ofType?.ofType?.kind);
+    }
+    if (type?.ofType?.ofType?.ofType?.kind) {
+        kinds.push(type?.ofType?.ofType?.ofType?.kind);
+    }
+    if (type?.type?.ofType?.ofType?.ofType?.kind) {
+        kinds.push(type?.type?.ofType?.ofType?.ofType?.kind);
+    }
+
+    return kinds
+}
+export const getNamesArrayForType = (type) => {
+    let names = [];
+
+    if (type?.name) {
+        names.push(type?.name);
+    }
+    if (type?.type?.name) {
+        names.push(type?.type?.name);
+    }
+    if (type?.ofType?.name) {
+        names.push(type?.ofType?.name);
+    }
+    if (type?.type?.ofType?.name) {
+        names.push(type?.type?.ofType?.name);
+    }
+    if (type?.type?.ofType?.ofType?.name) {
+        names.push(type?.type?.ofType?.ofType?.name);
+    }
+    if (type?.type?.ofType?.ofType?.ofType?.name) {
+        names.push(type?.type?.ofType?.ofType?.ofType?.name);
+    }
+    return names
+}
+
+export let getNameForType = (namesArray) => {
+    return namesArray[namesArray.length - 1]
+}
+
+export let getNameToDisplay = (namesArray) => {
+    return namesArray[0]
+}
 export const getQueryFromRootTypes = (rootTypes, queryNameForType) => {
     return rootTypes.filter((type) => {
         return type.name == queryNameForType;
