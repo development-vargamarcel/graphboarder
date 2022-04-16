@@ -130,8 +130,8 @@
 </script>
  
 <li 
-	class="my-0 py-1 ml-1 pr-0 bg-accent/5 rounded-r-sm rounded-l-none shadow-none  space-x-2 py-2 normal-case text-xs {showExpand
-		? ' ml-2 '
+	class="my-0 py-1 pl-1 pr-0 bg-accent/5 rounded-r-sm rounded-l-none shadow-none  space-x-2 py-2 normal-case text-xs {showExpand
+		? ' pl-2 '
 		: ''}"
 >
 	<div class="flex space-x-2">
