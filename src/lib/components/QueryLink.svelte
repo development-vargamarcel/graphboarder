@@ -1,27 +1,25 @@
 <script>
 	import { goto } from '$app/navigation';
-	import { mandatoryArguments } from '$lib/utils/usefulFunctions';
-	import { introspectionResult } from '$lib/stores/introspectionResult';
 	import {
-		getQueryInfo,
-		getCurrentQueryNameForType,
-		getQueryFromRootTypes,
-		getScalarFieldsNames
+		getRootType_Name,
+		getRootType_NamesArray,
+		getQM_mandatoryArguments
 	} from '$lib/utils/usefulFunctions';
+	import { introspectionResult } from '$lib/stores/introspectionResult';
+	import { getQM_Field, getRootType, getScalarFields_Names } from '$lib/utils/usefulFunctions';
 	export let origin;
 	export let query;
-	//let queryName = query?.type?.ofType?.name || query?.type?.name || query?.name;
 	let queryName = query.name;
 	let queryNameDisplay = queryName;
 	let queryTitleDisplay = '';
-	let currentQueryInfo = getQueryInfo($introspectionResult.queryFields, queryName);
-	let currentQueryNameForType = getCurrentQueryNameForType(currentQueryInfo);
-	let currentQueryFromRootTypes = getQueryFromRootTypes(
+	let currentQueryInfo = getQM_Field($introspectionResult.queryFields, queryName);
+	let currentQueryNameForType = getRootType_Name(getRootType_NamesArray(currentQueryInfo));
+	let currentQueryFromRootTypes = getRootType(
 		$introspectionResult.rootTypes,
 		currentQueryNameForType
 	);
-	let currentQuery_fields_SCALAR_names = getScalarFieldsNames(currentQueryFromRootTypes);
-	let mandatoryArgs = mandatoryArguments(query);
+	let currentQuery_fields_SCALAR_names = getScalarFields_Names(currentQueryFromRootTypes);
+	let mandatoryArgs = getQM_mandatoryArguments(query);
 	if (mandatoryArgs) {
 		queryTitleDisplay = `${queryTitleDisplay} ${JSON.stringify(mandatoryArgs)} \n`;
 		queryNameDisplay = `${queryNameDisplay} !(${mandatoryArgs.length}) `;

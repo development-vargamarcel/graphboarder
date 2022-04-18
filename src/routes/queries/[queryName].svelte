@@ -6,21 +6,22 @@
 	import Table from '$lib/components/Table.svelte';
 	import { urqlClient } from '$lib/stores/urqlClient';
 	import {
-		getQueryInfo,
-		getCurrentQueryNameForType,
-		getQueryFromRootTypes,
-		getScalarFieldsNames
+		getQM_Field,
+		getRootType,
+		getScalarFields_Names,
+		getRootType_Name,
+		getRootType_NamesArray
 	} from '$lib/utils/usefulFunctions';
 	setClient($urqlClient);
 	let queryName = $page.params.queryName;
 
-	let currentQueryInfo = getQueryInfo($introspectionResult.queryFields, queryName);
-	let currentQueryNameForType = getCurrentQueryNameForType(currentQueryInfo);
-	let currentQueryFromRootTypes = getQueryFromRootTypes(
+	let currentQueryInfo = getQM_Field($introspectionResult.queryFields, queryName);
+	let currentQueryNameForType = getRootType_Name(getRootType_NamesArray(currentQueryInfo));
+	let currentQueryFromRootTypes = getRootType(
 		$introspectionResult.rootTypes,
 		currentQueryNameForType
 	);
-	let currentQuery_fields_SCALAR_names = getScalarFieldsNames(currentQueryFromRootTypes);
+	let currentQuery_fields_SCALAR_names = getScalarFields_Names(currentQueryFromRootTypes);
 
 	let queryBody = `
     query MyQuery {

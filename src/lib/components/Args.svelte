@@ -4,7 +4,7 @@
 	export let args;
 </script>
 
-<div class="border-l-2 bg-accent/5">
+<div class="border-l-2 border-secondary bg-accent/5">
 	<div class="">
 		{#each args as arg, index}
 			<div>

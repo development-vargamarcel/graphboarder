@@ -1,11 +1,11 @@
 <script>
 	import { introspectionResult } from '$lib/stores/introspectionResult';
 	import {
-		getKindsArrayForType,
-		getNameForType,
-		getNameToDisplay,
-		getQueryFromRootTypes,
-		getNamesArrayForType
+		getRootType_KindsArray,
+		getRootType_Name,
+		getDisplay_Name,
+		getRootType,
+		getRootType_NamesArray
 	} from '$lib/utils/usefulFunctions';
 	import Args from './Args.svelte';
 	import Types from './Types.svelte';
@@ -15,10 +15,10 @@
 	let names = [];
 	let kinds = [];
 
-	names = getNamesArrayForType(type);
-	kinds = getKindsArrayForType(type);
-	let name = getNameForType(names);
-	let nameToDisplay = getNameToDisplay(names);
+	names = getRootType_NamesArray(type);
+	kinds = getRootType_KindsArray(type);
+	let name = getRootType_Name(names);
+	let nameToDisplay = getDisplay_Name(names);
 
 	let showExpand = false;
 	let expandData = {};
@@ -28,7 +28,7 @@
 	}
 	const expand = () => {
 		console.log('name', name);
-		expandData = getQueryFromRootTypes($introspectionResult.rootTypes, name);
+		expandData = getRootType($introspectionResult.rootTypes, name);
 		if (expandData) {
 			showExpand = !showExpand;
 		}
@@ -98,7 +98,7 @@
 	{#if showExpand}
 		<div class="mb-2 text-center text-xs" />
 		<Args args={type?.args} />
-		<div class="mb-2" />
+		<div class="mb-[0px]" />
 		<Types whatToShow={expandData.fields} whatIsShown="" />
 	{/if}
 </div>

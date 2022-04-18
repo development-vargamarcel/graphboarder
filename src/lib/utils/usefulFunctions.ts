@@ -1,7 +1,9 @@
-export const mandatoryArguments = (query) => {
-    if (query?.args) {
+//QM means QueryOrMutation
+
+export const getQM_mandatoryArguments = (QM) => { //QM means QueryOrMutation
+    if (QM?.args) {
         let mandatoryArgs = []
-        mandatoryArgs = query?.args?.filter((arg) => {
+        mandatoryArgs = QM?.args?.filter((arg) => {
             return arg?.type?.kind === "NON_NULL" || arg?.type?.name === "ID"
         })
         if (mandatoryArgs.length >= 1) {
@@ -15,21 +17,15 @@ export const mandatoryArguments = (query) => {
 
 }
 
-export const scalarQueryFields_names = () => {
 
-}
-export const getQueryInfo = (queryFields, queryName) => {
-    return queryFields.filter((queryField) => {
-        return queryField.name == queryName;
+export const getQM_Field = (QMFields, queryName) => { //QM means QueryOrMutation
+    return QMFields.filter((field) => {
+        return field.name == queryName;
     })[0];
 }
 
-export const getCurrentQueryNameForType = (queryInfo) => {
-    return queryInfo?.type?.ofType?.name || queryInfo?.type?.name || queryInfo?.name;
-}
 
-
-export const getKindsArrayForType = (type) => {
+export const getRootType_KindsArray = (type) => {
     let kinds = [];
 
     if (type?.kind) {
@@ -59,7 +55,7 @@ export const getKindsArrayForType = (type) => {
 
     return kinds
 }
-export const getNamesArrayForType = (type) => {
+export const getRootType_NamesArray = (type) => {
     let names = [];
 
     if (type?.name) {
@@ -83,21 +79,21 @@ export const getNamesArrayForType = (type) => {
     return names
 }
 
-export let getNameForType = (namesArray) => {
+export let getRootType_Name = (namesArray) => {
     return namesArray[namesArray.length - 1]
 }
 
-export let getNameToDisplay = (namesArray) => {
+export let getDisplay_Name = (namesArray) => {
     return namesArray[0]
 }
-export const getQueryFromRootTypes = (rootTypes, queryNameForType) => {
+export const getRootType = (rootTypes, queryNameForType) => {
     return rootTypes.filter((type) => {
         return type.name == queryNameForType;
     })[0];
 }
-export const getScalarFieldsNames = (query) => {
+export const getScalarFields_Names = (QM) => {
     let scalarFields = []
-    scalarFields = query?.fields?.filter((field) => {
+    scalarFields = QM?.fields?.filter((field) => {
         let isSCALAR = false
         isSCALAR = field?.type?.kind == 'SCALAR' || field?.type?.ofType?.kind == 'SCALAR'
         if (isSCALAR) {
