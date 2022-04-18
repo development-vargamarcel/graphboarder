@@ -110,3 +110,22 @@ export const getFields_Grouped = (QM) => {
         scalarFields: scalarFields, non_scalarFields: non_scalarFields
     }
 }
+
+export const getArguments_Grouped = (QM) => {
+    let scalarArgs = []
+    let non_scalarArgs = []
+    console.log(QM)
+    console.log(QM.args)
+    QM?.args?.forEach(arg => {
+        if (getRootType_KindsArray(arg).includes('SCALAR')) {
+            scalarArgs.push(arg)
+        } else {
+            non_scalarArgs.push(arg)
+
+        }
+    });
+
+    return {
+        scalarArgs: scalarArgs, non_scalarArgs: non_scalarArgs
+    }
+}

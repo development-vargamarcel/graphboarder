@@ -10,7 +10,8 @@
 		getRootType,
 		getRootType_Name,
 		getRootType_NamesArray,
-		getFields_Grouped
+		getFields_Grouped,
+		getArguments_Grouped
 	} from '$lib/utils/usefulFunctions';
 	setClient($urqlClient);
 	let queryName = $page.params.queryName;
@@ -23,6 +24,10 @@
 	);
 
 	let { scalarFields, non_scalarFields } = getFields_Grouped(currentQueryFromRootTypes);
+	let { scalarArgs, non_scalarArgs } = getArguments_Grouped(currentQueryInfo);
+	console.log('scalarArgs', scalarArgs);
+	console.log('non_scalarArgs', non_scalarArgs);
+
 	let currentQuery_fields_SCALAR_names = scalarFields.map((field) => {
 		return field.name;
 	});
@@ -51,15 +56,58 @@ ${currentQuery_fields_SCALAR_names?.join('\n')}
 	let rows = [];
 </script>
 
-<div class="flex flex-col">
-	<div class="w-full">non scalar fields</div>
-	<div class="w-full">{currentQuery_fields_non_scalar_names}</div>
-	<button class="btn btn-sm btn-primary">fetch</button>
-</div>
-{#if $queryStore.fetching}
-	<p>Loading...</p>
-{:else if $queryStore.error}
-	<p>Oh no... {$queryStore.error.message}</p>
+{#if currentQuery_fields_SCALAR_names}
+	{#if $queryStore.fetching}
+		<p>Loading...</p>
+	{:else if $queryStore.error}
+		<p>Oh no... {$queryStore.error.message}</p>
+	{:else}
+		<Table
+			{columns}
+			rows={$queryStore.data[queryName]}
+			on:addColumn={() => {
+				console.log('add column');
+			}}
+		>
+			<div slot="addColumnDisplay">
+				<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2">
+					{#each scalarFields as field}
+						<div class="w-full cursor-pointer  hover:text-primary p-2 rounded-box flex">
+							<div class="w-full pr-2">{field.name}</div>
+						</div>
+					{/each}
+					{#each non_scalarFields as field}
+						<div class="w-full cursor-pointer  hover:text-primary p-2 rounded-box flex">
+							<div class="w-full pr-2">{field.name}</div>
+							<div class="bi bi-chevron-down" />
+						</div>
+					{/each}
+				</div>
+				<div class="flex justify-end pr-2  pt-2">
+					<button class="btn btn-sm btn-primary justify-right" on:click={runQuery}>add</button>
+				</div>
+			</div>
+
+			<div slot="changeArguments">
+				<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2">
+					{#each scalarArgs as arg}
+						<div class="w-full cursor-pointer  hover:text-primary p-2 rounded-box flex">
+							<div class="w-full pr-2">{arg.name}</div>
+						</div>
+					{/each}
+					{#each non_scalarArgs as arg}
+						<div class="w-full cursor-pointer  hover:text-primary p-2 rounded-box flex">
+							<div class="w-full pr-2">{arg.name}</div>
+							<div class="bi bi-chevron-down" />
+						</div>
+					{/each}
+				</div>
+				<div class="flex justify-end pr-2 pt-2">
+					<button class="btn btn-sm btn-primary justify-right" on:click={runQuery}>apply</button>
+				</div>
+			</div>
+		</Table>
+	{/if}
 {:else}
-	<Table {columns} rows={$queryStore.data[queryName]} />
+	no scalar fields
 {/if}

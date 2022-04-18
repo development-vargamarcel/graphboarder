@@ -1,4 +1,6 @@
 <script>
+	import { createEventDispatcher } from 'svelte';
+
 	export let columns = [];
 	export let rows = [];
 	console.log(columns);
@@ -26,6 +28,8 @@
 
 		return resultingString;
 	};
+
+	const dispatch = createEventDispatcher();
 </script>
 
 <div class="  ">
@@ -41,9 +45,58 @@
 							</label>
 						</th>
 						<th>#</th>
-						{#each columns as column}
-							<th class="normal-case">{column}</th>
+						{#each columns as column, index}
+							{@const isLast = index == columns.length - 1}
+							<th class="normal-case">
+								<div class="dropdown dropdown-end  ">
+									<label tabindex="0" class="cursor-pointer ">
+										<div class="flex space-x-2 hover:text-primary rounded-box">
+											<div>{column}</div>
+											<div class="bi bi-chevron-down " />
+										</div>
+									</label>
+									<div
+										tabindex="0"
+										class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl"
+									>
+										dsd
+									</div>
+								</div>
+							</th>
 						{/each}
+						<th>
+							<div class="dropdown dropdown-end">
+								<label
+									tabindex="0"
+									class="btn btn-sm bi bi-node-plus-fill text-lg p-1"
+									on:click={() => {
+										dispatch('addColumn');
+									}}
+								/>
+								<div
+									tabindex="0"
+									class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl"
+								>
+									<slot name="addColumnDisplay" />
+								</div>
+							</div>
+
+							<div class="dropdown dropdown-end">
+								<label
+									tabindex="0"
+									class="btn btn-sm bi bi-sliders text-lg p-1"
+									on:click={() => {
+										dispatch('addColumn');
+									}}
+								/>
+								<div
+									tabindex="0"
+									class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl"
+								>
+									<slot name="changeArguments" />
+								</div>
+							</div>
+						</th>
 					</tr>
 				</thead>
 				<tbody class="z-0">
@@ -64,6 +117,7 @@
 								<td class="z-0">
 									{truncateText(row[column], 20, true)}
 								</td>{/each}
+							<td class="z-0" />
 						</tr>
 					{/each}
 				</tbody>
