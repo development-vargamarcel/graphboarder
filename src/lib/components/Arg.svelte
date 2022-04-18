@@ -97,9 +97,8 @@
 
 	{#if showExpand}
 		<div class="mb-2 text-center text-xs" />
-		<Args args={type?.args} />
+		<Args args={expandData.inputFields} />
 		<div class="mb-2" />
-		<Types whatToShow={expandData.fields} whatIsShown="" />
 	{/if}
 </div>
 {#if !showExpand}
