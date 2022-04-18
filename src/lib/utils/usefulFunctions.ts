@@ -111,21 +111,31 @@ export const getFields_Grouped = (QM) => {
     }
 }
 
-export const getArguments_Grouped = (QM) => {
-    let scalarArgs = []
-    let non_scalarArgs = []
-    console.log(QM)
-    console.log(QM.args)
-    QM?.args?.forEach(arg => {
-        if (getRootType_KindsArray(arg).includes('SCALAR')) {
-            scalarArgs.push(arg)
-        } else {
-            non_scalarArgs.push(arg)
+// export const getArguments_Grouped = (QM) => {
+//     let scalarArgs = []
+//     let non_scalarArgs = []
+//     console.log(QM)
+//     console.log(QM.args)
+//     QM?.args?.forEach(arg => {
+//         if (getRootType_KindsArray(arg).includes('SCALAR')) {
+//             scalarArgs.push(arg)
+//         } else {
+//             non_scalarArgs.push(arg)
 
+//         }
+//     });
+
+//     return {
+//         scalarArgs: scalarArgs, non_scalarArgs: non_scalarArgs
+//     }
+// }
+
+export const getArguments_withInfo = (QM) => {
+    let args = QM?.args?.map((arg) => {
+        return {
+            arg: arg
+            , kindsArray: getRootType_KindsArray(arg)
         }
-    });
-
-    return {
-        scalarArgs: scalarArgs, non_scalarArgs: non_scalarArgs
-    }
+    })
+    return args
 }

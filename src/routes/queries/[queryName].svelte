@@ -11,7 +11,7 @@
 		getRootType_Name,
 		getRootType_NamesArray,
 		getFields_Grouped,
-		getArguments_Grouped
+		getArguments_withInfo
 	} from '$lib/utils/usefulFunctions';
 	setClient($urqlClient);
 	let queryName = $page.params.queryName;
@@ -24,9 +24,7 @@
 	);
 
 	let { scalarFields, non_scalarFields } = getFields_Grouped(currentQueryFromRootTypes);
-	let { scalarArgs, non_scalarArgs } = getArguments_Grouped(currentQueryInfo);
-	console.log('scalarArgs', scalarArgs);
-	console.log('non_scalarArgs', non_scalarArgs);
+	let arguments_withInfo = getArguments_withInfo(currentQueryInfo);
 
 	let currentQuery_fields_SCALAR_names = scalarFields.map((field) => {
 		return field.name;
@@ -90,15 +88,12 @@ ${currentQuery_fields_SCALAR_names?.join('\n')}
 
 			<div slot="changeArguments">
 				<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2">
-					{#each scalarArgs as arg}
+					{#each arguments_withInfo as arg}
 						<div class="w-full cursor-pointer  hover:text-primary p-2 rounded-box flex">
-							<div class="w-full pr-2">{arg.name}</div>
-						</div>
-					{/each}
-					{#each non_scalarArgs as arg}
-						<div class="w-full cursor-pointer  hover:text-primary p-2 rounded-box flex">
-							<div class="w-full pr-2">{arg.name}</div>
-							<div class="bi bi-chevron-down" />
+							<div class="w-full pr-2">{arg.arg.name}</div>
+							{#if !arg.kindsArray.includes('SCALAR')}
+								<div class="bi bi-chevron-down" />
+							{/if}
 						</div>
 					{/each}
 				</div>
