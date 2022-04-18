@@ -8,9 +8,9 @@
 	import {
 		getQM_Field,
 		getRootType,
-		getScalarFields_Names,
 		getRootType_Name,
-		getRootType_NamesArray
+		getRootType_NamesArray,
+		getFields_Grouped
 	} from '$lib/utils/usefulFunctions';
 	setClient($urqlClient);
 	let queryName = $page.params.queryName;
@@ -21,7 +21,15 @@
 		$introspectionResult.rootTypes,
 		currentQueryNameForType
 	);
-	let currentQuery_fields_SCALAR_names = getScalarFields_Names(currentQueryFromRootTypes);
+
+	let { scalarFields, non_scalarFields } = getFields_Grouped(currentQueryFromRootTypes);
+	let currentQuery_fields_SCALAR_names = scalarFields.map((field) => {
+		return field.name;
+	});
+
+	let currentQuery_fields_non_scalar_names = non_scalarFields.map((field) => {
+		return field.name;
+	});
 
 	let queryBody = `
     query MyQuery {
@@ -34,12 +42,20 @@ ${currentQuery_fields_SCALAR_names?.join('\n')}
 	const queryStore = operationStore(queryBody);
 	query(queryStore);
 
+	const runQuery = () => {
+		query(queryStore);
+	};
 	///////
 
 	let columns = currentQuery_fields_SCALAR_names;
 	let rows = [];
 </script>
 
+<div class="flex flex-col">
+	<div class="w-full">non scalar fields</div>
+	<div class="w-full">{currentQuery_fields_non_scalar_names}</div>
+	<button class="btn btn-sm btn-primary">fetch</button>
+</div>
 {#if $queryStore.fetching}
 	<p>Loading...</p>
 {:else if $queryStore.error}

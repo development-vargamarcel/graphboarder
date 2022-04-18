@@ -3,10 +3,11 @@
 	import {
 		getRootType_Name,
 		getRootType_NamesArray,
-		getQM_mandatoryArguments
+		getQM_mandatoryArguments,
+		getFields_Grouped
 	} from '$lib/utils/usefulFunctions';
 	import { introspectionResult } from '$lib/stores/introspectionResult';
-	import { getQM_Field, getRootType, getScalarFields_Names } from '$lib/utils/usefulFunctions';
+	import { getQM_Field, getRootType } from '$lib/utils/usefulFunctions';
 	export let origin;
 	export let query;
 	let queryName = query.name;
@@ -18,7 +19,12 @@
 		$introspectionResult.rootTypes,
 		currentQueryNameForType
 	);
-	let currentQuery_fields_SCALAR_names = getScalarFields_Names(currentQueryFromRootTypes);
+
+	let { scalarFields, non_scalarFields } = getFields_Grouped(currentQueryFromRootTypes);
+	let currentQuery_fields_SCALAR_names = scalarFields.map((field) => {
+		return field.name;
+	});
+
 	let mandatoryArgs = getQM_mandatoryArguments(query);
 	if (mandatoryArgs) {
 		queryTitleDisplay = `${queryTitleDisplay} ${JSON.stringify(mandatoryArgs)} \n`;

@@ -91,22 +91,22 @@ export const getRootType = (rootTypes, queryNameForType) => {
         return type.name == queryNameForType;
     })[0];
 }
-export const getScalarFields_Names = (QM) => {
+
+
+export const getFields_Grouped = (QM) => {
     let scalarFields = []
-    scalarFields = QM?.fields?.filter((field) => {
-        let isSCALAR = false
-        isSCALAR = field?.type?.kind == 'SCALAR' || field?.type?.ofType?.kind == 'SCALAR'
-        if (isSCALAR) {
-            return true;
+    let non_scalarFields = []
+
+    QM.fields.forEach(field => {
+        if (getRootType_KindsArray(field).includes('SCALAR')) {
+            scalarFields.push(field)
+        } else {
+            non_scalarFields.push(field)
+
         }
     });
-    let scalarFieldsNames = []
-    if (scalarFields?.length >= 1) {
-        scalarFieldsNames = scalarFields?.map((field) => {
-            return field?.name;
-        });
-    } else {
-        scalarFieldsNames = []
+
+    return {
+        scalarFields: scalarFields, non_scalarFields: non_scalarFields
     }
-    return scalarFieldsNames
 }
