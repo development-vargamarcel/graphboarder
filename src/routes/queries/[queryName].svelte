@@ -60,25 +60,28 @@ ${queryFragments_scalar}
 }
     `;
 	console.log(queryBody);
-
-	const queryStore = operationStore(queryBody);
+	let queryStore;
+	queryStore = operationStore(queryBody);
 	query(queryStore);
 
 	const addColumnScalar = (fieldName, inUse) => {
 		if (!inUse) {
 			tableColsData = [...tableColsData, { title: fieldName, queryFragment: fieldName }];
 		}
+		//queryStore.reexecute();
 	};
 	const hideField = (e) => {
 		tableColsData = tableColsData.filter((colData) => {
 			return colData.title !== e.detail.column;
 		});
+
 		console.log('hideField', e.detail);
 	};
 	const runQuery = () => {
 		query(queryStore);
 	};
 	///////
+
 	let columns = [];
 	$: columns = tableColsData.map((colData) => {
 		return colData.title;
