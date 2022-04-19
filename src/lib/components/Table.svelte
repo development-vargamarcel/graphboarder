@@ -59,7 +59,20 @@
 										tabindex="0"
 										class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl"
 									>
-										dsd
+										<div
+											class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2"
+										>
+											<div class="w-full cursor-pointer  hover:text-primary p-2 rounded-box flex">
+												<div
+													class="w-full pr-2"
+													on:click={() => {
+														dispatch('hideField', { column: column, index: index });
+													}}
+												>
+													hide field
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 							</th>
@@ -70,7 +83,7 @@
 									tabindex="0"
 									class="btn btn-sm bi bi-node-plus-fill text-lg p-1"
 									on:click={() => {
-										dispatch('addColumn');
+										dispatch('addColumnDropdown');
 									}}
 								/>
 								<div
@@ -86,7 +99,7 @@
 									tabindex="0"
 									class="btn btn-sm bi bi-sliders text-lg p-1"
 									on:click={() => {
-										dispatch('addColumn');
+										dispatch('changeArgumentsDropdown');
 									}}
 								/>
 								<div

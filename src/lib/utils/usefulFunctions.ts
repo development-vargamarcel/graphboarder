@@ -93,11 +93,11 @@ export const getRootType = (rootTypes, queryNameForType) => {
 }
 
 
-export const getFields_Grouped = (QM) => {
+export const getFields_Grouped = (rootField) => {
     let scalarFields = []
     let non_scalarFields = []
 
-    QM.fields.forEach(field => {
+    rootField.fields.forEach(field => {
         if (getRootType_KindsArray(field).includes('SCALAR')) {
             scalarFields.push(field)
         } else {
