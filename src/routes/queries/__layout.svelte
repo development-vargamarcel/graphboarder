@@ -1,11 +1,30 @@
 <script>
 	import { introspectionResult } from '$lib/stores/introspectionResult';
-	import { goto } from '$app/navigation';
 	let queries = $introspectionResult.queryFields;
-	console.log('queries: ', queries);
 	import { getStores, navigating, page, session, updated } from '$app/stores';
 	import QueryLink from '$lib/components/QueryLink.svelte';
+	import {
+		afterNavigate,
+		beforeNavigate,
+		disableScrollHandling,
+		goto,
+		invalidate,
+		prefetch,
+		prefetchRoutes
+	} from '$app/navigation';
+	import { onDestroy } from 'svelte';
+	console.log('queries: ', queries);
+
 	let origin = $page.url.origin;
+	let urlHref;
+
+	let pageUnsubscribe = page.subscribe((value) => {
+		urlHref = value.url.href;
+		console.log(urlHref);
+	});
+	onDestroy(() => {
+		pageUnsubscribe();
+	});
 </script>
 
 <div class="drawer  drawer-mobile ">
@@ -39,7 +58,9 @@
 			</div>
 		</div>
 		<div class="w-full overflow-auto h-full">
-			<slot />
+			{#key urlHref}
+				<slot />
+			{/key}
 		</div>
 	</div>
 	<div class="drawer-side ">

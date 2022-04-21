@@ -39,13 +39,11 @@
 	}
 </script>
 
-<a
-	title={queryTitleDisplay}
-	href="{origin}/queries/{queryName}"
-	on:mousedown={() => {
+<a title={queryTitleDisplay} href="{origin}/queries/{queryName}">{queryNameDisplay}</a>
+<!-- 
+		on:mousedown={() => {
 		goto(`${origin}/queries/`);
 	}}
 	on:click={() => {
-		goto(`${origin}/queries/${queryName}`, { replaceState: true });
-	}}>{queryNameDisplay}</a
->
+		goto(`${origin}/queries/${queryName}`);
+	}} -->
