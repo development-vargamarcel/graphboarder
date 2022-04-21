@@ -1,7 +1,6 @@
 import adapter from '@sveltejs/adapter-auto';
 import preprocess from 'svelte-preprocess';
 import adapterNetlify from '@sveltejs/adapter-netlify';
-
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	// Consult https://github.com/sveltejs/svelte-preprocess
@@ -18,7 +17,8 @@ const config = {
 		// Override http methods in the Todo forms
 		methodOverride: {
 			allowed: ['PATCH', 'DELETE']
-		}
+		},
+
 	}
 };
 
