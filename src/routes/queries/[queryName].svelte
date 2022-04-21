@@ -14,8 +14,12 @@
 		getArguments_withInfo,
 		getRootType_KindsArray
 	} from '$lib/utils/usefulFunctions';
+	import { onDestroy, onMount } from 'svelte';
 	setClient($urqlClient);
 	let queryName = $page.params.queryName;
+	onDestroy(() => {
+		document.getElementById('my-drawer-3').click();
+	});
 
 	let currentQueryInfo = getQM_Field($introspectionResult.queryFields, queryName);
 	let currentQueryNameForType = getRootType_Name(getRootType_NamesArray(currentQueryInfo));
