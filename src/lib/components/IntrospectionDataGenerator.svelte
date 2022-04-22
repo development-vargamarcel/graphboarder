@@ -7,7 +7,8 @@
 	import { onDestroy, setContext } from 'svelte';
 	export let graphqlEndpointURL = 'https://mdunpmb9.directus.app/graphql';
 
-	import { createClient, fetchExchange } from '@urql/svelte';
+	//import { createClient, fetchExchange } from '@urql/svelte';
+	import { createClient, fetchExchange } from '@urql/core';
 	import { amp, browser, dev, mode, prerendering } from '$app/env';
 	let client = createClient({
 		url: graphqlEndpointURL,
@@ -39,7 +40,9 @@
 	import { introspectionResult } from '$lib/stores/introspectionResult';
 
 	import { urqlClient } from '$lib/stores/urqlClient';
+	import { urqlCoreClient } from '$lib/stores/urqlCoreClient';
 	urqlClient.set(client);
+	urqlCoreClient.set(client);
 	setClient(client);
 	const queryStore = operationStore(`
     query IntrospectionQuery {

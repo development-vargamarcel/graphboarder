@@ -5,6 +5,8 @@
 	import client from '$lib/utils/urql_client';
 	import Table from '$lib/components/Table.svelte';
 	import { urqlClient } from '$lib/stores/urqlClient';
+	import { urqlCoreClient } from '$lib/stores/urqlCoreClient';
+
 	import {
 		getQM_Field,
 		getRootType,
@@ -12,13 +14,16 @@
 		getRootType_NamesArray,
 		getFields_Grouped,
 		getArguments_withInfo,
-		getRootType_KindsArray
+		getRootType_KindsArray,
+		buildQueryBody,
+		generateQueryFragments
 	} from '$lib/utils/usefulFunctions';
 	import { onDestroy, onMount } from 'svelte';
+	import TestUrqlCore from '$lib/components/TestUrqlCore.svelte';
 	setClient($urqlClient);
 	let queryName = $page.params.queryName;
 	onDestroy(() => {
-		document.getElementById('my-drawer-3').click();
+		document.getElementById('my-drawer-3')?.click();
 	});
 
 	let currentQueryInfo = getQM_Field($introspectionResult.queryFields, queryName);
@@ -39,52 +44,52 @@
 		return field.name;
 	});
 
-	//
 	let scalarColsData = currentQuery_fields_SCALAR_names.map((name) => {
 		return { title: name, queryFragment: name };
 	});
 	let non_scalarColsData = [];
 	let tableColsData = [];
-	$: tableColsData = [...scalarColsData];
+	tableColsData = [...scalarColsData];
 
-	let queryFragments_scalar = scalarColsData
-		.map((colData) => {
-			let fragment;
-			fragment = colData.queryFragment;
-			return fragment;
-		})
-		?.join('\n');
-	//
-	let queryBody = ``;
-	queryBody = `
-    query MyQuery {
-  ${queryName} {
-${queryFragments_scalar}
-  }
-}
-    `;
-	console.log(queryBody);
-	let queryStore;
-	queryStore = operationStore(queryBody);
-	query(queryStore);
+	let queryFragments;
+	let queryBody;
+	let queryData = { fetching: true, error: false, data: false };
+
+	const runQuery = () => {
+		queryFragments = generateQueryFragments(tableColsData);
+		queryBody = buildQueryBody(queryName, queryFragments);
+		console.log(queryBody);
+
+		$urqlCoreClient
+			.query(queryBody)
+			.toPromise()
+			.then((result) => {
+				queryData = { fetching: false, error: false, data: result.data };
+				console.log('queryData', queryData);
+
+				console.log('result', result); // { data: ... }
+			})
+			.catch((error) => {
+				queryData = { fetching: false, error: error, data: false };
+				console.log('queryData', queryData);
+			});
+	};
+
+	runQuery();
 
 	const addColumnScalar = (fieldName, inUse) => {
 		if (!inUse) {
 			tableColsData = [...tableColsData, { title: fieldName, queryFragment: fieldName }];
+			runQuery();
 		}
-		//queryStore.reexecute();
 	};
-	const hideField = (e) => {
+	const hideColumn = (e) => {
 		tableColsData = tableColsData.filter((colData) => {
 			return colData.title !== e.detail.column;
 		});
 
-		console.log('hideField', e.detail);
+		console.log('hideColumn', e.detail);
 	};
-	const runQuery = () => {
-		query(queryStore);
-	};
-	///////
 
 	let columns = [];
 	$: columns = tableColsData.map((colData) => {
@@ -93,19 +98,19 @@ ${queryFragments_scalar}
 	let rows = [];
 </script>
 
-{#if $queryStore.fetching}
+{#if queryData.fetching}
 	<p>Loading...</p>
-{:else if $queryStore.error}
-	<p>Oh no... {$queryStore.error.message}</p>
+{:else if queryData.error}
+	<p>Oh no... {queryData.error}</p>
 {:else}
 	<Table
 		{columns}
-		rows={$queryStore.data[queryName]}
+		rows={queryData.data[queryName]}
 		on:addColumnDropdown={() => {
 			console.log('add column dropdown');
 		}}
-		on:hideField={(e) => {
-			hideField(e);
+		on:hideColumn={(e) => {
+			hideColumn(e);
 		}}
 	>
 		<div slot="addColumnDisplay">

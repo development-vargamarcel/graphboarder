@@ -1,5 +1,27 @@
 //QM means QueryOrMutation
 
+export const buildQueryBody = (queryName, queryFragments) => {
+    return `
+    query MyQuery {
+  ${queryName} {
+${queryFragments}
+  }
+}
+    `
+}
+
+export const generateQueryFragments = (tableColsData = []) => {
+    let body = ``
+
+    tableColsData.forEach((colData) => {
+        if (typeof colData?.queryFragment == 'string') {
+            body = body + `\n ${colData?.queryFragment}`
+        }
+    })
+
+    return body
+}
+
 export const getQM_mandatoryArguments = (QM) => { //QM means QueryOrMutation
     if (QM?.args) {
         let mandatoryArgs = []

@@ -66,7 +66,7 @@
 												<div
 													class="w-full pr-2"
 													on:click={() => {
-														dispatch('hideField', { column: column, index: index });
+														dispatch('hideColumn', { column: column, index: index });
 													}}
 												>
 													hide field
