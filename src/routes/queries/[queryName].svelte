@@ -143,9 +143,7 @@
 					})}
 					<div class="w-full cursor-pointer  hover:text-primary p-2 rounded-box flex ">
 						<div
-							class="w-full pr-2 {inUse
-								? 'cursor-no-drop hover:text-neutral-focus text-neutral'
-								: ''}"
+							class="w-full pr-2 {inUse ? 'cursor-no-drop hover:text-base-300 text-base-200' : ''}"
 							on:click={() => {
 								addColumn(field, inUse);
 							}}
