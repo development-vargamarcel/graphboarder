@@ -17,7 +17,8 @@
 		getRootType_KindsArray,
 		buildQueryBody,
 		generateQueryFragments,
-		generateFragmentData
+		generateFragmentData,
+		flattenFragm
 	} from '$lib/utils/usefulFunctions';
 	import { onDestroy, onMount } from 'svelte';
 	import TestUrqlCore from '$lib/components/TestUrqlCore.svelte';
@@ -82,56 +83,25 @@
 		let fieldName = field.name;
 		let isScalar = getRootType_KindsArray(field).includes('SCALAR');
 		if (!inUse) {
-			console.log(
-				'generateFragmentData--',
-				generateFragmentData(field, $introspectionResult.rootTypes)
-			);
-
-			let fragmentData = generateFragmentData(field, $introspectionResult.rootTypes);
-			let fragmentDataFields = generateFragmentData(field, $introspectionResult.rootTypes)[1];
-			let fragmentDataFieldsData;
-			let fragmentDataFieldsDataFlattened;
-			if (fragmentDataFields) {
-				fragmentDataFieldsData = fragmentDataFields.map((field) => {
-					return generateFragmentData(field, $introspectionResult.rootTypes);
-				});
-
-				fragmentDataFieldsDataFlattened = fragmentDataFields.map((field) => {
-					return generateFragmentData(field, $introspectionResult.rootTypes, true);
-				});
-			}
-			console.log();
-			console.log(
-				'generateFragmentData--deeper1',
-				fragmentDataFieldsData,
-				fragmentDataFieldsDataFlattened
-			);
 			if (isScalar) {
 				tableColsData = [...tableColsData, { title: fieldName, queryFragment: fieldName }];
 			} else {
+				let fragmentDataFlattenDeep = generateFragmentData(field, $introspectionResult.rootTypes);
+				fragmentDataFlattenDeep[1] = fragmentDataFlattenDeep[1].map((field) => {
+					return generateFragmentData(field, $introspectionResult.rootTypes, true);
+				});
+				let fragmentDataFlatten = generateFragmentData(field, $introspectionResult.rootTypes, true);
+
 				tableColsData = [
 					...tableColsData,
 					{
 						title: fieldName,
-						queryFragment: [
-							fieldName,
-
-							getRootType(
-								$introspectionResult.rootTypes,
-								getRootType_Name(getRootType_NamesArray(field))
-							)
-								.fields.filter((subField) => {
-									return getRootType_KindsArray(subField).includes('SCALAR');
-								})
-								.map((subField) => {
-									return subField.name;
-								})
-								.join('\n')
-						]
+						queryFragment: fragmentDataFlattenDeep
 					}
 				];
 			}
 			runQuery();
+			console.log('tableColsData', tableColsData);
 		}
 	};
 	const hideColumn = (e) => {

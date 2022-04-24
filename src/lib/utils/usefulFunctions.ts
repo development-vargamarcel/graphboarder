@@ -13,29 +13,19 @@ ${queryFragments}
 export const generateFragmentData = (field, rootTypes, flatten) => {
     let fieldName = field.name;
     let isScalar = getRootType_KindsArray(field).includes('SCALAR');
-    let fragment
+    let fragmentData
     let subFields
     if (isScalar) {
         if (flatten) {
-            fragment = fieldName
+            fragmentData = fieldName
         } else {
-            fragment = [fieldName]
+            fragmentData = [fieldName]
         }
 
 
 
     } else {
-        fragment = [
-            fieldName
-
-            // .fields.filter((subField) => {
-            //     return getRootType_KindsArray(subField).includes('SCALAR');
-            // })
-            // .map((subField) => {
-            //     return subField.name;
-            // })
-            // .join('\n')
-        ]
+        fragmentData = [fieldName]
         subFields = getRootType(
             rootTypes,
             getRootType_Name(getRootType_NamesArray(field))
@@ -43,43 +33,47 @@ export const generateFragmentData = (field, rootTypes, flatten) => {
 
 
         if (flatten) {
-            fragment.push(subFields.filter((subField) => {
-                return getRootType_KindsArray(subField).includes('SCALAR');
-            })
-                .map((subField) => {
-                    return subField.name;
-                }))
+            fragmentData.push(
+                subFields.filter((subField) => {
+                    return getRootType_KindsArray(subField).includes('SCALAR');
+                })
+                    .map((subField) => {
+                        return subField.name;
+                    }))
         } else {
-            fragment.push(subFields)
+            fragmentData.push(subFields)
         }
 
 
 
 
     }
-    return fragment
+    return fragmentData
 }
 
 
-const generateQueryFragment = (fragmentData) => {
-    return fragmentData.map((subField) => {
-        return subField.name;
+
+export const flattenFragm = (fragmentData) => { //accepts an array,so to be sure put input between [], ex:flattenFragm([input])
+    let res = fragmentData.map((el) => {
+        if (typeof el == 'string') {
+            return el
+        } else {
+            return [el[0], '\n{', flattenFragm(el[1]), '}\n']
+
+        }
     })
+    return res
 }
-
 
 export const generateQueryFragments = (tableColsData = []) => {
     let body = ``
     let queryFragment
-
     tableColsData.forEach((colData) => {
         queryFragment = colData?.queryFragment
-
         if (typeof queryFragment == 'string') {
             body = body + `\n ${queryFragment}`
         } else {
-            body = body + `\n ${queryFragment.join('{\n')}${'}'.repeat(queryFragment.length - 1)}`
-            console.log(queryFragment.join('{\n'), '}'.repeat(queryFragment.length - 1))
+            body = body + `\n ${flattenFragm([queryFragment])}`
 
         }
     })
