@@ -10,12 +10,77 @@ ${queryFragments}
     `
 }
 
+export const generateFragmentData = (field, rootTypes, flatten) => {
+    let fieldName = field.name;
+    let isScalar = getRootType_KindsArray(field).includes('SCALAR');
+    let fragment
+    let subFields
+    if (isScalar) {
+        if (flatten) {
+            fragment = fieldName
+        } else {
+            fragment = [fieldName]
+        }
+
+
+
+    } else {
+        fragment = [
+            fieldName
+
+            // .fields.filter((subField) => {
+            //     return getRootType_KindsArray(subField).includes('SCALAR');
+            // })
+            // .map((subField) => {
+            //     return subField.name;
+            // })
+            // .join('\n')
+        ]
+        subFields = getRootType(
+            rootTypes,
+            getRootType_Name(getRootType_NamesArray(field))
+        ).fields
+
+
+        if (flatten) {
+            fragment.push(subFields.filter((subField) => {
+                return getRootType_KindsArray(subField).includes('SCALAR');
+            })
+                .map((subField) => {
+                    return subField.name;
+                }))
+        } else {
+            fragment.push(subFields)
+        }
+
+
+
+
+    }
+    return fragment
+}
+
+
+const generateQueryFragment = (fragmentData) => {
+    return fragmentData.map((subField) => {
+        return subField.name;
+    })
+}
+
+
 export const generateQueryFragments = (tableColsData = []) => {
     let body = ``
+    let queryFragment
 
     tableColsData.forEach((colData) => {
-        if (typeof colData?.queryFragment == 'string') {
-            body = body + `\n ${colData?.queryFragment}`
+        queryFragment = colData?.queryFragment
+
+        if (typeof queryFragment == 'string') {
+            body = body + `\n ${queryFragment}`
+        } else {
+            body = body + `\n ${queryFragment.join('{\n')}${'}'.repeat(queryFragment.length - 1)}`
+            console.log(queryFragment.join('{\n'), '}'.repeat(queryFragment.length - 1))
+
         }
     })
 
@@ -108,9 +173,9 @@ export let getRootType_Name = (namesArray) => {
 export let getDisplay_Name = (namesArray) => {
     return namesArray[0]
 }
-export const getRootType = (rootTypes, queryNameForType) => {
+export const getRootType = (rootTypes, RootType_Name) => {
     return rootTypes.filter((type) => {
-        return type.name == queryNameForType;
+        return type.name == RootType_Name;
     })[0];
 }
 

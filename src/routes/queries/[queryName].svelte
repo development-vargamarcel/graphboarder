@@ -16,7 +16,8 @@
 		getArguments_withInfo,
 		getRootType_KindsArray,
 		buildQueryBody,
-		generateQueryFragments
+		generateQueryFragments,
+		generateFragmentData
 	} from '$lib/utils/usefulFunctions';
 	import { onDestroy, onMount } from 'svelte';
 	import TestUrqlCore from '$lib/components/TestUrqlCore.svelte';
@@ -77,9 +78,59 @@
 
 	runQuery();
 
-	const addColumnScalar = (fieldName, inUse) => {
+	const addColumn = (field, inUse) => {
+		let fieldName = field.name;
+		let isScalar = getRootType_KindsArray(field).includes('SCALAR');
 		if (!inUse) {
-			tableColsData = [...tableColsData, { title: fieldName, queryFragment: fieldName }];
+			console.log(
+				'generateFragmentData--',
+				generateFragmentData(field, $introspectionResult.rootTypes)
+			);
+
+			let fragmentData = generateFragmentData(field, $introspectionResult.rootTypes);
+			let fragmentDataFields = generateFragmentData(field, $introspectionResult.rootTypes)[1];
+			let fragmentDataFieldsData;
+			let fragmentDataFieldsDataFlattened;
+			if (fragmentDataFields) {
+				fragmentDataFieldsData = fragmentDataFields.map((field) => {
+					return generateFragmentData(field, $introspectionResult.rootTypes);
+				});
+
+				fragmentDataFieldsDataFlattened = fragmentDataFields.map((field) => {
+					return generateFragmentData(field, $introspectionResult.rootTypes, true);
+				});
+			}
+			console.log();
+			console.log(
+				'generateFragmentData--deeper1',
+				fragmentDataFieldsData,
+				fragmentDataFieldsDataFlattened
+			);
+			if (isScalar) {
+				tableColsData = [...tableColsData, { title: fieldName, queryFragment: fieldName }];
+			} else {
+				tableColsData = [
+					...tableColsData,
+					{
+						title: fieldName,
+						queryFragment: [
+							fieldName,
+
+							getRootType(
+								$introspectionResult.rootTypes,
+								getRootType_Name(getRootType_NamesArray(field))
+							)
+								.fields.filter((subField) => {
+									return getRootType_KindsArray(subField).includes('SCALAR');
+								})
+								.map((subField) => {
+									return subField.name;
+								})
+								.join('\n')
+						]
+					}
+				];
+			}
 			runQuery();
 		}
 	};
@@ -117,20 +168,16 @@
 			<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2">
 				{#each currentQueryFromRootTypes.fields as field}
 					{@const isScalar = getRootType_KindsArray(field).includes('SCALAR')}
-					{@const inUse_Scalar = isScalar
-						? tableColsData.find((colData) => {
-								return colData.queryFragment == field.name;
-						  })
-						: false}
-					<div
-						class="w-full cursor-pointer  hover:text-primary p-2 rounded-box flex {inUse_Scalar
-							? 'cursor-no-drop hover:text-neutral-focus text-neutral'
-							: ''}"
-					>
+					{@const inUse = tableColsData.find((colData) => {
+						return colData.title == field.name;
+					})}
+					<div class="w-full cursor-pointer  hover:text-primary p-2 rounded-box flex ">
 						<div
-							class="w-full pr-2"
+							class="w-full pr-2 {inUse
+								? 'cursor-no-drop hover:text-neutral-focus text-neutral'
+								: ''}"
 							on:click={() => {
-								addColumnScalar(field.name, inUse_Scalar);
+								addColumn(field, inUse);
 							}}
 						>
 							{field.name}
