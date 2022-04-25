@@ -20,7 +20,6 @@
 
 	let pageUnsubscribe = page.subscribe((value) => {
 		urlHref = value.url.href;
-		console.log(urlHref);
 	});
 	onDestroy(() => {
 		pageUnsubscribe();

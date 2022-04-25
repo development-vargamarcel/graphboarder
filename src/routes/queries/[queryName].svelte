@@ -113,65 +113,81 @@
 	};
 
 	let columns = [];
+	let rows = queryData.data[queryName];
 	$: columns = tableColsData.map((colData) => {
 		return colData.title;
 	});
-	let rows = [];
+	$: if (queryData) {
+		rows = queryData.data[queryName];
+		console.log('aaaa', typeof rows === 'object');
+
+		if (!rows?.length) {
+			if (typeof rows === 'object') {
+				rows = [Object.values(rows)];
+			} else {
+				rows = [rows];
+			}
+		}
+	}
 </script>
 
-{#if queryData.fetching}
-	<p>Loading...</p>
-{:else if queryData.error}
-	<p>Oh no... {queryData.error}</p>
-{:else}
-	<Table
-		{columns}
-		rows={queryData.data[queryName]}
-		on:addColumnDropdown={() => {
-			console.log('add column dropdown');
-		}}
-		on:hideColumn={(e) => {
-			hideColumn(e);
-		}}
-	>
-		<div slot="addColumnDisplay">
-			<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2">
-				{#each currentQueryFromRootTypes.fields as field}
-					{@const isScalar = getRootType_KindsArray(field).includes('SCALAR')}
-					{@const inUse = tableColsData.find((colData) => {
-						return colData.title == field.name;
-					})}
-					<div class="w-full cursor-pointer  hover:text-primary p-2 rounded-box flex ">
-						<div
-							class="w-full pr-2 {inUse ? 'cursor-no-drop hover:text-base-300 text-base-200' : ''}"
-							on:click={() => {
-								addColumn(field, inUse);
-							}}
-						>
-							{field.name}
+{#key queryData}
+	{#if queryData.fetching}
+		<p>Loading...</p>
+	{:else if queryData.error}
+		<p>Oh no... {queryData.error}</p>
+	{:else}
+		<Table
+			{columns}
+			{rows}
+			on:addColumnDropdown={() => {
+				console.log('add column dropdown');
+			}}
+			on:hideColumn={(e) => {
+				hideColumn(e);
+			}}
+		>
+			<div slot="addColumnDisplay">
+				<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2">
+					{#each currentQueryFromRootTypes.fields as field}
+						{@const isScalar = getRootType_KindsArray(field).includes('SCALAR')}
+						{@const inUse = tableColsData.find((colData) => {
+							return colData.title == field.name;
+						})}
+						<div class="w-full cursor-pointer  hover:text-primary p-2 rounded-box flex ">
+							<div
+								class="w-full pr-2 {inUse
+									? 'cursor-no-drop hover:text-base-300 text-base-200'
+									: ''}"
+								on:click={() => {
+									addColumn(field, inUse);
+								}}
+							>
+								{field.name}
+							</div>
+							{#if !isScalar}
+								<div class="bi bi-chevron-down" />
+							{/if}
 						</div>
-						{#if !isScalar}
-							<div class="bi bi-chevron-down" />
-						{/if}
-					</div>
-				{/each}
+					{/each}
+				</div>
 			</div>
-		</div>
 
-		<div slot="changeArguments">
-			<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2">
-				{#each arguments_withInfo as arg}
-					<div class="w-full cursor-pointer  hover:text-primary p-2 rounded-box flex">
-						<div class="w-full pr-2">{arg.arg.name}</div>
-						{#if !arg.kindsArray.includes('SCALAR')}
-							<div class="bi bi-chevron-down" />
-						{/if}
-					</div>
-				{/each}
+			<div slot="changeArguments">
+				<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2">
+					{#each arguments_withInfo as arg}
+						<div class="w-full cursor-pointer  hover:text-primary p-2 rounded-box flex">
+							<div class="w-full pr-2">{arg.arg.name}</div>
+							{#if !arg.kindsArray.includes('SCALAR')}
+								<div class="bi bi-chevron-down" />
+							{/if}
+						</div>
+					{/each}
+				</div>
+				<div class="flex justify-end pr-2 pt-2">
+					<button class="btn btn-sm btn-primary justify-right" on:click={runQuery}>apply</button>
+				</div>
 			</div>
-			<div class="flex justify-end pr-2 pt-2">
-				<button class="btn btn-sm btn-primary justify-right" on:click={runQuery}>apply</button>
-			</div>
-		</div>
-	</Table>
-{/if}
+		</Table>
+	{/if}
+{/key}

@@ -3,12 +3,10 @@
 
 	export let columns = [];
 	export let rows = [];
-	console.log(columns);
-	console.log(rows);
-	if (!rows?.length) {
-		rows = [rows];
-	}
-	const truncateText = (data = '', length, alwaysStringyfy = true) => {
+
+	console.log('columns', columns);
+	console.log('rows', rows);
+	const formatData = (data = '', length, alwaysStringyfy = true) => {
 		let string = '';
 		let resultingString = '';
 
@@ -126,9 +124,9 @@
 								</label>
 							</th>
 							<th class="z-0">{index + 1}</th>
-							{#each columns as column}
+							{#each columns as column, index}
 								<td class="z-0">
-									{truncateText(row[column], 20, true)}
+									{formatData(row[index] ? row[index] : row[column], 20, true)}
 								</td>{/each}
 							<td class="z-0" />
 						</tr>

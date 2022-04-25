@@ -54,14 +54,29 @@ export const generateFragmentData = (field, rootTypes, flatten) => {
 
 
 export const flattenFragm = (fragmentData) => { //accepts an array,so to be sure put input between [], ex:flattenFragm([input])
-    let res = fragmentData.map((el) => {
-        if (typeof el == 'string') {
-            return el
-        } else {
-            return [el[0], '\n{', flattenFragm(el[1]), '}\n']
+    // let res = fragmentData.map((el) => {
+    //     if (typeof el == 'string') {
+    //         return el
+    //     } else {
+    //         return [el[0], '\n{', flattenFragm(el[1]), '}\n']
 
-        }
-    })
+    //     }
+    // })
+    // return res
+
+    let res
+    if (typeof fragmentData == 'string') {
+        res = fragmentData
+    } else {
+        res = fragmentData.map((el) => {
+            if (typeof el == 'string') {
+                return el
+            } else {
+                return [el[0], '\n{', flattenFragm(el[1]), '}\n']
+
+            }
+        })
+    }
     return res
 }
 
