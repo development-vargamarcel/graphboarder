@@ -147,7 +147,7 @@
 			hideColumn(e);
 		}}
 	>
-		<div slot="addColumnDisplay" class="max-h-52 overflow-y-auto">
+		<div slot="addColumnDisplay" class="max-h-52 overflow-y-auto overscroll-y-contain">
 			<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2">
 				{#each currentQueryFromRootTypes.fields as field}
 					{@const isScalar = getRootType_KindsArray(field).includes('SCALAR')}
