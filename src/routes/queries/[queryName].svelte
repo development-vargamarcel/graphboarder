@@ -17,8 +17,7 @@
 		getRootType_KindsArray,
 		buildQueryBody,
 		generateQueryFragments,
-		generateFragmentData,
-		flattenFragm
+		generateFragmentData
 	} from '$lib/utils/usefulFunctions';
 	import { onDestroy, onMount } from 'svelte';
 	import TestUrqlCore from '$lib/components/TestUrqlCore.svelte';
@@ -66,14 +65,15 @@
 			.query(queryBody)
 			.toPromise()
 			.then((result) => {
-				queryData = { fetching: false, error: false, data: result.data };
-				console.log('queryData', queryData);
+				if (result.data) {
+					queryData = { fetching: false, error: false, data: result.data };
+					console.log('queryData', queryData);
+				} else {
+					console.log('---error---', result.error.message);
+					queryData = { fetching: false, error: result.error.message, data: false };
+				}
 
 				console.log('result', result); // { data: ... }
-			})
-			.catch((error) => {
-				queryData = { fetching: false, error: error, data: false };
-				console.log('queryData', queryData);
 			});
 	};
 
@@ -90,13 +90,14 @@
 				fragmentDataFlattenDeep[1] = fragmentDataFlattenDeep[1].map((field) => {
 					return generateFragmentData(field, $introspectionResult.rootTypes, true);
 				});
+
 				let fragmentDataFlatten = generateFragmentData(field, $introspectionResult.rootTypes, true);
 
 				tableColsData = [
 					...tableColsData,
 					{
 						title: fieldName,
-						queryFragment: fragmentDataFlattenDeep
+						queryFragment: fragmentDataFlatten
 					}
 				];
 			}
@@ -117,7 +118,7 @@
 	$: columns = tableColsData.map((colData) => {
 		return colData.title;
 	});
-	$: if (queryData) {
+	$: if (queryData.data) {
 		rows = queryData.data[queryName];
 		console.log('aaaa', typeof rows === 'object');
 
@@ -131,63 +132,59 @@
 	}
 </script>
 
-{#key queryData}
-	{#if queryData.fetching}
-		<p>Loading...</p>
-	{:else if queryData.error}
-		<p>Oh no... {queryData.error}</p>
-	{:else}
-		<Table
-			{columns}
-			{rows}
-			on:addColumnDropdown={() => {
-				console.log('add column dropdown');
-			}}
-			on:hideColumn={(e) => {
-				hideColumn(e);
-			}}
-		>
-			<div slot="addColumnDisplay">
-				<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2">
-					{#each currentQueryFromRootTypes.fields as field}
-						{@const isScalar = getRootType_KindsArray(field).includes('SCALAR')}
-						{@const inUse = tableColsData.find((colData) => {
-							return colData.title == field.name;
-						})}
-						<div class="w-full cursor-pointer  hover:text-primary p-2 rounded-box flex ">
-							<div
-								class="w-full pr-2 {inUse
-									? 'cursor-no-drop hover:text-base-300 text-base-200'
-									: ''}"
-								on:click={() => {
-									addColumn(field, inUse);
-								}}
-							>
-								{field.name}
-							</div>
-							{#if !isScalar}
-								<div class="bi bi-chevron-down" />
-							{/if}
+{#if queryData.fetching}
+	<p>Loading...</p>
+{:else if queryData.error}
+	<p>Oh no... {queryData.error}</p>
+{:else}
+	<Table
+		{columns}
+		{rows}
+		on:addColumnDropdown={() => {
+			console.log('add column dropdown');
+		}}
+		on:hideColumn={(e) => {
+			hideColumn(e);
+		}}
+	>
+		<div slot="addColumnDisplay">
+			<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2">
+				{#each currentQueryFromRootTypes.fields as field}
+					{@const isScalar = getRootType_KindsArray(field).includes('SCALAR')}
+					{@const inUse = tableColsData.find((colData) => {
+						return colData.title == field.name;
+					})}
+					<div class="w-full cursor-pointer  hover:text-primary p-2 rounded-box flex ">
+						<div
+							class="w-full pr-2 {inUse ? 'cursor-no-drop hover:text-base-300 text-base-200' : ''}"
+							on:click={() => {
+								addColumn(field, inUse);
+							}}
+						>
+							{field.name}
 						</div>
-					{/each}
-				</div>
+						{#if !isScalar}
+							<div class="bi bi-chevron-down" />
+						{/if}
+					</div>
+				{/each}
 			</div>
+		</div>
 
-			<div slot="changeArguments">
-				<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2">
-					{#each arguments_withInfo as arg}
-						<div class="w-full cursor-pointer  hover:text-primary p-2 rounded-box flex">
-							<div class="w-full pr-2">{arg.arg.name}</div>
-							{#if !arg.kindsArray.includes('SCALAR')}
-								<div class="bi bi-chevron-down" />
-							{/if}
-						</div>
-					{/each}
-				</div>
-				<div class="flex justify-end pr-2 pt-2">
-					<button class="btn btn-sm btn-primary justify-right" on:click={runQuery}>apply</button>
-				</div>
+		<div slot="changeArguments">
+			<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2">
+				{#each arguments_withInfo as arg}
+					<div class="w-full cursor-pointer  hover:text-primary p-2 rounded-box flex">
+						<div class="w-full pr-2">{arg.arg.name}</div>
+						{#if !arg.kindsArray.includes('SCALAR')}
+							<div class="bi bi-chevron-down" />
+						{/if}
+					</div>
+				{/each}
 			</div>
-		</Table>
-	{/if}
-{/key}
+			<div class="flex justify-end pr-2 pt-2">
+				<button class="btn btn-sm btn-primary justify-right" on:click={runQuery}>apply</button>
+			</div>
+		</div>
+	</Table>
+{/if}

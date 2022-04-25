@@ -10,7 +10,10 @@ ${queryFragments}
     `
 }
 
+
+
 export const generateFragmentData = (field, rootTypes, flatten) => {
+
     let fieldName = field.name;
     let isScalar = getRootType_KindsArray(field).includes('SCALAR');
     let fragmentData
@@ -53,17 +56,7 @@ export const generateFragmentData = (field, rootTypes, flatten) => {
 
 
 
-export const flattenFragm = (fragmentData) => { //accepts an array,so to be sure put input between [], ex:flattenFragm([input])
-    // let res = fragmentData.map((el) => {
-    //     if (typeof el == 'string') {
-    //         return el
-    //     } else {
-    //         return [el[0], '\n{', flattenFragm(el[1]), '}\n']
-
-    //     }
-    // })
-    // return res
-
+export const fragmentDataToFragment = (fragmentData) => { //accepts an array,so to be sure put input between [], ex:fragmentDataToFragment([input])
     let res
     if (typeof fragmentData == 'string') {
         res = fragmentData
@@ -72,7 +65,7 @@ export const flattenFragm = (fragmentData) => { //accepts an array,so to be sure
             if (typeof el == 'string') {
                 return el
             } else {
-                return [el[0], '\n{', flattenFragm(el[1]), '}\n']
+                return [el[0], '\n{', fragmentDataToFragment(el[1]), '}\n']
 
             }
         })
@@ -88,7 +81,7 @@ export const generateQueryFragments = (tableColsData = []) => {
         if (typeof queryFragment == 'string') {
             body = body + `\n ${queryFragment}`
         } else {
-            body = body + `\n ${flattenFragm([queryFragment])}`
+            body = body + `\n ${fragmentDataToFragment([queryFragment])}`
 
         }
     })
