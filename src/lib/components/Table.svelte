@@ -44,7 +44,7 @@
 			} else if (data?.[el] !== undefined) {
 				data = data[el];
 			} else {
-				data = 'loading...'; //might cause problems
+				data = undefined; //might cause problems
 			}
 		});
 		return data;
