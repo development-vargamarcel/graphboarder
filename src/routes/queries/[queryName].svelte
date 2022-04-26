@@ -22,6 +22,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import TestUrqlCore from '$lib/components/TestUrqlCore.svelte';
 	import TypeFieldsExplorer from '$lib/components/TypeFieldsExplorer.svelte';
+	import { goto } from '$app/navigation';
 	setClient($urqlClient);
 	let queryName = $page.params.queryName;
 	onDestroy(() => {
@@ -29,6 +30,10 @@
 	});
 
 	let currentQueryInfo = getQM_Field($introspectionResult.queryFields, queryName);
+	if (!currentQueryInfo) {
+		goto('/queries');
+	}
+
 	let currentQueryNameForType = getRootType_Name(getRootType_NamesArray(currentQueryInfo));
 	let currentQueryFromRootTypes = getRootType(
 		$introspectionResult.rootTypes,
