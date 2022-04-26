@@ -55,8 +55,6 @@
 			data = row[index];
 		} else {
 			data = getDataUsing_pathToData(pathToData(colData.queryFragment), row);
-			console.log('--pathToData', pathToData(colData.queryFragment));
-			console.log('--getDataUsing_pathToData', data);
 		}
 		return data;
 	};
