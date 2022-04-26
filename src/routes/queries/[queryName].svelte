@@ -137,15 +137,15 @@
 	];
 
 	tableColsData = [
-		...scalarColsData
-		// {
-		// 	title: 'queryFragmentFor_businesses_ingredients_PRECISE',
-		// 	queryFragment: queryFragmentFor_businesses_ingredients_PRECISE
-		// },
-		// {
-		// 	title: 'queryFragmentFor_businesses_ingredients_ALL',
-		// 	queryFragment: queryFragmentFor_businesses_ingredients_ALL
-		// }
+		...scalarColsData,
+		{
+			title: 'queryFragmentFor_businesses_ingredients_PRECISE',
+			queryFragment: queryFragmentFor_businesses_ingredients_PRECISE
+		},
+		{
+			title: 'queryFragmentFor_businesses_ingredients_ALL',
+			queryFragment: queryFragmentFor_businesses_ingredients_ALL
+		}
 	];
 
 	let queryFragments;

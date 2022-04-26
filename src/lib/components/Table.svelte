@@ -27,6 +27,10 @@
 	};
 
 	const getDataUsing_pathToData = (pathToData, data) => {
+		if (pathToData[pathToData.length - 1] == false) {
+			pathToData = [pathToData[0]];
+		}
+
 		pathToData.forEach((el) => {
 			if (data?.length) {
 				if (data?.length > 0) {
@@ -36,7 +40,7 @@
 				} else {
 					data = data;
 				}
-			} else if (data?.[el]) {
+			} else if (data?.[el] || data?.[el] == null) {
 				data = data?.[el];
 			} else {
 				data = data;
@@ -49,15 +53,9 @@
 		if (row[index]) {
 			data = row[index];
 		} else {
-			let pathToDataResult = pathToData(colData.queryFragment);
-			console.log('pathToDataResult', pathToDataResult);
-			if (pathToDataResult?.includes(false)) {
-				data = getDataUsing_pathToData([pathToDataResult[0]], row);
-			} else {
-				data = getDataUsing_pathToData(pathToDataResult, row);
-			}
+			data = getDataUsing_pathToData(pathToData(colData.queryFragment), row);
 		}
-		console.log(data);
+		console.log('data from getData', data);
 		return data;
 	};
 	console.log('columns', columns);
@@ -182,7 +180,7 @@
 							<th class="z-0">{index + 1}</th>
 							{#each colsData as colData, index}
 								<td class="z-0">
-									{formatData(getData(row, colData, index), 20, true)}
+									{formatData(getData(row, colData, index), 40, true)}
 								</td>{/each}
 							<td class="z-0" />
 						</tr>
