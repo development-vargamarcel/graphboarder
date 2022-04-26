@@ -56,7 +56,17 @@
 	});
 	let non_scalarColsData = [];
 	let tableColsData = [];
-	tableColsData = [...scalarColsData];
+	//
+	let queryFragmentFor_businesses_ingredients = ['businesses_ingredients', [['ing_id', ['name']]]];
+	console.log('queryFragmentFor_businesses_ingredients', queryFragmentFor_businesses_ingredients);
+	//
+	tableColsData = [
+		...scalarColsData,
+		{
+			title: 'businesses_ingredientsSpecial',
+			queryFragment: queryFragmentFor_businesses_ingredients
+		}
+	];
 
 	let queryFragments;
 	let queryBody;
@@ -94,10 +104,12 @@
 				tableColsData = [...tableColsData, { title: fieldName, queryFragment: fieldName }];
 			} else {
 				let fragmentDataFlattenDeep = generateFragmentData(field, $introspectionResult.rootTypes);
+
 				fragmentDataFlattenDeep[1] = fragmentDataFlattenDeep[1].map((field) => {
 					return generateFragmentData(field, $introspectionResult.rootTypes, true);
 				});
 
+				console.log('fragmentDataFlattenDeep', fragmentDataFlattenDeep);
 				let fragmentDataFlatten = generateFragmentData(field, $introspectionResult.rootTypes, true);
 				console.log('fragmentDataFlatten', fragmentDataFlatten);
 				if (fragmentDataFlatten) {
@@ -154,6 +166,7 @@
 	<p>Oh no... {queryData.error}</p>
 {:else}
 	<Table
+		colsData={tableColsData}
 		{columns}
 		{rows}
 		on:addColumnDropdown={() => {

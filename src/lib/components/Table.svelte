@@ -1,9 +1,22 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
-
+	export let colsData = [];
 	export let columns = [];
 	export let rows = [];
-
+	const getData = (row, colData, index) => {
+		let data;
+		if (row[index]) {
+			data = row[index];
+		} else {
+			if (typeof colData.queryFragment == 'string') {
+				data = row[colData.queryFragment];
+			} else {
+				//data = row[colData.queryFragment[0]][0]?.ing_id?.name;
+				data = row[colData.queryFragment[0]][0]?.ing_id;
+			}
+		}
+		return data;
+	};
 	console.log('columns', columns);
 	console.log('rows', rows);
 	const formatData = (data = '', length, alwaysStringyfy = true) => {
@@ -124,9 +137,9 @@
 								</label>
 							</th>
 							<th class="z-0">{index + 1}</th>
-							{#each columns as column, index}
+							{#each colsData as colData, index}
 								<td class="z-0">
-									{formatData(row[index] ? row[index] : row[column], 20, true)}
+									{formatData(getData(row, colData, index), 20, true)}
 								</td>{/each}
 							<td class="z-0" />
 						</tr>
