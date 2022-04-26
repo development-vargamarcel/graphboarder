@@ -56,21 +56,96 @@
 	});
 	let non_scalarColsData = [];
 	let tableColsData = [];
-	//
-	let queryFragmentFor_businesses_ingredients = [
+
+	let queryFragmentFor_businesses_ingredients_PRECISE = [
 		'businesses_ingredients',
 		[['ing_id', [['user_created', [['role', ['name']]]]]]]
 	];
 
-	//let test={businesses_ingredients:{fields}}
-	console.log('queryFragmentFor_businesses_ingredients', queryFragmentFor_businesses_ingredients);
-	//
+	let queryFragmentFor_businesses_ingredients_ALL = [
+		'businesses_ingredients',
+		[
+			'id',
+			'status',
+			'sort',
+			[
+				'user_created',
+				[
+					'id',
+					'first_name',
+					'last_name',
+					'email',
+					'password',
+					'location',
+					'title',
+					'description',
+					'tags',
+					'language',
+					'theme',
+					'tfa_secret',
+					'status',
+					'token',
+					'last_access',
+					'last_page',
+					'provider',
+					'external_identifier',
+					'auth_data',
+					'email_notifications'
+				]
+			],
+			'date_created',
+			[
+				'date_created_func',
+				['year', 'month', 'week', 'day', 'weekday', 'hour', 'minute', 'second']
+			],
+			[
+				'user_updated',
+				[
+					'id',
+					'first_name',
+					'last_name',
+					'email',
+					'password',
+					'location',
+					'title',
+					'description',
+					'tags',
+					'language',
+					'theme',
+					'tfa_secret',
+					'status',
+					'token',
+					'last_access',
+					'last_page',
+					'provider',
+					'external_identifier',
+					'auth_data',
+					'email_notifications'
+				]
+			],
+			'date_updated',
+			[
+				'date_updated_func',
+				['year', 'month', 'week', 'day', 'weekday', 'hour', 'minute', 'second']
+			],
+			['ing_id', ['id', 'status', 'sort', 'date_created', 'date_updated', 'name']],
+			[
+				'bus_id',
+				['id', 'status', 'sort', 'date_created', 'date_updated', 'name', 'location', 'serving_area']
+			]
+		]
+	];
+
 	tableColsData = [
-		...scalarColsData,
-		{
-			title: 'businesses_ingredientsSpecial',
-			queryFragment: queryFragmentFor_businesses_ingredients
-		}
+		...scalarColsData
+		// {
+		// 	title: 'queryFragmentFor_businesses_ingredients_PRECISE',
+		// 	queryFragment: queryFragmentFor_businesses_ingredients_PRECISE
+		// },
+		// {
+		// 	title: 'queryFragmentFor_businesses_ingredients_ALL',
+		// 	queryFragment: queryFragmentFor_businesses_ingredients_ALL
+		// }
 	];
 
 	let queryFragments;

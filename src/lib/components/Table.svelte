@@ -8,18 +8,8 @@
 		let pathStepsArray = [];
 
 		if (typeof queryFragment !== 'string') {
-			if (queryFragment.length >= 2) {
-				pathStepsArray = [queryFragment[0]];
-				//wom't work look at 'nameA'
-				// [
-				// 		'businesses_ingredients',
-				// 		[['ing_id','nameA' [['user_created', [['role', ['name']]]]]]]
-				// 	]
-				//will work look at 'nameA'
-				// [
-				// 		'businesses_ingredients',
-				// 		['nameA',['ing_id',[['user_created', [['role', ['name']]]]]]]
-				// 	]
+			if (queryFragment.length > 2) {
+				pathStepsArray.push(false);
 			} else {
 				queryFragment.forEach((el) => {
 					if (typeof el == 'string') {
@@ -59,8 +49,15 @@
 		if (row[index]) {
 			data = row[index];
 		} else {
-			data = getDataUsing_pathToData(pathToData(colData.queryFragment), row);
+			let pathToDataResult = pathToData(colData.queryFragment);
+			console.log('pathToDataResult', pathToDataResult);
+			if (pathToDataResult?.includes(false)) {
+				data = getDataUsing_pathToData([pathToDataResult[0]], row);
+			} else {
+				data = getDataUsing_pathToData(pathToDataResult, row);
+			}
 		}
+		console.log(data);
 		return data;
 	};
 	console.log('columns', columns);
