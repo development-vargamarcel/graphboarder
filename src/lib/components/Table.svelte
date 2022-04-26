@@ -40,7 +40,7 @@
 				} else {
 					data = data;
 				}
-			} else if (data?.[el] || data?.[el] == null) {
+			} else if (data?.[el] !== undefined) {
 				data = data?.[el];
 			} else {
 				data = data;
