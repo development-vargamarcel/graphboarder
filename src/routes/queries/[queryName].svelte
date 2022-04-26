@@ -57,7 +57,12 @@
 	let non_scalarColsData = [];
 	let tableColsData = [];
 	//
-	let queryFragmentFor_businesses_ingredients = ['businesses_ingredients', [['ing_id', ['name']]]];
+	let queryFragmentFor_businesses_ingredients = [
+		'businesses_ingredients',
+		[['ing_id', [['user_created', [['role', ['name']]]]]]]
+	];
+
+	//let test={businesses_ingredients:{fields}}
 	console.log('queryFragmentFor_businesses_ingredients', queryFragmentFor_businesses_ingredients);
 	//
 	tableColsData = [
@@ -148,7 +153,6 @@
 	});
 	$: if (queryData.data) {
 		rows = queryData.data[queryName];
-		console.log('aaaa', typeof rows === 'object');
 
 		if (!rows?.length) {
 			if (typeof rows === 'object') {

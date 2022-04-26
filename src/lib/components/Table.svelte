@@ -3,17 +3,63 @@
 	export let colsData = [];
 	export let columns = [];
 	export let rows = [];
+
+	const pathToData = (queryFragment) => {
+		let pathStepsArray = [];
+
+		if (typeof queryFragment !== 'string') {
+			if (queryFragment.length >= 2) {
+				pathStepsArray = [queryFragment[0]];
+				//wom't work look at 'nameA'
+				// [
+				// 		'businesses_ingredients',
+				// 		[['ing_id','nameA' [['user_created', [['role', ['name']]]]]]]
+				// 	]
+				//will work look at 'nameA'
+				// [
+				// 		'businesses_ingredients',
+				// 		['nameA',['ing_id',[['user_created', [['role', ['name']]]]]]]
+				// 	]
+			} else {
+				queryFragment.forEach((el) => {
+					if (typeof el == 'string') {
+						pathStepsArray.push(el);
+					} else {
+						pathStepsArray.push(...pathToData(el));
+					}
+				});
+			}
+		} else {
+			pathStepsArray.push(queryFragment);
+		}
+
+		return pathStepsArray;
+	};
+
+	const getDataUsing_pathToData = (pathToData, data) => {
+		pathToData.forEach((el) => {
+			if (data?.length) {
+				if (data?.length > 0) {
+					data = data.map((dataEl) => {
+						return dataEl[el];
+					});
+				} else {
+					data = data;
+				}
+			} else if (data?.[el]) {
+				data = data?.[el];
+			} else {
+				data = data;
+			}
+		});
+		return data;
+	};
 	const getData = (row, colData, index) => {
 		let data;
 		if (row[index]) {
 			data = row[index];
 		} else {
-			if (typeof colData.queryFragment == 'string') {
-				data = row[colData.queryFragment];
-			} else {
-				//data = row[colData.queryFragment[0]][0]?.ing_id?.name;
-				data = row[colData.queryFragment[0]][0]?.ing_id;
-			}
+			data = getDataUsing_pathToData(pathToData(colData.queryFragment), row);
 		}
 		return data;
 	};
