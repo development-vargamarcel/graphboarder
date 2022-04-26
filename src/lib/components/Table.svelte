@@ -44,7 +44,7 @@
 			} else if (data?.[el] !== undefined) {
 				data = data[el];
 			} else {
-				data = data;
+				data = null; //might cause problems
 			}
 		});
 		return data;
@@ -55,6 +55,8 @@
 			data = row[index];
 		} else {
 			data = getDataUsing_pathToData(pathToData(colData.queryFragment), row);
+			console.log('--pathToData', pathToData(colData.queryFragment));
+			console.log('--getDataUsing_pathToData', data);
 		}
 		return data;
 	};
