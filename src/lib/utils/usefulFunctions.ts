@@ -12,12 +12,14 @@ ${queryFragments}
 
 
 
-export const generateFragmentData = (field, rootTypes, flatten) => {
+export const generateFragmentData = (field, rootTypes, flatten, deeperIfNoScalar = true) => {
 
     let fieldName = field.name;
     let isScalar = getRootType_KindsArray(field).includes('SCALAR');
     let fragmentData
     let subFields
+    let subFields_scalar
+
     if (isScalar) {
         if (flatten) {
             fragmentData = fieldName
@@ -33,16 +35,36 @@ export const generateFragmentData = (field, rootTypes, flatten) => {
             rootTypes,
             getRootType_Name(getRootType_NamesArray(field))
         ).fields
+        subFields_scalar = subFields
+            .filter((subField) => {
+                return getRootType_KindsArray(subField).includes('SCALAR');
+            })
+
+
+
+
 
 
         if (flatten) {
-            fragmentData.push(
-                subFields.filter((subField) => {
-                    return getRootType_KindsArray(subField).includes('SCALAR');
-                })
-                    .map((subField) => {
+            if (subFields_scalar.length > 0) {
+                fragmentData.push(
+                    subFields_scalar.map((subField) => {
                         return subField.name;
                     }))
+            } else {
+                if (deeperIfNoScalar) {
+                    console.log('subFields', subFields)
+                    fragmentData.push(
+                        subFields.map((subField) => {
+                            return generateFragmentData(subField, rootTypes, true, true)
+                        }))
+
+                } else {
+                    return undefined
+                }
+
+            }
+
         } else {
             fragmentData.push(subFields)
         }

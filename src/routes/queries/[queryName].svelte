@@ -81,6 +81,7 @@
 	runQuery();
 
 	const addColumn = (field, inUse) => {
+		let runTheQuery = true;
 		let fieldName = field.name;
 		let isScalar = getRootType_KindsArray(field).includes('SCALAR');
 		if (!inUse) {
@@ -93,17 +94,26 @@
 				});
 
 				let fragmentDataFlatten = generateFragmentData(field, $introspectionResult.rootTypes, true);
-
-				tableColsData = [
-					...tableColsData,
-					{
-						title: fieldName,
-						queryFragment: fragmentDataFlatten
-					}
-				];
+				console.log('fragmentDataFlatten', fragmentDataFlatten);
+				if (fragmentDataFlatten) {
+					tableColsData = [
+						...tableColsData,
+						{
+							title: fieldName,
+							queryFragment: fragmentDataFlatten
+						}
+					];
+				} else {
+					runTheQuery = false;
+					console.error(
+						'cannot add this column because it doesn t have scalar fields or is not set to go deeper till it finds scalars'
+					);
+				}
 			}
-			runQuery();
-			console.log('tableColsData', tableColsData);
+			if (runTheQuery) {
+				runQuery();
+				console.log('tableColsData', tableColsData);
+			}
 		}
 	};
 	const hideColumn = (e) => {
