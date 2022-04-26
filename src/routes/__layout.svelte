@@ -15,6 +15,7 @@
 	////////////////////
 
 	import { browser } from '$app/env';
+	import { goto } from '$app/navigation';
 	let showEdit = false;
 	let show_IntrospectionDataGenerator = true;
 	let graphqlEndpointURL = '';
@@ -46,6 +47,7 @@
 	};
 
 	const storeAll = () => {
+		goto('/queries');
 		store_auth_token();
 		store_graphqlEndpointURL();
 		editButtonClick();
