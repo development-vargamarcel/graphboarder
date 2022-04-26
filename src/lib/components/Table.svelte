@@ -28,12 +28,13 @@
 
 	const getDataUsing_pathToData = (pathToData, data) => {
 		if (pathToData[pathToData.length - 1] == false) {
+			//or includes false maybe is better....
 			pathToData = [pathToData[0]];
 		}
 
 		pathToData.forEach((el) => {
 			if (data?.length) {
-				if (data?.length > 0) {
+				if (data.length > 0) {
 					data = data.map((dataEl) => {
 						return dataEl[el];
 					});
@@ -41,7 +42,7 @@
 					data = data;
 				}
 			} else if (data?.[el] !== undefined) {
-				data = data?.[el];
+				data = data[el];
 			} else {
 				data = data;
 			}
@@ -55,7 +56,6 @@
 		} else {
 			data = getDataUsing_pathToData(pathToData(colData.queryFragment), row);
 		}
-		console.log('data from getData', data);
 		return data;
 	};
 	console.log('columns', columns);
