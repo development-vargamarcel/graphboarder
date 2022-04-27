@@ -43,7 +43,8 @@
 	};
 </script>
 
-<div class="pt-2 text-center text-xs" />
+{#if template == 'default'}
+	<div class="pt-2 text-center text-xs" />{/if}
 
 <div
 	class="  pb-0 pl-1 pr-0  rounded-r-sm rounded-l-none shadow-none  space-x-2  normal-case text-xs {showExpand

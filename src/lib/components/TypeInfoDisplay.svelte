@@ -73,7 +73,7 @@
 		<div class="w-1/8 text-center text-xs" />
 	</div>
 {:else if template == 'columnAddDisplay'}
-	<div class="w-full cursor-pointer  hover:text-primary p-2 rounded-box flex text-md">
+	<div class="w-full cursor-pointer  hover:text-primary px-2 rounded-box flex text-base">
 		<div
 			class="w-full pr-2 text-md {false ? 'cursor-no-drop hover:text-base-300 text-base-200' : ''}"
 			on:click={() => {
