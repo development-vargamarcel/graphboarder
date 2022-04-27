@@ -91,7 +91,7 @@
 			<Type
 				{index}
 				{type}
-				template="columnAddDisplay"
+				template="default"
 				stepsOfFields={[]}
 				depth={0}
 				on:colAddRequest={(e) => {
