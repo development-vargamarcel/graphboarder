@@ -5,12 +5,11 @@
 <script lang="ts">
 	import { introspectionResult } from '$lib/stores/introspectionResult';
 	console.log($introspectionResult);
-	import Types from '$lib/components/Types.svelte';
+	import Type from '$lib/components/Type.svelte';
 
 	let rootTypes = $introspectionResult.rootTypes;
 	let queries = $introspectionResult.queryFields;
 	let mutations = $introspectionResult.mutationFields;
-	let whatIsShown = '-';
 	let whatToShow = [];
 	let sortingInputValue = '';
 	let sortingArray = [];
@@ -30,7 +29,6 @@
 	const showRootTypes = () => {
 		console.log(rootTypes);
 		whatToShow = rootTypes;
-		whatIsShown = 'rootTypes';
 	};
 	showRootTypes();
 	const showQueries = () => {
@@ -40,7 +38,6 @@
 		} else {
 			whatToShow = [];
 		}
-		whatIsShown = 'queryFields';
 	};
 
 	const showMutations = () => {
@@ -50,7 +47,6 @@
 		} else {
 			whatToShow = [];
 		}
-		whatIsShown = 'mutationFields';
 	};
 
 	const rootTypeByName = (name) => {
@@ -90,8 +86,11 @@
 	<button class="btn" on:click={showRootTypes}>show all</button>
 	<button class="btn" on:click={showQueries}>show queries</button>
 	<button class="btn" on:click={showMutations}>show mutations</button>
-
-	<Types {whatToShow} {whatIsShown} template="columnAddDisplay" />
+	{#key whatToShow}
+		{#each whatToShow as type, index (index)}
+			<Type {index} {type} template="columnAddDisplay" />
+		{/each}
+	{/key}
 </section>
 
 <style>

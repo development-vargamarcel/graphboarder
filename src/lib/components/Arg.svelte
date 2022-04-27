@@ -8,7 +8,6 @@
 		getRootType_NamesArray
 	} from '$lib/utils/usefulFunctions';
 	import Args from './Args.svelte';
-	import Types from './Types.svelte';
 
 	export let index;
 	export let type;
