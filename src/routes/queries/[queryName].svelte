@@ -22,6 +22,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import TestUrqlCore from '$lib/components/TestUrqlCore.svelte';
 	import { goto } from '$app/navigation';
+	import Type from '$lib/components/Type.svelte';
 	setClient($urqlClient);
 	let queryName = $page.params.queryName;
 	onDestroy(() => {
@@ -142,20 +143,17 @@
 		// 	title: 'queryFragmentFor_businesses_ingredients_PRECISE',
 		// 	queryFragment: queryFragmentFor_businesses_ingredients_PRECISE
 		// },
-		// {
-		// 	title: 'queryFragmentFor_businesses_ingredients_ALL',
-		// 	queryFragment: queryFragmentFor_businesses_ingredients_ALL
-		// }
 	];
-
+	console.log('tableColsData', tableColsData);
 	let queryFragments;
 	let queryBody;
 	let queryData = { fetching: true, error: false, data: false };
 
 	const runQuery = () => {
 		queryFragments = generateQueryFragments(tableColsData);
+		console.log('queryFragments', queryFragments);
 		queryBody = buildQueryBody(queryName, queryFragments);
-		console.log(queryBody);
+		console.log('queryBody', queryBody);
 
 		$urqlCoreClient
 			.query(queryBody)
@@ -197,7 +195,7 @@
 						...tableColsData,
 						{
 							title: fieldName,
-							queryFragment: fragmentDataFlatten
+							queryFragment: fragmentDataFlattenDeep
 						}
 					];
 				} else {
@@ -257,7 +255,7 @@
 	>
 		<div slot="addColumnDisplay" class="max-h-52 overflow-y-auto overscroll-y-contain">
 			<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2">
-				{#each currentQueryFromRootTypes.fields as field}
+				<!-- {#each currentQueryFromRootTypes.fields as field}
 					{@const isScalar = getRootType_KindsArray(field).includes('SCALAR')}
 					{@const inUse = tableColsData.find((colData) => {
 						return colData.title == field.name;
@@ -275,6 +273,22 @@
 							<div class="bi bi-chevron-down" />
 						{/if}
 					</div>
+				{/each} -->
+
+				{#each currentQueryFromRootTypes.fields as type, index (index)}
+					<Type
+						{index}
+						{type}
+						template="columnAddDisplay"
+						stepsOfFields={[]}
+						depth={0}
+						on:colAddRequest={(e) => {
+							console.log(e);
+							tableColsData = [...tableColsData, e.detail];
+							console.log('tableColsData', tableColsData);
+							runQuery();
+						}}
+					/>
 				{/each}
 			</div>
 		</div>

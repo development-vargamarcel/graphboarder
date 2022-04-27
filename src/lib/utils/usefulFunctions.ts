@@ -250,3 +250,29 @@ export const getArguments_withInfo = (QM) => {
     })
     return args
 }
+
+
+export const stepsOfFieldsToColData = (stepsOfFields) => {
+    let colData
+    if (stepsOfFields.length == 1) {
+        colData = stepsOfFields[0][0]
+
+    } else {
+        let stepsOfFields_Len = stepsOfFields.length
+        console.log(stepsOfFields_Len)
+        for (let i = stepsOfFields_Len; i > 0; i--) {
+            if (colData) {
+                if (i > 1) {
+                    colData = [[...stepsOfFields[i - 1], colData]]
+                } else {
+                    colData = [...stepsOfFields[i - 1], colData]
+                }
+            } else {
+                colData = [...stepsOfFields[i - 1]]
+
+            }
+        }
+    }
+
+    return colData
+}

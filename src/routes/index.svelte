@@ -88,7 +88,16 @@
 	<button class="btn" on:click={showMutations}>show mutations</button>
 	{#key whatToShow}
 		{#each whatToShow as type, index (index)}
-			<Type {index} {type} template="columnAddDisplay" />
+			<Type
+				{index}
+				{type}
+				template="columnAddDisplay"
+				stepsOfFields={[]}
+				depth={0}
+				on:colAddRequest={(e) => {
+					console.log(e);
+				}}
+			/>
 		{/each}
 	{/key}
 </section>
