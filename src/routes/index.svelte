@@ -91,7 +91,7 @@
 	<button class="btn" on:click={showQueries}>show queries</button>
 	<button class="btn" on:click={showMutations}>show mutations</button>
 
-	<Types {whatToShow} {whatIsShown} />
+	<Types {whatToShow} {whatIsShown} template="columnAddDisplay" />
 </section>
 
 <style>

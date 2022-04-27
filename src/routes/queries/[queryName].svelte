@@ -21,7 +21,6 @@
 	} from '$lib/utils/usefulFunctions';
 	import { onDestroy, onMount } from 'svelte';
 	import TestUrqlCore from '$lib/components/TestUrqlCore.svelte';
-	import TypeFieldsExplorer from '$lib/components/TypeFieldsExplorer.svelte';
 	import { goto } from '$app/navigation';
 	setClient($urqlClient);
 	let queryName = $page.params.queryName;
@@ -258,10 +257,6 @@
 	>
 		<div slot="addColumnDisplay" class="max-h-52 overflow-y-auto overscroll-y-contain">
 			<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2">
-				{#key tableColsData}
-					<TypeFieldsExplorer fields={currentQueryFromRootTypes.fields} {tableColsData} />
-				{/key}
-
 				{#each currentQueryFromRootTypes.fields as field}
 					{@const isScalar = getRootType_KindsArray(field).includes('SCALAR')}
 					{@const inUse = tableColsData.find((colData) => {
