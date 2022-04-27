@@ -34,9 +34,17 @@
 		console.log('name', name);
 		expandData = getRootType($introspectionResult.rootTypes, name);
 		if (expandData) {
-			stepsOfFields.push([nameToDisplay]);
-			console.log(stepsOfFieldsToColData(stepsOfFields));
-			console.log(stepsOfFields);
+			if (!showExpand) {
+				stepsOfFields.push([nameToDisplay]);
+				console.log(stepsOfFieldsToColData(stepsOfFields));
+				console.log(stepsOfFields);
+			} else {
+				// does the trick if you hide one by one from last one
+				stepsOfFields.splice(-1);
+				console.log(stepsOfFieldsToColData(stepsOfFields));
+				console.log(stepsOfFields);
+			}
+
 			showExpand = !showExpand;
 		}
 		console.log('expandData', expandData);
