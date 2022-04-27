@@ -274,22 +274,24 @@
 						{/if}
 					</div>
 				{/each} -->
-
-				{#each currentQueryFromRootTypes.fields as type, index (index)}
-					<Type
-						{index}
-						{type}
-						template="columnAddDisplay"
-						stepsOfFields={[]}
-						depth={0}
-						on:colAddRequest={(e) => {
-							console.log(e);
-							tableColsData = [...tableColsData, e.detail];
-							console.log('tableColsData', tableColsData);
-							runQuery();
-						}}
-					/>
-				{/each}
+				{#key currentQueryFromRootTypes.fields}
+					{#each currentQueryFromRootTypes.fields as type, index (index)}
+						<Type
+							{index}
+							{type}
+							template="columnAddDisplay"
+							stepsOfFields={[]}
+							depth={0}
+							on:colAddRequest={(e) => {
+								console.log(e);
+								tableColsData = [...tableColsData, e.detail];
+								console.log('tableColsData', tableColsData);
+								runQuery();
+								currentQueryFromRootTypes.fields = currentQueryFromRootTypes.fields; // this and key is used to re-render Type
+							}}
+						/>
+					{/each}
+				{/key}
 			</div>
 		</div>
 
