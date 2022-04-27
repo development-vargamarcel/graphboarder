@@ -101,7 +101,13 @@
 		</div>
 
 		{#if canExpand}
-			<div class="bi bi-chevron-down" on:click={expand} />
+			<div class="w-10  " on:click={expand}>
+				{#if showExpand}
+					<div class="bi bi-chevron-down mx-auto w-min" />
+				{:else}
+					<div class="bi bi-chevron-right mx-auto   w-min" />
+				{/if}
+			</div>
 		{/if}
 	</div>
 {/if}
