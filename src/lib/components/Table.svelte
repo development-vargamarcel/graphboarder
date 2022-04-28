@@ -27,24 +27,37 @@
 	};
 
 	const getDataUsing_pathToData = (pathToData, data) => {
+		console.log('-------------------------------------');
+		console.log('pathToData', pathToData);
 		if (pathToData[pathToData.length - 1] == false) {
+			console.log('********************');
 			//or includes false maybe is better....
 			pathToData = [pathToData[0]];
 		}
 
 		pathToData.forEach((el) => {
 			if (typeof el !== 'string' && el?.length > 0) {
-				let elName = el[0][0];
+				console.log('hellllllloooooo=====', el, el[0], data);
+				console.log('data--', data);
 				if (data) {
-					data = data[elName];
-				} else {
-					data = data;
+					if (typeof el[0] !== 'string') {
+						data = data[el[0][0]];
+					} else {
+						data = data.map((datEl) => {
+							return datEl[el[0]];
+						});
+					}
 				}
-				data = data;
+
+				//data = data;
 			} else {
+				console.log('getDataUsing_pathToData_data', data);
 				if (data?.length) {
 					if (data.length > 0) {
+						console.log('0.0***********');
+
 						data = data.map((dataEl) => {
+							console.log('0.0insideMap***********', dataEl);
 							if (dataEl.length) {
 								return dataEl.map((dataEl_El) => {
 									return dataEl_El?.[el];
@@ -54,16 +67,23 @@
 							}
 						});
 					} else {
+						console.log('0.1***********');
+
 						data = data;
 					}
 				} else if (data?.[el] !== undefined) {
+					console.log('1***********', el, data[el]);
 					data = data[el];
 				} else {
+					console.log('2***********');
+
 					data = undefined; //might cause problems
 				}
 			}
 		});
+		console.log('FINAL-getDataUsing_pathToData_data', data);
 
+		console.log('-------------------------------------');
 		return data;
 	};
 	const getData = (row, colData, index) => {
@@ -72,12 +92,14 @@
 			data = row[index];
 		} else {
 			data = getDataUsing_pathToData(pathToData(colData.queryFragment), row);
+			//console.log('getDataUsing_pathToData---------------------', data);
 		}
 		return data;
 	};
 	console.log('columns', columns);
 	console.log('rows', rows);
 	const formatData = (data = '', length, alwaysStringyfy = true) => {
+		//console.log('formatData()_data', data);
 		let string = '';
 		let resultingString = '';
 
