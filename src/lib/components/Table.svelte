@@ -36,19 +36,19 @@
 		}
 
 		pathToData.forEach((el) => {
-			if (typeof el !== 'string' && el?.length > 0) {
+			if (typeof el !== 'string') {
 				console.log('hellllllloooooo=====', el, el[0], data);
-				console.log('data--', data);
-				if (data) {
-					if (typeof el[0] !== 'string') {
-						data = data[el[0][0]];
-					} else {
-						data = data.map((datEl) => {
-							return datEl[el[0]];
-						});
-					}
-				}
 
+				
+				// if (data) {
+				// 	if (typeof el[0] !== 'string') {
+				// 		data = data[el[0][0]];
+				// 	} else {
+				// 		if (!(typeof el !== 'string' && el.length > 1)) {
+				// 			data = data[el[0]];
+				// 		}
+				// 	}
+				// }
 				//data = data;
 			} else {
 				console.log('getDataUsing_pathToData_data', data);
