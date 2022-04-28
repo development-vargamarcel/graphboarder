@@ -11,8 +11,8 @@
 			if (queryFragment.length > 2) {
 				pathStepsArray.push(false);
 			} else {
-				queryFragment.forEach((el) => {
-					if (typeof el == 'string') {
+				queryFragment.forEach((el, index) => {
+					if (typeof el == 'string' || queryFragment.length - 1 == index) {
 						pathStepsArray.push(el);
 					} else {
 						pathStepsArray.push(...pathToData(el));
@@ -27,8 +27,8 @@
 	};
 
 	const getDataUsing_pathToData = (pathToData, data) => {
-		// console.log('-------------------------------------');
-
+		console.log('-------------------------------------');
+		console.log('pathToData', pathToData);
 		if (pathToData[pathToData.length - 1] == false) {
 			console.log('********************');
 			//or includes false maybe is better....
@@ -36,38 +36,42 @@
 		}
 
 		pathToData.forEach((el) => {
-			// console.log('getDataUsing_pathToData_data', data);
-			if (data?.length) {
-				if (data.length > 0) {
-					// console.log('0.0***********');
-
-					data = data.map((dataEl) => {
-						// console.log('0.0insideMap***********', dataEl);
-						if (dataEl.length) {
-							return dataEl.map((dataEl_El) => {
-								return dataEl_El?.[el];
-							});
-						} else {
-							return dataEl[el];
-						}
-					});
-				} else {
-					// console.log('0.1***********');
-
-					data = data;
-				}
-			} else if (data?.[el] !== undefined) {
-				// console.log('1***********');
-				data = data[el];
+			if (typeof el !== 'string' && el?.length > 0) {
+				data = data;
 			} else {
-				// console.log('2***********');
+				console.log('getDataUsing_pathToData_data', data);
+				if (data?.length) {
+					if (data.length > 0) {
+						console.log('0.0***********');
 
-				data = undefined; //might cause problems
+						data = data.map((dataEl) => {
+							console.log('0.0insideMap***********', dataEl);
+							if (dataEl.length) {
+								return dataEl.map((dataEl_El) => {
+									return dataEl_El?.[el];
+								});
+							} else {
+								return dataEl[el];
+							}
+						});
+					} else {
+						console.log('0.1***********');
+
+						data = data;
+					}
+				} else if (data?.[el] !== undefined) {
+					console.log('1***********', el);
+					data = data[el];
+				} else {
+					console.log('2***********');
+
+					data = undefined; //might cause problems
+				}
 			}
 		});
-		// console.log('FINAL-getDataUsing_pathToData_data', data);
+		console.log('FINAL-getDataUsing_pathToData_data', data);
 
-		// console.log('-------------------------------------');
+		console.log('-------------------------------------');
 		return data;
 	};
 	const getData = (row, colData, index) => {

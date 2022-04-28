@@ -137,14 +137,14 @@
 	];
 
 	tableColsData = [
-		//...scalarColsData,
-		{
-			title: 'test',
-			queryFragment: [
-				'businesses_ingredients',
-				[['ing_id', [['user_created', [['role', [['users', ['email']]]]]]]]]
-			]
-		}
+		...scalarColsData
+		// {
+		// 	title: 'test',
+		// 	queryFragment: [
+		// 		'businesses_ingredients',
+		// 		[['ing_id', [['user_created', [['role', [['users', ['email']]]]]]]]]
+		// 	]
+		// }
 	];
 	console.log('tableColsData', tableColsData);
 	let queryFragments;

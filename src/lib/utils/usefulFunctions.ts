@@ -268,8 +268,17 @@ export const stepsOfFieldsToColData = (stepsOfFields) => {
                     colData = [...stepsOfFields[i - 1], colData]
                 }
             } else {
+
+
                 colData = [...stepsOfFields[i - 1]]
 
+
+                // if (typeof stepsOfFields[i - 1] == 'string') {
+                //     colData = [...stepsOfFields[i - 1]]
+                // } else {
+
+                //     colData = [...stepsOfFields[i - 1]]//change
+                // }
             }
 
         }

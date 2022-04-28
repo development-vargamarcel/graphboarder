@@ -86,6 +86,8 @@
 						true
 					);
 					stepsOfFields.push([fragmentDataFlatten[0]], fragmentDataFlatten[1]);
+					//stepsOfFields.push([fragmentDataFlatten[0]], [fragmentDataFlatten[1]]);
+					console.log('stepsOfFields', stepsOfFields);
 				}
 				dispatch('colAddRequest', {
 					title: `col-${Math.floor(Math.random() * 200)}`,
