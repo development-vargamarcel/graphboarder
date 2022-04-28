@@ -27,26 +27,47 @@
 	};
 
 	const getDataUsing_pathToData = (pathToData, data) => {
+		// console.log('-------------------------------------');
+
 		if (pathToData[pathToData.length - 1] == false) {
+			console.log('********************');
 			//or includes false maybe is better....
 			pathToData = [pathToData[0]];
 		}
 
 		pathToData.forEach((el) => {
+			// console.log('getDataUsing_pathToData_data', data);
 			if (data?.length) {
 				if (data.length > 0) {
+					// console.log('0.0***********');
+
 					data = data.map((dataEl) => {
-						return dataEl[el];
+						// console.log('0.0insideMap***********', dataEl);
+						if (dataEl.length) {
+							return dataEl.map((dataEl_El) => {
+								return dataEl_El?.[el];
+							});
+						} else {
+							return dataEl[el];
+						}
 					});
 				} else {
+					// console.log('0.1***********');
+
 					data = data;
 				}
 			} else if (data?.[el] !== undefined) {
+				// console.log('1***********');
 				data = data[el];
 			} else {
+				// console.log('2***********');
+
 				data = undefined; //might cause problems
 			}
 		});
+		// console.log('FINAL-getDataUsing_pathToData_data', data);
+
+		// console.log('-------------------------------------');
 		return data;
 	};
 	const getData = (row, colData, index) => {
@@ -55,12 +76,14 @@
 			data = row[index];
 		} else {
 			data = getDataUsing_pathToData(pathToData(colData.queryFragment), row);
+			//console.log('getDataUsing_pathToData---------------------', data);
 		}
 		return data;
 	};
 	console.log('columns', columns);
 	console.log('rows', rows);
 	const formatData = (data = '', length, alwaysStringyfy = true) => {
+		//console.log('formatData()_data', data);
 		let string = '';
 		let resultingString = '';
 

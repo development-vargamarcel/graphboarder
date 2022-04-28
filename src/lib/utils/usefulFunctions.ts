@@ -259,8 +259,8 @@ export const stepsOfFieldsToColData = (stepsOfFields) => {
 
     } else {
         let stepsOfFields_Len = stepsOfFields.length
-        console.log(stepsOfFields_Len)
         for (let i = stepsOfFields_Len; i > 0; i--) {
+
             if (colData) {
                 if (i > 1) {
                     colData = [[...stepsOfFields[i - 1], colData]]
@@ -271,6 +271,7 @@ export const stepsOfFieldsToColData = (stepsOfFields) => {
                 colData = [...stepsOfFields[i - 1]]
 
             }
+
         }
     }
 
