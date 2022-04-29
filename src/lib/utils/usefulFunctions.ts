@@ -326,7 +326,7 @@ export const getColResultData = (colData, row_resultData) => { //col data is col
                 }
 
             } else { //is undefined
-                if (row_resultData[element] !== undefined) {
+                if (row_resultData?.[element] !== undefined) {
                     colResultData = row_resultData[element]
                 } else {
                     //colResultData = 'unknown do some research'
