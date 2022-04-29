@@ -286,3 +286,18 @@ export const stepsOfFieldsToColData = (stepsOfFields) => {
 
     return colData
 }
+
+export const stepsOfFieldsToQueryFragment = (stepsOfFields) => {
+    let queryFragment
+
+    if (typeof stepsOfFields[stepsOfFields.length - 1][0] == 'string') {
+        queryFragment = `${stepsOfFields.join('{')}${'}'.repeat(stepsOfFields.length - 1)}`
+    } else {
+        //here you must handle the situation where the selected data for column doesn't have direct scalar fields
+    }
+
+
+
+
+    return queryFragment
+}

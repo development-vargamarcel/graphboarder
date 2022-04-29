@@ -14,6 +14,8 @@
 	export let index;
 	export let type;
 	export let stepsOfFields = [];
+	export let stepsOfFieldsNew = [];
+
 	let stepsOfFieldsCurr;
 	export let depth = 0;
 	let names = [];
@@ -36,9 +38,11 @@
 		if (expandData) {
 			if (!showExpand) {
 				stepsOfFields.push([nameToDisplay]);
+				stepsOfFieldsNew.push(nameToDisplay);
 			} else {
 				// does the trick if you hide one by one from last one
 				stepsOfFields.splice(-1);
+				stepsOfFieldsNew.splice(-1);
 			}
 
 			showExpand = !showExpand;
@@ -67,6 +71,7 @@
 		{showExpand}
 		{template}
 		{stepsOfFields}
+		{stepsOfFieldsNew}
 		{name}
 	/>
 
@@ -79,7 +84,15 @@
 		<div class="border-l-2 bg-accent/5">
 			<div class="">
 				{#each expandData.fields as type, index (index)}
-					<svelte:self {index} {type} {template} {stepsOfFields} {depth} on:colAddRequest />
+					<svelte:self
+						{index}
+						{type}
+						{template}
+						{stepsOfFields}
+						{stepsOfFieldsNew}
+						{depth}
+						on:colAddRequest
+					/>
 				{/each}
 			</div>
 		</div>

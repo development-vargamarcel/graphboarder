@@ -39,7 +39,6 @@
 			if (typeof el !== 'string') {
 				console.log('hellllllloooooo=====', el, el[0], data);
 
-				
 				// if (data) {
 				// 	if (typeof el[0] !== 'string') {
 				// 		data = data[el[0][0]];
@@ -96,6 +95,17 @@
 		}
 		return data;
 	};
+	// const getDataNew = (row, colData, index) => {
+	// 	let data;
+	// 	if (row[index]) {
+	// 		data = row[index];
+	// 	} else {
+	// 		data = getDataUsing_pathToData(pathToData(colData.queryFragment), row);
+	// 		//console.log('getDataUsing_pathToData---------------------', data);
+	// 	}
+	// 	return data;
+
+	// };
 	console.log('columns', columns);
 	console.log('rows', rows);
 	const formatData = (data = '', length, alwaysStringyfy = true) => {

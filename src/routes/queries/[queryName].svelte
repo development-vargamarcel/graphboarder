@@ -52,7 +52,7 @@
 	});
 
 	let scalarColsData = currentQuery_fields_SCALAR_names.map((name) => {
-		return { title: name, queryFragment: name };
+		return { title: name, queryFragment: name, queryFragmentNew: name };
 	});
 	let non_scalarColsData = [];
 	let tableColsData = [];
@@ -148,13 +148,22 @@
 	];
 	console.log('tableColsData', tableColsData);
 	let queryFragments;
+	let queryFragmentsNew;
 	let queryBody;
 	let queryData = { fetching: true, error: false, data: false };
 
 	const runQuery = () => {
 		queryFragments = generateQueryFragments(tableColsData);
+		queryFragmentsNew = tableColsData
+			.filter((colData) => {
+				return colData.queryFragmentNew !== undefined;
+			})
+			.map((colData) => {
+				return colData.queryFragmentNew;
+			});
+		console.log('tableColsData queryFragmentsNew', queryFragmentsNew);
 		console.log('queryFragments', queryFragments);
-		queryBody = buildQueryBody(queryName, queryFragments);
+		queryBody = buildQueryBody(queryName, queryFragmentsNew.join('\n'));
 		console.log('queryBody', queryBody);
 
 		$urqlCoreClient
@@ -283,6 +292,7 @@
 							{type}
 							template="columnAddDisplay"
 							stepsOfFields={[]}
+							stepsOfFieldsNew={[]}
 							depth={0}
 							on:colAddRequest={(e) => {
 								console.log(e);

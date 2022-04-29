@@ -1,4 +1,5 @@
 <script>
+	import { stepsOfFieldsToQueryFragment } from './../utils/usefulFunctions.ts';
 	import { introspectionResult } from './../stores/introspectionResult.ts';
 	import {
 		generateFragmentData,
@@ -18,6 +19,7 @@
 	export let showExpand;
 	export let template = 'default';
 	export let stepsOfFields;
+	export let stepsOfFieldsNew;
 </script>
 
 {#if template == 'default'}
@@ -79,6 +81,7 @@
 			on:click={() => {
 				if (kinds.includes('SCALAR')) {
 					stepsOfFields.push([nameToDisplay]);
+					stepsOfFieldsNew.push(nameToDisplay);
 				} else {
 					let fragmentDataFlatten = generateFragmentData(
 						type,
@@ -88,15 +91,22 @@
 					stepsOfFields.push([fragmentDataFlatten[0]], fragmentDataFlatten[1]);
 					//stepsOfFields.push([fragmentDataFlatten[0]], [fragmentDataFlatten[1]]);
 					console.log('stepsOfFields', stepsOfFields);
+					stepsOfFieldsNew.push(fragmentDataFlatten[0]);
+					stepsOfFieldsNew.push(fragmentDataFlatten[1]);
+					//stepsOfFieldsNew.push([fragmentDataFlatten[0]], [fragmentDataFlatten[1]]);
+					console.log('stepsOfFieldsNew', stepsOfFieldsNew);
 				}
 				dispatch('colAddRequest', {
 					title: `col-${Math.floor(Math.random() * 200)}`,
-					queryFragment: stepsOfFieldsToColData(stepsOfFields)
+					queryFragment: stepsOfFieldsToColData(stepsOfFields),
+					stepsOfFieldsNew: stepsOfFieldsNew,
+					queryFragmentNew: stepsOfFieldsToQueryFragment(stepsOfFieldsNew)
 				});
 				// console.log(type);
 				// console.log(name);
 				// console.log(stepsOfFields);
 				stepsOfFields = [];
+				stepsOfFieldsNew = [];
 			}}
 		>
 			{nameToDisplay}
