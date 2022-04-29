@@ -1,4 +1,6 @@
 <script>
+	import { getColResultData } from '$lib/utils/usefulFunctions';
+
 	import { createEventDispatcher } from 'svelte';
 	export let colsData = [];
 	export let columns = [];
@@ -85,7 +87,10 @@
 		console.log('-------------------------------------');
 		return data;
 	};
+
 	const getData = (row, colData, index) => {
+		console.log('aaaa getColResultData', getColResultData(colData, row));
+
 		let data;
 		if (row[index]) {
 			data = row[index];

@@ -301,22 +301,39 @@ export const stepsOfFieldsToQueryFragment = (stepsOfFields) => {
 
     return queryFragment
 }
-export const getColResultData = (colData, rowNr, colNr, resultData) => { //col data is column info like colData.stepsOfFieldsNew,not the result's column data
+
+//colData must become colInfo everywhere,for less ambiguity
+export const getColResultData = (colData, row_resultData) => { //col data is column info like colData.stepsOfFieldsNew,not the result's column data
+    console.log('aaaa', colData, row_resultData)
     let stepsOfFieldsNew = colData.stepsOfFieldsNew
+    let colResultData
+
+
+
+
 
     stepsOfFieldsNew.forEach(element => {
         if (typeof element == 'string') {
 
-            if (resultData?.length) { //is array
-                resultData = resultData.map((el) => {
-                    return
-                })
-            } else {
 
+            if (colResultData?.length) { //is array
+                // colResultData = colResultData.map((subElement) => {
+                //     return subElement[element]
+                // })
+            } else if (colResultData !== undefined) {//is not array but is defined
+                colResultData = colResultData[element]
+
+            } else { //is undefined
+                if (row_resultData[element]) {
+                    colResultData = row_resultData[element]
+                } else {
+                    colResultData = 'unknown do some research'
+                }
             }
 
         }
-    });
 
-    return resultData
+    })
+
+    return colResultData
 }
