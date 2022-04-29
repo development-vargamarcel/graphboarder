@@ -52,7 +52,7 @@
 	});
 
 	let scalarColsData = currentQuery_fields_SCALAR_names.map((name) => {
-		return { title: name, queryFragment: name, queryFragmentNew: name };
+		return { title: name, queryFragment: name, queryFragmentNew: name, stepsOfFieldsNew: [name] };
 	});
 	let non_scalarColsData = [];
 	let tableColsData = [];

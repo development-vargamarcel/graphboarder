@@ -301,3 +301,22 @@ export const stepsOfFieldsToQueryFragment = (stepsOfFields) => {
 
     return queryFragment
 }
+export const getColResultData = (colData, rowNr, colNr, resultData) => { //col data is column info like colData.stepsOfFieldsNew,not the result's column data
+    let stepsOfFieldsNew = colData.stepsOfFieldsNew
+
+    stepsOfFieldsNew.forEach(element => {
+        if (typeof element == 'string') {
+
+            if (resultData?.length) { //is array
+                resultData = resultData.map((el) => {
+                    return
+                })
+            } else {
+
+            }
+
+        }
+    });
+
+    return resultData
+}
