@@ -323,7 +323,9 @@ export const getColResultData = (colData, row_resultData) => { //col data is col
             } else if (colResultData !== undefined) {//is not array but is defined
                 if (colResultData?.[element]) {
                     colResultData = colResultData[element]
-                }
+                } else {//? may cause problems
+                    colResultData = null//? may cause problems
+                }//? may cause problems
 
             } else { //is undefined
                 if (row_resultData?.[element] !== undefined) {
