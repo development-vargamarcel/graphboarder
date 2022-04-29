@@ -95,7 +95,8 @@
 		if (row[index]) {
 			data = row[index];
 		} else {
-			data = getDataUsing_pathToData(pathToData(colData.queryFragment), row);
+			//data = getDataUsing_pathToData(pathToData(colData.queryFragment), row);
+			data = getColResultData(colData, row);
 			//console.log('getDataUsing_pathToData---------------------', data);
 		}
 		return data;

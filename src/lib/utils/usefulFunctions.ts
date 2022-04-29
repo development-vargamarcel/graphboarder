@@ -311,28 +311,30 @@ export const getColResultData = (colData, row_resultData) => { //col data is col
 
 
 
-
+    console.log('qqq start', stepsOfFieldsNew)
     stepsOfFieldsNew.forEach(element => {
         if (typeof element == 'string') {
 
 
             if (colResultData?.length) { //is array
-                // colResultData = colResultData.map((subElement) => {
-                //     return subElement[element]
-                // })
+                colResultData = colResultData.map((subElement) => {
+                    return subElement[element]
+                })
             } else if (colResultData !== undefined) {//is not array but is defined
-                colResultData = colResultData[element]
+                if (colResultData[element]) {
+                    colResultData = colResultData[element]
+                }
 
             } else { //is undefined
-                if (row_resultData[element]) {
+                if (row_resultData[element] !== undefined) {
                     colResultData = row_resultData[element]
                 } else {
-                    colResultData = 'unknown do some research'
+                    //colResultData = 'unknown do some research'
                 }
             }
 
         }
-
+        console.log('qqq----', colResultData)
     })
 
     return colResultData
