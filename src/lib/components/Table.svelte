@@ -89,7 +89,7 @@
 	};
 
 	const getData = (row, colData, index) => {
-		console.log('aaaa getColResultData', getColResultData(colData, row));
+		console.log('aaaa getColResultData');
 
 		let data;
 		if (row[index]) {

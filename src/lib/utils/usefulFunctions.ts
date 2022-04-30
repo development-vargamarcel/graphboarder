@@ -311,18 +311,31 @@ export const getColResultData = (colData, row_resultData) => { //col data is col
 
 
 
-    console.log('qqq start', stepsOfFieldsNew)
+    console.log('qqq start stepsOfFieldsNew', stepsOfFieldsNew)
+
     stepsOfFieldsNew.forEach(element => {
+        console.log('qqq start colResultData', colResultData)
         if (typeof element == 'string') {
+            console.log('test 1 colResultData', colResultData?.length)
+            if (colResultData?.length > 0) { //is array
+                console.log('---------array')
 
-
-            if (colResultData?.length) { //is array
                 colResultData = colResultData.map((subElement) => {
-                    return subElement[element]
+                    if (subElement[element] !== undefined) {
+
+                        return subElement[element]
+                    } else {
+                        return null
+                    }
+                    // return subElement[element]
                 })
+            } else if (colResultData?.length == 0) {
+                //do nothing in this case
             } else if (colResultData !== undefined) {//is not array but is defined
-                if (colResultData?.[element]) {
+                console.log('----------------')
+                if (colResultData?.[element] !== undefined) {
                     colResultData = colResultData[element]
+                    console.log('===================')
                 } else {//? may cause problems
                     colResultData = null//? may cause problems
                 }//? may cause problems
@@ -336,8 +349,9 @@ export const getColResultData = (colData, row_resultData) => { //col data is col
             }
 
         }
-        console.log('qqq----', colResultData)
-    })
 
+        console.log('qqq end colResultData', colResultData)
+    })
+    console.log('end all colResultData', colResultData)
     return colResultData
 }
