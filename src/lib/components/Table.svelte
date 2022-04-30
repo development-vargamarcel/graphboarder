@@ -169,9 +169,14 @@
 										<div
 											class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2"
 										>
-											<div class="w-full cursor-pointer  hover:text-primary p-2 rounded-box flex">
+											<div class="w-full   p-2 rounded-box flex flex-col space-y-2">
 												<div
-													class="w-full pr-2"
+													class="w-full pr-2 hover:text-primary cursor-pointer max-w-xs  md:max-w-sm overflow-x-auto"
+												>
+													{colsData[index].stepsOfFieldsNew.join(' > ')}
+												</div>
+												<div
+													class="w-full pr-2 hover:text-primary cursor-pointer "
 													on:click={() => {
 														dispatch('hideColumn', { column: column, index: index });
 													}}

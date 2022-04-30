@@ -266,25 +266,6 @@
 	>
 		<div slot="addColumnDisplay" class="max-h-52 overflow-y-auto overscroll-y-contain">
 			<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2">
-				<!-- {#each currentQueryFromRootTypes.fields as field}
-					{@const isScalar = getRootType_KindsArray(field).includes('SCALAR')}
-					{@const inUse = tableColsData.find((colData) => {
-						return colData.title == field.name;
-					})}
-					<div class="w-full cursor-pointer  hover:text-primary p-2 rounded-box flex ">
-						<div
-							class="w-full pr-2 {inUse ? 'cursor-no-drop hover:text-base-300 text-base-200' : ''}"
-							on:click={() => {
-								addColumn(field, inUse);
-							}}
-						>
-							{field.name}
-						</div>
-						{#if !isScalar}
-							<div class="bi bi-chevron-down" />
-						{/if}
-					</div>
-				{/each} -->
 				{#key currentQueryFromRootTypes.fields}
 					{#each currentQueryFromRootTypes.fields as type, index (index)}
 						<Type
