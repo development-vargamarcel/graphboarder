@@ -4,7 +4,18 @@
 	import Header from '$lib/header/Header.svelte';
 	import '../app.css';
 	import { introspectionResult } from '$lib/stores/introspectionResult';
-
+	let testEndpoints = [
+		{
+			url: 'https://mdunpmb9.directus.app/graphql',
+			authToken: 'kdjskhfdkjshfdsfkljdshfkjdhsfk7u4y3f3h8rhef347hh4ueihf8934h'
+		},
+		{ url: 'https://api.spacex.land/graphql/', authToken: '' },
+		{ url: 'https://swapi-graphql.netlify.app/.netlify/functions/index', authToken: '' },
+		{ url: 'https://rickandmortyapi.com/graphql', authToken: '' },
+		{ url: 'https://beta.pokeapi.co/graphql/v1beta', authToken: '' },
+		{ url: 'https://dex-server.herokuapp.com/', authToken: '' },
+		{ url: 'https://graphql.anilist.co', authToken: '' }
+	];
 	let gotData = false;
 	let introspectionResultUnsubscribe = introspectionResult.subscribe((data) => {
 		if (data?.rootTypes.length > 0) {
@@ -75,6 +86,11 @@
 	if (!graphqlEndpointURL) {
 		editButtonClick();
 	}
+
+	const handleEndpointClick = (endpoint) => {
+		auth_token = endpoint.authToken;
+		graphqlEndpointURL = endpoint.url;
+	};
 </script>
 
 <header />
@@ -90,9 +106,22 @@
 	{/if}
 	{#if showEdit}
 		<div
-			class="fixed bottom-0 bg-base-200 w-screen h-screen overscroll-none overflow-y-auto p-4 mx-auto"
+			class="fixed bottom-0 bg-base-200 w-screen h-screen overscroll-none overflow-y-auto pb-4 px-4 mx-auto"
 		>
 			<div class="form-control w-full max-w-xs mt-40">
+				<ul class="space-y-2 max-h-40 overflow-y-auto px-1">
+					{#each testEndpoints as endpoint}
+						<li
+							class="cursor-pointer bg-accent/5 p-2 rounded"
+							on:click={() => {
+								handleEndpointClick(endpoint);
+							}}
+						>
+							{endpoint.url}
+						</li>
+					{/each}
+				</ul>
+				<div class="divider">or</div>
 				<label class="label">
 					<span class="label-text">graphqlEndpointURL</span>
 				</label>
@@ -121,6 +150,7 @@
 			</div>
 		</div>
 	{/if}
+
 	<div class="fixed bottom-0 right-0 p-2">
 		<button class="btn btn-sm " on:click={editButtonClick}>{editText}</button>
 	</div>
