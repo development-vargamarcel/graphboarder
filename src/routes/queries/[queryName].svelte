@@ -254,7 +254,7 @@
 			//} else {
 				//rows = [rows];
 			//}
-		if(rows.?length !== undefined) {
+		if(rows.?length == undefined) {
 rows = [rows]
 } 
 		console.log('**** rows', rows);
