@@ -170,15 +170,20 @@
 			.query(queryBody)
 			.toPromise()
 			.then((result) => {
+				let fetching = false;
+				let error = false;
+				let data = false;
+
 				if (result.data) {
-					queryData = { fetching: false, error: false, data: result.data };
-					console.log('queryData', queryData);
-				} else {
-					console.log('---error---', result.error.message);
-					queryData = { fetching: false, error: result.error.message, data: false };
+					data = result.data;
 				}
 
+				if (result.error) {
+					error = result.error.message;
+				}
+				queryData = { fetching, error, data };
 				console.log('result', result); // { data: ... }
+				console.log('queryData', queryData);
 			});
 	};
 
@@ -240,7 +245,11 @@
 
 		if (!rows?.length) {
 			if (typeof rows === 'object') {
-				rows = [Object.values(rows)];
+				if (rows !== undefined && rows !== null) {
+					rows = [Object.values(rows)];
+				} else {
+					rows = [];
+				}
 			} else {
 				rows = [rows];
 			}

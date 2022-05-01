@@ -208,7 +208,7 @@ export const getFields_Grouped = (rootField) => {
     let scalarFields = []
     let non_scalarFields = []
 
-    rootField.fields.forEach(field => {
+    rootField?.fields?.forEach(field => {
         if (getRootType_KindsArray(field).includes('SCALAR')) {
             scalarFields.push(field)
         } else {
