@@ -245,8 +245,8 @@
 		console.log('**** queryData.data[queryName]', rows);
 
 	
-			if (typeof rows === 'object') {
-				if (rows !== undefined && rows !== null) {
+			if (typeof rows === 'object' && !(rows?.length>=0)) {
+				if (rows !== undefined&& rows !== null) {
 					rows = [[rows]];
 				} else {
 					rows = [];
