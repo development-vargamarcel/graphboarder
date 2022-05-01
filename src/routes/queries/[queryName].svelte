@@ -258,7 +258,7 @@
 		console.log('**** rows', rows);
 	}
 </script>
-{json.stringify(rows)} 
+{rows} 
 {#if queryData.fetching}
 	<p>Loading...</p>
 {:else if queryData.error}
