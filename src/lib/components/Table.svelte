@@ -1,11 +1,11 @@
 <script>
-	import { getColResultData } from '$lib/utils/usefulFunctions';
+	import { formatData, getColResultData, getData } from '$lib/utils/usefulFunctions';
 
 	import { createEventDispatcher } from 'svelte';
 	export let colsData = [];
 	export let columns = [];
 	export let rows = [];
-
+	console.log('rows---------------', rows);
 	const pathToData = (queryFragment) => {
 		let pathStepsArray = [];
 
@@ -40,17 +40,6 @@
 		pathToData.forEach((el) => {
 			if (typeof el !== 'string') {
 				console.log('hellllllloooooo=====', el, el[0], data);
-
-				// if (data) {
-				// 	if (typeof el[0] !== 'string') {
-				// 		data = data[el[0][0]];
-				// 	} else {
-				// 		if (!(typeof el !== 'string' && el.length > 1)) {
-				// 			data = data[el[0]];
-				// 		}
-				// 	}
-				// }
-				//data = data;
 			} else {
 				console.log('getDataUsing_pathToData_data', data);
 				if (data?.length) {
@@ -88,53 +77,8 @@
 		return data;
 	};
 
-	const getData = (row, colData, index) => {
-		console.log('aaaa getColResultData');
-
-		let data;
-		if (row[index]) {
-			data = row[index];
-		} else {
-			//data = getDataUsing_pathToData(pathToData(colData.queryFragment), row);
-			data = getColResultData(colData, row);
-			//console.log('getDataUsing_pathToData---------------------', data);
-		}
-		return data;
-	};
-	// const getDataNew = (row, colData, index) => {
-	// 	let data;
-	// 	if (row[index]) {
-	// 		data = row[index];
-	// 	} else {
-	// 		data = getDataUsing_pathToData(pathToData(colData.queryFragment), row);
-	// 		//console.log('getDataUsing_pathToData---------------------', data);
-	// 	}
-	// 	return data;
-
-	// };
 	console.log('columns', columns);
 	console.log('rows', rows);
-	const formatData = (data = '', length, alwaysStringyfy = true) => {
-		//console.log('formatData()_data', data);
-		let string = '';
-		let resultingString = '';
-
-		if (alwaysStringyfy) {
-			string = JSON.stringify(data);
-		} else {
-			typeof data === 'string' ? (string = data) : (string = JSON.stringify(data));
-		}
-
-		if (string.length >= length) {
-			resultingString = `${string.substring(0, length / 2)} ... ${string.substring(
-				string.length - length / 2
-			)}`;
-		} else {
-			resultingString = string;
-		}
-
-		return resultingString;
-	};
 
 	const dispatch = createEventDispatcher();
 </script>

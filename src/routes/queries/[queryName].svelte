@@ -165,14 +165,14 @@
 		console.log('queryFragments', queryFragments);
 		queryBody = buildQueryBody(queryName, queryFragmentsNew.join('\n'));
 		console.log('queryBody', queryBody);
-
+		let fetching = true;
+		let error = false;
+		let data = false;
 		$urqlCoreClient
 			.query(queryBody)
 			.toPromise()
 			.then((result) => {
-				let fetching = false;
-				let error = false;
-				let data = false;
+				fetching = false;
 
 				if (result.data) {
 					data = result.data;
@@ -242,6 +242,7 @@
 	});
 	$: if (queryData.data) {
 		rows = queryData.data[queryName];
+		console.log('**** queryData.data[queryName]', rows);
 
 		if (!rows?.length) {
 			if (typeof rows === 'object') {
@@ -254,6 +255,7 @@
 				rows = [rows];
 			}
 		}
+		console.log('**** rows', rows);
 	}
 </script>
 

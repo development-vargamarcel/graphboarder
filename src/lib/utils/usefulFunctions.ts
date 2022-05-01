@@ -304,7 +304,7 @@ export const stepsOfFieldsToQueryFragment = (stepsOfFields) => {
 
 //colData must become colInfo everywhere,for less ambiguity
 export const getColResultData = (colData, row_resultData) => { //col data is column info like colData.stepsOfFieldsNew,not the result's column data
-    console.log('aaaa', colData, row_resultData)
+    console.log('getColResultData start here', colData, row_resultData)
     let stepsOfFieldsNew = colData.stepsOfFieldsNew
     let colResultData
 
@@ -314,23 +314,29 @@ export const getColResultData = (colData, row_resultData) => { //col data is col
     console.log('qqq start stepsOfFieldsNew', stepsOfFieldsNew)
 
     stepsOfFieldsNew.forEach(element => {
-        console.log('qqq start colResultData', colResultData)
+        console.log('qqq start colResultData element', colResultData, element)
         if (typeof element == 'string') {
-            console.log('test 1 colResultData', colResultData?.length)
             if (colResultData?.length > 0) { //is array
                 console.log('---------array')
-
                 colResultData = colResultData.map((subElement) => {
-                    if (subElement[element] !== undefined) {
-
+                    if (subElement?.[element] !== undefined) {
                         return subElement[element]
-                    } else {
-                        return null
+                    } else if (typeof subElement == 'object' && subElement.length > 0) {
+                        return subElement.map((subSubElement) => {
+                            if (subSubElement[element] !== undefined) {
+
+                                return subSubElement[element]
+                            }
+                        })
+                    }
+                    else {
+                        return []
                     }
                     // return subElement[element]
                 })
             } else if (colResultData?.length == 0) {
                 //do nothing in this case
+                console.log('colResultData?.length == 0')
             } else if (colResultData !== undefined) {//is not array but is defined
                 console.log('----------------')
                 if (colResultData?.[element] !== undefined) {
@@ -343,7 +349,24 @@ export const getColResultData = (colData, row_resultData) => { //col data is col
             } else { //is undefined
                 if (row_resultData?.[element] !== undefined) {
                     colResultData = row_resultData[element]
-                } else {
+                } else if (typeof row_resultData == 'object') {
+                    if (row_resultData?.length > 0) { //is array
+                        console.log('is undefined --> ---------array')
+                        colResultData = row_resultData
+                        // .map((subElement) => {
+                        //     return subElement?.[element]
+                        // })
+                    } else if (colResultData?.length == 0) {
+                        //do nothing in this case
+                        console.log('colResultData?.length == 0')
+                    }
+
+                } else if (typeof row_resultData == 'number') {
+                    colResultData = row_resultData
+                }
+                else {
+                    //console.log('row_resultData', row_resultData)
+                    console.log('+++++')
                     //colResultData = 'unknown do some research'
                 }
             }
@@ -355,3 +378,46 @@ export const getColResultData = (colData, row_resultData) => { //col data is col
     console.log('end all colResultData', colResultData)
     return colResultData
 }
+
+
+
+export const getData = (row, colData, index) => {
+    let dateNow = (new Date())
+    console.log('*******************************************************')
+    console.log('aaaa getColResultData', dateNow);
+    console.log('data = row', row);
+
+    let data;
+    if (row) {
+        if (row[index]) { //Not good,causes problems when two or more fields share fields,because in the results they will have data under the same column
+            data = getColResultData(colData, row[index]);
+        } else {
+            data = getColResultData(colData, row);
+        }
+    } else {
+        data = 'loading...';
+    }
+
+    return data;
+};
+
+export const formatData = (data = '', length, alwaysStringyfy = true) => {
+    let string = '';
+    let resultingString = '';
+
+    if (alwaysStringyfy) {
+        string = JSON.stringify(data);
+    } else {
+        typeof data === 'string' ? (string = data) : (string = JSON.stringify(data));
+    }
+
+    if (string.length >= length) {
+        resultingString = `${string.substring(0, length / 2)} ... ${string.substring(
+            string.length - length / 2
+        )}`;
+    } else {
+        resultingString = string;
+    }
+
+    return resultingString;
+};
