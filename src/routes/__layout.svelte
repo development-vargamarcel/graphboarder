@@ -109,7 +109,7 @@
 			class="fixed bottom-0 bg-base-200 w-screen h-screen overscroll-none overflow-y-auto pb-4 px-4 mx-auto"
 		>
 			<div class="form-control w-full max-w-xs mt-40">
-				<ul class="space-y-2 max-h-40 overflow-y-auto px-1">
+				<ul class="space-y-2 max-h-40 overflow-y-auto px-1 overscroll-contain">
 					{#each testEndpoints as endpoint}
 						<li
 							class="cursor-pointer bg-accent/5 p-2 rounded"

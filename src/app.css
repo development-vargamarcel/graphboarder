@@ -117,17 +117,17 @@ button:focus:not(:focus-visible) {
 @tailwind utilities;
 /* width */
 ::-webkit-scrollbar {
-	@apply sm:w-[6px] sm:h-[6px] bg-base-100/5;
+	@apply sm:w-[6px] sm:h-[6px]  sm:bg-base-100/5 ;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-	@apply bg-base-100/5;
+	@apply sm:bg-base-100/5;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-	@apply bg-primary/75 rounded-full;
+	@apply sm:bg-primary/75  sm:rounded-full;
 }
 
 /* Handle on hover */
