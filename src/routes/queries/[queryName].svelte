@@ -244,17 +244,17 @@
 		rows = queryData.data[queryName];
 		console.log('**** queryData.data[queryName]', rows);
 
-		if (!rows?.length) {
+	
 			if (typeof rows === 'object') {
 				if (rows !== undefined && rows !== null) {
-					rows = [Object.values(rows)];
+					rows = [[rows]];
 				} else {
 					rows = [];
 				}
 			} else {
 				rows = [rows];
 			}
-		}
+		
 		console.log('**** rows', rows);
 	}
 </script>
