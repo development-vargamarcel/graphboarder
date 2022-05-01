@@ -245,15 +245,7 @@
 		console.log('**** queryData.data[queryName]', rows);
 
 	
-			//if (typeof rows === 'object' && !(rows?.length>=2)) {
-				//if (rows !== undefined&& rows !== null) {
-				//	rows = [[rows]];
-			//	} else {
-				//	rows = [];
-			//	}
-			//} else {
-				//rows = [rows];
-			//}
+			
 		if(rows.?length == undefined) {
 rows = [rows]
 } 
