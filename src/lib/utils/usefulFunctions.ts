@@ -389,7 +389,7 @@ export const getData = (row, colData, index) => {
 
     let data;
     if (row) {
-        if (row[index]) { //Not good,causes problems when two or more fields share fields,because in the results they will have data under the same column
+        if (false) {//row[index] //Not good,causes problems when two or more fields share fields,because in the results they will have data under the same column
             data = getColResultData(colData, row[index]);
         } else {
             data = getColResultData(colData, row);
