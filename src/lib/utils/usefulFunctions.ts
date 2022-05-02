@@ -308,7 +308,26 @@ export const getColResultData = (colData, row_resultData) => { //col data is col
     let stepsOfFieldsNew = colData.stepsOfFieldsNew
     let colResultData
 
-
+    const handleArray = (array, element) => {
+        array = array.map((subElement) => {
+            if (subElement?.[element] !== undefined) {
+                return subElement[element]
+            } else if (typeof subElement == 'object' && subElement.length > 0) {
+                return subElement.map((subSubElement) => {
+                    if (subSubElement?.[element] !== undefined) {
+                        return subSubElement[element]
+                    } else {
+                        return handleArray(subSubElement, element)
+                    }
+                })
+            }
+            else {
+                return []
+            }
+            // return subElement[element]
+        })
+        return array
+    }
 
 
     console.log('qqq start stepsOfFieldsNew', stepsOfFieldsNew)
@@ -317,6 +336,7 @@ export const getColResultData = (colData, row_resultData) => { //col data is col
         console.log('qqq start colResultData element', colResultData, element)
         if (typeof element == 'string') {
             if (colResultData?.length > 0) { //is array
+                //console.log('handleArray(colResultData, element)', handleArray(colResultData, element)) <------- test this and improve so you can replace the bellow array implementation with this recursive function for infinite relation coverage
                 console.log('---------array')
                 colResultData = colResultData.map((subElement) => {
                     if (subElement?.[element] !== undefined) {
