@@ -322,10 +322,23 @@ export const getColResultData = (colData, row_resultData) => { //col data is col
                     if (subElement?.[element] !== undefined) {
                         return subElement[element]
                     } else if (typeof subElement == 'object' && subElement.length > 0) {
-                        return subElement.map((subSubElement) => {
-                            if (subSubElement[element] !== undefined) {
+                        console.log('---------array subElement.length > 0', subElement)
 
-                                return subSubElement[element]
+                        return subElement.map((subSubElement) => {
+                            console.log('subSubElement', subSubElement)
+                            console.log('subSubElement?.[element]', subSubElement?.[element])
+                            if (subSubElement?.[element] !== undefined) {
+                                console.log('subSubElement[element]', subSubElement[element])
+                                return subSubElement[element] //supports deep of one to many like so: //edges > node > filmConnection > films > title
+                            } else if (subSubElement?.length > 0) {
+                                return subSubElement.map((subSubSubElement) => {
+                                    if (subSubSubElement?.[element] !== undefined) {
+                                        console.log('subSubSubElement[element]', subSubSubElement[element])
+                                        return subSubSubElement[element] //supports deep of one to many like so: //edges > node > filmConnection > films > characterConnection > characters > name
+                                    } else {
+
+                                    }
+                                })
                             }
                         })
                     }
@@ -389,7 +402,7 @@ export const getData = (row, colData, index) => {
 
     let data;
     if (row) {
-        if (row[index]!== undefined) {//row[index] //Not good,causes problems when two or more fields share fields,because in the results they will have data under the same column
+        if (row[index] !== undefined) {//row[index] //Not good,causes problems when two or more fields share fields,because in the results they will have data under the same column
             data = getColResultData(colData, row[index]);
         } else {
             data = getColResultData(colData, row);
