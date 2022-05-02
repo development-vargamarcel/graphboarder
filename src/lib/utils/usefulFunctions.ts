@@ -309,17 +309,16 @@ export const getColResultData = (colData, row_resultData) => { //col data is col
     let colResultData
 
     const handleArray = (array, element) => {
+        console.log('handleArray array, element ', array, element)
         array = array.map((subElement) => {
+            console.log('subElement?.[element]', subElement?.[element])
             if (subElement?.[element] !== undefined) {
+                console.log('subElement?.[element] !== undefined')
                 return subElement[element]
             } else if (typeof subElement == 'object' && subElement.length > 0) {
-                return subElement.map((subSubElement) => {
-                    if (subSubElement?.[element] !== undefined) {
-                        return subSubElement[element]
-                    } else {
-                        return handleArray(subSubElement, element)
-                    }
-                })
+                console.log('typeof subElement == object && subElement.length > 0')
+
+                return handleArray(subElement, element)
             }
             else {
                 return []
@@ -336,21 +335,23 @@ export const getColResultData = (colData, row_resultData) => { //col data is col
         console.log('qqq start colResultData element', colResultData, element)
         if (typeof element == 'string') {
             if (colResultData?.length > 0) { //is array
-                //console.log('handleArray(colResultData, element)', handleArray(colResultData, element)) <------- test this and improve so you can replace the bellow array implementation with this recursive function for infinite relation coverage
                 console.log('---------array')
+                // let handleArrayResult = handleArray(colResultData, element)
+                // console.log('handleArrayResult', handleArrayResult)
+                // return handleArrayResult
+
                 colResultData = colResultData.map((subElement) => {
                     if (subElement?.[element] !== undefined) {
                         return subElement[element]
                     } else if (typeof subElement == 'object' && subElement.length > 0) {
                         console.log('---------array subElement.length > 0', subElement)
-
                         return subElement.map((subSubElement) => {
                             console.log('subSubElement', subSubElement)
                             console.log('subSubElement?.[element]', subSubElement?.[element])
                             if (subSubElement?.[element] !== undefined) {
                                 console.log('subSubElement[element]', subSubElement[element])
                                 return subSubElement[element] //supports deep of one to many like so: //edges > node > filmConnection > films > title
-                            } else if (subSubElement?.length > 0) {
+                            } else if (typeof subElement == 'object' && subSubElement?.length > 0) {
                                 return subSubElement.map((subSubSubElement) => {
                                     if (subSubSubElement?.[element] !== undefined) {
                                         console.log('subSubSubElement[element]', subSubSubElement[element])
@@ -367,6 +368,7 @@ export const getColResultData = (colData, row_resultData) => { //col data is col
                     }
                     // return subElement[element]
                 })
+
             } else if (colResultData?.length == 0) {
                 //do nothing in this case
                 console.log('colResultData?.length == 0')
