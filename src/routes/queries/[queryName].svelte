@@ -216,7 +216,7 @@
 	let column_stepsOfFieldsNew = '';
 	const addColumnFromInput = (e) => {
 		if (e.key == 'Enter') {
-			let stepsOfFieldsNew = column_stepsOfFieldsNew.replace(/\s/g, '').split('>');
+			let stepsOfFieldsNew = column_stepsOfFieldsNew.replace(/\s/g, '').split('.');
 
 			let tableColData = {
 				title: `col-${Math.floor(Math.random() * 200)}`,
@@ -256,7 +256,7 @@
 					<input
 						type="text"
 						class="input input-sm input-bordered input-accent m-2"
-						placeholder="ex:producer>films>title"
+						placeholder="ex:producer.films.title"
 						bind:value={column_stepsOfFieldsNew}
 						on:keypress={addColumnFromInput}
 					/>
