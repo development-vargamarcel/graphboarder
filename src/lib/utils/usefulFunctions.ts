@@ -317,7 +317,6 @@ export const getColResultData = (colData, row_resultData) => { //col data is col
                 return subElement[element]
             } else if (typeof subElement == 'object' && subElement.length > 0) {
                 console.log('typeof subElement == object && subElement.length > 0')
-
                 return handleArray(subElement, element)
             }
             else {
@@ -336,38 +335,38 @@ export const getColResultData = (colData, row_resultData) => { //col data is col
         if (typeof element == 'string') {
             if (colResultData?.length > 0) { //is array
                 console.log('---------array')
-                // let handleArrayResult = handleArray(colResultData, element)
-                // console.log('handleArrayResult', handleArrayResult)
-                // return handleArrayResult
+                let handleArrayResult = handleArray(colResultData, element)
+                console.log('handleArrayResult', handleArrayResult, JSON.stringify(handleArrayResult))
+                colResultData = handleArrayResult
 
-                colResultData = colResultData.map((subElement) => {
-                    if (subElement?.[element] !== undefined) {
-                        return subElement[element]
-                    } else if (typeof subElement == 'object' && subElement.length > 0) {
-                        console.log('---------array subElement.length > 0', subElement)
-                        return subElement.map((subSubElement) => {
-                            console.log('subSubElement', subSubElement)
-                            console.log('subSubElement?.[element]', subSubElement?.[element])
-                            if (subSubElement?.[element] !== undefined) {
-                                console.log('subSubElement[element]', subSubElement[element])
-                                return subSubElement[element] //supports deep of one to many like so: //edges > node > filmConnection > films > title
-                            } else if (typeof subElement == 'object' && subSubElement?.length > 0) {
-                                return subSubElement.map((subSubSubElement) => {
-                                    if (subSubSubElement?.[element] !== undefined) {
-                                        console.log('subSubSubElement[element]', subSubSubElement[element])
-                                        return subSubSubElement[element] //supports deep of one to many like so: //edges > node > filmConnection > films > characterConnection > characters > name
-                                    } else {
+                // colResultData = colResultData.map((subElement) => {
+                //     if (subElement?.[element] !== undefined) {
+                //         return subElement[element]
+                //     } else if (typeof subElement == 'object' && subElement.length > 0) {
+                //         console.log('---------array subElement.length > 0', subElement)
+                //         return subElement.map((subSubElement) => {
+                //             console.log('subSubElement', subSubElement)
+                //             console.log('subSubElement?.[element]', subSubElement?.[element])
+                //             if (subSubElement?.[element] !== undefined) {
+                //                 console.log('subSubElement[element]', subSubElement[element])
+                //                 return subSubElement[element] //supports deep of one to many like so: //edges > node > filmConnection > films > title
+                //             } else if (typeof subElement == 'object' && subSubElement?.length > 0) {
+                //                 return subSubElement.map((subSubSubElement) => {
+                //                     if (subSubSubElement?.[element] !== undefined) {
+                //                         console.log('subSubSubElement[element]', subSubSubElement[element])
+                //                         return subSubSubElement[element] //supports deep of one to many like so: //edges > node > filmConnection > films > characterConnection > characters > name
+                //                     } else {
 
-                                    }
-                                })
-                            }
-                        })
-                    }
-                    else {
-                        return []
-                    }
-                    // return subElement[element]
-                })
+                //                     }
+                //                 })
+                //             }
+                //         })
+                //     }
+                //     else {
+                //         return []
+                //     }
+                //     // return subElement[element]
+                // })
 
             } else if (colResultData?.length == 0) {
                 //do nothing in this case
