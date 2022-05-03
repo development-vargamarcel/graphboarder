@@ -244,13 +244,17 @@
 		rows = queryData.data[queryName];
 		console.log('**** queryData.data[queryName]', rows);
 
-	
-			
-		if(rows?.length == undefined) {
-rows = [rows]
-} 
+		if (rows?.length == undefined) {
+			rows = [rows];
+		}
 		console.log('**** rows', rows);
 	}
+
+	let column_stepsOfFieldsNew = '';
+	const addColumnFromInput = (e) => {
+		column_stepsOfFieldsNew = e.key;
+		console.log(e);
+	};
 </script>
 
 {#if queryData.fetching}
@@ -272,6 +276,13 @@ rows = [rows]
 		<div slot="addColumnDisplay" class="max-h-52 overflow-y-auto overscroll-y-contain">
 			<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2">
 				{#key currentQueryFromRootTypes.fields}
+					<input
+						type="text"
+						class="input input-sm input-bordered input-accent m-2"
+						placeholder="steps: step1>step2"
+						bind:value={column_stepsOfFieldsNew}
+						on:keypress={addColumnFromInput}
+					/>
 					{#each currentQueryFromRootTypes.fields as type, index (index)}
 						<Type
 							{index}
