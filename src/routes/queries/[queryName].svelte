@@ -17,7 +17,8 @@
 		getRootType_KindsArray,
 		buildQueryBody,
 		generateQueryFragments,
-		generateFragmentData
+		generateFragmentData,
+		stepsOfFieldsToQueryFragment
 	} from '$lib/utils/usefulFunctions';
 	import { onDestroy, onMount } from 'svelte';
 	import TestUrqlCore from '$lib/components/TestUrqlCore.svelte';
@@ -147,13 +148,13 @@
 		// }
 	];
 	console.log('tableColsData', tableColsData);
-	let queryFragments;
+	//let queryFragments;
 	let queryFragmentsNew;
 	let queryBody;
 	let queryData = { fetching: true, error: false, data: false };
 
 	const runQuery = () => {
-		queryFragments = generateQueryFragments(tableColsData);
+		//queryFragments = generateQueryFragments(tableColsData);
 		queryFragmentsNew = tableColsData
 			.filter((colData) => {
 				return colData.queryFragmentNew !== undefined;
@@ -162,7 +163,7 @@
 				return colData.queryFragmentNew;
 			});
 		console.log('tableColsData queryFragmentsNew', queryFragmentsNew);
-		console.log('queryFragments', queryFragments);
+		//console.log('queryFragments', queryFragments);
 		queryBody = buildQueryBody(queryName, queryFragmentsNew.join('\n'));
 		console.log('queryBody', queryBody);
 		let fetching = true;
@@ -189,44 +190,6 @@
 
 	runQuery();
 
-	const addColumn = (field, inUse) => {
-		let runTheQuery = true;
-		let fieldName = field.name;
-		let isScalar = getRootType_KindsArray(field).includes('SCALAR');
-		if (!inUse) {
-			if (isScalar) {
-				tableColsData = [...tableColsData, { title: fieldName, queryFragment: fieldName }];
-			} else {
-				let fragmentDataFlattenDeep = generateFragmentData(field, $introspectionResult.rootTypes);
-
-				fragmentDataFlattenDeep[1] = fragmentDataFlattenDeep[1].map((field) => {
-					return generateFragmentData(field, $introspectionResult.rootTypes, true);
-				});
-
-				console.log('fragmentDataFlattenDeep', fragmentDataFlattenDeep);
-				let fragmentDataFlatten = generateFragmentData(field, $introspectionResult.rootTypes, true);
-				console.log('fragmentDataFlatten', fragmentDataFlatten);
-				if (fragmentDataFlatten) {
-					tableColsData = [
-						...tableColsData,
-						{
-							title: fieldName,
-							queryFragment: fragmentDataFlattenDeep
-						}
-					];
-				} else {
-					runTheQuery = false;
-					console.error(
-						'cannot add this column because it doesn t have scalar fields or is not set to go deeper till it finds scalars'
-					);
-				}
-			}
-			if (runTheQuery) {
-				runQuery();
-				console.log('tableColsData', tableColsData);
-			}
-		}
-	};
 	const hideColumn = (e) => {
 		tableColsData = tableColsData.filter((colData) => {
 			return colData.title !== e.detail.column;
@@ -252,7 +215,21 @@
 
 	let column_stepsOfFieldsNew = '';
 	const addColumnFromInput = (e) => {
-		column_stepsOfFieldsNew = e.key;
+		if (e.key == 'Enter') {
+			let stepsOfFieldsNew = column_stepsOfFieldsNew.replace(/\s/g, '').split('>');
+
+			let tableColData = {
+				title: `col-${Math.floor(Math.random() * 200)}`,
+				//queryFragment: stepsOfFieldsToColData(stepsOfFields),
+				stepsOfFieldsNew: stepsOfFieldsNew,
+				queryFragmentNew: stepsOfFieldsToQueryFragment(stepsOfFieldsNew)
+			};
+			tableColsData = [...tableColsData, tableColData];
+			console.log('tableColsData', tableColsData);
+			runQuery();
+			console.log('abababababa', tableColData);
+			column_stepsOfFieldsNew = '';
+		}
 		console.log(e);
 	};
 </script>
@@ -279,7 +256,7 @@
 					<input
 						type="text"
 						class="input input-sm input-bordered input-accent m-2"
-						placeholder="steps: step1>step2"
+						placeholder="ex:producer>films>title"
 						bind:value={column_stepsOfFieldsNew}
 						on:keypress={addColumnFromInput}
 					/>
