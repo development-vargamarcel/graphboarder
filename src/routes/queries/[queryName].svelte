@@ -233,7 +233,6 @@
 			console.log('abababababa', tableColData);
 			column_stepsOfFieldsNew = '';
 		}
-		console.log(e);
 	};
 </script>
 
