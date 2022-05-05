@@ -220,7 +220,6 @@
 				.replace(/\s/g, '')
 				.replace(/\./g, '>')
 				.split('>');
-
 			let tableColData = {
 				title: `col-${Math.floor(Math.random() * 200)}`,
 				//queryFragment: stepsOfFieldsToColData(stepsOfFields),

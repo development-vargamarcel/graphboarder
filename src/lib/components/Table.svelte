@@ -2,6 +2,7 @@
 	import { formatData, getColResultData, getData } from '$lib/utils/usefulFunctions';
 
 	import { createEventDispatcher } from 'svelte';
+	import ColumnInfo from './ColumnInfo.svelte';
 	export let colsData = [];
 	export let columns = [];
 	export let rows = [];
@@ -117,7 +118,8 @@
 												<div
 													class="w-full pr-2 hover:text-primary cursor-pointer max-w-xs  md:max-w-sm overflow-x-auto"
 												>
-													{colsData[index].stepsOfFieldsNew.join(' > ')}
+													<ColumnInfo stepsOfFieldsNew={colsData[index].stepsOfFieldsNew} />
+													<!-- {colsData[index].stepsOfFieldsNew.join(' > ')} -->
 												</div>
 												<div
 													class="w-full pr-2 hover:text-primary cursor-pointer "
