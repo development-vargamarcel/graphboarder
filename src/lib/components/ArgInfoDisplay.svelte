@@ -63,10 +63,18 @@
 		<div class="w-1/8 text-center text-xs" />
 	</div>
 {:else if template == 'changeArguments'}
-	<div class="w-full cursor-pointer  hover:text-primary px-2 rounded-box flex text-base">
-		<div class="w-full pr-2">{nameToDisplay}</div>
+	<div
+		class=" cursor-pointer  hover:text-primary px-2 rounded-box flex text-base min-w-max  w-full "
+	>
+		<div class=" pr-2  w-full min-w-max">{nameToDisplay}</div>
 		{#if canExpand}
-			<div class="bi bi-chevron-down" on:click={expand} />
+			<div class="w-10  " on:click={expand}>
+				{#if showExpand}
+					<div class="bi bi-chevron-down mx-auto w-min" />
+				{:else}
+					<div class="bi bi-chevron-right mx-auto   w-min" />
+				{/if}
+			</div>
 		{/if}
 	</div>
 {/if}
