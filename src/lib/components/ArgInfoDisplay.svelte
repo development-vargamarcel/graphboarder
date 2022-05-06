@@ -124,7 +124,7 @@
 				
 				{:else}
 					<input
-						type={names[names.length - 1] == 'String' ? 'text' : 'number'}
+						type={names[names.length - 1] == 'String' ? 'text' : names[names.length - 1] == 'Date' ? 'date' : 'number'}
 						class="input input-sm input-primary  w-full"
 					/>
 				{/if}
