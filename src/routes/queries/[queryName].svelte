@@ -24,6 +24,7 @@
 	import TestUrqlCore from '$lib/components/TestUrqlCore.svelte';
 	import { goto } from '$app/navigation';
 	import Type from '$lib/components/Type.svelte';
+	import Arg from '$lib/components/Arg.svelte';
 	setClient($urqlClient);
 	let queryName = $page.params.queryName;
 	onDestroy(() => {
@@ -43,7 +44,7 @@
 
 	let { scalarFields, non_scalarFields } = getFields_Grouped(currentQueryFromRootTypes);
 	let arguments_withInfo = getArguments_withInfo(currentQueryInfo);
-
+	console.log('currentQueryInfo ====', currentQueryInfo);
 	let currentQuery_fields_SCALAR_names = scalarFields.map((field) => {
 		return field.name;
 	});
@@ -251,7 +252,10 @@
 			hideColumn(e);
 		}}
 	>
-		<div slot="addColumnDisplay" class="max-h-52 overflow-y-auto overscroll-y-contain">
+		<div
+			slot="addColumnDisplay"
+			class="max-h-52 overflow-auto overscroll-contain max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
+		>
 			<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2">
 				{#key currentQueryFromRootTypes.fields}
 					<input
@@ -282,15 +286,13 @@
 			</div>
 		</div>
 
-		<div slot="changeArguments">
-			<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2">
-				{#each arguments_withInfo as arg}
-					<div class="w-full cursor-pointer  hover:text-primary p-2 rounded-box flex">
-						<div class="w-full pr-2">{arg.arg.name}</div>
-						{#if !arg.kindsArray.includes('SCALAR')}
-							<div class="bi bi-chevron-down" />
-						{/if}
-					</div>
+		<div
+			slot="changeArguments"
+			class="max-h-52 overflow-auto overscroll-contain max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
+		>
+			<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full ">
+				{#each currentQueryInfo?.args as arg, index}
+					<Arg {index} type={arg} template="changeArguments" />
 				{/each}
 			</div>
 			<div class="flex justify-end pr-2 pt-2">

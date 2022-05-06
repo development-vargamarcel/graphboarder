@@ -63,5 +63,10 @@
 		<div class="w-1/8 text-center text-xs" />
 	</div>
 {:else if template == 'changeArguments'}
-	ss
+	<div class="w-full cursor-pointer  hover:text-primary px-2 rounded-box flex text-base">
+		<div class="w-full pr-2">{nameToDisplay}</div>
+		{#if canExpand}
+			<div class="bi bi-chevron-down" on:click={expand} />
+		{/if}
+	</div>
 {/if}
