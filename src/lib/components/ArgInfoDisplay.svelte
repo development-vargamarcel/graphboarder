@@ -116,16 +116,12 @@
 		<!-- {names[names.length - 1]} -->
 		<div class="w-min-max pr-3">
 			{#if names[names.length - 1] == 'String' || names[names.length - 1] == 'Int' || names[names.length - 1] == 'Float'}
-				{#if parentKinds.includes('LIST')}
+				{#if parentKinds.includes('LIST') || kinds.includes('LIST') }
 					<textarea
 						type={names[names.length - 1] == 'String' ? 'text' : 'number'}
 						class="textarea textarea-sm textarea-primary  w-full"
 					/>
-				{:else if parentKinds.length == 0 && kinds.includes('LIST')}
-					<textarea
-						type={names[names.length - 1] == 'String' ? 'text' : 'number'}
-						class="textarea textarea-sm textarea-primary  w-full"
-					/>
+				
 				{:else}
 					<input
 						type={names[names.length - 1] == 'String' ? 'text' : 'number'}
