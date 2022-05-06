@@ -13,6 +13,8 @@
 	let client = createClient({
 		url: graphqlEndpointURL,
 		fetchOptions: () => {
+			console.log('getHeaders()', getHeaders());
+
 			const token = getToken();
 			let authorizationHeader = {};
 			if (token) {
@@ -20,11 +22,20 @@
 			}
 
 			return {
-				headers: { ...authorizationHeader }
+				headers: getHeaders()
 			};
 		},
 		exchanges: [fetchExchange]
 	});
+
+	let getHeaders = () => {
+		console.log('getHeaders run');
+		if (browser) {
+			return JSON.parse(localStorage.getItem('headers'));
+		} else {
+			return {};
+		}
+	};
 
 	let getToken = () => {
 		console.log('get token run');

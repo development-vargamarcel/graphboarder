@@ -304,19 +304,19 @@ export const stepsOfFieldsToQueryFragment = (stepsOfFields) => {
 
 //colData must become colInfo everywhere,for less ambiguity
 export const getColResultData = (colData, row_resultData) => { //col data is column info like colData.stepsOfFieldsNew,not the result's column data
-    console.log('getColResultData start here', colData, row_resultData)
+    // console.log('getColResultData start here', colData, row_resultData)
     let stepsOfFieldsNew = colData.stepsOfFieldsNew
     let colResultData
 
     const handleArray = (array, element) => {
-        console.log('handleArray array, element ', array, element)
+        // console.log('handleArray array, element ', array, element)
         array = array.map((subElement) => {
-            console.log('subElement?.[element]', subElement?.[element])
+            //  console.log('subElement?.[element]', subElement?.[element])
             if (subElement?.[element] !== undefined) {
-                console.log('subElement?.[element] !== undefined')
+                //   console.log('subElement?.[element] !== undefined')
                 return subElement[element]
             } else if (typeof subElement == 'object' && subElement.length > 0) {
-                console.log('typeof subElement == object && subElement.length > 0')
+                //  console.log('typeof subElement == object && subElement.length > 0')
                 return handleArray(subElement, element)
             }
             else {
@@ -328,15 +328,15 @@ export const getColResultData = (colData, row_resultData) => { //col data is col
     }
 
 
-    console.log('qqq start stepsOfFieldsNew', stepsOfFieldsNew)
+    // console.log('qqq start stepsOfFieldsNew', stepsOfFieldsNew)
 
     stepsOfFieldsNew.forEach(element => {
-        console.log('qqq start colResultData element', colResultData, element)
+        //  console.log('qqq start colResultData element', colResultData, element)
         if (typeof element == 'string') {
             if (colResultData?.length > 0) { //is array
-                console.log('---------array')
+                // console.log('---------array')
                 let handleArrayResult = handleArray(colResultData, element)
-                console.log('handleArrayResult', handleArrayResult, JSON.stringify(handleArrayResult))
+                // console.log('handleArrayResult', handleArrayResult, JSON.stringify(handleArrayResult))
                 colResultData = handleArrayResult
 
                 // colResultData = colResultData.map((subElement) => {
@@ -370,12 +370,12 @@ export const getColResultData = (colData, row_resultData) => { //col data is col
 
             } else if (colResultData?.length == 0) {
                 //do nothing in this case
-                console.log('colResultData?.length == 0')
+                // console.log('colResultData?.length == 0')
             } else if (colResultData !== undefined) {//is not array but is defined
-                console.log('----------------')
+                // console.log('----------------')
                 if (colResultData?.[element] !== undefined) {
                     colResultData = colResultData[element]
-                    console.log('===================')
+                    // console.log('===================')
                 } else {//? may cause problems
                     colResultData = null//? may cause problems
                 }//? may cause problems
@@ -385,14 +385,14 @@ export const getColResultData = (colData, row_resultData) => { //col data is col
                     colResultData = row_resultData[element]
                 } else if (typeof row_resultData == 'object') {
                     if (row_resultData?.length > 0) { //is array
-                        console.log('is undefined --> ---------array')
+                        // console.log('is undefined --> ---------array')
                         colResultData = row_resultData
                         // .map((subElement) => {
                         //     return subElement?.[element]
                         // })
                     } else if (colResultData?.length == 0) {
                         //do nothing in this case
-                        console.log('colResultData?.length == 0')
+                        //  console.log('colResultData?.length == 0')
                     }
 
                 } else if (typeof row_resultData == 'number') {
@@ -400,16 +400,16 @@ export const getColResultData = (colData, row_resultData) => { //col data is col
                 }
                 else {
                     //console.log('row_resultData', row_resultData)
-                    console.log('+++++')
+                    // console.log('+++++')
                     //colResultData = 'unknown do some research'
                 }
             }
 
         }
 
-        console.log('qqq end colResultData', colResultData)
+        // console.log('qqq end colResultData', colResultData)
     })
-    console.log('end all colResultData', colResultData)
+    // console.log('end all colResultData', colResultData)
     return colResultData
 }
 
@@ -417,9 +417,9 @@ export const getColResultData = (colData, row_resultData) => { //col data is col
 
 export const getData = (row, colData, index) => {
     let dateNow = (new Date())
-    console.log('*******************************************************')
-    console.log('aaaa getColResultData', dateNow);
-    console.log('data = row', row);
+    // console.log('*******************************************************')
+    // console.log('aaaa getColResultData', dateNow);
+    //console.log('data = row', row);
 
     let data;
     if (row) {

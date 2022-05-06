@@ -7,14 +7,20 @@
 	let testEndpoints = [
 		{
 			url: 'https://mdunpmb9.directus.app/graphql',
-			authToken: 'kdjskhfdkjshfdsfkljdshfkjdhsfk7u4y3f3h8rhef347hh4ueihf8934h'
+			headers: {
+				authorization: 'Bearer kdjskhfdkjshfdsfkljdshfkjdhsfk7u4y3f3h8rhef347hh4ueihf8934h'
+			}
 		},
-		{ url: 'https://api.spacex.land/graphql/', authToken: '' },
+		{ url: 'https://api.spacex.land/graphql/' },
 		{ url: 'https://swapi-graphql.netlify.app/.netlify/functions/index', authToken: '' },
-		{ url: 'https://rickandmortyapi.com/graphql', authToken: '' },
-		{ url: 'https://beta.pokeapi.co/graphql/v1beta', authToken: '' },
-		{ url: 'https://dex-server.herokuapp.com/', authToken: '' },
-		{ url: 'https://graphql.anilist.co', authToken: '' }
+		{ url: 'https://rickandmortyapi.com/graphql' },
+		{ url: 'https://beta.pokeapi.co/graphql/v1beta' },
+		{ url: 'https://dex-server.herokuapp.com/' },
+		{ url: 'https://graphql.anilist.co' },
+		{
+			url: 'https://vgqkcskomrpikolllkix.nhost.run/v1/graphql',
+			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' }
+		}
 	];
 	let gotData = false;
 	let introspectionResultUnsubscribe = introspectionResult.subscribe((data) => {
@@ -30,18 +36,23 @@
 	let showEdit = false;
 	let show_IntrospectionDataGenerator = true;
 	let graphqlEndpointURL = '';
-
-	let auth_token = '';
+	let headersValue = '';
 	let editText = 'edit';
-	if (browser && localStorage.getItem('auth_token')) {
-		auth_token = localStorage.getItem('auth_token');
-	}
-	const store_auth_token = () => {
-		console.log(auth_token);
-		if (auth_token == '') {
-			localStorage.removeItem('auth_token');
+
+	const store_headers = () => {
+		console.log(headersValue);
+		if (headersValue == '' || headersValue == undefined) {
+			localStorage.removeItem('headers');
 		} else {
-			localStorage.setItem('auth_token', auth_token);
+			let headersOneObj = {};
+			let headers = headersValue?.split('\n').forEach((el) => {
+				let currHeader = el.split(':');
+				if (currHeader[0] && currHeader[1]) {
+					headersOneObj[currHeader[0]] = currHeader[1];
+				}
+			});
+
+			localStorage.setItem('headers', JSON.stringify(headersOneObj));
 		}
 	};
 
@@ -59,15 +70,14 @@
 
 	const storeAll = () => {
 		goto('/queries');
-		store_auth_token();
+		store_headers();
 		store_graphqlEndpointURL();
 		editButtonClick();
 	};
 	const deleteAll = () => {
-		auth_token = '';
 		graphqlEndpointURL = '';
 
-		localStorage.removeItem('auth_token');
+		localStorage.removeItem('headers');
 		localStorage.removeItem('graphqlEndpointURL');
 	};
 	const editButtonClick = () => {
@@ -88,8 +98,18 @@
 	}
 
 	const handleEndpointClick = (endpoint) => {
-		auth_token = endpoint.authToken;
-		graphqlEndpointURL = endpoint.url;
+		let headers = endpoint?.headers;
+		if (headers) {
+			let headersKeys = Object.keys(headers);
+			let headersNames = headersKeys.map((key) => {
+				return `${key}:${headers[key]}`;
+			});
+			headersValue = headersNames.join('\n');
+		} else {
+			headersValue = '';
+		}
+
+		graphqlEndpointURL = endpoint?.url;
 	};
 </script>
 
@@ -112,7 +132,7 @@
 				<ul class="space-y-2 max-h-40 overflow-y-auto px-1 overscroll-contain">
 					{#each testEndpoints as endpoint}
 						<li
-							class="cursor-pointer bg-accent/5 p-2 rounded"
+							class="cursor-pointer bg-accent/5 p-2 rounded overflow-x-auto"
 							on:click={() => {
 								handleEndpointClick(endpoint);
 							}}
@@ -131,14 +151,17 @@
 					class="input input-bordered input-sm w-full max-w-xs "
 					bind:value={graphqlEndpointURL}
 				/>
+
 				<label class="label">
-					<span class="label-text">auth_token</span>
+					<span class="label-text">headers</span>
 				</label>
-				<input
-					type="text"
-					placeholder="Type here"
-					class="input input-bordered input-sm w-full max-w-xs "
-					bind:value={auth_token}
+
+				<textarea
+					type="textarea"
+					cols="40"
+					placeholder="header:value"
+					class="textarea textarea-bordered textarea-sm overflow-x-auto w-full max-w-xs "
+					bind:value={headersValue}
 				/>
 
 				<button class="btn bg-primary btn-sm normal-case w-content-min mt-2" on:click={storeAll}
