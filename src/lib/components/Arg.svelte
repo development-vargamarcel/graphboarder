@@ -13,6 +13,10 @@
 	export let index;
 	export let type;
 	export let template;
+	export let parentKinds = [];
+	export let parentNameToDisplay = '';
+	export let parentIdentifier = '';
+	let indetifier = Math.random();
 	let names = [];
 	let kinds = [];
 
@@ -54,6 +58,9 @@
 		{names}
 		{nameToDisplay}
 		{kinds}
+		{parentKinds}
+		{parentNameToDisplay}
+		{parentIdentifier}
 	/>
 
 	{#if showExpand}
@@ -63,7 +70,14 @@
 			<div class="">
 				{#each expandData.inputFields || expandData.enumValues as arg, index}
 					<div>
-						<svelte:self {index} type={arg} {template} />
+						<svelte:self
+							{index}
+							type={arg}
+							{template}
+							parentKinds={kinds}
+							parentNameToDisplay={nameToDisplay}
+							parentIdentifier={indetifier}
+						/>
 					</div>
 				{/each}
 			</div>
