@@ -22,7 +22,8 @@
 	let showExpand = false;
 	let expandData = {};
 	let canExpand = false;
-	if (!kinds.includes('SCALAR')) {
+	if (!kinds.includes('SCALAR') && kinds.length > 0) {
+		console.log('kinds ===========', kinds);
 		canExpand = true;
 	}
 	const expand = () => {
@@ -99,7 +100,7 @@
 
 		<div class="border-l-2 border-secondary bg-accent/5">
 			<div class="">
-				{#each expandData.inputFields as arg, index}
+				{#each expandData.inputFields || expandData.enumValues as arg, index}
 					<div>
 						<svelte:self {index} type={arg} />
 					</div>
