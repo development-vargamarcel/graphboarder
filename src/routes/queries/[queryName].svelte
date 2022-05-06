@@ -254,7 +254,7 @@
 	>
 		<div
 			slot="addColumnDisplay"
-			class="max-h-52 overflow-auto overscroll-contain max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
+			class="max-h-52 sm:max-h-72 md:max-h-90 overflow-auto overscroll-contain max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
 		>
 			<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2">
 				{#key currentQueryFromRootTypes.fields}
@@ -288,7 +288,7 @@
 
 		<div
 			slot="changeArguments"
-			class="max-h-52 overflow-auto overscroll-contain max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
+			class="max-h-52 sm:max-h-72 md:max-h-90 overflow-auto overscroll-contain max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
 		>
 			<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full ">
 				{#each currentQueryInfo?.args as arg, index}
