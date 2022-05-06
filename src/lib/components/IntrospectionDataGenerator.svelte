@@ -13,14 +13,7 @@
 	let client = createClient({
 		url: graphqlEndpointURL,
 		fetchOptions: () => {
-			console.log('getHeaders()', getHeaders());
-
-			const token = getToken();
-			let authorizationHeader = {};
-			if (token) {
-				authorizationHeader = { authorization: token ? `Bearer ${token}` : '' };
-			}
-
+			console.log('getHeaders() run', getHeaders());
 			return {
 				headers: getHeaders()
 			};
@@ -29,20 +22,10 @@
 	});
 
 	let getHeaders = () => {
-		console.log('getHeaders run');
 		if (browser) {
 			return JSON.parse(localStorage.getItem('headers'));
 		} else {
 			return {};
-		}
-	};
-
-	let getToken = () => {
-		console.log('get token run');
-		if (browser) {
-			return localStorage.getItem('auth_token');
-		} else {
-			return null;
 		}
 	};
 

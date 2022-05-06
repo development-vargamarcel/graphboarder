@@ -40,7 +40,6 @@
 	let editText = 'edit';
 
 	const store_headers = () => {
-		console.log(headersValue);
 		if (headersValue == '' || headersValue == undefined) {
 			localStorage.removeItem('headers');
 		} else {
