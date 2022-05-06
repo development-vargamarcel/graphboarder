@@ -115,10 +115,10 @@
 	{#if !canExpand && checkboxChecked}
 		<!-- {names[names.length - 1]} -->
 		<div class="w-min-max pr-3">
-			{#if names[names.length - 1] == 'String' || names[names.length - 1] == 'Int' || names[names.length - 1] == 'Float'}
+			{#if names[names.length - 1] == 'String' || names[names.length - 1] == 'Int' || names[names.length - 1] == 'Float' || names[names.length - 1] == 'ID' || names[names.length - 1] == 'Date' }
 				{#if parentKinds.includes('LIST') || kinds.includes('LIST') }
 					<textarea
-						type={names[names.length - 1] == 'String' ? 'text' : 'number'}
+						type={names[names.length - 1] == 'String' ? 'text' : names[names.length - 1] == 'Date' ? 'date' : 'number' }
 						class="textarea textarea-sm textarea-primary  w-full"
 					/>
 				
@@ -128,6 +128,8 @@
 						class="input input-sm input-primary  w-full"
 					/>
 				{/if}
+
+
 			{/if}
 		</div>
 	{/if}
