@@ -52,7 +52,8 @@
 </script>
 
 {#if template == 'default'}
-	<div class="pt-2 text-center text-xs" />{/if}
+	<div class="pt-2 text-center text-xs" />
+{/if}
 
 <div
 	class="  pb-0 pl-1 pr-0  rounded-r-sm rounded-l-none shadow-none  space-x-2  normal-case text-xs {showExpand
@@ -81,7 +82,7 @@
 			<div class="border-l-2 border-secondary bg-accent/5">
 				<div class="">
 					{#each type?.args as arg, index}
-						<Arg {index} type={arg} />
+						<Arg {index} type={arg} {template} />
 					{/each}
 				</div>
 			</div>
