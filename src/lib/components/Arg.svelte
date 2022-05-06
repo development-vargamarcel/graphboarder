@@ -23,7 +23,6 @@
 	let expandData = {};
 	let canExpand = false;
 	if (!kinds.includes('SCALAR') && kinds.length > 0) {
-		console.log('kinds ===========', kinds);
 		canExpand = true;
 	}
 	const expand = () => {
