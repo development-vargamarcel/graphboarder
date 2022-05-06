@@ -1,4 +1,5 @@
 <script>
+	//!!! ENUM TYPES WILL CREATE SOM PROBLEMS AS OF 5/6/2022
 	import { introspectionResult } from '$lib/stores/introspectionResult';
 	import {
 		getRootType_KindsArray,
@@ -7,7 +8,6 @@
 		getRootType,
 		getRootType_NamesArray
 	} from '$lib/utils/usefulFunctions';
-	import Args from './Args.svelte';
 
 	export let index;
 	export let type;
@@ -96,7 +96,16 @@
 
 	{#if showExpand}
 		<div class="mb-2 text-center text-xs" />
-		<Args args={expandData.inputFields} />
+
+		<div class="border-l-2 border-secondary bg-accent/5">
+			<div class="">
+				{#each expandData.inputFields as arg, index}
+					<div>
+						<svelte:self {index} type={arg} />
+					</div>
+				{/each}
+			</div>
+		</div>
 	{/if}
 </div>
 {#if !showExpand}

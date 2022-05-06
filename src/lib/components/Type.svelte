@@ -8,7 +8,7 @@
 		getRootType_NamesArray,
 		stepsOfFieldsToColData
 	} from '$lib/utils/usefulFunctions';
-	import Args from './Args.svelte';
+	import Arg from './Arg.svelte';
 	import TypeInfoDisplay from './TypeInfoDisplay.svelte';
 	export let template;
 	export let index;
@@ -78,7 +78,13 @@
 	{#if showExpand}
 		<div class="mb-2 text-center text-xs" />
 		{#if type?.args && template == 'default'}
-			<Args args={type?.args} />
+			<div class="border-l-2 border-secondary bg-accent/5">
+				<div class="">
+					{#each type?.args as arg, index}
+						<Arg {index} type={arg} />
+					{/each}
+				</div>
+			</div>
 		{/if}
 
 		<div class="border-l-2 bg-accent/5">
