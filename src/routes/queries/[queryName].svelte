@@ -18,7 +18,8 @@
 		buildQueryBody,
 		generateQueryFragments,
 		generateFragmentData,
-		stepsOfFieldsToQueryFragment
+		stepsOfFieldsToQueryFragment,
+		getDisplay_Name
 	} from '$lib/utils/usefulFunctions';
 	import { onDestroy, onMount } from 'svelte';
 	import TestUrqlCore from '$lib/components/TestUrqlCore.svelte';
@@ -234,6 +235,10 @@
 			column_stepsOfFieldsNew = '';
 		}
 	};
+
+	let identifier = Math.random();
+	let nameToDisplay = getDisplay_Name(getRootType_NamesArray(currentQueryInfo));
+	let kinds = getRootType_KindsArray(currentQueryInfo);
 </script>
 
 {#if queryData.fetching}
@@ -294,7 +299,14 @@
 		>
 			<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case min-w-max w-full ">
 				{#each currentQueryInfo?.args as arg, index}
-					<Arg {index} type={arg} template="changeArguments" />
+					<Arg
+						{index}
+						type={arg}
+						template="changeArguments"
+						parentKinds={[]}
+						parentNameToDisplay={nameToDisplay}
+						parentIdentifier={identifier}
+					/>
 				{/each}
 			</div>
 			<div class="flex justify-end pr-2 pt-2">

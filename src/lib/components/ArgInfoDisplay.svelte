@@ -75,7 +75,7 @@
 	>
 		{#if !canExpand}
 			{#if parentKinds.includes('ENUM')}
-				{#if parentKinds.includes('LIST') || parentKinds.length == 0}
+				{#if parentKinds.includes('LIST')}
 					<input
 						type="checkbox"
 						bind:checked={checkboxChecked}
@@ -113,12 +113,25 @@
 		{/if}
 	</label>
 	{#if !canExpand && checkboxChecked}
+		<!-- {names[names.length - 1]} -->
 		<div class="w-min-max pr-3">
-			{#if names[names.length - 1] == 'String' || names[names.length - 1] == 'Int'}
-				<input
-					type={names[names.length - 1] == 'Int' ? 'number' : 'text'}
-					class="input input-sm input-primary  w-full"
-				/>
+			{#if names[names.length - 1] == 'String' || names[names.length - 1] == 'Int' || names[names.length - 1] == 'Float'}
+				{#if parentKinds.includes('LIST')}
+					<textarea
+						type={names[names.length - 1] == 'String' ? 'text' : 'number'}
+						class="textarea textarea-sm textarea-primary  w-full"
+					/>
+				{:else if parentKinds.length == 0 && kinds.includes('LIST')}
+					<textarea
+						type={names[names.length - 1] == 'String' ? 'text' : 'number'}
+						class="textarea textarea-sm textarea-primary  w-full"
+					/>
+				{:else}
+					<input
+						type={names[names.length - 1] == 'String' ? 'text' : 'number'}
+						class="input input-sm input-primary  w-full"
+					/>
+				{/if}
 			{/if}
 		</div>
 	{/if}
