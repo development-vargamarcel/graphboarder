@@ -23,8 +23,8 @@
 </script>
 
 {#if template == 'default'}
-	<div class="flex space-x-2">
-		<div class="flex space-x-2 w-1/3">
+	<div class="flex space-x-2 min-w-max  w-full">
+		<div class="flex space-x-2 w-1/3 min-w-max  w-full">
 			{#if canExpand}
 				<div class="btn btn-xs  p-1 rounded normal-case" on:click={expand}>
 					{showExpand ? '-' : '+'}

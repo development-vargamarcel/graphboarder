@@ -89,7 +89,7 @@
 		{/if}
 
 		<div class="border-l-2 bg-accent/5">
-			<div class="">
+			<div class="w-min-max w-full">
 				{#each expandData.fields as type, index (index)}
 					<svelte:self
 						{index}
