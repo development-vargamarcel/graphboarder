@@ -128,7 +128,7 @@
 		{#if !_elementToDisplay.isENUM}
 			{#if inUse}
 				<div class="flex">
-					{#if _elementToDisplay.isListElement || _elementToDisplay.hasList}
+					{#if _elementToDisplay.hasList}
 						{#if _elementToDisplay.displayType == 'text' || _elementToDisplay.displayType == 'number' || _elementToDisplay.displayType == 'date'}
 							<textarea
 								type={_elementToDisplay.displayType}
