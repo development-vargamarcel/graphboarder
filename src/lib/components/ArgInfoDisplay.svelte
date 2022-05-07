@@ -1,5 +1,13 @@
 <script>
-	import { elementToDisplay } from '$lib/utils/usefulFunctions';
+	import { introspectionResult } from '$lib/stores/introspectionResult';
+
+	import {
+		elementToDisplay,
+		getRootType,
+		getRootType_KindsArray,
+		getRootType_Name,
+		getRootType_NamesArray
+	} from '$lib/utils/usefulFunctions';
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 	export let canExpand;
@@ -14,7 +22,6 @@
 	export let parentNameToDisplay;
 	export let parentIdentifier;
 	export let template;
-
 	//only for  changeArguments
 	let inUse;
 	const _elementToDisplay = elementToDisplay({
@@ -25,6 +32,29 @@
 		parentIdentifier
 	});
 	console.log('elementToDisplay', _elementToDisplay);
+
+	// testing
+	let RootType_Name = getRootType_Name(names);
+	let RootType = getRootType($introspectionResult.rootTypes, RootType_Name);
+	let rootType_inputFields = RootType?.inputFields;
+	let scalarFields;
+	let allSubFieldsAreScalar;
+	if (rootType_inputFields) {
+		scalarFields = rootType_inputFields.filter((field) => {
+			return getRootType_KindsArray(field).includes('SCALAR');
+		});
+		if (rootType_inputFields?.length == scalarFields?.length) {
+			allSubFieldsAreScalar = true;
+		} else {
+			allSubFieldsAreScalar = false;
+		}
+	}
+
+	console.log('*RootType*', RootType);
+	console.log('*scalarFields*', scalarFields);
+	console.log('*allSubFieldsAreScalar*', allSubFieldsAreScalar);
+
+	/// do the above for enums
 </script>
 
 {#if template == 'default'}
@@ -114,7 +144,7 @@
 		{/if}
 		<div class=" pr-2  w-full min-w-max">{nameToDisplay}</div>
 
-		{#if canExpand}
+		{#if canExpand && !allSubFieldsAreScalar}
 			<div class="w-10  " on:click={expand}>
 				{#if showExpand}
 					<div class="bi bi-chevron-down mx-auto w-min" />
@@ -122,55 +152,15 @@
 					<div class="bi bi-chevron-right mx-auto   w-min" />
 				{/if}
 			</div>
+		{:else}
+			<div
+				class="w-10  "
+				on:click={() => {
+					//add it
+				}}
+			>
+				<div class="bi bi-plus mx-auto   w-min" />
+			</div>
 		{/if}
 	</label>
-	{#if !canExpand}
-		{#if !_elementToDisplay.isENUM}
-			{#if inUse}
-				<div class="flex">
-					{#if _elementToDisplay.hasList}
-						{#if _elementToDisplay.displayType == 'text' || _elementToDisplay.displayType == 'number' || _elementToDisplay.displayType == 'date'}
-							<textarea
-								type={_elementToDisplay.displayType}
-								class="textarea textarea-sm textarea-primary w-11/12 mr-2"
-							/>
-						{:else if _elementToDisplay.displayType == 'geo'}
-							put map here
-						{:else if _elementToDisplay.displayType == 'none'}
-							<!-- else content here -->
-						{:else}
-							something else
-						{/if}
-					{:else if _elementToDisplay.displayType == 'text' || _elementToDisplay.displayType == 'number' || _elementToDisplay.displayType == 'date'}
-						<input
-							type={_elementToDisplay.displayType}
-							class="input input-sm input-primary  w-11/12 mr-2"
-						/>
-					{:else if _elementToDisplay.displayType == 'geo'}
-						put map here
-					{:else if _elementToDisplay.displayType == 'boolean'}
-						<!-- svelte-ignore a11y-label-has-associated-control -->
-						<label class="w-11/12 mr-2">
-							<div class="w-full flex bg-base-100 border-[1px] border-primary rounded-box py-[5px]">
-								<input type="checkbox" class="checkbox checkbox-sm  checkbox-primary  ml-2" />
-								<p class="pl-2 text-base-content">true</p>
-							</div>
-						</label>
-					{:else if _elementToDisplay.displayType == 'none'}
-						<!-- else content here -->
-					{:else}
-						something else
-					{/if}
-					<button
-						class="btn btn-sm btn-primary mr-2"
-						on:click={() => {
-							//add to filter list
-							//set ass no longer in use
-							inUse = !inUse; //migh cause problems // will close for some reason because of this
-						}}>+</button
-					>
-				</div>
-			{/if}
-		{/if}
-	{/if}
 {/if}
