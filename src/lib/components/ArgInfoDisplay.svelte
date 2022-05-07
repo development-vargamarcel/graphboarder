@@ -107,34 +107,6 @@
 	<label
 		class=" cursor-pointer  hover:text-primary px-2 rounded-box flex text-base min-w-max  w-full"
 	>
-		{#if !canExpand}
-			<!-- {#if _elementToDisplay.isListElement}
-				<input
-					type="checkbox"
-					bind:checked={inUse}
-					value={_elementToDisplay.displayName}
-					name={_elementToDisplay.groupIdentifier}
-					class="checkbox checkbox-sm mr-2"
-				/>
-			{:else}
-				<input
-					type="radio"
-					value={_elementToDisplay.displayName}
-					name={_elementToDisplay.groupIdentifier}
-					class="checkbox checkbox-sm mr-2"
-				/>
-			{/if} -->
-			{#if !_elementToDisplay.isListElement}
-				<!-- Choose only one -->
-			{/if}
-			<input
-				type="checkbox"
-				bind:checked={inUse}
-				value={_elementToDisplay.displayName}
-				name={_elementToDisplay.groupIdentifier}
-				class="checkbox checkbox-sm mr-2"
-			/>
-		{/if}
 		<div class=" pr-2  w-full min-w-max">{nameToDisplay}</div>
 
 		{#if canExpand && !allInputFieldsAreScalar && !enumValues}
