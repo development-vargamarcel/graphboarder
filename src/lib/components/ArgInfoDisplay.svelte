@@ -36,25 +36,18 @@
 	// testing
 	let RootType_Name = getRootType_Name(names);
 	let RootType = getRootType($introspectionResult.rootTypes, RootType_Name);
-	let rootType_inputFields = RootType?.inputFields;
-	let scalarFields;
-	let allSubFieldsAreScalar;
-	if (rootType_inputFields) {
-		scalarFields = rootType_inputFields.filter((field) => {
-			return getRootType_KindsArray(field).includes('SCALAR');
-		});
-		if (rootType_inputFields?.length == scalarFields?.length) {
-			allSubFieldsAreScalar = true;
-		} else {
-			allSubFieldsAreScalar = false;
-		}
-	}
+	let inputFields = RootType?.inputFields;
+	let enumValues = RootType?.enumValues;
+	let allInputFieldsAreScalar = inputFields?.every((field) => {
+		return getRootType_KindsArray(field).includes('SCALAR');
+	});
 
 	console.log('*RootType*', RootType);
-	console.log('*scalarFields*', scalarFields);
-	console.log('*allSubFieldsAreScalar*', allSubFieldsAreScalar);
+	console.log('*allInputFieldsAreScalar*', allInputFieldsAreScalar);
 
 	/// do the above for enums
+
+	let enumFields;
 </script>
 
 {#if template == 'default'}
@@ -144,7 +137,7 @@
 		{/if}
 		<div class=" pr-2  w-full min-w-max">{nameToDisplay}</div>
 
-		{#if canExpand && !allSubFieldsAreScalar}
+		{#if canExpand && !allInputFieldsAreScalar && !enumValues}
 			<div class="w-10  " on:click={expand}>
 				{#if showExpand}
 					<div class="bi bi-chevron-down mx-auto w-min" />
@@ -156,6 +149,8 @@
 			<div
 				class="w-10  "
 				on:click={() => {
+					let infoToCast = { inputFields, enumValues, ..._elementToDisplay };
+					console.log('infoToCast', infoToCast);
 					//add it
 				}}
 			>

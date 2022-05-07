@@ -478,12 +478,12 @@ export const elementToDisplay = (rawData) => {
     }
 
     return {
-        isENUM,
-        isListElement: parentKinds.includes('LIST'),
-        hasList: kinds.includes('LIST'),
+        //isENUM,
+        //isListElement: parentKinds.includes('LIST'),
+        expectsList: kinds.includes('LIST'),
         displayType,
         displayName: getDisplay_Name(names),
-        groupIdentifier: `${parentNameToDisplay}${parentIdentifier}`,
+        // groupIdentifier: `${parentNameToDisplay}${parentIdentifier}`,
         rawData
     }
 }
