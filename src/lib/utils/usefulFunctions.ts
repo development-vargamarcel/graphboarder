@@ -461,29 +461,25 @@ export const formatData = (data = '', length, alwaysStringyfy = true) => {
 
 
 export const elementToDisplay = (rawData) => {
-    let { kinds, names, parentKinds, parentNameToDisplay,
-        parentIdentifier
+    let { kinds, names, parentKinds
     } = rawData
     let displayType
-    let isENUM
     let RootType_Name = getRootType_Name(names)
     let _scalarsAndEnumsDisplayTypes = get(scalarsAndEnumsDisplayTypes)
-    let kindOfThis = parentKinds[parentKinds.length - 1]
-    if (kindOfThis == 'ENUM') {
-        isENUM = true
-        displayType = _scalarsAndEnumsDisplayTypes['ENUM']
+    let lastKind = kinds[kinds.length - 1]
+    if (lastKind == 'ENUM') {
+        displayType = 'ENUM'
     } else {
-        isENUM = false
         displayType = _scalarsAndEnumsDisplayTypes[RootType_Name]
     }
 
+
     return {
-        //isENUM,
-        //isListElement: parentKinds.includes('LIST'),
+
+        required: kinds[0] == 'NON_NULL',
         expectsList: kinds.includes('LIST'),
         displayType,
         displayName: getDisplay_Name(names),
-        // groupIdentifier: `${parentNameToDisplay}${parentIdentifier}`,
         rawData
     }
 }

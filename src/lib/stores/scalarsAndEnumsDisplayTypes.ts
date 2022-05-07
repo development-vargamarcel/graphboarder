@@ -8,5 +8,5 @@ export const scalarsAndEnumsDisplayTypes = writable({
     'Float': 'number',
     'GraphQLGeoJSON': 'geo',
     'Date': 'date',
-    "ENUM": 'none'
+    // "ENUM": 'none'
 })
