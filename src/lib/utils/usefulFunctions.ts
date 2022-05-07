@@ -1,5 +1,7 @@
 //QM means QueryOrMutation
 
+import { get } from "svelte/store";
+import { scalarsAndEnumsDisplayTypes } from "$lib/stores/scalarsAndEnumsDisplayTypes";
 export const buildQueryBody = (queryName, queryFragments) => {
     return `
     query MyQuery {
@@ -455,3 +457,33 @@ export const formatData = (data = '', length, alwaysStringyfy = true) => {
 
     return resultingString;
 };
+
+
+
+export const elementToDisplay = (rawData) => {
+    let { kinds, names, parentKinds, parentNameToDisplay,
+        parentIdentifier
+    } = rawData
+    let displayType
+    let isENUM
+    let RootType_Name = getRootType_Name(names)
+    let _scalarsAndEnumsDisplayTypes = get(scalarsAndEnumsDisplayTypes)
+    let kindOfThis = parentKinds[parentKinds.length - 1]
+    if (kindOfThis == 'ENUM') {
+        isENUM = true
+        displayType = _scalarsAndEnumsDisplayTypes['ENUM']
+    } else {
+        isENUM = false
+        displayType = _scalarsAndEnumsDisplayTypes[RootType_Name]
+    }
+
+    return {
+        isENUM,
+        isListElement: parentKinds.includes('LIST'),
+        hasList: kinds.includes('LIST'),
+        displayType,
+        displayName: getDisplay_Name(names),
+        groupIdentifier: `${parentNameToDisplay}${parentIdentifier}`,
+        rawData
+    }
+}

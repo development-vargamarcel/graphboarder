@@ -303,7 +303,7 @@
 						{index}
 						type={arg}
 						template="changeArguments"
-						parentKinds={[]}
+						parentKinds={kinds}
 						parentNameToDisplay={nameToDisplay}
 						parentIdentifier={identifier}
 					/>
