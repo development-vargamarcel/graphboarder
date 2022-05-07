@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
 
 export const scalarsAndEnumsDisplayTypes = writable({
-    "Boolean": "Boolean",
+    "Boolean": "boolean",
     'ID': 'text',
     'String': 'text',
     'Int': 'number',

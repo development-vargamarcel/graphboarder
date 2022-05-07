@@ -14,8 +14,6 @@
 	export let parentNameToDisplay;
 	export let parentIdentifier;
 	export let template;
-	export let choosenMultiple = [];
-	export let choosenSingle = '';
 
 	//only for  changeArguments
 	let inUse;
@@ -27,30 +25,6 @@
 		parentIdentifier
 	});
 	console.log('elementToDisplay', _elementToDisplay);
-	$: console.log('choosenSingleqqq', choosenSingle, _elementToDisplay.displayName, names);
-	$: console.log('choosenMultipleqqq', choosenMultiple, _elementToDisplay.displayName, names);
-	const handleClick_checkbox = () => {
-		dispatch('checkboxClick', { name: _elementToDisplay.displayName });
-	};
-	const handleClick_radio = () => {
-		dispatch('radioClick', { name: _elementToDisplay.displayName });
-	};
-
-	$: if (choosenSingle == _elementToDisplay.displayName) {
-		inUse = true;
-		console.log('[[inUse', inUse);
-	} else {
-		inUse = false;
-		console.log('[[inUse', inUse);
-	}
-
-	$: if (choosenMultiple.includes(_elementToDisplay.displayName)) {
-		inUse = true;
-		console.log('[[inUse', inUse);
-	} else {
-		inUse = false;
-		console.log('[[inUse', inUse);
-	}
 </script>
 
 {#if template == 'default'}
@@ -111,10 +85,9 @@
 		class=" cursor-pointer  hover:text-primary px-2 rounded-box flex text-base min-w-max  w-full"
 	>
 		{#if !canExpand}
-			{#if _elementToDisplay.isListElement}
+			<!-- {#if _elementToDisplay.isListElement}
 				<input
 					type="checkbox"
-					on:click={handleClick_checkbox}
 					bind:checked={inUse}
 					value={_elementToDisplay.displayName}
 					name={_elementToDisplay.groupIdentifier}
@@ -123,13 +96,21 @@
 			{:else}
 				<input
 					type="radio"
-					on:click={handleClick_radio}
-					checked={inUse}
 					value={_elementToDisplay.displayName}
 					name={_elementToDisplay.groupIdentifier}
 					class="checkbox checkbox-sm mr-2"
 				/>
+			{/if} -->
+			{#if !_elementToDisplay.isListElement}
+				<!-- Choose only one -->
 			{/if}
+			<input
+				type="checkbox"
+				bind:checked={inUse}
+				value={_elementToDisplay.displayName}
+				name={_elementToDisplay.groupIdentifier}
+				class="checkbox checkbox-sm mr-2"
+			/>
 		{/if}
 		<div class=" pr-2  w-full min-w-max">{nameToDisplay}</div>
 
@@ -146,31 +127,49 @@
 	{#if !canExpand}
 		{#if !_elementToDisplay.isENUM}
 			{#if inUse}
-				{#if _elementToDisplay.isListElement}
-					{#if _elementToDisplay.displayType == 'text' || _elementToDisplay.displayType == 'number' || _elementToDisplay.displayType == 'date'}
-						<textarea
+				<div class="flex">
+					{#if _elementToDisplay.isListElement || _elementToDisplay.hasList}
+						{#if _elementToDisplay.displayType == 'text' || _elementToDisplay.displayType == 'number' || _elementToDisplay.displayType == 'date'}
+							<textarea
+								type={_elementToDisplay.displayType}
+								class="textarea textarea-sm textarea-primary w-11/12 mr-2"
+							/>
+						{:else if _elementToDisplay.displayType == 'geo'}
+							put map here
+						{:else if _elementToDisplay.displayType == 'none'}
+							<!-- else content here -->
+						{:else}
+							something else
+						{/if}
+					{:else if _elementToDisplay.displayType == 'text' || _elementToDisplay.displayType == 'number' || _elementToDisplay.displayType == 'date'}
+						<input
 							type={_elementToDisplay.displayType}
-							class="textarea textarea-sm textarea-primary w-11/12 mr-4"
+							class="input input-sm input-primary  w-11/12 mr-2"
 						/>
 					{:else if _elementToDisplay.displayType == 'geo'}
 						put map here
+					{:else if _elementToDisplay.displayType == 'boolean'}
+						<!-- svelte-ignore a11y-label-has-associated-control -->
+						<label class="w-11/12 mr-2">
+							<div class="w-full flex bg-base-100 border-[1px] border-primary rounded-box py-[5px]">
+								<input type="checkbox" class="checkbox checkbox-sm  checkbox-primary  ml-2" />
+								<p class="pl-2 text-base-content">true</p>
+							</div>
+						</label>
 					{:else if _elementToDisplay.displayType == 'none'}
 						<!-- else content here -->
 					{:else}
 						something else
 					{/if}
-				{:else if _elementToDisplay.displayType == 'text' || _elementToDisplay.displayType == 'number' || _elementToDisplay.displayType == 'date'}
-					<input
-						type={_elementToDisplay.displayType}
-						class="input input-sm input-primary  w-11/12 mr-4"
-					/>
-				{:else if _elementToDisplay.displayType == 'geo'}
-					put map here
-				{:else if _elementToDisplay.displayType == 'none'}
-					<!-- else content here -->
-				{:else}
-					something else
-				{/if}
+					<button
+						class="btn btn-sm btn-primary mr-2"
+						on:click={() => {
+							//add to filter list
+							//set ass no longer in use
+							inUse = !inUse; //migh cause problems // will close for some reason because of this
+						}}>+</button
+					>
+				</div>
 			{/if}
 		{/if}
 	{/if}

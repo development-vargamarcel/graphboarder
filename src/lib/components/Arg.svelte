@@ -19,10 +19,6 @@
 	let indetifier = Math.random();
 	let names = [];
 	let kinds = [];
-	let choosenMultiple = [];
-	let choosenSingle = '';
-	$: console.log('choosenSingle', choosenSingle);
-	$: console.log('choosenMultiple', choosenMultiple);
 
 	names = getRootType_NamesArray(type);
 	kinds = getRootType_KindsArray(type);
@@ -68,8 +64,6 @@
 			{parentKinds}
 			{parentNameToDisplay}
 			{parentIdentifier}
-			{choosenMultiple}
-			{choosenSingle}
 		/>
 	{/key}
 
@@ -87,19 +81,6 @@
 							parentKinds={kinds}
 							parentNameToDisplay={nameToDisplay}
 							parentIdentifier={indetifier}
-							on:radioClick={(e) => {
-								choosenSingle = e.detail.name;
-								choosenSingle = choosenSingle;
-							}}
-							on:checkboxClick={(e) => {
-								if (choosenMultiple.includes(e.detail.name)) {
-									choosenMultiple.splice(choosenMultiple.indexOf(e.detail.name), 1);
-								} else {
-									choosenMultiple.push(e.detail.name);
-								}
-								choosenMultiple = choosenMultiple;
-								console.log('choosenMultiple', choosenMultiple);
-							}}
 						/>
 					</div>
 				{/each}
