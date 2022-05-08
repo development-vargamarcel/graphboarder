@@ -101,6 +101,7 @@
 							{@const isLast = index == columns.length - 1}
 							<th class="normal-case">
 								<div class="dropdown dropdown-end  ">
+									<!-- svelte-ignore a11y-label-has-associated-control -->
 									<label tabindex="0" class="cursor-pointer ">
 										<div class="flex space-x-2 hover:text-primary rounded-box">
 											<div>{column}</div>
@@ -137,6 +138,7 @@
 						{/each}
 						<th>
 							<div class="dropdown dropdown-end">
+								<!-- svelte-ignore a11y-label-has-associated-control -->
 								<label
 									tabindex="0"
 									class="btn btn-sm bi bi-node-plus-fill text-lg p-1"
@@ -153,6 +155,7 @@
 							</div>
 
 							<div class="dropdown dropdown-end">
+								<!-- svelte-ignore a11y-label-has-associated-control -->
 								<label
 									tabindex="0"
 									class="btn btn-sm bi bi-sliders text-lg p-1"

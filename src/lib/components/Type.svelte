@@ -16,7 +16,6 @@
 	export let stepsOfFields = [];
 	export let stepsOfFieldsNew = [];
 	stepsOfFieldsNew = [...stepsOfFieldsNew]; // so each tree will have it's own stepsOfFieldsNew
-	let stepsOfFieldsCurr;
 	export let depth = 0;
 	let names = [];
 	let kinds = [];

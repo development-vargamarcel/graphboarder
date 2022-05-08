@@ -22,6 +22,8 @@
 	export let parentNameToDisplay;
 	export let parentIdentifier;
 	export let template;
+	export let stepsOfFieldsNew;
+
 	//only for  changeArguments
 	let inUse;
 	const _elementToDisplay = elementToDisplay({
@@ -121,7 +123,9 @@
 			<div
 				class="w-10  "
 				on:click={() => {
-					let infoToCast = { inputFields, enumValues, ..._elementToDisplay };
+					stepsOfFieldsNew.push(nameToDisplay);
+
+					let infoToCast = { inputFields, enumValues, stepsOfFieldsNew, ..._elementToDisplay };
 					console.log('infoToCast', infoToCast);
 					//add it
 

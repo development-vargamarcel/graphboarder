@@ -16,6 +16,8 @@
 	export let parentKinds = [];
 	export let parentNameToDisplay = '';
 	export let parentIdentifier = '';
+	export let stepsOfFieldsNew = [];
+	stepsOfFieldsNew = [...stepsOfFieldsNew]; // so each tree will have it's own stepsOfFieldsNew
 	let indetifier = Math.random();
 	let names = [];
 	let kinds = [];
@@ -35,6 +37,7 @@
 		console.log('name', name);
 		expandData = getRootType($introspectionResult.rootTypes, name);
 		if (expandData) {
+			stepsOfFieldsNew.push(nameToDisplay);
 			showExpand = !showExpand;
 		}
 		console.log('expandData', expandData);
@@ -48,24 +51,23 @@
 		? ''
 		: ''}"
 >
-	{#key choosenMultiple}
-		<ArgInfoDisplay
-			on:radioClick
-			on:checkboxClick
-			{template}
-			{canExpand}
-			{expand}
-			{showExpand}
-			{index}
-			{type}
-			{names}
-			{nameToDisplay}
-			{kinds}
-			{parentKinds}
-			{parentNameToDisplay}
-			{parentIdentifier}
-		/>
-	{/key}
+	<ArgInfoDisplay
+		on:radioClick
+		on:checkboxClick
+		{template}
+		{canExpand}
+		{expand}
+		{showExpand}
+		{index}
+		{type}
+		{names}
+		{nameToDisplay}
+		{kinds}
+		{parentKinds}
+		{parentNameToDisplay}
+		{parentIdentifier}
+		{stepsOfFieldsNew}
+	/>
 
 	{#if showExpand}
 		<div class="mb-2 text-center text-xs" />
@@ -81,6 +83,7 @@
 							parentKinds={kinds}
 							parentNameToDisplay={nameToDisplay}
 							parentIdentifier={indetifier}
+							{stepsOfFieldsNew}
 						/>
 					</div>
 				{/each}
