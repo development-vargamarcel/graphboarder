@@ -126,7 +126,7 @@
 					//add it
 				}}
 			>
-				<button class="bi bi-plus mx-auto   w-min btn btn-xs btn-primary py-1" />
+				<div class="bi bi-plus mx-auto   w-min " />
 			</div>
 		{/if}
 	</label>
