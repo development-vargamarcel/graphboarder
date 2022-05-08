@@ -141,6 +141,7 @@
 					{/each}
 				</ul>
 				<div class="divider">or</div>
+				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<label class="label">
 					<span class="label-text">graphqlEndpointURL</span>
 				</label>
@@ -151,6 +152,7 @@
 					bind:value={graphqlEndpointURL}
 				/>
 
+				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<label class="label">
 					<span class="label-text">headers</span>
 				</label>
