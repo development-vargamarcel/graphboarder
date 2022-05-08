@@ -126,7 +126,7 @@
 					//add it
 				}}
 			>
-				<div class="bi bi-plus mx-auto   w-min" />
+				<div class="bi bi-arrow-right-circle mx-auto   w-min" />
 			</div>
 		{/if}
 	</label>
