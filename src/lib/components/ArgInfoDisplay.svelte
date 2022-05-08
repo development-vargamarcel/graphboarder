@@ -128,6 +128,8 @@
 					//infos about enums:
 					//https://blog.logrocket.com/what-you-need-to-know-about-graphql-enums/
 					//!!!  But the enum value as String is not valid. The field using an enum type requires an enum reference, so passing the enum value isn’t considered valid.
+
+					//other important info https://dgraph.io/docs/graphql/queries/and-or-not/
 				}}
 			>
 				<div class="bi bi-plus mx-auto   w-min " />
