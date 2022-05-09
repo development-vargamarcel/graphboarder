@@ -22,10 +22,10 @@
 		getDisplay_Name
 	} from '$lib/utils/usefulFunctions';
 	import { onDestroy, onMount } from 'svelte';
-	import TestUrqlCore from '$lib/components/TestUrqlCore.svelte';
 	import { goto } from '$app/navigation';
 	import Type from '$lib/components/Type.svelte';
 	import Arg from '$lib/components/Arg.svelte';
+	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	setClient($urqlClient);
 	let queryName = $page.params.queryName;
 	onDestroy(() => {
@@ -50,105 +50,13 @@
 		return field.name;
 	});
 
-	let currentQuery_fields_non_scalar_names = non_scalarFields.map((field) => {
-		return field.name;
-	});
-
 	let scalarColsData = currentQuery_fields_SCALAR_names.map((name) => {
 		return { title: name, queryFragment: name, queryFragmentNew: name, stepsOfFieldsNew: [name] };
 	});
 	let non_scalarColsData = [];
 	let tableColsData = [];
 
-	let queryFragmentFor_businesses_ingredients_PRECISE = [
-		'businesses_ingredients',
-		[['ing_id', [['user_created', [['role', ['name']]]]]]]
-	];
-
-	let queryFragmentFor_businesses_ingredients_ALL = [
-		'businesses_ingredients',
-		[
-			'id',
-			'status',
-			'sort',
-			[
-				'user_created',
-				[
-					'id',
-					'first_name',
-					'last_name',
-					'email',
-					'password',
-					'location',
-					'title',
-					'description',
-					'tags',
-					'language',
-					'theme',
-					'tfa_secret',
-					'status',
-					'token',
-					'last_access',
-					'last_page',
-					'provider',
-					'external_identifier',
-					'auth_data',
-					'email_notifications'
-				]
-			],
-			'date_created',
-			[
-				'date_created_func',
-				['year', 'month', 'week', 'day', 'weekday', 'hour', 'minute', 'second']
-			],
-			[
-				'user_updated',
-				[
-					'id',
-					'first_name',
-					'last_name',
-					'email',
-					'password',
-					'location',
-					'title',
-					'description',
-					'tags',
-					'language',
-					'theme',
-					'tfa_secret',
-					'status',
-					'token',
-					'last_access',
-					'last_page',
-					'provider',
-					'external_identifier',
-					'auth_data',
-					'email_notifications'
-				]
-			],
-			'date_updated',
-			[
-				'date_updated_func',
-				['year', 'month', 'week', 'day', 'weekday', 'hour', 'minute', 'second']
-			],
-			['ing_id', ['id', 'status', 'sort', 'date_created', 'date_updated', 'name']],
-			[
-				'bus_id',
-				['id', 'status', 'sort', 'date_created', 'date_updated', 'name', 'location', 'serving_area']
-			]
-		]
-	];
-
-	tableColsData = [
-		...scalarColsData
-		// {
-		// 	title: 'test',
-		// 	queryFragment: [
-		// 		'businesses_ingredients',
-		// 		[['ing_id', [['user_created', [['role', [['users', ['email']]]]]]]]]
-		// 	]
-		// }
-	];
+	tableColsData = [...scalarColsData];
 	console.log('tableColsData', tableColsData);
 	//let queryFragments;
 	let queryFragmentsNew;
@@ -239,7 +147,16 @@
 	let identifier = Math.random();
 	let nameToDisplay = getDisplay_Name(getRootType_NamesArray(currentQueryInfo));
 	let kinds = getRootType_KindsArray(currentQueryInfo);
+
+	//Active arguments logic
+	let activeArgumentsData = [];
 </script>
+
+{#key activeArgumentsData}
+	{#if activeArgumentsData.length > 0}
+		<ActiveArguments {activeArgumentsData} />
+	{/if}
+{/key}
 
 {#if queryData.fetching}
 	<p>Loading...</p>
@@ -306,6 +223,20 @@
 						parentKinds={kinds}
 						parentNameToDisplay={nameToDisplay}
 						parentIdentifier={identifier}
+						on:argAddRequest={(e) => {
+							let newArgData = e.detail;
+							if (
+								!activeArgumentsData.some((el) => {
+									return el.stepsOfFieldsNewStringified == newArgData.stepsOfFieldsNewStringified;
+								})
+							) {
+								activeArgumentsData.push(e.detail);
+								activeArgumentsData = activeArgumentsData;
+								console.log('activeArgumentsData', activeArgumentsData);
+							} else {
+								console.log('already added');
+							}
+						}}
 					/>
 				{/each}
 			</div>

@@ -8,6 +8,7 @@
 		getRootType_Name,
 		getRootType_NamesArray
 	} from '$lib/utils/usefulFunctions';
+	import { stringify } from 'postcss';
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 	export let canExpand;
@@ -48,8 +49,6 @@
 	console.log('*allInputFieldsAreScalar*', allInputFieldsAreScalar);
 
 	/// do the above for enums
-
-	let enumFields;
 </script>
 
 {#if template == 'default'}
@@ -123,16 +122,25 @@
 			<div
 				class="w-10  "
 				on:click={() => {
-					stepsOfFieldsNew.push(nameToDisplay);
+					if (stepsOfFieldsNew[stepsOfFieldsNew.length - 1] !== nameToDisplay) {
+						stepsOfFieldsNew.push(nameToDisplay); //take care might caus eproblems
+					}
 
-					let infoToCast = { inputFields, enumValues, stepsOfFieldsNew, ..._elementToDisplay };
+					let infoToCast = {
+						inputFields,
+						enumValues,
+						stepsOfFieldsNew,
+						stepsOfFieldsNewStringified: JSON.stringify(stepsOfFieldsNew),
+						..._elementToDisplay
+					};
 					console.log('infoToCast', infoToCast);
 					//add it
+
+					dispatch('argAddRequest', infoToCast);
 
 					//infos about enums:
 					//https://blog.logrocket.com/what-you-need-to-know-about-graphql-enums/
 					//!!!  But the enum value as String is not valid. The field using an enum type requires an enum reference, so passing the enum value isn’t considered valid.
-
 					//other important info https://dgraph.io/docs/graphql/queries/and-or-not/
 				}}
 			>

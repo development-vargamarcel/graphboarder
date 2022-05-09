@@ -67,6 +67,7 @@
 		{parentNameToDisplay}
 		{parentIdentifier}
 		{stepsOfFieldsNew}
+		on:argAddRequest
 	/>
 
 	{#if showExpand}
@@ -84,6 +85,7 @@
 							parentNameToDisplay={nameToDisplay}
 							parentIdentifier={indetifier}
 							{stepsOfFieldsNew}
+							on:argAddRequest
 						/>
 					</div>
 				{/each}
