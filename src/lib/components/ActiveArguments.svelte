@@ -1,9 +1,77 @@
 <script>
+	import { getRootType_KindsArray } from '$lib/utils/usefulFunctions';
+
 	export let activeArgumentsData;
 </script>
 
 <div>
 	{#each activeArgumentsData as activeArgumentData}
-		<p>{activeArgumentData.stepsOfFieldsNew}</p>
+		<!-- svelte-ignore a11y-label-has-associated-control -->
+		<div class="grid grid-cols-3 gap-4">
+			<p>{activeArgumentData.stepsOfFieldsNew}:</p>
+
+			{#if activeArgumentData.displayType == 'ENUM'}
+				<div class="flex flex-col">
+					{#if activeArgumentData.expectsList}
+						{#each activeArgumentData.enumValues as enumValue}
+							<label class="label" name={enumValue.name}>
+								{enumValue.name}
+								<input type="checkbox" class="checkbox input-primary" />
+							</label>
+						{/each}
+					{:else}
+						{#each activeArgumentData.enumValues as enumValue}
+							<label class="label">
+								{enumValue.name}
+								<input
+									type="radio"
+									class="radio input-primary"
+									name={activeArgumentData.stepsOfFieldsNewStringified}
+								/>
+							</label>
+						{/each}
+					{/if}
+				</div>
+			{:else if activeArgumentData.displayType == 'INPUT_OBJECT'}
+				<div class="flex flex-col">
+					<div class="dropdown">
+						<label tabindex="0" class="btn m-1">{activeArgumentData.inputFields[0].name}</label>
+						<div
+							tabindex="0"
+							class="dropdown-content  p-2 shadow bg-base-100 rounded-box max-w-min"
+						>
+							{#each activeArgumentData.inputFields as inputField}
+								<label class="label">
+									<p class="w-20">
+										{inputField.name}
+									</p>
+									<input
+										type="radio"
+										class="radio mr-2 input-primary"
+										name={activeArgumentData.stepsOfFieldsNewStringified}
+									/>
+									{#if getRootType_KindsArray(inputField).includes('LIST')}
+										<textarea class="textarea textarea-primary textarea-xs w-40 mr-2" />
+									{:else}
+										<input
+											type={activeArgumentData.displayType}
+											class="input input-primary input-xs w-40 mr-2"
+										/>
+									{/if}
+								</label>
+							{/each}
+						</div>
+					</div>
+				</div>
+			{:else}
+				<div>
+					{#if activeArgumentData.expectsList}
+						<textarea class="textarea textarea-primary textarea-xs" />
+					{:else}
+						<input type={activeArgumentData.displayType} class="input input-primary input-xs" />
+					{/if}
+				</div>
+			{/if}
+		</div>
 	{/each}
 </div>
