@@ -17,7 +17,7 @@
 							<label tabindex="0" class="btn btn-xs m-1">choose</label>
 							<div
 								tabindex="0"
-								class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+								class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-full"
 							>
 								{#each activeArgumentData.enumValues as enumValue}
 									<label class="label" name={enumValue.name}>
@@ -32,7 +32,7 @@
 							<label tabindex="0" class="btn btn-xs m-1">choose</label>
 							<div
 								tabindex="0"
-								class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+								class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-full"
 							>
 								{#each activeArgumentData.enumValues as enumValue}
 									<label class="label">
@@ -52,10 +52,7 @@
 				<div class="flex flex-col">
 					<div class="dropdown">
 						<label tabindex="0" class="btn btn-xs m-1">choose and fill</label>
-						<div
-							tabindex="0"
-							class="dropdown-content  p-2 shadow bg-base-100 rounded-box max-w-min"
-						>
+						<div tabindex="0" class="dropdown-content  p-2 shadow bg-base-100 rounded-box w-full">
 							{#each activeArgumentData.inputFields as inputField}
 								<label class="label">
 									<p class="w-20">
