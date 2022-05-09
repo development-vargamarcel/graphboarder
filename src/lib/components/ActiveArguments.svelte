@@ -7,13 +7,14 @@
 <div>
 	{#each activeArgumentsData as activeArgumentData}
 		<!-- svelte-ignore a11y-label-has-associated-control -->
-		<div class="grid grid-cols-3 gap-4">
-			<p>{activeArgumentData.stepsOfFieldsNew}:</p>
+		<div class="flex">
+			<p class="w-40 overflow-x-auto">{activeArgumentData.stepsOfFieldsNew}</p>
+			<p>:</p>
 
 			{#if activeArgumentData.displayType == 'ENUM'}
 				<div class="flex flex-col">
 					{#if activeArgumentData.expectsList}
-						<div class="dropdown">
+						<div class="dropdown ">
 							<label tabindex="0" class="btn m-1">choose</label>
 							<div
 								tabindex="0"
