@@ -1,7 +1,8 @@
 <script>
 	import { getRootType_NamesArray } from './../utils/usefulFunctions.ts';
 	import { getRootType_KindsArray } from '$lib/utils/usefulFunctions';
-
+	import { scalarsAndEnumsDisplayTypes } from '$lib/stores/scalarsAndEnumsDisplayTypes';
+	let _scalarsAndEnumsDisplayTypes = $scalarsAndEnumsDisplayTypes;
 	export let activeArgumentsData;
 </script>
 
@@ -66,13 +67,20 @@
 									/>
 									{#if getRootType_KindsArray(inputField).includes('LIST')}
 										<textarea class="textarea textarea-primary textarea-xs w-40 mr-2" />
-									{:else if getRootType_NamesArray(inputField).includes('Boolean')}
+									{:else if _scalarsAndEnumsDisplayTypes[getRootType_NamesArray(inputField)[getRootType_NamesArray(inputField).length - 1]] == 'boolean'}
 										<label class="label  w-40">
 											<div class="flex">
 												<input type="checkbox" class="checkbox input-primary" />
 												<p class="pl-2">true</p>
 											</div>
-										</label>{:else}
+										</label>
+									{:else if _scalarsAndEnumsDisplayTypes[getRootType_NamesArray(inputField)[getRootType_NamesArray(inputField).length - 1]] == 'geo'}
+										<input
+											type={activeArgumentData.displayType}
+											class="input input-primary input-xs w-20 h-20 mr-2 "
+											placeholder="map here"
+										/>
+									{:else}
 										<input
 											type={activeArgumentData.displayType}
 											class="input input-primary input-xs w-40 mr-2"
