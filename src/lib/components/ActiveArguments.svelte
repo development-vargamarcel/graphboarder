@@ -1,4 +1,5 @@
 <script>
+	import { getRootType_NamesArray } from './../utils/usefulFunctions.ts';
 	import { getRootType_KindsArray } from '$lib/utils/usefulFunctions';
 
 	export let activeArgumentsData;
@@ -65,12 +66,17 @@
 									/>
 									{#if getRootType_KindsArray(inputField).includes('LIST')}
 										<textarea class="textarea textarea-primary textarea-xs w-40 mr-2" />
-									{:else}
+									{:else if getRootType_NamesArray(inputField).includes('Boolean')}
+										<label class="label  w-40">
+											<div class="flex">
+												<input type="checkbox" class="checkbox input-primary" />
+												<p class="pl-2">true</p>
+											</div>
+										</label>{:else}
 										<input
 											type={activeArgumentData.displayType}
 											class="input input-primary input-xs w-40 mr-2"
-										/>
-									{/if}
+										/>{/if}
 								</label>
 							{/each}
 						</div>
