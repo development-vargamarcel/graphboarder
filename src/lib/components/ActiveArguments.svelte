@@ -8,7 +8,7 @@
 	{#each activeArgumentsData as activeArgumentData}
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<div class="flex">
-			<p class="w-40 overflow-x-auto">{activeArgumentData.stepsOfFieldsNew}</p>
+			<p class="w-20 overflow-x-auto text-xs">{activeArgumentData.stepsOfFieldsNew}</p>
 			<p>:</p>
 
 			{#if activeArgumentData.displayType == 'ENUM'}
