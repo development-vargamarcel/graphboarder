@@ -2,7 +2,7 @@
 	import { getRootType_NamesArray } from './../utils/usefulFunctions.ts';
 	import { getRootType_KindsArray } from '$lib/utils/usefulFunctions';
 	import { scalarsAndEnumsDisplayTypes } from '$lib/stores/scalarsAndEnumsDisplayTypes';
-	import FilterChoises from './FilterChoises.svelte';
+	import FilterChoises from '$lib/components/FilterChoises.svelte';
 	let _scalarsAndEnumsDisplayTypes = $scalarsAndEnumsDisplayTypes;
 	export let activeArgumentsData;
 </script>
