@@ -26,9 +26,9 @@
 	});
 </script>
 
-<div class="drawer  drawer-mobile ">
+<div class="drawer  drawer-mobile">
 	<input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
-	<div class="drawer-content flex flex-col  w-full">
+	<div class="drawer-content  flex flex-col  w-full ">
 		<!-- Navbar -->
 		<div class="w-full navbar bg-base-300">
 			<div class="flex-none lg:hidden">
@@ -51,7 +51,8 @@
 				<a href="/">go home</a><a href="/queries">go to queries</a>
 			</div>
 		</div>
-		<div class="w-full overflow-auto h-full">
+		<!-- overflow-auto h-full -->
+		<div class="w-full">
 			{#key urlHref}
 				<slot />
 			{/key}
