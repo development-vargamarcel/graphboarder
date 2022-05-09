@@ -2,6 +2,7 @@
 	import { getRootType_NamesArray } from './../utils/usefulFunctions.ts';
 	import { getRootType_KindsArray } from '$lib/utils/usefulFunctions';
 	import { scalarsAndEnumsDisplayTypes } from '$lib/stores/scalarsAndEnumsDisplayTypes';
+	import FilterChoises from './FilterChoises.svelte';
 	let _scalarsAndEnumsDisplayTypes = $scalarsAndEnumsDisplayTypes;
 	export let activeArgumentsData;
 </script>
@@ -21,28 +22,52 @@
 								tabindex="0"
 								class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-full max-h-52 sm:max-h-72 md:max-h-90 overflow-auto overscroll-contain "
 							>
-								{#each activeArgumentData.enumValues as enumValue}
-									<label class="label" name={enumValue.name}>
-										{enumValue.name}
-										<input type="checkbox" class="checkbox input-primary" />
-									</label>
-								{/each}
+								<div>
+									<FilterChoises
+										choises={activeArgumentData.enumValues.map((enumValue) => {
+											return enumValue.name;
+										})}
+										id={activeArgumentData.stepsOfFieldsNew}
+										title={activeArgumentData.stepsOfFieldsNew}
+										type="checkbox"
+									/>
+									<!-- {#each activeArgumentData.enumValues as enumValue}
+										<label class="label" name={enumValue.name}>
+											{enumValue.name}
+											<input type="checkbox" class="checkbox input-primary" />
+										</label>
+									{/each} -->
+								</div>
 							</div>
 						</div>
 					{:else}
 						<div class="dropdown">
 							<label tabindex="0" class="btn btn-xs m-1">choose</label>
-							<div tabindex="0">
-								{#each activeArgumentData.enumValues as enumValue}
-									<label class="label">
-										{enumValue.name}
-										<input
-											type="radio"
-											class="radio input-primary"
-											name={activeArgumentData.stepsOfFieldsNewStringified}
-										/>
-									</label>
-								{/each}
+							<div
+								tabindex="0"
+								class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-full max-h-52 sm:max-h-72 md:max-h-90 overflow-auto overscroll-contain "
+							>
+								<div>
+									<FilterChoises
+										choises={activeArgumentData.enumValues.map((enumValue) => {
+											return enumValue.name;
+										})}
+										id={activeArgumentData.stepsOfFieldsNew}
+										title={activeArgumentData.stepsOfFieldsNew}
+										type="radio"
+									/>
+
+									<!-- {#each activeArgumentData.enumValues as enumValue}
+										<label class="label">
+											{enumValue.name}
+											<input
+												type="radio"
+												class="radio input-primary"
+												name={activeArgumentData.stepsOfFieldsNewStringified}
+											/>
+										</label>
+									{/each} -->
+								</div>
 							</div>
 						</div>
 					{/if}
