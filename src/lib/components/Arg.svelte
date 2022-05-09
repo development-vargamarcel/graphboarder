@@ -37,9 +37,16 @@
 		console.log('name', name);
 		expandData = getRootType($introspectionResult.rootTypes, name);
 		if (expandData) {
-			stepsOfFieldsNew.push(nameToDisplay);
+			if (!showExpand) {
+				stepsOfFieldsNew.push(nameToDisplay);
+			} else {
+				// does the trick if you hide one by one from last one
+				stepsOfFieldsNew.splice(-1);
+			}
+
 			showExpand = !showExpand;
 		}
+
 		console.log('expandData', expandData);
 	};
 </script>
