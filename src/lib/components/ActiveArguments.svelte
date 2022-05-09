@@ -4,18 +4,17 @@
 	export let activeArgumentsData;
 </script>
 
-<div>
+<div class="space-y-2 my-2">
 	{#each activeArgumentsData as activeArgumentData}
 		<!-- svelte-ignore a11y-label-has-associated-control -->
-		<div class="flex">
-			<p class="w-20 overflow-x-auto text-xs">{activeArgumentData.stepsOfFieldsNew}</p>
-			<p>:</p>
+		<div class=" bg-base-200 rounded-box p-2">
+			<p class="  overflow-x-auto text-xs break-words">{activeArgumentData.stepsOfFieldsNew}</p>
 
 			{#if activeArgumentData.displayType == 'ENUM'}
 				<div class="flex flex-col">
 					{#if activeArgumentData.expectsList}
 						<div class="dropdown ">
-							<label tabindex="0" class="btn m-1">choose</label>
+							<label tabindex="0" class="btn btn-xs m-1">choose</label>
 							<div
 								tabindex="0"
 								class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
@@ -30,7 +29,7 @@
 						</div>
 					{:else}
 						<div class="dropdown">
-							<label tabindex="0" class="btn m-1">choose</label>
+							<label tabindex="0" class="btn btn-xs m-1">choose</label>
 							<div
 								tabindex="0"
 								class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
@@ -52,7 +51,7 @@
 			{:else if activeArgumentData.displayType == 'INPUT_OBJECT'}
 				<div class="flex flex-col">
 					<div class="dropdown">
-						<label tabindex="0" class="btn m-1">choose and fill</label>
+						<label tabindex="0" class="btn btn-xs m-1">choose and fill</label>
 						<div
 							tabindex="0"
 							class="dropdown-content  p-2 shadow bg-base-100 rounded-box max-w-min"
