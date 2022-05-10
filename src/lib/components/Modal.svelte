@@ -66,9 +66,6 @@
 <!-- grid grid-cols-1 content-end -->
 <div
 	class="fixed top-0 left-0 z-40  h-screen  w-full overflow-y-scroll overscroll-contain scroll-smooth  bg-base-100/50  "
-	on:scroll={(e) => {
-		console.log(e);
-	}}
 	bind:this={mainDiv}
 	in:fade={{ delay: 0, duration: 200 }}
 	out:fade={{ delay: 0, duration: 200 }}
