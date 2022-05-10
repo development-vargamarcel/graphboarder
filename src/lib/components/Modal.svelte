@@ -53,28 +53,42 @@
 			history.back();
 		}
 	};
+
+	let mainDiv;
+	let bodyDiv;
+
+	$: if (bodyDiv) {
+		mainDiv.scrollTop = 500;
+		console.log('mainDiv.scrollTop = 0', mainDiv.scrollTop);
+	}
 </script>
 
+<!-- grid grid-cols-1 content-end -->
 <div
-	class="fixed top-0 left-0 z-40  h-screen  w-full overflow-y-scroll overscroll-contain scroll-smooth  bg-base-100/50 "
+	class="fixed top-0 left-0 z-40  h-screen  w-full overflow-y-scroll overscroll-contain scroll-smooth  bg-base-100/50  "
+	on:scroll={(e) => {
+		console.log(e);
+	}}
+	bind:this={mainDiv}
 	in:fade={{ delay: 0, duration: 200 }}
 	out:fade={{ delay: 0, duration: 200 }}
 	on:introend={() => (mainDivIntroEnd = true)}
 >
 	{#if mainDivIntroEnd}
 		<div
-			class="    {oneItem ? 'h-full w-full' : 'pt-80'}"
+			class="    {oneItem ? 'h-full w-full' : 'py-80'}"
 			on:click|self={() => {
 				history.back();
 			}}
 		/>
 		<div
+			bind:this={bodyDiv}
 			use:detectSwipe
 			on:swipedown={(e) => {
 				swipedown(e);
 			}}
 			class="{oneItem ? 'fixed bottom-0 w-full' : ' '} shadowTop card-bordered card rounded-box z-50
-			my-0 max-h-min space-y-0 rounded-b-none border-transparent bg-base-100 p-0 py-0  pb-24"
+			my-0 max-h-min space-y-0 rounded-b-none border-transparent bg-base-100 p-0 py-0  pb-24 "
 			in:fly={{
 				delay: 20,
 				duration: 300,
@@ -99,7 +113,7 @@
 
 	{#if bodyDivIntroEnd}
 		<div
-			class="fixed bottom-0 z-50 w-full"
+			class="fixed bottom-0 z-50 w-full "
 			in:fly={{ delay: 0, duration: 200, x: 0, y: 120, opacity: 1, start: 0, easing: sineOut }}
 			out:fly={{ delay: 0, duration: 200, x: 0, y: 20, opacity: 0, start: 0, easing: sineIn }}
 		>
