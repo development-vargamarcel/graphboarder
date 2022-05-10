@@ -90,26 +90,20 @@
 		</div>
 	{/if}
 
-	{#if mainDivScrolled}
+	<div class="fixed bottom-0 z-50 w-full 	">
+		<!-- card-actions -->
 		<div
-			class="fixed bottom-0 z-50 w-full 	"
-			in:fly={{ delay: 600, duration: 100, x: 0, y: 120, opacity: 1, start: 0, easing: sineOut }}
-			out:fly={{ delay: 0, duration: 100, x: 0, y: 20, opacity: 0, start: 0, easing: sineIn }}
+			class="my-0  mx-auto w-full justify-center bg-gradient-to-t from-base-100/100 via-base-100/70 to-base-100/10 px-2 pb-0"
 		>
-			<!-- card-actions -->
-			<div
-				class="my-0  mx-auto w-full justify-center bg-gradient-to-t from-base-100/100 via-base-100/70 to-base-100/10 px-2 pb-0"
-			>
-				<div class=" mx-auto w-11/12    ">
-					<button
-						class="btn btn-primary btn-lg    w-full justify-center normal-case shadow-2xl drop-shadow-2xl "
-						on:click={apply}>Apply</button
-					>
-				</div>
+			<div class=" mx-auto w-11/12    ">
+				<button
+					class="btn btn-primary btn-lg    w-full justify-center normal-case shadow-2xl drop-shadow-2xl "
+					on:click={apply}>Apply</button
+				>
 			</div>
-			<div class="my-0 mx-auto w-full bg-base-100/100 py-4" />
 		</div>
-	{/if}
+		<div class="my-0 mx-auto w-full bg-base-100/100 py-4" />
+	</div>
 </div>
 
 <style>
