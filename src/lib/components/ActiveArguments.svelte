@@ -7,49 +7,74 @@
 	import FilterItem from './FilterItem.svelte';
 	let _scalarsAndEnumsDisplayTypes = $scalarsAndEnumsDisplayTypes;
 	export let activeArgumentsData;
+
+	let activeArgumentsDataGrouped = {};
+	activeArgumentsData.forEach((el) => {
+		if (el.stepsOfFieldsNew.length == 1) {
+			if (activeArgumentsDataGrouped?.['root']) {
+				activeArgumentsDataGrouped.root.push(el);
+			} else {
+				activeArgumentsDataGrouped.root = [el];
+			}
+		} else {
+			let firstStep = el.stepsOfFieldsNew[0];
+			if (activeArgumentsDataGrouped?.[firstStep]) {
+				activeArgumentsDataGrouped[firstStep].push(el);
+			} else {
+				activeArgumentsDataGrouped[firstStep] = [el];
+			}
+		}
+	});
+	activeArgumentsDataGrouped.groups = Object.keys(activeArgumentsDataGrouped);
+
+	console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 </script>
 
 <div class="mx-auto mt-2 grid w-full auto-cols-max grid-flow-col gap-x-2 overflow-x-auto  pb-2">
 	<div class="w-2" />
-	{#each activeArgumentsData as activeArgumentData (activeArgumentData.stepsOfFieldsNewStringified)}
-		<!-- svelte-ignore a11y-label-has-associated-control -->
-		<div class=" bg-base-200 rounded-box p-2">
-			<p class="  overflow-x-auto text-xs break-words">
-				{activeArgumentData.stepsOfFieldsNew.join(' > ')}
-			</p>
 
-			{#if activeArgumentData.displayType == 'ENUM'}
-				<div class="flex flex-col">
-					{#if activeArgumentData.expectsList}
+	{#each activeArgumentsDataGrouped.groups as group}
+		<div>
+			{group}
+			{#each activeArgumentsDataGrouped[group] as activeArgumentData}
+				<!-- svelte-ignore a11y-label-has-associated-control -->
+				<div class=" bg-base-200 rounded-box p-2 my-2">
+					<p class="  overflow-x-auto text-xs break-words">
+						{activeArgumentData.stepsOfFieldsNew.join(' > ')}
+					</p>
+
+					{#if activeArgumentData.displayType == 'ENUM'}
+						<div class="flex flex-col ">
+							{#if activeArgumentData.expectsList}
+								<FilterGroup
+									choises={activeArgumentData.enumValues.map((enumValue) => {
+										return enumValue.name;
+									})}
+									id={activeArgumentData.stepsOfFieldsNew}
+									title={activeArgumentData.stepsOfFieldsNew.join(' > ')}
+									type="checkbox"
+								/>
+							{:else}
+								<FilterGroup
+									choises={activeArgumentData.enumValues.map((enumValue) => {
+										return enumValue.name;
+									})}
+									id={activeArgumentData.stepsOfFieldsNew}
+									title={activeArgumentData.stepsOfFieldsNew.join(' > ')}
+									type="radio"
+								/>
+							{/if}
+						</div>
+					{:else if activeArgumentData.displayType == 'INPUT_OBJECT'}
 						<FilterGroup
-							choises={activeArgumentData.enumValues.map((enumValue) => {
-								return enumValue.name;
-							})}
-							id={activeArgumentData.stepsOfFieldsNew}
-							title={activeArgumentData.stepsOfFieldsNew.join(' > ')}
-							type="checkbox"
-						/>
-					{:else}
-						<FilterGroup
-							choises={activeArgumentData.enumValues.map((enumValue) => {
-								return enumValue.name;
+							choises={activeArgumentData.inputFields.map((inputField) => {
+								return inputField.name;
 							})}
 							id={activeArgumentData.stepsOfFieldsNew}
 							title={activeArgumentData.stepsOfFieldsNew.join(' > ')}
 							type="radio"
 						/>
-					{/if}
-				</div>
-			{:else if activeArgumentData.displayType == 'INPUT_OBJECT'}
-				<FilterGroup
-					choises={activeArgumentData.inputFields.map((inputField) => {
-						return inputField.name;
-					})}
-					id={activeArgumentData.stepsOfFieldsNew}
-					title={activeArgumentData.stepsOfFieldsNew.join(' > ')}
-					type="radio"
-				/>
-				<!-- <div class="flex flex-col">
+						<!-- <div class="flex flex-col">
 					<div class="dropdown">
 						<label tabindex="0" class="btn btn-xs m-1">choose and fill</label>
 						<div
@@ -91,16 +116,19 @@
 						</div>
 					</div>
 				</div> -->
-			{:else}
-				<div>
-					{#if activeArgumentData.expectsList}
-						<textarea class="textarea textarea-primary textarea-xs" />
 					{:else}
-						<input type={activeArgumentData.displayType} class="input input-primary input-xs" />
+						<div>
+							{#if activeArgumentData.expectsList}
+								<textarea class="textarea textarea-primary textarea-xs" />
+							{:else}
+								<input type={activeArgumentData.displayType} class="input input-primary input-xs" />
+							{/if}
+						</div>
 					{/if}
 				</div>
-			{/if}
+			{/each}
 		</div>
 	{/each}
+
 	<div class="w-2" />
 </div>
