@@ -49,8 +49,8 @@
 <div
 	class="fixed top-0 left-0 z-40  h-screen  w-full overflow-y-scroll overscroll-contain   bg-base-100/50  "
 	bind:this={mainDiv}
-	in:fade={{ delay: 0, duration: 200 }}
-	out:fade={{ delay: 0, duration: 200 }}
+	in:fade={{ delay: 0, duration: 100 }}
+	out:fade={{ delay: 0, duration: 100 }}
 	on:introend={() => (mainDivIntroEnd = true)}
 >
 	{#if mainDivIntroEnd}
@@ -77,7 +77,7 @@
 				start: 0,
 				easing: sineOut
 			}}
-			out:fly={{ delay: 0, duration: 200, x: 0, y: 20, opacity: 0, start: 0, easing: sineIn }}
+			out:fly={{ delay: 0, duration: 100, x: 0, y: 20, opacity: 0, start: 0, easing: sineIn }}
 			on:introend={() => (bodyDivIntroEnd = true)}
 		>
 			<div class="sticky top-0  bg-base-100">
@@ -93,8 +93,8 @@
 	{#if mainDivScrolled}
 		<div
 			class="fixed bottom-0 z-50 w-full 	"
-			in:fly={{ delay: 600, duration: 200, x: 0, y: 120, opacity: 1, start: 0, easing: sineOut }}
-			out:fly={{ delay: 0, duration: 200, x: 0, y: 20, opacity: 0, start: 0, easing: sineIn }}
+			in:fly={{ delay: 600, duration: 100, x: 0, y: 120, opacity: 1, start: 0, easing: sineOut }}
+			out:fly={{ delay: 0, duration: 100, x: 0, y: 20, opacity: 0, start: 0, easing: sineIn }}
 		>
 			<!-- card-actions -->
 			<div
