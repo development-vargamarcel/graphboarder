@@ -1,35 +1,15 @@
 <script>
 	import { fly, fade, scale } from 'svelte/transition';
 	import { detectSwipe } from '$lib/actions/detectSwipe.js';
-	import {
-		disableScrollHandling,
-		goto,
-		invalidate,
-		prefetch,
-		prefetchRoutes,
-		beforeNavigate,
-		afterNavigate
-	} from '$app/navigation';
-	import {
-		backIn,
-		backOut,
-		elasticOut,
-		backInOut,
-		circIn,
-		circOut,
-		sineOut,
-		sineIn
-	} from 'svelte/easing';
+	import { goto, beforeNavigate } from '$app/navigation';
+	import { sineOut, sineIn } from 'svelte/easing';
 	import { onMount } from 'svelte';
 
-	import { page } from '$app/stores';
-	let isVisible = true;
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 	let apply = () => {
 		dispatch('apply');
 	};
-	export let oneItem = false;
 	let mainDivIntroEnd = false;
 	let bodyDivIntroEnd = false;
 
@@ -65,8 +45,9 @@
 </script>
 
 <!-- grid grid-cols-1 content-end -->
+<!-- scroll-smooth -->
 <div
-	class="fixed top-0 left-0 z-40  h-screen  w-full overflow-y-scroll overscroll-contain scroll-smooth  bg-base-100/50  "
+	class="fixed top-0 left-0 z-40  h-screen  w-full overflow-y-scroll overscroll-contain   bg-base-100/50  "
 	bind:this={mainDiv}
 	in:fade={{ delay: 0, duration: 200 }}
 	out:fade={{ delay: 0, duration: 200 }}
@@ -74,7 +55,7 @@
 >
 	{#if mainDivIntroEnd}
 		<div
-			class="    {oneItem ? 'h-full w-full' : 'py-80'}"
+			class="    py-80"
 			on:click|self={() => {
 				history.back();
 			}}
@@ -85,7 +66,7 @@
 			on:swipedown={(e) => {
 				swipedown(e);
 			}}
-			class="{oneItem ? 'fixed bottom-0 w-full' : ' '} shadowTop card-bordered card rounded-box z-50
+			class=" shadowTop card-bordered card rounded-box z-50
 			my-0 max-h-min space-y-0 rounded-b-none border-transparent bg-base-100 p-0 py-0  pb-24 "
 			in:fly={{
 				delay: 20,
@@ -100,7 +81,7 @@
 			on:introend={() => (bodyDivIntroEnd = true)}
 		>
 			<div class="sticky top-0  bg-base-100">
-				<div class="{oneItem ? ' my-2 ' : 'my-4 h-2 bg-base-300'}    rounded-box mx-auto w-12  " />
+				<div class="my-4 h-2 bg-base-300    rounded-box mx-auto w-12  " />
 			</div>
 
 			<div class="px-3 pb-40">
