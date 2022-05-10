@@ -12,6 +12,7 @@
 	const dispatch = createEventDispatcher();
 	$: if (chosen || !chosen) {
 		dispatch('filterChanged', { id: id, chosen: chosen });
+		console.log('filterChanged');
 	}
 </script>
 
@@ -23,11 +24,10 @@
 		{#if type == 'radio'}
 			{#each choises as choice}
 				<label
-					class=" w-11/12 mx-auto cursor-pointer label  rounded-box  transition font-light  border-2 border-dotted border-transparent  active:border-base-content/50 active:bg-primary/5 {chosen.includes(
-						choice
-					)
-						? 'font-medium'
-						: ''}"
+					class=" w-11/12 mx-auto cursor-pointer label  rounded-box  transition font-light  border-2 border-dotted border-transparent  active:border-base-content/50 active:bg-primary/5 {chosen ==
+					choice
+						? 'font-bold'
+						: null}"
 				>
 					<span class="label-text  text-lg"
 						>{choice}
@@ -43,8 +43,8 @@
 					class="w-11/12 mx-auto cursor-pointer label  rounded-box  transition font-light border-2 border-dotted border-transparent  active:border-base-content/50 active:bg-primary/5 {chosen.includes(
 						choice
 					)
-						? 'font-medium '
-						: ''}"
+						? 'font-bold '
+						: null}"
 				>
 					<span class="label-text  text-lg"
 						>{choice}
@@ -63,6 +63,7 @@
 			{/each}{/if}
 	</div>
 </div>
+{chosen}
 
 <style>
 	.noStyles {
