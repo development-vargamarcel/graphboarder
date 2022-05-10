@@ -11,7 +11,7 @@
 
 <div class="mx-auto mt-2 grid w-full auto-cols-max grid-flow-col gap-x-2 overflow-x-auto  pb-2">
 	<div class="w-2" />
-	{#each activeArgumentsData as activeArgumentData}
+	{#each activeArgumentsData as activeArgumentData (activeArgumentData.stepsOfFieldsNewStringified)}
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<div class=" bg-base-200 rounded-box p-2">
 			<p class="  overflow-x-auto text-xs break-words">
@@ -35,7 +35,7 @@
 								return enumValue.name;
 							})}
 							id={activeArgumentData.stepsOfFieldsNew}
-							title={activeArgumentData.stepsOfFieldsNew}
+							title={activeArgumentData.stepsOfFieldsNew.join(' > ')}
 							type="radio"
 						/>
 					{/if}
@@ -46,7 +46,7 @@
 						return inputField.name;
 					})}
 					id={activeArgumentData.stepsOfFieldsNew}
-					title={activeArgumentData.stepsOfFieldsNew}
+					title={activeArgumentData.stepsOfFieldsNew.join(' > ')}
 					type="radio"
 				/>
 				<!-- <div class="flex flex-col">
