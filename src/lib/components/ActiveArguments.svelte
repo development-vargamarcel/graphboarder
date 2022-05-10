@@ -26,7 +26,7 @@
 								return enumValue.name;
 							})}
 							id={activeArgumentData.stepsOfFieldsNew}
-							title={activeArgumentData.stepsOfFieldsNew}
+							title={activeArgumentData.stepsOfFieldsNew.join(' > ')}
 							type="checkbox"
 						/>
 					{:else}
