@@ -49,7 +49,7 @@
 					title={activeArgumentData.stepsOfFieldsNew}
 					type="radio"
 				/>
-				<div class="flex flex-col">
+				<!-- <div class="flex flex-col">
 					<div class="dropdown">
 						<label tabindex="0" class="btn btn-xs m-1">choose and fill</label>
 						<div
@@ -90,7 +90,7 @@
 							{/each}
 						</div>
 					</div>
-				</div>
+				</div> -->
 			{:else}
 				<div>
 					{#if activeArgumentData.expectsList}
