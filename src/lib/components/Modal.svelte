@@ -112,7 +112,7 @@
 	{#if mainDivScrolled}
 		<div
 			class="fixed bottom-0 z-50 w-full 	"
-			in:fly={{ delay: 400, duration: 200, x: 0, y: 120, opacity: 1, start: 0, easing: sineOut }}
+			in:fly={{ delay: 600, duration: 200, x: 0, y: 120, opacity: 1, start: 0, easing: sineOut }}
 			out:fly={{ delay: 0, duration: 200, x: 0, y: 20, opacity: 0, start: 0, easing: sineIn }}
 		>
 			<!-- card-actions -->
