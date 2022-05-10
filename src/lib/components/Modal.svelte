@@ -28,7 +28,7 @@
 		const scrollTop = parent.scrollTop;
 
 		if (scrollTop > 0) {
-			parent.scrollTop = 0;
+			//parent.scrollTop = 0;
 		} else {
 			history.back();
 		}

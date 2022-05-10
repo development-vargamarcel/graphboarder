@@ -16,10 +16,11 @@
 	console.log('queries: ', queries);
 
 	let origin = $page.url.origin;
-	let urlHref;
+	let pathname;
 
 	let pageUnsubscribe = page.subscribe((value) => {
-		urlHref = value.url.href;
+		pathname = value.url.pathname;
+		console.log('value===', value);
 	});
 	onDestroy(() => {
 		pageUnsubscribe();
@@ -53,7 +54,7 @@
 		</div>
 		<!-- overflow-auto h-full -->
 		<div class="w-full">
-			{#key urlHref}
+			{#key pathname}
 				<slot />
 			{/key}
 		</div>
