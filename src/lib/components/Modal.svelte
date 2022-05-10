@@ -27,11 +27,13 @@
 		const parent = e.target.parentNode;
 		const scrollTop = parent.scrollTop;
 
-		if (scrollTop > 0) {
-			//parent.scrollTop = 0;
-		} else {
-			history.back();
-		}
+		// if (scrollTop > 0) {
+		// 	//parent.scrollTop = 0;
+		// } else {
+		// 	history.back();
+		// }
+
+		history.back();
 	};
 
 	let mainDiv;
