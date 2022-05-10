@@ -30,7 +30,9 @@
 	console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 </script>
 
-<div class="mx-auto mt-2 grid w-full auto-cols-max grid-flow-col gap-x-2 overflow-x-auto  pb-2">
+<div
+	class="mx-auto mt-2 grid w-full auto-cols-max grid-flow-col gap-x-2 overflow-x-auto  pb-2 max-h-60 overscroll-contain"
+>
 	<div class="w-2" />
 
 	{#each activeArgumentsDataGrouped.groups as group}
