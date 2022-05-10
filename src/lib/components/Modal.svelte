@@ -56,11 +56,11 @@
 
 	let mainDiv;
 	let bodyDiv;
-	let applyButton;
-
-	$: if (applyButton) {
+	let mainDivScrolled = false;
+	$: if (bodyDiv) {
 		mainDiv.scrollTop = 500;
 		console.log('mainDiv.scrollTop = 0', mainDiv.scrollTop);
+		mainDivScrolled = true;
 	}
 </script>
 
@@ -103,18 +103,16 @@
 				<div class="{oneItem ? ' my-2 ' : 'my-4 h-2 bg-base-300'}    rounded-box mx-auto w-12  " />
 			</div>
 
-			<div class="px-3 pb-20">
+			<div class="px-3 pb-40">
 				<slot />
 			</div>
 		</div>
 	{/if}
 
-	{#if bodyDivIntroEnd}
+	{#if mainDivScrolled}
 		<div
-			class="fixed bottom-0 z-50 w-full 	
-"
-			bind:this={applyButton}
-			in:fly={{ delay: 0, duration: 200, x: 0, y: 120, opacity: 1, start: 0, easing: sineOut }}
+			class="fixed bottom-0 z-50 w-full 	"
+			in:fly={{ delay: 400, duration: 200, x: 0, y: 120, opacity: 1, start: 0, easing: sineOut }}
 			out:fly={{ delay: 0, duration: 200, x: 0, y: 20, opacity: 0, start: 0, easing: sineIn }}
 		>
 			<!-- card-actions -->
