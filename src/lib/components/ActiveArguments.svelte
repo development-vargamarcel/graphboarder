@@ -49,6 +49,7 @@
 						<div class="flex flex-col ">
 							{#if activeArgumentData.expectsList}
 								<FilterGroup
+									extraData={activeArgumentData}
 									choises={activeArgumentData.enumValues.map((enumValue) => {
 										return enumValue.name;
 									})}
@@ -58,6 +59,7 @@
 								/>
 							{:else}
 								<FilterGroup
+									extraData={activeArgumentData}
 									choises={activeArgumentData.enumValues.map((enumValue) => {
 										return enumValue.name;
 									})}
@@ -69,6 +71,7 @@
 						</div>
 					{:else if activeArgumentData.displayType == 'INPUT_OBJECT'}
 						<FilterGroup
+							extraData={activeArgumentData}
 							choises={activeArgumentData.inputFields.map((inputField) => {
 								return inputField.name;
 							})}
@@ -76,14 +79,8 @@
 							title={activeArgumentData.stepsOfFieldsNew.join(' > ')}
 							type="radio"
 						/>
-						<!-- <div class="flex flex-col">
-					<div class="dropdown">
-						<label tabindex="0" class="btn btn-xs m-1">choose and fill</label>
-						<div
-							tabindex="0"
-							class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-full max-h-52 sm:max-h-72 md:max-h-90 overflow-auto overscroll-contain "
-						>
-							{#each activeArgumentData.inputFields as inputField}
+						<!-- 
+
 								<label class="label">
 									<p class="w-20">
 										{inputField.name}
@@ -114,10 +111,7 @@
 											class="input input-primary input-xs w-40 mr-2"
 										/>{/if}
 								</label>
-							{/each}
-						</div>
-					</div>
-				</div> -->
+					 -->
 					{:else}
 						<div>
 							{#if activeArgumentData.expectsList}

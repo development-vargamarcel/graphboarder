@@ -1,5 +1,6 @@
 <script>
 	import Modal from '$lib/components/Modal.svelte';
+	export let extraData;
 	export let id;
 	export let choises = [''];
 	export let title = choises[0];
@@ -44,7 +45,7 @@
 			chosen = chosenInternal;
 		}
 
-		dispatch('filterApplied', { id: id, chosen: chosen });
+		dispatch('filterApplied', { id: id, chosen: chosen, extraData });
 	};
 	$: if (title) {
 		if (type == 'toggle') {

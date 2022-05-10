@@ -422,7 +422,7 @@ export const formatData = (data = '', length, alwaysStringyfy = true) => {
 };
 
 export const elementToDisplay = (rawData) => {
-    let { kinds, names, parentKinds } = rawData;
+    let { kinds, names } = rawData;
     let displayType;
     let RootType_Name = getRootType_Name(names);
     let _scalarsAndEnumsDisplayTypes = get(scalarsAndEnumsDisplayTypes);
