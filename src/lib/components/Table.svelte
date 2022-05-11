@@ -153,23 +153,6 @@
 									<slot name="addColumnDisplay" />
 								</div>
 							</div>
-
-							<div class="dropdown dropdown-end">
-								<!-- svelte-ignore a11y-label-has-associated-control -->
-								<label
-									tabindex="0"
-									class="btn btn-sm bi bi-sliders text-lg p-1"
-									on:click={() => {
-										dispatch('changeArgumentsDropdown');
-									}}
-								/>
-								<div
-									tabindex="0"
-									class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl"
-								>
-									<slot name="changeArguments" />
-								</div>
-							</div>
 						</th>
 					</tr>
 				</thead>

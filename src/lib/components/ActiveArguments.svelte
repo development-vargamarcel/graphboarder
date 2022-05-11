@@ -26,28 +26,42 @@
 		}
 	});
 	activeArgumentsDataGrouped.groups = Object.keys(activeArgumentsDataGrouped);
-
+	let showActiveFilters;
 	console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-	let showActiveFilters = false;
+	if (activeArgumentsData.length > 0) {
+		showActiveFilters = true;
+	} else {
+		showActiveFilters = false;
+	}
 </script>
 
-{#if !showActiveFilters}
+<div class="flex">
 	<button
 		class="btn btn-xs  {activeArgumentsData.length > 0 ? 'btn-primary' : 'btn-secondary'}"
 		on:click={() => {
-			showActiveFilters = true;
-		}}>show filters</button
-	>
-{/if}
+			showActiveFilters = !showActiveFilters;
+		}}
+		>toggle fiters visibility
+	</button>
 
+	<div class="dropdown ">
+		<!-- svelte-ignore a11y-label-has-associated-control -->
+		<label
+			tabindex="0"
+			class="btn btn-sm bi bi-sliders text-lg p-1"
+			on:click={() => {
+				dispatch('changeArgumentsDropdown');
+			}}
+		/>
+		<div
+			tabindex="0"
+			class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl"
+		>
+			<slot />
+		</div>
+	</div>
+</div>
 {#if showActiveFilters}
-	<button
-		class="btn btn-xs btn-primary mx-auto "
-		on:click={() => {
-			showActiveFilters = false;
-		}}>hide</button
-	>
-
 	<div class="  w-full h-80 bg-base-200/50 overflow-y-auto overscroll-contain">
 		<div class="mx-auto mt-2  w-full px-4 overflow-x-auto space-y-2   pb-2  ">
 			<div class="w-2" />
@@ -121,10 +135,4 @@
 			<div class="w-2" />
 		</div>
 	</div>
-	<button
-		class="btn btn-xs btn-primary mx-auto "
-		on:click={() => {
-			showActiveFilters = false;
-		}}>hide</button
-	>
 {/if}
