@@ -4,7 +4,20 @@
 	import { goto, beforeNavigate } from '$app/navigation';
 	import { sineOut, sineIn } from 'svelte/easing';
 	import { onMount } from 'svelte';
+	import { getStores, navigating, page, session, updated } from '$app/stores';
+	import QueryLink from '$lib/components/QueryLink.svelte';
 
+	import { onDestroy } from 'svelte';
+
+	let origin = $page.url.origin;
+	let pathname = $page.url.pathname;
+
+	// let pageUnsubscribe = page.subscribe((value) => {
+	// 	pathname = value.url.pathname;
+	// });
+	// onDestroy(() => {
+	// 	pageUnsubscribe();
+	// });
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 	let apply = () => {
@@ -14,11 +27,13 @@
 	let bodyDivIntroEnd = false;
 
 	onMount(() => {
-		goto('#modal');
+		goto(`${pathname}#modal`);
 	});
 
 	beforeNavigate((e) => {
 		if (e.from.pathname == e.to.pathname) {
+			console.log('beforeNavigate');
+
 			dispatch('cancel');
 		}
 	});
@@ -59,7 +74,7 @@
 		<div
 			class="    py-80"
 			on:click|self={() => {
-				history.back();
+				goto(`${pathname}`);
 			}}
 		/>
 		<div
