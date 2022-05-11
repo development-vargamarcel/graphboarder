@@ -22,6 +22,7 @@
 	const dispatch = createEventDispatcher();
 	let apply = () => {
 		dispatch('apply');
+		goto(`${pathname}`);
 	};
 	let mainDivIntroEnd = false;
 	let bodyDivIntroEnd = false;

@@ -28,12 +28,12 @@
 	activeArgumentsDataGrouped.groups = Object.keys(activeArgumentsDataGrouped);
 
 	console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-	let showActiveFilters = true;
+	let showActiveFilters = false;
 </script>
 
 {#if !showActiveFilters}
 	<button
-		class="btn btn-xs btn-primary"
+		class="btn btn-xs  {activeArgumentsData.length > 0 ? 'btn-primary' : 'btn-secondary'}"
 		on:click={() => {
 			showActiveFilters = true;
 		}}>show filters</button
