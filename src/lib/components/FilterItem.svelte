@@ -118,7 +118,7 @@
 	{/if}
 </btn>
 {#if modalVisible}
-	<Modal on:cancel={hideModal} on:apply={applyFilter} oneItem={false}>
+	<Modal on:apply={applyFilter} oneItem={false}>
 		<div class="rounded-box overflow-hidden border-2 border-base-300 bg-base-100 pb-3">
 			<h4 class="mb-3 overflow-hidden bg-base-300 py-1 pl-2 text-xl ">{modalTitle}</h4>
 			<div class="form-control px-2">

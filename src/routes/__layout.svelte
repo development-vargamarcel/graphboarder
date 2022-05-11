@@ -114,7 +114,7 @@
 
 <header />
 
-<main class="bg-base-300 w-full w-min-max overflow-x-auto">
+<main class="bg-base-300 w-full w-min-max ">
 	{#if graphqlEndpointURL && graphqlEndpointURL !== ''}
 		{#if show_IntrospectionDataGenerator}
 			{#if gotData}
