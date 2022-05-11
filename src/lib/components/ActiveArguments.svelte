@@ -35,7 +35,7 @@
 	}
 </script>
 
-<div class="flex">
+<div class="flex space-x-2 mb-2 px-2">
 	<button
 		class="btn btn-xs  {activeArgumentsData.length > 0 ? 'btn-primary' : 'btn-secondary'}"
 		on:click={() => {
