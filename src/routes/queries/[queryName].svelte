@@ -225,17 +225,17 @@
 						parentIdentifier={identifier}
 						on:argAddRequest={(e) => {
 							let newArgData = e.detail;
-							if (
-								!activeArgumentsData.some((el) => {
-									return el.stepsOfFieldsNewStringified == newArgData.stepsOfFieldsNewStringified;
-								})
-							) {
-								activeArgumentsData.push(e.detail);
-								activeArgumentsData = activeArgumentsData;
-								console.log('activeArgumentsData', activeArgumentsData);
-							} else {
-								console.log('already added');
-							}
+							// if (
+							// 	!activeArgumentsData.some((el) => {
+							// 		return el.stepsOfFieldsNewStringified == newArgData.stepsOfFieldsNewStringified;
+							// 	})
+							// ) {
+							activeArgumentsData.push(e.detail);
+							activeArgumentsData = activeArgumentsData;
+							console.log('activeArgumentsData', activeArgumentsData);
+							// } else {
+							// 	console.log('already added');
+							// }
 						}}
 					/>
 				{/each}

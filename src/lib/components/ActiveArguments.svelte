@@ -28,103 +28,86 @@
 	activeArgumentsDataGrouped.groups = Object.keys(activeArgumentsDataGrouped);
 
 	console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+	let showActiveFilters = true;
 </script>
 
-<div
-	class="mx-auto mt-2 grid w-full auto-cols-max grid-flow-col gap-x-2 overflow-x-auto  pb-2 max-h-60 overscroll-contain"
+<button
+	class="btn btn-sm btn-primary"
+	on:click={() => {
+		showActiveFilters = !showActiveFilters;
+	}}>toggle filters</button
 >
-	<div class="w-2" />
 
-	{#each activeArgumentsDataGrouped.groups as group}
-		<div>
-			{group}
-			{#each activeArgumentsDataGrouped[group] as activeArgumentData}
-				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<div class=" bg-base-200 rounded-box p-2 my-2">
-					<p class="  overflow-x-auto text-xs break-words">
-						{activeArgumentData.stepsOfFieldsNew.join(' > ')}
-					</p>
+{#if showActiveFilters}
+	<div
+		class="mx-auto mt-2 grid w-full auto-cols-max grid-flow-col gap-x-2 overflow-x-auto  pb-2 max-h-40 overscroll-contain"
+	>
+		<div class="w-2" />
 
-					{#if activeArgumentData.displayType == 'ENUM'}
-						<div class="flex flex-col ">
-							{#if activeArgumentData.expectsList}
-								<FilterGroup
-									extraData={activeArgumentData}
-									choises={activeArgumentData.enumValues.map((enumValue) => {
-										return enumValue.name;
-									})}
-									id={activeArgumentData.stepsOfFieldsNew}
-									title={activeArgumentData.stepsOfFieldsNew.join(' > ')}
-									type="checkbox"
-								/>
-							{:else}
-								<FilterGroup
-									extraData={activeArgumentData}
-									choises={activeArgumentData.enumValues.map((enumValue) => {
-										return enumValue.name;
-									})}
-									id={activeArgumentData.stepsOfFieldsNew}
-									title={activeArgumentData.stepsOfFieldsNew.join(' > ')}
-									type="radio"
-								/>
-							{/if}
-						</div>
-					{:else if activeArgumentData.displayType == 'INPUT_OBJECT'}
-						<FilterGroup
-							extraData={activeArgumentData}
-							choises={activeArgumentData.inputFields.map((inputField) => {
-								return inputField.name;
-							})}
-							id={activeArgumentData.stepsOfFieldsNew}
-							title={activeArgumentData.stepsOfFieldsNew.join(' > ')}
-							type="radio"
-						/>
-						<!-- 
+		{#each activeArgumentsDataGrouped.groups as group}
+			<div>
+				{group}
+				{#each activeArgumentsDataGrouped[group] as activeArgumentData}
+					<!-- svelte-ignore a11y-label-has-associated-control -->
+					<div class=" bg-base-200 rounded-box p-2 my-2 flex ">
+						<p class="  overflow-x-auto text-xs break-words mr-2 w-40">
+							{activeArgumentData.stepsOfFieldsNew.join(' > ')}
+						</p>
 
-								<label class="label">
-									<p class="w-20">
-										{inputField.name}
-									</p>
-									<input
-										type="radio"
-										class="radio mr-2 input-primary"
-										name={activeArgumentData.stepsOfFieldsNewStringified}
+						{#if activeArgumentData.displayType == 'ENUM'}
+							<div class="flex flex-col ">
+								{#if activeArgumentData.expectsList}
+									<FilterGroup
+										extraData={activeArgumentData}
+										choises={activeArgumentData.enumValues.map((enumValue) => {
+											return enumValue.name;
+										})}
+										id={activeArgumentData.stepsOfFieldsNew}
+										title="choose"
+										}
+										type="checkbox"
 									/>
-									{#if getRootType_KindsArray(inputField).includes('LIST')}
-										<textarea class="textarea textarea-primary textarea-xs w-40 mr-2" />
-									{:else if _scalarsAndEnumsDisplayTypes[getRootType_NamesArray(inputField)[getRootType_NamesArray(inputField).length - 1]] == 'boolean'}
-										<label class="label  w-40">
-											<div class="flex">
-												<input type="checkbox" class="checkbox input-primary" />
-												<p class="pl-2">true</p>
-											</div>
-										</label>
-									{:else if _scalarsAndEnumsDisplayTypes[getRootType_NamesArray(inputField)[getRootType_NamesArray(inputField).length - 1]] == 'geo'}
-										<input
-											type={activeArgumentData.displayType}
-											class="input input-primary input-xs w-20 h-20 mr-2 "
-											placeholder="map here"
-										/>
-									{:else}
-										<input
-											type={activeArgumentData.displayType}
-											class="input input-primary input-xs w-40 mr-2"
-										/>{/if}
-								</label>
-					 -->
-					{:else}
-						<div>
-							{#if activeArgumentData.expectsList}
-								<textarea class="textarea textarea-primary textarea-xs" />
-							{:else}
-								<input type={activeArgumentData.displayType} class="input input-primary input-xs" />
-							{/if}
-						</div>
-					{/if}
-				</div>
-			{/each}
-		</div>
-	{/each}
+								{:else}
+									<FilterGroup
+										extraData={activeArgumentData}
+										choises={activeArgumentData.enumValues.map((enumValue) => {
+											return enumValue.name;
+										})}
+										id={activeArgumentData.stepsOfFieldsNew}
+										title="choose"
+										}
+										type="radio"
+									/>
+								{/if}
+							</div>
+						{:else if activeArgumentData.displayType == 'INPUT_OBJECT'}
+							<FilterGroup
+								extraData={activeArgumentData}
+								choises={activeArgumentData.inputFields.map((inputField) => {
+									return inputField.name;
+								})}
+								id={activeArgumentData.stepsOfFieldsNew}
+								title="choose"
+								}
+								type="radio"
+							/>
+						{:else}
+							<div>
+								{#if activeArgumentData.expectsList}
+									<textarea class="textarea textarea-primary textarea-xs" />
+								{:else}
+									<input
+										type={activeArgumentData.displayType}
+										class="input input-primary input-xs"
+									/>
+								{/if}
+							</div>
+						{/if}
+					</div>
+				{/each}
+			</div>
+		{/each}
 
-	<div class="w-2" />
-</div>
+		<div class="w-2" />
+	</div>
+{/if}
