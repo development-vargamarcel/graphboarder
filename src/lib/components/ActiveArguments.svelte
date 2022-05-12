@@ -39,14 +39,6 @@
 </script>
 
 <div class="flex space-x-2 mb-2 px-2">
-	<button
-		class="btn btn-xs  {activeArgumentsData.length > 0 ? 'btn-primary' : 'btn-secondary'}"
-		on:click={() => {
-			showActiveFilters = !showActiveFilters;
-		}}
-		>toggle fiters visibility
-	</button>
-
 	<div class="dropdown ">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label tabindex="0" class="btn btn-sm bi bi-sliders text-lg p-1" />
@@ -57,6 +49,13 @@
 			<slot />
 		</div>
 	</div>
+	<button
+		class="btn btn-xs  {activeArgumentsData.length > 0 ? 'btn-primary' : 'btn-secondary'}"
+		on:click={() => {
+			showActiveFilters = !showActiveFilters;
+		}}
+		>toggle fiters visibility
+	</button>
 </div>
 {#if showActiveFilters}
 	<div class="  w-full h-80 bg-base-200/50 overflow-y-auto overscroll-contain">
