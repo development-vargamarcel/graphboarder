@@ -119,7 +119,7 @@
 </btn>
 {#if modalVisible}
 	<Modal on:apply={applyFilter} on:cancel={hideModal}>
-		<div class="rounded-box overflow-hidden border-2 border-base-300 bg-base-100 pb-3">
+		<div class="rounded-box overflow-hidden border-2 border-base-300 bg-base-100 pb-3 ">
 			<h4 class="mb-3 overflow-hidden bg-base-300 py-1 pl-2 text-xl ">{modalTitle}</h4>
 			<div class="form-control px-2">
 				{#if type == 'radio'}
@@ -127,9 +127,10 @@
 						<label
 							class="label rounded-box  cursor-pointer   border-2 border-dotted  border-transparent font-light transition  active:border-base-content/50 active:bg-primary/5 {chosenInternal ==
 							choice
-								? 'font-bold'
+								? 'font-extrabold '
 								: ''}"
 						>
+							{chosenInternal == choice}
 							<span class="label-text  text-lg"
 								>{choice}
 								{#if chosenDefault && chosenDefault == choice}
@@ -150,7 +151,7 @@
 							class="cursor-pointer label  rounded-box   transition font-light border-2 border-dotted border-transparent  active:border-base-content/50 active:bg-primary/5 {chosenInternal.includes(
 								choice
 							)
-								? 'font-bold '
+								? 'font-extrabold '
 								: ''}"
 						>
 							<span class="label-text  text-lg"
