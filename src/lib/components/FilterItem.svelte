@@ -130,7 +130,6 @@
 								? 'font-extrabold '
 								: ''}"
 						>
-							{chosenInternal == choice}
 							<span class="label-text  text-lg"
 								>{choice}
 								{#if chosenDefault && chosenDefault == choice}
