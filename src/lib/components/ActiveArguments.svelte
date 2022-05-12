@@ -7,31 +7,34 @@
 	import FilterItem from './FilterItem.svelte';
 	let _scalarsAndEnumsDisplayTypes = $scalarsAndEnumsDisplayTypes;
 	export let activeArgumentsData;
-
 	let activeArgumentsDataGrouped = {};
-	activeArgumentsData.forEach((el) => {
-		if (el.stepsOfFieldsNew.length == 1) {
-			if (activeArgumentsDataGrouped?.['root']) {
-				activeArgumentsDataGrouped.root.push(el);
-			} else {
-				activeArgumentsDataGrouped.root = [el];
-			}
-		} else {
-			let firstStep = el.stepsOfFieldsNew[0];
-			if (activeArgumentsDataGrouped?.[firstStep]) {
-				activeArgumentsDataGrouped[firstStep].push(el);
-			} else {
-				activeArgumentsDataGrouped[firstStep] = [el];
-			}
-		}
-	});
-	activeArgumentsDataGrouped.groups = Object.keys(activeArgumentsDataGrouped);
 	let showActiveFilters;
-	console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-	if (activeArgumentsData.length > 0) {
-		showActiveFilters = true;
-	} else {
-		showActiveFilters = false;
+
+	$: if (activeArgumentsData) {
+		activeArgumentsDataGrouped = {};
+		activeArgumentsData.forEach((el) => {
+			if (el.stepsOfFieldsNew.length == 1) {
+				if (activeArgumentsDataGrouped?.['root']) {
+					activeArgumentsDataGrouped.root.push(el);
+				} else {
+					activeArgumentsDataGrouped.root = [el];
+				}
+			} else {
+				let firstStep = el.stepsOfFieldsNew[0];
+				if (activeArgumentsDataGrouped?.[firstStep]) {
+					activeArgumentsDataGrouped[firstStep].push(el);
+				} else {
+					activeArgumentsDataGrouped[firstStep] = [el];
+				}
+			}
+		});
+		activeArgumentsDataGrouped.groups = Object.keys(activeArgumentsDataGrouped);
+		console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+		if (activeArgumentsData.length > 0) {
+			showActiveFilters = true;
+		} else {
+			showActiveFilters = false;
+		}
 	}
 </script>
 
@@ -46,16 +49,10 @@
 
 	<div class="dropdown ">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
-		<label
-			tabindex="0"
-			class="btn btn-sm bi bi-sliders text-lg p-1"
-			on:click={() => {
-				dispatch('changeArgumentsDropdown');
-			}}
-		/>
+		<label tabindex="0" class="btn btn-sm bi bi-sliders text-lg p-1" />
 		<div
 			tabindex="0"
-			class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl"
+			class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl fixed left-0"
 		>
 			<slot />
 		</div>
@@ -75,7 +72,7 @@
 						<!-- svelte-ignore a11y-label-has-associated-control -->
 						<div class=" bg-base-200 rounded-box p-2 my-2  ">
 							<p class="  overflow-x-auto text-xs break-words mr-2  ">
-								{activeArgumentData.stepsOfFieldsNew.join(' > ')}
+								{activeArgumentData.stepsOfFieldsNew?.join(' > ')}
 							</p>
 
 							{#if activeArgumentData.displayType == 'ENUM'}
@@ -88,7 +85,6 @@
 											})}
 											id={activeArgumentData.stepsOfFieldsNew}
 											title="choose"
-											}
 											type="checkbox"
 										/>
 									{:else}
@@ -99,7 +95,6 @@
 											})}
 											id={activeArgumentData.stepsOfFieldsNew}
 											title="choose"
-											}
 											type="radio"
 										/>
 									{/if}
@@ -112,7 +107,6 @@
 									})}
 									id={activeArgumentData.stepsOfFieldsNew}
 									title="choose"
-									}
 									type="radio"
 								/>
 							{:else}

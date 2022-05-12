@@ -21,8 +21,8 @@
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 	let apply = () => {
+		//goto(`${pathname}`);
 		dispatch('apply');
-		goto(`${pathname}`);
 	};
 	let mainDivIntroEnd = false;
 	let bodyDivIntroEnd = false;

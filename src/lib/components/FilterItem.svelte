@@ -44,7 +44,7 @@
 			modalVisible = false;
 			chosen = chosenInternal;
 		}
-
+		console.log('filterApplied', { id: id, chosen: chosen, extraData });
 		dispatch('filterApplied', { id: id, chosen: chosen, extraData });
 	};
 	$: if (title) {
@@ -118,7 +118,7 @@
 	{/if}
 </btn>
 {#if modalVisible}
-	<Modal on:apply={applyFilter} on:cancel={hideModal} oneItem={false}>
+	<Modal on:apply={applyFilter} on:cancel={hideModal}>
 		<div class="rounded-box overflow-hidden border-2 border-base-300 bg-base-100 pb-3">
 			<h4 class="mb-3 overflow-hidden bg-base-300 py-1 pl-2 text-xl ">{modalTitle}</h4>
 			<div class="form-control px-2">

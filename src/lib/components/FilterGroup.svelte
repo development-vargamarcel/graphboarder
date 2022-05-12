@@ -34,17 +34,22 @@
 		on:filterApplied={(e) => {
 			let { detail } = e;
 			filterAppliedData = detail;
-			relatedField = filterAppliedData.extraData.inputFields.filter((el) => {
+			relatedField = filterAppliedData.extraData.inputFields?.filter((el) => {
 				return el.name == filterAppliedData.chosen;
 			})[0];
-			displayType = filterAppliedData.extraData.displayType;
-			relatedFieldDetails = elementToDisplay({
-				kinds: getRootType_KindsArray(relatedField),
-				names: getRootType_NamesArray(relatedField)
-			});
+			if (relatedField) {
+				displayType = filterAppliedData.extraData.displayType;
+				relatedFieldDetails = elementToDisplay({
+					kinds: getRootType_KindsArray(relatedField),
+					names: getRootType_NamesArray(relatedField)
+				});
+			} else {
+			}
+
 			console.log('relatedField', relatedField);
 			console.log('relatedFieldDetails', relatedFieldDetails);
 			console.log('detail', detail);
+			chosen = detail.chosen;
 		}}
 	/>
 	{#if filterAppliedData}

@@ -152,44 +152,42 @@
 	let activeArgumentsData = [];
 </script>
 
-{#key activeArgumentsData}
-	{#if activeArgumentsData}
-		<ActiveArguments {activeArgumentsData}>
-			<div
-				class="max-h-52 sm:max-h-72 md:max-h-90 overflow-auto overscroll-contain max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
-			>
-				<div
-					class="flex flex-col overflow-x-auto text-sm font-normal normal-case min-w-max w-full "
-				>
-					{#each currentQueryInfo?.args as arg, index}
-						<Arg
-							{index}
-							type={arg}
-							template="changeArguments"
-							parentKinds={kinds}
-							parentNameToDisplay={nameToDisplay}
-							parentIdentifier={identifier}
-							on:argAddRequest={(e) => {
-								let newArgData = e.detail;
-								// if (
-								// 	!activeArgumentsData.some((el) => {
-								// 		return el.stepsOfFieldsNewStringified == newArgData.stepsOfFieldsNewStringified;
-								// 	})
-								// ) {
-								activeArgumentsData.push(e.detail);
-								activeArgumentsData = activeArgumentsData;
-								console.log('activeArgumentsData', activeArgumentsData);
-								// } else {
-								// 	console.log('already added');
-								// }
-							}}
-						/>
-					{/each}
-				</div>
-			</div>
-		</ActiveArguments>
-	{/if}
-{/key}
+<!-- {#key activeArgumentsData}
+	{#if activeArgumentsData} -->
+<ActiveArguments {activeArgumentsData}>
+	<div
+		class="max-h-52 sm:max-h-72 md:max-h-90 overflow-auto overscroll-contain max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
+	>
+		<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case min-w-max w-full ">
+			{#each currentQueryInfo?.args as arg, index}
+				<Arg
+					{index}
+					type={arg}
+					template="changeArguments"
+					parentKinds={kinds}
+					parentNameToDisplay={nameToDisplay}
+					parentIdentifier={identifier}
+					on:argAddRequest={(e) => {
+						let newArgData = e.detail;
+						// if (
+						// 	!activeArgumentsData.some((el) => {
+						// 		return el.stepsOfFieldsNewStringified == newArgData.stepsOfFieldsNewStringified;
+						// 	})
+						// ) {
+						activeArgumentsData.push(e.detail);
+						activeArgumentsData = activeArgumentsData;
+						console.log('activeArgumentsData', activeArgumentsData);
+						// } else {
+						// 	console.log('already added');
+						// }
+					}}
+				/>
+			{/each}
+		</div>
+	</div>
+</ActiveArguments>
+<!-- {/if}
+{/key} -->
 
 {#if queryData.fetching}
 	<p>Loading...</p>
@@ -240,38 +238,6 @@
 						/>
 					{/each}
 				{/key}
-			</div>
-		</div>
-
-		<div
-			slot="changeArguments"
-			class="max-h-52 sm:max-h-72 md:max-h-90 overflow-auto overscroll-contain max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
-		>
-			<div class="flex flex-col overflow-x-auto text-sm font-normal normal-case min-w-max w-full ">
-				{#each currentQueryInfo?.args as arg, index}
-					<Arg
-						{index}
-						type={arg}
-						template="changeArguments"
-						parentKinds={kinds}
-						parentNameToDisplay={nameToDisplay}
-						parentIdentifier={identifier}
-						on:argAddRequest={(e) => {
-							let newArgData = e.detail;
-							// if (
-							// 	!activeArgumentsData.some((el) => {
-							// 		return el.stepsOfFieldsNewStringified == newArgData.stepsOfFieldsNewStringified;
-							// 	})
-							// ) {
-							activeArgumentsData.push(e.detail);
-							activeArgumentsData = activeArgumentsData;
-							console.log('activeArgumentsData', activeArgumentsData);
-							// } else {
-							// 	console.log('already added');
-							// }
-						}}
-					/>
-				{/each}
 			</div>
 		</div>
 	</Table>
