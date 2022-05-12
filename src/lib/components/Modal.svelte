@@ -8,7 +8,7 @@
 	import QueryLink from '$lib/components/QueryLink.svelte';
 
 	import { onDestroy } from 'svelte';
-
+	export let modalName = 'modal' + Math.random();
 	let origin = $page.url.origin;
 	let pathname = $page.url.pathname;
 
@@ -27,8 +27,23 @@
 	let mainDivIntroEnd = false;
 	let bodyDivIntroEnd = false;
 
+	//testing
+	export const replaceStateWithQuery = (values) => {
+		const url = new URL(window.location.toString());
+		for (let [k, v] of Object.entries(values)) {
+			if (!!v) {
+				url.searchParams.set(encodeURIComponent(k), encodeURIComponent(v));
+			} else {
+				url.searchParams.delete(k);
+			}
+		}
+		history.replaceState({}, '', url);
+	};
+
+	//
+
 	onMount(() => {
-		goto(`${pathname}#modal`);
+		goto(`${pathname}#${modalName}`);
 	});
 
 	beforeNavigate((e) => {
