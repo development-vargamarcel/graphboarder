@@ -44,6 +44,9 @@
 
 	onMount(() => {
 		goto(`${pathname}#${modalName}`);
+		// const url = new URL(window.location);
+		// url.searchParams.set('foo', 'bar');
+		// window.history.pushState({}, '', url);
 	});
 
 	beforeNavigate((e) => {
