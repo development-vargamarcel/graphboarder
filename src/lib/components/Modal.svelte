@@ -8,7 +8,7 @@
 	import QueryLink from '$lib/components/QueryLink.svelte';
 
 	import { onDestroy } from 'svelte';
-	export let modalName = 'modal' + Math.random();
+	export let modalIdetifier = 'modal' + Math.random();
 	let origin = $page.url.origin;
 	let pathname = $page.url.pathname;
 
@@ -27,33 +27,27 @@
 	let mainDivIntroEnd = false;
 	let bodyDivIntroEnd = false;
 
-	//testing
-	export const replaceStateWithQuery = (values) => {
-		const url = new URL(window.location.toString());
-		for (let [k, v] of Object.entries(values)) {
-			if (!!v) {
-				url.searchParams.set(encodeURIComponent(k), encodeURIComponent(v));
-			} else {
-				url.searchParams.delete(k);
-			}
-		}
-		history.replaceState({}, '', url);
-	};
-
-	//
-
 	onMount(() => {
-		goto(`${pathname}#${modalName}`);
-		// const url = new URL(window.location);
-		// url.searchParams.set('foo', 'bar');
-		// window.history.pushState({}, '', url);
+		let currModalStack = history.state?.modalStack || [];
+		goto(`${pathname}`, {
+			state: {
+				modalStack: [...currModalStack, modalIdetifier]
+			}
+		});
+		console.log('history.state', history.state);
 	});
 
 	beforeNavigate((e) => {
-		if (e.from.pathname == e.to.pathname) {
-			console.log('beforeNavigate');
+		let currModalStack = history.state?.modalStack || [];
 
-			dispatch('cancel');
+		if (e.from.pathname == e.to.pathname) {
+			console.log('history.state', history.state);
+			if (currModalStack[currModalStack.length - 1] == modalIdetifier) {
+				dispatch('cancel', { modalIdetifier });
+			}
+			history.state?.modalStack?.pop();
+			console.log('beforeNavigate');
+			console.log('history.state', history.state);
 		}
 	});
 

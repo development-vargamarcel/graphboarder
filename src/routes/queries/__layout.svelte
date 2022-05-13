@@ -3,15 +3,7 @@
 	let queries = $introspectionResult.queryFields;
 	import { getStores, navigating, page, session, updated } from '$app/stores';
 	import QueryLink from '$lib/components/QueryLink.svelte';
-	import {
-		afterNavigate,
-		beforeNavigate,
-		disableScrollHandling,
-		goto,
-		invalidate,
-		prefetch,
-		prefetchRoutes
-	} from '$app/navigation';
+
 	import { onDestroy } from 'svelte';
 	console.log('queries: ', queries);
 
