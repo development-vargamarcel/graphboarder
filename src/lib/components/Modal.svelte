@@ -8,7 +8,7 @@
 	import QueryLink from '$lib/components/QueryLink.svelte';
 
 	import { onDestroy } from 'svelte';
-	export let modalIdetifier = 'modal' + Math.random();
+	export let modalIdetifier = 'modal';
 	let origin = $page.url.origin;
 	let pathname = $page.url.pathname;
 
