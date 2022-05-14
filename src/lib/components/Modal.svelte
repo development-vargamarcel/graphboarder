@@ -42,10 +42,14 @@
 
 		if (e.from.pathname == e.to.pathname) {
 			console.log('history.state', history.state);
+			console.log('currModalStack', 'currModalStack[currModalStack.length - 1]', 'modalIdetifier');
+
+			console.log(currModalStack, currModalStack[currModalStack.length - 1], modalIdetifier);
 			if (currModalStack[currModalStack.length - 1] == modalIdetifier) {
 				dispatch('cancel', { modalIdetifier });
+				history.state?.modalStack?.pop();
 			}
-			history.state?.modalStack?.pop();
+
 			console.log('beforeNavigate');
 			console.log('history.state', history.state);
 		}
@@ -87,7 +91,8 @@
 		<div
 			class="    py-80"
 			on:click|self={() => {
-				goto(`${pathname}`);
+				history.back();
+				// goto(`${pathname}`);
 			}}
 		/>
 		<div
