@@ -7,22 +7,22 @@ export const Create_introspectionResult = () => {
 
     return {
         subscribe, set, update,
-        set_schema: () => {
+        set_schema: (schema) => {
 
         },
-        set_rootFields: (withDerivedData: false, schema) => {
+        set_rootTypes: (withDerivedData: false, schema) => {
 
         },
-        set_queryFields: (withDerivedData: false, rootFields) => {
+        set_queryFields: (withDerivedData: false, rootTypes) => {
 
         },
-        set_mutationFields: (withDerivedData: false, rootFields) => {
+        set_mutationFields: (withDerivedData: false, rootTypes) => {
 
         },
-        set_subscriptionFields: (withDerivedData: false, rootFields) => {
+        set_subscriptionFields: (withDerivedData: false, rootTypes) => {
 
         },
-        set_fields: (withDerivedData: false, schema) => { //set rootFields,queryFields,mutationFields,subscriptionFields //fields or types?
+        set_fields: (withDerivedData: false, schema) => { //set rootTypes,queryFields,mutationFields,subscriptionFields //fields or types?
 
         }
 
