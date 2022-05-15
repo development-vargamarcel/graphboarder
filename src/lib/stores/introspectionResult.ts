@@ -7,6 +7,9 @@ export const Create_introspectionResult = () => {
 
     return {
         subscribe, set, update,
+        set_schema: () => {
+
+        },
         set_rootFields: (withDerivedData: false, schema) => {
 
         },
