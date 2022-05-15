@@ -26,6 +26,7 @@
 	let introspectionResultUnsubscribe = introspectionResult.subscribe((data) => {
 		if (data?.rootTypes.length > 0) {
 			gotData = true;
+			console.log('introspectionResult', data);
 		}
 	});
 
