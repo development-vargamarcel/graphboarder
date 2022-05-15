@@ -1,76 +1,21 @@
 <script>
 	import { fly, fade, scale } from 'svelte/transition';
 	import { detectSwipe } from '$lib/actions/detectSwipe.js';
-	import { goto, beforeNavigate } from '$app/navigation';
 	import { sineOut, sineIn } from 'svelte/easing';
-	import { onMount } from 'svelte';
-	import { getStores, navigating, page, session, updated } from '$app/stores';
-	import QueryLink from '$lib/components/QueryLink.svelte';
 
-	import { onDestroy } from 'svelte';
 	export let modalIdetifier = 'modal';
-	let origin = $page.url.origin;
-	let pathname = $page.url.pathname;
 
-	// let pageUnsubscribe = page.subscribe((value) => {
-	// 	pathname = value.url.pathname;
-	// });
-	// onDestroy(() => {
-	// 	pageUnsubscribe();
-	// });
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 	let apply = () => {
-		//goto(`${pathname}`);
 		dispatch('apply');
 	};
 	let mainDivIntroEnd = false;
 	let bodyDivIntroEnd = false;
 
-	onMount(() => {
-		let currModalStack = history.state?.modalStack || [];
-		goto(`${pathname}`, {
-			state: {
-				modalStack: [...currModalStack, modalIdetifier]
-			}
-		});
-		console.log('history.state', history.state);
-	});
-
-	beforeNavigate((e) => {
-		let currModalStack = history.state?.modalStack || [];
-
-		if (e.from.pathname == e.to.pathname) {
-			console.log('history.state', history.state);
-			console.log(
-				'---',
-				'currModalStack',
-				'currModalStack[currModalStack.length - 1]',
-				'modalIdetifier'
-			);
-
-			console.log(currModalStack, currModalStack[currModalStack.length - 1], modalIdetifier);
-			if (currModalStack[currModalStack.length - 1] == modalIdetifier) {
-				dispatch('cancel', { modalIdetifier });
-				history.state?.modalStack?.pop();
-			}
-
-			console.log('beforeNavigate');
-			console.log('history.state', history.state);
-		}
-	});
-
 	const swipedown = (e) => {
 		const parent = e.target.parentNode;
-		const scrollTop = parent.scrollTop;
-
-		// if (scrollTop > 0) {
-		// 	parent.scrollTop = 0;
-		// } else {
-		// 	history.back();
-		// }
-
-		history.back();
+		dispatch('cancel', { modalIdetifier });
 	};
 
 	let mainDiv;
@@ -78,7 +23,6 @@
 	let mainDivScrolled = false;
 	$: if (bodyDiv) {
 		mainDiv.scrollTop = 500;
-		console.log('mainDiv.scrollTop = 0', mainDiv.scrollTop);
 		mainDivScrolled = true;
 	}
 </script>
@@ -96,8 +40,7 @@
 		<div
 			class="    py-80"
 			on:click|self={() => {
-				history.back();
-				// goto(`${pathname}`);
+				dispatch('cancel', { modalIdetifier });
 			}}
 		/>
 		<div
