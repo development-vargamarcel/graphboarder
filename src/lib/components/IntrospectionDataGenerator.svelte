@@ -35,6 +35,7 @@
 
 	import { urqlClient } from '$lib/stores/urqlClient';
 	import { urqlCoreClient } from '$lib/stores/urqlCoreClient';
+	import { schemaData } from '$lib/stores/schemaData';
 	urqlClient.set(client);
 	urqlCoreClient.set(client);
 	setClient(client);
@@ -139,11 +140,22 @@
 	let sortingInputValue = '';
 	let sortingArray = [];
 	$: sortingArray = sortingInputValue.split(' ');
+
+	schemaData.subscribe((value) => {
+		console.log('schemaData value', value);
+	});
+
 	const handleData = () => {
 		//handle schema --
 		schema = $queryStore?.data?.__schema;
 		$introspectionResult.schema = schema;
+		//-------
+		$schemaData.schema = schema;
+		//-------
 		//handle rootTypes --
+		//-------
+		schemaData.set_rootTypes();
+		//-------
 		rootTypes = [...$queryStore?.data?.__schema?.types];
 		//sort
 		rootTypes = rootTypes?.sort((a, b) => {
