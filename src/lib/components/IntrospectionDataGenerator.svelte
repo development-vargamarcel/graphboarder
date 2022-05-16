@@ -151,58 +151,16 @@
 		$introspectionResult.schema = schema;
 		//-------
 		$schemaData.schema = schema;
-		//-------
-		//handle rootTypes --
-		//-------
-		schemaData.set_rootTypes();
-		//-------
-		rootTypes = [...$queryStore?.data?.__schema?.types];
-		//sort
-		rootTypes = rootTypes?.sort((a, b) => {
-			if (a?.name < b?.name) {
-				return -1;
-			}
-			if (a?.name > b?.name) {
-				return 1;
-			}
-			return 0;
-		});
-		$introspectionResult.rootTypes = rootTypes;
-		//handle queries --
-		if (schema?.queryType?.name) {
-			queries = rootTypes?.find((type) => {
-				return type?.name == schema?.queryType?.name;
-			})?.fields;
-			//sort
-			queries = queries?.sort((a, b) => {
-				if (a?.name < b?.name) {
-					return -1;
-				}
-				if (a?.name > b?.name) {
-					return 1;
-				}
-				return 0;
-			});
-			$introspectionResult.queryFields = queries;
-		}
-		//handle mutations --
-		if (schema?.mutationType?.name) {
-			mutations = rootTypes?.find((type) => {
-				return type?.name == schema?.mutationType?.name;
-			})?.fields;
-			//sort
-			mutations = mutations?.sort((a, b) => {
-				if (a?.name < b?.name) {
-					return -1;
-				}
-				if (a?.name > b?.name) {
-					return 1;
-				}
-				return 0;
-			});
-			$introspectionResult.mutationFields = mutations;
-		}
 
+		// schemaData.set_rootTypes();
+		// schemaData.set_queryFields();
+		// schemaData.set_mutationFields();
+		// schemaData.set_subscriptionFields();
+
+		//--------------------------------------
+		schemaData.set_fields();
+		//--------------------------------------
+		$introspectionResult = $schemaData;
 		//output
 	};
 	$: if (!$queryStore.fetching) {
