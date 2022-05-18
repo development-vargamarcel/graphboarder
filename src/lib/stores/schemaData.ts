@@ -61,14 +61,16 @@ export const create_schemaData = () => {
                 }
 
                 if (withDerivedData) {
-                    new_QMS_Fields.forEach(el => {
-                        // let derivedData = generate_derivedData(el, rootTypes)
+                    new_QMS_Fields.forEach(el => {                    // let derivedData = generate_derivedData(el, rootTypes)
                         Object.assign(el, generate_derivedData(el, rootTypes))
                         el?.args?.forEach(arg => {
                             Object.assign(arg, generate_derivedData(arg, rootTypes))
                         });
                         el?.fields?.forEach(field => {
                             Object.assign(field, generate_derivedData(field, rootTypes))
+                            field?.args?.forEach(arg => {
+                                Object.assign(arg, generate_derivedData(arg, rootTypes))
+                            });
                         });
                         el?.inputFields?.forEach(inputField => {
                             Object.assign(inputField, generate_derivedData(inputField, rootTypes))
