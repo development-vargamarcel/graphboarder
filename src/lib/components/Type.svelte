@@ -2,7 +2,7 @@
 	import { introspectionResult } from '$lib/stores/introspectionResult';
 	import {
 		get_KindsArray,
-		get_mainName,
+		get_rootName,
 		get_displayName,
 		getRootType,
 		get_NamesArray,
@@ -22,7 +22,7 @@
 
 	names = get_NamesArray(type);
 	kinds = get_KindsArray(type);
-	let name = get_mainName(names);
+	let name = get_rootName(names);
 	let nameToDisplay = get_displayName(names);
 
 	let showExpand = false;

@@ -5,7 +5,7 @@
 		elementToDisplay,
 		getRootType,
 		get_KindsArray,
-		get_mainName,
+		get_rootName,
 		get_NamesArray
 	} from '$lib/utils/usefulFunctions';
 	import { stringify } from 'postcss';
@@ -37,7 +37,7 @@
 	console.log('elementToDisplay', _elementToDisplay);
 
 	// testing
-	let RootType_Name = get_mainName(names);
+	let RootType_Name = get_rootName(names);
 	let RootType = getRootType($introspectionResult.rootTypes, RootType_Name);
 	let inputFields = RootType?.inputFields;
 	let enumValues = RootType?.enumValues;

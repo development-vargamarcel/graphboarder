@@ -3,7 +3,7 @@
 	import { introspectionResult } from './../stores/introspectionResult.ts';
 	import {
 		generateFragmentData,
-		get_mainName,
+		get_rootName,
 		stepsOfFieldsToColData
 	} from '$lib/utils/usefulFunctions';
 	import { createEventDispatcher } from 'svelte';

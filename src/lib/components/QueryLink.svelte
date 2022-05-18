@@ -1,7 +1,7 @@
 <script>
 	import { goto } from '$app/navigation';
 	import {
-		get_mainName,
+		get_rootName,
 		get_NamesArray,
 		getQM_mandatoryArguments,
 		getFields_Grouped
@@ -14,7 +14,7 @@
 	let queryNameDisplay = queryName;
 	let queryTitleDisplay = '';
 	let currentQueryInfo = getQM_Field($introspectionResult.queryFields, queryName);
-	let currentQueryNameForType = get_mainName(get_NamesArray(currentQueryInfo));
+	let currentQueryNameForType = get_rootName(get_NamesArray(currentQueryInfo));
 	let currentQueryFromRootTypes = getRootType(
 		$introspectionResult.rootTypes,
 		currentQueryNameForType

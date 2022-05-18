@@ -1,4 +1,4 @@
-import { get_NamesArray, get_KindsArray, sortByName, get_mainName, get_displayName, generate_derivedData } from "$lib/utils/usefulFunctions";
+import { get_NamesArray, get_KindsArray, sortByName, get_rootName, get_displayName, generate_derivedData } from "$lib/utils/usefulFunctions";
 import { get, writable } from "svelte/store";
 
 export const create_schemaData = () => {

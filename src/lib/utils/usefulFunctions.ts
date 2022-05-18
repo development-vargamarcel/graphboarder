@@ -27,7 +27,7 @@ export const generateFragmentData = (field, rootTypes, flatten, deeperIfNoScalar
         }
     } else {
         fragmentData = [fieldName];
-        subFields = getRootType(rootTypes, get_mainName(get_NamesArray(field))).fields;
+        subFields = getRootType(rootTypes, get_rootName(get_NamesArray(field))).fields;
         subFields_scalar = subFields.filter((subField) => {
             return get_KindsArray(subField).includes('SCALAR');
         });
@@ -168,7 +168,7 @@ export const get_NamesArray = (type) => {
     return names;
 };
 
-export let get_mainName = (namesArray) => {
+export let get_rootName = (namesArray) => {
     return namesArray[namesArray.length - 1];
 };
 
@@ -424,7 +424,7 @@ export const formatData = (data = '', length, alwaysStringyfy = true) => {
 export const elementToDisplay = (rawData) => {
     let { kinds, names } = rawData;
     let displayType;
-    let RootType_Name = get_mainName(names);
+    let RootType_Name = get_rootName(names);
     let _scalarsAndEnumsDisplayTypes = get(scalarsAndEnumsDisplayTypes);
     let lastKind = kinds[kinds.length - 1];
     if (lastKind == 'ENUM') {
@@ -463,10 +463,9 @@ export const generate_derivedData = (type, rootTypes) => { //type/field
     let derivedData = {}
     derivedData.dd_kindsArray = get_KindsArray(type)
     derivedData.dd_namesArray = get_NamesArray(type)
-    derivedData.dd_mainName = get_mainName(derivedData.dd_namesArray)
-    derivedData.dd_mainName = get_mainName(derivedData.dd_namesArray)
+    derivedData.dd_rootName = get_rootName(derivedData.dd_namesArray)
     derivedData.dd_displayName = get_displayName(derivedData.dd_namesArray)
-    derivedData.dd_next = getRootType(rootTypes, derivedData.dd_mainName)
+    derivedData.dd_relatedRoot = getRootType(rootTypes, derivedData.dd_rootName)
 
     return derivedData
 }

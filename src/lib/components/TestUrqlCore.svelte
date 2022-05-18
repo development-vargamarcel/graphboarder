@@ -7,7 +7,7 @@
 	import {
 		getQM_Field,
 		getRootType,
-		get_mainName,
+		get_rootName,
 		get_NamesArray,
 		getFields_Grouped,
 		getArguments_withInfo,
@@ -24,7 +24,7 @@
 	});
 
 	let currentQueryInfo = getQM_Field($introspectionResult.queryFields, queryName);
-	let currentQueryNameForType = get_mainName(get_NamesArray(currentQueryInfo));
+	let currentQueryNameForType = get_rootName(get_NamesArray(currentQueryInfo));
 	let currentQueryFromRootTypes = getRootType(
 		$introspectionResult.rootTypes,
 		currentQueryNameForType
