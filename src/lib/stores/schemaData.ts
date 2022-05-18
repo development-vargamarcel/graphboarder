@@ -20,70 +20,39 @@ export const create_schemaData = () => {
             }
             return new_rootTypes
         },
-        set_queryFields: (withDerivedData: false, set_storeVal = true) => {
+        set_rootTypes_DerivedData: () => {
+
+        },
+        set_QMSFields: (withDerivedData: false, set_storeVal = true, QMS = ['query', 'mutation', 'subscription']) => {//QMS -> Query,Mutation,Subscription
             let storeValue = get(store)
             let { rootTypes, queryFields, mutationFields, schema } = storeValue
-            let queryType_name = schema?.queryType?.name
-            let new_queryFields
-            if (queryType_name) {
-                new_queryFields = sortByName(rootTypes?.find((type) => {
-                    return type?.name == queryType_name;
-                })?.fields)
-
+            let result = {}
+            QMS.forEach(_QMS_ => {// _QMS_ -> current QMS (one of: Query,Mutation,Subscription)
+                let _QMS_Type_name = schema?.[`${_QMS_}Type`]?.name
+                let new_QMS_Fields
+                if (_QMS_Type_name) {
+                    new_QMS_Fields = sortByName(rootTypes?.find((type) => {
+                        return type?.name == _QMS_Type_name;
+                    })?.fields)
+                }
                 if (set_storeVal) {
-                    storeValue.queryFields = new_queryFields
+                    storeValue = { ...storeValue, ...result }
                     set(storeValue) //works even without this but donno about reactivity
                 }
-            }
-            return new_queryFields
-        },
-        set_mutationFields: (withDerivedData: false, set_storeVal = true) => {
-            let storeValue = get(store)
-            let { rootTypes, queryFields, mutationFields, schema } = storeValue
-            let mutationType_name = schema?.mutationType?.name
-            let new_mutationFields
-            if (mutationType_name) {
-                new_mutationFields = sortByName(rootTypes?.find((type) => {
-                    return type?.name == mutationType_name;
-                })?.fields)
+                result[`${_QMS_}Fields`] = new_QMS_Fields
 
-                if (set_storeVal) {
-                    storeValue.mutationFields = new_mutationFields
-                    set(storeValue) //works even without this but donno about reactivity
-                }
-            }
-            return new_mutationFields
-        },
-        set_subscriptionFields: (withDerivedData: false, set_storeVal = true) => {
-            let storeValue = get(store)
-            let { rootTypes, queryFields, subscriptionFields, schema } = storeValue
-            let subscriptionType_name = schema?.subscriptionType?.name
-            let new_subscriptionFields
-            if (subscriptionType_name) {
-                new_subscriptionFields = sortByName(rootTypes?.find((type) => {
-                    return type?.name == subscriptionType_name;
-                })?.fields)
-
-                if (set_storeVal) {
-                    storeValue.subscriptionFields = new_subscriptionFields
-                    set(storeValue) //works even without this but donno about reactivity
-                }
-            }
-            return new_subscriptionFields
+            });
+            return result
         },
         set_fields: (withDerivedData: false) => { //set rootTypes,queryFields,mutationFields,subscriptionFields //fields or types?
             let rootTypes = returnObject.set_rootTypes(false, true)
-            let queryFields = returnObject.set_queryFields(false, false)
-            let mutationFields = returnObject.set_mutationFields(false, false)
-            let subscriptionFields = returnObject.set_subscriptionFields(false, false)
-            let { schema } = get(store)
-
+            let storeValue = get(store)
+            let QMSFields = returnObject.set_QMSFields(false, false, ['query', 'mutation', 'subscription'])
+            console.log('QMSFields', QMSFields)
             set({
-                schema,
+                ...storeValue,
                 rootTypes,
-                queryFields,
-                mutationFields,
-                subscriptionFields,
+                ...QMSFields
             })
         }
 
