@@ -1,4 +1,4 @@
-import { get_NamesArray, get_KindsArray, sortByName, get_mainName, get_displayName } from "$lib/utils/usefulFunctions";
+import { get_NamesArray, get_KindsArray, sortByName, get_mainName, get_displayName, generate_derivedData } from "$lib/utils/usefulFunctions";
 import { get, writable } from "svelte/store";
 
 export const create_schemaData = () => {
@@ -16,15 +16,20 @@ export const create_schemaData = () => {
             let new_rootTypes = sortByName([...schema.types])
 
 
-            let derivedData = {}
+
             if (withDerivedData) {
                 new_rootTypes.forEach(el => {
-                    el.dd_kindsArray = get_KindsArray(el)
-                    el.dd_namesArray = get_NamesArray(el)
-                    el.dd_mainName = get_mainName(el.dd_namesArray)
-                    el.dd_mainName = get_mainName(el.dd_namesArray)
-                    el.dd_displayName = get_displayName(el.dd_namesArray)
-
+                    // let derivedData = generate_derivedData(el, rootTypes)
+                    Object.assign(el, generate_derivedData(el, rootTypes))
+                    el?.args?.forEach(arg => {
+                        Object.assign(arg, generate_derivedData(arg, rootTypes))
+                    });
+                    el?.fields?.forEach(field => {
+                        Object.assign(field, generate_derivedData(field, rootTypes))
+                    });
+                    el?.inputFields?.forEach(inputField => {
+                        Object.assign(inputField, generate_derivedData(inputField, rootTypes))
+                    });
                 });
             }
 
@@ -52,15 +57,19 @@ export const create_schemaData = () => {
                     })?.fields)
                 }
 
-                let derivedData = {}
                 if (withDerivedData) {
                     new_QMS_Fields.forEach(el => {
-                        el.dd_kindsArray = get_KindsArray(el)
-                        el.dd_namesArray = get_NamesArray(el)
-                        el.dd_mainName = get_mainName(el.dd_namesArray)
-                        el.dd_mainName = get_mainName(el.dd_namesArray)
-                        el.dd_displayName = get_displayName(el.dd_namesArray)
-
+                        // let derivedData = generate_derivedData(el, rootTypes)
+                        Object.assign(el, generate_derivedData(el, rootTypes))
+                        el?.args?.forEach(arg => {
+                            Object.assign(arg, generate_derivedData(arg, rootTypes))
+                        });
+                        el?.fields?.forEach(field => {
+                            Object.assign(field, generate_derivedData(field, rootTypes))
+                        });
+                        el?.inputFields?.forEach(inputField => {
+                            Object.assign(inputField, generate_derivedData(inputField, rootTypes))
+                        });
                     });
                 }
 
