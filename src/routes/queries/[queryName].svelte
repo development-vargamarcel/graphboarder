@@ -10,16 +10,16 @@
 	import {
 		getQM_Field,
 		getRootType,
-		getRootType_Name,
-		getRootType_NamesArray,
+		get_mainName,
+		get_NamesArray,
 		getFields_Grouped,
 		getArguments_withInfo,
-		getRootType_KindsArray,
+		get_KindsArray,
 		buildQueryBody,
 		generateQueryFragments,
 		generateFragmentData,
 		stepsOfFieldsToQueryFragment,
-		getDisplay_Name
+		get_displayName
 	} from '$lib/utils/usefulFunctions';
 	import { onDestroy, onMount } from 'svelte';
 	import { goto } from '$app/navigation';
@@ -37,7 +37,7 @@
 		goto('/queries');
 	}
 
-	let currentQueryNameForType = getRootType_Name(getRootType_NamesArray(currentQueryInfo));
+	let currentQueryNameForType = get_mainName(get_NamesArray(currentQueryInfo));
 	let currentQueryFromRootTypes = getRootType(
 		$introspectionResult.rootTypes,
 		currentQueryNameForType
@@ -145,8 +145,8 @@
 	};
 
 	let identifier = Math.random();
-	let nameToDisplay = getDisplay_Name(getRootType_NamesArray(currentQueryInfo));
-	let kinds = getRootType_KindsArray(currentQueryInfo);
+	let nameToDisplay = get_displayName(get_NamesArray(currentQueryInfo));
+	let kinds = get_KindsArray(currentQueryInfo);
 
 	//Active arguments logic
 	let activeArgumentsData = [];

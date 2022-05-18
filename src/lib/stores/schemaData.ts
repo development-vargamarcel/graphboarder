@@ -1,4 +1,4 @@
-import { sortByName } from "$lib/utils/usefulFunctions";
+import { get_NamesArray, get_KindsArray, sortByName, get_mainName, get_displayName } from "$lib/utils/usefulFunctions";
 import { get, writable } from "svelte/store";
 
 export const create_schemaData = () => {
@@ -14,10 +14,26 @@ export const create_schemaData = () => {
             let storeValue = get(store)
             let { rootTypes, queryFields, mutationFields, schema } = storeValue
             let new_rootTypes = sortByName([...schema.types])
+
+
+            let derivedData = {}
+            if (withDerivedData) {
+                new_rootTypes.forEach(el => {
+                    el.dd_kindsArray = get_KindsArray(el)
+                    el.dd_namesArray = get_NamesArray(el)
+                    el.dd_mainName = get_mainName(el.dd_namesArray)
+                    el.dd_mainName = get_mainName(el.dd_namesArray)
+                    el.dd_displayName = get_displayName(el.dd_namesArray)
+
+                });
+            }
+
+
             if (set_storeVal) {
                 storeValue.rootTypes = new_rootTypes
                 set(storeValue) //works even without this but donno about reactivity
             }
+
             return new_rootTypes
         },
         set_rootTypes_DerivedData: () => {
@@ -35,6 +51,20 @@ export const create_schemaData = () => {
                         return type?.name == _QMS_Type_name;
                     })?.fields)
                 }
+
+                let derivedData = {}
+                if (withDerivedData) {
+                    new_QMS_Fields.forEach(el => {
+                        el.dd_kindsArray = get_KindsArray(el)
+                        el.dd_namesArray = get_NamesArray(el)
+                        el.dd_mainName = get_mainName(el.dd_namesArray)
+                        el.dd_mainName = get_mainName(el.dd_namesArray)
+                        el.dd_displayName = get_displayName(el.dd_namesArray)
+
+                    });
+                }
+
+
                 if (set_storeVal) {
                     storeValue = { ...storeValue, ...result }
                     set(storeValue) //works even without this but donno about reactivity
@@ -45,9 +75,9 @@ export const create_schemaData = () => {
             return result
         },
         set_fields: (withDerivedData: false) => { //set rootTypes,queryFields,mutationFields,subscriptionFields //fields or types?
-            let rootTypes = returnObject.set_rootTypes(false, true)
+            let rootTypes = returnObject.set_rootTypes(true, true)
             let storeValue = get(store)
-            let QMSFields = returnObject.set_QMSFields(false, false, ['query', 'mutation', 'subscription'])
+            let QMSFields = returnObject.set_QMSFields(true, false, ['query', 'mutation', 'subscription'])
             console.log('QMSFields', QMSFields)
             set({
                 ...storeValue,

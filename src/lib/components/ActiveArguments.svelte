@@ -1,6 +1,6 @@
 <script>
-	import { getRootType_NamesArray } from './../utils/usefulFunctions.ts';
-	import { getRootType_KindsArray } from '$lib/utils/usefulFunctions';
+	import { get_NamesArray } from './../utils/usefulFunctions.ts';
+	import { get_KindsArray } from '$lib/utils/usefulFunctions';
 	import { scalarsAndEnumsDisplayTypes } from '$lib/stores/scalarsAndEnumsDisplayTypes';
 	import FilterChoises from '$lib/components/FilterChoises.svelte';
 	import FilterGroup from './FilterGroup.svelte';

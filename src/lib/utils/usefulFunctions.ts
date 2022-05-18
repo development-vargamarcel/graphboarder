@@ -14,7 +14,7 @@ ${queryFragments}
 
 export const generateFragmentData = (field, rootTypes, flatten, deeperIfNoScalar = true) => {
     let fieldName = field.name;
-    let isScalar = getRootType_KindsArray(field).includes('SCALAR');
+    let isScalar = get_KindsArray(field).includes('SCALAR');
     let fragmentData;
     let subFields;
     let subFields_scalar;
@@ -27,9 +27,9 @@ export const generateFragmentData = (field, rootTypes, flatten, deeperIfNoScalar
         }
     } else {
         fragmentData = [fieldName];
-        subFields = getRootType(rootTypes, getRootType_Name(getRootType_NamesArray(field))).fields;
+        subFields = getRootType(rootTypes, get_mainName(get_NamesArray(field))).fields;
         subFields_scalar = subFields.filter((subField) => {
-            return getRootType_KindsArray(subField).includes('SCALAR');
+            return get_KindsArray(subField).includes('SCALAR');
         });
 
         if (flatten) {
@@ -114,7 +114,7 @@ export const getQM_Field = (QMFields, queryName) => {
     })[0];
 };
 
-export const getRootType_KindsArray = (type) => {
+export const get_KindsArray = (type) => {
     let kinds = [];
 
     if (type?.kind) {
@@ -144,7 +144,7 @@ export const getRootType_KindsArray = (type) => {
 
     return kinds;
 };
-export const getRootType_NamesArray = (type) => {
+export const get_NamesArray = (type) => {
     let names = [];
 
     if (type?.name) {
@@ -168,11 +168,11 @@ export const getRootType_NamesArray = (type) => {
     return names;
 };
 
-export let getRootType_Name = (namesArray) => {
+export let get_mainName = (namesArray) => {
     return namesArray[namesArray.length - 1];
 };
 
-export let getDisplay_Name = (namesArray) => {
+export let get_displayName = (namesArray) => {
     return namesArray[0];
 };
 export const getRootType = (rootTypes, RootType_Name) => {
@@ -186,7 +186,7 @@ export const getFields_Grouped = (rootField) => {
     let non_scalarFields = [];
 
     rootField?.fields?.forEach((field) => {
-        if (getRootType_KindsArray(field).includes('SCALAR')) {
+        if (get_KindsArray(field).includes('SCALAR')) {
             scalarFields.push(field);
         } else {
             non_scalarFields.push(field);
@@ -205,7 +205,7 @@ export const getFields_Grouped = (rootField) => {
 //     console.log(QM)
 //     console.log(QM.args)
 //     QM?.args?.forEach(arg => {
-//         if (getRootType_KindsArray(arg).includes('SCALAR')) {
+//         if (get_KindsArray(arg).includes('SCALAR')) {
 //             scalarArgs.push(arg)
 //         } else {
 //             non_scalarArgs.push(arg)
@@ -222,7 +222,7 @@ export const getArguments_withInfo = (QM) => {
     let args = QM?.args?.map((arg) => {
         return {
             arg: arg,
-            kindsArray: getRootType_KindsArray(arg)
+            kindsArray: get_KindsArray(arg)
         };
     });
     return args;
@@ -424,7 +424,7 @@ export const formatData = (data = '', length, alwaysStringyfy = true) => {
 export const elementToDisplay = (rawData) => {
     let { kinds, names } = rawData;
     let displayType;
-    let RootType_Name = getRootType_Name(names);
+    let RootType_Name = get_mainName(names);
     let _scalarsAndEnumsDisplayTypes = get(scalarsAndEnumsDisplayTypes);
     let lastKind = kinds[kinds.length - 1];
     if (lastKind == 'ENUM') {
@@ -439,7 +439,7 @@ export const elementToDisplay = (rawData) => {
         required: kinds[0] == 'NON_NULL',
         expectsList: kinds.includes('LIST'),
         displayType,
-        displayName: getDisplay_Name(names),
+        displayName: get_displayName(names),
         rawData
     };
 };

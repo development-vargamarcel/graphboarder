@@ -1,11 +1,11 @@
 <script>
 	import { introspectionResult } from '$lib/stores/introspectionResult';
 	import {
-		getRootType_KindsArray,
-		getRootType_Name,
-		getDisplay_Name,
+		get_KindsArray,
+		get_mainName,
+		get_displayName,
 		getRootType,
-		getRootType_NamesArray,
+		get_NamesArray,
 		stepsOfFieldsToColData
 	} from '$lib/utils/usefulFunctions';
 	import Arg from './Arg.svelte';
@@ -20,10 +20,10 @@
 	let names = [];
 	let kinds = [];
 
-	names = getRootType_NamesArray(type);
-	kinds = getRootType_KindsArray(type);
-	let name = getRootType_Name(names);
-	let nameToDisplay = getDisplay_Name(names);
+	names = get_NamesArray(type);
+	kinds = get_KindsArray(type);
+	let name = get_mainName(names);
+	let nameToDisplay = get_displayName(names);
 
 	let showExpand = false;
 	let expandData = {};

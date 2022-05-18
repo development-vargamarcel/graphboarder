@@ -4,9 +4,9 @@
 	import {
 		elementToDisplay,
 		getRootType,
-		getRootType_KindsArray,
-		getRootType_Name,
-		getRootType_NamesArray
+		get_KindsArray,
+		get_mainName,
+		get_NamesArray
 	} from '$lib/utils/usefulFunctions';
 	import { stringify } from 'postcss';
 	import { createEventDispatcher } from 'svelte';
@@ -37,12 +37,12 @@
 	console.log('elementToDisplay', _elementToDisplay);
 
 	// testing
-	let RootType_Name = getRootType_Name(names);
+	let RootType_Name = get_mainName(names);
 	let RootType = getRootType($introspectionResult.rootTypes, RootType_Name);
 	let inputFields = RootType?.inputFields;
 	let enumValues = RootType?.enumValues;
 	let allInputFieldsAreScalar = inputFields?.every((field) => {
-		return getRootType_KindsArray(field).includes('SCALAR');
+		return get_KindsArray(field).includes('SCALAR');
 	});
 
 	console.log('*RootType*', RootType);

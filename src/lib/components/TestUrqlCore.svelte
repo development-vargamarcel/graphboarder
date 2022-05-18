@@ -7,11 +7,11 @@
 	import {
 		getQM_Field,
 		getRootType,
-		getRootType_Name,
-		getRootType_NamesArray,
+		get_mainName,
+		get_NamesArray,
 		getFields_Grouped,
 		getArguments_withInfo,
-		getRootType_KindsArray
+		get_KindsArray
 	} from '$lib/utils/usefulFunctions';
 	import { onDestroy, onMount } from 'svelte';
 
@@ -24,7 +24,7 @@
 	});
 
 	let currentQueryInfo = getQM_Field($introspectionResult.queryFields, queryName);
-	let currentQueryNameForType = getRootType_Name(getRootType_NamesArray(currentQueryInfo));
+	let currentQueryNameForType = get_mainName(get_NamesArray(currentQueryInfo));
 	let currentQueryFromRootTypes = getRootType(
 		$introspectionResult.rootTypes,
 		currentQueryNameForType

@@ -1,11 +1,7 @@
 <script>
 	import FilterItem from './FilterItem.svelte';
 	import FilterChoises from './FilterChoises.svelte';
-	import {
-		elementToDisplay,
-		getRootType_KindsArray,
-		getRootType_NamesArray
-	} from '$lib/utils/usefulFunctions';
+	import { elementToDisplay, get_KindsArray, get_NamesArray } from '$lib/utils/usefulFunctions';
 
 	export let id;
 	export let choises;
@@ -40,8 +36,8 @@
 			if (relatedField) {
 				displayType = filterAppliedData.extraData.displayType;
 				relatedFieldDetails = elementToDisplay({
-					kinds: getRootType_KindsArray(relatedField),
-					names: getRootType_NamesArray(relatedField)
+					kinds: get_KindsArray(relatedField),
+					names: get_NamesArray(relatedField)
 				});
 			} else {
 			}
