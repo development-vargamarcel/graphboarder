@@ -466,6 +466,26 @@ export const generate_derivedData = (type, rootTypes) => { //type/field
     derivedData.dd_rootName = get_rootName(derivedData.dd_namesArray)
     derivedData.dd_displayName = get_displayName(derivedData.dd_namesArray)
     derivedData.dd_relatedRoot = getRootType(rootTypes, derivedData.dd_rootName)
+    derivedData.dd_kindEl = undefined
+    derivedData.dd_kindEl_NON_NULL = false
+    derivedData.dd_kindList = false
+    derivedData.dd_kindList_NON_NULL = false
+    derivedData.dd_NON_NULL = derivedData.dd_kindsArray[0] === 'NON_NULL'
+
+    let dd_kindsArray_REVERSE = [...derivedData.dd_kindsArray].reverse()
+    dd_kindsArray_REVERSE.forEach(el => {
+        if (el == 'LIST') {
+            derivedData.dd_kindList = true
+        } else if (el == 'NON_NULL') {
+            if (derivedData.dd_kindList) {
+                derivedData.dd_kindList_NON_NULL = true
+            } else {
+                derivedData.dd_kindEl_NON_NULL = true
+            }
+        } else {
+            derivedData.dd_kindEl = el
+        }
+    });
 
     return derivedData
 }
