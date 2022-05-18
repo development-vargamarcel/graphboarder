@@ -26,6 +26,9 @@ export const create_schemaData = () => {
                     });
                     el?.fields?.forEach(field => {
                         Object.assign(field, generate_derivedData(field, rootTypes))
+                        field?.args?.forEach(arg => {
+                            Object.assign(arg, generate_derivedData(arg, rootTypes))
+                        });
                     });
                     el?.inputFields?.forEach(inputField => {
                         Object.assign(inputField, generate_derivedData(inputField, rootTypes))
