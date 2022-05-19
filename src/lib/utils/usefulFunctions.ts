@@ -461,7 +461,6 @@ export const sortByName = (array) => {
 
 export const generate_derivedData = (type, rootTypes) => { //type/field  
     let derivedData = {}
-    derivedData.dd_rootTypesTEST = rootTypes
     derivedData.dd_kindsArray = get_KindsArray(type)
     derivedData.dd_namesArray = get_NamesArray(type)
     derivedData.dd_rootName = get_rootName(derivedData.dd_namesArray)

@@ -11,7 +11,6 @@
 	import { schemaData } from '$lib/stores/schemaData';
 	export let origin;
 	export let query;
-	console.log('query', query);
 	let queryName = query.name;
 	let queryNameDisplay = queryName;
 	let queryTitleDisplay = '';

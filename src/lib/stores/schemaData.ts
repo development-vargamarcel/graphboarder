@@ -108,15 +108,15 @@ export const create_schemaData = () => {
                 type.name == name
             })[0]
         },
-        // get_QMS_Field: (name, _QMS_) => { //_QMS_ -> choosen QMS (one of: Query,Mutation,Subscription)
-        //     let storeValue = get(store)
-        //     let { rootTypes, queryFields, mutationFields, schema } = storeValue
-        //     return [`${_QMS_
-        //         }Fields`].filter((field) => {
-        //             field.name == name
-        //         })[0]
-        //     // return queryFields
-        // }
+        get_QMS_Field: (name, _QMS_) => { //_QMS_ -> choosen QMS (one of: Query,Mutation,Subscription)
+            let storeValue = get(store)
+            let { rootTypes, queryFields, mutationFields, schema } = storeValue
+            return storeValue?.[`${_QMS_
+                }Fields`]?.filter((field) => {
+                    return field.name == name
+                })[0]
+
+        }
     }
     return returnObject
 }

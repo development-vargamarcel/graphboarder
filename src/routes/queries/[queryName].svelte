@@ -26,25 +26,31 @@
 	import Type from '$lib/components/Type.svelte';
 	import Arg from '$lib/components/Arg.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
+	import { schemaData } from '$lib/stores/schemaData';
 	setClient($urqlClient);
 	let queryName = $page.params.queryName;
 	onDestroy(() => {
 		document.getElementById('my-drawer-3')?.click();
 	});
 
-	let currentQueryInfo = getQM_Field($introspectionResult.queryFields, queryName);
+	let currentQueryInfo = schemaData.get_QMS_Field(queryName, 'query');
+	let {
+		dd_kindsArray,
+		dd_namesArray,
+		dd_rootName,
+		dd_displayName,
+		dd_kindEl,
+		dd_kindEl_NON_NULL,
+		dd_kindList,
+		dd_kindList_NON_NULL,
+		dd_NON_NULL,
+		dd_relatedRoot
+	} = currentQueryInfo;
 	if (!currentQueryInfo) {
 		goto('/queries');
 	}
 
-	let currentQueryNameForType = get_rootName(get_NamesArray(currentQueryInfo));
-	let currentQueryFromRootTypes = getRootType(
-		$introspectionResult.rootTypes,
-		currentQueryNameForType
-	);
-
-	let { scalarFields, non_scalarFields } = getFields_Grouped(currentQueryFromRootTypes);
-	let arguments_withInfo = getArguments_withInfo(currentQueryInfo);
+	let { scalarFields, non_scalarFields } = getFields_Grouped(dd_relatedRoot);
 	console.log('currentQueryInfo ====', currentQueryInfo);
 	let currentQuery_fields_SCALAR_names = scalarFields.map((field) => {
 		return field.name;
@@ -211,7 +217,7 @@
 			<div
 				class="flex flex-col overflow-x-auto text-sm font-normal normal-case min-w-max  w-full  space-y-2"
 			>
-				{#key currentQueryFromRootTypes.fields}
+				{#key dd_relatedRoot.fields}
 					<input
 						type="text"
 						class="input input-sm input-bordered input-accent m-2"
@@ -219,7 +225,7 @@
 						bind:value={column_stepsOfFieldsNew}
 						on:keypress={addColumnFromInput}
 					/>
-					{#each currentQueryFromRootTypes.fields as type, index (index)}
+					{#each dd_relatedRoot.fields as type, index (index)}
 						<Type
 							{index}
 							{type}
@@ -231,7 +237,7 @@
 								tableColsData = [...tableColsData, e.detail];
 								console.log('tableColsData', tableColsData);
 								runQuery();
-								currentQueryFromRootTypes.fields = currentQueryFromRootTypes.fields; // this and key is used to re-render Type
+								dd_relatedRoot.fields = dd_relatedRoot.fields; // this and key is used to re-render Type
 							}}
 						/>
 					{/each}
