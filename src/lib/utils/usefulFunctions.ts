@@ -228,34 +228,34 @@ export const getArguments_withInfo = (QM) => {
     return args;
 };
 
-export const stepsOfFieldsToColData = (stepsOfFields) => {
-    let colData;
-    if (stepsOfFields.length == 1) {
-        colData = stepsOfFields[0][0];
-    } else {
-        let stepsOfFields_Len = stepsOfFields.length;
-        for (let i = stepsOfFields_Len; i > 0; i--) {
-            if (colData) {
-                if (i > 1) {
-                    colData = [[...stepsOfFields[i - 1], colData]];
-                } else {
-                    colData = [...stepsOfFields[i - 1], colData];
-                }
-            } else {
-                colData = [...stepsOfFields[i - 1]];
+// export const stepsOfFieldsToColData = (stepsOfFields) => {
+//     let colData;
+//     if (stepsOfFields.length == 1) {
+//         colData = stepsOfFields[0][0];
+//     } else {
+//         let stepsOfFields_Len = stepsOfFields.length;
+//         for (let i = stepsOfFields_Len; i > 0; i--) {
+//             if (colData) {
+//                 if (i > 1) {
+//                     colData = [[...stepsOfFields[i - 1], colData]];
+//                 } else {
+//                     colData = [...stepsOfFields[i - 1], colData];
+//                 }
+//             } else {
+//                 colData = [...stepsOfFields[i - 1]];
 
-                // if (typeof stepsOfFields[i - 1] == 'string') {
-                //     colData = [...stepsOfFields[i - 1]]
-                // } else {
+//                 // if (typeof stepsOfFields[i - 1] == 'string') {
+//                 //     colData = [...stepsOfFields[i - 1]]
+//                 // } else {
 
-                //     colData = [...stepsOfFields[i - 1]]//change
-                // }
-            }
-        }
-    }
+//                 //     colData = [...stepsOfFields[i - 1]]//change
+//                 // }
+//             }
+//         }
+//     }
 
-    return colData;
-};
+//     return colData;
+// };
 
 export const stepsOfFieldsToQueryFragment = (stepsOfFields) => {
     let queryFragment;
@@ -461,6 +461,7 @@ export const sortByName = (array) => {
 
 export const generate_derivedData = (type, rootTypes) => { //type/field  
     let derivedData = {}
+    derivedData.dd_rootTypesTEST = rootTypes
     derivedData.dd_kindsArray = get_KindsArray(type)
     derivedData.dd_namesArray = get_NamesArray(type)
     derivedData.dd_rootName = get_rootName(derivedData.dd_namesArray)

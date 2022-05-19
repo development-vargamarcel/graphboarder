@@ -5,8 +5,7 @@
 		get_rootName,
 		get_displayName,
 		getRootType,
-		get_NamesArray,
-		stepsOfFieldsToColData
+		get_NamesArray
 	} from '$lib/utils/usefulFunctions';
 	import Arg from './Arg.svelte';
 	import TypeInfoDisplay from './TypeInfoDisplay.svelte';

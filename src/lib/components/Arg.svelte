@@ -13,32 +13,35 @@
 	export let index;
 	export let type;
 	export let template;
-	export let parentKinds = [];
-	export let parentNameToDisplay = '';
-	export let parentIdentifier = '';
+
 	export let stepsOfFieldsNew = [];
 	stepsOfFieldsNew = [...stepsOfFieldsNew]; // so each tree will have it's own stepsOfFieldsNew
 	let indetifier = Math.random();
-	let names = [];
-	let kinds = [];
-
-	names = get_NamesArray(type);
-	kinds = get_KindsArray(type);
-	let name = get_rootName(names);
-	let nameToDisplay = get_displayName(names);
+	let {
+		dd_kindsArray,
+		dd_namesArray,
+		dd_rootName,
+		dd_displayName,
+		dd_kindEl,
+		dd_kindEl_NON_NULL,
+		dd_kindList,
+		dd_kindList_NON_NULL,
+		dd_NON_NULL,
+		dd_relatedRoot
+	} = type;
 
 	let showExpand = false;
 	let expandData = {};
 	let canExpand = false;
-	if (!kinds.includes('SCALAR') && kinds.length > 0) {
+	if (!dd_kindsArray.includes('SCALAR') && dd_kindsArray.length > 0) {
 		canExpand = true;
 	}
 	const expand = () => {
-		console.log('name', name);
-		expandData = getRootType($introspectionResult.rootTypes, name);
+		console.log('dd_rootName', dd_rootName);
+		expandData = getRootType($introspectionResult.rootTypes, dd_rootName);
 		if (expandData) {
 			if (!showExpand) {
-				stepsOfFieldsNew.push(nameToDisplay);
+				stepsOfFieldsNew.push(dd_displayName);
 			} else {
 				// does the trick if you hide one by one from last one
 				stepsOfFieldsNew.splice(-1);
@@ -67,12 +70,6 @@
 		{showExpand}
 		{index}
 		{type}
-		{names}
-		{nameToDisplay}
-		{kinds}
-		{parentKinds}
-		{parentNameToDisplay}
-		{parentIdentifier}
 		{stepsOfFieldsNew}
 		on:argAddRequest
 	/>
@@ -84,16 +81,7 @@
 			<div class="">
 				{#each expandData.inputFields || expandData.enumValues as arg, index}
 					<div>
-						<svelte:self
-							{index}
-							type={arg}
-							{template}
-							parentKinds={kinds}
-							parentNameToDisplay={nameToDisplay}
-							parentIdentifier={indetifier}
-							{stepsOfFieldsNew}
-							on:argAddRequest
-						/>
+						<svelte:self {index} type={arg} {template} {stepsOfFieldsNew} on:argAddRequest />
 					</div>
 				{/each}
 			</div>

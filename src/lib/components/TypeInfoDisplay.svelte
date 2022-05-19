@@ -1,11 +1,7 @@
 <script>
 	import { stepsOfFieldsToQueryFragment } from './../utils/usefulFunctions.ts';
 	import { introspectionResult } from './../stores/introspectionResult.ts';
-	import {
-		generateFragmentData,
-		get_rootName,
-		stepsOfFieldsToColData
-	} from '$lib/utils/usefulFunctions';
+	import { generateFragmentData, get_rootName } from '$lib/utils/usefulFunctions';
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 	export let canExpand;

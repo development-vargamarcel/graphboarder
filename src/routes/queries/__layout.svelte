@@ -5,6 +5,7 @@
 	import QueryLink from '$lib/components/QueryLink.svelte';
 
 	import { onDestroy } from 'svelte';
+	import { schemaData } from '$lib/stores/schemaData';
 	console.log('queries: ', queries);
 
 	let origin = $page.url.origin;
@@ -59,7 +60,9 @@
 				<!-- svelte-ignore a11y-missing-attribute -->
 				<label for="my-drawer-3" class=""
 					><li>
-						<QueryLink {query} {origin} />
+						{#if $schemaData.queryFields.length > 0}
+							<QueryLink {query} {origin} />
+						{/if}
 					</li></label
 				>
 			{/each}

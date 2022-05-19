@@ -14,27 +14,23 @@ export const create_schemaData = () => {
             let storeValue = get(store)
             let { rootTypes, queryFields, mutationFields, schema } = storeValue
             let new_rootTypes = sortByName([...schema.types])
-
-
-
             if (withDerivedData) {
                 new_rootTypes.forEach(el => {
-                    // let derivedData = generate_derivedData(el, rootTypes)
-                    Object.assign(el, generate_derivedData(el, rootTypes))
+                    Object.assign(el, generate_derivedData(el, new_rootTypes))
                     el?.args?.forEach(arg => {
-                        Object.assign(arg, generate_derivedData(arg, rootTypes))
+                        Object.assign(arg, generate_derivedData(arg, new_rootTypes))
                     });
                     el?.fields?.forEach(field => {
-                        Object.assign(field, generate_derivedData(field, rootTypes))
+                        Object.assign(field, generate_derivedData(field, new_rootTypes))
                         field?.args?.forEach(arg => {
-                            Object.assign(arg, generate_derivedData(arg, rootTypes))
+                            Object.assign(arg, generate_derivedData(arg, new_rootTypes))
                         });
                     });
                     el?.inputFields?.forEach(inputField => {
-                        Object.assign(inputField, generate_derivedData(inputField, rootTypes))
+                        Object.assign(inputField, generate_derivedData(inputField, new_rootTypes))
                     });
                     el?.enumValues?.forEach(enumValue => {
-                        Object.assign(enumValue, generate_derivedData(enumValue, rootTypes))
+                        Object.assign(enumValue, generate_derivedData(enumValue, new_rootTypes))
                     });
                 });
             }
@@ -64,7 +60,7 @@ export const create_schemaData = () => {
                 }
 
                 if (withDerivedData) {
-                    new_QMS_Fields.forEach(el => {                    // let derivedData = generate_derivedData(el, rootTypes)
+                    new_QMS_Fields.forEach(el => {
                         Object.assign(el, generate_derivedData(el, rootTypes))
                         el?.args?.forEach(arg => {
                             Object.assign(arg, generate_derivedData(arg, rootTypes))
@@ -77,6 +73,9 @@ export const create_schemaData = () => {
                         });
                         el?.inputFields?.forEach(inputField => {
                             Object.assign(inputField, generate_derivedData(inputField, rootTypes))
+                        });
+                        el?.enumValues?.forEach(enumValue => {
+                            Object.assign(enumValue, generate_derivedData(enumValue, rootTypes))
                         });
                     });
                 }
@@ -101,8 +100,23 @@ export const create_schemaData = () => {
                 rootTypes,
                 ...QMSFields
             })
-        }
-
+        },
+        get_rootType: (name) => {
+            let storeValue = get(store)
+            let { rootTypes, queryFields, mutationFields, schema } = storeValue
+            return rootTypes.filter((type) => {
+                type.name == name
+            })[0]
+        },
+        // get_QMS_Field: (name, _QMS_) => { //_QMS_ -> choosen QMS (one of: Query,Mutation,Subscription)
+        //     let storeValue = get(store)
+        //     let { rootTypes, queryFields, mutationFields, schema } = storeValue
+        //     return [`${_QMS_
+        //         }Fields`].filter((field) => {
+        //             field.name == name
+        //         })[0]
+        //     // return queryFields
+        // }
     }
     return returnObject
 }
