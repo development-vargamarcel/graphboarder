@@ -28,7 +28,7 @@
 	}
 
 	if (scalarFields.length == 0) {
-		queryNameDisplay = queryNameDisplay + ' (...)';
+		queryNameDisplay = queryNameDisplay + ' (no scalar)';
 	}
 </script>
 

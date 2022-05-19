@@ -67,7 +67,7 @@
 	//let queryFragments;
 	let queryFragmentsNew;
 	let queryBody;
-	let queryData = { fetching: true, error: false, data: false };
+	let queryData;
 
 	const runQuery = () => {
 		//queryFragments = generateQueryFragments(tableColsData);
@@ -103,8 +103,12 @@
 				console.log('queryData', queryData);
 			});
 	};
-
-	runQuery();
+	if (scalarFields.length == 0) {
+		queryData = { fetching: false, error: false, data: false };
+	} else {
+		queryData = { fetching: true, error: false, data: false };
+		runQuery();
+	}
 
 	const hideColumn = (e) => {
 		tableColsData = tableColsData.filter((colData) => {
@@ -169,9 +173,6 @@
 					{index}
 					type={arg}
 					template="changeArguments"
-					parentKinds={kinds}
-					parentNameToDisplay={nameToDisplay}
-					parentIdentifier={identifier}
 					on:argAddRequest={(e) => {
 						let newArgData = e.detail;
 						// if (
