@@ -16,29 +16,33 @@
 	export let showExpand;
 	export let index;
 	export let type;
-	export let names;
-	export let nameToDisplay;
-	export let kinds;
-	export let parentKinds;
-	export let parentNameToDisplay;
-	export let parentIdentifier;
 	export let template;
 	export let stepsOfFieldsNew;
+	let {
+		dd_kindsArray,
+		dd_namesArray,
+		dd_rootName,
+		dd_displayName,
+		dd_kindEl,
+		dd_kindEl_NON_NULL,
+		dd_kindList,
+		dd_kindList_NON_NULL,
+		dd_NON_NULL,
+		dd_relatedRoot
+	} = type;
 
+	console.log('====', dd_namesArray, dd_namesArray);
 	//only for  changeArguments
 	let inUse;
 	const _elementToDisplay = elementToDisplay({
-		kinds,
-		names,
-		parentKinds,
-		parentNameToDisplay,
-		parentIdentifier
+		kinds: dd_kindsArray,
+		names: dd_namesArray
 	});
 	console.log('elementToDisplay', _elementToDisplay);
 
 	// testing
-	let RootType_Name = get_rootName(names);
-	let RootType = getRootType($introspectionResult.rootTypes, RootType_Name);
+	let RootType_Name = dd_rootName;
+	let RootType = dd_relatedRoot;
 	let inputFields = RootType?.inputFields;
 	let enumValues = RootType?.enumValues;
 	let allInputFieldsAreScalar = inputFields?.every((field) => {
@@ -66,32 +70,32 @@
 				class="btn btn-xs btn-info normal-case font-light "
 				on:click={() => {
 					console.log(type);
-					console.log(names);
+					console.log(dd_namesArray);
 				}}
 			>
-				{nameToDisplay}
+				{dd_displayName}
 			</div>
 		</div>
 
 		<div class="w-1/2 ">
 			<div class="flex">
-				<div class="bg-secondary p-1 rounded ">{kinds.join(' of ')}</div>
+				<div class="bg-secondary p-1 rounded ">{dd_kindsArray.join(' of ')}</div>
 
 				{#if !canExpand}
-					{#if nameToDisplay == names[names.length - 1]}
+					{#if dd_displayName == dd_namesArray[dd_namesArray.length - 1]}
 						{''}
 					{:else}
 						<div class="bg-base-200 p-1 rounded">
-							{names[names.length - 1]}
+							{dd_namesArray[dd_namesArray.length - 1]}
 						</div>
 					{/if}
 				{/if}
 				{#if canExpand}
 					<div class="bg-base-200  rounded px-2 py-1">
-						{#if names[0] !== nameToDisplay}
-							({names[0]})
-						{:else if names[1] && names[1] !== nameToDisplay}
-							({names[1]})
+						{#if dd_namesArray[0] !== dd_displayName}
+							({dd_namesArray[0]})
+						{:else if dd_namesArray[1] && dd_namesArray[1] !== dd_displayName}
+							({dd_namesArray[1]})
 						{:else}
 							{'same'}
 						{/if}
@@ -108,7 +112,7 @@
 	<label
 		class=" cursor-pointer  hover:text-primary px-2 rounded-box flex text-base min-w-max  w-full"
 	>
-		<div class=" pr-2  w-full min-w-max">{nameToDisplay}</div>
+		<div class=" pr-2  w-full min-w-max">{dd_displayName}</div>
 
 		{#if canExpand && !allInputFieldsAreScalar && !enumValues}
 			<div class="w-10  " on:click={expand}>
@@ -122,8 +126,8 @@
 			<div
 				class="w-10  "
 				on:click={() => {
-					if (stepsOfFieldsNew[stepsOfFieldsNew.length - 1] !== nameToDisplay) {
-						stepsOfFieldsNew.push(nameToDisplay); //take care might caus eproblems
+					if (stepsOfFieldsNew[stepsOfFieldsNew.length - 1] !== dd_displayName) {
+						stepsOfFieldsNew.push(dd_displayName); //take care might caus eproblems
 					}
 
 					let infoToCast = {
