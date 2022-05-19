@@ -13,34 +13,36 @@
 	export let template;
 	export let index;
 	export let type;
-	export let stepsOfFields = [];
 	export let stepsOfFieldsNew = [];
 	stepsOfFieldsNew = [...stepsOfFieldsNew]; // so each tree will have it's own stepsOfFieldsNew
 	export let depth = 0;
-	let names = [];
-	let kinds = [];
-
-	names = get_NamesArray(type);
-	kinds = get_KindsArray(type);
-	let name = get_rootName(names);
-	let nameToDisplay = get_displayName(names);
+	let {
+		dd_kindsArray,
+		dd_namesArray,
+		dd_rootName,
+		dd_displayName,
+		dd_kindEl,
+		dd_kindEl_NON_NULL,
+		dd_kindList,
+		dd_kindList_NON_NULL,
+		dd_NON_NULL,
+		dd_relatedRoot
+	} = type;
 
 	let showExpand = false;
 	let expandData = {};
 	let canExpand = false;
-	if (!kinds.includes('SCALAR')) {
+	if (!dd_kindsArray?.includes('SCALAR') && dd_kindsArray.length > 0) {
 		canExpand = true;
 	}
 	const expand = () => {
-		console.log('name', name);
-		expandData = getRootType($introspectionResult.rootTypes, name);
+		console.log('dd_rootName', dd_rootName);
+		expandData = getRootType($introspectionResult.rootTypes, dd_rootName);
 		if (expandData) {
 			if (!showExpand) {
-				stepsOfFields.push([nameToDisplay]);
-				stepsOfFieldsNew.push(nameToDisplay);
+				stepsOfFieldsNew.push(dd_displayName);
 			} else {
 				// does the trick if you hide one by one from last one
-				stepsOfFields.splice(-1);
 				stepsOfFieldsNew.splice(-1);
 			}
 
@@ -64,15 +66,10 @@
 		{canExpand}
 		{expand}
 		{type}
-		{names}
-		{nameToDisplay}
-		{kinds}
 		{index}
 		{showExpand}
 		{template}
-		{stepsOfFields}
 		{stepsOfFieldsNew}
-		{name}
 	/>
 
 	{#if showExpand}
@@ -89,16 +86,8 @@
 
 		<div class="border-l-2 bg-accent/5">
 			<div class="w-min-max w-full">
-				{#each expandData.fields as type, index (index)}
-					<svelte:self
-						{index}
-						{type}
-						{template}
-						{stepsOfFields}
-						{stepsOfFieldsNew}
-						{depth}
-						on:colAddRequest
-					/>
+				{#each expandData.fields || expandData.inputFields || expandData.enumValues as type, index (index)}
+					<svelte:self {index} {type} {template} {stepsOfFieldsNew} {depth} on:colAddRequest />
 				{/each}
 			</div>
 		</div>

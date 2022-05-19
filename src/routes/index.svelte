@@ -93,7 +93,6 @@
 					{index}
 					{type}
 					template="default"
-					stepsOfFields={[]}
 					depth={0}
 					on:colAddRequest={(e) => {
 						console.log(e);

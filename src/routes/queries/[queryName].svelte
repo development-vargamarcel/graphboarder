@@ -132,7 +132,6 @@
 				.split('>');
 			let tableColData = {
 				title: `col-${Math.floor(Math.random() * 200)}`,
-				//queryFragment: stepsOfFieldsToColData(stepsOfFields),
 				stepsOfFieldsNew: stepsOfFieldsNew,
 				queryFragmentNew: stepsOfFieldsToQueryFragment(stepsOfFieldsNew)
 			};
@@ -225,7 +224,6 @@
 							{index}
 							{type}
 							template="columnAddDisplay"
-							stepsOfFields={[]}
 							stepsOfFieldsNew={[]}
 							depth={0}
 							on:colAddRequest={(e) => {

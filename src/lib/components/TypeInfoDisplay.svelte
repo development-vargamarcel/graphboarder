@@ -11,15 +11,22 @@
 	export let canExpand;
 	export let expand;
 	export let type;
-	export let names;
-	export let name;
-	export let kinds;
-	export let nameToDisplay;
 	export let index;
 	export let showExpand;
 	export let template = 'default';
-	export let stepsOfFields;
 	export let stepsOfFieldsNew;
+	let {
+		dd_kindsArray,
+		dd_namesArray,
+		dd_rootName,
+		dd_displayName,
+		dd_kindEl,
+		dd_kindEl_NON_NULL,
+		dd_kindList,
+		dd_kindList_NON_NULL,
+		dd_NON_NULL,
+		dd_relatedRoot
+	} = type;
 </script>
 
 {#if template == 'default'}
@@ -37,32 +44,32 @@
 				class="btn btn-xs btn-info normal-case font-light "
 				on:click={() => {
 					console.log(type);
-					console.log(names);
+					console.log(dd_namesArray);
 				}}
 			>
-				{nameToDisplay}
+				{dd_displayName}
 			</div>
 		</div>
 
 		<div class="w-1/2 ">
 			<div class="flex">
-				<div class="bg-secondary p-1 rounded ">{kinds.join(' of ')}</div>
+				<div class="bg-secondary p-1 rounded ">{dd_kindsArray?.join(' of ')}</div>
 
 				{#if !canExpand}
-					{#if nameToDisplay == names[names.length - 1]}
+					{#if dd_displayName == dd_namesArray[dd_namesArray.length - 1]}
 						{''}
 					{:else}
 						<div class="bg-base-200 p-1 rounded">
-							{names[names.length - 1]}
+							{dd_namesArray[dd_namesArray.length - 1]}
 						</div>
 					{/if}
 				{/if}
 				{#if canExpand}
 					<div class="bg-base-200  rounded px-2 py-1">
-						{#if names[0] !== nameToDisplay}
-							({names[0]})
-						{:else if names[1] && names[1] !== nameToDisplay}
-							({names[1]})
+						{#if dd_namesArray?.[0] !== dd_displayName}
+							({dd_namesArray?.[0]})
+						{:else if dd_namesArray?.[1] && dd_namesArray?.[1] !== dd_displayName}
+							({dd_namesArray?.[1]})
 						{:else}
 							{'same'}
 						{/if}
@@ -83,18 +90,14 @@
 				? 'cursor-no-drop hover:text-base-300 text-base-200'
 				: ''}"
 			on:click={() => {
-				if (kinds.includes('SCALAR')) {
-					stepsOfFields.push([nameToDisplay]);
-					stepsOfFieldsNew.push(nameToDisplay);
+				if (dd_kindsArray.includes('SCALAR')) {
+					stepsOfFieldsNew.push(dd_displayName);
 				} else {
 					let fragmentDataFlatten = generateFragmentData(
 						type,
 						$introspectionResult.rootTypes,
 						true
 					);
-					stepsOfFields.push([fragmentDataFlatten[0]], fragmentDataFlatten[1]);
-					//stepsOfFields.push([fragmentDataFlatten[0]], [fragmentDataFlatten[1]]);
-					console.log('stepsOfFields', stepsOfFields);
 					stepsOfFieldsNew.push(fragmentDataFlatten[0]);
 					stepsOfFieldsNew.push(fragmentDataFlatten[1]);
 					//stepsOfFieldsNew.push([fragmentDataFlatten[0]], [fragmentDataFlatten[1]]);
@@ -102,18 +105,15 @@
 				}
 				dispatch('colAddRequest', {
 					title: `col-${Math.floor(Math.random() * 200)}`,
-					queryFragment: stepsOfFieldsToColData(stepsOfFields),
 					stepsOfFieldsNew: stepsOfFieldsNew,
 					queryFragmentNew: stepsOfFieldsToQueryFragment(stepsOfFieldsNew)
 				});
 				// console.log(type);
-				// console.log(name);
-				// console.log(stepsOfFields);
-				stepsOfFields = [];
+				// console.log(dd_rootName);
 				stepsOfFieldsNew = [];
 			}}
 		>
-			{nameToDisplay}
+			{dd_displayName}
 		</div>
 
 		{#if canExpand}

@@ -33,6 +33,9 @@ export const create_schemaData = () => {
                     el?.inputFields?.forEach(inputField => {
                         Object.assign(inputField, generate_derivedData(inputField, rootTypes))
                     });
+                    el?.enumValues?.forEach(enumValue => {
+                        Object.assign(enumValue, generate_derivedData(enumValue, rootTypes))
+                    });
                 });
             }
 
