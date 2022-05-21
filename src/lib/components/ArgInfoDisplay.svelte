@@ -2,7 +2,6 @@
 	import { introspectionResult } from '$lib/stores/introspectionResult';
 
 	import {
-		elementToDisplay,
 		getRootType,
 		get_KindsArray,
 		get_rootName,
@@ -34,11 +33,6 @@
 	console.log('====', dd_namesArray, dd_namesArray);
 	//only for  changeArguments
 	let inUse;
-	const _elementToDisplay = elementToDisplay({
-		kinds: dd_kindsArray,
-		names: dd_namesArray
-	});
-	console.log('elementToDisplay', _elementToDisplay);
 
 	// testing
 	let RootType_Name = dd_rootName;
@@ -135,7 +129,7 @@
 						enumValues,
 						stepsOfFieldsNew,
 						stepsOfFieldsNewStringified: JSON.stringify(stepsOfFieldsNew),
-						..._elementToDisplay
+						...type
 					};
 					console.log('infoToCast', infoToCast);
 					//add it

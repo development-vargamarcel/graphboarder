@@ -77,9 +77,9 @@
 							{activeArgumentData.stepsOfFieldsNew?.join(' > ')}
 						</p>
 
-						{#if activeArgumentData.displayType == 'ENUM'}
+						{#if activeArgumentData.dd_displayType == 'ENUM'}
 							<div class="flex flex-col ">
-								{#if activeArgumentData.expectsList}
+								{#if activeArgumentData.dd_kindList}
 									<FilterGroup
 										extraData={activeArgumentData}
 										choises={activeArgumentData.enumValues.map((enumValue) => {
@@ -101,7 +101,7 @@
 									/>
 								{/if}
 							</div>
-						{:else if activeArgumentData.displayType == 'INPUT_OBJECT'}
+						{:else if activeArgumentData.dd_displayType == 'INPUT_OBJECT'}
 							<FilterGroup
 								extraData={activeArgumentData}
 								choises={activeArgumentData.inputFields.map((inputField) => {
@@ -113,11 +113,11 @@
 							/>
 						{:else}
 							<div>
-								{#if activeArgumentData.expectsList}
+								{#if activeArgumentData.dd_kindList}
 									<textarea class="textarea textarea-primary textarea-xs" />
 								{:else}
 									<input
-										type={activeArgumentData.displayType}
+										type={activeArgumentData.dd_displayType}
 										class="input input-primary input-xs"
 									/>
 								{/if}

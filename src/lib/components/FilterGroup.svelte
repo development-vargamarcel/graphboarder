@@ -13,8 +13,6 @@
 	export let extraData;
 	let filterAppliedData;
 	let relatedField;
-	let displayType;
-	let relatedFieldDetails;
 </script>
 
 <div class="flex">
@@ -31,30 +29,21 @@
 			let { detail } = e;
 			filterAppliedData = detail;
 			relatedField = filterAppliedData.extraData.inputFields?.filter((el) => {
-				return el.name == filterAppliedData.chosen;
+				return el.dd_displayName == filterAppliedData.chosen;
 			})[0];
-			if (relatedField) {
-				displayType = filterAppliedData.extraData.displayType;
-				relatedFieldDetails = elementToDisplay({
-					kinds: get_KindsArray(relatedField),
-					names: get_NamesArray(relatedField)
-				});
-			} else {
-			}
 
 			console.log('relatedField', relatedField);
-			console.log('relatedFieldDetails', relatedFieldDetails);
 			console.log('detail', detail);
 			chosen = detail.chosen;
 		}}
 	/>
 	{#if filterAppliedData}
-		{#if displayType == 'INPUT_OBJECT'}
+		{#if filterAppliedData.extraData.dd_displayType == 'INPUT_OBJECT'}
 			<!-- svelte-ignore a11y-label-has-associated-control -->
 			<label class="label">
-				{#if relatedFieldDetails.expectsList}
+				{#if relatedField.dd_kindList}
 					<textarea class="textarea textarea-primary textarea-xs w-40 mr-2" />
-				{:else if relatedFieldDetails.displayType == 'boolean'}
+				{:else if relatedField.dd_displayType == 'boolean'}
 					<!-- svelte-ignore a11y-label-has-associated-control -->
 					<label class="label  w-40">
 						<div class="flex">
@@ -62,15 +51,15 @@
 							<p class="pl-2">true</p>
 						</div>
 					</label>
-				{:else if relatedFieldDetails.displayType == 'geo'}
+				{:else if relatedField.dd_displayType == 'geo'}
 					<input
-						type={relatedFieldDetails.displayType}
+						type={relatedField.dd_displayType}
 						class="input input-primary input-xs w-20 h-20 mr-2 "
 						placeholder="map here"
 					/>
 				{:else}
 					<input
-						type={relatedFieldDetails.displayType}
+						type={relatedField.dd_displayType}
 						class="input input-primary input-xs w-40 mr-2"
 					/>{/if}
 			</label>
