@@ -129,6 +129,7 @@
 						enumValues,
 						stepsOfFieldsNew,
 						stepsOfFieldsNewStringified: JSON.stringify(stepsOfFieldsNew),
+						id: `${JSON.stringify(stepsOfFieldsNew)}${Math.random()}`,
 						...type
 					};
 					console.log('infoToCast', infoToCast);

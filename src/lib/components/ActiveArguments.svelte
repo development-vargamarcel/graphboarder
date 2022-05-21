@@ -85,6 +85,10 @@
 										choises={activeArgumentData.enumValues.map((enumValue) => {
 											return enumValue.name;
 										})}
+										on:changed={(e) => {
+											Object.assign(activeArgumentData, e.detail);
+											console.log(e.detail);
+										}}
 										id={activeArgumentData.stepsOfFieldsNew}
 										title="choose"
 										type="checkbox"
@@ -95,6 +99,11 @@
 										choises={activeArgumentData.enumValues.map((enumValue) => {
 											return enumValue.name;
 										})}
+										on:changed={(e) => {
+											Object.assign(activeArgumentData, e.detail);
+
+											console.log(e.detail);
+										}}
 										id={activeArgumentData.stepsOfFieldsNew}
 										title="choose"
 										type="radio"
@@ -107,6 +116,11 @@
 								choises={activeArgumentData.inputFields.map((inputField) => {
 									return inputField.name;
 								})}
+								on:changed={(e) => {
+									Object.assign(activeArgumentData, e.detail);
+
+									console.log(e.detail);
+								}}
 								id={activeArgumentData.stepsOfFieldsNew}
 								title="choose"
 								type="radio"
