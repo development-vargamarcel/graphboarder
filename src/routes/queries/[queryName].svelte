@@ -148,14 +148,13 @@
 			tableColsData = [...tableColsData, tableColData];
 			console.log('tableColsData', tableColsData);
 			runQuery();
-			console.log('abababababa', tableColData);
 			column_stepsOfFieldsNew = '';
 		}
 	};
 
-	let identifier = Math.random();
-	let nameToDisplay = get_displayName(get_NamesArray(currentQueryInfo));
-	let kinds = get_KindsArray(currentQueryInfo);
+	// let identifier = Math.random();
+	// let nameToDisplay = get_displayName(get_NamesArray(currentQueryInfo));
+	// let kinds = get_KindsArray(currentQueryInfo);
 
 	//Active arguments logic
 	let activeArgumentsData = [];

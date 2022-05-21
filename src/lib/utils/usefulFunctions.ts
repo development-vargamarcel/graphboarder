@@ -487,5 +487,14 @@ export const generate_derivedData = (type, rootTypes) => { //type/field
         }
     });
 
+    let _scalarsAndEnumsDisplayTypes = get(scalarsAndEnumsDisplayTypes);
+    if (derivedData.dd_kindEl == 'ENUM') {
+        derivedData.dd_displayType = 'ENUM';
+    } else if (derivedData.dd_kindEl == 'INPUT_OBJECT') {
+        derivedData.dd_displayType = 'INPUT_OBJECT';
+    } else {
+        derivedData.dd_displayType = _scalarsAndEnumsDisplayTypes[derivedData.dd_rootName];
+    }
+
     return derivedData
 }
