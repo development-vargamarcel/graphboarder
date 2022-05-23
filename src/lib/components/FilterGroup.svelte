@@ -17,7 +17,7 @@
 	let chosenInputField;
 	let inputEl;
 	let rawValue = '';
-	let dispatchValue;
+	let dispatchValue = null;
 	let isINPUT_OBJECT = false;
 	let fillValue;
 </script>
@@ -37,10 +37,20 @@
 			chosenInputField = detail.extraData.inputFields?.filter((el) => {
 				return el.dd_displayName == detail.chosen;
 			})[0];
-			if (chosenInputField && dispatchValue) {
-				//	dispatch('changed', { chd_chosen: detail.chosen, chd_dispatchValue:dispatchValue }); //chd_ == chosen data
+			if (chosenInputField) {
+				dispatch('changed', {
+					chd_chosen: detail.chosen,
+					chd_dispatchValue: undefined,
+					chd_needsValue: true,
+					chd_needsChosen: true
+				}); //chd_ == chosen data
 			} else {
-				dispatch('changed', { chd_chosen: detail.chosen, chd_dispatchValue: undefined }); //chd_ == chosen data
+				dispatch('changed', {
+					chd_chosen: detail.chosen,
+					chd_dispatchValue: undefined,
+					chd_needsValue: false,
+					chd_needsChosen: true
+				}); //chd_ == chosen data
 			}
 			console.log('chosenInputField', chosenInputField);
 			console.log('detail', detail);
@@ -60,7 +70,12 @@
 					on:keyup={() => {
 						rawValue = inputEl.value;
 						dispatchValue = rawValue.split('\n');
-						dispatch('changed', { chd_chosen: chosen, chd_dispatchValue: dispatchValue }); //chd_ == chosen data
+						dispatch('changed', {
+							chd_chosen: chosen,
+							chd_dispatchValue: dispatchValue,
+							chd_needsValue: true,
+							chd_needsChosen: true
+						}); //chd_ == chosen data
 					}}
 				/>
 			{:else if chosenInputField.dd_displayType == 'boolean'}
@@ -74,7 +89,13 @@
 							checked={rawValue == 'true' ? true : false}
 							on:change={() => {
 								rawValue = inputEl.checked;
-								dispatch('changed', { chd_chosen: chosen, chd_dispatchValue: rawValue }); //chd_ == chosen data
+								dispatch('changed', {
+									chd_chosen: chosen,
+									chd_dispatchValue: rawValue || '',
+									chd_needsValue: true,
+									chd_needsChosen: true,
+									chd_needsChosen: true
+								}); //chd_ == chosen data
 							}}
 						/>
 						<p class="pl-2">true</p>
@@ -89,7 +110,12 @@
 					value={rawValue}
 					on:keyup={() => {
 						rawValue = inputEl.value;
-						dispatch('changed', { chd_chosen: chosen, chd_dispatchValue: rawValue }); //chd_ == chosen data
+						dispatch('changed', {
+							chd_chosen: chosen,
+							chd_dispatchValue: rawValue || '',
+							chd_needsValue: true,
+							chd_needsChosen: true
+						}); //chd_ == chosen data
 					}}
 				/>
 			{:else}
@@ -100,7 +126,12 @@
 					value={rawValue}
 					on:keyup={() => {
 						rawValue = inputEl.value;
-						dispatch('changed', { chd_chosen: chosen, chd_dispatchValue: rawValue }); //chd_ == chosen data
+						dispatch('changed', {
+							chd_chosen: chosen,
+							chd_dispatchValue: rawValue || '',
+							chd_needsValue: true,
+							chd_needsChosen: true
+						}); //chd_ == chosen data
 					}}
 				/>{/if}
 		</label>

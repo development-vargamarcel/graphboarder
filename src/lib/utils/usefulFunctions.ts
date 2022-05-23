@@ -2,10 +2,10 @@
 
 import { get } from 'svelte/store';
 import { scalarsAndEnumsDisplayTypes } from '$lib/stores/scalarsAndEnumsDisplayTypes';
-export const buildQueryBody = (queryName, queryFragments) => {
+export const buildQueryBody = (queryName, queryFragments, gqlArgObj_string) => {
     return `
     query MyQuery {
-  ${queryName} {
+  ${queryName}${gqlArgObj_string ? `(${gqlArgObj_string})` : ''}{
 ${queryFragments}
   }
 }

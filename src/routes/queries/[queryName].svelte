@@ -68,7 +68,7 @@
 	let queryFragmentsNew;
 	let queryBody;
 	let queryData;
-
+	let gqlArgObj_string;
 	const runQuery = () => {
 		//queryFragments = generateQueryFragments(tableColsData);
 		queryFragmentsNew = tableColsData
@@ -80,7 +80,7 @@
 			});
 		console.log('tableColsData queryFragmentsNew', queryFragmentsNew);
 		//console.log('queryFragments', queryFragments);
-		queryBody = buildQueryBody(queryName, queryFragmentsNew.join('\n'));
+		queryBody = buildQueryBody(queryName, queryFragmentsNew.join('\n'), gqlArgObj_string);
 		console.log('queryBody', queryBody);
 		let fetching = true;
 		let error = false;
@@ -162,7 +162,14 @@
 
 <!-- {#key activeArgumentsData}
 	{#if activeArgumentsData} -->
-<ActiveArguments {activeArgumentsData}>
+<ActiveArguments
+	{activeArgumentsData}
+	on:argsChanged={(e) => {
+		console.log('argsChanged', e.detail);
+		gqlArgObj_string = e.detail.gqlArgObj_string;
+		runQuery();
+	}}
+>
 	<div
 		class="max-h-52 sm:max-h-72 md:max-h-90 overflow-auto overscroll-contain max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
 	>

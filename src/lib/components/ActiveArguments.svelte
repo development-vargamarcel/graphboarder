@@ -1,14 +1,16 @@
-<script>
+<script lang="ts">
 	import { get_NamesArray } from './../utils/usefulFunctions.ts';
 	import { get_KindsArray } from '$lib/utils/usefulFunctions';
 	import { scalarsAndEnumsDisplayTypes } from '$lib/stores/scalarsAndEnumsDisplayTypes';
 	import FilterChoises from '$lib/components/FilterChoises.svelte';
 	import FilterGroup from './FilterGroup.svelte';
 	import FilterItem from './FilterItem.svelte';
+	import { createEventDispatcher, each } from 'svelte/internal';
 	let _scalarsAndEnumsDisplayTypes = $scalarsAndEnumsDisplayTypes;
 	export let activeArgumentsData;
 	let activeArgumentsDataGrouped = {};
 	let showActiveFilters;
+	const dispatch = createEventDispatcher();
 
 	$: if (activeArgumentsData) {
 		activeArgumentsDataGrouped = {};
@@ -35,6 +37,98 @@
 		} else {
 			showActiveFilters = false;
 		}
+
+		/////generate gqlArgObj to be used in query
+
+		class EnumType {
+			constructor(public value: string) {}
+		}
+
+		class VariableType {
+			constructor(public value: string) {}
+
+			toJSON() {
+				return `$${this.value}`;
+			}
+		}
+		function stringify(obj_from_json: any): string {
+			if (obj_from_json instanceof EnumType) {
+				return obj_from_json.value;
+			}
+			// variables should be prefixed with dollar sign and not quoted
+			else if (obj_from_json instanceof VariableType) {
+				return `$${obj_from_json.value}`;
+			}
+			// Cheers to Derek: https://stackoverflow.com/questions/11233498/json-stringify-without-quotes-on-properties
+			else if (typeof obj_from_json !== 'object' || obj_from_json === null) {
+				// not an object, stringify using native function
+				return JSON.stringify(obj_from_json);
+			} else if (Array.isArray(obj_from_json)) {
+				return `[${obj_from_json.map((item) => stringify(item)).join(', ')}]`;
+			}
+			// Implements recursive object serialization according to JSON spec
+			// but without quotes around the keys.
+			const props: string = Object.keys(obj_from_json)
+				.map((key) => `${key}: ${stringify(obj_from_json[key])}`)
+				.join(', ');
+
+			return `{${props}}`;
+		}
+
+		const generate_gqlArgObj = () => {
+			let gqlArgObj = {};
+			let canRunQuery = true;
+			activeArgumentsData.forEach((argData) => {
+				let { chd_chosen, chd_dispatchValue, chd_needsValue, stepsOfFieldsNew } = argData;
+				let curr_gqlArgObj = gqlArgObj;
+				stepsOfFieldsNew.forEach((step, index) => {
+					let isLast = index == stepsOfFieldsNew.length - 1;
+					if (isLast) {
+						console.log('chd_needsValue', chd_needsValue);
+						if (chd_needsValue == undefined) {
+							canRunQuery = false;
+						} else if (!chd_needsValue) {
+							curr_gqlArgObj[step] = chd_chosen;
+							if (!chd_chosen?.length) {
+								canRunQuery = false;
+							}
+						} else {
+							console.log('chd_dispatchValue', chd_dispatchValue);
+							console.log('!chd_dispatchValue', !chd_dispatchValue);
+
+							if (!curr_gqlArgObj?.[step]) {
+								curr_gqlArgObj[step] = {};
+							}
+							curr_gqlArgObj = curr_gqlArgObj[step];
+
+							curr_gqlArgObj[chd_chosen] = chd_dispatchValue || '';
+							curr_gqlArgObj = curr_gqlArgObj[chd_chosen];
+
+							console.log('----curr_gqlArgObj', curr_gqlArgObj);
+							if (!chd_dispatchValue) {
+								canRunQuery = false;
+							}
+						}
+					} else {
+						if (!curr_gqlArgObj?.[step]) {
+							curr_gqlArgObj[step] = {};
+						}
+						curr_gqlArgObj = curr_gqlArgObj[step];
+					}
+				});
+				console.log('curr_gqlArgObj', curr_gqlArgObj);
+			});
+
+			console.log('gqlArgObj', gqlArgObj);
+			console.log('canRunQuery', canRunQuery);
+			console.log('JSON.stringify(gqlArgObj)', JSON.stringify(gqlArgObj), stringify(gqlArgObj));
+
+			if (canRunQuery) {
+				dispatch('argsChanged', { gqlArgObj, gqlArgObj_string: stringify(gqlArgObj).slice(1, -1) });
+			}
+		};
+
+		generate_gqlArgObj();
 	}
 </script>
 
@@ -89,6 +183,7 @@
 											Object.assign(activeArgumentData, e.detail);
 											console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 											console.log('activeArgumentsData', activeArgumentsData);
+											activeArgumentsData = activeArgumentsData;
 
 											console.log(e.detail);
 										}}
@@ -106,7 +201,7 @@
 											Object.assign(activeArgumentData, e.detail);
 											console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 											console.log('activeArgumentsData', activeArgumentsData);
-
+											activeArgumentsData = activeArgumentsData;
 											console.log(e.detail);
 										}}
 										id={activeArgumentData.stepsOfFieldsNew}
@@ -125,6 +220,7 @@
 									Object.assign(activeArgumentData, e.detail);
 									console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 									console.log('activeArgumentsData', activeArgumentsData);
+									activeArgumentsData = activeArgumentsData;
 
 									console.log(e.detail);
 								}}
