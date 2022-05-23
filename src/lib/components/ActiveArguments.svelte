@@ -231,8 +231,10 @@
 						{:else}
 							<div>
 								{#if activeArgumentData.dd_kindList}
+									<!-- make this a component for easy handling -->
 									<textarea class="textarea textarea-primary textarea-xs" />
 								{:else}
+									<!-- make this a component for easy handling -->
 									<input
 										type={activeArgumentData.dd_displayType}
 										class="input input-primary input-xs"
