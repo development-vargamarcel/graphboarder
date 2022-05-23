@@ -87,6 +87,9 @@
 										})}
 										on:changed={(e) => {
 											Object.assign(activeArgumentData, e.detail);
+											console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+											console.log('activeArgumentsData', activeArgumentsData);
+
 											console.log(e.detail);
 										}}
 										id={activeArgumentData.stepsOfFieldsNew}
@@ -101,6 +104,8 @@
 										})}
 										on:changed={(e) => {
 											Object.assign(activeArgumentData, e.detail);
+											console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+											console.log('activeArgumentsData', activeArgumentsData);
 
 											console.log(e.detail);
 										}}
@@ -118,6 +123,8 @@
 								})}
 								on:changed={(e) => {
 									Object.assign(activeArgumentData, e.detail);
+									console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+									console.log('activeArgumentsData', activeArgumentsData);
 
 									console.log(e.detail);
 								}}

@@ -38,16 +38,12 @@
 				return el.dd_displayName == detail.chosen;
 			})[0];
 			if (chosenInputField && dispatchValue) {
-				//	dispatch('changed', { chosen: detail.chosen, dispatchValue });
+				//	dispatch('changed', { chd_chosen: detail.chosen, chd_dispatchValue:dispatchValue }); //chd_ == chosen data
 			} else {
-				dispatch('changed', { chosen: detail.chosen, dispatchValue: null });
+				dispatch('changed', { chd_chosen: detail.chosen, chd_dispatchValue: undefined }); //chd_ == chosen data
 			}
 			console.log('chosenInputField', chosenInputField);
 			console.log('detail', detail);
-			console.log(
-				"detail.extraData.dd_displayType == 'INPUT_OBJECT'",
-				detail.extraData.dd_displayType == 'INPUT_OBJECT'
-			);
 			isINPUT_OBJECT = detail.extraData.dd_displayType == 'INPUT_OBJECT';
 			chosen = detail.chosen;
 		}}
@@ -64,7 +60,7 @@
 					on:keyup={() => {
 						rawValue = inputEl.value;
 						dispatchValue = rawValue.split('\n');
-						dispatch('changed', { chosen, dispatchValue });
+						dispatch('changed', { chd_chosen: chosen, chd_dispatchValue: dispatchValue }); //chd_ == chosen data
 					}}
 				/>
 			{:else if chosenInputField.dd_displayType == 'boolean'}
@@ -78,7 +74,7 @@
 							checked={rawValue == 'true' ? true : false}
 							on:change={() => {
 								rawValue = inputEl.checked;
-								dispatch('changed', { chosen, dispatchValue: rawValue });
+								dispatch('changed', { chd_chosen: chosen, chd_dispatchValue: rawValue }); //chd_ == chosen data
 							}}
 						/>
 						<p class="pl-2">true</p>
@@ -93,7 +89,7 @@
 					value={rawValue}
 					on:keyup={() => {
 						rawValue = inputEl.value;
-						dispatch('changed', { chosen, dispatchValue: rawValue });
+						dispatch('changed', { chd_chosen: chosen, chd_dispatchValue: rawValue }); //chd_ == chosen data
 					}}
 				/>
 			{:else}
@@ -104,7 +100,7 @@
 					value={rawValue}
 					on:keyup={() => {
 						rawValue = inputEl.value;
-						dispatch('changed', { chosen, dispatchValue: rawValue });
+						dispatch('changed', { chd_chosen: chosen, chd_dispatchValue: rawValue }); //chd_ == chosen data
 					}}
 				/>{/if}
 		</label>
