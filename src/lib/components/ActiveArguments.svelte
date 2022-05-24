@@ -225,8 +225,6 @@
 									{:else}
 										<div>
 											{#if activeArgumentData.dd_kindList}
-												<!-- make this a component for easy handling -->
-												<textarea class="textarea textarea-primary textarea-xs" />
 												<Textarea
 													dd_displayType={activeArgumentData.dd_displayType}
 													rawValue={activeArgumentData?.chd_rawValue}
@@ -241,7 +239,6 @@
 													}}
 												/>
 											{:else}
-												<!-- make this a component for easy handling -->
 												<Input
 													dd_displayType={activeArgumentData.dd_displayType}
 													rawValue={activeArgumentData?.chd_rawValue}
