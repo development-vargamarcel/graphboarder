@@ -17,7 +17,7 @@
 	export let chosenInputField;
 	let inputEl;
 	export let rawValue = '';
-	let dispatchValue = null;
+	export let dispatchValue = null;
 	export let isINPUT_OBJECT = false;
 
 	let fillValue;

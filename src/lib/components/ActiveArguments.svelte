@@ -181,6 +181,7 @@
 													chosenInputField={activeArgumentData?.chosenInputField}
 													isINPUT_OBJECT={activeArgumentData?.isINPUT_OBJECT}
 													rawValue={activeArgumentData?.chd_rawValue}
+													dispatchValue={activeArgumentData?.chd_dispatchValue}
 													on:changed={(e) => {
 														Object.assign(activeArgumentData, e.detail);
 														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
@@ -204,6 +205,7 @@
 											chosenInputField={activeArgumentData?.chosenInputField}
 											isINPUT_OBJECT={activeArgumentData?.isINPUT_OBJECT}
 											rawValue={activeArgumentData?.chd_rawValue}
+											dispatchValue={activeArgumentData?.chd_dispatchValue}
 											on:changed={(e) => {
 												Object.assign(activeArgumentData, e.detail);
 												console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
@@ -224,6 +226,7 @@
 												<Textarea
 													dd_displayType={activeArgumentData.dd_displayType}
 													rawValue={activeArgumentData?.chd_rawValue}
+													dispatchValue={activeArgumentData?.chd_dispatchValue}
 													on:changed={(e) => {
 														Object.assign(activeArgumentData, e.detail);
 														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);

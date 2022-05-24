@@ -4,7 +4,7 @@
 	export let dd_displayType;
 	let inputEl;
 	export let rawValue;
-	let dispatchValue;
+	export let dispatchValue;
 	const dispatch = createEventDispatcher();
 </script>
 
