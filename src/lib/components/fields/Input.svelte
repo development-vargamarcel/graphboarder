@@ -16,7 +16,7 @@
 		rawValue = inputEl.value;
 		dispatch('changed', {
 			chd_chosen: undefined,
-			chd_dispatchValue: parseInt(rawValue) ? rawValue : `'${rawValue}'` || '',
+			chd_dispatchValue: dd_displayType == 'text' ? `'${rawValue}'` : rawValue || '',
 			chd_needsValue: true,
 			chd_needsChosen: false,
 			chd_rawValue: rawValue

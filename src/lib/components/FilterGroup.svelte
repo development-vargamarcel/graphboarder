@@ -77,7 +77,7 @@
 						rawValue = inputEl.value;
 						dispatchValue = rawValue.split('\n');
 						dispatchValue = dispatchValue.map((elVal) => {
-							return parseInt(elVal) ? elVal : `'${elVal}'`;
+							return chosenInputField.dd_displayType == 'text' ? `'${rawValue}'` : rawValue || '';
 						});
 						dispatch('changed', {
 							chd_chosen: chosen,
@@ -102,7 +102,8 @@
 								rawValue = inputEl.checked;
 								dispatch('changed', {
 									chd_chosen: chosen,
-									chd_dispatchValue: parseInt(rawValue) ? rawValue : `'${rawValue}'` || '',
+									chd_dispatchValue:
+										chosenInputField.dd_displayType == 'text' ? `'${rawValue}'` : rawValue || '',
 									chd_rawValue: rawValue,
 
 									chd_needsValue: true,
@@ -125,7 +126,8 @@
 						rawValue = inputEl.value;
 						dispatch('changed', {
 							chd_chosen: chosen,
-							chd_dispatchValue: parseInt(rawValue) ? rawValue : `'${rawValue}'` || '',
+							chd_dispatchValue:
+								chosenInputField.dd_displayType == 'text' ? `'${rawValue}'` : rawValue || '',
 							chd_rawValue: rawValue,
 
 							chd_needsValue: true,
@@ -144,7 +146,8 @@
 						rawValue = inputEl.value;
 						dispatch('changed', {
 							chd_chosen: chosen,
-							chd_dispatchValue: parseInt(rawValue) ? rawValue : `'${rawValue}'` || '',
+							chd_dispatchValue:
+								chosenInputField.dd_displayType == 'text' ? `'${rawValue}'` : rawValue || '',
 							chd_rawValue: rawValue,
 
 							chd_needsValue: true,

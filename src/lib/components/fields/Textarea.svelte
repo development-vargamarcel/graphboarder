@@ -17,7 +17,7 @@
 		rawValue = inputEl.value;
 		dispatchValue = rawValue.split('\n');
 		dispatchValue = dispatchValue.map((elVal) => {
-			return parseInt(elVal) ? elVal : `'${elVal}'`;
+			return dd_displayType == 'text' ? `'${rawValue}'` : rawValue || '';
 		});
 		dispatch('changed', {
 			chd_chosen: undefined,
