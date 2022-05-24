@@ -51,11 +51,13 @@
 		if (type == 'toggle') {
 			title = chosen;
 		} else {
-			type == 'radio' ? (title = chosen) : (extraInfo = `${chosen.length}`);
+			type == 'radio' ? (title = chosen) : (extraInfo = `${chosen?.length}`);
 		}
 	}
 
-	$: if (chosen.length > 0) {
+	$: if (chosen?.length > 0) {
+		console.log('chosen:', chosen);
+
 		if (!modalVisible) {
 			chosenInternal = chosen;
 		}
@@ -74,6 +76,8 @@
 			type == 'radio' ? (title = chosen) : (extraInfo = `${chosen.length}`);
 		}
 	} else {
+		console.log('chosen:', chosen);
+
 		if (!modalVisible) {
 			chosenInternal = chosen;
 		}
@@ -147,7 +151,7 @@
 					{/each}{:else if type == 'checkbox'}
 					{#each choises as choice}
 						<label
-							class="cursor-pointer label  rounded-box   transition font-light border-2 border-dotted border-transparent  active:border-base-content/50 active:bg-primary/5 {chosenInternal.includes(
+							class="cursor-pointer label  rounded-box   transition font-light border-2 border-dotted border-transparent  active:border-base-content/50 active:bg-primary/5 {chosenInternal?.includes(
 								choice
 							)
 								? 'font-extrabold '

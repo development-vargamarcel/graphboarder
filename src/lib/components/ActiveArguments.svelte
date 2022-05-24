@@ -8,12 +8,13 @@
 	import { createEventDispatcher, each } from 'svelte/internal';
 	import Input from './fields/Input.svelte';
 	import Textarea from './fields/Textarea.svelte';
+	import Modal from './Modal.svelte';
 	let _scalarsAndEnumsDisplayTypes = $scalarsAndEnumsDisplayTypes;
 	export let activeArgumentsData;
 	let activeArgumentsDataGrouped = {};
 	let showActiveFilters;
 	const dispatch = createEventDispatcher();
-
+	let showModal = false;
 	export let delete_activeArgument;
 	$: if (activeArgumentsData) {
 		activeArgumentsDataGrouped = {};
@@ -113,8 +114,149 @@
 		};
 
 		generate_gqlArgObj();
+
+		if (activeArgumentsData.length == 0) {
+			showModal = false;
+		}
 	}
 </script>
+
+{#if showModal}
+	<Modal
+		showApplyBtn={false}
+		on:cancel={() => {
+			showModal = false;
+		}}
+		on:apply={(e) => {
+			console.log(']]]]]]]]]', e);
+		}}
+		><div class="  w-full  bg-base-200/50  ">
+			<div class="mx-auto mt-2  w-full px-4 overflow-x-auto space-y-2   pb-2  ">
+				<div class="w-2" />
+
+				{#each activeArgumentsDataGrouped.groups as group}
+					<div class="bg-base-100 p-2 rounded-box">
+						<div class="font-bold">
+							{group}
+						</div>
+						{#each activeArgumentsDataGrouped[group] as activeArgumentData}
+							<!-- svelte-ignore a11y-label-has-associated-control -->
+							<div class=" bg-base-200 rounded-box p-2 my-2 flex">
+								<div class="grow ">
+									<p class="  overflow-x-auto text-xs break-words mr-2  ">
+										{activeArgumentData.stepsOfFieldsNew?.join(' > ')}
+									</p>
+
+									{#if activeArgumentData.dd_displayType == 'ENUM'}
+										<div class="flex flex-col ">
+											{#if activeArgumentData.dd_kindList}
+												<FilterGroup
+													extraData={activeArgumentData}
+													choises={activeArgumentData.enumValues.map((enumValue) => {
+														return enumValue.name;
+													})}
+													chosen={activeArgumentData?.chd_chosen}
+													on:changed={(e) => {
+														Object.assign(activeArgumentData, e.detail);
+														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+														console.log('activeArgumentsData', activeArgumentsData);
+														activeArgumentsData = activeArgumentsData;
+
+														console.log(e.detail);
+													}}
+													id={activeArgumentData.stepsOfFieldsNew}
+													title="choose"
+													type="checkbox"
+												/>
+											{:else}
+												<FilterGroup
+													extraData={activeArgumentData}
+													choises={activeArgumentData.enumValues.map((enumValue) => {
+														return enumValue.name;
+													})}
+													chosen={activeArgumentData?.chd_chosen}
+													on:changed={(e) => {
+														Object.assign(activeArgumentData, e.detail);
+														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+														console.log('activeArgumentsData', activeArgumentsData);
+														activeArgumentsData = activeArgumentsData;
+														console.log(e.detail);
+													}}
+													id={activeArgumentData.stepsOfFieldsNew}
+													title="choose"
+													type="radio"
+												/>
+											{/if}
+										</div>
+									{:else if activeArgumentData.dd_displayType == 'INPUT_OBJECT'}
+										<FilterGroup
+											extraData={activeArgumentData}
+											choises={activeArgumentData.inputFields.map((inputField) => {
+												return inputField.name;
+											})}
+											chosen={activeArgumentData?.chd_chosen}
+											on:changed={(e) => {
+												Object.assign(activeArgumentData, e.detail);
+												console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+												console.log('activeArgumentsData', activeArgumentsData);
+												activeArgumentsData = activeArgumentsData;
+
+												console.log(e.detail);
+											}}
+											id={activeArgumentData.stepsOfFieldsNew}
+											title="choose"
+											type="radio"
+										/>
+									{:else}
+										<div>
+											{#if activeArgumentData.dd_kindList}
+												<!-- make this a component for easy handling -->
+												<textarea class="textarea textarea-primary textarea-xs" />
+												<Textarea
+													dd_displayType={activeArgumentData.dd_displayType}
+													on:changed={(e) => {
+														Object.assign(activeArgumentData, e.detail);
+														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+														console.log('activeArgumentsData', activeArgumentsData);
+														activeArgumentsData = activeArgumentsData;
+
+														console.log(e.detail);
+													}}
+												/>
+											{:else}
+												<!-- make this a component for easy handling -->
+												<Input
+													dd_displayType={activeArgumentData.dd_displayType}
+													on:changed={(e) => {
+														Object.assign(activeArgumentData, e.detail);
+														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+														console.log('activeArgumentsData', activeArgumentsData);
+														activeArgumentsData = activeArgumentsData;
+
+														console.log(e.detail);
+													}}
+												/>
+											{/if}
+										</div>
+									{/if}
+								</div>
+
+								<button
+									class="btn btn-sm"
+									on:click={() => {
+										delete_activeArgument(activeArgumentData.id);
+									}}><i class="bi bi-trash3-fill" /></button
+								>
+							</div>
+						{/each}
+					</div>
+				{/each}
+
+				<div class="w-2" />
+			</div>
+		</div>
+	</Modal>
+{/if}
 
 <div class="flex space-x-2 mb-2 px-2">
 	<div class="dropdown ">
@@ -130,134 +272,10 @@
 	<button
 		class="btn btn-xs  {activeArgumentsData.length > 0 ? 'btn-primary' : 'btn-secondary'}"
 		on:click={() => {
-			showActiveFilters = !showActiveFilters;
+			showModal = !showModal;
+			//showActiveFilters = !showActiveFilters;
+			showActiveFilters = true;
 		}}
 		>toggle fiters visibility
 	</button>
-</div>
-<div
-	class="  w-full h-80 bg-base-200/50 overflow-y-auto overscroll-contain {showActiveFilters
-		? ' h-80'
-		: 'h-0'}"
->
-	<div class="mx-auto mt-2  w-full px-4 overflow-x-auto space-y-2   pb-2  ">
-		<div class="w-2" />
-
-		{#each activeArgumentsDataGrouped.groups as group}
-			<div class="bg-base-100 p-2 rounded-box">
-				<div class="font-bold">
-					{group}
-				</div>
-				{#each activeArgumentsDataGrouped[group] as activeArgumentData}
-					<!-- svelte-ignore a11y-label-has-associated-control -->
-					<div class=" bg-base-200 rounded-box p-2 my-2 flex">
-						<div class="grow ">
-							<p class="  overflow-x-auto text-xs break-words mr-2  ">
-								{activeArgumentData.stepsOfFieldsNew?.join(' > ')}
-							</p>
-
-							{#if activeArgumentData.dd_displayType == 'ENUM'}
-								<div class="flex flex-col ">
-									{#if activeArgumentData.dd_kindList}
-										<FilterGroup
-											extraData={activeArgumentData}
-											choises={activeArgumentData.enumValues.map((enumValue) => {
-												return enumValue.name;
-											})}
-											on:changed={(e) => {
-												Object.assign(activeArgumentData, e.detail);
-												console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-												console.log('activeArgumentsData', activeArgumentsData);
-												activeArgumentsData = activeArgumentsData;
-
-												console.log(e.detail);
-											}}
-											id={activeArgumentData.stepsOfFieldsNew}
-											title="choose"
-											type="checkbox"
-										/>
-									{:else}
-										<FilterGroup
-											extraData={activeArgumentData}
-											choises={activeArgumentData.enumValues.map((enumValue) => {
-												return enumValue.name;
-											})}
-											on:changed={(e) => {
-												Object.assign(activeArgumentData, e.detail);
-												console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-												console.log('activeArgumentsData', activeArgumentsData);
-												activeArgumentsData = activeArgumentsData;
-												console.log(e.detail);
-											}}
-											id={activeArgumentData.stepsOfFieldsNew}
-											title="choose"
-											type="radio"
-										/>
-									{/if}
-								</div>
-							{:else if activeArgumentData.dd_displayType == 'INPUT_OBJECT'}
-								<FilterGroup
-									extraData={activeArgumentData}
-									choises={activeArgumentData.inputFields.map((inputField) => {
-										return inputField.name;
-									})}
-									on:changed={(e) => {
-										Object.assign(activeArgumentData, e.detail);
-										console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-										console.log('activeArgumentsData', activeArgumentsData);
-										activeArgumentsData = activeArgumentsData;
-
-										console.log(e.detail);
-									}}
-									id={activeArgumentData.stepsOfFieldsNew}
-									title="choose"
-									type="radio"
-								/>
-							{:else}
-								<div>
-									{#if activeArgumentData.dd_kindList}
-										<!-- make this a component for easy handling -->
-										<textarea class="textarea textarea-primary textarea-xs" />
-										<Textarea
-											dd_displayType={activeArgumentData.dd_displayType}
-											on:changed={(e) => {
-												Object.assign(activeArgumentData, e.detail);
-												console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-												console.log('activeArgumentsData', activeArgumentsData);
-												activeArgumentsData = activeArgumentsData;
-
-												console.log(e.detail);
-											}}
-										/>
-									{:else}
-										<!-- make this a component for easy handling -->
-										<Input
-											dd_displayType={activeArgumentData.dd_displayType}
-											on:changed={(e) => {
-												Object.assign(activeArgumentData, e.detail);
-												console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-												console.log('activeArgumentsData', activeArgumentsData);
-												activeArgumentsData = activeArgumentsData;
-
-												console.log(e.detail);
-											}}
-										/>
-									{/if}
-								</div>
-							{/if}
-						</div>
-
-						<button
-							class="btn btn-sm"
-							on:click={() => {
-								delete_activeArgument(activeArgumentData.id);
-							}}><i class="bi bi-trash3-fill" /></button
-						>
-					</div>
-				{/each}
-			</div>
-		{/each}
-
-		<div class="w-2" />
-	</div>
 </div>

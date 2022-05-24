@@ -4,7 +4,7 @@
 	import { sineOut, sineIn } from 'svelte/easing';
 
 	export let modalIdetifier = 'modal';
-
+	export let showApplyBtn = true;
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 	let apply = () => {
@@ -72,21 +72,21 @@
 			</div>
 		</div>
 	{/if}
-
-	<div class="fixed bottom-0 z-50 w-full 	">
-		<!-- card-actions -->
-		<div
-			class="my-0  mx-auto w-full justify-center bg-gradient-to-t from-base-100/100 via-base-100/70 to-base-100/10 px-2 pb-0"
-		>
-			<div class=" mx-auto w-11/12    ">
-				<button
-					class="btn btn-primary btn-lg    w-full justify-center normal-case shadow-2xl drop-shadow-2xl "
-					on:click={apply}>Apply</button
-				>
+	{#if showApplyBtn}
+		<div class="fixed bottom-0 z-50 w-full 	">
+			<!-- card-actions -->
+			<div
+				class="my-0  mx-auto w-full justify-center bg-gradient-to-t from-base-100/100 via-base-100/70 to-base-100/10 px-2 pb-0"
+			>
+				<div class=" mx-auto w-11/12    ">
+					<button
+						class="btn btn-primary btn-lg    w-full justify-center normal-case shadow-2xl drop-shadow-2xl "
+						on:click={apply}>Apply</button
+					>
+				</div>
 			</div>
-		</div>
-		<div class="my-0 mx-auto w-full bg-base-100/100 py-4" />
-	</div>
+			<div class="my-0 mx-auto w-full bg-base-100/100 py-4" />
+		</div>{/if}
 </div>
 
 <style>
