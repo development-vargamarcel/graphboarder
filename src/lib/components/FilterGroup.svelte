@@ -46,7 +46,7 @@
 			if (chosenInputField) {
 				dispatch('changed', {
 					chd_chosen: detail.chosen,
-					chd_dispatchValue: undefined,
+					chd_dispatchValue: dispatchValue,
 					chd_needsValue: true,
 					chd_needsChosen: true,
 					isINPUT_OBJECT,
@@ -55,7 +55,7 @@
 			} else {
 				dispatch('changed', {
 					chd_chosen: detail.chosen,
-					chd_dispatchValue: undefined,
+					chd_dispatchValue: dispatchValue,
 					chd_needsValue: false,
 					chd_needsChosen: true,
 					isINPUT_OBJECT,
