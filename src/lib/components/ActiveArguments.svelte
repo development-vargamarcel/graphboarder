@@ -14,6 +14,7 @@
 	let showActiveFilters;
 	const dispatch = createEventDispatcher();
 
+	export let delete_activeArgument;
 	$: if (activeArgumentsData) {
 		activeArgumentsDataGrouped = {};
 		activeArgumentsData.forEach((el) => {
@@ -243,6 +244,13 @@
 								{/if}
 							</div>
 						{/if}
+
+						<button
+							class="btn btn-sm"
+							on:click={() => {
+								delete_activeArgument(activeArgumentData.id);
+							}}>delete</button
+						>
 					</div>
 				{/each}
 			</div>

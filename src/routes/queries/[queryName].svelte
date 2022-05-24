@@ -158,12 +158,19 @@
 
 	//Active arguments logic
 	let activeArgumentsData = [];
+
+	const delete_activeArgument = (id) => {
+		activeArgumentsData = activeArgumentsData.filter((activeArgData) => {
+			return activeArgData.id !== id;
+		});
+	};
 </script>
 
 <!-- {#key activeArgumentsData}
 	{#if activeArgumentsData} -->
 <ActiveArguments
 	{activeArgumentsData}
+	{delete_activeArgument}
 	on:argsChanged={(e) => {
 		console.log('argsChanged', e.detail);
 		gqlArgObj_string = e.detail.gqlArgObj_string;
