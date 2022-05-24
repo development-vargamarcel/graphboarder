@@ -67,7 +67,7 @@
 									canRunQuery = false;
 								} else if (!chd_needsValue) {
 									curr_gqlArgObj[step] = chd_chosen;
-									if (!chd_chosen?.length) {
+									if (!Array.isArray(chd_chosen)) {
 										canRunQuery = false;
 									}
 								} else {
