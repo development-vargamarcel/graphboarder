@@ -101,7 +101,7 @@
 </script>
 
 <btn
-	class="btn btn-sm btn-{size} {btnExtraClass}  flex  w-max normal-case "
+	class="btn btn-sm btn-{size} {btnExtraClass}  flex  w-max normal-case"
 	on:click={showModalOrToggle}
 >
 	{title}
