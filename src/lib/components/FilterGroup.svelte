@@ -77,7 +77,7 @@
 						rawValue = inputEl.value;
 						dispatchValue = rawValue.split('\n');
 						dispatchValue = dispatchValue.map((elVal) => {
-							return chosenInputField.dd_displayType == 'text' ? `'${rawValue}'` : rawValue || '';
+							return chosenInputField.dd_displayType == 'text' ? `'${elVal}'` : elVal || '';
 						});
 						dispatch('changed', {
 							chd_chosen: chosen,

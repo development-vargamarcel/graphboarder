@@ -123,9 +123,13 @@
 
 {#if showModal}
 	<Modal
+		modalIdetifier={'activeArgumentsDataModal'}
 		showApplyBtn={false}
-		on:cancel={() => {
-			showModal = false;
+		on:cancel={(e) => {
+			let { detail } = e;
+			if (detail.modalIdetifier == 'activeArgumentsDataModal') {
+				showModal = false;
+			}
 		}}
 		on:apply={(e) => {
 			console.log(']]]]]]]]]', e);
