@@ -3,7 +3,7 @@
 
 	export let dd_displayType;
 	let inputEl;
-	let rawValue;
+	export let rawValue;
 	let dispatchValue;
 	const dispatch = createEventDispatcher();
 </script>
@@ -23,7 +23,8 @@
 			chd_chosen: undefined,
 			chd_dispatchValue: dispatchValue || '',
 			chd_needsValue: true,
-			chd_needsChosen: false
+			chd_needsChosen: false,
+			chd_rawValue: rawValue
 		}); //chd_ == chosen data
 	}}
 />

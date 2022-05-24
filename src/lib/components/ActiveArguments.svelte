@@ -156,6 +156,9 @@
 														return enumValue.name;
 													})}
 													chosen={activeArgumentData?.chd_chosen}
+													chosenInputField={activeArgumentData?.chosenInputField}
+													isINPUT_OBJECT={activeArgumentData?.isINPUT_OBJECT}
+													rawValue={activeArgumentData?.chd_rawValue}
 													on:changed={(e) => {
 														Object.assign(activeArgumentData, e.detail);
 														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
@@ -175,6 +178,9 @@
 														return enumValue.name;
 													})}
 													chosen={activeArgumentData?.chd_chosen}
+													chosenInputField={activeArgumentData?.chosenInputField}
+													isINPUT_OBJECT={activeArgumentData?.isINPUT_OBJECT}
+													rawValue={activeArgumentData?.chd_rawValue}
 													on:changed={(e) => {
 														Object.assign(activeArgumentData, e.detail);
 														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
@@ -195,6 +201,9 @@
 												return inputField.name;
 											})}
 											chosen={activeArgumentData?.chd_chosen}
+											chosenInputField={activeArgumentData?.chosenInputField}
+											isINPUT_OBJECT={activeArgumentData?.isINPUT_OBJECT}
+											rawValue={activeArgumentData?.chd_rawValue}
 											on:changed={(e) => {
 												Object.assign(activeArgumentData, e.detail);
 												console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
@@ -214,6 +223,7 @@
 												<textarea class="textarea textarea-primary textarea-xs" />
 												<Textarea
 													dd_displayType={activeArgumentData.dd_displayType}
+													rawValue={activeArgumentData?.chd_rawValue}
 													on:changed={(e) => {
 														Object.assign(activeArgumentData, e.detail);
 														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
@@ -227,6 +237,7 @@
 												<!-- make this a component for easy handling -->
 												<Input
 													dd_displayType={activeArgumentData.dd_displayType}
+													rawValue={activeArgumentData?.chd_rawValue}
 													on:changed={(e) => {
 														Object.assign(activeArgumentData, e.detail);
 														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);

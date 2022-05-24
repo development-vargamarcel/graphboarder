@@ -14,11 +14,12 @@
 	export let extraData;
 	let dispatch = createEventDispatcher();
 	let detail;
-	let chosenInputField;
+	export let chosenInputField;
 	let inputEl;
-	let rawValue = '';
+	export let rawValue = '';
 	let dispatchValue = null;
-	let isINPUT_OBJECT = false;
+	export let isINPUT_OBJECT = false;
+
 	let fillValue;
 </script>
 
@@ -37,25 +38,30 @@
 			chosenInputField = detail.extraData.inputFields?.filter((el) => {
 				return el.dd_displayName == detail.chosen;
 			})[0];
+
+			console.log('chosenInputField', chosenInputField);
+			console.log('detail', detail);
+			isINPUT_OBJECT = detail.extraData.dd_displayType == 'INPUT_OBJECT';
+			chosen = detail.chosen;
 			if (chosenInputField) {
 				dispatch('changed', {
 					chd_chosen: detail.chosen,
 					chd_dispatchValue: undefined,
 					chd_needsValue: true,
-					chd_needsChosen: true
+					chd_needsChosen: true,
+					isINPUT_OBJECT,
+					chosenInputField
 				}); //chd_ == chosen data
 			} else {
 				dispatch('changed', {
 					chd_chosen: detail.chosen,
 					chd_dispatchValue: undefined,
 					chd_needsValue: false,
-					chd_needsChosen: true
+					chd_needsChosen: true,
+					isINPUT_OBJECT,
+					chosenInputField
 				}); //chd_ == chosen data
 			}
-			console.log('chosenInputField', chosenInputField);
-			console.log('detail', detail);
-			isINPUT_OBJECT = detail.extraData.dd_displayType == 'INPUT_OBJECT';
-			chosen = detail.chosen;
 		}}
 	/>
 
@@ -76,8 +82,10 @@
 						dispatch('changed', {
 							chd_chosen: chosen,
 							chd_dispatchValue: dispatchValue,
+							chd_rawValue: rawValue,
 							chd_needsValue: true,
-							chd_needsChosen: true
+							chd_needsChosen: true,
+							isINPUT_OBJECT
 						}); //chd_ == chosen data
 					}}
 				/>
@@ -95,8 +103,11 @@
 								dispatch('changed', {
 									chd_chosen: chosen,
 									chd_dispatchValue: parseInt(rawValue) ? rawValue : `'${rawValue}'` || '',
+									chd_rawValue: rawValue,
+
 									chd_needsValue: true,
-									chd_needsChosen: true
+									chd_needsChosen: true,
+									isINPUT_OBJECT
 								}); //chd_ == chosen data
 							}}
 						/>
@@ -115,8 +126,11 @@
 						dispatch('changed', {
 							chd_chosen: chosen,
 							chd_dispatchValue: parseInt(rawValue) ? rawValue : `'${rawValue}'` || '',
+							chd_rawValue: rawValue,
+
 							chd_needsValue: true,
-							chd_needsChosen: true
+							chd_needsChosen: true,
+							isINPUT_OBJECT
 						}); //chd_ == chosen data
 					}}
 				/>
@@ -131,8 +145,11 @@
 						dispatch('changed', {
 							chd_chosen: chosen,
 							chd_dispatchValue: parseInt(rawValue) ? rawValue : `'${rawValue}'` || '',
+							chd_rawValue: rawValue,
+
 							chd_needsValue: true,
-							chd_needsChosen: true
+							chd_needsChosen: true,
+							isINPUT_OBJECT
 						}); //chd_ == chosen data
 					}}
 				/>{/if}
