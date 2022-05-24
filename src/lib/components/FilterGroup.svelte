@@ -91,7 +91,7 @@
 								rawValue = inputEl.checked;
 								dispatch('changed', {
 									chd_chosen: chosen,
-									chd_dispatchValue: rawValue || '',
+									chd_dispatchValue: `'${rawValue}'` || '',
 									chd_needsValue: true,
 									chd_needsChosen: true,
 									chd_needsChosen: true
@@ -112,7 +112,7 @@
 						rawValue = inputEl.value;
 						dispatch('changed', {
 							chd_chosen: chosen,
-							chd_dispatchValue: rawValue || '',
+							chd_dispatchValue: `'${rawValue}'` || '',
 							chd_needsValue: true,
 							chd_needsChosen: true
 						}); //chd_ == chosen data
@@ -128,7 +128,7 @@
 						rawValue = inputEl.value;
 						dispatch('changed', {
 							chd_chosen: chosen,
-							chd_dispatchValue: rawValue || '',
+							chd_dispatchValue: `'${rawValue}'` || '',
 							chd_needsValue: true,
 							chd_needsChosen: true
 						}); //chd_ == chosen data

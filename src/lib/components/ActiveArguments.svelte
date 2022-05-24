@@ -40,41 +40,6 @@
 
 		/////generate gqlArgObj to be used in query
 
-		class EnumType {
-			constructor(public value: string) {}
-		}
-
-		class VariableType {
-			constructor(public value: string) {}
-
-			toJSON() {
-				return `$${this.value}`;
-			}
-		}
-		function stringify(obj_from_json: any): string {
-			if (obj_from_json instanceof EnumType) {
-				return obj_from_json.value;
-			}
-			// variables should be prefixed with dollar sign and not quoted
-			else if (obj_from_json instanceof VariableType) {
-				return `$${obj_from_json.value}`;
-			}
-			// Cheers to Derek: https://stackoverflow.com/questions/11233498/json-stringify-without-quotes-on-properties
-			else if (typeof obj_from_json !== 'object' || obj_from_json === null) {
-				// not an object, stringify using native function
-				return JSON.stringify(obj_from_json);
-			} else if (Array.isArray(obj_from_json)) {
-				return `[${obj_from_json.map((item) => stringify(item)).join(', ')}]`;
-			}
-			// Implements recursive object serialization according to JSON spec
-			// but without quotes around the keys.
-			const props: string = Object.keys(obj_from_json)
-				.map((key) => `${key}: ${stringify(obj_from_json[key])}`)
-				.join(', ');
-
-			return `{${props}}`;
-		}
-
 		const generate_gqlArgObj = () => {
 			let gqlArgObj = {};
 			let canRunQuery = true;
@@ -121,10 +86,18 @@
 
 			console.log('gqlArgObj', gqlArgObj);
 			console.log('canRunQuery', canRunQuery);
-			console.log('JSON.stringify(gqlArgObj)', JSON.stringify(gqlArgObj), stringify(gqlArgObj));
 
+			let gqlArgObj_string = JSON.stringify(gqlArgObj)
+				.replace(/"/g, '')
+				.replace(/'/g, `"`)
+				.slice(1, -1);
+			console.log(
+				'JSON.stringify(gqlArgObj)',
+				JSON.stringify(gqlArgObj),
+				JSON.stringify(gqlArgObj).replace(/"/g, '')
+			);
 			if (canRunQuery) {
-				dispatch('argsChanged', { gqlArgObj, gqlArgObj_string: stringify(gqlArgObj).slice(1, -1) });
+				dispatch('argsChanged', { gqlArgObj, gqlArgObj_string });
 			}
 		};
 
