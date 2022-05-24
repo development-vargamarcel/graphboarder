@@ -130,8 +130,8 @@
 		on:apply={(e) => {
 			console.log(']]]]]]]]]', e);
 		}}
-		><div class="  w-full  bg-base-200/50  ">
-			<div class="mx-auto mt-2  w-full px-4 overflow-x-auto space-y-2   pb-2  ">
+		><div class="  w-full  ">
+			<div class="mx-auto mt-2  w-full  overflow-x-auto space-y-2   pb-2  ">
 				<div class="w-2" />
 
 				{#each activeArgumentsDataGrouped.groups as group}
@@ -287,6 +287,6 @@
 			//showActiveFilters = !showActiveFilters;
 			showActiveFilters = true;
 		}}
-		>toggle fiters visibility
+		>show active filters
 	</button>
 </div>
