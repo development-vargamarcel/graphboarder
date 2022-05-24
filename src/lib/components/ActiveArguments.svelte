@@ -49,53 +49,55 @@
 			let gqlArgObj = {};
 			let canRunQuery = true;
 			activeArgumentsData.forEach((argData) => {
-				let { chd_chosen, chd_dispatchValue, chd_needsValue, chd_needsChosen, stepsOfFieldsNew } =
-					argData;
-				let curr_gqlArgObj = gqlArgObj;
-				stepsOfFieldsNew.forEach((step, index) => {
-					let isLast = index == stepsOfFieldsNew.length - 1;
-					if (isLast) {
-						console.log('chd_needsValue', chd_needsValue);
-						if (!chd_needsChosen) {
-							if (!curr_gqlArgObj?.[step]) {
-								curr_gqlArgObj[step] = chd_dispatchValue;
-							}
-							curr_gqlArgObj = curr_gqlArgObj[step];
-						} else {
-							if (chd_needsValue == undefined) {
-								canRunQuery = false;
-							} else if (!chd_needsValue) {
-								curr_gqlArgObj[step] = chd_chosen;
-								if (!chd_chosen?.length) {
-									canRunQuery = false;
-								}
-							} else {
-								console.log('chd_dispatchValue', chd_dispatchValue);
-								console.log('!chd_dispatchValue', !chd_dispatchValue);
-
+				if (argData.inUse) {
+					let { chd_chosen, chd_dispatchValue, chd_needsValue, chd_needsChosen, stepsOfFieldsNew } =
+						argData;
+					let curr_gqlArgObj = gqlArgObj;
+					stepsOfFieldsNew.forEach((step, index) => {
+						let isLast = index == stepsOfFieldsNew.length - 1;
+						if (isLast) {
+							console.log('chd_needsValue', chd_needsValue);
+							if (!chd_needsChosen) {
 								if (!curr_gqlArgObj?.[step]) {
-									curr_gqlArgObj[step] = {};
+									curr_gqlArgObj[step] = chd_dispatchValue;
 								}
 								curr_gqlArgObj = curr_gqlArgObj[step];
-
-								curr_gqlArgObj[chd_chosen] =
-									chd_dispatchValue !== undefined ? chd_dispatchValue : '';
-								curr_gqlArgObj = curr_gqlArgObj[chd_chosen];
-
-								console.log('----curr_gqlArgObj', curr_gqlArgObj);
-								if (chd_dispatchValue == undefined) {
+							} else {
+								if (chd_needsValue == undefined) {
 									canRunQuery = false;
+								} else if (!chd_needsValue) {
+									curr_gqlArgObj[step] = chd_chosen;
+									if (!chd_chosen?.length) {
+										canRunQuery = false;
+									}
+								} else {
+									console.log('chd_dispatchValue', chd_dispatchValue);
+									console.log('!chd_dispatchValue', !chd_dispatchValue);
+
+									if (!curr_gqlArgObj?.[step]) {
+										curr_gqlArgObj[step] = {};
+									}
+									curr_gqlArgObj = curr_gqlArgObj[step];
+
+									curr_gqlArgObj[chd_chosen] =
+										chd_dispatchValue !== undefined ? chd_dispatchValue : '';
+									curr_gqlArgObj = curr_gqlArgObj[chd_chosen];
+
+									console.log('----curr_gqlArgObj', curr_gqlArgObj);
+									if (chd_dispatchValue == undefined) {
+										canRunQuery = false;
+									}
 								}
 							}
+						} else {
+							if (!curr_gqlArgObj?.[step]) {
+								curr_gqlArgObj[step] = {};
+							}
+							curr_gqlArgObj = curr_gqlArgObj[step];
 						}
-					} else {
-						if (!curr_gqlArgObj?.[step]) {
-							curr_gqlArgObj[step] = {};
-						}
-						curr_gqlArgObj = curr_gqlArgObj[step];
-					}
-				});
-				console.log('curr_gqlArgObj', curr_gqlArgObj);
+					});
+					console.log('curr_gqlArgObj', curr_gqlArgObj);
+				}
 			});
 
 			console.log('gqlArgObj', gqlArgObj);
@@ -148,6 +150,18 @@
 						{#each activeArgumentsDataGrouped[group] as activeArgumentData}
 							<!-- svelte-ignore a11y-label-has-associated-control -->
 							<div class=" bg-base-200 rounded-box p-2 my-2 flex">
+								<div class=" pr-2">
+									<input
+										type="checkbox"
+										class="checkbox input-primary"
+										checked={activeArgumentData?.inUse}
+										on:change={() => {
+											activeArgumentData.inUse =
+												activeArgumentData.inUse !== undefined ? !activeArgumentData.inUse : true;
+											activeArgumentData = activeArgumentData;
+										}}
+									/>
+								</div>
 								<div class="grow ">
 									<p class="  overflow-x-auto text-xs break-words mr-2  ">
 										{activeArgumentData.stepsOfFieldsNew?.join(' > ')}

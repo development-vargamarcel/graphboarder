@@ -111,7 +111,6 @@
 								}); //chd_ == chosen data
 							}}
 						/>
-						<p class="pl-2">true</p>
 					</div>
 				</label>
 			{:else if chosenInputField.dd_displayType == 'geo'}
