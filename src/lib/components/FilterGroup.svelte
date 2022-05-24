@@ -70,6 +70,9 @@
 					on:keyup={() => {
 						rawValue = inputEl.value;
 						dispatchValue = rawValue.split('\n');
+						dispatchValue = dispatchValue.map((elVal) => {
+							return parseInt(elVal) ? elVal : `'${elVal}'`;
+						});
 						dispatch('changed', {
 							chd_chosen: chosen,
 							chd_dispatchValue: dispatchValue,
@@ -91,9 +94,8 @@
 								rawValue = inputEl.checked;
 								dispatch('changed', {
 									chd_chosen: chosen,
-									chd_dispatchValue: `'${rawValue}'` || '',
+									chd_dispatchValue: parseInt(rawValue) ? rawValue : `'${rawValue}'` || '',
 									chd_needsValue: true,
-									chd_needsChosen: true,
 									chd_needsChosen: true
 								}); //chd_ == chosen data
 							}}
@@ -112,7 +114,7 @@
 						rawValue = inputEl.value;
 						dispatch('changed', {
 							chd_chosen: chosen,
-							chd_dispatchValue: `'${rawValue}'` || '',
+							chd_dispatchValue: parseInt(rawValue) ? rawValue : `'${rawValue}'` || '',
 							chd_needsValue: true,
 							chd_needsChosen: true
 						}); //chd_ == chosen data
@@ -128,7 +130,7 @@
 						rawValue = inputEl.value;
 						dispatch('changed', {
 							chd_chosen: chosen,
-							chd_dispatchValue: `'${rawValue}'` || '',
+							chd_dispatchValue: parseInt(rawValue) ? rawValue : `'${rawValue}'` || '',
 							chd_needsValue: true,
 							chd_needsChosen: true
 						}); //chd_ == chosen data

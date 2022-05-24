@@ -6,6 +6,8 @@
 	import FilterGroup from './FilterGroup.svelte';
 	import FilterItem from './FilterItem.svelte';
 	import { createEventDispatcher, each } from 'svelte/internal';
+	import Input from './fields/Input.svelte';
+	import Textarea from './fields/Textarea.svelte';
 	let _scalarsAndEnumsDisplayTypes = $scalarsAndEnumsDisplayTypes;
 	export let activeArgumentsData;
 	let activeArgumentsDataGrouped = {};
@@ -44,34 +46,42 @@
 			let gqlArgObj = {};
 			let canRunQuery = true;
 			activeArgumentsData.forEach((argData) => {
-				let { chd_chosen, chd_dispatchValue, chd_needsValue, stepsOfFieldsNew } = argData;
+				let { chd_chosen, chd_dispatchValue, chd_needsValue, chd_needsChosen, stepsOfFieldsNew } =
+					argData;
 				let curr_gqlArgObj = gqlArgObj;
 				stepsOfFieldsNew.forEach((step, index) => {
 					let isLast = index == stepsOfFieldsNew.length - 1;
 					if (isLast) {
 						console.log('chd_needsValue', chd_needsValue);
-						if (chd_needsValue == undefined) {
-							canRunQuery = false;
-						} else if (!chd_needsValue) {
-							curr_gqlArgObj[step] = chd_chosen;
-							if (!chd_chosen?.length) {
-								canRunQuery = false;
-							}
-						} else {
-							console.log('chd_dispatchValue', chd_dispatchValue);
-							console.log('!chd_dispatchValue', !chd_dispatchValue);
-
+						if (!chd_needsChosen) {
 							if (!curr_gqlArgObj?.[step]) {
-								curr_gqlArgObj[step] = {};
+								curr_gqlArgObj[step] = chd_dispatchValue;
 							}
 							curr_gqlArgObj = curr_gqlArgObj[step];
-
-							curr_gqlArgObj[chd_chosen] = chd_dispatchValue || '';
-							curr_gqlArgObj = curr_gqlArgObj[chd_chosen];
-
-							console.log('----curr_gqlArgObj', curr_gqlArgObj);
-							if (!chd_dispatchValue) {
+						} else {
+							if (chd_needsValue == undefined) {
 								canRunQuery = false;
+							} else if (!chd_needsValue) {
+								curr_gqlArgObj[step] = chd_chosen;
+								if (!chd_chosen?.length) {
+									canRunQuery = false;
+								}
+							} else {
+								console.log('chd_dispatchValue', chd_dispatchValue);
+								console.log('!chd_dispatchValue', !chd_dispatchValue);
+
+								if (!curr_gqlArgObj?.[step]) {
+									curr_gqlArgObj[step] = {};
+								}
+								curr_gqlArgObj = curr_gqlArgObj[step];
+
+								curr_gqlArgObj[chd_chosen] = chd_dispatchValue || '';
+								curr_gqlArgObj = curr_gqlArgObj[chd_chosen];
+
+								console.log('----curr_gqlArgObj', curr_gqlArgObj);
+								if (!chd_dispatchValue) {
+									canRunQuery = false;
+								}
 							}
 						}
 					} else {
@@ -206,11 +216,29 @@
 								{#if activeArgumentData.dd_kindList}
 									<!-- make this a component for easy handling -->
 									<textarea class="textarea textarea-primary textarea-xs" />
+									<Textarea
+										dd_displayType={activeArgumentData.dd_displayType}
+										on:changed={(e) => {
+											Object.assign(activeArgumentData, e.detail);
+											console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+											console.log('activeArgumentsData', activeArgumentsData);
+											activeArgumentsData = activeArgumentsData;
+
+											console.log(e.detail);
+										}}
+									/>
 								{:else}
 									<!-- make this a component for easy handling -->
-									<input
-										type={activeArgumentData.dd_displayType}
-										class="input input-primary input-xs"
+									<Input
+										dd_displayType={activeArgumentData.dd_displayType}
+										on:changed={(e) => {
+											Object.assign(activeArgumentData, e.detail);
+											console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+											console.log('activeArgumentsData', activeArgumentsData);
+											activeArgumentsData = activeArgumentsData;
+
+											console.log(e.detail);
+										}}
 									/>
 								{/if}
 							</div>
