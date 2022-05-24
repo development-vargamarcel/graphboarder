@@ -13,7 +13,7 @@
 	class="textarea textarea-primary textarea-xs"
 	bind:this={inputEl}
 	value={rawValue}
-	on:keyup={() => {
+	on:change={() => {
 		rawValue = inputEl.value;
 		dispatchValue = rawValue.split('\n');
 		dispatchValue = dispatchValue.map((elVal) => {

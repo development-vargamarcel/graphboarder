@@ -73,7 +73,7 @@
 					class="textarea textarea-primary textarea-xs w-40 mr-2"
 					bind:this={inputEl}
 					value={rawValue}
-					on:keyup={() => {
+					on:change={() => {
 						rawValue = inputEl.value;
 						dispatchValue = rawValue.split('\n');
 						dispatchValue = dispatchValue.map((elVal) => {
@@ -121,7 +121,7 @@
 					placeholder="map here"
 					bind:this={inputEl}
 					value={rawValue}
-					on:keyup={() => {
+					on:change={() => {
 						rawValue = inputEl.value;
 						dispatch('changed', {
 							chd_chosen: chosen,
@@ -140,7 +140,7 @@
 					class="input input-primary input-xs w-40 mr-2"
 					bind:this={inputEl}
 					value={rawValue}
-					on:keyup={() => {
+					on:change={() => {
 						rawValue = inputEl.value;
 						dispatch('changed', {
 							chd_chosen: chosen,
