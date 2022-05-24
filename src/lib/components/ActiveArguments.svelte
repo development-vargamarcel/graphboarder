@@ -9,6 +9,7 @@
 	import Input from './fields/Input.svelte';
 	import Textarea from './fields/Textarea.svelte';
 	import Modal from './Modal.svelte';
+	import Toggle from './fields/Toggle.svelte';
 	let _scalarsAndEnumsDisplayTypes = $scalarsAndEnumsDisplayTypes;
 	export let activeArgumentsData;
 	let activeArgumentsDataGrouped = {};
@@ -77,11 +78,12 @@
 								}
 								curr_gqlArgObj = curr_gqlArgObj[step];
 
-								curr_gqlArgObj[chd_chosen] = chd_dispatchValue || '';
+								curr_gqlArgObj[chd_chosen] =
+									chd_dispatchValue !== undefined ? chd_dispatchValue : '';
 								curr_gqlArgObj = curr_gqlArgObj[chd_chosen];
 
 								console.log('----curr_gqlArgObj', curr_gqlArgObj);
-								if (!chd_dispatchValue) {
+								if (chd_dispatchValue == undefined) {
 									canRunQuery = false;
 								}
 							}
@@ -224,7 +226,20 @@
 										/>
 									{:else}
 										<div>
-											{#if activeArgumentData.dd_kindList}
+											{#if activeArgumentData.dd_displayType == 'boolean'}
+												<Toggle
+													dd_displayType={activeArgumentData.dd_displayType}
+													rawValue={activeArgumentData?.chd_rawValue}
+													on:changed={(e) => {
+														Object.assign(activeArgumentData, e.detail);
+														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+														console.log('activeArgumentsData', activeArgumentsData);
+														activeArgumentsData = activeArgumentsData;
+
+														console.log(e.detail);
+													}}
+												/>
+											{:else if activeArgumentData.dd_kindList}
 												<Textarea
 													dd_displayType={activeArgumentData.dd_displayType}
 													rawValue={activeArgumentData?.chd_rawValue}

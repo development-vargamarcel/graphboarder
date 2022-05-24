@@ -95,17 +95,16 @@
 					<div class="flex">
 						<input
 							type="checkbox"
-							class="checkbox input-primary"
+							class="toggle toggle-primary"
 							bind:this={inputEl}
-							checked={rawValue == 'true' ? true : false}
+							checked={rawValue == 'true' || rawValue == true ? true : false}
 							on:change={() => {
-								rawValue = inputEl.checked;
+								rawValue = inputEl.checked ? true : false;
 								dispatch('changed', {
 									chd_chosen: chosen,
 									chd_dispatchValue:
-										chosenInputField.dd_displayType == 'text' ? `'${rawValue}'` : rawValue || '',
+										chosenInputField.dd_displayType == 'text' ? `'${rawValue}'` : rawValue,
 									chd_rawValue: rawValue,
-
 									chd_needsValue: true,
 									chd_needsChosen: true,
 									isINPUT_OBJECT
