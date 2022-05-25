@@ -77,7 +77,7 @@
 		}
 	} else {
 		console.log('chosen:', chosen);
-
+		console.log('chosenInternal:', chosenInternal);
 		if (!modalVisible) {
 			chosenInternal = chosen;
 		}
