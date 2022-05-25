@@ -17,6 +17,8 @@
 	let titlePreChange = title;
 	choises.length == 1 ? (type = 'toggle') : '';
 
+	let selectedForEdit = [];
+	$: console.log('selectedForEdit', selectedForEdit);
 	let chosenPreChange;
 	let modalVisible = false;
 	let showModalOrToggle = () => {
@@ -98,6 +100,20 @@
 			}
 		}
 	}
+
+	let reorder = false;
+
+	const moveUp = () => {
+		choises.forEach((el, index, array) => {
+			if (selectedForEdit.includes(el) && index > 1) {
+				let elToSubstitute = array[index - 1];
+				array[index - 1] = el;
+				array[index] = elToSubstitute;
+			}
+		});
+		choises = choises;
+	};
+	const moveDown = () => {};
 </script>
 
 <btn
@@ -157,8 +173,18 @@
 								? 'font-extrabold '
 								: ''}"
 						>
-							<span class="label-text  text-lg"
-								>{choice}
+							{#if reorder}
+								<input
+									type="checkbox"
+									name="selectedForEdit"
+									class="checkbox"
+									value={choice}
+									bind:group={selectedForEdit}
+									checked={true}
+								/>
+							{/if}
+							<span class="label-text  text-lg">
+								{choice}
 								{#if chosenDefault && chosenDefault.includes(choice)}
 									<div class="badge badge-xs  badge-info">default</div>
 								{/if}
@@ -173,6 +199,24 @@
 							/>
 						</label>
 					{/each}
+					<div class="flex space-x-2 pr-2 mt-2">
+						<button
+							class="btn btn-xs {reorder ? 'btn-accent w-1/2' : 'btn-primary w-full'}  "
+							on:click={() => {
+								reorder = !reorder;
+							}}>reorder</button
+						>
+						{#if reorder}
+							<div class="w-1/2 flex space-x-2">
+								<button class="btn btn-xs   w-1/2" on:click={moveUp}
+									><i class="bi bi-arrow-up-short" />up</button
+								>
+								<button class="btn btn-xs   w-1/2" on:click={moveDown}
+									><i class="bi bi-arrow-down-short" />down</button
+								>
+							</div>
+						{/if}
+					</div>
 				{/if}
 			</div>
 		</div>
