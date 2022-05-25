@@ -16,7 +16,7 @@
 	let btnExtraClass;
 	let titlePreChange = title;
 	choises.length == 1 ? (type = 'toggle') : '';
-
+	let reorder = false;
 	let selectedForEdit = [];
 	$: console.log('selectedForEdit', selectedForEdit);
 	let chosenPreChange;
@@ -47,7 +47,9 @@
 			chosen = chosenInternal;
 		}
 		console.log('filterApplied', { id: id, chosen: chosen, extraData });
-		dispatch('filterApplied', { id: id, chosen: chosen, extraData });
+		dispatch('filterApplied', { id: id, chosen: chosen, extraData, choises: choises });
+		selectedForEdit = [];
+		reorder = false;
 	};
 	$: if (title) {
 		if (type == 'toggle') {
@@ -59,7 +61,7 @@
 
 	$: if (chosen?.length > 0) {
 		console.log('chosen:', chosen);
-
+		console.log('chosenInternal:', chosenInternal);
 		if (!modalVisible) {
 			chosenInternal = chosen;
 		}
@@ -101,9 +103,8 @@
 		}
 	}
 
-	let reorder = false;
-
 	const moveUp = () => {
+		chosenInternal = [];
 		choises.forEach((el, index, array) => {
 			if (selectedForEdit.includes(el) && index > 0) {
 				let elToSubstitute = array[index - 1];
@@ -113,7 +114,9 @@
 				}
 			}
 		});
+
 		choises = choises;
+		chosen = chosenInternal;
 		//selectedForEdit = selectedForEdit;
 	};
 	const moveDown = () => {};
@@ -168,44 +171,46 @@
 							/>
 						</label>
 					{/each}{:else if type == 'checkbox'}
-					{#each choises as choice (choice)}
-						<label
-							class="cursor-pointer label  rounded-box   transition font-light border-2 border-dotted border-transparent  active:border-base-content/50 active:bg-primary/5 {chosenInternal?.includes(
-								choice
-							)
-								? 'font-extrabold '
-								: ''}"
-						>
-							<input
-								type="checkbox"
-								name="selectedForEdit"
-								class="checkbox {reorder ? 'block' : 'hidden'}"
-								value={choice}
-								bind:group={selectedForEdit}
-							/>
+					{#key choises}
+						{#each choises as choice (choice)}
+							<label
+								class="cursor-pointer label  rounded-box   transition font-light border-2 border-dotted border-transparent  active:border-base-content/50 active:bg-primary/5 {chosenInternal?.includes(
+									choice
+								)
+									? 'font-extrabold '
+									: ''}"
+							>
+								<input
+									type="checkbox"
+									name="selectedForEdit"
+									class="checkbox {reorder ? 'block' : 'hidden'}"
+									value={choice}
+									bind:group={selectedForEdit}
+								/>
 
-							<span class="label-text  text-lg">
-								{choice}
-								{#if chosenDefault && chosenDefault.includes(choice)}
-									<div class="badge badge-xs  badge-info">default</div>
-								{/if}
-							</span>
+								<span class="label-text  text-lg">
+									{choice}
+									{#if chosenDefault && chosenDefault.includes(choice)}
+										<div class="badge badge-xs  badge-info">default</div>
+									{/if}
+								</span>
 
-							<input
-								type="checkbox"
-								name="chosen"
-								class="checkbox"
-								value={choice}
-								bind:group={chosenInternal}
-							/>
-						</label>
-					{/each}
+								<input
+									type="checkbox"
+									name="chosen"
+									class="checkbox"
+									value={choice}
+									bind:group={chosenInternal}
+								/>
+							</label>
+						{/each}
+					{/key}
 					<div class="flex space-x-2 pr-2 mt-2">
 						<button
 							class="btn btn-xs {reorder ? 'btn-accent w-1/2' : 'btn-primary w-full'}  "
 							on:click={() => {
 								reorder = !reorder;
-							}}>reorder</button
+							}}>{reorder ? 'done' : 'reorder'}</button
 						>
 						{#if reorder}
 							<div class="w-1/2 flex space-x-2">

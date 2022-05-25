@@ -172,9 +172,11 @@
 											{#if activeArgumentData.dd_kindList}
 												<FilterGroup
 													extraData={activeArgumentData}
-													choises={activeArgumentData.enumValues.map((enumValue) => {
-														return enumValue.name;
-													})}
+													choises={activeArgumentData?.chd_Choises
+														? activeArgumentData.chd_Choises
+														: activeArgumentData.enumValues.map((enumValue) => {
+																return enumValue.name;
+														  })}
 													chosen={activeArgumentData?.chd_chosen}
 													chosenInputField={activeArgumentData?.chosenInputField}
 													isINPUT_OBJECT={activeArgumentData?.isINPUT_OBJECT}

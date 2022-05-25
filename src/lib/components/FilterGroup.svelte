@@ -49,6 +49,7 @@
 					chd_dispatchValue: dispatchValue,
 					chd_needsValue: true,
 					chd_needsChosen: true,
+					chd_Choises: detail?.choises,
 					isINPUT_OBJECT,
 					chosenInputField
 				}); //chd_ == chosen data
@@ -58,6 +59,7 @@
 					chd_dispatchValue: dispatchValue,
 					chd_needsValue: false,
 					chd_needsChosen: true,
+					chd_Choises: detail?.choises,
 					isINPUT_OBJECT,
 					chosenInputField
 				}); //chd_ == chosen data
