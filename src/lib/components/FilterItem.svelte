@@ -113,7 +113,7 @@
 				}
 			}
 		});
-
+		chosenInternal = [];
 		choises = choises;
 		chosen = chosenInternal;
 	};
