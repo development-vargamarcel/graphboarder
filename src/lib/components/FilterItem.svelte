@@ -104,7 +104,6 @@
 	}
 
 	const moveUp = () => {
-		chosenInternal = [];
 		choises.forEach((el, index, array) => {
 			if (selectedForEdit.includes(el) && index > 0) {
 				let elToSubstitute = array[index - 1];
@@ -117,7 +116,6 @@
 
 		choises = choises;
 		chosen = chosenInternal;
-		//selectedForEdit = selectedForEdit;
 	};
 	const moveDown = () => {};
 </script>
@@ -209,6 +207,9 @@
 						<button
 							class="btn btn-xs {reorder ? 'btn-accent w-1/2' : 'btn-primary w-full'}  "
 							on:click={() => {
+								if (!reorder) {
+									chosenInternal = [];
+								}
 								reorder = !reorder;
 							}}>{reorder ? 'done' : 'reorder'}</button
 						>
