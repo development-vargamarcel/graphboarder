@@ -105,13 +105,16 @@
 
 	const moveUp = () => {
 		choises.forEach((el, index, array) => {
-			if (selectedForEdit.includes(el) && index > 1) {
+			if (selectedForEdit.includes(el) && index > 0) {
 				let elToSubstitute = array[index - 1];
-				array[index - 1] = el;
-				array[index] = elToSubstitute;
+				if (!selectedForEdit.includes(elToSubstitute)) {
+					array[index] = elToSubstitute;
+					array[index - 1] = el;
+				}
 			}
 		});
 		choises = choises;
+		//selectedForEdit = selectedForEdit;
 	};
 	const moveDown = () => {};
 </script>
@@ -165,7 +168,7 @@
 							/>
 						</label>
 					{/each}{:else if type == 'checkbox'}
-					{#each choises as choice}
+					{#each choises as choice (choice)}
 						<label
 							class="cursor-pointer label  rounded-box   transition font-light border-2 border-dotted border-transparent  active:border-base-content/50 active:bg-primary/5 {chosenInternal?.includes(
 								choice
@@ -173,16 +176,14 @@
 								? 'font-extrabold '
 								: ''}"
 						>
-							{#if reorder}
-								<input
-									type="checkbox"
-									name="selectedForEdit"
-									class="checkbox"
-									value={choice}
-									bind:group={selectedForEdit}
-									checked={true}
-								/>
-							{/if}
+							<input
+								type="checkbox"
+								name="selectedForEdit"
+								class="checkbox {reorder ? 'block' : 'hidden'}"
+								value={choice}
+								bind:group={selectedForEdit}
+							/>
+
 							<span class="label-text  text-lg">
 								{choice}
 								{#if chosenDefault && chosenDefault.includes(choice)}
