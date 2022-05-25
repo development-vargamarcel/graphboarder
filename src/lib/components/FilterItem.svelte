@@ -113,7 +113,13 @@
 				}
 			}
 		});
-		chosenInternal = [];
+		let chosenInternalNew = [];
+		choises.forEach((el, index, array) => {
+			if (chosenInternal.includes(el)) {
+				chosenInternalNew.push(el);
+			}
+		});
+		chosenInternal = chosenInternalNew;
 		choises = choises;
 		chosen = chosenInternal;
 	};
@@ -208,7 +214,7 @@
 							class="btn btn-xs {reorder ? 'btn-accent w-1/2' : 'btn-primary w-full'}  "
 							on:click={() => {
 								if (!reorder) {
-									chosenInternal = [];
+									// /chosenInternal = [];
 								}
 								reorder = !reorder;
 							}}>{reorder ? 'done' : 'reorder'}</button
