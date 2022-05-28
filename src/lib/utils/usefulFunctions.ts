@@ -257,12 +257,46 @@ export const getArguments_withInfo = (QM) => {
 //     return colData;
 // };
 
+export const stepsOfFieldsFlatten = (stepsOfFields, stepsOfFildsStringAll) => {//if takes multiple paths,make one 'stepsOfFields' for each path,as to preserve the stepsOfFields syntax,where only the last element can be an array and that can only contain strings
+    let lastStepIndex = stepsOfFields.length - 1
+    let stepsOfFieldsFlat = []
+
+    let stepsOfFildsStringEl
+    let stepsOfFildsLastStep = stepsOfFields[lastStepIndex]
+    if (typeof stepsOfFields[lastStepIndex][0] == 'string') {
+        stepsOfFieldsFlat = stepsOfFields
+    } else {
+        stepsOfFildsStringEl = stepsOfFields.filter((el) => {
+            return !Array.isArray(el)
+        })
+        stepsOfFieldsFlat = stepsOfFildsLastStep.map((el) => {
+            console.log('el===', el)
+            let stepsOfFieldsForEl
+
+
+            if (typeof el[el.length - 1][el[el.length - 1].length - 1] == 'string') { //support one way in
+                stepsOfFieldsForEl = [...stepsOfFildsStringEl, ...el]
+            } else {//support deeper way in
+
+            }
+
+            return stepsOfFieldsForEl
+        })
+
+
+    }
+    return stepsOfFieldsFlat
+}
 export const stepsOfFieldsToQueryFragment = (stepsOfFields) => {
     let queryFragment;
 
     if (typeof stepsOfFields[stepsOfFields.length - 1][0] == 'string') {
         queryFragment = `${stepsOfFields.join('{')}${'}'.repeat(stepsOfFields.length - 1)}`;
     } else {
+
+        console.log('stepsOfFieldsFlatten() teststeps', stepsOfFieldsFlatten(stepsOfFields))
+
+        console.error('--HANDLE THIS if important for app,most likely not---', stepsOfFields, `${stepsOfFields.join('{')}${'}'.repeat(stepsOfFields.length - 1)}`)
         //here you must handle the situation where the selected data for column doesn't have direct scalar fields
     }
 

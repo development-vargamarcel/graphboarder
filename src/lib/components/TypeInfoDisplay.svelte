@@ -1,5 +1,8 @@
 <script>
-	import { stepsOfFieldsToQueryFragment } from './../utils/usefulFunctions.ts';
+	import {
+		stepsOfFieldsToQueryFragment,
+		stepsOfFieldsFlatten
+	} from './../utils/usefulFunctions.ts';
 	import { introspectionResult } from './../stores/introspectionResult.ts';
 	import { generateFragmentData, get_rootName } from '$lib/utils/usefulFunctions';
 	import { createEventDispatcher } from 'svelte';
@@ -96,13 +99,22 @@
 					);
 					stepsOfFieldsNew.push(fragmentDataFlatten[0]);
 					stepsOfFieldsNew.push(fragmentDataFlatten[1]);
+					console.log('fragmentDataFlatten[1]', fragmentDataFlatten[1]);
 					//stepsOfFieldsNew.push([fragmentDataFlatten[0]], [fragmentDataFlatten[1]]);
 					console.log('stepsOfFieldsNew', stepsOfFieldsNew);
 				}
+				let stepsOfFieldsNew_Flat = stepsOfFieldsFlatten(stepsOfFieldsNew);
+				let stepsOfFieldsNew_useFlat = Array.isArray(stepsOfFieldsNew_Flat[0]);
 				dispatch('colAddRequest', {
 					title: `col-${Math.floor(Math.random() * 200)}`,
 					stepsOfFieldsNew: stepsOfFieldsNew,
-					queryFragmentNew: stepsOfFieldsToQueryFragment(stepsOfFieldsNew)
+					stepsOfFieldsNew_Flat: stepsOfFieldsNew_Flat,
+					stepsOfFieldsNew_useFlat: stepsOfFieldsNew_useFlat,
+					queryFragmentNew: stepsOfFieldsNew_useFlat
+						? stepsOfFieldsNew_Flat.map((el) => {
+								return stepsOfFieldsToQueryFragment(el);
+						  })
+						: stepsOfFieldsToQueryFragment(stepsOfFieldsNew)
 				});
 				// console.log(type);
 				// console.log(dd_rootName);
