@@ -81,13 +81,9 @@
 		<div class="w-1/8 text-center text-xs" />
 	</div>
 {:else if template == 'columnAddDisplay'}
-	<div
-		class="min-w-max  w-full  cursor-pointer  hover:text-primary px-2 rounded-box flex text-base"
-	>
+	<div class="min-w-max  w-full  cursor-pointer   px-2 rounded-box flex text-base">
 		<div
-			class="min-w-max  w-full  pr-2 text-md {false
-				? 'cursor-no-drop hover:text-base-300 text-base-200'
-				: ''}"
+			class="min-w-max  w-full  pr-2 text-md hover:text-primary active:scale-50 duration-300 "
 			on:click={() => {
 				if (dd_kindsArray.includes('SCALAR')) {
 					stepsOfFieldsNew.push(dd_displayName);
@@ -125,7 +121,7 @@
 		</div>
 
 		{#if canExpand}
-			<div class="w-10  " on:click={expand}>
+			<div class="w-10 hover:text-primary active:scale-50 duration-300" on:click={expand}>
 				{#if showExpand}
 					<div class="bi bi-chevron-down mx-auto w-min" />
 				{:else}

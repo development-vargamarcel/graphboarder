@@ -47,6 +47,30 @@
 	console.log('*allInputFieldsAreScalar*', allInputFieldsAreScalar);
 
 	/// do the above for enums
+
+	const addFilter = () => {
+		if (stepsOfFieldsNew[stepsOfFieldsNew.length - 1] !== dd_displayName) {
+			stepsOfFieldsNew.push(dd_displayName); //take care might caus eproblems
+		}
+
+		let infoToCast = {
+			inputFields,
+			enumValues,
+			stepsOfFieldsNew,
+			stepsOfFieldsNewStringified: JSON.stringify(stepsOfFieldsNew),
+			id: `${JSON.stringify(stepsOfFieldsNew)}${Math.random()}`,
+			...type
+		};
+		console.log('infoToCast', infoToCast);
+		//add it
+
+		dispatch('argAddRequest', infoToCast);
+
+		//infos about enums:
+		//https://blog.logrocket.com/what-you-need-to-know-about-graphql-enums/
+		//!!!  But the enum value as String is not valid. The field using an enum type requires an enum reference, so passing the enum value isn’t considered valid.
+		//other important info https://dgraph.io/docs/graphql/queries/and-or-not/
+	};
 </script>
 
 {#if template == 'default'}
@@ -104,12 +128,19 @@
 {:else if template == 'changeArguments'}
 	<!-- svelte-ignore a11y-label-has-associated-control -->
 	<label
-		class=" cursor-pointer  hover:text-primary px-2 rounded-box flex text-base min-w-max  w-full"
+		class=" cursor-pointer  hover:text-primary px-2 rounded-box flex text-base min-w-max  w-full active:scale-50 duration-300"
+		on:click={() => {
+			if (canExpand && !allInputFieldsAreScalar && !enumValues) {
+				expand();
+			} else {
+				addFilter();
+			}
+		}}
 	>
 		<div class=" pr-2  w-full min-w-max">{dd_displayName}</div>
 
 		{#if canExpand && !allInputFieldsAreScalar && !enumValues}
-			<div class="w-10  " on:click={expand}>
+			<div class="w-10  ">
 				{#if showExpand}
 					<div class="bi bi-chevron-down mx-auto w-min" />
 				{:else}
@@ -117,34 +148,9 @@
 				{/if}
 			</div>
 		{:else}
-			<div
-				class="w-10  "
-				on:click={() => {
-					if (stepsOfFieldsNew[stepsOfFieldsNew.length - 1] !== dd_displayName) {
-						stepsOfFieldsNew.push(dd_displayName); //take care might caus eproblems
-					}
-
-					let infoToCast = {
-						inputFields,
-						enumValues,
-						stepsOfFieldsNew,
-						stepsOfFieldsNewStringified: JSON.stringify(stepsOfFieldsNew),
-						id: `${JSON.stringify(stepsOfFieldsNew)}${Math.random()}`,
-						...type
-					};
-					console.log('infoToCast', infoToCast);
-					//add it
-
-					dispatch('argAddRequest', infoToCast);
-
-					//infos about enums:
-					//https://blog.logrocket.com/what-you-need-to-know-about-graphql-enums/
-					//!!!  But the enum value as String is not valid. The field using an enum type requires an enum reference, so passing the enum value isn’t considered valid.
-					//other important info https://dgraph.io/docs/graphql/queries/and-or-not/
-				}}
-			>
+			<!-- <div class="w-10  ">
 				<div class="bi bi-plus mx-auto   w-min " />
-			</div>
+			</div> -->
 		{/if}
 	</label>
 {/if}
