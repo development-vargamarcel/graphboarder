@@ -3,6 +3,7 @@
 	import FilterChoises from './FilterChoises.svelte';
 	import { elementToDisplay, get_KindsArray, get_NamesArray } from '$lib/utils/usefulFunctions';
 	import { createEventDispatcher } from 'svelte';
+	import { loop_guard } from 'svelte/internal';
 
 	export let id;
 	export let choises;
@@ -19,6 +20,9 @@
 	export let rawValue = '';
 	export let dispatchValue = null;
 	export let isINPUT_OBJECT = false;
+	let checkboxChecked;
+	$: rawValue = checkboxChecked;
+	$: dispatchValue = checkboxChecked;
 
 	let fillValue;
 </script>
@@ -43,26 +47,61 @@
 			console.log('detail', detail);
 			isINPUT_OBJECT = detail.extraData.dd_displayType == 'INPUT_OBJECT';
 			chosen = detail.chosen;
+			let valueCouldBeValid = true;
 			if (chosenInputField) {
-				dispatch('changed', {
-					chd_chosen: detail.chosen,
-					chd_dispatchValue: dispatchValue,
-					chd_needsValue: true,
-					chd_needsChosen: true,
-					chd_Choises: detail?.choises,
-					isINPUT_OBJECT,
-					chosenInputField
-				}); //chd_ == chosen data
+				let rawValue_TypeOf = typeof rawValue;
+				if (chosenInputField.dd_kindList) {
+					if (!['string', 'number', 'date'].includes(rawValue_TypeOf)) {
+						rawValue = '';
+						valueCouldBeValid = false;
+					} else {
+						dispatchValue = rawValue.split('\n');
+						dispatchValue = dispatchValue.map((elVal) => {
+							return chosenInputField.dd_displayType == 'text' ? `'${elVal}'` : elVal || '';
+						});
+					}
+				} else if (chosenInputField.dd_displayType == 'boolean') {
+					if (typeof rawValue !== 'boolean') {
+						rawValue = true;
+						dispatchValue = true;
+						checkboxChecked = true;
+					} else {
+					}
+				} else if (chosenInputField.dd_displayType == 'geo') {
+					//
+				} else {
+					if (!['string', 'number', 'date'].includes(rawValue_TypeOf)) {
+						rawValue = '';
+						valueCouldBeValid = false;
+					} else {
+						dispatchValue = chosenInputField.dd_displayType == 'text' ? `'${rawValue}'` : rawValue;
+					}
+				}
+				checkboxChecked = rawValue;
+				console.log('-----', rawValue);
+
+				if (valueCouldBeValid) {
+					dispatch('changed', {
+						chd_chosen: detail.chosen,
+						chd_dispatchValue: dispatchValue,
+						chd_needsValue: true,
+						chd_needsChosen: true,
+						chd_rawValue: rawValue,
+						chd_Choises: detail?.choises,
+						isINPUT_OBJECT,
+						chosenInputField
+					}); //chd_ == chosen data
+				}
 			} else {
-				dispatch('changed', {
-					chd_chosen: detail.chosen,
-					chd_dispatchValue: dispatchValue,
-					chd_needsValue: false,
-					chd_needsChosen: true,
-					chd_Choises: detail?.choises,
-					isINPUT_OBJECT,
-					chosenInputField
-				}); //chd_ == chosen data
+				// dispatch('changed', {
+				// 	chd_chosen: detail.chosen,
+				// 	chd_dispatchValue: dispatchValue,
+				// 	chd_needsValue: false,
+				// 	chd_needsChosen: true,
+				// 	chd_Choises: detail?.choises,
+				// 	isINPUT_OBJECT,
+				// 	chosenInputField
+				// }); //chd_ == chosen data
 			}
 		}}
 	/>
@@ -98,10 +137,8 @@
 						<input
 							type="checkbox"
 							class="toggle toggle-primary"
-							bind:this={inputEl}
-							checked={rawValue == 'true' || rawValue == true ? true : false}
+							bind:checked={checkboxChecked}
 							on:change={() => {
-								rawValue = inputEl.checked ? true : false;
 								dispatch('changed', {
 									chd_chosen: chosen,
 									chd_dispatchValue:

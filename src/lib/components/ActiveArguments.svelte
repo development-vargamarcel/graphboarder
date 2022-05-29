@@ -17,7 +17,86 @@
 	const dispatch = createEventDispatcher();
 	let showModal = false;
 	export let delete_activeArgument;
+
+	const handleArgsChanged = () => {};
+
+	const generate_gqlArgObj = () => {
+		let gqlArgObj = {};
+		let canRunQuery = true;
+		activeArgumentsData.forEach((argData) => {
+			if (argData.inUse) {
+				let { chd_chosen, chd_dispatchValue, chd_needsValue, chd_needsChosen, stepsOfFieldsNew } =
+					argData;
+				let curr_gqlArgObj = gqlArgObj;
+				stepsOfFieldsNew.forEach((step, index) => {
+					let isLast = index == stepsOfFieldsNew.length - 1;
+					if (isLast) {
+						console.log('chd_needsValue', chd_needsValue);
+						if (!chd_needsChosen) {
+							if (!curr_gqlArgObj?.[step]) {
+								curr_gqlArgObj[step] = chd_dispatchValue;
+							}
+							curr_gqlArgObj = curr_gqlArgObj[step];
+						} else {
+							if (chd_needsValue == undefined) {
+								canRunQuery = false;
+							} else if (!chd_needsValue) {
+								curr_gqlArgObj[step] = chd_chosen;
+								if (!Array.isArray(chd_chosen)) {
+									canRunQuery = false;
+								}
+							} else {
+								console.log('chd_dispatchValue', chd_dispatchValue);
+								console.log('!chd_dispatchValue', !chd_dispatchValue);
+
+								if (!curr_gqlArgObj?.[step]) {
+									curr_gqlArgObj[step] = {};
+								}
+								curr_gqlArgObj = curr_gqlArgObj[step];
+
+								curr_gqlArgObj[chd_chosen] =
+									chd_dispatchValue !== undefined ? chd_dispatchValue : '';
+								curr_gqlArgObj = curr_gqlArgObj[chd_chosen];
+
+								console.log('----curr_gqlArgObj', curr_gqlArgObj);
+								if (chd_dispatchValue == undefined) {
+									canRunQuery = false;
+								}
+							}
+						}
+					} else {
+						if (!curr_gqlArgObj?.[step]) {
+							curr_gqlArgObj[step] = {};
+						}
+						curr_gqlArgObj = curr_gqlArgObj[step];
+					}
+				});
+				console.log('curr_gqlArgObj', curr_gqlArgObj);
+			}
+		});
+
+		console.log('gqlArgObj', gqlArgObj);
+		console.log('canRunQuery', canRunQuery);
+
+		let gqlArgObj_string = JSON.stringify(gqlArgObj)
+			.replace(/"/g, '')
+			.replace(/'/g, `"`)
+			.slice(1, -1);
+		console.log(
+			'JSON.stringify(gqlArgObj)',
+			JSON.stringify(gqlArgObj),
+			JSON.stringify(gqlArgObj).replace(/"/g, '')
+		);
+		if (canRunQuery) {
+			dispatch('argsChanged', { gqlArgObj, gqlArgObj_string });
+		}
+	};
 	$: if (activeArgumentsData) {
+		console.log(
+			'activeArgumentsData changed',
+			activeArgumentsData,
+			activeArgumentsData?.[0]?.chd_rawValue
+		);
 		activeArgumentsDataGrouped = {};
 		activeArgumentsData.forEach((el) => {
 			if (el.stepsOfFieldsNew.length == 1) {
@@ -44,78 +123,6 @@
 		}
 
 		/////generate gqlArgObj to be used in query
-
-		const generate_gqlArgObj = () => {
-			let gqlArgObj = {};
-			let canRunQuery = true;
-			activeArgumentsData.forEach((argData) => {
-				if (argData.inUse) {
-					let { chd_chosen, chd_dispatchValue, chd_needsValue, chd_needsChosen, stepsOfFieldsNew } =
-						argData;
-					let curr_gqlArgObj = gqlArgObj;
-					stepsOfFieldsNew.forEach((step, index) => {
-						let isLast = index == stepsOfFieldsNew.length - 1;
-						if (isLast) {
-							console.log('chd_needsValue', chd_needsValue);
-							if (!chd_needsChosen) {
-								if (!curr_gqlArgObj?.[step]) {
-									curr_gqlArgObj[step] = chd_dispatchValue;
-								}
-								curr_gqlArgObj = curr_gqlArgObj[step];
-							} else {
-								if (chd_needsValue == undefined) {
-									canRunQuery = false;
-								} else if (!chd_needsValue) {
-									curr_gqlArgObj[step] = chd_chosen;
-									if (!Array.isArray(chd_chosen)) {
-										canRunQuery = false;
-									}
-								} else {
-									console.log('chd_dispatchValue', chd_dispatchValue);
-									console.log('!chd_dispatchValue', !chd_dispatchValue);
-
-									if (!curr_gqlArgObj?.[step]) {
-										curr_gqlArgObj[step] = {};
-									}
-									curr_gqlArgObj = curr_gqlArgObj[step];
-
-									curr_gqlArgObj[chd_chosen] =
-										chd_dispatchValue !== undefined ? chd_dispatchValue : '';
-									curr_gqlArgObj = curr_gqlArgObj[chd_chosen];
-
-									console.log('----curr_gqlArgObj', curr_gqlArgObj);
-									if (chd_dispatchValue == undefined) {
-										canRunQuery = false;
-									}
-								}
-							}
-						} else {
-							if (!curr_gqlArgObj?.[step]) {
-								curr_gqlArgObj[step] = {};
-							}
-							curr_gqlArgObj = curr_gqlArgObj[step];
-						}
-					});
-					console.log('curr_gqlArgObj', curr_gqlArgObj);
-				}
-			});
-
-			console.log('gqlArgObj', gqlArgObj);
-			console.log('canRunQuery', canRunQuery);
-
-			let gqlArgObj_string = JSON.stringify(gqlArgObj)
-				.replace(/"/g, '')
-				.replace(/'/g, `"`)
-				.slice(1, -1);
-			console.log(
-				'JSON.stringify(gqlArgObj)',
-				JSON.stringify(gqlArgObj),
-				JSON.stringify(gqlArgObj).replace(/"/g, '')
-			);
-			if (canRunQuery) {
-				dispatch('argsChanged', { gqlArgObj, gqlArgObj_string });
-			}
-		};
 
 		generate_gqlArgObj();
 
@@ -185,7 +192,8 @@
 														Object.assign(activeArgumentData, e.detail);
 														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 														console.log('activeArgumentsData', activeArgumentsData);
-														activeArgumentsData = activeArgumentsData;
+														//activeArgumentsData = activeArgumentsData
+														generate_gqlArgObj();
 
 														console.log(e.detail);
 													}}
@@ -208,7 +216,7 @@
 														Object.assign(activeArgumentData, e.detail);
 														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 														console.log('activeArgumentsData', activeArgumentsData);
-														activeArgumentsData = activeArgumentsData;
+														generate_gqlArgObj();
 														console.log(e.detail);
 													}}
 													id={activeArgumentData.stepsOfFieldsNew}
@@ -232,7 +240,8 @@
 												Object.assign(activeArgumentData, e.detail);
 												console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 												console.log('activeArgumentsData', activeArgumentsData);
-												activeArgumentsData = activeArgumentsData;
+												//activeArgumentsData = activeArgumentsData
+												generate_gqlArgObj();
 
 												console.log(e.detail);
 											}}
@@ -250,7 +259,8 @@
 														Object.assign(activeArgumentData, e.detail);
 														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 														console.log('activeArgumentsData', activeArgumentsData);
-														activeArgumentsData = activeArgumentsData;
+														//activeArgumentsData = activeArgumentsData
+														generate_gqlArgObj();
 
 														console.log(e.detail);
 													}}
@@ -264,7 +274,8 @@
 														Object.assign(activeArgumentData, e.detail);
 														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 														console.log('activeArgumentsData', activeArgumentsData);
-														activeArgumentsData = activeArgumentsData;
+														//activeArgumentsData = activeArgumentsData
+														generate_gqlArgObj();
 
 														console.log(e.detail);
 													}}
@@ -277,7 +288,8 @@
 														Object.assign(activeArgumentData, e.detail);
 														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 														console.log('activeArgumentsData', activeArgumentsData);
-														activeArgumentsData = activeArgumentsData;
+														//activeArgumentsData = activeArgumentsData
+														generate_gqlArgObj();
 
 														console.log(e.detail);
 													}}
