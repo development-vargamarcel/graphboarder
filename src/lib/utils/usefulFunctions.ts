@@ -12,7 +12,7 @@ ${queryFragments}
     `;
 };
 
-export const generateFragmentData = (field, rootTypes, flatten, deeperIfNoScalar = true) => {//refactor this using current data
+export const generateFragmentData = (field, rootTypes, flatten, deeperIfNoScalar = true) => {// !!! refactor this using current data
     let fieldName = field.name;
     let isScalar = get_KindsArray(field).includes('SCALAR');
     let fragmentData;
