@@ -137,7 +137,7 @@
 				</label>
 			{:else if chosenInputField.dd_displayType == 'geo'}
 				<Map />
-				<input
+				<!-- <input
 					type={chosenInputField.dd_displayType}
 					class="input input-primary input-xs w-20 h-20 mr-2 "
 					placeholder="map here"
@@ -147,7 +147,7 @@
 						rawValue = inputEl.value;
 						handleChanges();
 					}}
-				/>
+				/> -->
 			{:else}
 				<Input
 					dd_displayType={chosenInputField.dd_displayType}

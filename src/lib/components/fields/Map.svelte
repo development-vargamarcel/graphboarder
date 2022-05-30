@@ -14,9 +14,11 @@
 	let large = false;
 </script>
 
-<button>large/small</button>
-<div class="bg-black  w-20 h-20">
-	<div id="map" class="h-20 w-20 absolute" />
+<div class="flex flex-col">
+	<button>large/small</button>
+	<div class="bg-black  w-20 h-20">
+		<div id="map" class="h-20 w-20 absolute" />
+	</div>
 </div>
 
 <style>
