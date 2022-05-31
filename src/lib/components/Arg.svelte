@@ -1,5 +1,6 @@
 <script>
 	//!!! ENUM TYPES WILL CREATE SOM PROBLEMS AS OF 5/6/2022
+	import { fade, fly, slide } from 'svelte/transition';
 	import { introspectionResult } from '$lib/stores/introspectionResult';
 	import {
 		get_KindsArray,
@@ -77,7 +78,11 @@
 	{#if showExpand}
 		<!-- <div class="mb-2 text-center text-xs" /> -->
 
-		<div class="border-l-2 border-secondary bg-accent/5">
+		<div
+			class="border-l-2 border-secondary bg-accent/5"
+			in:slide={{ duration: 1000 }}
+			out:slide={{ duration: 1000 }}
+		>
 			<div class="">
 				{#each expandData.inputFields || expandData.enumValues as arg, index}
 					<div>
