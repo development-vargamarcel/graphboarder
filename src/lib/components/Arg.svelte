@@ -54,7 +54,7 @@
 	};
 </script>
 
-<div class="pt-2 text-center text-xs" />
+<!-- <div class="pt-2 text-center text-xs" /> -->
 
 <div
 	class="  pb-0 pl-1 pr-0  rounded-r-sm rounded-l-none shadow-none  space-x-2  normal-case text-xs min-w-max {showExpand
@@ -75,7 +75,7 @@
 	/>
 
 	{#if showExpand}
-		<div class="mb-2 text-center text-xs" />
+		<!-- <div class="mb-2 text-center text-xs" /> -->
 
 		<div class="border-l-2 border-secondary bg-accent/5">
 			<div class="">
