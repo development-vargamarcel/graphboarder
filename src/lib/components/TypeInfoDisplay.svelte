@@ -122,17 +122,11 @@
 
 		{#if canExpand}
 			<div
-				class="w-10 hover:text-primary active:scale-90 duration-300 bi  mx-auto w-min {showExpand
+				class="w-10 hover:text-primary active:scale-150 duration-300 bi  mx-auto w-min {showExpand
 					? 'bi-chevron-down'
 					: 'bi-chevron-right'}"
 				on:click={expand}
-			>
-				<!-- {#if showExpand}
-					<div class="bi bi-chevron-down mx-auto w-min" />
-				{:else}
-					<div class="bi bi-chevron-right mx-auto   w-min" />
-				{/if} -->
-			</div>
+			/>
 		{/if}
 	</div>
 {/if}

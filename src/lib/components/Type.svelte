@@ -1,5 +1,7 @@
 <script>
 	import { introspectionResult } from '$lib/stores/introspectionResult';
+	import { fade, fly, slide } from 'svelte/transition';
+
 	import {
 		get_KindsArray,
 		get_rootName,
@@ -83,7 +85,11 @@
 			</div>
 		{/if}
 
-		<div class="border-l-2 bg-accent/5">
+		<div
+			class="border-l-2 bg-accent/5"
+			in:slide={{ duration: 1000 }}
+			out:slide={{ duration: 1000 }}
+		>
 			<div class="w-min-max w-full">
 				{#each expandData.fields || expandData.inputFields || expandData.enumValues as type, index (index)}
 					<svelte:self {index} {type} {template} {stepsOfFieldsNew} {depth} on:colAddRequest />
