@@ -184,13 +184,15 @@
 									? 'font-extrabold '
 									: ''}"
 							>
-								<input
-									type="checkbox"
-									name="selectedForEdit"
-									class="checkbox {reorder ? 'block' : 'hidden'}"
-									value={choice}
-									bind:group={selectedForEdit}
-								/>
+								{#if reorder}
+									<input
+										type="checkbox"
+										name="selectedForEdit"
+										class="checkbox "
+										value={choice}
+										bind:group={selectedForEdit}
+									/>
+								{/if}
 
 								<span class="label-text  text-lg">
 									{choice}

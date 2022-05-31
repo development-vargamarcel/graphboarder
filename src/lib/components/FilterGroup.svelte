@@ -65,21 +65,31 @@
 					chd_needsValue: true,
 					chd_needsChosen: true,
 					chd_rawValue: rawValue,
-					chd_Choises: detail?.choises,
+					chd_Choises: choises,
 					isINPUT_OBJECT,
 					chosenInputField
 				}); //chd_ == chosen data
 			} else {
 				dispatch('changed', {
-					chd_chosen: detail.chosen,
+					chd_chosen: chosen,
 					chd_dispatchValue: dispatchValue,
 					chd_needsValue: false,
 					chd_needsChosen: true,
-					chd_Choises: detail?.choises,
+					chd_Choises: choises,
 					isINPUT_OBJECT,
 					chosenInputField
 				}); //chd_ == chosen data
 			}
+		} else if (chosen) {
+			dispatch('changed', {
+				chd_chosen: chosen,
+				chd_dispatchValue: dispatchValue,
+				chd_needsValue: false,
+				chd_needsChosen: true,
+				chd_Choises: choises,
+				isINPUT_OBJECT,
+				chosenInputField
+			}); //chd_ == chosen data
 		}
 	};
 </script>
@@ -103,6 +113,7 @@
 			console.log('chosenInputField', chosenInputField);
 			console.log('detail', detail);
 			isINPUT_OBJECT = detail.extraData.dd_displayType == 'INPUT_OBJECT';
+			choises = detail.choises;
 			chosen = detail.chosen;
 			handleChanges();
 		}}
