@@ -328,7 +328,9 @@
 		</div>
 	</div>
 	<button
-		class="btn btn-xs  {activeArgumentsData.length > 0 ? 'btn-primary' : 'btn-secondary'}"
+		class="btn btn-xs  {activeArgumentsData.length > 0
+			? 'btn-primary'
+			: 'btn-secondary'} transition-colors duration-1000"
 		on:click={() => {
 			showModal = !showModal;
 			//showActiveFilters = !showActiveFilters;
