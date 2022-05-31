@@ -213,7 +213,9 @@
 					{/key}
 					<div class="flex space-x-2 pr-2 mt-2">
 						<button
-							class="btn btn-xs {reorder ? 'btn-accent w-1/2' : 'btn-primary w-full'}  "
+							class="btn btn-xs {reorder
+								? 'btn-accent w-1/2'
+								: 'btn-primary w-full'}  transition-colors duration-1000"
 							on:click={() => {
 								reorder = !reorder;
 							}}>{reorder ? 'done' : 'reorder'}</button
