@@ -37,6 +37,7 @@
 	if (!dd_kindsArray.includes('SCALAR') && dd_kindsArray.length > 0) {
 		canExpand = true;
 	}
+	let inDuration = 1000;
 	const expand = () => {
 		console.log('dd_rootName', dd_rootName);
 		expandData = getRootType($introspectionResult.rootTypes, dd_rootName);
@@ -51,6 +52,8 @@
 			showExpand = !showExpand;
 		}
 
+		inDuration = expandData?.inputFields.length * 300;
+		console.log('inDuration', inDuration);
 		console.log('expandData', expandData);
 	};
 </script>
@@ -80,8 +83,8 @@
 
 		<div
 			class="border-l-2 border-secondary bg-accent/5"
-			in:slide={{ duration: 1000 }}
-			out:slide={{ duration: 1000 }}
+			in:slide={{ duration: inDuration }}
+			out:slide={{ duration: inDuration }}
 		>
 			<div class="">
 				{#each expandData.inputFields || expandData.enumValues as arg, index}
