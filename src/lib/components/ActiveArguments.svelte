@@ -40,10 +40,12 @@
 						} else {
 							if (chd_needsValue == undefined) {
 								canRunQuery = false;
+								console.log('canRunQuery = false', canRunQuery);
 							} else if (!chd_needsValue) {
 								curr_gqlArgObj[step] = chd_chosen;
-								if (!Array.isArray(chd_chosen)) {
+								if (!(Array.isArray(chd_chosen) || typeof chd_chosen == 'string')) {
 									canRunQuery = false;
+									console.log('canRunQuery = false', canRunQuery);
 								}
 							} else {
 								console.log('chd_dispatchValue', chd_dispatchValue);
@@ -61,6 +63,7 @@
 								console.log('----curr_gqlArgObj', curr_gqlArgObj);
 								if (chd_dispatchValue == undefined) {
 									canRunQuery = false;
+									console.log('canRunQuery = false', canRunQuery);
 								}
 							}
 						}
