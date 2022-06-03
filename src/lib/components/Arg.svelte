@@ -10,6 +10,7 @@
 		get_NamesArray
 	} from '$lib/utils/usefulFunctions';
 	import ArgInfoDisplay from './ArgInfoDisplay.svelte';
+	import { circIn, expoIn, expoOut } from 'svelte/easing';
 
 	export let index;
 	export let type;
@@ -52,13 +53,13 @@
 			showExpand = !showExpand;
 		}
 
-		inDuration = expandData?.inputFields.length * 300;
+		inDuration = expandData?.inputFields.length * 100;
 		console.log('inDuration', inDuration);
 		console.log('expandData', expandData);
 	};
 </script>
 
-<!-- <div class="pt-2 text-center text-xs" /> -->
+{#if template == 'default'}<div class="pt-2 text-center text-xs" />{/if}
 
 <div
 	class="  pb-0 pl-1 pr-0  rounded-r-sm rounded-l-none shadow-none  space-x-2  normal-case text-xs min-w-max {showExpand
@@ -79,12 +80,12 @@
 	/>
 
 	{#if showExpand}
-		<!-- <div class="mb-2 text-center text-xs" /> -->
+		{#if template == 'default'}<div class="mb-2 text-center text-xs" />{/if}
 
 		<div
 			class="border-l-2 border-secondary bg-accent/5"
-			in:slide={{ duration: inDuration }}
-			out:slide={{ duration: inDuration }}
+			in:slide={{ duration: inDuration, easing: expoIn }}
+			out:slide={{ duration: inDuration, easing: expoOut }}
 		>
 			<div class="">
 				{#each expandData.inputFields || expandData.enumValues as arg, index}

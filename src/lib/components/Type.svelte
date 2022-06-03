@@ -11,12 +11,15 @@
 	} from '$lib/utils/usefulFunctions';
 	import Arg from './Arg.svelte';
 	import TypeInfoDisplay from './TypeInfoDisplay.svelte';
+	import { expoIn, expoOut } from 'svelte/easing';
 	export let template;
 	export let index;
 	export let type;
 	export let stepsOfFieldsNew = [];
 	stepsOfFieldsNew = [...stepsOfFieldsNew]; // so each tree will have it's own stepsOfFieldsNew
 	export let depth = 0;
+	let inDuration = 1000;
+
 	let {
 		dd_kindsArray,
 		dd_namesArray,
@@ -48,8 +51,21 @@
 			}
 
 			showExpand = !showExpand;
+			console.log('expandData', expandData);
+			let typeLen =
+				expandData?.fields?.length ||
+				expandData?.inputFields?.length ||
+				expandData?.enumValues?.length;
+
+			let argLen = 0;
+			if (type?.args) {
+				argLen = type?.args.length;
+			}
+
+			inDuration = (typeLen + argLen) * 100;
+			console.log('inDuration', inDuration);
+			console.log('expandData', expandData);
 		}
-		console.log('expandData', expandData);
 	};
 </script>
 
@@ -74,26 +90,28 @@
 	/>
 
 	{#if showExpand}
-		<div class="mb-2 text-center text-xs" />
-		{#if type?.args && template == 'default'}
-			<div class="border-l-2 border-secondary bg-accent/5">
-				<div class="">
-					{#each type?.args as arg, index}
-						<Arg {index} type={arg} {template} />
+		<div
+			in:slide={{ duration: inDuration, easing: expoIn }}
+			out:slide={{ duration: inDuration, easing: expoOut }}
+		>
+			<div class="mb-2 text-center text-xs" />
+
+			{#if type?.args && template == 'default'}
+				<div class="border-l-2 border-secondary bg-accent/5">
+					<div class="">
+						{#each type?.args as arg, index}
+							<Arg {index} type={arg} {template} />
+						{/each}
+					</div>
+				</div>
+			{/if}
+
+			<div class="border-l-2 bg-accent/5">
+				<div class="w-min-max w-full">
+					{#each expandData.fields || expandData.inputFields || expandData.enumValues as type, index (index)}
+						<svelte:self {index} {type} {template} {stepsOfFieldsNew} {depth} on:colAddRequest />
 					{/each}
 				</div>
-			</div>
-		{/if}
-
-		<div
-			class="border-l-2 bg-accent/5"
-			in:slide={{ duration: 1000 }}
-			out:slide={{ duration: 1000 }}
-		>
-			<div class="w-min-max w-full">
-				{#each expandData.fields || expandData.inputFields || expandData.enumValues as type, index (index)}
-					<svelte:self {index} {type} {template} {stepsOfFieldsNew} {depth} on:colAddRequest />
-				{/each}
 			</div>
 		</div>
 	{/if}
