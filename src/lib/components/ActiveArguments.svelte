@@ -12,8 +12,7 @@
 	import Toggle from './fields/Toggle.svelte';
 	let _scalarsAndEnumsDisplayTypes = $scalarsAndEnumsDisplayTypes;
 	export let activeArgumentsData;
-	let activeArgumentsDataGroupedNew;
-	let activeArgumentsDataGrouped = {};
+	let activeArgumentsDataGrouped;
 	let showActiveFilters;
 	const dispatch = createEventDispatcher();
 	let showModal = false;
@@ -31,6 +30,7 @@
 			if (argData.inUse) {
 				let { chd_chosen, chd_dispatchValue, chd_needsValue, chd_needsChosen, stepsOfFieldsNew } =
 					argData;
+
 				let curr_gqlArgObj = gqlArgObj;
 				stepsOfFieldsNew.forEach((step, index) => {
 					let isLast = index == stepsOfFieldsNew.length - 1;
@@ -106,50 +106,31 @@
 		);
 
 		//handle generating activeArgumentsDataGrouped
-		activeArgumentsDataGrouped = {};
-		activeArgumentsData.forEach((el) => {
-			if (el.stepsOfFieldsNew.length == 1) {
-				if (activeArgumentsDataGrouped?.['root']) {
-					activeArgumentsDataGrouped.root.push(el);
-				} else {
-					activeArgumentsDataGrouped.root = [el];
-				}
-			} else {
-				let firstStep = el.stepsOfFieldsNew[0];
-				if (activeArgumentsDataGrouped?.[firstStep]) {
-					activeArgumentsDataGrouped[firstStep].push(el);
-				} else {
-					activeArgumentsDataGrouped[firstStep] = [el];
-				}
+		let rootGroup = { groupName: 'root', dd_kindList: false, args: [] };
+		activeArgumentsDataGrouped = [rootGroup];
+		argsInfo.forEach((el) => {
+			if (el.dd_displayType == 'INPUT_OBJECT') {
+				activeArgumentsDataGrouped.push({
+					groupName: el.dd_displayName,
+					groupInfo: el,
+					dd_kindList: el.dd_kindList,
+					args: []
+				});
 			}
 		});
-		activeArgumentsDataGrouped.groups = Object.keys(activeArgumentsDataGrouped);
-		console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-		//
-		//handle generating activeArgumentsDataGroupedNew
-		activeArgumentsDataGroupedNew = {};
 		activeArgumentsData.forEach((activeArgData) => {
-			let argInfo = argsInfo.filter((argInfo) => {
-				return argInfo.dd_displayName == activeArgData.dd_displayName;
-			})[0];
+			let activeArgGroup = activeArgumentsDataGrouped.find((el) => {
+				return el.groupName == activeArgData.stepsOfFieldsNew[0];
+			});
 
-			if (activeArgData.stepsOfFieldsNew.length == 1) {
-				if (activeArgumentsDataGroupedNew?.['root']) {
-					activeArgumentsDataGroupedNew.root.push(activeArgData);
-				} else {
-					activeArgumentsDataGroupedNew.root = [activeArgData];
-				}
+			if (activeArgGroup) {
+				activeArgGroup.args.push(activeArgData);
 			} else {
-				let firstStep = activeArgData.stepsOfFieldsNew[0];
-				if (activeArgumentsDataGroupedNew?.[firstStep]) {
-					activeArgumentsDataGroupedNew[firstStep].push(activeArgData);
-				} else {
-					activeArgumentsDataGroupedNew[firstStep] = [activeArgData];
-				}
+				rootGroup.args.push(activeArgData);
 			}
 		});
 
-		console.log('activeArgumentsDataGroupedNew', activeArgumentsDataGroupedNew);
+		console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 
 		//
 		if (activeArgumentsData.length > 0) {
@@ -185,12 +166,16 @@
 			<div class="mx-auto mt-2  w-full  overflow-x-auto space-y-2   pb-2  ">
 				<div class="w-2" />
 
-				{#each activeArgumentsDataGrouped.groups as group}
+				{#each activeArgumentsDataGrouped as group}
 					<div class="bg-base-100 p-2 rounded-box">
 						<div class="font-bold">
-							{group}
+							{group.groupName}
+							{#if group.dd_kindList}
+								(list)
+							{/if}
 						</div>
-						{#each activeArgumentsDataGrouped[group] as activeArgumentData}
+
+						{#each group.args as activeArgumentData}
 							<!-- svelte-ignore a11y-label-has-associated-control -->
 							<div class=" bg-base-200 rounded-box p-2 my-2 flex">
 								<div class=" pr-2">
