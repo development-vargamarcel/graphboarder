@@ -127,6 +127,29 @@
 		console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 		//
 		//handle generating activeArgumentsDataGroupedNew
+		activeArgumentsDataGroupedNew = {};
+		activeArgumentsData.forEach((activeArgData) => {
+			let argInfo = argsInfo.filter((argInfo) => {
+				return argInfo.dd_displayName == activeArgData.dd_displayName;
+			})[0];
+
+			if (activeArgData.stepsOfFieldsNew.length == 1) {
+				if (activeArgumentsDataGroupedNew?.['root']) {
+					activeArgumentsDataGroupedNew.root.push(activeArgData);
+				} else {
+					activeArgumentsDataGroupedNew.root = [activeArgData];
+				}
+			} else {
+				let firstStep = activeArgData.stepsOfFieldsNew[0];
+				if (activeArgumentsDataGroupedNew?.[firstStep]) {
+					activeArgumentsDataGroupedNew[firstStep].push(activeArgData);
+				} else {
+					activeArgumentsDataGroupedNew[firstStep] = [activeArgData];
+				}
+			}
+		});
+
+		console.log('activeArgumentsDataGroupedNew', activeArgumentsDataGroupedNew);
 
 		//
 		if (activeArgumentsData.length > 0) {
