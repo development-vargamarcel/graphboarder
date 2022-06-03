@@ -21,6 +21,8 @@
 	const handleArgsChanged = () => {};
 
 	const generate_gqlArgObj = () => {
+		// check for group if expects list and treat it accordingly like here --->https://stackoverflow.com/questions/69040911/hasura-order-by-date-with-distinct
+
 		let gqlArgObj = {};
 		let canRunQuery = true;
 		activeArgumentsData.forEach((argData) => {
