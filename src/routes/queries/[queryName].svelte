@@ -169,6 +169,7 @@
 <!-- {#key activeArgumentsData}
 	{#if activeArgumentsData} -->
 <ActiveArguments
+	argsInfo={currentQueryInfo?.args}
 	{activeArgumentsData}
 	{delete_activeArgument}
 	on:argsChanged={(e) => {

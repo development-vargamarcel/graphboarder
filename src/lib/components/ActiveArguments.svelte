@@ -12,12 +12,14 @@
 	import Toggle from './fields/Toggle.svelte';
 	let _scalarsAndEnumsDisplayTypes = $scalarsAndEnumsDisplayTypes;
 	export let activeArgumentsData;
+	let activeArgumentsDataGroupedNew;
 	let activeArgumentsDataGrouped = {};
 	let showActiveFilters;
 	const dispatch = createEventDispatcher();
 	let showModal = false;
 	export let delete_activeArgument;
-
+	export let argsInfo;
+	console.log('argsInfo', argsInfo);
 	const handleArgsChanged = () => {};
 
 	const generate_gqlArgObj = () => {
@@ -102,6 +104,8 @@
 			activeArgumentsData,
 			activeArgumentsData?.[0]?.chd_rawValue
 		);
+
+		//handle generating activeArgumentsDataGrouped
 		activeArgumentsDataGrouped = {};
 		activeArgumentsData.forEach((el) => {
 			if (el.stepsOfFieldsNew.length == 1) {
@@ -121,6 +125,10 @@
 		});
 		activeArgumentsDataGrouped.groups = Object.keys(activeArgumentsDataGrouped);
 		console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+		//
+		//handle generating activeArgumentsDataGroupedNew
+
+		//
 		if (activeArgumentsData.length > 0) {
 			showActiveFilters = true;
 		} else {
