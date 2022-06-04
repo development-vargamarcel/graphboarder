@@ -12,7 +12,7 @@
 	import Toggle from './fields/Toggle.svelte';
 	let _scalarsAndEnumsDisplayTypes = $scalarsAndEnumsDisplayTypes;
 	export let activeArgumentsData;
-	let activeArgumentsDataGrouped;
+	let activeArgumentsDataGrouped = [];
 	let showActiveFilters;
 	const dispatch = createEventDispatcher();
 	let showModal = false;
@@ -30,28 +30,37 @@
 				return arg.inUse;
 			});
 
-			if (group.group_isRoot) {
-				console.log('root group handled');
-				let { gqlArgObj, canRunQuery } = generate_gqlArgObj(group_argumentsData);
-				final_gqlArgObj = { ...final_gqlArgObj, ...gqlArgObj };
-				if (canRunQuery == false) {
-					final_canRunQuery = false;
-				}
-			} else {
-				console.log('NON root group handled');
-				if (group.dd_kindList) {
-					//delete this>down
+			if (group_argumentsData?.length > 0) {
+				console.log('group_argumentsData', group_argumentsData);
+
+				if (group.group_isRoot) {
+					console.log('root group handled');
 					let { gqlArgObj, canRunQuery } = generate_gqlArgObj(group_argumentsData);
 					final_gqlArgObj = { ...final_gqlArgObj, ...gqlArgObj };
 					if (canRunQuery == false) {
 						final_canRunQuery = false;
 					}
-					//delete this>up
 				} else {
-					let { gqlArgObj, canRunQuery } = generate_gqlArgObj(group_argumentsData);
-					final_gqlArgObj = { ...final_gqlArgObj, ...gqlArgObj };
-					if (canRunQuery == false) {
-						final_canRunQuery = false;
+					console.log('NON root group handled');
+					if (group.dd_kindList) {
+						let list = [];
+						list = group_argumentsData.map((arg) => {
+							let { gqlArgObj, canRunQuery } = generate_gqlArgObj([arg]);
+							console.log('-=-=-canRunQuery', canRunQuery);
+							if (canRunQuery == false) {
+								final_canRunQuery = false;
+							}
+							return gqlArgObj[group.group_name];
+						});
+						final_gqlArgObj[group.group_name] = list;
+						final_gqlArgObj = { ...final_gqlArgObj };
+						console.log('list---', list);
+					} else {
+						let { gqlArgObj, canRunQuery } = generate_gqlArgObj(group_argumentsData);
+						final_gqlArgObj = { ...final_gqlArgObj, ...gqlArgObj };
+						if (canRunQuery == false) {
+							final_canRunQuery = false;
+						}
 					}
 				}
 			}
