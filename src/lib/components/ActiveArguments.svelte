@@ -20,10 +20,32 @@
 	export let argsInfo;
 	console.log('argsInfo', argsInfo);
 	const handleArgsChanged = () => {};
+	let final_gqlArgObj = {};
+	let final_canRunQuery = true;
+	const generate_final_gqlArgObj = () => {
+		//handle root group
 
+		let { gqlArgObj, canRunQuery } = generate_gqlArgObj();
+		final_gqlArgObj = gqlArgObj;
+		final_canRunQuery = canRunQuery;
+		let final_gqlArgObj_string = JSON.stringify(final_gqlArgObj)
+			.replace(/"/g, '')
+			.replace(/'/g, `"`)
+			.slice(1, -1);
+		console.log(
+			'JSON.stringify(final_gqlArgObj)',
+			JSON.stringify(final_gqlArgObj),
+			JSON.stringify(final_gqlArgObj).replace(/"/g, '')
+		);
+		if (canRunQuery) {
+			dispatch('argsChanged', {
+				gqlArgObj: final_gqlArgObj,
+				gqlArgObj_string: final_gqlArgObj_string
+			});
+		}
+	};
 	const generate_gqlArgObj = () => {
 		// check for group if expects list and treat it accordingly like here --->https://stackoverflow.com/questions/69040911/hasura-order-by-date-with-distinct
-
 		let gqlArgObj = {};
 		let canRunQuery = true;
 		activeArgumentsData.forEach((argData) => {
@@ -85,18 +107,19 @@
 		console.log('gqlArgObj', gqlArgObj);
 		console.log('canRunQuery', canRunQuery);
 
-		let gqlArgObj_string = JSON.stringify(gqlArgObj)
-			.replace(/"/g, '')
-			.replace(/'/g, `"`)
-			.slice(1, -1);
-		console.log(
-			'JSON.stringify(gqlArgObj)',
-			JSON.stringify(gqlArgObj),
-			JSON.stringify(gqlArgObj).replace(/"/g, '')
-		);
-		if (canRunQuery) {
-			dispatch('argsChanged', { gqlArgObj, gqlArgObj_string });
-		}
+		// let gqlArgObj_string = JSON.stringify(gqlArgObj)
+		// 	.replace(/"/g, '')
+		// 	.replace(/'/g, `"`)
+		// 	.slice(1, -1);
+		// console.log(
+		// 	'JSON.stringify(gqlArgObj)',
+		// 	JSON.stringify(gqlArgObj),
+		// 	JSON.stringify(gqlArgObj).replace(/"/g, '')
+		// );
+		// if (canRunQuery) {
+		// 	dispatch('argsChanged', { gqlArgObj, gqlArgObj_string });
+		// }
+		return { gqlArgObj, canRunQuery };
 	};
 	$: if (activeArgumentsData) {
 		console.log(
@@ -106,27 +129,28 @@
 		);
 
 		//handle generating activeArgumentsDataGrouped
-		let rootGroup = { groupName: 'root', dd_kindList: false, args: [] };
+		let rootGroup = { group_name: 'root', group_isRoot: true, dd_kindList: false, group_args: [] };
 		activeArgumentsDataGrouped = [rootGroup];
 		argsInfo.forEach((el) => {
 			if (el.dd_displayType == 'INPUT_OBJECT') {
 				activeArgumentsDataGrouped.push({
-					groupName: el.dd_displayName,
-					groupInfo: el,
-					dd_kindList: el.dd_kindList,
-					args: []
+					group_name: el.dd_displayName,
+					group_isRoot: false,
+					// group_info: el,
+					...el,
+					group_args: []
 				});
 			}
 		});
 		activeArgumentsData.forEach((activeArgData) => {
 			let activeArgGroup = activeArgumentsDataGrouped.find((el) => {
-				return el.groupName == activeArgData.stepsOfFieldsNew[0];
+				return el.group_name == activeArgData.stepsOfFieldsNew[0];
 			});
 
 			if (activeArgGroup) {
-				activeArgGroup.args.push(activeArgData);
+				activeArgGroup.group_args.push(activeArgData);
 			} else {
-				rootGroup.args.push(activeArgData);
+				rootGroup.group_args.push(activeArgData);
 			}
 		});
 
@@ -141,7 +165,7 @@
 
 		/////generate gqlArgObj to be used in query
 
-		generate_gqlArgObj();
+		generate_final_gqlArgObj();
 
 		if (activeArgumentsData.length == 0) {
 			showModal = false;
@@ -169,13 +193,15 @@
 				{#each activeArgumentsDataGrouped as group}
 					<div class="bg-base-100 p-2 rounded-box">
 						<div class="font-bold">
-							{group.groupName}
+							{#if !group.group_isRoot}
+								{group.group_name}
+							{/if}
 							{#if group.dd_kindList}
 								(list)
 							{/if}
 						</div>
 
-						{#each group.args as activeArgumentData}
+						{#each group.group_args as activeArgumentData}
 							<!-- svelte-ignore a11y-label-has-associated-control -->
 							<div class=" bg-base-200 rounded-box p-2 my-2 flex">
 								<div class=" pr-2">
@@ -214,7 +240,7 @@
 														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 														console.log('activeArgumentsData', activeArgumentsData);
 														//activeArgumentsData = activeArgumentsData
-														generate_gqlArgObj();
+														generate_final_gqlArgObj();
 
 														console.log(e.detail);
 													}}
@@ -237,7 +263,7 @@
 														Object.assign(activeArgumentData, e.detail);
 														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 														console.log('activeArgumentsData', activeArgumentsData);
-														generate_gqlArgObj();
+														generate_final_gqlArgObj();
 														console.log(e.detail);
 													}}
 													id={activeArgumentData.stepsOfFieldsNew}
@@ -262,7 +288,7 @@
 												console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 												console.log('activeArgumentsData', activeArgumentsData);
 												//activeArgumentsData = activeArgumentsData
-												generate_gqlArgObj();
+												generate_final_gqlArgObj();
 
 												console.log(e.detail);
 											}}
@@ -281,7 +307,7 @@
 														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 														console.log('activeArgumentsData', activeArgumentsData);
 														//activeArgumentsData = activeArgumentsData
-														generate_gqlArgObj();
+														generate_final_gqlArgObj();
 
 														console.log(e.detail);
 													}}
@@ -296,7 +322,7 @@
 														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 														console.log('activeArgumentsData', activeArgumentsData);
 														//activeArgumentsData = activeArgumentsData
-														generate_gqlArgObj();
+														generate_final_gqlArgObj();
 
 														console.log(e.detail);
 													}}
@@ -310,7 +336,7 @@
 														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 														console.log('activeArgumentsData', activeArgumentsData);
 														//activeArgumentsData = activeArgumentsData
-														generate_gqlArgObj();
+														generate_final_gqlArgObj();
 
 														console.log(e.detail);
 													}}
