@@ -23,32 +23,58 @@
 	let final_gqlArgObj = {};
 	let final_canRunQuery = true;
 	const generate_final_gqlArgObj = () => {
+		final_gqlArgObj = {};
+		final_canRunQuery = true;
+		activeArgumentsDataGrouped.forEach((group) => {
+			let group_argumentsData = group.group_args.filter((arg) => {
+				return arg.inUse;
+			});
+
+			if (group.group_isRoot) {
+				console.log('root group handled');
+				let { gqlArgObj, canRunQuery } = generate_gqlArgObj(group_argumentsData);
+				final_gqlArgObj = { ...final_gqlArgObj, ...gqlArgObj };
+				if (canRunQuery == false) {
+					final_canRunQuery = false;
+				}
+			} else {
+				console.log('NON root group handled');
+				if (group.dd_kindList) {
+					//delete this>down
+					let { gqlArgObj, canRunQuery } = generate_gqlArgObj(group_argumentsData);
+					final_gqlArgObj = { ...final_gqlArgObj, ...gqlArgObj };
+					if (canRunQuery == false) {
+						final_canRunQuery = false;
+					}
+					//delete this>up
+				} else {
+					let { gqlArgObj, canRunQuery } = generate_gqlArgObj(group_argumentsData);
+					final_gqlArgObj = { ...final_gqlArgObj, ...gqlArgObj };
+					if (canRunQuery == false) {
+						final_canRunQuery = false;
+					}
+				}
+			}
+		});
 		//handle root group
 
-		let { gqlArgObj, canRunQuery } = generate_gqlArgObj();
-		final_gqlArgObj = gqlArgObj;
-		final_canRunQuery = canRunQuery;
 		let final_gqlArgObj_string = JSON.stringify(final_gqlArgObj)
 			.replace(/"/g, '')
 			.replace(/'/g, `"`)
 			.slice(1, -1);
-		console.log(
-			'JSON.stringify(final_gqlArgObj)',
-			JSON.stringify(final_gqlArgObj),
-			JSON.stringify(final_gqlArgObj).replace(/"/g, '')
-		);
-		if (canRunQuery) {
+		console.log('final_gqlArgObj_string', final_gqlArgObj_string);
+		if (final_canRunQuery) {
 			dispatch('argsChanged', {
 				gqlArgObj: final_gqlArgObj,
 				gqlArgObj_string: final_gqlArgObj_string
 			});
 		}
 	};
-	const generate_gqlArgObj = () => {
+	const generate_gqlArgObj = (group_argumentsData) => {
 		// check for group if expects list and treat it accordingly like here --->https://stackoverflow.com/questions/69040911/hasura-order-by-date-with-distinct
 		let gqlArgObj = {};
 		let canRunQuery = true;
-		activeArgumentsData.forEach((argData) => {
+		group_argumentsData.forEach((argData) => {
 			if (argData.inUse) {
 				let { chd_chosen, chd_dispatchValue, chd_needsValue, chd_needsChosen, stepsOfFieldsNew } =
 					argData;
@@ -107,18 +133,6 @@
 		console.log('gqlArgObj', gqlArgObj);
 		console.log('canRunQuery', canRunQuery);
 
-		// let gqlArgObj_string = JSON.stringify(gqlArgObj)
-		// 	.replace(/"/g, '')
-		// 	.replace(/'/g, `"`)
-		// 	.slice(1, -1);
-		// console.log(
-		// 	'JSON.stringify(gqlArgObj)',
-		// 	JSON.stringify(gqlArgObj),
-		// 	JSON.stringify(gqlArgObj).replace(/"/g, '')
-		// );
-		// if (canRunQuery) {
-		// 	dispatch('argsChanged', { gqlArgObj, gqlArgObj_string });
-		// }
 		return { gqlArgObj, canRunQuery };
 	};
 	$: if (activeArgumentsData) {
