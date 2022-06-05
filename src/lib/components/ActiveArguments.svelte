@@ -37,7 +37,11 @@
 				}
 			}
 		});
-		overwrite_activeArgumentsData([...group_argumentsData]);
+		let new_activeArgumentsData = [];
+		activeArgumentsDataGrouped.forEach((group) => {
+			new_activeArgumentsData.push(...group.group_args);
+		});
+		overwrite_activeArgumentsData(new_activeArgumentsData);
 		//activeArgumentsData = activeArgumentsData;
 		//activeArgumentsDataGrouped = activeArgumentsDataGrouped;
 		//group_argumentsData = group_argumentsData;
@@ -228,6 +232,8 @@
 			let { detail } = e;
 			if (detail.modalIdetifier == 'activeArgumentsDataModal') {
 				showModal = false;
+				reorder = '';
+				selectedForEdit = [];
 			}
 		}}
 		on:apply={(e) => {
@@ -250,9 +256,14 @@
 
 						{#each group.group_args as activeArgumentData (activeArgumentData.stepsOfFieldsNewStringified)}
 							<!-- svelte-ignore a11y-label-has-associated-control -->
-							<div class=" bg-base-200 rounded-box p-2 my-2 flex">
+							<div
+								class=" bg-base-200 rounded-box p-2 my-2 flex transition-all duration-500 {selectedForEdit.includes(
+									activeArgumentData.stepsOfFieldsNewStringified
+								)
+									? 'border-[1px] border-accent'
+									: 'border-[1px] border-transparent'}"
+							>
 								<div class=" pr-2">
-									<!-- {#if reorder == group.group_name} -->
 									<input
 										type="checkbox"
 										name="selectedForEdit"
@@ -264,7 +275,6 @@
 										value={activeArgumentData.stepsOfFieldsNewStringified}
 										bind:group={selectedForEdit}
 									/>
-									<!-- {/if} -->
 									<input
 										type="checkbox"
 										class="checkbox input-primary"
