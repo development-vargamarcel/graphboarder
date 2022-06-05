@@ -128,7 +128,7 @@
 {:else if template == 'changeArguments'}
 	<!-- svelte-ignore a11y-label-has-associated-control -->
 	<label
-		class=" cursor-pointer  hover:text-primary px-2 py-2 rounded-box flex text-base min-w-max  w-full active:translate-x-4 duration-300"
+		class=" cursor-pointer  hover:text-primary px-2 py-2 rounded-box flex text-base min-w-max  w-full active:font-black duration-100 select-none"
 		on:click={() => {
 			if (canExpand && !allInputFieldsAreScalar && !enumValues) {
 				expand();

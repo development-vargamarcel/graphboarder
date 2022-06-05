@@ -529,6 +529,11 @@ export const generate_derivedData = (type, rootTypes) => { //type/field
     } else {
         derivedData.dd_displayType = _scalarsAndEnumsDisplayTypes[derivedData.dd_rootName];
     }
+    derivedData.dd_isArg = !type?.args
+    derivedData.dd_canExpand = !derivedData.dd_kindsArray?.includes('SCALAR') && derivedData.dd_kindsArray.length > 0
+    if (derivedData.dd_isArg) {
+        derivedData.dd_isRootArg = !derivedData?.dd_relatedRoot?.inputFields ? true : false
+    }
 
     return derivedData
 }
