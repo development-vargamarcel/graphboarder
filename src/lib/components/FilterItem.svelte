@@ -187,7 +187,7 @@
 								{#if reorder}
 									<input
 										type="checkbox"
-										name="selectedForEdit"
+										name="selectedForEdit "
 										class="checkbox "
 										value={choice}
 										bind:group={selectedForEdit}
