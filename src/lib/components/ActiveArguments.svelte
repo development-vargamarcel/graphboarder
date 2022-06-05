@@ -259,7 +259,7 @@
 							<div
 								class=" bg-base-200 rounded-box p-2 my-2 flex transition-all duration-500 {selectedForEdit.includes(
 									activeArgumentData.stepsOfFieldsNewStringified
-								)
+								) && reorder == group.group_name
 									? 'border-[1px] border-accent'
 									: 'border-[1px] border-transparent'}"
 							>
