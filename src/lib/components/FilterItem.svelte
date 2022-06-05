@@ -178,11 +178,12 @@
 					{#key choises}
 						{#each choises as choice (choice)}
 							<label
-								class="cursor-pointer label  rounded-box   transition font-light border-2 border-dotted border-transparent  active:border-base-content/50 active:bg-primary/5 {chosenInternal?.includes(
-									choice
-								)
+								class="cursor-pointer label  rounded-box my-[1px]   font-light border-[1px]  border-transparent {!reorder
+									? 'active:border-base-content/50 active:bg-primary/5 transition-all duration-75'
+									: ' transition-all duration-500'}   {chosenInternal?.includes(choice)
 									? 'font-extrabold '
 									: ''}
+									{reorder && selectedForEdit.includes(choice) ? '  border-accent ' : '  border-transparent '}
 									"
 							>
 								{#if reorder}
