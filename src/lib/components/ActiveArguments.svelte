@@ -254,7 +254,7 @@
 							{/if}
 						</div>
 
-						{#each group.group_args as activeArgumentData (activeArgumentData.stepsOfFieldsNewStringified)}
+						{#each group.group_args as activeArgumentData (activeArgumentData.stepsOfFieldsNewStringified + activeArgumentData.inUse)}
 							<!-- svelte-ignore a11y-label-has-associated-control -->
 							<div
 								class=" bg-base-200 rounded-box p-2 my-2 flex transition-all duration-500 {selectedForEdit.includes(
@@ -277,7 +277,7 @@
 									/>
 									<input
 										type="checkbox"
-										class="checkbox input-primary"
+										class="checkbox input-primary "
 										checked={activeArgumentData?.inUse}
 										on:change={() => {
 											activeArgumentData.inUse =
