@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ActiveArgument from './ActiveArgument.svelte';
 	import { get_NamesArray } from './../utils/usefulFunctions.ts';
 	import { get_KindsArray } from '$lib/utils/usefulFunctions';
 	import { scalarsAndEnumsDisplayTypes } from '$lib/stores/scalarsAndEnumsDisplayTypes';
@@ -255,174 +256,28 @@
 						</div>
 
 						{#each group.group_args as activeArgumentData (activeArgumentData.stepsOfFieldsNewStringified + activeArgumentData.inUse)}
-							<!-- svelte-ignore a11y-label-has-associated-control -->
-							<div
-								class=" bg-base-200 rounded-box p-2 my-2 flex transition-all duration-500 {selectedForEdit.includes(
-									activeArgumentData.stepsOfFieldsNewStringified
-								) && reorder == group.group_name
-									? 'border-[1px] border-accent'
-									: 'border-[1px] border-transparent'}"
-							>
-								<div class=" pr-2">
-									<input
-										type="checkbox"
-										name="selectedForEdit"
-										class="checkbox checkbox-accent transition-all duration-500 {reorder ==
-										group.group_name
-											? 'visible'
-											: 'invisible w-0'} "
-										disabled={reorder !== group.group_name}
-										value={activeArgumentData.stepsOfFieldsNewStringified}
-										bind:group={selectedForEdit}
-									/>
-									<input
-										type="checkbox"
-										class="checkbox input-primary "
-										checked={activeArgumentData?.inUse}
-										on:change={() => {
-											activeArgumentData.inUse =
-												activeArgumentData.inUse !== undefined ? !activeArgumentData.inUse : true;
-											activeArgumentData = activeArgumentData;
-										}}
-									/>
-								</div>
-								<div class="grow ">
-									<p class="  overflow-x-auto text-xs break-words mr-2  ">
-										{activeArgumentData.stepsOfFieldsNew?.join(' > ')}
-									</p>
-
-									{#if activeArgumentData.dd_displayType == 'ENUM'}
-										<div class="flex flex-col ">
-											{#if activeArgumentData.dd_kindList}
-												<FilterGroup
-													extraData={activeArgumentData}
-													choises={activeArgumentData?.chd_Choises
-														? activeArgumentData.chd_Choises
-														: activeArgumentData.enumValues.map((enumValue) => {
-																return enumValue.name;
-														  })}
-													chosen={activeArgumentData?.chd_chosen}
-													chosenInputField={activeArgumentData?.chosenInputField}
-													isINPUT_OBJECT={activeArgumentData?.isINPUT_OBJECT}
-													rawValue={activeArgumentData?.chd_rawValue}
-													on:changed={(e) => {
-														Object.assign(activeArgumentData, e.detail);
-														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-														console.log('activeArgumentsData', activeArgumentsData);
-														//activeArgumentsData = activeArgumentsData
-														generate_final_gqlArgObj();
-
-														console.log(e.detail);
-													}}
-													id={activeArgumentData.stepsOfFieldsNew}
-													title="choose"
-													type="checkbox"
-												/>
-											{:else}
-												<FilterGroup
-													extraData={activeArgumentData}
-													choises={activeArgumentData.enumValues.map((enumValue) => {
-														return enumValue.name;
-													})}
-													chosen={activeArgumentData?.chd_chosen}
-													chosenInputField={activeArgumentData?.chosenInputField}
-													isINPUT_OBJECT={activeArgumentData?.isINPUT_OBJECT}
-													rawValue={activeArgumentData?.chd_rawValue}
-													dispatchValue={activeArgumentData?.chd_dispatchValue}
-													on:changed={(e) => {
-														Object.assign(activeArgumentData, e.detail);
-														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-														console.log('activeArgumentsData', activeArgumentsData);
-														generate_final_gqlArgObj();
-														console.log(e.detail);
-													}}
-													id={activeArgumentData.stepsOfFieldsNew}
-													title="choose"
-													type="radio"
-												/>
-											{/if}
-										</div>
-									{:else if activeArgumentData.dd_displayType == 'INPUT_OBJECT'}
-										<FilterGroup
-											extraData={activeArgumentData}
-											choises={activeArgumentData.inputFields.map((inputField) => {
-												return inputField.name;
-											})}
-											chosen={activeArgumentData?.chd_chosen}
-											chosenInputField={activeArgumentData?.chosenInputField}
-											isINPUT_OBJECT={activeArgumentData?.isINPUT_OBJECT}
-											rawValue={activeArgumentData?.chd_rawValue}
-											dispatchValue={activeArgumentData?.chd_dispatchValue}
-											on:changed={(e) => {
-												Object.assign(activeArgumentData, e.detail);
-												console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-												console.log('activeArgumentsData', activeArgumentsData);
-												//activeArgumentsData = activeArgumentsData
-												generate_final_gqlArgObj();
-
-												console.log(e.detail);
-											}}
-											id={activeArgumentData.stepsOfFieldsNew}
-											title="choose"
-											type="radio"
-										/>
-									{:else}
-										<div>
-											{#if activeArgumentData.dd_displayType == 'boolean'}
-												<Toggle
-													dd_displayType={activeArgumentData.dd_displayType}
-													rawValue={activeArgumentData?.chd_rawValue}
-													on:changed={(e) => {
-														Object.assign(activeArgumentData, e.detail);
-														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-														console.log('activeArgumentsData', activeArgumentsData);
-														//activeArgumentsData = activeArgumentsData
-														generate_final_gqlArgObj();
-
-														console.log(e.detail);
-													}}
-												/>
-											{:else if activeArgumentData.dd_kindList}
-												<Textarea
-													dd_displayType={activeArgumentData.dd_displayType}
-													rawValue={activeArgumentData?.chd_rawValue}
-													dispatchValue={activeArgumentData?.chd_dispatchValue}
-													on:changed={(e) => {
-														Object.assign(activeArgumentData, e.detail);
-														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-														console.log('activeArgumentsData', activeArgumentsData);
-														//activeArgumentsData = activeArgumentsData
-														generate_final_gqlArgObj();
-
-														console.log(e.detail);
-													}}
-												/>
-											{:else}
-												<Input
-													dd_displayType={activeArgumentData.dd_displayType}
-													rawValue={activeArgumentData?.chd_rawValue}
-													on:changed={(e) => {
-														Object.assign(activeArgumentData, e.detail);
-														console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-														console.log('activeArgumentsData', activeArgumentsData);
-														//activeArgumentsData = activeArgumentsData
-														generate_final_gqlArgObj();
-
-														console.log(e.detail);
-													}}
-												/>
-											{/if}
-										</div>
-									{/if}
-								</div>
-
-								<button
-									class="btn btn-sm"
-									on:click={() => {
-										delete_activeArgument(activeArgumentData.id);
-									}}><i class="bi bi-trash3-fill" /></button
-								>
-							</div>
+							<ActiveArgument
+								on:selectedForEditChanged={(e) => {
+									let { detail } = e;
+									console.log('detail.selectedForEditOn', detail.selectedForEditOn);
+									if (detail.selectedForEditOn) {
+										if (!selectedForEdit.includes(detail.selectedForEditValue)) {
+											selectedForEdit = [...selectedForEdit, detail.selectedForEditValue];
+										}
+									} else {
+										selectedForEdit = selectedForEdit.filter((el) => {
+											return el !== detail.selectedForEditValue;
+										});
+									}
+								}}
+								{activeArgumentData}
+								{reorder}
+								{group}
+								{generate_final_gqlArgObj}
+								{delete_activeArgument}
+								{activeArgumentsDataGrouped}
+								{activeArgumentsData}
+							/>
 						{/each}
 					</div>
 					{#if group.dd_kindList && group.group_args?.length > 0}
