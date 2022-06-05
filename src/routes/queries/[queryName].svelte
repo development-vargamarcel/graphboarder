@@ -164,6 +164,13 @@
 			return activeArgData.id !== id;
 		});
 	};
+	const overwrite_activeArgumentsData = (new_activeArgumentsData) => {
+		activeArgumentsData = new_activeArgumentsData;
+	};
+	let selectedForEdit = [];
+	const overwrite_selectedForEdit = (new_selectedForEdit) => {
+		selectedForEdit = new_selectedForEdit;
+	};
 </script>
 
 <!-- {#key activeArgumentsData}
@@ -171,7 +178,10 @@
 <ActiveArguments
 	argsInfo={currentQueryInfo?.args}
 	{activeArgumentsData}
+	{selectedForEdit}
+	{overwrite_selectedForEdit}
 	{delete_activeArgument}
+	{overwrite_activeArgumentsData}
 	on:argsChanged={(e) => {
 		console.log('argsChanged', e.detail);
 		gqlArgObj_string = e.detail.gqlArgObj_string;

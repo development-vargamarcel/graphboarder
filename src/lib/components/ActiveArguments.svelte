@@ -16,12 +16,34 @@
 	let showActiveFilters;
 	const dispatch = createEventDispatcher();
 	let showModal = false;
+	export let overwrite_activeArgumentsData;
 	export let delete_activeArgument;
 	export let argsInfo;
 	console.log('argsInfo', argsInfo);
 	const handleArgsChanged = () => {};
 	let final_gqlArgObj = {};
 	let final_canRunQuery = true;
+	let reorder = '';
+	let selectedForEdit = [];
+	$: console.log('selectedForEdit', selectedForEdit);
+	const moveUp = (group_argumentsData) => {
+		console.log('group_argumentsData before', group_argumentsData);
+		group_argumentsData.forEach((el, index, array) => {
+			if (selectedForEdit.includes(el.stepsOfFieldsNewStringified) && index > 0) {
+				let elToSubstitute = array[index - 1];
+				if (!selectedForEdit.includes(elToSubstitute)) {
+					array[index] = elToSubstitute;
+					array[index - 1] = el;
+				}
+			}
+		});
+		overwrite_activeArgumentsData([...group_argumentsData]);
+		//activeArgumentsData = activeArgumentsData;
+		//activeArgumentsDataGrouped = activeArgumentsDataGrouped;
+		//group_argumentsData = group_argumentsData;
+		console.log('group_argumentsData after', group_argumentsData);
+	};
+	const moveDown = () => {};
 	const generate_final_gqlArgObj = () => {
 		final_gqlArgObj = {};
 		final_canRunQuery = true;
@@ -48,6 +70,7 @@
 							let { gqlArgObj, canRunQuery } = generate_gqlArgObj([arg]);
 							console.log('-=-=-canRunQuery', canRunQuery);
 							if (canRunQuery == false) {
+								//will give off not good results for canRunQuery,must change handling in generate_gqlArgObj
 								final_canRunQuery = false;
 							}
 							return gqlArgObj[group.group_name];
@@ -225,10 +248,23 @@
 							{/if}
 						</div>
 
-						{#each group.group_args as activeArgumentData}
+						{#each group.group_args as activeArgumentData (activeArgumentData.stepsOfFieldsNewStringified)}
 							<!-- svelte-ignore a11y-label-has-associated-control -->
 							<div class=" bg-base-200 rounded-box p-2 my-2 flex">
 								<div class=" pr-2">
+									<!-- {#if reorder == group.group_name} -->
+									<input
+										type="checkbox"
+										name="selectedForEdit"
+										class="checkbox checkbox-accent transition-all duration-500 {reorder ==
+										group.group_name
+											? 'visible'
+											: 'invisible w-0'} "
+										disabled={reorder !== group.group_name}
+										value={activeArgumentData.stepsOfFieldsNewStringified}
+										bind:group={selectedForEdit}
+									/>
+									<!-- {/if} -->
 									<input
 										type="checkbox"
 										class="checkbox input-primary"
@@ -379,6 +415,35 @@
 							</div>
 						{/each}
 					</div>
+					{#if group.dd_kindList && group.group_args?.length > 0}
+						<div class="flex space-x-2 pr-2 mt-2">
+							<button
+								class="btn btn-xs {reorder == group.group_name
+									? 'btn-accent w-1/2'
+									: 'btn-primary w-full'}  transition-colors duration-1000"
+								on:click={() => {
+									if (reorder == group.group_name) {
+										reorder = '';
+									} else {
+										reorder = group.group_name;
+									}
+								}}>{reorder == group.group_name ? 'done' : 'reorder'}</button
+							>
+							{#if reorder}
+								<div class="w-1/2 flex space-x-2">
+									<button
+										class="btn btn-xs   w-1/2"
+										on:click={() => {
+											moveUp(group.group_args);
+										}}><i class="bi bi-arrow-up-short" />up</button
+									>
+									<button class="btn btn-xs   w-1/2" on:click={() => {}}
+										><i class="bi bi-arrow-down-short" />down</button
+									>
+								</div>
+							{/if}
+						</div>
+					{/if}
 				{/each}
 
 				<div class="w-2" />
