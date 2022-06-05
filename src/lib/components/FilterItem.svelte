@@ -183,7 +183,9 @@
 									: ' transition-all duration-500'}   {chosenInternal?.includes(choice)
 									? 'font-extrabold '
 									: ''}
-									{reorder && selectedForEdit.includes(choice) ? '  border-accent ' : '  border-transparent '}
+									{reorder && selectedForEdit.includes(choice)
+									? ' border-[1px] border-accent '
+									: '  border-transparent '}
 									"
 							>
 								{#if reorder}
