@@ -23,16 +23,11 @@
 </script>
 
 <!-- svelte-ignore a11y-label-has-associated-control -->
-<div
+<label
 	class=" bg-base-200 rounded-box p-2 my-2 flex transition-all duration-500 {selectedForEdit &&
 	reorder == group.group_name
 		? 'border-[1px] border-accent'
 		: 'border-[1px] border-transparent'}"
-	on:click={() => {
-		if (reorder == group.group_name) {
-			selectedForEdit = !selectedForEdit;
-		}
-	}}
 >
 	<div class=" pr-2">
 		<input
@@ -194,4 +189,4 @@
 			delete_activeArgument(activeArgumentData.id);
 		}}><i class="bi bi-trash3-fill" /></button
 	>
-</div>
+</label>

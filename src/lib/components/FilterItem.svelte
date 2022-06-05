@@ -128,7 +128,7 @@
 
 <btn
 	class="btn btn-sm btn-{size} {btnExtraClass}  flex  w-max normal-case"
-	on:click={showModalOrToggle}
+	on:click|stopPropagation|preventDefault|capture={showModalOrToggle}
 >
 	{title}
 	{#if extraInfo}
