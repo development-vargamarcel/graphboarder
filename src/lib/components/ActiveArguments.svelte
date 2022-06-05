@@ -253,6 +253,9 @@
 							{#if group.dd_kindList}
 								(list)
 							{/if}
+							{#if group?.dd_relatedRoot?.dd_filterOperators}
+								{`(${group?.dd_relatedRoot?.dd_filterOperators?.join(',')})`}
+							{/if}
 						</div>
 
 						{#each group.group_args as activeArgumentData (activeArgumentData.stepsOfFieldsNewStringified + activeArgumentData.inUse)}
