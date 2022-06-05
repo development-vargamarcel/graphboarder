@@ -51,6 +51,7 @@
 			class="checkbox input-primary "
 			checked={activeArgumentData?.inUse}
 			on:change={() => {
+				dispatch('inUseChanged');
 				activeArgumentData.inUse =
 					activeArgumentData.inUse !== undefined ? !activeArgumentData.inUse : true;
 				activeArgumentData = activeArgumentData;

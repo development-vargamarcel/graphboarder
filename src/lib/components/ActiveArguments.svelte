@@ -270,6 +270,9 @@
 										});
 									}
 								}}
+								on:inUseChanged={() => {
+									activeArgumentData = activeArgumentData;
+								}}
 								{activeArgumentData}
 								{reorder}
 								{group}
