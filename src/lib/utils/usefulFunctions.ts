@@ -535,6 +535,12 @@ export const generate_derivedData = (type, rootTypes) => { //type/field
     });
     derivedData.dd_canExpand = !derivedData.dd_kindsArray?.includes('SCALAR') && derivedData.dd_kindsArray.length > 0
     if (derivedData.dd_isArg) {
+        derivedData.dd_filterOperators = type?.inputFields?.filter((inputField) => {//_and/_or/_not
+            return inputField.name[0] == '_'
+        })?.map((inputField) => { return inputField.name })
+        if (!derivedData?.dd_filterOperators?.length > 0) {
+            derivedData.dd_filterOperators = undefined
+        }
         derivedData.dd_isRootArg = !(derivedData.dd_canExpand && !derivedData.dd_relatedRoot_inputFields_allScalar && !derivedData?.dd_relatedRoot?.enumValues)
     }
     return derivedData
