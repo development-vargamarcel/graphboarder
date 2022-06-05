@@ -32,7 +32,7 @@
 		group_argumentsData.forEach((el, index, array) => {
 			if (selectedForEdit.includes(el.stepsOfFieldsNewStringified) && index > 0) {
 				let elToSubstitute = array[index - 1];
-				if (!selectedForEdit.includes(elToSubstitute)) {
+				if (!selectedForEdit.includes(elToSubstitute.stepsOfFieldsNewStringified)) {
 					array[index] = elToSubstitute;
 					array[index - 1] = el;
 				}
