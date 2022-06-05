@@ -182,7 +182,8 @@
 									choice
 								)
 									? 'font-extrabold '
-									: ''}"
+									: ''}
+									"
 							>
 								{#if reorder}
 									<input
