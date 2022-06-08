@@ -11,6 +11,7 @@
 	import Textarea from './fields/Textarea.svelte';
 	import Modal from './Modal.svelte';
 	import Toggle from './fields/Toggle.svelte';
+	import Arg from './Arg.svelte';
 	let _scalarsAndEnumsDisplayTypes = $scalarsAndEnumsDisplayTypes;
 	export let activeArgumentsData;
 	let activeArgumentsDataGrouped = [];
@@ -241,12 +242,81 @@
 			console.log(']]]]]]]]]', e);
 		}}
 		><div class="  w-full  ">
-			<div class="mx-auto mt-2  w-full  overflow-x-auto space-y-2   pb-2  ">
+			<div class="mx-auto mt-2  w-full   space-y-2   pb-2  ">
 				<div class="w-2" />
 
 				{#each activeArgumentsDataGrouped as group}
 					<div class="bg-base-100 p-2 rounded-box">
-						<div class="font-bold">
+						<div class="font-bold flex">
+							<div class=" ">
+								<div class="dropdown dropdown-start ">
+									<!-- svelte-ignore a11y-label-has-associated-control -->
+									<label tabindex="0" class="btn btn-sm bi bi-plus-circle text-lg p-1 mr-2" />
+									<div
+										tabindex="0"
+										class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl overflow-y-auto  max-h-52 sm:max-h-72 md:max-h-90  overscroll-contain  max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
+									>
+										<div
+											class="flex flex-col overflow-x-auto text-sm font-normal normal-case min-w-max w-full "
+										>
+											{#if group?.dd_relatedRoot?.inputFields}
+												{#each group?.dd_relatedRoot?.inputFields as arg, index}
+													<Arg
+														{index}
+														type={arg}
+														template="changeArguments"
+														predefinedFirstSteps={[group.group_name]}
+														on:argAddRequest={(e) => {
+															let newArgData = e.detail;
+															if (
+																!activeArgumentsData.some((el) => {
+																	return (
+																		el.stepsOfFieldsNewStringified ==
+																		newArgData.stepsOfFieldsNewStringified
+																	);
+																})
+															) {
+																activeArgumentsData.push(e.detail);
+																overwrite_activeArgumentsData(activeArgumentsData);
+																console.log('activeArgumentsData', activeArgumentsData);
+															} else {
+																console.log('already added');
+															}
+														}}
+													/>
+												{/each}
+											{:else}
+												{#each argsInfo.filter((arg) => {
+													return arg.dd_isRootArg;
+												}) as arg, index}
+													<Arg
+														{index}
+														type={arg}
+														template="changeArguments"
+														on:argAddRequest={(e) => {
+															let newArgData = e.detail;
+															if (
+																!activeArgumentsData.some((el) => {
+																	return (
+																		el.stepsOfFieldsNewStringified ==
+																		newArgData.stepsOfFieldsNewStringified
+																	);
+																})
+															) {
+																activeArgumentsData.push(e.detail);
+																overwrite_activeArgumentsData(activeArgumentsData);
+																console.log('activeArgumentsData', activeArgumentsData);
+															} else {
+																console.log('already added');
+															}
+														}}
+													/>
+												{/each}
+											{/if}
+										</div>
+									</div>
+								</div>
+							</div>
 							{#if !group.group_isRoot}
 								{group.group_name}
 							{/if}
