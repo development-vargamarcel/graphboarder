@@ -27,6 +27,7 @@
 	let modalVisible = false;
 	let chosenNew = [];
 	let choisesNew = [];
+	let choisesWithId;
 	let showModalOrToggle = () => {
 		if (choises.length > 1) {
 			//show modal
@@ -39,7 +40,9 @@
 			applyFilter();
 		}
 	};
-
+	choisesWithId = choises.map((choise) => {
+		return { id: choise, title: choise };
+	});
 	let hideModal = () => {
 		chosen = chosenPreChange;
 		chosenInternal = chosen;
@@ -65,6 +68,7 @@
 	}
 
 	$: if (chosen?.length > 0) {
+		syncOrder();
 		console.log('chosen:', chosen);
 		console.log('chosenInternal:', chosenInternal);
 		if (!modalVisible) {
@@ -106,20 +110,14 @@
 				extraInfo = '';
 			}
 		}
+		syncOrder();
 	}
 
-	let choisesWithId;
-
-	choisesWithId = choises.map((choise) => {
-		return { id: choise, title: choise };
-	});
 	import { flip } from 'svelte/animate';
 	const flipDurationMs = 200;
 	let dragDisabled = true;
-	function handleSort(e) {
-		choisesWithId = e.detail.items;
-		console.log('choisesWithId', choisesWithId);
 
+	const syncOrder = () => {
 		chosenNew = [];
 		choisesNew = [];
 		choisesWithId.forEach((choice) => {
@@ -130,6 +128,13 @@
 		});
 		chosenInternal = chosenNew;
 		choises = choisesNew;
+	};
+
+	function handleSort(e) {
+		choisesWithId = e.detail.items;
+		console.log('choisesWithId', choisesWithId);
+		syncOrder();
+
 		dragDisabled = true;
 	}
 	const transformDraggedElement = (draggedEl, data, index) => {
