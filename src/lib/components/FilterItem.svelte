@@ -1,5 +1,9 @@
 <script>
 	import Modal from '$lib/components/Modal.svelte';
+	import { dndzone, SHADOW_ITEM_MARKER_PROPERTY_NAME, SOURCES, TRIGGERS } from 'svelte-dnd-action';
+	import { fade } from 'svelte/transition';
+	// notice - fade in works fine but don't add svelte's fade-out (known issue)
+	import { cubicIn } from 'svelte/easing';
 	export let extraData;
 	export let id;
 	export let choises = [''];
@@ -21,6 +25,8 @@
 	$: console.log('selectedForEdit', selectedForEdit);
 	let chosenPreChange;
 	let modalVisible = false;
+	let chosenNew = [];
+	let choisesNew = [];
 	let showModalOrToggle = () => {
 		if (choises.length > 1) {
 			//show modal
@@ -49,7 +55,6 @@
 		console.log('filterApplied', { id: id, chosen: chosen, extraData });
 		dispatch('filterApplied', { id: id, chosen: chosen, extraData, choises: choises });
 		selectedForEdit = [];
-		reorder = false;
 	};
 	$: if (title) {
 		if (type == 'toggle') {
@@ -103,27 +108,66 @@
 		}
 	}
 
-	const moveUp = () => {
-		choises.forEach((el, index, array) => {
-			if (selectedForEdit.includes(el) && index > 0) {
-				let elToSubstitute = array[index - 1];
-				if (!selectedForEdit.includes(elToSubstitute)) {
-					array[index] = elToSubstitute;
-					array[index - 1] = el;
-				}
+	let choisesWithId;
+
+	choisesWithId = choises.map((choise) => {
+		return { id: choise, title: choise };
+	});
+	import { flip } from 'svelte/animate';
+	const flipDurationMs = 200;
+	let dragDisabled = true;
+	function handleSort(e) {
+		choisesWithId = e.detail.items;
+		console.log('choisesWithId', choisesWithId);
+
+		chosenNew = [];
+		choisesNew = [];
+		choisesWithId.forEach((choice) => {
+			if (chosenInternal.includes(choice.title)) {
+				chosenNew.push(choice.title);
 			}
+			choisesNew.push(choice.title);
 		});
-		let chosenInternalNew = [];
-		choises.forEach((el, index, array) => {
-			if (chosenInternal.includes(el)) {
-				chosenInternalNew.push(el);
-			}
-		});
-		chosenInternal = chosenInternalNew;
-		choises = choises;
-		chosen = chosenInternal;
+		chosenInternal = chosenNew;
+		choises = choisesNew;
+		dragDisabled = true;
+	}
+	const transformDraggedElement = (draggedEl, data, index) => {
+		draggedEl.querySelector('.dnd-item').classList.add('bg-accent/20', 'border-2', 'border-accent');
 	};
-	const moveDown = () => {};
+
+	//
+	function handleConsider(e) {
+		const {
+			items: newItems,
+			info: { source, trigger }
+		} = e.detail;
+		handleSort(e);
+		// Ensure dragging is stopped on drag finish via keyboard
+		if (source === SOURCES.KEYBOARD && trigger === TRIGGERS.DRAG_STOPPED) {
+			dragDisabled = true;
+		}
+	}
+	function handleFinalize(e) {
+		const {
+			items: newItems,
+			info: { source }
+		} = e.detail;
+		handleSort(e);
+		// Ensure dragging is stopped on drag finish via pointer (mouse, touch)
+		if (source === SOURCES.POINTER) {
+			dragDisabled = true;
+		}
+	}
+	function startDrag(e) {
+		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
+		e.preventDefault();
+		dragDisabled = false;
+	}
+	function handleKeyDown(e) {
+		if ((e.key === 'Enter' || e.key === ' ') && dragDisabled) dragDisabled = false;
+	}
+	//
 </script>
 
 <btn
@@ -175,64 +219,75 @@
 							/>
 						</label>
 					{/each}{:else if type == 'checkbox'}
-					{#key choises}
-						{#each choises as choice (choice)}
-							<label
-								class="cursor-pointer label  rounded-box my-[1px] transition-all   font-light border-[1px]   {!reorder
-									? 'active:border-base-content/50 active:bg-primary/5  duration-75'
-									: '  duration-500'}   {chosenInternal?.includes(choice) ? 'font-extrabold ' : ''}
-									{reorder && selectedForEdit.includes(choice)
-									? ' border-[1px] border-accent '
-									: '  border-transparent '}
+					<ul
+						use:dndzone={{
+							items: choisesWithId,
+							dragDisabled,
+							flipDurationMs,
+							transformDraggedElement
+						}}
+						on:consider={handleSort}
+						on:finalize={handleSort}
+					>
+						{#each choisesWithId as choice (choice.id)}
+							<div animate:flip={{ duration: flipDurationMs }} class="relative flex">
+								<div
+									tabindex={dragDisabled ? 0 : -1}
+									aria-label="drag-handle"
+									class="bi bi-grip-vertical pt-3 px-2"
+									style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
+									on:mousedown={startDrag}
+									on:touchstart={startDrag}
+									on:keydown={handleKeyDown}
+								/>
+								<div
+									class="w-full"
+									on:mousedown={() => {
+										dragDisabled = true;
+									}}
+									on:touchstart={() => {
+										dragDisabled = true;
+									}}
+									on:keydown={() => {
+										dragDisabled = true;
+									}}
+								>
+									<label
+										class="cursor-pointer label  rounded-box my-[1px] transition-all   font-light border-transparent border-[1px] active:border-base-content/50 active:bg-primary/5  duration-75    {chosenInternal?.includes(
+											choice.title
+										)
+											? 'font-extrabold '
+											: ''} dnd-item
 									"
-							>
-								{#if reorder}
-									<input
-										type="checkbox"
-										name="selectedForEdit "
-										class="checkbox "
-										value={choice}
-										bind:group={selectedForEdit}
+									>
+										<span class="label-text  text-lg">
+											{choice.title}
+
+											{#if chosenDefault && chosenDefault.includes(choice.title)}
+												<div class="badge badge-xs  badge-info">default</div>
+											{/if}
+										</span>
+
+										<input
+											type="checkbox"
+											name="chosen"
+											class="checkbox"
+											value={choice.title}
+											bind:group={chosenInternal}
+										/>
+									</label>
+								</div>
+
+								{#if choice[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
+									<div
+										in:fade={{ duration: 200, easing: cubicIn }}
+										class="rounded-box mx-2 py-5 border-dotted  border-accent/20 border-2 text-primary absolute w-11/12   top-0 left-0 visible"
 									/>
 								{/if}
-
-								<span class="label-text  text-lg">
-									{choice}
-									{#if chosenDefault && chosenDefault.includes(choice)}
-										<div class="badge badge-xs  badge-info">default</div>
-									{/if}
-								</span>
-
-								<input
-									type="checkbox"
-									name="chosen"
-									class="checkbox"
-									value={choice}
-									bind:group={chosenInternal}
-								/>
-							</label>
-						{/each}
-					{/key}
-					<div class="flex space-x-2 pr-2 mt-2">
-						<button
-							class="btn btn-xs {reorder
-								? 'btn-accent w-1/2'
-								: 'btn-primary w-full'}  transition-colors duration-1000"
-							on:click={() => {
-								reorder = !reorder;
-							}}>{reorder ? 'done' : 'reorder'}</button
-						>
-						{#if reorder}
-							<div class="w-1/2 flex space-x-2">
-								<button class="btn btn-xs   w-1/2" on:click={moveUp}
-									><i class="bi bi-arrow-up-short" />up</button
-								>
-								<button class="btn btn-xs   w-1/2" on:click={moveDown}
-									><i class="bi bi-arrow-down-short" />down</button
-								>
 							</div>
-						{/if}
-					</div>
+						{/each}
+					</ul>
+					<div class="flex space-x-2 pr-2 mt-2" />
 				{/if}
 			</div>
 		</div>
@@ -242,5 +297,17 @@
 <style>
 	.noStyles {
 		all: unset;
+	}
+	.custom-shadow-item {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		visibility: visible;
+		border: 1px dashed grey;
+		background: lightblue;
+		opacity: 0.5;
+		margin: 0;
 	}
 </style>
