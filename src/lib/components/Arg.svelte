@@ -15,8 +15,11 @@
 	export let index;
 	export let type;
 	export let template;
-
+	export let predefinedFirstSteps;
 	export let stepsOfFieldsNew = [];
+	if (stepsOfFieldsNew.length == 0 && predefinedFirstSteps) {
+		stepsOfFieldsNew = [...predefinedFirstSteps];
+	}
 	stepsOfFieldsNew = [...stepsOfFieldsNew]; // so each tree will have it's own stepsOfFieldsNew
 	let indetifier = Math.random();
 	let {
@@ -69,6 +72,7 @@
 	<ArgInfoDisplay
 		on:radioClick
 		on:checkboxClick
+		{predefinedFirstSteps}
 		{template}
 		{canExpand}
 		{expand}

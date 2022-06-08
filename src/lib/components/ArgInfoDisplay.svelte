@@ -17,6 +17,10 @@
 	export let type;
 	export let template;
 	export let stepsOfFieldsNew;
+	export let predefinedFirstSteps;
+	if (stepsOfFieldsNew.length == 0 && predefinedFirstSteps) {
+		stepsOfFieldsNew = [...predefinedFirstSteps];
+	}
 	let {
 		dd_kindsArray,
 		dd_namesArray,
