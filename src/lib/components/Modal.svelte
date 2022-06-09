@@ -15,7 +15,9 @@
 
 	const swipedown = (e) => {
 		const parent = e.target.parentNode;
-		dispatch('cancel', { modalIdetifier });
+		let targetId = e.target?.id;
+		console.log('modalIdetifiertargetId', modalIdetifier == targetId);
+		dispatch('cancel', { modalIdetifier: targetId });
 	};
 
 	let mainDiv;
@@ -47,7 +49,10 @@
 		<div
 			bind:this={bodyDiv}
 			use:detectSwipe
+			id={modalIdetifier}
 			on:swipedown={(e) => {
+				e.stopPropagation();
+				e.stopImmediatePropagation();
 				swipedown(e);
 				console.log('swipedown', e);
 			}}
