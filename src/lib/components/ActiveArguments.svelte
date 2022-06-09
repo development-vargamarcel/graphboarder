@@ -251,13 +251,16 @@
 							<div class=" ">
 								<div class="dropdown dropdown-start ">
 									<!-- svelte-ignore a11y-label-has-associated-control -->
-									<label tabindex="0" class="btn btn-sm bi bi-plus-circle text-lg p-1 mr-2" />
+									<label
+										tabindex="0"
+										class="btn btn-sm bi bi-plus-circle text-lg p-1 mr-2 overscroll-contain"
+									/>
 									<div
 										tabindex="0"
-										class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl overflow-y-auto  max-h-52 sm:max-h-72 md:max-h-90  overscroll-contain  max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
+										class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl overflow-y-auto overscroll-contain  max-h-52 sm:max-h-72 md:max-h-90    max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
 									>
 										<div
-											class="flex flex-col overflow-x-auto text-sm font-normal normal-case min-w-max w-full "
+											class="flex flex-col overflow-x-auto overscroll-contain text-sm font-normal normal-case min-w-max w-full "
 										>
 											{#if group?.dd_relatedRoot?.inputFields}
 												{#each group?.dd_relatedRoot?.inputFields as arg, index}
