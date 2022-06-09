@@ -7,41 +7,18 @@
 	import FilterGroup from './FilterGroup.svelte';
 	let dispatch = createEventDispatcher();
 	export let activeArgumentData;
-	export let reorder;
 	export let group;
 	export let generate_final_gqlArgObj;
 	export let delete_activeArgument;
 	export let activeArgumentsDataGrouped;
 	export let activeArgumentsData;
-	let selectedForEdit = false;
-	$: if (selectedForEdit !== undefined) {
-		dispatch('selectedForEditChanged', {
-			selectedForEditOn: selectedForEdit,
-			selectedForEditValue: activeArgumentData.stepsOfFieldsNewStringified
-		});
-	}
+
 	let showDescription = false;
 </script>
 
 <!-- svelte-ignore a11y-label-has-associated-control -->
-<label
-	class=" bg-base-200 rounded-box p-2 my-2 flex transition-all duration-500 {selectedForEdit &&
-	reorder == group.group_name
-		? 'border-[1px] border-accent'
-		: 'border-[1px] border-transparent'} dnd-item"
->
+<label class=" bg-base-200 rounded-box p-2 my-2 flex transition-all duration-500  dnd-item">
 	<div class=" pr-2">
-		<input
-			type="checkbox"
-			name="selectedForEdit"
-			class="checkbox checkbox-accent transition-all duration-500 {reorder == group.group_name
-				? 'visible'
-				: 'invisible w-0'} "
-			bind:checked={selectedForEdit}
-			on:click={() => {}}
-			disabled={reorder !== group.group_name}
-			value={activeArgumentData.stepsOfFieldsNewStringified}
-		/>
 		<input
 			type="checkbox"
 			class="checkbox input-primary "
@@ -51,6 +28,7 @@
 				activeArgumentData.inUse =
 					activeArgumentData.inUse !== undefined ? !activeArgumentData.inUse : true;
 				activeArgumentData = activeArgumentData;
+				generate_final_gqlArgObj();
 			}}
 		/>
 	</div>
