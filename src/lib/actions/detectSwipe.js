@@ -1,4 +1,6 @@
 export function detectSwipe(node) {
+    console.log('node', node)
+    console.log('node id', node?.id)
     // Swipe Up / Down / Left / Right
     var initialX = null;
     var initialY = null;
@@ -16,12 +18,19 @@ export function detectSwipe(node) {
 
     var minSpeed = 0.1;
     function touchstart(e) {
+        e.stopPropagation()
+        e.stopImmediatePropagation()
+
         initialTime = e.timeStamp;
 
         initialX = e.touches[0].clientX;
         initialY = e.touches[0].clientY;
     }
     function touchend(e) {
+        e.stopPropagation()
+        e.stopImmediatePropagation()
+        console.log(e)
+
         if (diffX === null || diffY === null) {
             return;
         }
@@ -44,24 +53,39 @@ export function detectSwipe(node) {
         if (Math.abs(diffX) > Math.abs(diffY) && speedX > minSpeed) {// sliding horizontally
             if (diffX > 0) {
                 // swiped left
-                node.dispatchEvent(new CustomEvent("swipeleft"));
+                node.dispatchEvent(new CustomEvent("swipeleft", {
+                    bubbles: false
+                }));
             } else {
                 // swiped right
-                node.dispatchEvent(new CustomEvent("swiperight"));
+                node.dispatchEvent(new CustomEvent("swiperight", {
+                    bubbles: false
+                }));
             }
         } else if (speedY > minSpeed) {// sliding vertically
             if (diffY > 0) {
                 // swiped up
-                node.dispatchEvent(new CustomEvent("swipeup"));
+                node.dispatchEvent(new CustomEvent("swipeup", {
+                    bubbles: false
+                }));
             } else {
                 // swiped down
-                node.dispatchEvent(new CustomEvent("swipedown"));
+                node.dispatchEvent(new CustomEvent("swipedown", {
+                    bubbles: false
+                }));
             }
         }
         diffX = null
         diffY = null
+
+
+
     }
     function touchmove(e) {
+        e.stopPropagation()
+        e.stopImmediatePropagation()
+
+
         if (initialX === null || initialY === null) {
             return;
         }
@@ -78,15 +102,16 @@ export function detectSwipe(node) {
 
 
 
-    document.addEventListener("touchmove", touchmove, true);
-    document.addEventListener("touchend", touchend, true);
-    document.addEventListener("touchstart", touchstart, true);
+    document.addEventListener("touchmove", touchmove, { capture: true });
+    document.addEventListener("touchend", touchend, { capture: true });
+    document.addEventListener("touchstart", touchstart, { capture: true });
 
     return {
         destroy() {
-            document.removeEventListener("touchmove", touchmove, true);
-            document.removeEventListener("touchend", touchend, true);
-            document.removeEventListener("touchstart", touchstart, true);
+            document.removeEventListener("touchmove", touchmove, { capture: true });
+            document.removeEventListener("touchend", touchend, { capture: true });
+            document.removeEventListener("touchstart", touchstart, { capture: true });
+
         }
     };
 
