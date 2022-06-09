@@ -191,6 +191,7 @@
 					{index}
 					type={arg}
 					template="changeArguments"
+					predefinedFirstSteps={[]}
 					on:argAddRequest={(e) => {
 						let newArgData = e.detail;
 						if (

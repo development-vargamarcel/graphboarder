@@ -12,6 +12,7 @@
 	import Modal from './Modal.svelte';
 	import Toggle from './fields/Toggle.svelte';
 	import Arg from './Arg.svelte';
+	import ActiveArgumentsGroup from './fields/ActiveArgumentsGroup.svelte';
 	let _scalarsAndEnumsDisplayTypes = $scalarsAndEnumsDisplayTypes;
 	export let activeArgumentsData;
 	let activeArgumentsDataGrouped = [];
@@ -247,165 +248,22 @@
 				<div class="w-2" />
 
 				{#each activeArgumentsDataGrouped as group}
-					<div class="bg-base-100 p-2 rounded-box">
-						<div class="font-bold flex">
-							<div class=" ">
-								<div class="dropdown dropdown-start ">
-									<!-- svelte-ignore a11y-label-has-associated-control -->
-									<label
-										tabindex="0"
-										class="btn btn-sm bi bi-plus-circle text-lg p-1 mr-2 overscroll-contain"
-									/>
-									<div
-										tabindex="0"
-										class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl overflow-y-auto overscroll-contain  max-h-52 sm:max-h-72 md:max-h-90    max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
-									>
-										<div
-											class="flex flex-col overflow-x-auto overscroll-contain text-sm font-normal normal-case min-w-max w-full "
-										>
-											{#if group?.dd_relatedRoot?.inputFields}
-												{#each group?.dd_relatedRoot?.inputFields as arg, index}
-													<Arg
-														{index}
-														type={arg}
-														template="changeArguments"
-														predefinedFirstSteps={[group.group_name]}
-														on:argAddRequest={(e) => {
-															let newArgData = e.detail;
-															if (
-																!activeArgumentsData.some((el) => {
-																	return (
-																		el.stepsOfFieldsNewStringified ==
-																		newArgData.stepsOfFieldsNewStringified
-																	);
-																})
-															) {
-																activeArgumentsData.push(e.detail);
-																overwrite_activeArgumentsData(activeArgumentsData);
-																console.log('activeArgumentsData', activeArgumentsData);
-															} else {
-																console.log('already added');
-															}
-														}}
-													/>
-												{/each}
-											{:else}
-												{#each argsInfo.filter((arg) => {
-													return arg.dd_isRootArg;
-												}) as arg, index}
-													<Arg
-														{index}
-														type={arg}
-														template="changeArguments"
-														on:argAddRequest={(e) => {
-															let newArgData = e.detail;
-															if (
-																!activeArgumentsData.some((el) => {
-																	return (
-																		el.stepsOfFieldsNewStringified ==
-																		newArgData.stepsOfFieldsNewStringified
-																	);
-																})
-															) {
-																activeArgumentsData.push(e.detail);
-																overwrite_activeArgumentsData(activeArgumentsData);
-																console.log('activeArgumentsData', activeArgumentsData);
-															} else {
-																console.log('already added');
-															}
-														}}
-													/>
-												{/each}
-											{/if}
-										</div>
-									</div>
-								</div>
-							</div>
-							{#if !group.group_isRoot}
-								{group.group_name}
-							{/if}
-							{#if group.dd_kindList}
-								(list)
-							{/if}
-							{#if group?.dd_relatedRoot?.dd_filterOperators}
-								{`(${group?.dd_relatedRoot?.dd_filterOperators?.join(',')})`}
-							{/if}
-							{#if group.group_name !== 'root'}
-								<i
-									class="bi bi-info-circle text-secondary px-2"
-									title={group.description}
-									on:click={() => {
-										if (showDescription == group.description) {
-											showDescription = '';
-										} else {
-											showDescription = group.description;
-										}
-									}}
-								/>
-								{#if showDescription == group.description && group.description}
-									<p class="text-xs font-light text-secondary select-none">
-										({group.description})
-									</p>
-								{/if}{/if}
-						</div>
-
-						{#each group.group_args as activeArgumentData (activeArgumentData.stepsOfFieldsNewStringified + activeArgumentData.inUse)}
-							<ActiveArgument
-								on:selectedForEditChanged={(e) => {
-									let { detail } = e;
-									console.log('detail.selectedForEditOn', detail.selectedForEditOn);
-									if (detail.selectedForEditOn) {
-										if (!selectedForEdit.includes(detail.selectedForEditValue)) {
-											selectedForEdit = [...selectedForEdit, detail.selectedForEditValue];
-										}
-									} else {
-										selectedForEdit = selectedForEdit.filter((el) => {
-											return el !== detail.selectedForEditValue;
-										});
-									}
-								}}
-								on:inUseChanged={() => {
-									activeArgumentData = activeArgumentData;
-								}}
-								{activeArgumentData}
-								{reorder}
-								{group}
-								{generate_final_gqlArgObj}
-								{delete_activeArgument}
-								{activeArgumentsDataGrouped}
-								{activeArgumentsData}
-							/>
-						{/each}
-					</div>
-					{#if group.dd_kindList && group.group_args?.length > 0}
-						<div class="flex space-x-2 pr-2 mt-2">
-							<button
-								class="btn btn-xs {reorder == group.group_name
-									? 'btn-accent w-1/2'
-									: 'btn-primary w-full'}  transition-colors duration-1000"
-								on:click={() => {
-									if (reorder == group.group_name) {
-										reorder = '';
-									} else {
-										reorder = group.group_name;
-									}
-								}}>{reorder == group.group_name ? 'done' : 'reorder'}</button
-							>
-							{#if reorder}
-								<div class="w-1/2 flex space-x-2">
-									<button
-										class="btn btn-xs   w-1/2"
-										on:click={() => {
-											moveUp(group.group_args);
-										}}><i class="bi bi-arrow-up-short" />up</button
-									>
-									<button class="btn btn-xs   w-1/2" on:click={() => {}}
-										><i class="bi bi-arrow-down-short" />down</button
-									>
-								</div>
-							{/if}
-						</div>
-					{/if}
+					<ActiveArgumentsGroup
+						on:updateQuery={() => {
+							generate_final_gqlArgObj();
+						}}
+						{group}
+						{argsInfo}
+						{activeArgumentsData}
+						{overwrite_activeArgumentsData}
+						{showDescription}
+						{reorder}
+						{generate_final_gqlArgObj}
+						{delete_activeArgument}
+						{activeArgumentsDataGrouped}
+						{selectedForEdit}
+						{moveUp}
+					/>
 				{/each}
 
 				<div class="w-2" />
