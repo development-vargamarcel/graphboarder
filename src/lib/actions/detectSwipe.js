@@ -22,9 +22,15 @@ export function detectSwipe(node) {
         initialY = e.touches[0].clientY;
     }
     function touchend(e) {
+        if (diffX === null || diffY === null) {
+            return;
+        }
         finalTime = e.timeStamp;
 
         duration = finalTime - initialTime;
+        console.log('initialTime', initialTime)
+        console.log('finalTime', finalTime)
+        console.log('duration', duration)
 
         speedX = Math.abs(diffX / duration);
         speedY = Math.abs(diffY / duration);
@@ -32,8 +38,10 @@ export function detectSwipe(node) {
         //finalX = e.touches[0].clientX;
         //finalY = e.touches[0].clientY;
 
-        if (Math.abs(diffX) > Math.abs(diffY) && speedX > minSpeed) {
-            // sliding horizontally
+        console.log('diffX', diffX)
+        console.log('diffY', diffY)
+
+        if (Math.abs(diffX) > Math.abs(diffY) && speedX > minSpeed) {// sliding horizontally
             if (diffX > 0) {
                 // swiped left
                 node.dispatchEvent(new CustomEvent("swipeleft"));
@@ -41,8 +49,7 @@ export function detectSwipe(node) {
                 // swiped right
                 node.dispatchEvent(new CustomEvent("swiperight"));
             }
-        } else if (speedY > minSpeed) {
-            // sliding vertically
+        } else if (speedY > minSpeed) {// sliding vertically
             if (diffY > 0) {
                 // swiped up
                 node.dispatchEvent(new CustomEvent("swipeup"));
@@ -51,6 +58,8 @@ export function detectSwipe(node) {
                 node.dispatchEvent(new CustomEvent("swipedown"));
             }
         }
+        diffX = null
+        diffY = null
     }
     function touchmove(e) {
         if (initialX === null || initialY === null) {
