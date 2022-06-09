@@ -20,6 +20,7 @@
 			selectedForEditValue: activeArgumentData.stepsOfFieldsNewStringified
 		});
 	}
+	let showDescription = false;
 </script>
 
 <!-- svelte-ignore a11y-label-has-associated-control -->
@@ -56,6 +57,16 @@
 	<div class="grow ">
 		<p class="  overflow-x-auto text-xs break-words mr-2  ">
 			{activeArgumentData.stepsOfFieldsNew?.join(' > ')}
+			<i
+				class="bi bi-info-circle text-secondary"
+				title={activeArgumentData.description}
+				on:click={() => {
+					showDescription = !showDescription;
+				}}
+			/>
+			{#if showDescription && activeArgumentData.description}
+				({activeArgumentData.description})
+			{/if}
 		</p>
 
 		{#if activeArgumentData.dd_displayType == 'ENUM'}

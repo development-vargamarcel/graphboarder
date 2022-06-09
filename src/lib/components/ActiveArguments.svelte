@@ -224,6 +224,7 @@
 			showModal = false;
 		}
 	}
+	let showDescription = null;
 </script>
 
 {#if showModal}
@@ -328,6 +329,23 @@
 							{/if}
 							{#if group?.dd_relatedRoot?.dd_filterOperators}
 								{`(${group?.dd_relatedRoot?.dd_filterOperators?.join(',')})`}
+							{/if}
+
+							<i
+								class="bi bi-info-circle text-secondary px-2"
+								title={group.description}
+								on:click={() => {
+									if (showDescription == group.description) {
+										showDescription = '';
+									} else {
+										showDescription = group.description;
+									}
+								}}
+							/>
+							{#if showDescription == group.description && group.description}
+								<p class="text-xs font-light">
+									({group.description})
+								</p>
 							{/if}
 						</div>
 
