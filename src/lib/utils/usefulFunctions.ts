@@ -543,5 +543,6 @@ export const generate_derivedData = (type, rootTypes) => { //type/field
         }
         derivedData.dd_isRootArg = !(derivedData.dd_canExpand && !derivedData.dd_relatedRoot_inputFields_allScalar && !derivedData?.dd_relatedRoot?.enumValues)
     }
+    derivedData.id = derivedData.dd_namesArray.join('-')
     return derivedData
 }

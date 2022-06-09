@@ -1,0 +1,245 @@
+<script>
+	import ActiveArgument from '../ActiveArgument.svelte';
+
+	import Arg from '../Arg.svelte';
+
+	export let group;
+	export let argsInfo;
+	export let activeArgumentsData;
+	export let overwrite_activeArgumentsData;
+	let showDescription;
+	let reorder;
+	export let generate_final_gqlArgObj;
+	export let delete_activeArgument;
+	export let activeArgumentsDataGrouped;
+	export let selectedForEdit;
+	export let moveUp;
+
+	//
+
+	import { dndzone, SHADOW_ITEM_MARKER_PROPERTY_NAME, SOURCES, TRIGGERS } from 'svelte-dnd-action';
+	import { fade } from 'svelte/transition';
+	// notice - fade in works fine but don't add svelte's fade-out (known issue)
+	import { cubicIn } from 'svelte/easing';
+	import { flip } from 'svelte/animate';
+	import { createEventDispatcher } from 'svelte';
+	const flipDurationMs = 200;
+	let dragDisabled = true;
+	const dispatch = createEventDispatcher();
+	function handleSort(e) {
+		group.group_args = e.detail.items;
+		console.log('choisesWithId', group.group_args);
+
+		dragDisabled = true;
+	}
+	const transformDraggedElement = (draggedEl, data, index) => {
+		draggedEl.querySelector('.dnd-item').classList.add('bg-accent/20', 'border-2', 'border-accent');
+	};
+
+	//
+	function handleConsider(e) {
+		const {
+			items: newItems,
+			info: { source, trigger }
+		} = e.detail;
+		handleSort(e);
+		// Ensure dragging is stopped on drag finish via keyboard
+		if (source === SOURCES.KEYBOARD && trigger === TRIGGERS.DRAG_STOPPED) {
+			dragDisabled = true;
+		}
+	}
+	function handleFinalize(e) {
+		const {
+			items: newItems,
+			info: { source }
+		} = e.detail;
+		handleSort(e);
+		// Ensure dragging is stopped on drag finish via pointer (mouse, touch)
+		if (source === SOURCES.POINTER) {
+			dragDisabled = true;
+		}
+		dispatch('updateQuery');
+	}
+	function startDrag(e) {
+		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
+		e.preventDefault();
+		dragDisabled = false;
+	}
+	function handleKeyDown(e) {
+		if ((e.key === 'Enter' || e.key === ' ') && dragDisabled) dragDisabled = false;
+	}
+	//
+	//
+</script>
+
+<div class="bg-base-100 p-2 rounded-box">
+	<div class="font-bold flex">
+		<div class=" ">
+			<div class="dropdown dropdown-start ">
+				<!-- svelte-ignore a11y-label-has-associated-control -->
+				<label
+					tabindex="0"
+					class="btn btn-sm bi bi-plus-circle text-lg p-1 mr-2 overscroll-contain"
+				/>
+				<div
+					tabindex="0"
+					class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl overflow-y-auto overscroll-contain  max-h-52 sm:max-h-72 md:max-h-90    max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
+				>
+					<div
+						class="flex flex-col overflow-x-auto overscroll-contain text-sm font-normal normal-case min-w-max w-full "
+					>
+						{#if group?.dd_relatedRoot?.inputFields}
+							{#each group?.dd_relatedRoot?.inputFields as arg, index}
+								<Arg
+									{index}
+									type={arg}
+									template="changeArguments"
+									predefinedFirstSteps={[group.group_name]}
+									on:argAddRequest={(e) => {
+										let newArgData = e.detail;
+										if (
+											!activeArgumentsData.some((el) => {
+												return (
+													el.stepsOfFieldsNewStringified == newArgData.stepsOfFieldsNewStringified
+												);
+											})
+										) {
+											activeArgumentsData.push(e.detail);
+											overwrite_activeArgumentsData(activeArgumentsData);
+											console.log('activeArgumentsData', activeArgumentsData);
+										} else {
+											console.log('already added');
+										}
+									}}
+								/>
+							{/each}
+						{:else}
+							{#each argsInfo.filter((arg) => {
+								return arg.dd_isRootArg;
+							}) as arg, index}
+								<Arg
+									{index}
+									type={arg}
+									template="changeArguments"
+									predefinedFirstSteps={[]}
+									on:argAddRequest={(e) => {
+										let newArgData = e.detail;
+										if (
+											!activeArgumentsData.some((el) => {
+												return (
+													el.stepsOfFieldsNewStringified == newArgData.stepsOfFieldsNewStringified
+												);
+											})
+										) {
+											activeArgumentsData.push(e.detail);
+											overwrite_activeArgumentsData(activeArgumentsData);
+											console.log('activeArgumentsData', activeArgumentsData);
+										} else {
+											console.log('already added');
+										}
+									}}
+								/>
+							{/each}
+						{/if}
+					</div>
+				</div>
+			</div>
+		</div>
+		{#if !group.group_isRoot}
+			{group.group_name}
+		{/if}
+		{#if group.dd_kindList}
+			(list)
+		{/if}
+		{#if group?.dd_relatedRoot?.dd_filterOperators}
+			{`(${group?.dd_relatedRoot?.dd_filterOperators?.join(',')})`}
+		{/if}
+		{#if group.group_name !== 'root'}
+			<i
+				class="bi bi-info-circle text-secondary px-2"
+				title={group.description}
+				on:click={() => {
+					if (showDescription == group.description) {
+						showDescription = '';
+					} else {
+						showDescription = group.description;
+					}
+				}}
+			/>
+			{#if showDescription == group.description && group.description}
+				<p class="text-xs font-light text-secondary select-none">
+					({group.description})
+				</p>
+			{/if}{/if}
+	</div>
+	<ul
+		use:dndzone={{
+			items: group.group_args,
+			dragDisabled,
+			flipDurationMs,
+			transformDraggedElement,
+			type: group.group_name
+		}}
+		on:consider={handleConsider}
+		on:finalize={handleFinalize}
+		class="mt-2 pt-2"
+	>
+		{#each group.group_args as activeArgumentData (activeArgumentData.id)}
+			<div animate:flip={{ duration: flipDurationMs }} class="relative flex">
+				<div
+					tabindex={dragDisabled ? 0 : -1}
+					aria-label="drag-handle"
+					class="bi bi-grip-vertical pt-3 px-2"
+					style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
+					on:mousedown={startDrag}
+					on:touchstart={startDrag}
+					on:keydown={handleKeyDown}
+				/>
+				<div
+					class="w-full "
+					on:mousedown={() => {
+						dragDisabled = true;
+					}}
+					on:touchstart={() => {
+						dragDisabled = true;
+					}}
+					on:keydown={() => {
+						dragDisabled = true;
+					}}
+				>
+					<ActiveArgument
+						on:selectedForEditChanged={(e) => {
+							let { detail } = e;
+							console.log('detail.selectedForEditOn', detail.selectedForEditOn);
+							if (detail.selectedForEditOn) {
+								if (!selectedForEdit.includes(detail.selectedForEditValue)) {
+									selectedForEdit = [...selectedForEdit, detail.selectedForEditValue];
+								}
+							} else {
+								selectedForEdit = selectedForEdit.filter((el) => {
+									return el !== detail.selectedForEditValue;
+								});
+							}
+						}}
+						on:inUseChanged={() => {
+							activeArgumentData = activeArgumentData;
+						}}
+						{activeArgumentData}
+						{reorder}
+						{group}
+						{generate_final_gqlArgObj}
+						{delete_activeArgument}
+						{activeArgumentsDataGrouped}
+						{activeArgumentsData}
+					/>
+					{#if activeArgumentData[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
+						<div
+							in:fade={{ duration: 200, easing: cubicIn }}
+							class="rounded-box mx-2 py-8 border-dotted  border-accent/20 border-2 text-primary absolute w-11/12   top-0 left-0 visible"
+						/>
+					{/if}
+				</div>
+			</div>
+		{/each}
+	</ul>
+</div>

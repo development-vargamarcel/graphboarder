@@ -94,7 +94,14 @@
 			<div class="">
 				{#each expandData.inputFields || expandData.enumValues as arg, index}
 					<div>
-						<svelte:self {index} type={arg} {template} {stepsOfFieldsNew} on:argAddRequest />
+						<svelte:self
+							{index}
+							type={arg}
+							{template}
+							{stepsOfFieldsNew}
+							predefinedFirstSteps={[]}
+							on:argAddRequest
+						/>
 					</div>
 				{/each}
 			</div>

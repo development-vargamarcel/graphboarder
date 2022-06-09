@@ -28,7 +28,7 @@
 	class=" bg-base-200 rounded-box p-2 my-2 flex transition-all duration-500 {selectedForEdit &&
 	reorder == group.group_name
 		? 'border-[1px] border-accent'
-		: 'border-[1px] border-transparent'}"
+		: 'border-[1px] border-transparent'} dnd-item"
 >
 	<div class=" pr-2">
 		<input
