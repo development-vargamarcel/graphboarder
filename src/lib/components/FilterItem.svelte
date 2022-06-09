@@ -68,7 +68,9 @@
 	}
 
 	$: if (chosen?.length > 0) {
-		syncOrder();
+		if (type !== 'radio') {
+			syncOrder();
+		}
 		console.log('chosen:', chosen);
 		console.log('chosenInternal:', chosenInternal);
 		if (!modalVisible) {
@@ -110,7 +112,9 @@
 				extraInfo = '';
 			}
 		}
-		syncOrder();
+		if (type !== 'radio') {
+			syncOrder();
+		}
 	}
 
 	import { flip } from 'svelte/animate';
