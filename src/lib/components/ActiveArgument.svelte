@@ -179,7 +179,8 @@
 	<button
 		class="btn btn-sm"
 		on:click={() => {
-			delete_activeArgument(activeArgumentData.id);
+			dispatch('delete_activeArgument');
+			// delete_activeArgument(activeArgumentData.id);
 		}}><i class="bi bi-trash3-fill" /></button
 	>
 </label>

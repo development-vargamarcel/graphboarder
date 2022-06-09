@@ -222,6 +222,11 @@
 						on:inUseChanged={() => {
 							update_activeArgumentsDataGrouped(group);
 						}}
+						on:delete_activeArgument={() => {
+							group.group_args = group.group_args.filter((arg) => {
+								return arg.id !== activeArgumentData.id;
+							});
+						}}
 						{activeArgumentData}
 						{group}
 						{generate_final_gqlArgObj}
