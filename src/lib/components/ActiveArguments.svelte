@@ -14,8 +14,16 @@
 	import Arg from './Arg.svelte';
 	import ActiveArgumentsGroup from './fields/ActiveArgumentsGroup.svelte';
 	let _scalarsAndEnumsDisplayTypes = $scalarsAndEnumsDisplayTypes;
-	export let activeArgumentsData;
 	let activeArgumentsDataGrouped = [];
+	const update_activeArgumentsDataGrouped = (groupNewData) => {
+		let index = activeArgumentsDataGrouped.findIndex((group) => {
+			return group.group_name == groupNewData.group_name;
+		});
+		activeArgumentsDataGrouped[index] = groupNewData;
+		activeArgumentsDataGrouped = activeArgumentsDataGrouped;
+		console.log('groupNewData.group_args', groupNewData.group_args);
+		console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+	};
 	let showActiveFilters;
 	const dispatch = createEventDispatcher();
 	let showModal = false;
@@ -26,31 +34,7 @@
 	const handleArgsChanged = () => {};
 	let final_gqlArgObj = {};
 	let final_canRunQuery = true;
-	let reorder = '';
-	let selectedForEdit = [];
-	$: console.log('selectedForEdit', selectedForEdit);
-	const moveUp = (group_argumentsData) => {
-		console.log('group_argumentsData before', group_argumentsData);
-		group_argumentsData.forEach((el, index, array) => {
-			if (selectedForEdit.includes(el.stepsOfFieldsNewStringified) && index > 0) {
-				let elToSubstitute = array[index - 1];
-				if (!selectedForEdit.includes(elToSubstitute.stepsOfFieldsNewStringified)) {
-					array[index] = elToSubstitute;
-					array[index - 1] = el;
-				}
-			}
-		});
-		let new_activeArgumentsData = [];
-		activeArgumentsDataGrouped.forEach((group) => {
-			new_activeArgumentsData.push(...group.group_args);
-		});
-		overwrite_activeArgumentsData(new_activeArgumentsData);
-		//activeArgumentsData = activeArgumentsData;
-		//activeArgumentsDataGrouped = activeArgumentsDataGrouped;
-		//group_argumentsData = group_argumentsData;
-		console.log('group_argumentsData after', group_argumentsData);
-	};
-	const moveDown = () => {};
+
 	const generate_final_gqlArgObj = () => {
 		final_gqlArgObj = {};
 		final_canRunQuery = true;
@@ -174,57 +158,31 @@
 
 		return { gqlArgObj, canRunQuery };
 	};
-	$: if (activeArgumentsData) {
-		console.log(
-			'activeArgumentsData changed',
-			activeArgumentsData,
-			activeArgumentsData?.[0]?.chd_rawValue
-		);
 
-		//handle generating activeArgumentsDataGrouped
-		let rootGroup = { group_name: 'root', group_isRoot: true, dd_kindList: false, group_args: [] };
-		activeArgumentsDataGrouped = [rootGroup];
-		argsInfo.forEach((el) => {
-			console.log('el---', el);
-			if (!el.dd_isRootArg) {
-				activeArgumentsDataGrouped.push({
-					group_name: el.dd_displayName,
-					group_isRoot: false,
-					// group_info: el,
-					...el,
-					group_args: []
-				});
-			}
-		});
-		activeArgumentsData.forEach((activeArgData) => {
-			let activeArgGroup = activeArgumentsDataGrouped.find((el) => {
-				return el.group_name == activeArgData.stepsOfFieldsNew[0];
+	//handle generating activeArgumentsDataGrouped
+	let rootGroup = { group_name: 'root', group_isRoot: true, dd_kindList: false, group_args: [] };
+	activeArgumentsDataGrouped = [rootGroup];
+	argsInfo.forEach((el) => {
+		console.log('el---', el);
+		if (!el.dd_isRootArg) {
+			activeArgumentsDataGrouped.push({
+				group_name: el.dd_displayName,
+				group_isRoot: false,
+				// group_info: el,
+				...el,
+				group_args: []
 			});
-
-			if (activeArgGroup) {
-				activeArgGroup.group_args.push(activeArgData);
-			} else {
-				rootGroup.group_args.push(activeArgData);
-			}
-		});
-
-		console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-
-		//
-		if (activeArgumentsData.length > 0) {
-			showActiveFilters = true;
-		} else {
-			showActiveFilters = false;
 		}
+	});
 
-		/////generate gqlArgObj to be used in query
+	console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 
-		generate_final_gqlArgObj();
+	//
 
-		if (activeArgumentsData.length == 0) {
-			showModal = false;
-		}
-	}
+	/////generate gqlArgObj to be used in query
+
+	generate_final_gqlArgObj();
+
 	let showDescription = null;
 </script>
 
@@ -236,8 +194,6 @@
 			let { detail } = e;
 			if (detail.modalIdetifier == 'activeArgumentsDataModal') {
 				showModal = false;
-				reorder = '';
-				selectedForEdit = [];
 			}
 		}}
 		on:apply={(e) => {
@@ -252,17 +208,14 @@
 						on:updateQuery={() => {
 							generate_final_gqlArgObj();
 						}}
+						{update_activeArgumentsDataGrouped}
 						{group}
 						{argsInfo}
-						{activeArgumentsData}
 						{overwrite_activeArgumentsData}
 						{showDescription}
-						{reorder}
 						{generate_final_gqlArgObj}
 						{delete_activeArgument}
 						{activeArgumentsDataGrouped}
-						{selectedForEdit}
-						{moveUp}
 					/>
 				{/each}
 
@@ -273,18 +226,8 @@
 {/if}
 
 <div class="flex space-x-2 mb-2 px-2">
-	<div class="dropdown ">
-		<!-- svelte-ignore a11y-label-has-associated-control -->
-		<label tabindex="0" class="btn btn-sm bi bi-sliders text-lg p-1" />
-		<div
-			tabindex="0"
-			class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl fixed left-0"
-		>
-			<slot />
-		</div>
-	</div>
 	<button
-		class="btn btn-xs  {activeArgumentsData.length > 0 ? 'btn-primary' : 'btn-secondary'}"
+		class="btn btn-xs  "
 		on:click={() => {
 			showModal = !showModal;
 			//showActiveFilters = !showActiveFilters;

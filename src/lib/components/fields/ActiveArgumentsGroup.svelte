@@ -6,14 +6,12 @@
 	export let group;
 	export let argsInfo;
 	export let activeArgumentsData;
-	export let overwrite_activeArgumentsData;
+	export let update_activeArgumentsDataGrouped;
 	let showDescription;
-	let reorder;
 	export let generate_final_gqlArgObj;
 	export let delete_activeArgument;
 	export let activeArgumentsDataGrouped;
 	export let selectedForEdit;
-	export let moveUp;
 
 	//
 
@@ -58,6 +56,7 @@
 		if (source === SOURCES.POINTER) {
 			dragDisabled = true;
 		}
+		update_activeArgumentsDataGrouped(group);
 		dispatch('updateQuery');
 	}
 	function startDrag(e) {
@@ -98,15 +97,15 @@
 									on:argAddRequest={(e) => {
 										let newArgData = e.detail;
 										if (
-											!activeArgumentsData.some((el) => {
+											!group.group_args.some((el) => {
 												return (
 													el.stepsOfFieldsNewStringified == newArgData.stepsOfFieldsNewStringified
 												);
 											})
 										) {
-											activeArgumentsData.push(e.detail);
-											overwrite_activeArgumentsData(activeArgumentsData);
-											console.log('activeArgumentsData', activeArgumentsData);
+											group.group_args.push(newArgData);
+											console.log('aa group', group);
+											update_activeArgumentsDataGrouped(group);
 										} else {
 											console.log('already added');
 										}
@@ -125,15 +124,14 @@
 									on:argAddRequest={(e) => {
 										let newArgData = e.detail;
 										if (
-											!activeArgumentsData.some((el) => {
+											!group.group_args.some((el) => {
 												return (
 													el.stepsOfFieldsNewStringified == newArgData.stepsOfFieldsNewStringified
 												);
 											})
 										) {
-											activeArgumentsData.push(e.detail);
-											overwrite_activeArgumentsData(activeArgumentsData);
-											console.log('activeArgumentsData', activeArgumentsData);
+											group.group_args.push(newArgData);
+											update_activeArgumentsDataGrouped(group);
 										} else {
 											console.log('already added');
 										}
@@ -222,10 +220,9 @@
 							}
 						}}
 						on:inUseChanged={() => {
-							activeArgumentData = activeArgumentData;
+							update_activeArgumentsDataGrouped(group);
 						}}
 						{activeArgumentData}
-						{reorder}
 						{group}
 						{generate_final_gqlArgObj}
 						{delete_activeArgument}
