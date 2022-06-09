@@ -55,18 +55,20 @@
 		/>
 	</div>
 	<div class="grow ">
-		<p class="  overflow-x-auto text-xs break-words mr-2  ">
+		<p class="  overflow-x-auto text-xs break-words mr-2 flex ">
 			{activeArgumentData.stepsOfFieldsNew?.join(' > ')}
 			{#if activeArgumentData.description}
 				<i
-					class="bi bi-info-circle text-secondary"
+					class="bi bi-info-circle text-secondary mx-2"
 					title={activeArgumentData.description}
 					on:click={() => {
 						showDescription = !showDescription;
 					}}
 				/>
 				{#if showDescription}
-					({activeArgumentData.description})
+					<p class="text-secondary text-xs select-none">
+						({activeArgumentData.description})
+					</p>
 				{/if}
 			{/if}
 		</p>

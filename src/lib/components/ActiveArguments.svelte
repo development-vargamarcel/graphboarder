@@ -343,7 +343,7 @@
 									}}
 								/>
 								{#if showDescription == group.description && group.description}
-									<p class="text-xs font-light">
+									<p class="text-xs font-light text-secondary select-none">
 										({group.description})
 									</p>
 								{/if}{/if}
