@@ -18,8 +18,7 @@ export function detectSwipe(node) {
 
     var minSpeed = 0.1;
     function touchstart(e) {
-        e.stopPropagation()
-        e.stopImmediatePropagation()
+
 
         initialTime = e.timeStamp;
 
@@ -27,8 +26,7 @@ export function detectSwipe(node) {
         initialY = e.touches[0].clientY;
     }
     function touchend(e) {
-        e.stopPropagation()
-        e.stopImmediatePropagation()
+
         console.log(e)
 
         if (diffX === null || diffY === null) {
@@ -82,8 +80,7 @@ export function detectSwipe(node) {
 
     }
     function touchmove(e) {
-        e.stopPropagation()
-        e.stopImmediatePropagation()
+
 
 
         if (initialX === null || initialY === null) {

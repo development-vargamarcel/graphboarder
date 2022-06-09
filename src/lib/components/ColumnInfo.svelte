@@ -11,6 +11,6 @@
 		.join(' > ');
 </script>
 
-<div>
+<div class="select-all">
 	{stepsOfFieldsNew_display}
 </div>
