@@ -156,6 +156,7 @@
 					on:changed={(e) => {
 						console.log(e.detail);
 						rawValue = e.detail.chd_rawValue;
+
 						handleChanges();
 					}}
 				/>

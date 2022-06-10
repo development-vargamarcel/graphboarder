@@ -4,10 +4,12 @@
 	let mapboxgl = mapboxglOriginal;
 	export let containerEl;
 	export let rawValue;
-
+	console.log('rawValue from outside', rawValue);
+	export let dispatchValue;
 	let map;
 	let mapContainer;
 	let dispatch = createEventDispatcher();
+	let draw;
 	onMount(() => {
 		if (containerEl) {
 			console.log('containerEl', containerEl);
@@ -43,7 +45,7 @@
 				showUserHeading: true
 			})
 		);
-		const draw = new MapboxDraw({
+		draw = new MapboxDraw({
 			displayControlsDefault: false,
 			// Select which mapbox-gl-draw control buttons to add to the map.
 			controls: {
@@ -64,20 +66,52 @@
 		function updateArea(e) {
 			const data = draw.getAll();
 			console.log('data', data);
+			let dispatchValue = data.features.map((feature) => {
+				let geometry = feature.geometry;
+				geometry.type = `'${geometry.type}'`;
+				return geometry;
+			});
+			let chd_rawValue = JSON.parse(JSON.stringify(data));
 			if (data.features.length == 1) {
-				rawValue = data.features[0].geometry;
-				rawValue.type = `'${rawValue.type}'`;
+				//rawValue = JSON.parse(JSON.stringify(data));
+				// dispatchValue = data.features[0].geometry;
+				// dispatchValue.type = `'${dispatchValue.type}'`;
 				dispatch('changed', {
 					chd_chosen: undefined,
-					chd_dispatchValue: rawValue,
+					chd_dispatchValue: dispatchValue[0],
 					chd_needsValue: true,
 					chd_needsChosen: false,
-					chd_rawValue: rawValue
+					chd_rawValue: chd_rawValue
 				});
 			} else {
+				dispatch('changed', {
+					chd_chosen: undefined,
+					chd_dispatchValue: dispatchValue,
+					chd_needsValue: true,
+					chd_needsChosen: false,
+					chd_rawValue: chd_rawValue
+				});
 			}
+
+			console.log('map', map);
+			console.log('draw', draw);
 		}
 	});
+	let mapOnLoadHandler_set = false;
+	$: if (map && !mapOnLoadHandler_set) {
+		mapOnLoadHandler_set = true;
+		map.on('load', () => {
+			if (rawValue) {
+				console.log('rawValue', rawValue);
+				if (draw) {
+					rawValue.features.forEach((feature) => {
+						console.log('feature added');
+						draw.add(feature);
+					});
+				}
+			}
+		});
+	}
 	let showMap = true;
 </script>
 
