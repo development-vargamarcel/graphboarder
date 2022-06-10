@@ -94,7 +94,7 @@
 	};
 </script>
 
-<div class="flex">
+<div class="">
 	<FilterItem
 		{extraData}
 		{id}
