@@ -1,7 +1,7 @@
 <script>
 	import Modal from '$lib/components/Modal.svelte';
 	import { dndzone, SHADOW_ITEM_MARKER_PROPERTY_NAME, SOURCES, TRIGGERS } from 'svelte-dnd-action';
-	import { fade } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
 	import { cubicIn } from 'svelte/easing';
 	export let extraData;
@@ -289,7 +289,6 @@
 
 								{#if choice[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
 									<div
-										in:fade={{ duration: 200, easing: cubicIn }}
 										class="ml-8 rounded-box mx-2 py-5 border-dotted  border-accent/20 border-2 text-primary absolute w-11/12   top-0 left-0 visible"
 									/>
 								{/if}
