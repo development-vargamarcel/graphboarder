@@ -46,9 +46,10 @@
 				dispatch('cancel', { modalIdetifier });
 			}}
 		/>
+
+		<!-- use:detectSwipe -->
 		<div
 			bind:this={bodyDiv}
-			use:detectSwipe
 			id={modalIdetifier}
 			on:swipedown={(e) => {
 				e.stopPropagation();
