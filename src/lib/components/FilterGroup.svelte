@@ -134,17 +134,15 @@
 				/>
 			{:else if chosenInputField.dd_displayType == 'boolean'}
 				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<label class="label  w-40">
-					<div class="flex">
-						<Toggle
-							dd_displayType={chosenInputField.dd_displayType}
-							{rawValue}
-							on:changed={(e) => {
-								rawValue = e.detail.chd_rawValue;
-								handleChanges();
-							}}
-						/>
-					</div>
+				<label class="label  w-full ">
+					<Toggle
+						dd_displayType={chosenInputField.dd_displayType}
+						{rawValue}
+						on:changed={(e) => {
+							rawValue = e.detail.chd_rawValue;
+							handleChanges();
+						}}
+					/>
 				</label>
 			{:else if chosenInputField.dd_displayType == 'geo'}
 				<Map />

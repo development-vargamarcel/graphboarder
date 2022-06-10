@@ -92,7 +92,7 @@
 		</div>
 		<div class="px-2">
 			{#if activeArgumentData.dd_displayType == 'ENUM'}
-				<div class="flex flex-col ">
+				<div class="flex flex-col">
 					{#if activeArgumentData.dd_kindList}
 						<FilterGroup
 							extraData={activeArgumentData}
