@@ -19,7 +19,6 @@
 	let showDescription = false;
 	let labelEl;
 	let shadowEl;
-	let labelHeight;
 	let shadowHeight = 20;
 	let shadowWidth = 20;
 
@@ -32,32 +31,23 @@
 
 	$: console.log(shadowEl);
 	$: if (shadowHeight && shadowEl) {
-		if (labelElClone) {
-			shadowEl.removeChild(labelElClone);
+		if (shadowEl.style.height == 0) {
+			shadowEl.style.height = `${shadowHeight + 18}px`;
+			shadowEl.style.width = `${shadowWidth}px`;
+
+			//put labelElClone in place of shadowEl
+			if (labelElClone) {
+				shadowEl.removeChild(labelElClone);
+			}
+			labelElClone = labelEl.cloneNode(true);
+			labelElClone.classList.remove('dnd-item');
+			shadowEl.appendChild(labelElClone);
 		}
-
-		shadowEl.style.height = `${shadowHeight + 18}px`;
-		shadowEl.style.width = `${shadowWidth}px`;
-
-		labelElClone = labelEl.cloneNode(true);
-		labelElClone.classList.remove('dnd-item');
-		shadowEl.appendChild(labelElClone);
 	}
-
-	$: console.log('shadowHeight', shadowHeight);
-	$: console.log('labelHeight', labelHeight);
-
-	// $: if (activeArgumentData[SHADOW_ITEM_MARKER_PROPERTY_NAME]) {
-	// 	shadowHeight = labelHeight;
-	// }
 </script>
 
 <!-- svelte-ignore a11y-label-has-associated-control -->
-<label
-	class=" bg-base-200 rounded-box p-2 my-2 flex   dnd-item"
-	bind:clientHeight={labelHeight}
-	bind:this={labelEl}
->
+<label class=" bg-base-200 rounded-box p-2 my-2 flex   dnd-item" bind:this={labelEl}>
 	<div class=" pr-2">
 		<input
 			type="checkbox"
@@ -228,7 +218,7 @@
 {#if activeArgumentData[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
 	<div
 		in:fade={{ duration: 200, easing: cubicIn }}
-		class="rounded-box ml-8  border-dotted  border-accent/20 border-2 text-primary absolute w-11/12   top-0 left-0 visible"
+		class="rounded-box ml-8 h-0  border-dotted  border-accent/20 border-2 text-primary absolute w-11/12   top-0 left-0 visible"
 		id="shadowEl"
 		bind:this={shadowEl}
 	/>
