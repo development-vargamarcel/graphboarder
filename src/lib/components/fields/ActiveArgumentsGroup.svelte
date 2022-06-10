@@ -180,7 +180,7 @@
 		}}
 		on:consider={handleConsider}
 		on:finalize={handleFinalize}
-		class="mt-2 pt-2"
+		class="mt-2 pt-2 pr-2 rounded-box"
 	>
 		{#each group.group_args as activeArgumentData (activeArgumentData.id)}
 			<div animate:flip={{ duration: flipDurationMs }} class="relative flex">
@@ -234,7 +234,6 @@
 						{activeArgumentsDataGrouped}
 						{activeArgumentsData}
 					/>
-
 				</div>
 			</div>
 		{/each}

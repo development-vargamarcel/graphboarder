@@ -42,6 +42,8 @@
 			// }
 			labelElClone = labelEl.cloneNode(true);
 			labelElClone.classList.remove('dnd-item');
+			labelElClone.classList.add('border-2', 'border-accent');
+
 			shadowEl.appendChild(labelElClone);
 		}
 	}
@@ -229,7 +231,7 @@
 {#if activeArgumentData[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
 	<div
 		in:fade={{ duration: 200, easing: cubicIn }}
-		class="rounded-box ml-8 h-0  border-dotted  border-accent/20 border-2 text-primary absolute w-11/12   top-0 left-0 visible"
+		class=" ml-8 h-0    absolute w-11/12   top-0 left-0 visible"
 		id="shadowEl"
 		bind:this={shadowEl}
 	/>

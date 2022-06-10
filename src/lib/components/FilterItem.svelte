@@ -236,6 +236,7 @@
 						}}
 						on:consider={handleSort}
 						on:finalize={handleSort}
+						class="rounded-box"
 					>
 						{#each choisesWithId as choice (choice.id)}
 							<div animate:flip={{ duration: flipDurationMs }} class="relative flex">
