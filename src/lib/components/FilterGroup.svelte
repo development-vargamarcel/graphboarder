@@ -47,7 +47,12 @@
 					dispatchValue = rawValue;
 				}
 			} else if (chosenInputField.dd_displayType == 'geo') {
-				//
+				if (typeof rawValue !== 'object') {
+					//rawValue = true;
+					//dispatchValue = true;
+				} else {
+					dispatchValue = rawValue;
+				}
 			} else {
 				if (!['string', 'number', 'date'].includes(rawValue_TypeOf)) {
 					rawValue = '';
@@ -145,7 +150,15 @@
 					/>
 				</label>
 			{:else if chosenInputField.dd_displayType == 'geo'}
-				<Map {containerEl} />
+				<Map
+					{containerEl}
+					{rawValue}
+					on:changed={(e) => {
+						console.log(e.detail);
+						rawValue = e.detail.chd_rawValue;
+						handleChanges();
+					}}
+				/>
 				<!-- <input
 					type={chosenInputField.dd_displayType}
 					class="input input-primary input-xs w-20 h-20 mr-2 "

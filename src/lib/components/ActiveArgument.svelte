@@ -8,6 +8,7 @@
 	import FilterGroup from './FilterGroup.svelte';
 	import { fade } from 'svelte/transition';
 	import { cubicIn } from 'svelte/easing';
+	import Map from './fields/Map.svelte';
 	let dispatch = createEventDispatcher();
 	export let activeArgumentData;
 	export let group;
@@ -176,6 +177,19 @@
 					{#if activeArgumentData.dd_displayType == 'boolean'}
 						<Toggle
 							dd_displayType={activeArgumentData.dd_displayType}
+							rawValue={activeArgumentData?.chd_rawValue}
+							on:changed={(e) => {
+								Object.assign(activeArgumentData, e.detail);
+								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+								console.log('activeArgumentsData', activeArgumentsData);
+								//activeArgumentsData = activeArgumentsData
+								generate_final_gqlArgObj();
+
+								console.log(e.detail);
+							}}
+						/>
+					{:else if activeArgumentData.dd_displayType == 'geo'}
+						<Map
 							rawValue={activeArgumentData?.chd_rawValue}
 							on:changed={(e) => {
 								Object.assign(activeArgumentData, e.detail);
