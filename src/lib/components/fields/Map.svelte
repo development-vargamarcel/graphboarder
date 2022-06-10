@@ -16,9 +16,9 @@
 	let showMap = true;
 </script>
 
-<div class="flex flex-col">
+<div class="flex justify-center container">
 	<div class="">
-		<div id="map" class="w-32 h-32  " />
+		<div id="map" class="w-60 h-60 md:w-80  md:h-80 lg:w-96  lg:h-96 " />
 	</div>
 </div>
 
