@@ -230,7 +230,7 @@
 
 {#if activeArgumentData[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
 	<div
-		in:fade={{ duration: 200, easing: cubicIn }}
+		in:fade={{ duration: 300, easing: cubicIn }}
 		class=" ml-8 h-0    absolute w-11/12   top-0 left-0 visible"
 		id="shadowEl"
 		bind:this={shadowEl}
