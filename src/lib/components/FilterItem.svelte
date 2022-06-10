@@ -290,7 +290,7 @@
 								{#if choice[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
 									<div
 										in:fade={{ duration: 200, easing: cubicIn }}
-										class="rounded-box mx-2 py-5 border-dotted  border-accent/20 border-2 text-primary absolute w-11/12   top-0 left-0 visible"
+										class="ml-8 rounded-box mx-2 py-5 border-dotted  border-accent/20 border-2 text-primary absolute w-11/12   top-0 left-0 visible"
 									/>
 								{/if}
 							</div>
