@@ -50,7 +50,7 @@
 <!-- svelte-ignore a11y-label-has-associated-control -->
 <label class=" bg-base-200 rounded-box p-2 my-2 flex   dnd-item" bind:this={labelEl}>
 	<div class="grow ">
-		<div class=" pr-2 flex  space-x-2 mb-2">
+		<div class="  flex  space-x-2 mb-2">
 			<input
 				type="checkbox"
 				class="checkbox input-primary "
@@ -63,7 +63,7 @@
 					generate_final_gqlArgObj();
 				}}
 			/>
-			<div class="  overflow-x-auto text-xs break-words mr-2 flex grow">
+			<div class="  overflow-x-auto text-xs break-words  flex grow">
 				<div>
 					{activeArgumentData.stepsOfFieldsNew?.join(' > ')}
 				</div>
