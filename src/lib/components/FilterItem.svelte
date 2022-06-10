@@ -202,9 +202,8 @@
 </btn>
 {#if modalVisible}
 	<Modal on:apply={applyFilter} on:cancel={hideModal}>
-		<div class="rounded-box overflow-hidden border-2 border-base-300 bg-base-100 pb-3 ">
-			<h4 class="mb-3 overflow-hidden bg-base-300 py-1 pl-2 text-xl ">{modalTitle}</h4>
-			<div class="form-control px-2">
+		<div class="rounded-box overflow-hidden ">
+			<div class="form-control px-2 mt-2 pt-2">
 				{#if type == 'radio'}
 					{#each choises as choice}
 						<label
