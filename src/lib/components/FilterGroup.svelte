@@ -94,7 +94,7 @@
 	};
 </script>
 
-<div class="">
+<div class="w-full">
 	<FilterItem
 		{extraData}
 		{id}

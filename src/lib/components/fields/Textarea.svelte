@@ -10,7 +10,7 @@
 
 <textarea
 	type={dd_displayType}
-	class="textarea textarea-primary textarea-xs"
+	class="textarea textarea-primary w-full"
 	bind:this={inputEl}
 	value={rawValue}
 	on:change={() => {

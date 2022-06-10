@@ -10,7 +10,7 @@
 	export let title = choises[0];
 	export let modalTitle = title;
 	export let type = 'radio';
-	export let size = 'sm';
+	export let size = 'xs';
 	export let chosenDefault;
 	export let defaultMeansNoChange = true;
 	export let chosen = chosenDefault ? JSON.parse(JSON.stringify(chosenDefault)) : [];
@@ -180,7 +180,7 @@
 </script>
 
 <btn
-	class="btn btn-sm btn-{size} {btnExtraClass}  flex  w-max normal-case"
+	class="btn btn-sm btn-{size} {btnExtraClass}  flex  w-full normal-case"
 	on:click|stopPropagation|preventDefault|capture={showModalOrToggle}
 >
 	{title}

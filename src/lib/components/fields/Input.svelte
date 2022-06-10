@@ -9,7 +9,7 @@
 
 <input
 	type={dd_displayType}
-	class="input input-primary input-xs w-40 mr-2"
+	class="input input-primary input-xs  w-full  mr-2 "
 	bind:this={inputEl}
 	value={rawValue}
 	on:change={() => {
