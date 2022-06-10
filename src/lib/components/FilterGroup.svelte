@@ -47,12 +47,6 @@
 					dispatchValue = rawValue;
 				}
 			} else if (chosenInputField.dd_displayType == 'geo') {
-				if (typeof rawValue !== 'object') {
-					//rawValue = true;
-					//dispatchValue = true;
-				} else {
-					dispatchValue = rawValue;
-				}
 			} else {
 				if (!['string', 'number', 'date'].includes(rawValue_TypeOf)) {
 					rawValue = '';
@@ -156,21 +150,11 @@
 					on:changed={(e) => {
 						console.log(e.detail);
 						rawValue = e.detail.chd_rawValue;
+						dispatchValue = e.detail.chd_dispatchValue;
 
 						handleChanges();
 					}}
 				/>
-				<!-- <input
-					type={chosenInputField.dd_displayType}
-					class="input input-primary input-xs w-20 h-20 mr-2 "
-					placeholder="map here"
-					bind:this={inputEl}
-					value={rawValue}
-					on:change={() => {
-						rawValue = inputEl.value;
-						handleChanges();
-					}}
-				/> -->
 			{:else}
 				<Input
 					dd_displayType={chosenInputField.dd_displayType}
