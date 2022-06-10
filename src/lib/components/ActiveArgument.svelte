@@ -97,6 +97,7 @@
 				<div class="flex flex-col">
 					{#if activeArgumentData.dd_kindList}
 						<FilterGroup
+							containerEl={labelEl}
 							extraData={activeArgumentData}
 							choises={activeArgumentData?.chd_Choises
 								? activeArgumentData.chd_Choises
@@ -122,6 +123,7 @@
 						/>
 					{:else}
 						<FilterGroup
+							containerEl={labelEl}
 							extraData={activeArgumentData}
 							choises={activeArgumentData.enumValues.map((enumValue) => {
 								return enumValue.name;
@@ -146,6 +148,7 @@
 				</div>
 			{:else if activeArgumentData.dd_displayType == 'INPUT_OBJECT'}
 				<FilterGroup
+					containerEl={labelEl}
 					extraData={activeArgumentData}
 					choises={activeArgumentData.inputFields.map((inputField) => {
 						return inputField.name;

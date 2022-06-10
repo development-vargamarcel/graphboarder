@@ -8,7 +8,7 @@
 	import Textarea from './fields/Textarea.svelte';
 	import Toggle from './fields/Toggle.svelte';
 	import Map from './fields/Map.svelte';
-
+	export let containerEl;
 	export let id;
 	export let choises;
 	export let title;
@@ -145,7 +145,7 @@
 					/>
 				</label>
 			{:else if chosenInputField.dd_displayType == 'geo'}
-				<Map />
+				<Map {containerEl} />
 				<!-- <input
 					type={chosenInputField.dd_displayType}
 					class="input input-primary input-xs w-20 h-20 mr-2 "
