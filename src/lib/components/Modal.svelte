@@ -47,16 +47,17 @@
 			}}
 		/>
 
-		<!-- use:detectSwipe -->
-		<div
-			bind:this={bodyDiv}
-			id={modalIdetifier}
-			on:swipedown={(e) => {
+		<!-- use:detectSwipe 
+					on:swipedown={(e) => {
 				e.stopPropagation();
 				e.stopImmediatePropagation();
 				swipedown(e);
 				console.log('swipedown', e);
 			}}
+		-->
+		<div
+			bind:this={bodyDiv}
+			id={modalIdetifier}
 			class=" shadowTop card-bordered card rounded-box z-50
 			my-0 max-h-min space-y-0 rounded-b-none border-transparent bg-base-100 p-0 py-0  pb-32 "
 			in:fly={{
