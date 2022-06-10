@@ -63,7 +63,7 @@
 					generate_final_gqlArgObj();
 				}}
 			/>
-			<div class="  overflow-x-auto text-xs break-words  flex grow">
+			<div class="  overflow-x-auto text-xs break-words select-none  flex grow">
 				<div>
 					{activeArgumentData.stepsOfFieldsNew?.join(' > ')}
 				</div>
