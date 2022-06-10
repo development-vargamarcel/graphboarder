@@ -42,7 +42,7 @@
 	{#if mainDivIntroEnd}
 		<div
 			class="    py-80"
-			on:click|self|stopPropagation={() => {
+			on:click|self|stopPropagation|preventDefault={() => {
 				dispatch('cancel', { modalIdetifier });
 			}}
 		/>
