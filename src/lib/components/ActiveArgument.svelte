@@ -9,6 +9,7 @@
 	import { fade } from 'svelte/transition';
 	import { cubicIn } from 'svelte/easing';
 	import Map from './fields/Map.svelte';
+	import { generate_gqlArgObj } from '$lib/utils/usefulFunctions';
 	let dispatch = createEventDispatcher();
 	export let activeArgumentData;
 	export let group;
@@ -62,6 +63,7 @@
 					dispatch('inUseChanged');
 					activeArgumentData.inUse =
 						activeArgumentData.inUse !== undefined ? !activeArgumentData.inUse : true;
+
 					activeArgumentData = activeArgumentData;
 					generate_final_gqlArgObj();
 				}}
@@ -115,6 +117,7 @@
 								console.log('activeArgumentsData', activeArgumentsData);
 								//activeArgumentsData = activeArgumentsData
 								generate_final_gqlArgObj();
+								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
 
 								console.log(e.detail);
 							}}
@@ -139,6 +142,7 @@
 								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 								console.log('activeArgumentsData', activeArgumentsData);
 								generate_final_gqlArgObj();
+								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
 								console.log(e.detail);
 							}}
 							id={activeArgumentData.stepsOfFieldsNew}
@@ -165,6 +169,7 @@
 						console.log('activeArgumentsData', activeArgumentsData);
 						//activeArgumentsData = activeArgumentsData
 						generate_final_gqlArgObj();
+						Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
 
 						console.log(e.detail);
 					}}
@@ -184,6 +189,7 @@
 								console.log('activeArgumentsData', activeArgumentsData);
 								//activeArgumentsData = activeArgumentsData
 								generate_final_gqlArgObj();
+								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
 
 								console.log(e.detail);
 							}}
@@ -197,6 +203,7 @@
 								console.log('activeArgumentsData', activeArgumentsData);
 								//activeArgumentsData = activeArgumentsData
 								generate_final_gqlArgObj();
+								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
 
 								console.log(e.detail);
 							}}
@@ -212,6 +219,7 @@
 								console.log('activeArgumentsData', activeArgumentsData);
 								//activeArgumentsData = activeArgumentsData
 								generate_final_gqlArgObj();
+								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
 
 								console.log(e.detail);
 							}}
@@ -226,6 +234,7 @@
 								console.log('activeArgumentsData', activeArgumentsData);
 								//activeArgumentsData = activeArgumentsData
 								generate_final_gqlArgObj();
+								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
 
 								console.log(e.detail);
 							}}

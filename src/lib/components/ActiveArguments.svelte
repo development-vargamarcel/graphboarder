@@ -1,7 +1,11 @@
 <script lang="ts">
 	import ActiveArgument from './ActiveArgument.svelte';
 	import { get_NamesArray } from './../utils/usefulFunctions.ts';
-	import { get_KindsArray } from '$lib/utils/usefulFunctions';
+	import {
+		generate_final_gqlArgObjTEST,
+		generate_gqlArgObj,
+		get_KindsArray
+	} from '$lib/utils/usefulFunctions';
 	import { scalarsAndEnumsDisplayTypes } from '$lib/stores/scalarsAndEnumsDisplayTypes';
 	import FilterChoises from '$lib/components/FilterChoises.svelte';
 	import FilterGroup from './FilterGroup.svelte';
@@ -92,71 +96,6 @@
 				gqlArgObj_string: final_gqlArgObj_string
 			});
 		}
-	};
-	const generate_gqlArgObj = (group_argumentsData) => {
-		// check for group if expects list and treat it accordingly like here --->https://stackoverflow.com/questions/69040911/hasura-order-by-date-with-distinct
-		let gqlArgObj = {};
-		let canRunQuery = true;
-		group_argumentsData.forEach((argData) => {
-			if (argData.inUse) {
-				let { chd_chosen, chd_dispatchValue, chd_needsValue, chd_needsChosen, stepsOfFieldsNew } =
-					argData;
-
-				let curr_gqlArgObj = gqlArgObj;
-				stepsOfFieldsNew.forEach((step, index) => {
-					let isLast = index == stepsOfFieldsNew.length - 1;
-					if (isLast) {
-						console.log('chd_needsValue', chd_needsValue);
-						if (!chd_needsChosen) {
-							if (!curr_gqlArgObj?.[step]) {
-								curr_gqlArgObj[step] = chd_dispatchValue;
-							}
-							curr_gqlArgObj = curr_gqlArgObj[step];
-						} else {
-							if (chd_needsValue == undefined) {
-								canRunQuery = false;
-								console.log('canRunQuery = false', canRunQuery);
-							} else if (!chd_needsValue) {
-								curr_gqlArgObj[step] = chd_chosen;
-								if (!(Array.isArray(chd_chosen) || typeof chd_chosen == 'string')) {
-									canRunQuery = false;
-									console.log('canRunQuery = false', canRunQuery);
-								}
-							} else {
-								console.log('chd_dispatchValue', chd_dispatchValue);
-								console.log('!chd_dispatchValue', !chd_dispatchValue);
-
-								if (!curr_gqlArgObj?.[step]) {
-									curr_gqlArgObj[step] = {};
-								}
-								curr_gqlArgObj = curr_gqlArgObj[step];
-
-								curr_gqlArgObj[chd_chosen] =
-									chd_dispatchValue !== undefined ? chd_dispatchValue : '';
-								curr_gqlArgObj = curr_gqlArgObj[chd_chosen];
-
-								console.log('----curr_gqlArgObj', curr_gqlArgObj);
-								if (chd_dispatchValue == undefined) {
-									canRunQuery = false;
-									console.log('canRunQuery = false', canRunQuery);
-								}
-							}
-						}
-					} else {
-						if (!curr_gqlArgObj?.[step]) {
-							curr_gqlArgObj[step] = {};
-						}
-						curr_gqlArgObj = curr_gqlArgObj[step];
-					}
-				});
-				console.log('curr_gqlArgObj', curr_gqlArgObj);
-			}
-		});
-
-		console.log('gqlArgObj', gqlArgObj);
-		console.log('canRunQuery', canRunQuery);
-
-		return { gqlArgObj, canRunQuery };
 	};
 
 	//handle generating activeArgumentsDataGrouped
