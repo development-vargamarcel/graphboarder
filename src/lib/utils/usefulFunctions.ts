@@ -618,7 +618,10 @@ export const generate_gqlArgObj = (group_argumentsData) => {
     console.log('gqlArgObj', gqlArgObj);
     console.log('canRunQuery', canRunQuery);
 
-    return { arg_gqlArgObj: gqlArgObj, arg_canRunQuery: canRunQuery };
+    return {
+        arg_gqlArgObj: gqlArgObj, arg_canRunQuery: canRunQuery, gqlArgObj,
+        canRunQuery, note: 'these are repeated for easy refactoring while keeping the old working: arg_gqlArgObj: gqlArgObj, arg_canRunQuery: canRunQuery, gqlArgObj,canRunQuery'
+    };
 };
 export const gqlArgObjToString = (gqlArgObj) => {
     let gqlArgObj_string = JSON.stringify(gqlArgObj)
