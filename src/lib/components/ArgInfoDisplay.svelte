@@ -143,7 +143,9 @@
 			}
 		}}
 	>
-		<div class=" pr-2  w-full min-w-max">{dd_displayName}</div>
+		<div class=" pr-2  w-full min-w-max {dd_NON_NULL && 'underline underline-offset-0'}">
+			{dd_displayName}
+		</div>
 
 		<!-- {#if dd_canExpand && !allInputFieldsAreScalar && !enumValues} -->
 		{#if dd_shouldExpand}
