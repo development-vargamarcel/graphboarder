@@ -66,6 +66,8 @@
 
 					activeArgumentData = activeArgumentData;
 					generate_final_gqlArgObj();
+					Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+					Object.assign(group, generate_group_gqlArgObj(group));
 				}}
 			/>
 			<div class="  overflow-x-auto text-xs break-words select-none  flex grow">
