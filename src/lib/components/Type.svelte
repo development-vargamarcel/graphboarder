@@ -18,7 +18,7 @@
 	export let stepsOfFieldsNew = [];
 	stepsOfFieldsNew = [...stepsOfFieldsNew]; // so each tree will have it's own stepsOfFieldsNew
 	export let depth = 0;
-	let inDuration = 1000;
+	let inDuration = 300;
 
 	let {
 		dd_kindsArray,
@@ -63,6 +63,7 @@
 			}
 
 			inDuration = (typeLen + argLen) * 100;
+			inDuration = inDuration < 300 && inDuration > 200 ? inDuration : 300;
 			console.log('inDuration', inDuration);
 			console.log('expandData', expandData);
 		}
