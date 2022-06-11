@@ -10,7 +10,6 @@
 	import { stringify } from 'postcss';
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
-	export let canExpand;
 	export let expand;
 	export let showExpand;
 	export let index;
@@ -31,7 +30,9 @@
 		dd_kindList,
 		dd_kindList_NON_NULL,
 		dd_NON_NULL,
-		dd_relatedRoot
+		dd_relatedRoot,
+		dd_canExpand,
+		dd_shouldExpand
 	} = type;
 
 	console.log('====', dd_namesArray, dd_namesArray);
@@ -80,7 +81,7 @@
 {#if template == 'default'}
 	<div class="flex space-x-2">
 		<div class="flex space-x-2 w-1/3">
-			{#if canExpand}
+			{#if dd_canExpand}
 				<div class="btn btn-xs  p-1 rounded normal-case" on:click={expand}>
 					{showExpand ? '-' : '+'}
 				</div>
@@ -103,7 +104,7 @@
 			<div class="flex">
 				<div class="bg-secondary p-1 rounded ">{dd_kindsArray.join(' of ')}</div>
 
-				{#if !canExpand}
+				{#if !dd_canExpand}
 					{#if dd_displayName == dd_namesArray[dd_namesArray.length - 1]}
 						{''}
 					{:else}
@@ -112,7 +113,7 @@
 						</div>
 					{/if}
 				{/if}
-				{#if canExpand}
+				{#if dd_canExpand}
 					<div class="bg-base-200  rounded px-2 py-1">
 						{#if dd_namesArray[0] !== dd_displayName}
 							({dd_namesArray[0]})
@@ -134,8 +135,8 @@
 	<label
 		class=" cursor-pointer  hover:text-primary px-2 py-2 rounded-box flex text-base min-w-max  w-full active:font-black duration-100 select-none"
 		on:click={() => {
-			// if (canExpand && !allInputFieldsAreScalar && !enumValues) {
-			if (canExpand && !enumValues) {
+			// if (dd_canExpand && !allInputFieldsAreScalar && !enumValues) {
+			if (dd_shouldExpand) {
 				expand();
 			} else {
 				addFilter();
@@ -144,8 +145,8 @@
 	>
 		<div class=" pr-2  w-full min-w-max">{dd_displayName}</div>
 
-		<!-- {#if canExpand && !allInputFieldsAreScalar && !enumValues} -->
-		{#if canExpand && !enumValues}
+		<!-- {#if dd_canExpand && !allInputFieldsAreScalar && !enumValues} -->
+		{#if dd_shouldExpand}
 			<div class="w-10  ">
 				{#if showExpand}
 					<div class="bi bi-chevron-down mx-auto w-min" />

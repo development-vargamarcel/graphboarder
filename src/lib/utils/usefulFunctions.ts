@@ -500,6 +500,10 @@ export const generate_derivedData = (type, rootTypes) => { //type/field
     derivedData.dd_rootName = get_rootName(derivedData.dd_namesArray)
     derivedData.dd_displayName = get_displayName(derivedData.dd_namesArray)
     derivedData.dd_relatedRoot = getRootType(rootTypes, derivedData.dd_rootName)
+    //start set derivedData for dd_relatedRoot  ---
+
+    //end set derivedData for dd_relatedRoot    ---
+
     derivedData.dd_kindEl = undefined
     derivedData.dd_kindEl_NON_NULL = false
     derivedData.dd_kindList = false
@@ -544,5 +548,7 @@ export const generate_derivedData = (type, rootTypes) => { //type/field
         derivedData.dd_isRootArg = !(derivedData.dd_canExpand && !derivedData.dd_relatedRoot_inputFields_allScalar && !derivedData?.dd_relatedRoot?.enumValues)
     }
     // derivedData.id = derivedData.dd_namesArray.join('-')
+
+    derivedData.dd_shouldExpand = derivedData.dd_canExpand && !derivedData.dd_relatedRoot?.enumValues
     return derivedData
 }

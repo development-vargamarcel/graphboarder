@@ -74,7 +74,6 @@
 		on:checkboxClick
 		{predefinedFirstSteps}
 		{template}
-		{canExpand}
 		{expand}
 		{showExpand}
 		{index}
