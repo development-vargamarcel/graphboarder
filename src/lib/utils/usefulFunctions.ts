@@ -618,7 +618,7 @@ export const generate_gqlArgObj = (group_argumentsData) => {
     console.log('gqlArgObj', gqlArgObj);
     console.log('canRunQuery', canRunQuery);
 
-    return { gqlArgObj, canRunQuery };
+    return { arg_gqlArgObj: gqlArgObj, arg_canRunQuery: canRunQuery };
 };
 export const gqlArgObjToString = (gqlArgObj) => {
     let gqlArgObj_string = JSON.stringify(gqlArgObj)
@@ -681,3 +681,57 @@ export const generate_final_gqlArgObjTEST = (activeArgumentsDataGrouped) => {
     }
 };
 
+
+
+export const generate_group_gqlArgObj = (group) => {//if is where/filter (its related_root has filter_operators  ,like __or,__and,_not) handle differently after implementing the new ui
+    let group_gqlArgObj = {};
+    let group_canRunQuery = true;
+    let group_argumentsData = group.group_args.filter((arg) => {
+        return arg.inUse;
+    });
+
+    if (group_argumentsData?.length > 0) {
+        console.log('group_argumentsData', group_argumentsData);
+
+        if (group.group_isRoot) {
+            console.log('root group handled');
+            let { gqlArgObj, canRunQuery } = generate_gqlArgObj(group_argumentsData);
+            group_gqlArgObj = { ...group_gqlArgObj, ...gqlArgObj };
+            if (canRunQuery == false) {
+                group_canRunQuery = false;
+            }
+        } else {
+            console.log('NON root group handled');
+            if (group.dd_kindList) {
+                let list = [];
+                list = group_argumentsData.map((arg) => {
+                    let { gqlArgObj, canRunQuery } = generate_gqlArgObj([arg]);
+                    console.log('-=-=-canRunQuery', canRunQuery);
+                    if (canRunQuery == false) {
+                        //will give off not good results for canRunQuery,must change handling in generate_gqlArgObj
+                        group_canRunQuery = false;
+                    }
+                    return gqlArgObj[group.group_name];
+                });
+                group_gqlArgObj[group.group_name] = list;
+                group_gqlArgObj = { ...group_gqlArgObj };
+                console.log('list---', list);
+            } else {
+                let { gqlArgObj, canRunQuery } = generate_gqlArgObj(group_argumentsData);
+                group_gqlArgObj = { ...group_gqlArgObj, ...gqlArgObj };
+                if (canRunQuery == false) {
+                    group_canRunQuery = false;
+                }
+            }
+        }
+    }
+
+
+
+    let group_gqlArgObj_string = gqlArgObjToString(group_gqlArgObj)
+    return {
+        group_gqlArgObj,
+        group_gqlArgObj_string,
+        group_canRunQuery
+    }
+};
