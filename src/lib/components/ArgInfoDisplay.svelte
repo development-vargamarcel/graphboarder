@@ -134,7 +134,8 @@
 	<label
 		class=" cursor-pointer  hover:text-primary px-2 py-2 rounded-box flex text-base min-w-max  w-full active:font-black duration-100 select-none"
 		on:click={() => {
-			if (canExpand && !allInputFieldsAreScalar && !enumValues) {
+			// if (canExpand && !allInputFieldsAreScalar && !enumValues) {
+			if (canExpand && !enumValues) {
 				expand();
 			} else {
 				addFilter();
@@ -143,7 +144,8 @@
 	>
 		<div class=" pr-2  w-full min-w-max">{dd_displayName}</div>
 
-		{#if canExpand && !allInputFieldsAreScalar && !enumValues}
+		<!-- {#if canExpand && !allInputFieldsAreScalar && !enumValues} -->
+		{#if canExpand && !enumValues}
 			<div class="w-10  ">
 				{#if showExpand}
 					<div class="bi bi-chevron-down mx-auto w-min" />
