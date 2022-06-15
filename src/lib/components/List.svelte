@@ -9,14 +9,15 @@
 	let itemsNew;
 	let movedIndex;
 	function handleSort(e) {
-		console.log(e.detail.info.id);
+		console.log(e.detail);
 		if (e.detail.info.trigger == 'droppedIntoAnother') {
-			movedIndex = items.findIndex((item) => {
-				return item.id == e.detail.info.id;
-			});
-			if (movedIndex !== -1) {
-				items.splice(movedIndex, 1);
-			}
+			// //wrong approach,watch target in the event object first
+			// movedIndex = items.findIndex((item) => {
+			// 	return item.id == e.detail.info.id;
+			// });
+			// if (movedIndex !== -1) {
+			// 	items.splice(movedIndex, 1);
+			// }
 		} else {
 			itemsNew = e.detail.items;
 			items = itemsNew;
