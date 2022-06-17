@@ -36,7 +36,7 @@
 >
 {#if node.hasOwnProperty('items')}
 	<section
-		class="rounded-box bg-base-200/50 rounded-l-none {node?.items?.length == 0 ? 'pt-10' : ''}"
+		class="rounded-box bg-accent/25 rounded-l-none {node?.items?.length == 0 ? 'pt-10' : ''}"
 		use:dndzone={{ items: node.items, flipDurationMs }}
 		on:consider={handleDndConsider}
 		on:finalize={handleDndFinalize}

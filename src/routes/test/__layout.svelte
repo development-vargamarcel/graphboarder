@@ -176,7 +176,7 @@
 		nodes[`${randomNr}`] = {
 			id: randomNr,
 			name: `container:${randomNr}`,
-			operator: '_or',
+			operator: '__or',
 			items: []
 		};
 		nodes['mainContainer'].items.push({ id: randomNr });
