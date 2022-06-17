@@ -22,10 +22,17 @@
 	style="color:{node.color}"
 	on:click={() => {
 		if (node?.operator) {
-			node.operator = 'aaaaa';
-			dispatch('changed');
+			if (node?.operator == '__or') {
+				node.operator = '__and';
+			} else {
+				node.operator = '__or';
+			}
+		} else if (node?.not !== undefined) {
+			node.not = !node.not;
 		}
-	}}>{node.name} {node?.operator ? `(${node?.operator})` : ''}</b
+
+		dispatch('changed');
+	}}>{node?.not ? '!' : ''} {node.name} {node?.operator ? `(${node?.operator})` : ''}</b
 >
 {#if node.hasOwnProperty('items')}
 	<section
