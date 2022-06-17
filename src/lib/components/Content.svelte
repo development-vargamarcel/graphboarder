@@ -36,7 +36,9 @@
 >
 {#if node.hasOwnProperty('items')}
 	<section
-		class=" bg-accent/25 rounded-l-none {node?.items?.length == 0 ? 'pt-10' : ''}"
+		class=" bg-base-100/50 rounded-l-none {node?.items?.length == 0 ? 'pt-10' : ''} {node?.isMain
+			? 'pb-10 border-l-2 border-l-primary'
+			: ''}"
 		use:dndzone={{ items: node.items, flipDurationMs }}
 		on:consider={handleDndConsider}
 		on:finalize={handleDndFinalize}
@@ -45,7 +47,7 @@
 		{#each node.items.filter((item) => item.id !== SHADOW_PLACEHOLDER_ITEM_ID) as item (item.id)}
 			<div
 				animate:flip={{ duration: flipDurationMs }}
-				class="item bg-base-200/50 pl-4 py-2 border-l-2"
+				class="item bg-base-100/50 pl-4 py-2 border-l-2 border-primary/50"
 			>
 				<svelte:self bind:nodes node={nodes[item.id]} on:changed {availableOperators} />
 			</div>

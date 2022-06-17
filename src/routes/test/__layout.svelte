@@ -4,7 +4,7 @@
 	let nodes = {
 		mainContainer: {
 			operator: '__or',
-
+			isMain: true,
 			name: 'mainContainer',
 			items: [
 				{
