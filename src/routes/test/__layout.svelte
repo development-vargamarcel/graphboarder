@@ -3,7 +3,7 @@
 
 	let nodes = {
 		mainContainer: {
-			operator: '__or',
+			operator: '_or',
 			isMain: true,
 			name: 'mainContainer',
 			items: [
@@ -20,7 +20,7 @@
 			id: 'mainContainer'
 		},
 		container2: {
-			operator: '__or',
+			operator: '_or',
 			isMain: false,
 
 			name: 'container 2',
@@ -41,7 +41,7 @@
 			id: 'container2'
 		},
 		container3: {
-			operator: '__and',
+			operator: '_and',
 			isMain: false,
 
 			name: 'container 3',
@@ -62,7 +62,7 @@
 			id: 'container3'
 		},
 		container4: {
-			operator: '__or',
+			operator: '_or',
 			isMain: false,
 
 			name: 'container 4',
@@ -179,7 +179,7 @@
 		nodes[`${randomNr}`] = {
 			id: randomNr,
 			name: `container:${randomNr}`,
-			operator: '__or',
+			operator: '_or',
 			isMain: false,
 
 			items: []

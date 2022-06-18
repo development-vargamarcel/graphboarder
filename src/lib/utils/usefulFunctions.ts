@@ -550,6 +550,7 @@ export const generate_derivedData = (type, rootTypes) => { //type/field
     // derivedData.id = derivedData.dd_namesArray.join('-')
 
     derivedData.dd_shouldExpand = derivedData.dd_canExpand && !derivedData.dd_relatedRoot?.enumValues
+    derivedData.dd_isQMSField = 'to do this'
     return derivedData
 }
 
