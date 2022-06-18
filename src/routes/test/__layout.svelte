@@ -21,6 +21,7 @@
 		},
 		container2: {
 			operator: '__or',
+			isMain: false,
 
 			name: 'container 2',
 			items: [
@@ -41,6 +42,7 @@
 		},
 		container3: {
 			operator: '__and',
+			isMain: false,
 
 			name: 'container 3',
 			items: [
@@ -61,6 +63,7 @@
 		},
 		container4: {
 			operator: '__or',
+			isMain: false,
 
 			name: 'container 4',
 			items: [
@@ -177,6 +180,8 @@
 			id: randomNr,
 			name: `container:${randomNr}`,
 			operator: '__or',
+			isMain: false,
+
 			items: []
 		};
 		nodes['mainContainer'].items.push({ id: randomNr });
