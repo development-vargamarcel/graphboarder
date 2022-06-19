@@ -20,30 +20,22 @@
 	}
 </script>
 
-<b
-	style="color:{node.color}"
-	on:click={() => {
-		if (node?.operator) {
-			if (node?.operator == '_or') {
-				node.operator = '_and';
-			} else {
-				node.operator = '_or';
-			}
-		} else if (node?.not !== undefined) {
-			node.not = !node.not;
-		} else {
-			node.not = !node.not;
-		}
-
-		dispatch('changed');
-	}}
->
-	{node?.operator ? `${node?.operator}` : ''}
-</b>
-<br />
 {#if node?.operator}
-	<!-- container -->
-{:else}
+	<b
+		style="color:{node.color}"
+		on:click={() => {
+			if (node?.operator) {
+				if (node?.operator == '_or') {
+					node.operator = '_and';
+				} else {
+					node.operator = '_or';
+				}
+			}
+			dispatch('changed');
+		}}
+	>
+		{node.operator}
+	</b>{:else}
 	<div
 		class="transition-color duration-500 rounded-box border-l-2 {node.not
 			? ' border-error'
