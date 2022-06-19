@@ -16,7 +16,6 @@
 	export let generate_final_gqlArgObj;
 	export let delete_activeArgument;
 	export let activeArgumentsDataGrouped;
-	export let activeArgumentsData;
 	let showDescription = false;
 	let labelEl;
 	let shadowEl;
@@ -123,9 +122,7 @@
 							on:changed={(e) => {
 								Object.assign(activeArgumentData, e.detail);
 								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-								console.log('activeArgumentsData', activeArgumentsData);
 								if (!group.group_argsNode) {
-									//activeArgumentsData = activeArgumentsData
 									generate_final_gqlArgObj();
 									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
 									Object.assign(group, generate_group_gqlArgObj(group));
@@ -153,7 +150,6 @@
 							on:changed={(e) => {
 								Object.assign(activeArgumentData, e.detail);
 								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-								console.log('activeArgumentsData', activeArgumentsData);
 								if (!group.group_argsNode) {
 									generate_final_gqlArgObj();
 									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
@@ -184,8 +180,7 @@
 					on:changed={(e) => {
 						Object.assign(activeArgumentData, e.detail);
 						console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-						console.log('activeArgumentsData', activeArgumentsData);
-						//activeArgumentsData = activeArgumentsData
+
 						if (!group.group_argsNode) {
 							generate_final_gqlArgObj();
 							Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
@@ -208,8 +203,6 @@
 							on:changed={(e) => {
 								Object.assign(activeArgumentData, e.detail);
 								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-								console.log('activeArgumentsData', activeArgumentsData);
-								//activeArgumentsData = activeArgumentsData
 								if (!group.group_argsNode) {
 									generate_final_gqlArgObj();
 									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
@@ -226,8 +219,6 @@
 							on:changed={(e) => {
 								Object.assign(activeArgumentData, e.detail);
 								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-								console.log('activeArgumentsData', activeArgumentsData);
-								//activeArgumentsData = activeArgumentsData
 								if (!group.group_argsNode) {
 									generate_final_gqlArgObj();
 									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
@@ -246,8 +237,6 @@
 							on:changed={(e) => {
 								Object.assign(activeArgumentData, e.detail);
 								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-								console.log('activeArgumentsData', activeArgumentsData);
-								//activeArgumentsData = activeArgumentsData
 								if (!group.group_argsNode) {
 									generate_final_gqlArgObj();
 									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
@@ -265,8 +254,6 @@
 							on:changed={(e) => {
 								Object.assign(activeArgumentData, e.detail);
 								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-								console.log('activeArgumentsData', activeArgumentsData);
-								//activeArgumentsData = activeArgumentsData
 								if (!group.group_argsNode) {
 									generate_final_gqlArgObj();
 									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));

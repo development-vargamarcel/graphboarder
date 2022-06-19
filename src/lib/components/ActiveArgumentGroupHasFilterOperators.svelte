@@ -44,7 +44,11 @@
 {#if node?.operator}
 	<!-- container -->
 {:else}
-	<div class=" rounded-box border-l-2 {node.not ? ' border-error' : 'border-transparent'} ">
+	<div
+		class="transition-color duration-500 rounded-box border-l-2 {node.not
+			? ' border-error'
+			: 'border-transparent'} "
+	>
 		<ActiveArgument
 			on:contextmenu={() => {
 				if (node?.not !== undefined) {
