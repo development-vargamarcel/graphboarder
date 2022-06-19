@@ -153,7 +153,7 @@ return item.id !== SHADOW_PLACEHOLDER_ITEM_ID
 					<div
 						tabindex={dragDisabled ? 0 : -1}
 						aria-label="drag-handle"
-						class="bi bi-grip-vertical pt-3 px-2"
+						class="bi bi-grip-vertical pt-3 pr-2"
 						style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
 						on:mousedown={startDrag}
 						on:touchstart={startDrag}
