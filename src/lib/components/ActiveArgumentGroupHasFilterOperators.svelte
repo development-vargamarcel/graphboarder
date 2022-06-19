@@ -22,10 +22,10 @@
 	style="color:{node.color}"
 	on:click={() => {
 		if (node?.operator) {
-			if (node?.operator == '__or') {
-				node.operator = '__and';
+			if (node?.operator == '_or') {
+				node.operator = '_and';
 			} else {
-				node.operator = '__or';
+				node.operator = '_or';
 			}
 		} else if (node?.not !== undefined) {
 			node.not = !node.not;

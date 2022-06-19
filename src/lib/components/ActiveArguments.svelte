@@ -104,13 +104,68 @@
 	argsInfo.forEach((el) => {
 		console.log('el---', el);
 		if (!el.dd_isRootArg) {
-			activeArgumentsDataGrouped.push({
+			let newGroupData = {
 				group_name: el.dd_displayName,
 				group_isRoot: false,
 				// group_info: el,
 				...el,
 				group_args: []
-			});
+			};
+
+			const hasFilterOperators = el.dd_relatedRoot?.dd_filterOperators?.length > 0;
+
+			if (hasFilterOperators) {
+				newGroupData.group_argsNode = {
+					mainContainer: {
+						operator: '_or',
+						isMain: true,
+						items: [
+							{
+								id: 'container2'
+							}
+						],
+						id: 'mainContainer'
+					},
+					container2: {
+						operator: '_or',
+						isMain: false,
+
+						items: [
+							{
+								id: 'node5'
+							},
+							{
+								id: 'node6'
+							},
+							{
+								id: 'node7'
+							},
+							{
+								id: 'node8'
+							}
+						],
+						id: 'container2'
+					},
+					node5: {
+						id: 'node5',
+						not: false
+					},
+					node6: {
+						id: 'node6',
+						not: false
+					},
+					node7: {
+						id: 'node7',
+						not: false
+					},
+					node8: {
+						id: 'node8',
+						not: false
+					}
+				};
+			}
+
+			activeArgumentsDataGrouped.push(newGroupData);
 		}
 	});
 

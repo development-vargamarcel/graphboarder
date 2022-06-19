@@ -5,7 +5,6 @@
 		mainContainer: {
 			operator: '_or',
 			isMain: true,
-			name: 'mainContainer',
 			items: [
 				{
 					id: 'container2'
@@ -23,7 +22,6 @@
 			operator: '_or',
 			isMain: false,
 
-			name: 'container 2',
 			items: [
 				{
 					id: 'node5'
@@ -44,7 +42,6 @@
 			operator: '_and',
 			isMain: false,
 
-			name: 'container 3',
 			items: [
 				{
 					id: 'node9'
@@ -65,7 +62,6 @@
 			operator: '_or',
 			isMain: false,
 
-			name: 'container 4',
 			items: [
 				{
 					id: 'node13'
@@ -85,62 +81,50 @@
 		},
 		node5: {
 			id: 'node5',
-			name: 'item 5',
 			not: false
 		},
 		node6: {
 			id: 'node6',
-			name: 'item 6',
 			not: false
 		},
 		node7: {
 			id: 'node7',
-			name: 'item 7',
 			not: false
 		},
 		node8: {
 			id: 'node8',
-			name: 'item 8',
 			not: false
 		},
 		node9: {
 			id: 'node9',
-			name: 'item 9',
 			not: false
 		},
 		node10: {
 			id: 'node10',
-			name: 'item 10',
 			not: false
 		},
 		node11: {
 			id: 'node11',
-			name: 'item 11',
 			not: false
 		},
 		node12: {
 			id: 'node12',
-			name: 'item 12',
 			not: false
 		},
 		node13: {
 			id: 'node13',
-			name: 'item 13',
 			not: false
 		},
 		node14: {
 			id: 'node14',
-			name: 'item 14',
 			not: false
 		},
 		node15: {
 			id: 'node15',
-			name: 'item 15',
 			not: false
 		},
 		node16: {
 			id: 'node16',
-			name: 'item 16',
 			not: false
 		}
 	};
@@ -166,7 +150,7 @@
 	class="btn btn-primary btn-sm"
 	on:click={() => {
 		let randomNr = Math.random();
-		nodes[`${randomNr}`] = { id: randomNr, name: randomNr, not: false };
+		nodes[`${randomNr}`] = { id: randomNr, not: false };
 		nodes['mainContainer'].items.push({ id: randomNr });
 	}}
 >
@@ -178,7 +162,6 @@
 		let randomNr = Math.random();
 		nodes[`${randomNr}`] = {
 			id: randomNr,
-			name: `container:${randomNr}`,
 			operator: '_or',
 			isMain: false,
 

@@ -21,6 +21,7 @@
 	import { cubicIn } from 'svelte/easing';
 	import { flip } from 'svelte/animate';
 	import { createEventDispatcher } from 'svelte';
+	import ActiveArgumentGroupHasFilterOperators from '../ActiveArgumentGroupHasFilterOperators.svelte';
 	const flipDurationMs = 200;
 	let dragDisabled = true;
 	const dispatch = createEventDispatcher();
@@ -68,6 +69,9 @@
 		if ((e.key === 'Enter' || e.key === ' ') && dragDisabled) dragDisabled = false;
 	}
 	//
+
+	const hasFilterOperators = group.dd_relatedRoot?.dd_filterOperators?.length > 0;
+	const hasGroup_argsNode = group.group_argsNode;
 	//
 </script>
 
@@ -239,3 +243,10 @@
 		{/each}
 	</ul>
 </div>
+
+{#if hasFilterOperators}
+	<ActiveArgumentGroupHasFilterOperators
+		node={group.group_argsNode.mainContainer}
+		bind:nodes={group.group_argsNode}
+	/>
+{/if}
