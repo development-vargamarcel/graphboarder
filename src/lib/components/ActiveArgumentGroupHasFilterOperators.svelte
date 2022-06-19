@@ -140,7 +140,10 @@ const dragDisabledConstantTest=true
 		on:finalize={handleDndFinalize}
 	>
 		<!-- WE FILTER THE SHADOW PLACEHOLDER THAT WAS ADDED IN VERSION 0.7.4, filtering this way rather than checking whether 'nodes' have the id became possible in version 0.9.1 -->
-		{#each node.items.filter((item) => item.id !== SHADOW_PLACEHOLDER_ITEM_ID) as item (item.id)}
+		{#each node.items.filter((item) => {
+return true
+return //item.id !== SHADOW_PLACEHOLDER_ITEM_ID
+} ) as item (item.id)}
 			<div
 				animate:flip={{ duration: flipDurationMs }}
 				class="item bg-base-100/50 pl-4 py-2 border-l-2 border-primary/50 {!nodes[item.id].operator
@@ -158,17 +161,20 @@ const dragDisabledConstantTest=true
 						on:keydown={handleKeyDown}
 					/>
 				{/if}
-
-				<svelte:self bind:nodes node={nodes[item.id]} on:changed {availableOperators} {group} />
-			</div>
-		{/each}
-		{#if node[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
+{#if node[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
 			<div
 				class=" ml-8 h-0    absolute w-11/12   top-0 left-0 visible"
 				id="shadowEl"
 				bind:this={shadowEl}
 			/>
+{:else} 
+<svelte:self bind:nodes node={nodes[item.id]} on:changed {availableOperators} {group} />
+			
 		{/if}
+
+				</div>
+		{/each}
+		
 	</section>
 {/if}
 
