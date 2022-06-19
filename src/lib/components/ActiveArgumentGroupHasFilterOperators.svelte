@@ -18,14 +18,14 @@
 	function handleDndConsider(e) {
 		console.log('considering', e, nodes);
 		node.items = e.detail.items;
-		dragDisabled = false;
+		dragDisabled = true;
 	}
 	function handleDndFinalize(e) {
 		node.items = e.detail.items;
 		console.log(e);
 		nodes = { ...nodes };
 		dispatch('changed');
-		dragDisabled = false;
+		dragDisabled = true;
 	}
 
 	//
