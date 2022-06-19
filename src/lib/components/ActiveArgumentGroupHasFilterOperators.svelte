@@ -145,7 +145,7 @@ return item.id !== SHADOW_PLACEHOLDER_ITEM_ID
 } ) as item (item.id)}
 			<div
 				animate:flip={{ duration: flipDurationMs }}
-				class="item bg-base-100/50 pl-4 py-2 border-l-2 border-primary/50 {!nodes[item.id].operator
+				class="item bg-base-100/50  py-2 border-l-2 border-primary/50 {!nodes[item.id].operator
 					? 'flex'
 					: ''} "
 			>
