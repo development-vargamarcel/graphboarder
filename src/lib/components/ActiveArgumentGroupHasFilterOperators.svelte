@@ -161,7 +161,7 @@ return true
 						on:keydown={handleKeyDown}
 					/>
 				{/if}
-{#if node[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
+{#if item.id == SHADOW_PLACEHOLDER_ITEM_ID }
 			<div
 				class=" ml-8 h-0    absolute w-11/12   top-0 left-0 visible"
 				id="shadowEl"
