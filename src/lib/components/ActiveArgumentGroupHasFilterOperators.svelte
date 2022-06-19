@@ -142,7 +142,7 @@ const dragDisabledConstantTest=true
 		<!-- WE FILTER THE SHADOW PLACEHOLDER THAT WAS ADDED IN VERSION 0.7.4, filtering this way rather than checking whether 'nodes' have the id became possible in version 0.9.1 -->
 		{#each node.items.filter((item) => {
 return true
-return //item.id !== SHADOW_PLACEHOLDER_ITEM_ID
+//return item.id !== SHADOW_PLACEHOLDER_ITEM_ID
 } ) as item (item.id)}
 			<div
 				animate:flip={{ duration: flipDurationMs }}
