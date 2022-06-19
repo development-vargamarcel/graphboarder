@@ -71,6 +71,7 @@
 		draggedEl.querySelector('.dnd-item').classList.add('bg-accent/20', 'border-2', 'border-accent');
 	};
 	//
+const dragDisabledConstantTest=true
 </script>
 
 <div
@@ -134,7 +135,7 @@
 		class=" bg-base-100/50 rounded-l-none {node?.items?.length == 0 ? 'pt-10' : ''} {node?.isMain
 			? 'pb-10 border-l-2 border-l-primary'
 			: ''} w-full"
-		use:dndzone={{ items: node.items, false, flipDurationMs }}
+		use:dndzone={{ items: node.items, dragDisabledConstantTest, flipDurationMs }}
 		on:consider={handleDndConsider}
 		on:finalize={handleDndFinalize}
 	>
