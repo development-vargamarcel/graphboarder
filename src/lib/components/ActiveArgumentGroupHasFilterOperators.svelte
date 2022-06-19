@@ -135,7 +135,7 @@ const dragDisabledConstantTest=true
 		class=" bg-base-100/50 rounded-l-none {node?.items?.length == 0 ? 'pt-10' : ''} {node?.isMain
 			? 'pb-10 border-l-2 border-l-primary'
 			: ''} w-full"
-		use:dndzone={{ items: node.items, dragDisabledConstantTest, flipDurationMs }}
+		use:dndzone={{ items: node.items, dragDisabled, flipDurationMs }}
 		on:consider={handleDndConsider}
 		on:finalize={handleDndFinalize}
 	>
