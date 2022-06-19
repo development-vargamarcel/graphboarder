@@ -2,10 +2,12 @@
 	import { flip } from 'svelte/animate';
 	import { dndzone, SHADOW_PLACEHOLDER_ITEM_ID } from 'svelte-dnd-action';
 	import { createEventDispatcher } from 'svelte';
+	import ActiveArgument from './ActiveArgument.svelte';
 	const dispatch = createEventDispatcher();
 	export let nodes;
 	export let node;
 	export let availableOperators;
+	export let group;
 	const flipDurationMs = 300;
 	function handleDndConsider(e) {
 		node.items = e.detail.items;
@@ -29,11 +31,39 @@
 			}
 		} else if (node?.not !== undefined) {
 			node.not = !node.not;
+		} else {
+			node.not = !node.not;
 		}
 
 		dispatch('changed');
-	}}>{node?.not ? '!' : ''} {node?.operator ? `(${node?.operator})` : ''} {node.id}</b
+	}}
 >
+	{node?.operator ? `${node?.operator}` : ''}
+</b>
+<br />
+{#if node?.operator}
+	<!-- container -->
+{:else}
+	<div class=" rounded-box border-l-2 {node.not ? ' border-error' : 'border-transparent'} ">
+		<ActiveArgument
+			on:contextmenu={() => {
+				if (node?.not !== undefined) {
+					node.not = !node.not;
+				}
+			}}
+			on:inUseChanged={() => {}}
+			on:delete_activeArgument={() => {}}
+			activeArgumentData={node}
+			{group}
+		/>
+	</div>
+	<!-- 
+		{generate_final_gqlArgObj}
+		{delete_activeArgument}
+		{activeArgumentsDataGrouped}
+		{activeArgumentsData} -->
+{/if}
+
 {#if node.hasOwnProperty('items')}
 	<section
 		class=" bg-base-100/50 rounded-l-none {node?.items?.length == 0 ? 'pt-10' : ''} {node?.isMain
@@ -49,7 +79,7 @@
 				animate:flip={{ duration: flipDurationMs }}
 				class="item bg-base-100/50 pl-4 py-2 border-l-2 border-primary/50"
 			>
-				<svelte:self bind:nodes node={nodes[item.id]} on:changed {availableOperators} />
+				<svelte:self bind:nodes node={nodes[item.id]} on:changed {availableOperators} {group} />
 			</div>
 		{/each}
 	</section>

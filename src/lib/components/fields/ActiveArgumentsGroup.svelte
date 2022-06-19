@@ -70,7 +70,6 @@
 	}
 	//
 
-	const hasFilterOperators = group.dd_relatedRoot?.dd_filterOperators?.length > 0;
 	const hasGroup_argsNode = group.group_argsNode;
 	//
 </script>
@@ -100,18 +99,28 @@
 									predefinedFirstSteps={[group.group_name]}
 									on:argAddRequest={(e) => {
 										let newArgData = e.detail;
-										if (
-											!group.group_args.some((el) => {
-												return (
-													el.stepsOfFieldsNewStringified == newArgData.stepsOfFieldsNewStringified
-												);
-											})
-										) {
-											group.group_args.push(newArgData);
-											console.log('aa group', group);
-											update_activeArgumentsDataGrouped(group);
+
+										if (group.group_argsNode) {
+											//to prevent --> Uncaught TypeError: Converting circular structure to JSON
+											newArgData.dd_relatedRoot =
+												'overwritten to evade error: Uncaught TypeError: Converting circular structure to JSON';
+											newArgData.not = false;
+											group.group_argsNode[newArgData.id] = newArgData;
+											group.group_argsNode.mainContainer.items.push({ id: newArgData.id });
 										} else {
-											console.log('already added');
+											if (
+												!group.group_args.some((el) => {
+													return (
+														el.stepsOfFieldsNewStringified == newArgData.stepsOfFieldsNewStringified
+													);
+												})
+											) {
+												group.group_args.push(newArgData);
+												console.log('aa group', group);
+												update_activeArgumentsDataGrouped(group);
+											} else {
+												console.log('already added');
+											}
 										}
 									}}
 								/>
@@ -244,9 +253,20 @@
 	</ul>
 </div>
 
-{#if hasFilterOperators}
+{#if hasGroup_argsNode}
 	<ActiveArgumentGroupHasFilterOperators
 		node={group.group_argsNode.mainContainer}
+		{group}
 		bind:nodes={group.group_argsNode}
+		on:changed={() => {
+			let nodesClone = JSON.parse(JSON.stringify(group.group_argsNode));
+			let values = Object.values(nodesClone);
+			let valuesWithItems = values.filter((node) => {
+				return node?.items?.length > 0;
+			});
+			console.log('group.group_argsNode', group.group_argsNode);
+			console.log({ values });
+			console.log({ valuesWithItems });
+		}}
 	/>
 {/if}

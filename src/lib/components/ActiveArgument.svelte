@@ -17,7 +17,6 @@
 	export let delete_activeArgument;
 	export let activeArgumentsDataGrouped;
 	export let activeArgumentsData;
-
 	let showDescription = false;
 	let labelEl;
 	let shadowEl;
@@ -52,7 +51,13 @@
 </script>
 
 <!-- svelte-ignore a11y-label-has-associated-control -->
-<label class=" bg-base-200 rounded-box p-2 my-2 flex   dnd-item" bind:this={labelEl}>
+<label
+	class=" bg-base-200 rounded-box p-2 my-2 flex   dnd-item"
+	bind:this={labelEl}
+	on:contextmenu|preventDefault={() => {
+		dispatch('contextmenu');
+	}}
+>
 	<div class="grow ">
 		<div class="  flex  space-x-2 mb-2">
 			<input
@@ -65,9 +70,11 @@
 						activeArgumentData.inUse !== undefined ? !activeArgumentData.inUse : true;
 
 					activeArgumentData = activeArgumentData;
-					generate_final_gqlArgObj();
-					Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-					Object.assign(group, generate_group_gqlArgObj(group));
+					if (!group.group_argsNode) {
+						generate_final_gqlArgObj();
+						Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+						Object.assign(group, generate_group_gqlArgObj(group));
+					}
 				}}
 			/>
 			<div class="  overflow-x-auto text-xs break-words select-none  flex grow">
@@ -117,11 +124,14 @@
 								Object.assign(activeArgumentData, e.detail);
 								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 								console.log('activeArgumentsData', activeArgumentsData);
-								//activeArgumentsData = activeArgumentsData
-								generate_final_gqlArgObj();
-								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-								Object.assign(group, generate_group_gqlArgObj(group));
-
+								if (!group.group_argsNode) {
+									//activeArgumentsData = activeArgumentsData
+									generate_final_gqlArgObj();
+									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+									Object.assign(group, generate_group_gqlArgObj(group));
+								} else {
+									dispatch('changed', e.detail);
+								}
 								console.log(e.detail);
 							}}
 							id={activeArgumentData.stepsOfFieldsNew}
@@ -144,10 +154,13 @@
 								Object.assign(activeArgumentData, e.detail);
 								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 								console.log('activeArgumentsData', activeArgumentsData);
-								generate_final_gqlArgObj();
-								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-								Object.assign(group, generate_group_gqlArgObj(group));
-
+								if (!group.group_argsNode) {
+									generate_final_gqlArgObj();
+									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+									Object.assign(group, generate_group_gqlArgObj(group));
+								} else {
+									dispatch('changed', e.detail);
+								}
 								console.log(e.detail);
 							}}
 							id={activeArgumentData.stepsOfFieldsNew}
@@ -173,10 +186,13 @@
 						console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 						console.log('activeArgumentsData', activeArgumentsData);
 						//activeArgumentsData = activeArgumentsData
-						generate_final_gqlArgObj();
-						Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-						Object.assign(group, generate_group_gqlArgObj(group));
-
+						if (!group.group_argsNode) {
+							generate_final_gqlArgObj();
+							Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+							Object.assign(group, generate_group_gqlArgObj(group));
+						} else {
+							dispatch('changed', e.detail);
+						}
 						console.log(e.detail);
 					}}
 					id={activeArgumentData.stepsOfFieldsNew}
@@ -194,10 +210,13 @@
 								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 								console.log('activeArgumentsData', activeArgumentsData);
 								//activeArgumentsData = activeArgumentsData
-								generate_final_gqlArgObj();
-								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-								Object.assign(group, generate_group_gqlArgObj(group));
-
+								if (!group.group_argsNode) {
+									generate_final_gqlArgObj();
+									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+									Object.assign(group, generate_group_gqlArgObj(group));
+								} else {
+									dispatch('changed', e.detail);
+								}
 								console.log(e.detail);
 							}}
 						/>
@@ -209,10 +228,13 @@
 								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 								console.log('activeArgumentsData', activeArgumentsData);
 								//activeArgumentsData = activeArgumentsData
-								generate_final_gqlArgObj();
-								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-								Object.assign(group, generate_group_gqlArgObj(group));
-
+								if (!group.group_argsNode) {
+									generate_final_gqlArgObj();
+									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+									Object.assign(group, generate_group_gqlArgObj(group));
+								} else {
+									dispatch('changed', e.detail);
+								}
 								console.log(e.detail);
 							}}
 						/>
@@ -226,10 +248,13 @@
 								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 								console.log('activeArgumentsData', activeArgumentsData);
 								//activeArgumentsData = activeArgumentsData
-								generate_final_gqlArgObj();
-								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-								Object.assign(group, generate_group_gqlArgObj(group));
-
+								if (!group.group_argsNode) {
+									generate_final_gqlArgObj();
+									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+									Object.assign(group, generate_group_gqlArgObj(group));
+								} else {
+									dispatch('changed', e.detail);
+								}
 								console.log(e.detail);
 							}}
 						/>
@@ -242,10 +267,13 @@
 								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 								console.log('activeArgumentsData', activeArgumentsData);
 								//activeArgumentsData = activeArgumentsData
-								generate_final_gqlArgObj();
-								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-								Object.assign(group, generate_group_gqlArgObj(group));
-
+								if (!group.group_argsNode) {
+									generate_final_gqlArgObj();
+									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+									Object.assign(group, generate_group_gqlArgObj(group));
+								} else {
+									dispatch('changed', e.detail);
+								}
 								console.log(e.detail);
 							}}
 						/>

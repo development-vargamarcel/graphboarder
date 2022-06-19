@@ -130,37 +130,8 @@
 						operator: '_or',
 						isMain: false,
 
-						items: [
-							{
-								id: 'node5'
-							},
-							{
-								id: 'node6'
-							},
-							{
-								id: 'node7'
-							},
-							{
-								id: 'node8'
-							}
-						],
+						items: [],
 						id: 'container2'
-					},
-					node5: {
-						id: 'node5',
-						not: false
-					},
-					node6: {
-						id: 'node6',
-						not: false
-					},
-					node7: {
-						id: 'node7',
-						not: false
-					},
-					node8: {
-						id: 'node8',
-						not: false
 					}
 				};
 			}
