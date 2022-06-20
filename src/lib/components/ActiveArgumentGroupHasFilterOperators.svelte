@@ -155,6 +155,7 @@
 					class="  flex   "
 				>
 					<div class=" grid   content-center">
+<div>A</div>
 						<div
 							tabindex={dragDisabled ? 0 : -1}
 							aria-label="drag-handle"
