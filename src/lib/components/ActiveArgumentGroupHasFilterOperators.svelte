@@ -149,7 +149,9 @@
 			}) as item (item.id)}
 				<div
 					animate:flip={{ duration: flipDurationMs }}
-					class="    border-l-2 border-primary/25 {!nodes[item.id].operator || true ? 'flex' : ''} "
+					class="  flex  border-l-2 {!nodes[item.id].operator
+						? ' border-accent/25'
+						: 'border-primary/25'} "
 				>
 					<div class=" grid   content-center">
 						<div
