@@ -145,12 +145,11 @@ return item.id !== SHADOW_PLACEHOLDER_ITEM_ID
 } ) as item (item.id)}
 			<div
 				animate:flip={{ duration: flipDurationMs }}
-				class="item  pl-[1] py-2 border-l-2 border-primary/50 {!nodes[item.id].operator || true
+				class="  pl-[1] py-2 border-l-2 border-primary/50 {!nodes[item.id].operator || true
 					? 'flex'
 					: ''} "
 			>
-				{#if !nodes[item.id].operator || true}
-					<div
+				<div
 						tabindex={dragDisabled ? 0 : -1}
 						aria-label="drag-handle"
 						class="bi bi-grip-vertical pt-3 pr-[1]"
@@ -159,7 +158,7 @@ return item.id !== SHADOW_PLACEHOLDER_ITEM_ID
 						on:touchstart={startDrag}
 						on:keydown={handleKeyDown}
 					/>
-				{/if}
+			
 
 <svelte:self bind:nodes node={nodes[item.id]} on:changed {availableOperators} {group} />
 			
