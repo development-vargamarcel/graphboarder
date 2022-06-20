@@ -155,7 +155,7 @@
 					class="  flex   "
 				>
 					<div class=" grid   content-center">
-<div>A</div>
+<div>&</div>
 						<div
 							tabindex={dragDisabled ? 0 : -1}
 							aria-label="drag-handle"
@@ -165,6 +165,7 @@
 							on:touchstart={startDrag}
 							on:keydown={handleKeyDown}
 						/>
+<div>&</div>
 					</div>
 
 					<svelte:self bind:nodes node={nodes[item.id]} on:changed {availableOperators} {group} />
