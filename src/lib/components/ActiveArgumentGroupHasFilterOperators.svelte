@@ -155,17 +155,17 @@
 					class="  flex   "
 				>
 					<div class=" grid   content-center" on:click={() => {
-				if (node?.operator && !node?.isMain) {
-					if (node?.operator == '_or') {
-						node.operator = '_and';
+				if (item?.operator && !node?.isMain) {
+					if (item?.operator == '_or') {
+						item.operator = '_and';
 					} else {
-						node.operator = '_or';
+						item.operator = '_or';
 					}
 				}
 				dispatch('changed');
 			}}>
-{#if node?.operator}
-<div>{node.operator=='_and'? '&' :'|' } </div>
+{#if item?.operator}
+<div>{item.operator=='_and'? '&' :'|' } </div>
 {/if} 
 						<div
 							tabindex={dragDisabled ? 0 : -1}
@@ -176,8 +176,8 @@
 							on:touchstart={startDrag}
 							on:keydown={handleKeyDown}
 						/>
-{#if node?.operator}
-<div>{node.operator=='_and'? '&' :'|' } </div>
+{#if item?.operator}
+<div>{item.operator=='_and'? '&' :'|' } </div>
 {/if} 
 					</div>
 
