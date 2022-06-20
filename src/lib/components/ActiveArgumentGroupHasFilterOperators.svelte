@@ -128,7 +128,7 @@ const dragDisabledConstantTest=true
 			{activeArgumentsDataGrouped}
 			{activeArgumentsData} -->
 	{/if}
-</div>
+
 
 {#if node.hasOwnProperty('items')}
 	<section
@@ -176,6 +176,6 @@ return item.id !== SHADOW_PLACEHOLDER_ITEM_ID
 		
 	</section>
 {/if}
-
+</div>
 <style>
 </style>
