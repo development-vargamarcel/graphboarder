@@ -154,8 +154,19 @@
 					animate:flip={{ duration: flipDurationMs }}
 					class="  flex   "
 				>
-					<div class=" grid   content-center">
-<div>&</div>
+					<div class=" grid   content-center" on:click={() => {
+				if (node?.operator && !node?.isMain) {
+					if (node?.operator == '_or') {
+						node.operator = '_and';
+					} else {
+						node.operator = '_or';
+					}
+				}
+				dispatch('changed');
+			}}>
+{#if node?.operator}
+<div>{node.operator=='_and'? '&' :'|' } </div>
+{/if} 
 						<div
 							tabindex={dragDisabled ? 0 : -1}
 							aria-label="drag-handle"
@@ -165,7 +176,9 @@
 							on:touchstart={startDrag}
 							on:keydown={handleKeyDown}
 						/>
-<div>&</div>
+{#if node?.operator}
+<div>{node.operator=='_and'? '&' :'|' } </div>
+{/if} 
 					</div>
 
 					<svelte:self bind:nodes node={nodes[item.id]} on:changed {availableOperators} {group} />
