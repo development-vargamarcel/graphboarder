@@ -145,7 +145,7 @@ return item.id !== SHADOW_PLACEHOLDER_ITEM_ID
 } ) as item (item.id)}
 			<div
 				animate:flip={{ duration: flipDurationMs }}
-				class="item bg-base-100/50  pl-2 py-2 border-l-2 border-primary/50 {!nodes[item.id].operator || true
+				class="item bg-base-100/50  pl-[1] py-2 border-l-2 border-primary/50 {!nodes[item.id].operator || true
 					? 'flex'
 					: ''} "
 			>
@@ -153,7 +153,7 @@ return item.id !== SHADOW_PLACEHOLDER_ITEM_ID
 					<div
 						tabindex={dragDisabled ? 0 : -1}
 						aria-label="drag-handle"
-						class="bi bi-grip-vertical pt-3 pr-2"
+						class="bi bi-grip-vertical pt-3 pr-[1]"
 						style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
 						on:mousedown={startDrag}
 						on:touchstart={startDrag}
