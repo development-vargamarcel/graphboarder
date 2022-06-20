@@ -120,9 +120,7 @@
 						operator: '_and',
 						isMain: true,
 						items: [
-							{
-								id: 'container2'
-							}
+							
 						],
 						id: 'mainContainer'
 					}
