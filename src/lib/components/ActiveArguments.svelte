@@ -117,7 +117,7 @@
 			if (hasFilterOperators) {
 				newGroupData.group_argsNode = {
 					mainContainer: {
-						operator: '_or',
+						operator: '_and',
 						isMain: true,
 						items: [
 							{
@@ -125,13 +125,6 @@
 							}
 						],
 						id: 'mainContainer'
-					},
-					container2: {
-						operator: '_or',
-						isMain: false,
-
-						items: [],
-						id: 'container2'
 					}
 				};
 			}
