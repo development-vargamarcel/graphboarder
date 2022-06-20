@@ -125,6 +125,22 @@
 									}}
 								/>
 							{/each}
+
+<button
+	class="btn btn-primary btn-sm"
+	on:click={() => {
+		let randomNr = Math.random();
+		group.group_argsNode[`${randomNr}`] = {
+			id: randomNr,
+			operator: '_or',
+			isMain: false,
+			items: []
+		};
+		group.group_argsNode['mainContainer'].items.push({ id: randomNr });
+	}}
+>
+	add Container
+</button> 
 						{:else}
 							{#each argsInfo.filter((arg) => {
 								return arg.dd_isRootArg;
