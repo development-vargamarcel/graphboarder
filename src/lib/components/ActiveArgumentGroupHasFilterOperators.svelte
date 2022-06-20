@@ -158,7 +158,7 @@
 						<div
 							tabindex={dragDisabled ? 0 : -1}
 							aria-label="drag-handle"
-							class="bi bi-grip-vertical  pr-[1]"
+							class="bi bi-grip-vertical"
 							style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
 							on:mousedown={startDrag}
 							on:touchstart={startDrag}
