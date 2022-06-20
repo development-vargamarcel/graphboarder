@@ -75,7 +75,9 @@
 </script>
 
 <div
-	class=" w-full {node?.operator ? 'bg-gradient-to-br from-primary-focus/5 to-transparent' : ''} "
+	class=" w-full {node?.operator
+		? 'rounded-tl-md bg-gradient-to-br from-primary-focus/5 to-transparent'
+		: ''} "
 	bind:this={labelEl}
 	on:mousedown={() => {
 		dragDisabled = true;
