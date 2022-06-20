@@ -75,7 +75,7 @@
 </script>
 
 <div
-	class=" w-full {node?.operator
+	class=" w-full  {node?.operator
 		? 'rounded-tl-md bg-gradient-to-br from-primary-focus/5 to-transparent'
 		: ''} "
 	bind:this={labelEl}
@@ -91,9 +91,10 @@
 >
 	{#if node?.operator}
 		<b
-			style="color:{node.color}"
+			style=""
+			class="px-2 pb-1   rounded-full rounded-tl-none"
 			on:click={() => {
-				if (node?.operator) {
+				if (node?.operator && !node?.isMain) {
 					if (node?.operator == '_or') {
 						node.operator = '_and';
 					} else {
@@ -134,7 +135,7 @@
 	{#if node.hasOwnProperty('items')}
 		<section
 			class=" rounded-l-none {node?.items?.length == 0 ? 'pt-20' : ''} {node?.isMain
-				? 'pb-10 border-l-2 border-l-primary'
+				? 'pb-10 border-l-2 border-l-transparent'
 				: ''} w-full"
 			use:dndzone={{
 				items: node.items,
@@ -159,7 +160,7 @@
 						<div
 							tabindex={dragDisabled ? 0 : -1}
 							aria-label="drag-handle"
-							class="bi bi-grip-vertical pt-3 pr-[1]"
+							class="bi bi-grip-vertical  pr-[1]"
 							style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
 							on:mousedown={startDrag}
 							on:touchstart={startDrag}
