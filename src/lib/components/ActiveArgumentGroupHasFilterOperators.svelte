@@ -145,11 +145,11 @@ return item.id !== SHADOW_PLACEHOLDER_ITEM_ID
 } ) as item (item.id)}
 			<div
 				animate:flip={{ duration: flipDurationMs }}
-				class="item bg-base-100/50  pl-2 py-2 border-l-2 border-primary/50 {!nodes[item.id].operator
+				class="item bg-base-100/50  pl-2 py-2 border-l-2 border-primary/50 {!nodes[item.id].operator || true
 					? 'flex'
 					: ''} "
 			>
-				{#if !nodes[item.id].operator}
+				{#if !nodes[item.id].operator || true}
 					<div
 						tabindex={dragDisabled ? 0 : -1}
 						aria-label="drag-handle"
