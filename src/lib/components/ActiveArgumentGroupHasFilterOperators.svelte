@@ -136,7 +136,7 @@
 		<section
 			class=" rounded-l-none {node?.items?.length == 0 ? 'pt-20' : ''} {node?.isMain
 				? 'pb-10 border-l-2 border-l-transparent'
-				: ''} w-full"
+				: ' pb-4'} w-full"
 			use:dndzone={{
 				items: node.items,
 				dragDisabled,
