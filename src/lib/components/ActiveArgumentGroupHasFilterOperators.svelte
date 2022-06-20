@@ -76,7 +76,7 @@
 
 <div
 	class=" w-full  {node?.operator
-		? 'rounded-tl-md bg-gradient-to-br from-primary-focus/5 to-transparent'
+		? 'rounded-tl-md bg-gradient-to-br from-primary-focus/5 to-transparent border-l-2 border-primary/50'
 		: ''} "
 	bind:this={labelEl}
 	on:mousedown={() => {
