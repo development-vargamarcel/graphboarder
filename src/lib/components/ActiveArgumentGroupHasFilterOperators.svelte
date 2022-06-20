@@ -165,8 +165,8 @@
 				dispatch('changed');
 			}}>
 {#if item?.operator}
-<div>{item.operator=='_and'? '&' :'|' } </div>
-{/if} 
+<div class="w-full" >{item.operator=='_and'? '&' :'|' } </div>
+{/if}  
 						<div
 							tabindex={dragDisabled ? 0 : -1}
 							aria-label="drag-handle"
@@ -177,7 +177,7 @@
 							on:keydown={handleKeyDown}
 						/>
 {#if item?.operator}
-<div>{item.operator=='_and'? '&' :'|' } </div>
+<div class="w-full" >{item.operator=='_and'? '&' :'|' } </div>
 {/if} 
 					</div>
 
