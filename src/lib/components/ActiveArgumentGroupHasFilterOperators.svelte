@@ -172,7 +172,7 @@ return item.id !== SHADOW_PLACEHOLDER_ITEM_ID
 {/if}
 
 </div>
-{#if item.id == SHADOW_PLACEHOLDER_ITEM_ID }
+{#if node.id == SHADOW_PLACEHOLDER_ITEM_ID }
 			<div
 				class=" ml-8 h-0    absolute w-11/12   top-0 left-0 visible"
 				id="shadowEl"
