@@ -132,7 +132,7 @@ const dragDisabledConstantTest=true
 
 {#if node.hasOwnProperty('items')}
 	<section
-		class=" bg-base-100/50 rounded-l-none {node?.items?.length == 0 ? 'pt-20' : ''} {node?.isMain
+		class=" rounded-l-none {node?.items?.length == 0 ? 'pt-20' : ''} {node?.isMain
 			? 'pb-10 border-l-2 border-l-primary'
 			: ''} w-full"
 		use:dndzone={{ items: node.items, dragDisabled, flipDurationMs }}
@@ -145,7 +145,7 @@ return item.id !== SHADOW_PLACEHOLDER_ITEM_ID
 } ) as item (item.id)}
 			<div
 				animate:flip={{ duration: flipDurationMs }}
-				class="item bg-base-100/50  pl-[1] py-2 border-l-2 border-primary/50 {!nodes[item.id].operator || true
+				class="item  pl-[1] py-2 border-l-2 border-primary/50 {!nodes[item.id].operator || true
 					? 'flex'
 					: ''} "
 			>
