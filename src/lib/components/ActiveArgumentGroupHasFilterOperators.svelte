@@ -160,22 +160,24 @@ return item.id !== SHADOW_PLACEHOLDER_ITEM_ID
 						on:keydown={handleKeyDown}
 					/>
 				{/if}
-{#if item.id == SHADOW_PLACEHOLDER_ITEM_ID }
-			<div
-				class=" ml-8 h-0    absolute w-11/12   top-0 left-0 visible"
-				id="shadowEl"
-				bind:this={shadowEl}
-			/>
-{:else} 
+
 <svelte:self bind:nodes node={nodes[item.id]} on:changed {availableOperators} {group} />
 			
-		{/if}
+		
 
 				</div>
 		{/each}
 		
 	</section>
 {/if}
+
 </div>
+{#if item.id == SHADOW_PLACEHOLDER_ITEM_ID }
+			<div
+				class=" ml-8 h-0    absolute w-11/12   top-0 left-0 visible"
+				id="shadowEl"
+				bind:this={shadowEl}
+			/>
+{/if} 
 <style>
 </style>
