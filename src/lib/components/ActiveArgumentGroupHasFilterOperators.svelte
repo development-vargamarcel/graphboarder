@@ -92,7 +92,7 @@
 	{#if node?.operator}
 		<b
 			style=""
-			class="px-2 pb-1   rounded-full rounded-tl-none {node?.operator == '_and'
+			class="px-2 pb-1 transition-all duration-500  rounded-full rounded-tl-none {node?.operator == '_and'
 				? 'text-primary/50'
 				: 'text-accent/50'}"
 			on:click={() => {
