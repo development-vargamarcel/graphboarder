@@ -76,8 +76,8 @@
 
 <div
 	class=" w-full  {node?.operator
-		? 'rounded-l-md bg-gradient-to-br from-primary-focus/5 to-transparent border-l-[1px] '
-		: ''} {node?.operator == '_and' ? 'border-primary/50' : 'border-accent/50'}"
+		? 'rounded-l-md bg-gradient-to-br   border-l-[1px] '
+		: ''} {node?.operator == '_and' ? 'border-primary/50 from-primary-focus/5 ' : 'border-accent/50 from-accent-focus/5'}"
 	bind:this={labelEl}
 	on:mousedown={() => {
 		dragDisabled = true;
