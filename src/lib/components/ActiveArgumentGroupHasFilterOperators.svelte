@@ -144,7 +144,7 @@
 			}) as item (item.id)}
 				<div
 					animate:flip={{ duration: flipDurationMs }}
-					class="  pl-[1] pt-2 border-l-2 border-primary/50 {!nodes[item.id].operator || true
+					class="  pl-[1] pt-2 border-l-2 border-primary/25 {!nodes[item.id].operator || true
 						? 'flex'
 						: ''} "
 				>
@@ -165,11 +165,7 @@
 	{/if}
 </div>
 {#if node.id == SHADOW_PLACEHOLDER_ITEM_ID}
-	<div
-		class=" ml-8 h-0    absolute w-11/12   top-0 left-0 visible"
-		id="shadowEl"
-		bind:this={shadowEl}
-	/>
+	<div class=" ml-8 h-0     top-0 left-0 visible" id="shadowEl" bind:this={shadowEl} />
 {/if}
 
 <style>
