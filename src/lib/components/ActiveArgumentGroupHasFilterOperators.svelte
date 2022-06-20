@@ -106,7 +106,7 @@
 		<br />
 	{:else}
 		<div
-			class="transition-color duration-500 rounded-box border-l-2 {node.not
+			class="transition-color duration-500 rounded-box border-l-2 pr-2 {node.not
 				? ' border-error'
 				: 'border-transparent'}  w-full"
 		>
