@@ -75,7 +75,7 @@ const dragDisabledConstantTest=true
 </script>
 
 <div
-	class=" w-full {node?.operator? 'bg-primary/5':''} "
+	class=" w-full {node?.operator? 'bg-base-300/5':''} "
 	bind:this={labelEl}
 	on:mousedown={() => {
 		dragDisabled = true;
