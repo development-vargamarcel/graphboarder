@@ -134,7 +134,12 @@
 			class=" rounded-l-none {node?.items?.length == 0 ? 'pt-20' : ''} {node?.isMain
 				? 'pb-10 border-l-2 border-l-primary'
 				: ''} w-full"
-			use:dndzone={{ items: node.items, dragDisabled, flipDurationMs }}
+			use:dndzone={{
+				items: node.items,
+				dragDisabled,
+				flipDurationMs,
+				centreDraggedOnCursor: false
+			}}
 			on:consider={handleDndConsider}
 			on:finalize={handleDndFinalize}
 		>
@@ -144,19 +149,19 @@
 			}) as item (item.id)}
 				<div
 					animate:flip={{ duration: flipDurationMs }}
-					class="  pl-[1] pt-2 border-l-2 border-primary/25 {!nodes[item.id].operator || true
-						? 'flex'
-						: ''} "
+					class="    border-l-2 border-primary/25 {!nodes[item.id].operator || true ? 'flex' : ''} "
 				>
-					<div
-						tabindex={dragDisabled ? 0 : -1}
-						aria-label="drag-handle"
-						class="bi bi-grip-vertical pt-3 pr-[1]"
-						style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
-						on:mousedown={startDrag}
-						on:touchstart={startDrag}
-						on:keydown={handleKeyDown}
-					/>
+					<div class=" grid   content-center">
+						<div
+							tabindex={dragDisabled ? 0 : -1}
+							aria-label="drag-handle"
+							class="bi bi-grip-vertical pt-3 pr-[1]"
+							style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
+							on:mousedown={startDrag}
+							on:touchstart={startDrag}
+							on:keydown={handleKeyDown}
+						/>
+					</div>
 
 					<svelte:self bind:nodes node={nodes[item.id]} on:changed {availableOperators} {group} />
 				</div>
