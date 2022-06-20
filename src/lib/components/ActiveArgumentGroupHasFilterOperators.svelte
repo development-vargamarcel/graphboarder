@@ -68,14 +68,14 @@
 		if ((e.key === 'Enter' || e.key === ' ') && dragDisabled) dragDisabled = false;
 	}
 	const transformDraggedElement = (draggedEl, data, index) => {
-		draggedEl.querySelector('.dnd-item').classList.add('bg-gradient-to-r from-primary/5 to-transparent', 'border-2', 'border-accent');
+		draggedEl.querySelector('.dnd-item').classList.add('bg-accent', 'border-2', 'border-accent');
 	};
 	//
-const dragDisabledConstantTest=true
+	const dragDisabledConstantTest = true;
 </script>
 
 <div
-	class=" w-full {node?.operator? 'bg-secondary/5':''} "
+	class=" w-full {node?.operator ? 'bg-gradient-to-r from-primary-focus/5 to-transparent' : ''} "
 	bind:this={labelEl}
 	on:mousedown={() => {
 		dragDisabled = true;
@@ -129,27 +129,26 @@ const dragDisabledConstantTest=true
 			{activeArgumentsData} -->
 	{/if}
 
-
-{#if node.hasOwnProperty('items')}
-	<section
-		class=" rounded-l-none {node?.items?.length == 0 ? 'pt-20' : ''} {node?.isMain
-			? 'pb-10 border-l-2 border-l-primary'
-			: ''} w-full"
-		use:dndzone={{ items: node.items, dragDisabled, flipDurationMs }}
-		on:consider={handleDndConsider}
-		on:finalize={handleDndFinalize}
-	>
-		<!-- WE FILTER THE SHADOW PLACEHOLDER THAT WAS ADDED IN VERSION 0.7.4, filtering this way rather than checking whether 'nodes' have the id became possible in version 0.9.1 -->
-		{#each node.items.filter((item) => {
-return item.id !== SHADOW_PLACEHOLDER_ITEM_ID
-} ) as item (item.id)}
-			<div
-				animate:flip={{ duration: flipDurationMs }}
-				class="  pl-[1] pt-2 border-l-2 border-primary/50 {!nodes[item.id].operator || true
-					? 'flex'
-					: ''} "
-			>
+	{#if node.hasOwnProperty('items')}
+		<section
+			class=" rounded-l-none {node?.items?.length == 0 ? 'pt-20' : ''} {node?.isMain
+				? 'pb-10 border-l-2 border-l-primary'
+				: ''} w-full"
+			use:dndzone={{ items: node.items, dragDisabled, flipDurationMs }}
+			on:consider={handleDndConsider}
+			on:finalize={handleDndFinalize}
+		>
+			<!-- WE FILTER THE SHADOW PLACEHOLDER THAT WAS ADDED IN VERSION 0.7.4, filtering this way rather than checking whether 'nodes' have the id became possible in version 0.9.1 -->
+			{#each node.items.filter((item) => {
+				return item.id !== SHADOW_PLACEHOLDER_ITEM_ID;
+			}) as item (item.id)}
 				<div
+					animate:flip={{ duration: flipDurationMs }}
+					class="  pl-[1] pt-2 border-l-2 border-primary/50 {!nodes[item.id].operator || true
+						? 'flex'
+						: ''} "
+				>
+					<div
 						tabindex={dragDisabled ? 0 : -1}
 						aria-label="drag-handle"
 						class="bi bi-grip-vertical pt-3 pr-[1]"
@@ -158,25 +157,20 @@ return item.id !== SHADOW_PLACEHOLDER_ITEM_ID
 						on:touchstart={startDrag}
 						on:keydown={handleKeyDown}
 					/>
-			
 
-<svelte:self bind:nodes node={nodes[item.id]} on:changed {availableOperators} {group} />
-			
-		
-
+					<svelte:self bind:nodes node={nodes[item.id]} on:changed {availableOperators} {group} />
 				</div>
-		{/each}
-		
-	</section>
+			{/each}
+		</section>
+	{/if}
+</div>
+{#if node.id == SHADOW_PLACEHOLDER_ITEM_ID}
+	<div
+		class=" ml-8 h-0    absolute w-11/12   top-0 left-0 visible"
+		id="shadowEl"
+		bind:this={shadowEl}
+	/>
 {/if}
 
-</div>
-{#if node.id == SHADOW_PLACEHOLDER_ITEM_ID }
-			<div
-				class=" ml-8 h-0    absolute w-11/12   top-0 left-0 visible"
-				id="shadowEl"
-				bind:this={shadowEl}
-			/>
-{/if} 
 <style>
 </style>
