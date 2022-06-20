@@ -76,8 +76,8 @@
 
 <div
 	class=" w-full  {node?.operator
-		? 'rounded-l-md bg-gradient-to-br from-primary-focus/5 to-transparent border-l-[1px] border-primary/50'
-		: ''} "
+		? 'rounded-l-md bg-gradient-to-br from-primary-focus/5 to-transparent border-l-[1px] '
+		: ''} {node?.operator == '_and' ? 'border-primary/50' : 'border-accent/50'}"
 	bind:this={labelEl}
 	on:mousedown={() => {
 		dragDisabled = true;
@@ -92,7 +92,9 @@
 	{#if node?.operator}
 		<b
 			style=""
-			class="px-2 pb-1   rounded-full rounded-tl-none"
+			class="px-2 pb-1   rounded-full rounded-tl-none {node?.operator == '_and'
+				? 'text-primary/50'
+				: 'text-accent/50'}"
 			on:click={() => {
 				if (node?.operator && !node?.isMain) {
 					if (node?.operator == '_or') {
@@ -150,23 +152,8 @@
 			{#each node.items.filter((item) => {
 				return item.id !== SHADOW_PLACEHOLDER_ITEM_ID;
 			}) as item (item.id)}
-				<div
-					animate:flip={{ duration: flipDurationMs }}
-					class="  flex   "
-				>
-					<div class=" grid   content-center" on:click={() => {
-				if (item?.operator && !node?.isMain) {
-					if (item?.operator == '_or') {
-						item.operator = '_and';
-					} else {
-						item.operator = '_or';
-					}
-				}
-				dispatch('changed');
-			}}>
-{#if item?.operator}
-<div class="w-full" >{item.operator=='_and'? '&' :'|' } </div>
-{/if}  
+				<div animate:flip={{ duration: flipDurationMs }} class="  flex   ">
+					<div class=" grid   content-center">
 						<div
 							tabindex={dragDisabled ? 0 : -1}
 							aria-label="drag-handle"
@@ -176,9 +163,6 @@
 							on:touchstart={startDrag}
 							on:keydown={handleKeyDown}
 						/>
-{#if item?.operator}
-<div class="w-full" >{item.operator=='_and'? '&' :'|' } </div>
-{/if} 
 					</div>
 
 					<svelte:self bind:nodes node={nodes[item.id]} on:changed {availableOperators} {group} />
