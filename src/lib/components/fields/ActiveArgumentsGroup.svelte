@@ -125,7 +125,7 @@
 									}}
 								/>
 							{/each}
-
+{#if hasGroup_argsNode}
 <button
 	class="btn btn-primary btn-sm"
 	on:click={() => {
@@ -139,9 +139,11 @@
 		group.group_argsNode['mainContainer'].items.push({ id: randomNr });
 	}}
 >
-	add Container
+	OR/And group
 </button> 
-						{:else}
+{/if} 
+		
+				{:else}
 							{#each argsInfo.filter((arg) => {
 								return arg.dd_isRootArg;
 							}) as arg, index}
