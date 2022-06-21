@@ -75,7 +75,7 @@
 </script>
 
 <div
-	class=" w-full transition-all duration-500 my-2 ring ring-2 ring-primary/5  {node?.operator
+	class=" w-full transition-all duration-500 my-4 ring ring-2 ring-primary/5  {node?.operator
 		? 'rounded-l-md bg-gradient-to-br   border-l-[1px] '
 		: ''} {node?.operator == '_and' ? 'border-primary from-primary-focus/10 ' : 'border-accent-focus from-accent-focus/10'}"
 	bind:this={labelEl}
