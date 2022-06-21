@@ -68,7 +68,9 @@
 		if ((e.key === 'Enter' || e.key === ' ') && dragDisabled) dragDisabled = false;
 	}
 	const transformDraggedElement = (draggedEl, data, index) => {
-		draggedEl.querySelector('.dnd-item').classList.add('bg-accent/25', 'border-2', 'border-accent');
+		draggedEl
+			.querySelector('.dnd-item')
+			?.classList.add('bg-accent/25', 'border-2', 'border-accent');
 	};
 	//
 	const dragDisabledConstantTest = true;
@@ -153,7 +155,7 @@
 				items: node.items,
 				dragDisabled,
 				flipDurationMs,
-transformDraggedElement, 
+				transformDraggedElement,
 				centreDraggedOnCursor: false
 			}}
 			on:consider={handleDndConsider}
@@ -161,8 +163,7 @@ transformDraggedElement,
 		>
 			<!-- WE FILTER THE SHADOW PLACEHOLDER THAT WAS ADDED IN VERSION 0.7.4, filtering this way rather than checking whether 'nodes' have the id became possible in version 0.9.1 -->
 			{#each node.items.filter((item) => {
-				
-return item.id !== SHADOW_PLACEHOLDER_ITEM_ID;
+				return item.id !== SHADOW_PLACEHOLDER_ITEM_ID;
 			}) as item (item.id)}
 				<div animate:flip={{ duration: flipDurationMs }} class="  flex   ">
 					<div class=" grid   content-center">
