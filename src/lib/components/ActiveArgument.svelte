@@ -121,11 +121,11 @@
 							rawValue={activeArgumentData?.chd_rawValue}
 							on:changed={(e) => {
 								Object.assign(activeArgumentData, e.detail);
+								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+								Object.assign(group, generate_group_gqlArgObj(group));
 								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 								if (!group.group_argsNode) {
 									generate_final_gqlArgObj();
-									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-									Object.assign(group, generate_group_gqlArgObj(group));
 								} else {
 									dispatch('changed', e.detail);
 								}
@@ -149,11 +149,11 @@
 							dispatchValue={activeArgumentData?.chd_dispatchValue}
 							on:changed={(e) => {
 								Object.assign(activeArgumentData, e.detail);
+								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+								Object.assign(group, generate_group_gqlArgObj(group));
 								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 								if (!group.group_argsNode) {
 									generate_final_gqlArgObj();
-									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-									Object.assign(group, generate_group_gqlArgObj(group));
 								} else {
 									dispatch('changed', e.detail);
 								}
@@ -179,12 +179,12 @@
 					dispatchValue={activeArgumentData?.chd_dispatchValue}
 					on:changed={(e) => {
 						Object.assign(activeArgumentData, e.detail);
+						Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+						Object.assign(group, generate_group_gqlArgObj(group));
 						console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 
 						if (!group.group_argsNode) {
 							generate_final_gqlArgObj();
-							Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-							Object.assign(group, generate_group_gqlArgObj(group));
 						} else {
 							dispatch('changed', e.detail);
 						}
@@ -202,11 +202,11 @@
 							rawValue={activeArgumentData?.chd_rawValue}
 							on:changed={(e) => {
 								Object.assign(activeArgumentData, e.detail);
+								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+								Object.assign(group, generate_group_gqlArgObj(group));
 								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 								if (!group.group_argsNode) {
 									generate_final_gqlArgObj();
-									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-									Object.assign(group, generate_group_gqlArgObj(group));
 								} else {
 									dispatch('changed', e.detail);
 								}
@@ -218,11 +218,11 @@
 							rawValue={activeArgumentData?.chd_rawValue}
 							on:changed={(e) => {
 								Object.assign(activeArgumentData, e.detail);
+								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+								Object.assign(group, generate_group_gqlArgObj(group));
 								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 								if (!group.group_argsNode) {
 									generate_final_gqlArgObj();
-									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-									Object.assign(group, generate_group_gqlArgObj(group));
 								} else {
 									dispatch('changed', e.detail);
 								}
@@ -236,11 +236,11 @@
 							dispatchValue={activeArgumentData?.chd_dispatchValue}
 							on:changed={(e) => {
 								Object.assign(activeArgumentData, e.detail);
+								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+								Object.assign(group, generate_group_gqlArgObj(group));
 								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 								if (!group.group_argsNode) {
 									generate_final_gqlArgObj();
-									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-									Object.assign(group, generate_group_gqlArgObj(group));
 								} else {
 									dispatch('changed', e.detail);
 								}
@@ -253,11 +253,11 @@
 							rawValue={activeArgumentData?.chd_rawValue}
 							on:changed={(e) => {
 								Object.assign(activeArgumentData, e.detail);
+								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+								Object.assign(group, generate_group_gqlArgObj(group));
 								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 								if (!group.group_argsNode) {
 									generate_final_gqlArgObj();
-									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-									Object.assign(group, generate_group_gqlArgObj(group));
 								} else {
 									dispatch('changed', e.detail);
 								}

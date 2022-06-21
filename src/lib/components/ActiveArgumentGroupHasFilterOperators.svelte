@@ -78,7 +78,7 @@
 	class=" w-full transition-all duration-500 my-1  {node?.operator
 		? 'rounded-l-md bg-gradient-to-br   border-l-[1px] ring ring-1 '
 		: 'pr-2'} 
-{node?.operator && node?.not ? ' ring-error/50' : 'ring-error/0'} 
+{node?.operator && node?.not ? ' ring-error' : 'ring-error/0'} 
 {node?.operator == '_and'
 		? 'border-primary from-primary-focus/10'
 		: 'border-accent-focus from-accent-focus/10'}"
@@ -122,7 +122,7 @@
 	{:else}
 		<div
 			class="transition-color duration-500 rounded-box ring  ring-1    {node?.not
-				? ' ring-error/50'
+				? ' ring-error'
 				: 'ring-error/0'}  w-full"
 		>
 			<ActiveArgument
