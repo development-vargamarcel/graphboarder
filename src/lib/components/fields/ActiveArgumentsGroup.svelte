@@ -133,7 +133,7 @@
 		group.group_argsNode[`${randomNr}`] = {
 			id: randomNr,
 			operator: '_or', 
-not=false, 
+not:false, 
 			isMain: false,
 			items: []
 		};
