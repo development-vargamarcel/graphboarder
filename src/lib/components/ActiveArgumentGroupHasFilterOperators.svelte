@@ -76,7 +76,7 @@
 
 <div
 	class=" w-full transition-all duration-500 my-1  {node?.operator
-		? 'rounded-l-md bg-gradient-to-br   border-l-[1px] ring ring-2  '
+		? 'rounded-l-md bg-gradient-to-br   border-l-[1px] ring ring-4  '
 		: 'pr-2'} 
 {node?.operator && node?.not
 				? ' ring-error/10'
@@ -120,7 +120,7 @@ on:contextmenu|preventDefault|stopPropagation={() => {
 		<br />
 	{:else}
 		<div
-			class="transition-color duration-500 rounded-box ring ring-2   {node?.not
+			class="transition-color duration-500 rounded-box ring ring-4   {node?.not
 				? ' ring-error/10'
 				: 'ring-error/0'}  w-full"
 		>
