@@ -81,7 +81,7 @@
 {node?.operator && node?.not
 				? ' ring-error/10'
 				: 'ring-error/0'} 
-{node?.operator == '_and' ? 'border-primary from-primary-focus/25 ' : 'border-accent-focus from-accent-focus/25'}"
+{node?.operator == '_and' ? 'border-primary from-primary-focus/10' : 'border-accent-focus from-accent-focus/10'}"
 on:contextmenu={() => {
 					if (node?.not !== undefined) {
 						node.not = !node.not;
