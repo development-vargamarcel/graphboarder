@@ -111,8 +111,8 @@
 		<br />
 	{:else}
 		<div
-			class="transition-color duration-500 rounded-box ring ring-2  pr-2 {node.not
-				? ' ring-error/25'
+			class="transition-color duration-500 rounded-box ring ring-2  mx-2 {node.not
+				? ' ring-error/50'
 				: 'ring-error/0'}  w-full"
 		>
 			<ActiveArgument
