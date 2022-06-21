@@ -153,6 +153,7 @@
 				items: node.items,
 				dragDisabled,
 				flipDurationMs,
+transformDraggedElement, 
 				centreDraggedOnCursor: false
 			}}
 			on:consider={handleDndConsider}
