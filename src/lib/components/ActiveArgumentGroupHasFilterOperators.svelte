@@ -76,17 +76,17 @@
 
 <div
 	class=" w-full transition-all duration-500 my-1  {node?.operator
-		? 'rounded-l-md bg-gradient-to-br   border-l-[1px] ring ring-2 '
+		? 'rounded-l-md bg-gradient-to-br   border-l-[1px] ring ring-1 '
 		: 'pr-2'} 
-{node?.operator && node?.not
-				? ' ring-error/25'
-				: 'ring-error/0'} 
-{node?.operator == '_and' ? 'border-primary from-primary-focus/10' : 'border-accent-focus from-accent-focus/10'}"
-on:contextmenu|preventDefault|stopPropagation={() => {
-					if (node?.not !== undefined) {
-						node.not = !node.not;
-					}
-				}}
+{node?.operator && node?.not ? ' ring-error/50' : 'ring-error/0'} 
+{node?.operator == '_and'
+		? 'border-primary from-primary-focus/10'
+		: 'border-accent-focus from-accent-focus/10'}"
+	on:contextmenu|preventDefault|stopPropagation={() => {
+		if (node?.not !== undefined) {
+			node.not = !node.not;
+		}
+	}}
 	bind:this={labelEl}
 	on:mousedown={() => {
 		dragDisabled = true;
@@ -101,7 +101,8 @@ on:contextmenu|preventDefault|stopPropagation={() => {
 	{#if node?.operator}
 		<b
 			style=""
-			class="px-2 pb-1 transition-all duration-500  rounded-full rounded-tl-none {node?.operator == '_and'
+			class="px-2 pb-1 transition-all duration-500  rounded-full rounded-tl-none {node?.operator ==
+			'_and'
 				? 'text-primary/50'
 				: 'text-accent-focus/75'}"
 			on:click={() => {
@@ -120,12 +121,12 @@ on:contextmenu|preventDefault|stopPropagation={() => {
 		<br />
 	{:else}
 		<div
-			class="transition-color duration-500 rounded-box ring  ring-2    {node?.not
-				? ' ring-error/25'
+			class="transition-color duration-500 rounded-box ring  ring-1    {node?.not
+				? ' ring-error/50'
 				: 'ring-error/0'}  w-full"
 		>
 			<ActiveArgument
-				on:contextmenu={() => {
+				on:contextmenuUsed={() => {
 					if (node?.not !== undefined) {
 						node.not = !node.not;
 					}

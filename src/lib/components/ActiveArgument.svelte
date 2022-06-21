@@ -53,8 +53,8 @@
 <label
 	class=" bg-base-200 rounded-box p-2 my-2 flex   dnd-item"
 	bind:this={labelEl}
-	on:contextmenu|preventDefault={() => {
-		dispatch('contextmenu');
+	on:contextmenu|preventDefault|stopPropagation={() => {
+		dispatch('contextmenuUsed');
 	}}
 >
 	<div class="grow ">
