@@ -75,7 +75,7 @@
 </script>
 
 <div
-	class=" w-full transition-all duration-500 my-2 ring ring-2 ring-primary/5  {node?.operator
+	class=" w-full transition-all duration-500 my-1 ring ring-2 ring-warning/5  {node?.operator
 		? 'rounded-l-md bg-gradient-to-br   border-l-[1px] '
 		: ''} {node?.operator == '_and' ? 'border-primary from-primary-focus/10 ' : 'border-accent-focus from-accent-focus/10'}"
 	bind:this={labelEl}
@@ -111,9 +111,9 @@
 		<br />
 	{:else}
 		<div
-			class="transition-color duration-500 rounded-box border-l-2 pr-2 {node.not
-				? ' border-error'
-				: 'border-transparent'}  w-full"
+			class="transition-color duration-500 rounded-box ring ring-2  pr-2 {node.not
+				? ' ring-error/5'
+				: 'ring-transparent'}  w-full"
 		>
 			<ActiveArgument
 				on:contextmenu={() => {
