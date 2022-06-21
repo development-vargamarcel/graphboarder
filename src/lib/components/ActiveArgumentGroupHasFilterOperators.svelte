@@ -77,7 +77,7 @@
 <div
 	class=" w-full transition-all duration-500 my-1  {node?.operator
 		? 'rounded-l-md bg-gradient-to-br   border-l-[1px] ring ring-2 ring-primary/5 '
-		: ''} {node?.operator == '_and' ? 'border-primary from-primary-focus/10 ' : 'border-accent-focus from-accent-focus/10'}"
+		: 'px-2'} {node?.operator == '_and' ? 'border-primary from-primary-focus/10 ' : 'border-accent-focus from-accent-focus/10'}"
 	bind:this={labelEl}
 	on:mousedown={() => {
 		dragDisabled = true;
@@ -111,7 +111,7 @@
 		<br />
 	{:else}
 		<div
-			class="transition-color duration-500 rounded-box ring ring-2  mx-2 {node.not
+			class="transition-color duration-500 rounded-box ring ring-2   {node.not
 				? ' ring-error/50'
 				: 'ring-error/0'}  w-full"
 		>
