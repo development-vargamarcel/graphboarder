@@ -132,7 +132,8 @@
 		let randomNr = Math.random();
 		group.group_argsNode[`${randomNr}`] = {
 			id: randomNr,
-			operator: '_or',
+			operator: '_or', 
+not=false, 
 			isMain: false,
 			items: []
 		};
