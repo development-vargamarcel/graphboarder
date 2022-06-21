@@ -79,9 +79,9 @@
 		? 'rounded-l-md bg-gradient-to-br   border-l-[1px] ring ring-2  '
 		: 'pr-2'} 
 {node?.operator && node?.not
-				? ' ring-error/50'
+				? ' ring-error/10'
 				: 'ring-error/0'} 
-{node?.operator == '_and' ? 'border-primary from-primary-focus/10 ' : 'border-accent-focus from-accent-focus/10'}"
+{node?.operator == '_and' ? 'border-primary from-primary-focus/25 ' : 'border-accent-focus from-accent-focus/25'}"
 on:contextmenu={() => {
 					if (node?.not !== undefined) {
 						node.not = !node.not;
