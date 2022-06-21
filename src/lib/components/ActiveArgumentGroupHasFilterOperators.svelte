@@ -82,6 +82,11 @@
 				? ' ring-error/50'
 				: 'ring-error/0'} 
 {node?.operator == '_and' ? 'border-primary from-primary-focus/10 ' : 'border-accent-focus from-accent-focus/10'}"
+on:contextmenu={() => {
+					if (node?.not !== undefined) {
+						node.not = !node.not;
+					}
+				}}
 	bind:this={labelEl}
 	on:mousedown={() => {
 		dragDisabled = true;
