@@ -82,7 +82,7 @@
 				? ' ring-error/10'
 				: 'ring-error/0'} 
 {node?.operator == '_and' ? 'border-primary from-primary-focus/10' : 'border-accent-focus from-accent-focus/10'}"
-on|preventDefault|stopPropagation:contextmenu={() => {
+on:contextmenu|preventDefault|stopPropagation={() => {
 					if (node?.not !== undefined) {
 						node.not = !node.not;
 					}
