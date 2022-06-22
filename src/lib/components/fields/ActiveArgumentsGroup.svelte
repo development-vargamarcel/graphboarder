@@ -273,6 +273,7 @@ not:false,
 </div>
 
 {#if hasGroup_argsNode}
+<div class='overflow-x-auto' >
 	<ActiveArgumentGroupHasFilterOperators
 		node={group.group_argsNode.mainContainer}
 		{group}
@@ -288,4 +289,5 @@ not:false,
 			console.log({ valuesWithItems });
 		}}
 	/>
+</div>
 {/if}
