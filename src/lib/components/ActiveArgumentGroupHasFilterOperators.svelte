@@ -176,7 +176,7 @@
 							on:touchstart={startDrag}
 							on:keydown={handleKeyDown}
 						/>
-<div class='bg-black p-0' >abc</div>
+
 					</div>
 
 					<svelte:self bind:nodes node={nodes[item.id]} on:changed {availableOperators} {group} />
