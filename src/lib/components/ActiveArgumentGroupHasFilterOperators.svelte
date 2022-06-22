@@ -63,6 +63,7 @@
 		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
 		e.preventDefault();
 		dragDisabled = false;
+dispatch ('childrenStartDrag' ) 
 	}
 	function handleKeyDown(e) {
 		if ((e.key === 'Enter' || e.key === ' ') && dragDisabled) dragDisabled = false;
