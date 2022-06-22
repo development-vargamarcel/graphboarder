@@ -83,8 +83,8 @@
 							aria-label="drag-handle"
 							class="bi bi-grip-vertical -mr-1 text-lg {node?.operator ==undefined? text-base-content:(node?.operator ==
 			'_and'
-				? 'text-primary/50'
-				: 'text-accent-focus/75')}"
+				? 'text-primary'
+				: 'text-accent-focus')}"
 							style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
 							on:mousedown={(e)=>{
 		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
