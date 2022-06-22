@@ -81,7 +81,7 @@
 						<div
 							tabindex={dragDisabled ? 0 : -1}
 							aria-label="drag-handle"
-							class="bi bi-grip-vertical -mr-1 text-lg {node?.operator ==undefined? 'text-base-content' :(node?.operator ==
+							class=" transition:all duration-500 bi bi-grip-vertical -mr-1 text-lg {node?.operator ==undefined? 'text-base-content' :(node?.operator ==
 			'_and'
 				? 'text-primary'
 				: 'text-accent-focus')}"
