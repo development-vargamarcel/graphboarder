@@ -181,21 +181,7 @@
 				return item.id !== SHADOW_PLACEHOLDER_ITEM_ID;
 			}) as item (item.id)}
 				<div animate:flip={{ duration: flipDurationMs }} class="  flex   ">
-					<div class=" grid   content-center">
-						<div
-							tabindex={dragDisabled ? 0 : -1}
-							aria-label="drag-handle"
-							class="bi bi-grip-vertical -mr-1 {nodes[item.id]?.operator ==
-			'_and'
-				? 'text-primary/50'
-				: 'text-accent-focus/75'}"
-							style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
-							on:mousedown={startDrag}
-							on:touchstart={startDrag}
-							on:keydown={handleKeyDown}
-						/>
-
-					</div>
+					
 
 					<svelte:self bind:nodes node={nodes[item.id]} on:changed {availableOperators} {group} />
 				</div>
