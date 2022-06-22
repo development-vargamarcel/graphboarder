@@ -273,7 +273,7 @@ not:false,
 </div>
 
 {#if hasGroup_argsNode}
-<div class='overflow-auto overscroll-contain max-h-[75vh] ' >
+<div class='overflow-scroll overscroll-contain max-h-[75vh] ' >
 	<ActiveArgumentGroupHasFilterOperators
 		node={group.group_argsNode.mainContainer}
 		{group}
