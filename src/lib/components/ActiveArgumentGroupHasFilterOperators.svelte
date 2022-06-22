@@ -76,6 +76,21 @@
 	const dragDisabledConstantTest = true;
 </script>
 
+<div class=" grid   content-center">
+						<div
+							tabindex={dragDisabled ? 0 : -1}
+							aria-label="drag-handle"
+							class="bi bi-grip-vertical -mr-1 {node?.operator ==
+			'_and'
+				? 'text-primary/50'
+				: 'text-accent-focus/75'}"
+							style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
+							on:mousedown={startDrag}
+							on:touchstart={startDrag}
+							on:keydown={handleKeyDown}
+						/>
+
+					</div>
 <div
 	class=" w-full transition-all duration-500 my-1  {node?.operator
 		? 'rounded-l-md bg-gradient-to-br   border-l-[1px] ring ring-1 '
