@@ -61,7 +61,7 @@
 	}
 	function startDrag(e) {
 		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
-		e.preventDefault();
+		//e.preventDefault();
 		dragDisabled = false;
  
 	}
@@ -88,14 +88,14 @@
 							style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
 							on:mousedown={(e)=>{
 		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
-		e.preventDefault();
+		//e.preventDefault();
 		
 dispatch ('childrenStartDrag' ) 
 	} 
 }
 							on:touchstart={(e)=>{
 		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
-		e.preventDefault();
+		//e.preventDefault();
 		
 dispatch ('childrenStartDrag' ) 
 	}  }
