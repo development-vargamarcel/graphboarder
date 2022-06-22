@@ -86,14 +86,14 @@
 				? 'text-primary/50'
 				: 'text-accent-focus/75'}"
 							style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
-							on:mousedown={()=>{
+							on:mousedown={(e)=>{
 		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
 		e.preventDefault();
 		
 dispatch ('childrenStartDrag' ) 
 	} 
 }
-							on:touchstart={()=>{
+							on:touchstart={(e)=>{
 		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
 		e.preventDefault();
 		
