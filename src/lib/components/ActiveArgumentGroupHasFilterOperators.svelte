@@ -170,7 +170,7 @@
 						<div
 							tabindex={dragDisabled ? 0 : -1}
 							aria-label="drag-handle"
-							class="bi bi-grip-vertical -Mr-1 {node?.operator ==
+							class="bi bi-grip-vertical -mr-1 {nodes[item.id]?.operator ==
 			'_and'
 				? 'text-primary/50'
 				: 'text-accent-focus/75'}"
