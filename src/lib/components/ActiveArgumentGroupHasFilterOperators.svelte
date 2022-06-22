@@ -150,11 +150,12 @@ dispatch ('childrenStartDrag' )
 		<br />
 	{:else}
 		<div
-			class="mr-2 transition-color duration-500 rounded-box ring  ring-1    {node?.not
+			class=" transition-color duration-500 rounded-box ring  ring-1    {node?.not
 				? ' ring-error'
 				: 'ring-error/0'}  w-full"
 		>
-			<ActiveArgument
+<div class='pr-2' >
+<ActiveArgument
 				on:contextmenuUsed={() => {
 					if (node?.not !== undefined) {
 						node.not = !node.not;
@@ -165,6 +166,8 @@ dispatch ('childrenStartDrag' )
 				activeArgumentData={node}
 				{group}
 			/>
+</div>
+			
 		</div>
 		<!-- 
 			{generate_final_gqlArgObj}
