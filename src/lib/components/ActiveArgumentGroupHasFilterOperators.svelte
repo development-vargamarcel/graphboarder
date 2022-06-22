@@ -150,7 +150,7 @@ dispatch ('childrenStartDrag' )
 		<br />
 	{:else}
 		<div
-			class="transition-color duration-500 rounded-box ring  ring-1    {node?.not
+			class="mr-2 transition-color duration-500 rounded-box ring  ring-1    {node?.not
 				? ' ring-error'
 				: 'ring-error/0'}  w-full"
 		>
