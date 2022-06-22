@@ -150,11 +150,11 @@ dispatch ('childrenStartDrag' )
 		<br />
 	{:else}
 		<div
-			class=" transition-color duration-500 rounded-box ring  ring-1    {node?.not
-				? ' ring-error'
-				: 'ring-error/0'}  w-full"
+			class="pr-2 rounded-box  w-full"
 		>
-<div class='pr-2' >
+<div class=' transition-color duration-500 rounded-box ring  ring-1    {node?.not
+				? ' ring-error'
+				: 'ring-error/0'}' >
 <ActiveArgument
 				on:contextmenuUsed={() => {
 					if (node?.not !== undefined) {
