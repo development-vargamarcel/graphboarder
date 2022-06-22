@@ -63,7 +63,7 @@
 		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
 		e.preventDefault();
 		dragDisabled = false;
-dispatch ('childrenStartDrag' ) 
+ 
 	}
 	function handleKeyDown(e) {
 		if ((e.key === 'Enter' || e.key === ' ') && dragDisabled) dragDisabled = false;
@@ -86,8 +86,19 @@ dispatch ('childrenStartDrag' )
 				? 'text-primary/50'
 				: 'text-accent-focus/75'}"
 							style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
-							on:mousedown={startDrag}
-							on:touchstart={startDrag}
+							on:mousedown={()=>{
+		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
+		e.preventDefault();
+		
+dispatch ('childrenStartDrag' ) 
+	} 
+}
+							on:touchstart={()=>{
+		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
+		e.preventDefault();
+		
+dispatch ('childrenStartDrag' ) 
+	}  }
 							on:keydown={handleKeyDown}
 						/>
 
@@ -184,7 +195,7 @@ dispatch ('childrenStartDrag' )
 				<div animate:flip={{ duration: flipDurationMs }} class="  flex   ">
 					
 
-					<svelte:self bind:nodes node={nodes[item.id]} on:changed {availableOperators} {group} />
+					<svelte:self bind:nodes node={nodes[item.id]} on:changed {availableOperators} on:childrenStartDrag={startDrag} {group} />
 				</div>
 			{/each}
 		</section>
