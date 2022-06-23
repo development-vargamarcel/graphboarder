@@ -109,8 +109,8 @@ dispatch ('childrenStartDrag' )
 		: 'pr-2XXX'} 
 {node?.operator && node?.not ? ' ring-error' : 'ring-error/0'} 
 {node?.operator == '_and'
-		? 'border-primary from-primary-focus/20'
-		: 'border-accent-focus from-accent-focus/30'}"
+		? 'border-primary from-primary-focus/20xxx'
+		: 'border-accent-focus from-accent-focus/30xxx'}"
 	on:contextmenu|preventDefault|stopPropagation={() => {
 		if (node?.not !== undefined) {
 			node.not = !node.not;
