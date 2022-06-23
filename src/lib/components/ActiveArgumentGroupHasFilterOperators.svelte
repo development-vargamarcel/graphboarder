@@ -130,10 +130,10 @@ dispatch ('childrenStartDrag' )
 	{#if node?.operator}
 		<b
 			style=""
-			class="px-2 pb-1 transition-all duration-500  rounded-full rounded-tl-none {node?.operator ==
+			class="px-2 pb-1 font-light transition-all duration-500  rounded-full rounded-tl-none {node?.operator ==
 			'_and'
-				? 'text-primary/50'
-				: 'text-accent-focus/75'}"
+				? 'text-primary'
+				: 'text-accent-focus'}"
 			on:click={() => {
 				if (node?.operator && !node?.isMain) {
 					if (node?.operator == '_or') {
