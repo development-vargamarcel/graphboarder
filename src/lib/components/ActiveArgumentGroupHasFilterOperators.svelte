@@ -105,7 +105,7 @@ dispatch ('childrenStartDrag' )
 					</div>
 <div
 	class=" w-full transition-all duration-500 my-1  {node?.operator
-		? 'rounded-l-md bg-gradient-to-rxxx   border-l-[1px] ring ring-1 '
+		? 'rounded-l-md bg-gradient-to-rxxx   border-l-[1px] ringxxx ring-1xxx '
 		: 'pr-2XXX'} 
 {node?.operator && node?.not ? ' ring-errorxxx' : 'ring-error/0xxx'} 
 {node?.operator == '_and'
@@ -152,7 +152,7 @@ dispatch ('childrenStartDrag' )
 		<div
 			class="pr-2 rounded-box  w-full"
 		>
-<div class=' transition-color duration-500 rounded-box ring  ring-1    {node?.not
+<div class=' transition-color duration-500 rounded-box ringxxx  ring-1xxx    {node?.not
 				? ' ring-errorxxx'
 				: 'ring-error/0xxx'}' >
 <ActiveArgument
