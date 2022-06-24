@@ -63,7 +63,6 @@
 		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
 		//e.preventDefault();
 		dragDisabled = false;
- 
 	}
 	function handleKeyDown(e) {
 		if ((e.key === 'Enter' || e.key === ' ') && dragDisabled) dragDisabled = false;
@@ -77,40 +76,43 @@
 	const dragDisabledConstantTest = true;
 </script>
 
-<div class=" grid   content-center border-r-2 {node?.not?'border-error/25':'border-error/0'} rounded-full">
-						<div
-							tabindex={dragDisabled ? 0 : -1}
-							aria-label="drag-handle"
-							class=" transition:all duration-500 bi bi-grip-vertical pl-2 py-2 -mr-1 text-lg {node?.operator ==undefined? 'text-base-content' :(node?.operator ==
-			'_and'
-				? 'text-primary'
-				: 'text-accent-focus')}
-rounded-box
-{node?.not?'bg-error/25':'bg-error/0'}
-"
-							style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
-							on:mousedown={(e)=>{
-		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
-		//e.preventDefault();
-		
-dispatch ('childrenStartDrag' ) 
-	} 
-}
-							on:touchstart={(e)=>{
-		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
-		//e.preventDefault();
-		
-dispatch ('childrenStartDrag' ) 
-	}  }
-							on:keydown={handleKeyDown}
-						/>
+<div class=" grid   content-center  rounded-full ">
+	<div
+		tabindex={dragDisabled ? 0 : -1}
+		aria-label="drag-handle"
+		class="  transition:all duration-500 bi bi-grip-vertical ml-2  -mr-1 text-lg rounded-md {node?.operator ==
+		undefined
+			? 'text-base-content'
+			: node?.operator == '_and'
+			? 'text-primary'
+			: 'text-accent-focus'} {node?.not ? ' bg-gradient-to-r from-base-300/100' : 'bg-error/0'}"
+		style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
+		on:mousedown={(e) => {
+			// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
+			//e.preventDefault();
 
-					</div>
+			dispatch('childrenStartDrag');
+		}}
+		on:touchstart={(e) => {
+			// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
+			//e.preventDefault();
+
+			dispatch('childrenStartDrag');
+		}}
+		on:keydown={handleKeyDown}
+		on:contextmenu|preventDefault|stopPropagation={() => {
+			if (node?.not !== undefined) {
+				node.not = !node.not;
+			}
+		}}
+	/>
+</div>
+
 <div
 	class=" w-full transition-all duration-500 my-1  {node?.operator
-		? 'rounded-l-md bg-gradient-to-rxxx   border-l-[1px] ringxxx ring-1xxx '
-		: 'pr-2XXX'} 
-{node?.operator && node?.not ? ' ring-errorxxx' : 'ring-error/0xxx'} 
+		? 'rounded-l-md bg-gradient-to-rxxx   border-l-[1px]'
+		: ''} 
+{node?.operator && node?.not ? 'border-dashed  ' : ''} 
 {node?.operator == '_and'
 		? 'border-primary from-primary-focus/20xxx'
 		: 'border-accent-focus from-accent-focus/30xxx'}"
@@ -152,25 +154,24 @@ dispatch ('childrenStartDrag' )
 		</b>
 		<br />
 	{:else}
-		<div
-			class="pr-2 rounded-box  w-full"
-		>
-<div class=' transition-color duration-500 rounded-box ringxxx  ring-1xxx    {node?.not
-				? ' ring-errorxxx'
-				: 'ring-error/0xxx'}' >
-<ActiveArgument
-				on:contextmenuUsed={() => {
-					if (node?.not !== undefined) {
-						node.not = !node.not;
-					}
-				}}
-				on:inUseChanged={() => {}}
-				on:delete_activeArgument={() => {}}
-				activeArgumentData={node}
-				{group}
-			/>
-</div>
-			
+		<div class="pr-2 rounded-box  w-full">
+			<div
+				class=" transition-color duration-500 rounded-box ringxxx  ring-1xxx    {node?.not
+					? ' ring-errorxxx'
+					: 'ring-error/0xxx'}"
+			>
+				<ActiveArgument
+					on:contextmenuUsed={() => {
+						if (node?.not !== undefined) {
+							node.not = !node.not;
+						}
+					}}
+					on:inUseChanged={() => {}}
+					on:delete_activeArgument={() => {}}
+					activeArgumentData={node}
+					{group}
+				/>
+			</div>
 		</div>
 		<!-- 
 			{generate_final_gqlArgObj}
@@ -199,9 +200,14 @@ dispatch ('childrenStartDrag' )
 				return item.id !== SHADOW_PLACEHOLDER_ITEM_ID;
 			}) as item (item.id)}
 				<div animate:flip={{ duration: flipDurationMs }} class="  flex   ">
-					
-
-					<svelte:self bind:nodes node={nodes[item.id]} on:changed {availableOperators} on:childrenStartDrag={startDrag} {group} />
+					<svelte:self
+						bind:nodes
+						node={nodes[item.id]}
+						on:changed
+						{availableOperators}
+						on:childrenStartDrag={startDrag}
+						{group}
+					/>
 				</div>
 			{/each}
 		</section>
