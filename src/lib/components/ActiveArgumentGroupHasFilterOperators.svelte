@@ -114,8 +114,8 @@
 		: ''} 
 {node?.operator && node?.not ? 'border-dashed  ' : ''} 
 {node?.operator == '_and'
-		? 'border-primary from-primary-focus/20xxx'
-		: 'border-accent-focus from-accent-focus/30xxx'}"
+		? 'border-primary'
+		: 'border-accent-focus '}"
 	on:contextmenu|preventDefault|stopPropagation={() => {
 		if (node?.not !== undefined) {
 			node.not = !node.not;
