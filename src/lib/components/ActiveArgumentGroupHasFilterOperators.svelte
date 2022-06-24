@@ -77,7 +77,7 @@
 	const dragDisabledConstantTest = true;
 </script>
 
-<div class=" grid   content-center">
+<div class=" grid   content-center bg-error-10 rounded-full">
 						<div
 							tabindex={dragDisabled ? 0 : -1}
 							aria-label="drag-handle"
