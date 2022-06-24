@@ -84,7 +84,10 @@
 							class=" transition:all duration-500 bi bi-grip-vertical pl-2 py-2 -mr-1 text-lg {node?.operator ==undefined? 'text-base-content' :(node?.operator ==
 			'_and'
 				? 'text-primary'
-				: 'text-accent-focus')}"
+				: 'text-accent-focus')}
+rounded-box
+{node?.not?'bg-error/25':'bg-error/0'}
+"
 							style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
 							on:mousedown={(e)=>{
 		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
