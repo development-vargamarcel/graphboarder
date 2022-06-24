@@ -77,7 +77,7 @@
 	const dragDisabledConstantTest = true;
 </script>
 
-<div class=" grid   content-center border-r-[1px] {node?.not?'border-error/25':'border-error/0'} rounded-full">
+<div class=" grid   content-center border-r-[1px] {node?.not?'border-error':'border-error/0'} rounded-full">
 						<div
 							tabindex={dragDisabled ? 0 : -1}
 							aria-label="drag-handle"
@@ -107,7 +107,7 @@ dispatch ('childrenStartDrag' )
 	class=" w-full transition-all duration-500 my-1  {node?.operator
 		? 'rounded-l-md bg-gradient-to-rxxx   border-l-[1px] ring ring-1 '
 		: 'pr-2XXX'} 
-{node?.operator && node?.not ? ' ring-error' : 'ring-error/0'} 
+{node?.operator && node?.not ? ' ring-errorxxx' : 'ring-error/0xxx'} 
 {node?.operator == '_and'
 		? 'border-primary from-primary-focus/20xxx'
 		: 'border-accent-focus from-accent-focus/30xxx'}"
@@ -153,8 +153,8 @@ dispatch ('childrenStartDrag' )
 			class="pr-2 rounded-box  w-full"
 		>
 <div class=' transition-color duration-500 rounded-box ring  ring-1    {node?.not
-				? ' ring-error'
-				: 'ring-error/0'}' >
+				? ' ring-errorxxx'
+				: 'ring-error/0xxx'}' >
 <ActiveArgument
 				on:contextmenuUsed={() => {
 					if (node?.not !== undefined) {
