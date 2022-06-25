@@ -1,4 +1,5 @@
 <script lang="ts">
+	import DNDExample from './DNDExample.svelte';
 	import ActiveArgument from './ActiveArgument.svelte';
 	import { get_NamesArray } from './../utils/usefulFunctions.ts';
 	import {
@@ -119,9 +120,7 @@
 					mainContainer: {
 						operator: '_and',
 						isMain: true,
-						items: [
-							
-						],
+						items: [],
 						id: 'mainContainer'
 					}
 				};
