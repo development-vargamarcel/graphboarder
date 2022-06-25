@@ -142,7 +142,7 @@
 	const availableOperators = ['_and', '_or', '_nor'];
 </script>
 
-<div class="p-2 h-80 overflow-auto overscroll-auto">
+<div class="p-2  h-80 overflow-auto">
 	<div>
 		<Content
 			node={nodes.mainContainer}

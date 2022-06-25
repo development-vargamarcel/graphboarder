@@ -125,26 +125,25 @@
 									}}
 								/>
 							{/each}
-{#if hasGroup_argsNode}
-<button
-	class="btn btn-primary btn-sm"
-	on:click={() => {
-		let randomNr = Math.random();
-		group.group_argsNode[`${randomNr}`] = {
-			id: randomNr,
-			operator: '_or', 
-not:false, 
-			isMain: false,
-			items: []
-		};
-		group.group_argsNode['mainContainer'].items.push({ id: randomNr });
-	}}
->
-	OR/And group
-</button> 
-{/if} 
-		
-				{:else}
+							{#if hasGroup_argsNode}
+								<button
+									class="btn btn-primary btn-sm"
+									on:click={() => {
+										let randomNr = Math.random();
+										group.group_argsNode[`${randomNr}`] = {
+											id: randomNr,
+											operator: '_or',
+											not: false,
+											isMain: false,
+											items: []
+										};
+										group.group_argsNode['mainContainer'].items.push({ id: randomNr });
+									}}
+								>
+									OR/And group
+								</button>
+							{/if}
+						{:else}
 							{#each argsInfo.filter((arg) => {
 								return arg.dd_isRootArg;
 							}) as arg, index}
@@ -273,21 +272,22 @@ not:false,
 </div>
 
 {#if hasGroup_argsNode}
-<div class='overflow-scroll overscroll-contain max-h-[75vh] ' >
-	<ActiveArgumentGroupHasFilterOperators
-		node={group.group_argsNode.mainContainer}
-		{group}
-		bind:nodes={group.group_argsNode}
-		on:changed={() => {
-			let nodesClone = JSON.parse(JSON.stringify(group.group_argsNode));
-			let values = Object.values(nodesClone);
-			let valuesWithItems = values.filter((node) => {
-				return node?.items?.length > 0;
-			});
-			console.log('group.group_argsNode', group.group_argsNode);
-			console.log({ values });
-			console.log({ valuesWithItems });
-		}}
-	/>
-</div>
+	<!-- overflow-scroll overscroll-contain h-[75vh] -->
+	<div class=" ">
+		<ActiveArgumentGroupHasFilterOperators
+			node={group.group_argsNode.mainContainer}
+			{group}
+			bind:nodes={group.group_argsNode}
+			on:changed={() => {
+				let nodesClone = JSON.parse(JSON.stringify(group.group_argsNode));
+				let values = Object.values(nodesClone);
+				let valuesWithItems = values.filter((node) => {
+					return node?.items?.length > 0;
+				});
+				console.log('group.group_argsNode', group.group_argsNode);
+				console.log({ values });
+				console.log({ valuesWithItems });
+			}}
+		/>
+	</div>
 {/if}

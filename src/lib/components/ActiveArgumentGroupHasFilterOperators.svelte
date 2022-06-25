@@ -113,9 +113,7 @@
 		? 'rounded-l-md bg-gradient-to-rxxx   border-l-[1px]'
 		: ''} 
 {node?.operator && node?.not ? 'border-dashed  ' : ''} 
-{node?.operator == '_and'
-		? 'border-primary'
-		: 'border-accent-focus '}"
+{node?.operator == '_and' ? 'border-primary' : 'border-accent-focus '}"
 	on:contextmenu|preventDefault|stopPropagation={() => {
 		if (node?.not !== undefined) {
 			node.not = !node.not;
@@ -184,7 +182,7 @@
 		<section
 			class=" rounded-l-none {node?.items?.length == 0 ? 'pt-20' : ''} {node?.isMain
 				? 'pb-10 border-l-2 border-l-transparent'
-				: ' pb-4'} w-full"
+				: ' pb-4'} {node?.isMain ? 'overflow-scroll overscroll-contain h-[75vh] ' : ''} w-full"
 			use:dndzone={{
 				items: node.items,
 				dragDisabled,
