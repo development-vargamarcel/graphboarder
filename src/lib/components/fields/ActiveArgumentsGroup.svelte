@@ -1,4 +1,5 @@
 <script>
+	import SimpleDNDZone from './../SimpleDNDZone.svelte';
 	import ActiveArgument from '../ActiveArgument.svelte';
 
 	import Arg from '../Arg.svelte';
@@ -275,6 +276,7 @@
 	<!-- overflow-scroll overscroll-contain h-[75vh] -->
 	<div class=" ">
 		<ActiveArgumentGroupHasFilterOperators
+			type={group.group_name + 'ActiveArgumentGroupHasFilterOperators'}
 			node={group.group_argsNode.mainContainer}
 			{group}
 			bind:nodes={group.group_argsNode}

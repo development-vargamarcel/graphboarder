@@ -3,7 +3,8 @@
 
 	export let dd_displayType;
 	let inputEl;
-	export let rawValue;
+	export let rawValue = true;
+
 	const dispatch = createEventDispatcher();
 </script>
 
@@ -12,7 +13,7 @@
 		type="checkbox"
 		class="toggle toggle-primary"
 		bind:this={inputEl}
-		checked={rawValue == 'true' || rawValue == true ? true : false}
+		bind:checked={rawValue}
 		on:change={() => {
 			rawValue = inputEl.checked ? true : false;
 			dispatch('changed', {

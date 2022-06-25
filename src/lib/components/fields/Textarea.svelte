@@ -3,8 +3,10 @@
 
 	export let dd_displayType;
 	let inputEl;
-	export let rawValue;
-	export let dispatchValue;
+	export let rawValue = '';
+
+	export let dispatchValue = '';
+
 	const dispatch = createEventDispatcher();
 </script>
 

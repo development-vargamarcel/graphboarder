@@ -37,7 +37,7 @@
 {#if node.hasOwnProperty('items')}
 	<section
 		class=" bg-base-100/50 rounded-l-none {node?.items?.length == 0 ? 'pt-10' : ''} {node?.isMain
-			? 'pb-10 border-l-2 border-l-primary'
+			? 'pb-10 border-l-2 border-l-primary  '
 			: ''}"
 		use:dndzone={{ items: node.items, flipDurationMs }}
 		on:consider={handleDndConsider}

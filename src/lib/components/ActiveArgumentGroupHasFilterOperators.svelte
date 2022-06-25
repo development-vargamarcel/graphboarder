@@ -12,6 +12,7 @@
 	export let node;
 	export let availableOperators;
 	export let group;
+	export let type;
 	let dragDisabled = true;
 
 	const flipDurationMs = 300;
@@ -89,13 +90,13 @@
 		style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
 		on:mousedown={(e) => {
 			// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
-			//e.preventDefault();
+			e.preventDefault();
 
 			dispatch('childrenStartDrag');
 		}}
 		on:touchstart={(e) => {
 			// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
-			//e.preventDefault();
+			e.preventDefault();
 
 			dispatch('childrenStartDrag');
 		}}
@@ -182,13 +183,14 @@
 		<section
 			class=" rounded-l-none {node?.items?.length == 0 ? 'pt-20' : ''} {node?.isMain
 				? 'pb-10 border-l-2 border-l-transparent'
-				: ' pb-4'} {node?.isMain ? 'overflow-scroll overscroll-contain h-[75vh] ' : ''} w-full"
+				: ' pb-4'} {node?.isMain ? 'overflow-scroll  h-[60vh]' : 'min'} w-full"
 			use:dndzone={{
 				items: node.items,
 				dragDisabled,
 				flipDurationMs,
 				transformDraggedElement,
-				centreDraggedOnCursor: false
+				centreDraggedOnCursor: false,
+				type
 			}}
 			on:consider={handleDndConsider}
 			on:finalize={handleDndFinalize}
@@ -199,6 +201,7 @@
 			}) as item (item.id)}
 				<div animate:flip={{ duration: flipDurationMs }} class="  flex   ">
 					<svelte:self
+						{type}
 						bind:nodes
 						node={nodes[item.id]}
 						on:changed

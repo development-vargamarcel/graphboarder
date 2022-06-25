@@ -142,16 +142,7 @@
 	const availableOperators = ['_and', '_or', '_nor'];
 </script>
 
-<div class="p-2  h-80 overflow-auto">
-	<div>
-		<Content
-			node={nodes.mainContainer}
-			bind:nodes
-			on:changed={handle_changed}
-			{availableOperators}
-		/>
-	</div>
-</div>
+<Content node={nodes.mainContainer} bind:nodes on:changed={handle_changed} {availableOperators} />
 
 <button
 	class="btn btn-primary btn-sm"
