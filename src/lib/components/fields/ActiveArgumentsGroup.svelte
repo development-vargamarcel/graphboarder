@@ -216,15 +216,17 @@
 	>
 		{#each group.group_args as activeArgumentData (activeArgumentData.id)}
 			<div animate:flip={{ duration: flipDurationMs }} class="relative flex">
-				<div
-					tabindex={dragDisabled ? 0 : -1}
-					aria-label="drag-handle"
-					class="bi bi-grip-vertical pt-3 px-2"
-					style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
-					on:mousedown={startDrag}
-					on:touchstart={startDrag}
-					on:keydown={handleKeyDown}
-				/>
+				<div class="grid   content-center  rounded-full ">
+					<div
+						tabindex={dragDisabled ? 0 : -1}
+						aria-label="drag-handle"
+						class="bi bi-grip-vertical ml-2  -mr-1"
+						style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
+						on:mousedown={startDrag}
+						on:touchstart={startDrag}
+						on:keydown={handleKeyDown}
+					/>
+				</div>
 				<div
 					class="w-full "
 					on:mousedown={() => {
