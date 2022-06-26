@@ -185,7 +185,7 @@
 		<section
 			class=" rounded-l-none {node?.items?.length == 0 ? 'pt-20' : ''} {node?.isMain
 				? 'pb-10 border-l-2 border-l-transparent'
-				: ' pb-4'} {node?.isMain ? 'overflow-scroll  h-[60vh]' : 'min'} w-full"
+				: ' pb-4'} {node?.isMain ? 'overflow-scroll overscroll-contain h-[60vh]' : 'min'} w-full"
 			use:dndzone={{
 				items: node.items,
 				dragDisabled,

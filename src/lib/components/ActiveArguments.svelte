@@ -182,12 +182,12 @@
 
 <div class="flex space-x-2 mb-2 px-2">
 	<button
-		class="btn btn-xs  "
+		class="btn btn-xs btn-block  "
 		on:click={() => {
 			showModal = !showModal;
 			//showActiveFilters = !showActiveFilters;
 			showActiveFilters = true;
 		}}
-		>show active filters
+		><i class="bi bi-funnel-fill" />
 	</button>
 </div>
