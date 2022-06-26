@@ -47,21 +47,24 @@
 			shadowEl.appendChild(labelElClone);
 		}
 	}
+	let expandedVersion = false;
 </script>
 
 <!-- svelte-ignore a11y-label-has-associated-control -->
 <label
-	class=" bg-base-200 rounded-box p-2 my-2 flex   dnd-item"
+	class="  rounded-box p-2 my-2 flex   dnd-item {activeArgumentData?.inUse
+		? 'bg-base-300 ring ring-[1px] ring-primary/50'
+		: 'bg-base-200'} "
 	bind:this={labelEl}
 	on:contextmenu|preventDefault|stopPropagation={() => {
 		dispatch('contextmenuUsed');
 	}}
 >
 	<div class="grow ">
-		<div class="  flex  space-x-2 mb-2">
+		<div class="  flex  space-x-2 ">
 			<input
 				type="checkbox"
-				class="checkbox input-primary "
+				class="checkbox input-primary hidden"
 				checked={activeArgumentData?.inUse}
 				on:change={() => {
 					dispatch('inUseChanged');
@@ -95,179 +98,190 @@
 					{/if}
 				{/if}
 			</div>
+			{#if expandedVersion}
+				<button
+					class="btn btn-xs"
+					on:click={() => {
+						dispatch('delete_activeArgument');
+						// delete_activeArgument(activeArgumentData.id);
+					}}><i class="bi bi-trash3-fill" /></button
+				>
+			{/if}
+
 			<button
-				class="btn btn-xs"
+				class="btn btn-xs  {expandedVersion && 'btn-primary'}"
 				on:click={() => {
-					dispatch('delete_activeArgument');
-					// delete_activeArgument(activeArgumentData.id);
-				}}><i class="bi bi-trash3-fill" /></button
+					expandedVersion = !expandedVersion;
+				}}><i class="bi bi-chevron-expand" /></button
 			>
 		</div>
-		<div class="px-2">
-			{#if activeArgumentData.dd_displayType == 'ENUM'}
-				<div class="flex flex-col">
-					{#if activeArgumentData.dd_kindList}
-						<FilterGroup
-							containerEl={labelEl}
-							extraData={activeArgumentData}
-							choises={activeArgumentData?.chd_Choises
-								? activeArgumentData.chd_Choises
-								: activeArgumentData.enumValues.map((enumValue) => {
-										return enumValue.name;
-								  })}
-							chosen={activeArgumentData?.chd_chosen}
-							chosenInputField={activeArgumentData?.chosenInputField}
-							isINPUT_OBJECT={activeArgumentData?.isINPUT_OBJECT}
-							rawValue={activeArgumentData?.chd_rawValue}
-							on:changed={(e) => {
-								Object.assign(activeArgumentData, e.detail);
-								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-								Object.assign(group, generate_group_gqlArgObj(group));
-								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-								if (!group.group_argsNode) {
-									generate_final_gqlArgObj();
-								} else {
-									dispatch('changed', e.detail);
-								}
-								console.log(e.detail);
-							}}
-							id={activeArgumentData.stepsOfFieldsNew}
-							title="choose"
-							type="checkbox"
-						/>
-					{:else}
-						<FilterGroup
-							containerEl={labelEl}
-							extraData={activeArgumentData}
-							choises={activeArgumentData.enumValues.map((enumValue) => {
-								return enumValue.name;
-							})}
-							chosen={activeArgumentData?.chd_chosen}
-							chosenInputField={activeArgumentData?.chosenInputField}
-							isINPUT_OBJECT={activeArgumentData?.isINPUT_OBJECT}
-							rawValue={activeArgumentData?.chd_rawValue}
-							dispatchValue={activeArgumentData?.chd_dispatchValue}
-							on:changed={(e) => {
-								Object.assign(activeArgumentData, e.detail);
-								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-								Object.assign(group, generate_group_gqlArgObj(group));
-								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-								if (!group.group_argsNode) {
-									generate_final_gqlArgObj();
-								} else {
-									dispatch('changed', e.detail);
-								}
-								console.log(e.detail);
-							}}
-							id={activeArgumentData.stepsOfFieldsNew}
-							title="choose"
-							type="radio"
-						/>
-					{/if}
-				</div>
-			{:else if activeArgumentData.dd_displayType == 'INPUT_OBJECT'}
-				<FilterGroup
-					containerEl={labelEl}
-					extraData={activeArgumentData}
-					choises={activeArgumentData.inputFields.map((inputField) => {
-						return inputField.name;
-					})}
-					chosen={activeArgumentData?.chd_chosen}
-					chosenInputField={activeArgumentData?.chosenInputField}
-					isINPUT_OBJECT={activeArgumentData?.isINPUT_OBJECT}
-					rawValue={activeArgumentData?.chd_rawValue}
-					dispatchValue={activeArgumentData?.chd_dispatchValue}
-					on:changed={(e) => {
-						Object.assign(activeArgumentData, e.detail);
-						Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-						Object.assign(group, generate_group_gqlArgObj(group));
-						console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+		{#if expandedVersion}
+			<div class="px-2 mt-2">
+				{#if activeArgumentData.dd_displayType == 'ENUM'}
+					<div class="flex flex-col">
+						{#if activeArgumentData.dd_kindList}
+							<FilterGroup
+								containerEl={labelEl}
+								extraData={activeArgumentData}
+								choises={activeArgumentData?.chd_Choises
+									? activeArgumentData.chd_Choises
+									: activeArgumentData.enumValues.map((enumValue) => {
+											return enumValue.name;
+									  })}
+								chosen={activeArgumentData?.chd_chosen}
+								chosenInputField={activeArgumentData?.chosenInputField}
+								isINPUT_OBJECT={activeArgumentData?.isINPUT_OBJECT}
+								rawValue={activeArgumentData?.chd_rawValue}
+								on:changed={(e) => {
+									Object.assign(activeArgumentData, e.detail);
+									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+									Object.assign(group, generate_group_gqlArgObj(group));
+									console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+									if (!group.group_argsNode) {
+										generate_final_gqlArgObj();
+									} else {
+										dispatch('changed', e.detail);
+									}
+									console.log(e.detail);
+								}}
+								id={activeArgumentData.stepsOfFieldsNew}
+								title="choose"
+								type="checkbox"
+							/>
+						{:else}
+							<FilterGroup
+								containerEl={labelEl}
+								extraData={activeArgumentData}
+								choises={activeArgumentData.enumValues.map((enumValue) => {
+									return enumValue.name;
+								})}
+								chosen={activeArgumentData?.chd_chosen}
+								chosenInputField={activeArgumentData?.chosenInputField}
+								isINPUT_OBJECT={activeArgumentData?.isINPUT_OBJECT}
+								rawValue={activeArgumentData?.chd_rawValue}
+								dispatchValue={activeArgumentData?.chd_dispatchValue}
+								on:changed={(e) => {
+									Object.assign(activeArgumentData, e.detail);
+									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+									Object.assign(group, generate_group_gqlArgObj(group));
+									console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+									if (!group.group_argsNode) {
+										generate_final_gqlArgObj();
+									} else {
+										dispatch('changed', e.detail);
+									}
+									console.log(e.detail);
+								}}
+								id={activeArgumentData.stepsOfFieldsNew}
+								title="choose"
+								type="radio"
+							/>
+						{/if}
+					</div>
+				{:else if activeArgumentData.dd_displayType == 'INPUT_OBJECT'}
+					<FilterGroup
+						containerEl={labelEl}
+						extraData={activeArgumentData}
+						choises={activeArgumentData.inputFields.map((inputField) => {
+							return inputField.name;
+						})}
+						chosen={activeArgumentData?.chd_chosen}
+						chosenInputField={activeArgumentData?.chosenInputField}
+						isINPUT_OBJECT={activeArgumentData?.isINPUT_OBJECT}
+						rawValue={activeArgumentData?.chd_rawValue}
+						dispatchValue={activeArgumentData?.chd_dispatchValue}
+						on:changed={(e) => {
+							Object.assign(activeArgumentData, e.detail);
+							Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+							Object.assign(group, generate_group_gqlArgObj(group));
+							console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 
-						if (!group.group_argsNode) {
-							generate_final_gqlArgObj();
-						} else {
-							dispatch('changed', e.detail);
-						}
-						console.log(e.detail);
-					}}
-					id={activeArgumentData.stepsOfFieldsNew}
-					title="choose"
-					type="radio"
-				/>
-			{:else}
-				<div>
-					{#if activeArgumentData.dd_displayType == 'boolean'}
-						<Toggle
-							dd_displayType={activeArgumentData.dd_displayType}
-							rawValue={activeArgumentData?.chd_rawValue}
-							on:changed={(e) => {
-								Object.assign(activeArgumentData, e.detail);
-								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-								Object.assign(group, generate_group_gqlArgObj(group));
-								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-								if (!group.group_argsNode) {
-									generate_final_gqlArgObj();
-								} else {
-									dispatch('changed', e.detail);
-								}
-								console.log(e.detail);
-							}}
-						/>
-					{:else if activeArgumentData.dd_displayType == 'geo'}
-						<Map
-							rawValue={activeArgumentData?.chd_rawValue}
-							on:changed={(e) => {
-								Object.assign(activeArgumentData, e.detail);
-								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-								Object.assign(group, generate_group_gqlArgObj(group));
-								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-								if (!group.group_argsNode) {
-									generate_final_gqlArgObj();
-								} else {
-									dispatch('changed', e.detail);
-								}
-								console.log(e.detail);
-							}}
-						/>
-					{:else if activeArgumentData.dd_kindList}
-						<Textarea
-							dd_displayType={activeArgumentData.dd_displayType}
-							rawValue={activeArgumentData?.chd_rawValue}
-							dispatchValue={activeArgumentData?.chd_dispatchValue}
-							on:changed={(e) => {
-								Object.assign(activeArgumentData, e.detail);
-								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-								Object.assign(group, generate_group_gqlArgObj(group));
-								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-								if (!group.group_argsNode) {
-									generate_final_gqlArgObj();
-								} else {
-									dispatch('changed', e.detail);
-								}
-								console.log(e.detail);
-							}}
-						/>
-					{:else}
-						<Input
-							dd_displayType={activeArgumentData.dd_displayType}
-							rawValue={activeArgumentData?.chd_rawValue}
-							on:changed={(e) => {
-								Object.assign(activeArgumentData, e.detail);
-								Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-								Object.assign(group, generate_group_gqlArgObj(group));
-								console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-								if (!group.group_argsNode) {
-									generate_final_gqlArgObj();
-								} else {
-									dispatch('changed', e.detail);
-								}
-								console.log(e.detail);
-							}}
-						/>
-					{/if}
-				</div>
-			{/if}
-		</div>
+							if (!group.group_argsNode) {
+								generate_final_gqlArgObj();
+							} else {
+								dispatch('changed', e.detail);
+							}
+							console.log(e.detail);
+						}}
+						id={activeArgumentData.stepsOfFieldsNew}
+						title="choose"
+						type="radio"
+					/>
+				{:else}
+					<div>
+						{#if activeArgumentData.dd_displayType == 'boolean'}
+							<Toggle
+								dd_displayType={activeArgumentData.dd_displayType}
+								rawValue={activeArgumentData?.chd_rawValue}
+								on:changed={(e) => {
+									Object.assign(activeArgumentData, e.detail);
+									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+									Object.assign(group, generate_group_gqlArgObj(group));
+									console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+									if (!group.group_argsNode) {
+										generate_final_gqlArgObj();
+									} else {
+										dispatch('changed', e.detail);
+									}
+									console.log(e.detail);
+								}}
+							/>
+						{:else if activeArgumentData.dd_displayType == 'geo'}
+							<Map
+								rawValue={activeArgumentData?.chd_rawValue}
+								on:changed={(e) => {
+									Object.assign(activeArgumentData, e.detail);
+									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+									Object.assign(group, generate_group_gqlArgObj(group));
+									console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+									if (!group.group_argsNode) {
+										generate_final_gqlArgObj();
+									} else {
+										dispatch('changed', e.detail);
+									}
+									console.log(e.detail);
+								}}
+							/>
+						{:else if activeArgumentData.dd_kindList}
+							<Textarea
+								dd_displayType={activeArgumentData.dd_displayType}
+								rawValue={activeArgumentData?.chd_rawValue}
+								dispatchValue={activeArgumentData?.chd_dispatchValue}
+								on:changed={(e) => {
+									Object.assign(activeArgumentData, e.detail);
+									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+									Object.assign(group, generate_group_gqlArgObj(group));
+									console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+									if (!group.group_argsNode) {
+										generate_final_gqlArgObj();
+									} else {
+										dispatch('changed', e.detail);
+									}
+									console.log(e.detail);
+								}}
+							/>
+						{:else}
+							<Input
+								dd_displayType={activeArgumentData.dd_displayType}
+								rawValue={activeArgumentData?.chd_rawValue}
+								on:changed={(e) => {
+									Object.assign(activeArgumentData, e.detail);
+									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+									Object.assign(group, generate_group_gqlArgObj(group));
+									console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+									if (!group.group_argsNode) {
+										generate_final_gqlArgObj();
+									} else {
+										dispatch('changed', e.detail);
+									}
+									console.log(e.detail);
+								}}
+							/>
+						{/if}
+					</div>
+				{/if}
+			</div>
+		{/if}
 	</div>
 
 	<!-- <button

@@ -77,41 +77,42 @@
 	const dragDisabledConstantTest = true;
 </script>
 
-<div class=" grid   content-center  rounded-full ">
-	<div
-		tabindex={dragDisabled ? 0 : -1}
-		aria-label="drag-handle"
-		class="  transition:all duration-500 bi bi-grip-vertical ml-2  -mr-1 text-lg rounded-md {node?.operator ==
-		undefined
-			? 'text-base-content'
-			: node?.operator == '_and'
-			? 'text-primary'
-			: 'text-accent-focus'} {node?.not ? ' bg-gradient-to-r from-base-300/100' : 'bg-error/0'}"
-		style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
-		on:mousedown={(e) => {
-			// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
-			e.preventDefault();
+{#if !node?.isMain}
+	<div class=" grid   content-center  rounded-full ">
+		<div
+			tabindex={dragDisabled ? 0 : -1}
+			aria-label="drag-handle"
+			class="  transition:all duration-500 bi bi-grip-vertical ml-2  -mr-1 text-lg rounded-l-md {node?.operator ==
+			undefined
+				? 'text-base-content'
+				: node?.operator == '_and'
+				? 'text-primary'
+				: 'text-accent-focus'} {node?.not ? ' bg-gradient-to-r from-base-300/100' : 'bg-error/0'}"
+			style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
+			on:mousedown={(e) => {
+				// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
+				e.preventDefault();
 
-			dispatch('childrenStartDrag');
-		}}
-		on:touchstart={(e) => {
-			// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
-			e.preventDefault();
+				dispatch('childrenStartDrag');
+			}}
+			on:touchstart={(e) => {
+				// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
+				e.preventDefault();
 
-			dispatch('childrenStartDrag');
-		}}
-		on:keydown={handleKeyDown}
-		on:contextmenu|preventDefault|stopPropagation={() => {
-			if (node?.not !== undefined) {
-				node.not = !node.not;
-			}
-		}}
-	/>
-</div>
+				dispatch('childrenStartDrag');
+			}}
+			on:keydown={handleKeyDown}
+			on:contextmenu|preventDefault|stopPropagation={() => {
+				if (node?.not !== undefined) {
+					node.not = !node.not;
+				}
+			}}
+		/>
+	</div>{/if}
 
 <div
-	class=" w-full transition-all duration-500 my-1  {node?.operator
-		? 'rounded-l-md bg-gradient-to-rxxx   border-l-[1px]'
+	class=" w-full transition-all duration-500   {node?.operator
+		? 'rounded-l-md bg-gradient-to-rxxx   border-l-[1px] my-1'
 		: ''} 
 {node?.operator && node?.not ? 'border-dashed  ' : ''} 
 {node?.operator == '_and' ? 'border-primary' : 'border-accent-focus '}"
@@ -132,26 +133,27 @@
 	}}
 >
 	{#if node?.operator}
-		<b
-			style=""
-			class="px-2 pb-1 font-light transition-all duration-500  rounded-full rounded-tl-none {node?.operator ==
-			'_and'
-				? 'text-primary'
-				: 'text-accent-focus'}"
-			on:click={() => {
-				if (node?.operator && !node?.isMain) {
-					if (node?.operator == '_or') {
-						node.operator = '_and';
-					} else {
-						node.operator = '_or';
+		<div class="flex">
+			<p
+				style=""
+				class="px-2 pb-1 font-light transition-all duration-500  rounded-full rounded-tl-none {node?.operator ==
+				'_and'
+					? 'text-primary'
+					: 'text-accent-focus'}"
+				on:click={() => {
+					if (node?.operator && !node?.isMain) {
+						if (node?.operator == '_or') {
+							node.operator = '_and';
+						} else {
+							node.operator = '_or';
+						}
 					}
-				}
-				dispatch('changed');
-			}}
-		>
-			{node.operator}
-		</b>
-		<br />
+					dispatch('changed');
+				}}
+			>
+				{node.operator}
+			</p>
+		</div>
 	{:else}
 		<div class="pr-2 rounded-box  w-full">
 			<div
