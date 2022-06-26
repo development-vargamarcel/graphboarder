@@ -85,7 +85,7 @@
 </script>
 
 <div class="">
-	<div class="drawer drawer-end 	">
+	<div class="drawer drawer-end 	h-[89vh]">
 		<input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
 		<div class="drawer-content overscroll-contain pb-60">
 			<table class="table table-compact w-full rounded-none">
