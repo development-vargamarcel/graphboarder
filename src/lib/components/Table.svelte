@@ -87,7 +87,7 @@
 <div class="">
 	<div class="drawer drawer-end 	h-[89vh]">
 		<input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
-		<div class="drawer-content overscroll-contain pb-60">
+		<div class="drawer-content overscroll-contain pb-40">
 			<table class="table table-compact w-full rounded-none">
 				<thead class="sticky top-0 z-20">
 					<tr class="sticky top-0 z-20">
