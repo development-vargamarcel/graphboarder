@@ -94,14 +94,14 @@
 					}
 				}}
 			/>
-			<div class="   text-xs  select-none flex grow flex-nowrap">
-				<div class="flex flex-nowrap  overflow-x-auto  max-w-[65vw]">
-					<p class="text-primary pr-1  shrink-0 ">
+			<div class="   text-xs  select-none flex grow flex-nowrap pt-1">
+				<div class="flex flex-nowrap  overflow-x-auto  max-w-[65vw] ">
+					<p class="  pr-1  shrink-0  text-base-content">
 						{activeArgumentData.stepsOfFieldsNew?.join(' > ') + ':'}
 					</p>
 
 					{#if !expandedVersion}
-						<p class="shrink-0">{valueToDisplay()}</p>
+						<p class="shrink-0 text-base-content font-light">{valueToDisplay()}</p>
 					{/if}
 				</div>
 			</div>
