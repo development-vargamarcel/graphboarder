@@ -65,7 +65,9 @@
 
 <!-- svelte-ignore a11y-label-has-associated-control -->
 <label
-	class="  rounded-box p-2 my-2 flex   dnd-item {activeArgumentData?.inUse
+	class="  rounded-box {expandedVersion
+		? 'p-2'
+		: ''}  my-2 flex   dnd-item {activeArgumentData?.inUse
 		? 'bg-base-300 ring ring-[1px] ring-primary/50'
 		: 'bg-base-200'} "
 	bind:this={labelEl}
@@ -92,12 +94,14 @@
 					}
 				}}
 			/>
-			<div class="   text-xs  select-none flex grow">
-				<div class="flex overflow-x-auto max-w-[60vw]">
-					<p class="text-primary pr-1">{activeArgumentData.stepsOfFieldsNew?.join(' > ') + ':'}</p>
+			<div class="   text-xs  select-none flex grow flex-nowrap">
+				<div class="flex flex-nowrap  overflow-x-auto  max-w-[65vw]">
+					<p class="text-primary pr-1  shrink-0 ">
+						{activeArgumentData.stepsOfFieldsNew?.join(' > ') + ':'}
+					</p>
 
 					{#if !expandedVersion}
-						<p class=" ">{valueToDisplay()}</p>
+						<p class="shrink-0">{valueToDisplay()}</p>
 					{/if}
 				</div>
 			</div>
@@ -121,7 +125,7 @@
 			{/if}
 
 			<button
-				class="btn btn-xs  {expandedVersion && 'btn-primary'}"
+				class="btn btn-xs {expandedVersion ? 'btn-primary ' : '  '}"
 				on:click={() => {
 					expandedVersion = !expandedVersion;
 				}}><i class="bi bi-chevron-expand" /></button
