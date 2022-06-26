@@ -48,6 +48,19 @@
 		}
 	}
 	let expandedVersion = false;
+	let valueToDisplay = () => {
+		let value;
+		if (activeArgumentData.dd_displayType == 'ENUM') {
+			value = activeArgumentData.chd_chosen;
+		} else if (activeArgumentData.dd_displayType == 'geo') {
+			value = '[map]';
+		} else {
+			value = activeArgumentData.chd_dispatchValue;
+		}
+		// else if(){
+		// }
+		return value;
+	};
 </script>
 
 <!-- svelte-ignore a11y-label-has-associated-control -->
@@ -79,26 +92,25 @@
 					}
 				}}
 			/>
-			<div class="  overflow-x-auto text-xs break-words select-none  flex grow">
-				<div>
-					{activeArgumentData.stepsOfFieldsNew?.join(' > ')}
+			<div class="   text-xs  select-none flex grow">
+				<div class="flex overflow-x-auto max-w-[60vw]">
+					<p class="text-primary pr-1">{activeArgumentData.stepsOfFieldsNew?.join(' > ') + ':'}</p>
+
+					{#if !expandedVersion}
+						<p class=" ">{valueToDisplay()}</p>
+					{/if}
 				</div>
+			</div>
+			{#if expandedVersion}
 				{#if activeArgumentData.description}
-					<i
-						class="bi bi-info-circle text-secondary mx-2"
+					<button
+						class="btn btn-xs bi bi-info-circle mx-2"
 						title={activeArgumentData.description}
 						on:click={() => {
 							showDescription = !showDescription;
 						}}
 					/>
-					{#if showDescription}
-						<p class="text-secondary text-xs select-none">
-							({activeArgumentData.description})
-						</p>
-					{/if}
 				{/if}
-			</div>
-			{#if expandedVersion}
 				<button
 					class="btn btn-xs"
 					on:click={() => {
@@ -115,6 +127,11 @@
 				}}><i class="bi bi-chevron-expand" /></button
 			>
 		</div>
+		{#if showDescription}
+			<p class="text-secondary text-xs select-none">
+				({activeArgumentData.description})
+			</p>
+		{/if}
 		{#if expandedVersion}
 			<div class="px-2 mt-2">
 				{#if activeArgumentData.dd_displayType == 'ENUM'}
