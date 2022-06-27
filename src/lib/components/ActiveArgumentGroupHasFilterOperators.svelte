@@ -136,7 +136,7 @@
 		<div class="flex">
 			<p
 				style=""
-				class="px-2 pb-1 font-light transition-all duration-500  rounded-full rounded-tl-none {node?.operator ==
+				class="px-2 pb-1 text-xs font-light transition-all duration-500  rounded-full rounded-tl-none {node?.operator ==
 				'_and'
 					? 'text-primary'
 					: 'text-accent-focus'}"
@@ -185,7 +185,7 @@
 		<section
 			class=" rounded-l-none {node?.items?.length == 0 ? 'pt-20' : ''} {node?.isMain
 				? 'pb-10 border-l-2 border-l-transparent'
-				: ' pb-4'} {node?.isMain ? 'overflow-scroll overscroll-contain h-[60vh]' : 'min'} w-full"
+				: ' pb-2'} {node?.isMain ? 'overflow-scroll overscroll-contain h-[60vh]' : 'min'} w-full"
 			use:dndzone={{
 				items: node.items,
 				dragDisabled,
