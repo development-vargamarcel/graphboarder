@@ -20,11 +20,11 @@
 	});
 </script>
 
-<div class="drawer  drawer-mobile">
+<div class="drawer  drawer-mobile  h-screen overflow-hidden">
 	<input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
-	<div class="drawer-content  flex flex-col  w-full ">
+	<div class="drawer-content  flex flex-col  w-full  ">
 		<!-- Navbar -->
-		<div class="w-full navbar bg-base-300 h-[20vh]">
+		<div class="w-full  bg-base-300 flex ">
 			<div class="flex-none lg:hidden">
 				<label for="my-drawer-3" class="btn btn-square btn-ghost">
 					<svg
@@ -41,12 +41,12 @@
 					>
 				</label>
 			</div>
-			<div class="flex-1 px-2 mx-2 space-x-2">
+			<div class="flex-1 pt-3 px-2 mx-2 space-x-2">
 				<a href="/">go home</a><a href="/queries">go to queries</a>
 			</div>
 		</div>
 		<!-- overflow-auto h-full -->
-		<div class="w-full">
+		<div class="w-full h-[89vh]">
 			{#key pathname}
 				<slot />
 			{/key}
