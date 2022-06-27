@@ -76,7 +76,7 @@
 				<div class="my-4 h-2 bg-base-300    rounded-box mx-auto w-12  " />
 			</div>
 
-			<div class="px-3 pb-10 ">
+			<div class="px-3 pb-40 ">
 				<slot />
 			</div>
 		</div>

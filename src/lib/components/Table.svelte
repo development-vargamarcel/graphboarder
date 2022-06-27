@@ -84,10 +84,10 @@
 	const dispatch = createEventDispatcher();
 </script>
 
-<div class="drawer drawer-end h-full	">
+<div class="drawer drawer-end h-full	 ">
 	<input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
-	<div class="drawer-content overscroll-contain pb-10">
-		<table class="table table-compact w-full rounded-none">
+	<div class="drawer-content overscroll-contain ">
+		<table class="table table-compact w-full rounded-none  mb-32">
 			<thead class="sticky top-0 z-20">
 				<tr class="sticky top-0 z-20">
 					<th>
@@ -199,7 +199,7 @@
 							<div class="btn btn-success mb-40">ok</div>
 						</div>
 					</div>
-					<div class="px-2 mt-4 pb-10">content here</div>
+					<div class="px-2 mt-4 pb-40">content here</div>
 				</div>
 			</div>
 		</div>
