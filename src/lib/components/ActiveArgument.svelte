@@ -67,7 +67,7 @@
 <label
 	class="  rounded-box {expandedVersion
 		? 'p-2'
-		: ''}  my-2 flex   dnd-item {activeArgumentData?.inUse
+		: ''}  my-1 flex   dnd-item {activeArgumentData?.inUse
 		? 'bg-base-300 ring ring-[1px] ring-primary/50'
 		: 'bg-base-200'} "
 	bind:this={labelEl}
