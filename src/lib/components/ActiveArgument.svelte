@@ -61,7 +61,7 @@
 		// }
 		return value;
 	};
-	let canRunQuery = undefined;
+	let canRunQuery = activeArgumentData?.canRunQuery;
 	const handleChanged = (detail) => {
 		Object.assign(activeArgumentData, detail);
 		Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
@@ -175,20 +175,22 @@
 								isINPUT_OBJECT={activeArgumentData?.isINPUT_OBJECT}
 								rawValue={activeArgumentData?.chd_rawValue}
 								on:changed={(e) => {
-									Object.assign(activeArgumentData, e.detail);
-									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-									Object.assign(group, generate_group_gqlArgObj(group));
-									console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-									console.log(
-										'generate_gqlArgObj([activeArgumentData])',
-										generate_gqlArgObj([activeArgumentData])
-									);
-									if (!group.group_argsNode) {
-										generate_final_gqlArgObj();
-									} else {
-										dispatch('changed', e.detail);
-									}
-									console.log(e.detail);
+									handleChanged(e.detail);
+
+									// Object.assign(activeArgumentData, e.detail);
+									// Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+									// Object.assign(group, generate_group_gqlArgObj(group));
+									// console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+									// console.log(
+									// 	'generate_gqlArgObj([activeArgumentData])',
+									// 	generate_gqlArgObj([activeArgumentData])
+									// );
+									// if (!group.group_argsNode) {
+									// 	generate_final_gqlArgObj();
+									// } else {
+									// 	dispatch('changed', e.detail);
+									// }
+									// console.log(e.detail);
 								}}
 								id={activeArgumentData.stepsOfFieldsNew}
 								title="choose"
