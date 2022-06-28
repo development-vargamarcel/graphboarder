@@ -183,7 +183,7 @@
 
 	{#if node.hasOwnProperty('items')}
 		<section
-			class=" rounded-l-none {node?.items?.length == 0 ? 'pt-20' : ''} {node?.isMain
+			class=" rounded-l-none {node?.items?.length == 0 ? 'pt-6' : ''} {node?.isMain
 				? 'pb-10 border-l-2 border-l-transparent'
 				: ' pb-2'} {node?.isMain ? 'overflow-scroll overscroll-contain h-[60vh]' : 'min'} w-full"
 			use:dndzone={{

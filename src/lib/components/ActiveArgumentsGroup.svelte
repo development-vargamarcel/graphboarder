@@ -283,15 +283,6 @@
 			bind:nodes={group.group_argsNode}
 			on:changed={() => {
 				let gqlArgObj_forHasOperators = generate_gqlArgObj_forHasOperators(group.group_argsNode);
-
-				let nodesClone = JSON.parse(JSON.stringify(group.group_argsNode));
-				let values = Object.values(nodesClone);
-				let valuesWithItems = values.filter((node) => {
-					return node?.items?.length > 0;
-				});
-				console.log('group.group_argsNode', group.group_argsNode);
-				console.log({ values });
-				console.log({ valuesWithItems });
 			}}
 		/>
 	</div>
