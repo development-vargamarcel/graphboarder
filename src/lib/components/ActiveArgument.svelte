@@ -79,6 +79,9 @@
 		}
 		console.log(detail);
 		canRunQuery = activeArgumentData?.canRunQuery;
+if (activeArgumentData?.inUse && !(valueToDisplay()==undefined || !canRunQuery) ) {
+						expandedVersion=false;
+					}
 	};
 </script>
 
