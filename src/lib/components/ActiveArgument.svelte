@@ -103,7 +103,7 @@
 				class="checkbox input-primary hidden"
 				checked={activeArgumentData?.inUse}
 				on:change={() => {
-					if (!canRunQuery && !activeArgumentData.inUse && activeArgumentData?.chd_dispatchValue==undefined) {
+					if (  !activeArgumentData.inUse && (activeArgumentData?.chd_dispatchValue==undefined || !canRunQuery) ) {
 						expandedVersion = true;
 					}
 					if (!canRunQuery && activeArgumentData.inUse && expandedVersion == true && !(activeArgumentData?.chd_dispatchValue==undefined) ) {
