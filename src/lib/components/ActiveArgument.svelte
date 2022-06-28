@@ -104,11 +104,9 @@
 				checked={activeArgumentData?.inUse}
 				on:change={() => {
 					if (  !activeArgumentData.inUse && (activeArgumentData?.chd_dispatchValue==undefined || !canRunQuery) ) {
-						expandedVersion = true;
+						expandedVersion=!expandedVersion ;
 					}
-					if (!canRunQuery && activeArgumentData.inUse && expandedVersion == true && !(activeArgumentData?.chd_dispatchValue==undefined) ) {
-						expandedVersion = false;
-					}
+					
 					/////
 					dispatch('inUseChanged');
 					activeArgumentData.inUse =
