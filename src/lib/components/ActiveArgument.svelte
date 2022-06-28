@@ -114,7 +114,7 @@
 						Object.assign(group, generate_group_gqlArgObj(group));
 					}
 
-					if (!canRunQuery) {
+					if (!canRunQuery && activeArgumentData.inUse) {
 						expandedVersion = true;
 					}
 				}}
