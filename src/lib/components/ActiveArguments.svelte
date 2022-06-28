@@ -17,7 +17,7 @@
 	import Modal from './Modal.svelte';
 	import Toggle from './fields/Toggle.svelte';
 	import Arg from './Arg.svelte';
-	import ActiveArgumentsGroup from './fields/ActiveArgumentsGroup.svelte';
+	import ActiveArgumentsGroup from './ActiveArgumentsGroup.svelte';
 	let _scalarsAndEnumsDisplayTypes = $scalarsAndEnumsDisplayTypes;
 	let activeArgumentsDataGrouped = [];
 	const update_activeArgumentsDataGrouped = (groupNewData) => {

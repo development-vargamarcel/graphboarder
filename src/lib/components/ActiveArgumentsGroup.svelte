@@ -1,9 +1,5 @@
 <script>
-	import SimpleDNDZone from './../SimpleDNDZone.svelte';
-	import ActiveArgument from '../ActiveArgument.svelte';
-
-	import Arg from '../Arg.svelte';
-
+	import ActiveArgument from '$lib/components/ActiveArgument.svelte';
 	export let group;
 	export let argsInfo;
 	export let activeArgumentsData;
@@ -22,7 +18,9 @@
 	import { cubicIn } from 'svelte/easing';
 	import { flip } from 'svelte/animate';
 	import { createEventDispatcher } from 'svelte';
-	import ActiveArgumentGroupHasFilterOperators from '../ActiveArgumentGroupHasFilterOperators.svelte';
+	import ActiveArgumentGroupHasFilterOperators from '$lib/components/ActiveArgumentGroupHasFilterOperators.svelte';
+	import SimpleDndZone from './SimpleDNDZone.svelte';
+	import Arg from './Arg.svelte';
 	const flipDurationMs = 200;
 	let dragDisabled = true;
 	const dispatch = createEventDispatcher();
