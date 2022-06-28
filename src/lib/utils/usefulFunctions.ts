@@ -557,10 +557,12 @@ export const generate_derivedData = (type, rootTypes) => { //type/field
 
 
 export const generate_gqlArgObj = (group_argumentsData) => {
+
     // check for group if expects list and treat it accordingly like here --->https://stackoverflow.com/questions/69040911/hasura-order-by-date-with-distinct
     let gqlArgObj = {};
     let canRunQuery = true;
     group_argumentsData.forEach((argData) => {
+        console.log('argData', argData)
         if (argData.inUse) {
             let { chd_chosen, chd_dispatchValue, chd_needsValue, chd_needsChosen, stepsOfFieldsNew } =
                 argData;
@@ -613,11 +615,20 @@ export const generate_gqlArgObj = (group_argumentsData) => {
                 }
             });
             console.log('curr_gqlArgObj', curr_gqlArgObj);
+
+            if (chd_chosen == undefined &&
+                chd_dispatchValue == undefined &&
+                chd_needsValue == undefined &&
+                chd_needsChosen == undefined) {
+                canRunQuery = false;
+            }
+
         }
     });
 
     console.log('gqlArgObj', gqlArgObj);
     console.log('canRunQuery', canRunQuery);
+
 
     return {
         arg_gqlArgObj: gqlArgObj, arg_canRunQuery: canRunQuery, gqlArgObj,

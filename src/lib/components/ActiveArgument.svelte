@@ -61,14 +61,35 @@
 		// }
 		return value;
 	};
+	let canRunQuery = undefined;
+	const handleChanged = (detail) => {
+		Object.assign(activeArgumentData, detail);
+		Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+		Object.assign(group, generate_group_gqlArgObj(group));
+		console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+		console.log(
+			'generate_gqlArgObj([activeArgumentData])',
+			generate_gqlArgObj([activeArgumentData])
+		);
+
+		if (!group.group_argsNode) {
+			generate_final_gqlArgObj();
+		} else {
+			dispatch('changed', detail);
+		}
+		console.log(detail);
+		canRunQuery = activeArgumentData?.canRunQuery;
+	};
 </script>
 
 <!-- svelte-ignore a11y-label-has-associated-control -->
 <label
-	class="  rounded-box {expandedVersion
+	class="   rounded-box {expandedVersion
 		? 'p-2'
 		: ''}  my-1 flex   dnd-item {activeArgumentData?.inUse
-		? 'bg-base-300 ring ring-[1px] ring-primary/50'
+		? canRunQuery
+			? 'ring ring-[1px]  bg-base-300 ring-primary/50'
+			: 'ring ring-[1px]  ring-error/50 bg-error/50'
 		: 'bg-base-200'} "
 	bind:this={labelEl}
 	on:contextmenu|preventDefault|stopPropagation={() => {
@@ -158,6 +179,10 @@
 									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
 									Object.assign(group, generate_group_gqlArgObj(group));
 									console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+									console.log(
+										'generate_gqlArgObj([activeArgumentData])',
+										generate_gqlArgObj([activeArgumentData])
+									);
 									if (!group.group_argsNode) {
 										generate_final_gqlArgObj();
 									} else {
@@ -182,16 +207,7 @@
 								rawValue={activeArgumentData?.chd_rawValue}
 								dispatchValue={activeArgumentData?.chd_dispatchValue}
 								on:changed={(e) => {
-									Object.assign(activeArgumentData, e.detail);
-									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-									Object.assign(group, generate_group_gqlArgObj(group));
-									console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-									if (!group.group_argsNode) {
-										generate_final_gqlArgObj();
-									} else {
-										dispatch('changed', e.detail);
-									}
-									console.log(e.detail);
+									handleChanged(e.detail);
 								}}
 								id={activeArgumentData.stepsOfFieldsNew}
 								title="choose"
@@ -216,6 +232,10 @@
 							Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
 							Object.assign(group, generate_group_gqlArgObj(group));
 							console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+							console.log(
+								'generate_gqlArgObj([activeArgumentData])',
+								generate_gqlArgObj([activeArgumentData])
+							);
 
 							if (!group.group_argsNode) {
 								generate_final_gqlArgObj();
@@ -235,32 +255,14 @@
 								dd_displayType={activeArgumentData.dd_displayType}
 								rawValue={activeArgumentData?.chd_rawValue}
 								on:changed={(e) => {
-									Object.assign(activeArgumentData, e.detail);
-									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-									Object.assign(group, generate_group_gqlArgObj(group));
-									console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-									if (!group.group_argsNode) {
-										generate_final_gqlArgObj();
-									} else {
-										dispatch('changed', e.detail);
-									}
-									console.log(e.detail);
+									handleChanged(e.detail);
 								}}
 							/>
 						{:else if activeArgumentData.dd_displayType == 'geo'}
 							<Map
 								rawValue={activeArgumentData?.chd_rawValue}
 								on:changed={(e) => {
-									Object.assign(activeArgumentData, e.detail);
-									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-									Object.assign(group, generate_group_gqlArgObj(group));
-									console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-									if (!group.group_argsNode) {
-										generate_final_gqlArgObj();
-									} else {
-										dispatch('changed', e.detail);
-									}
-									console.log(e.detail);
+									handleChanged(e.detail);
 								}}
 							/>
 						{:else if activeArgumentData.dd_kindList}
@@ -269,16 +271,7 @@
 								rawValue={activeArgumentData?.chd_rawValue}
 								dispatchValue={activeArgumentData?.chd_dispatchValue}
 								on:changed={(e) => {
-									Object.assign(activeArgumentData, e.detail);
-									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-									Object.assign(group, generate_group_gqlArgObj(group));
-									console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-									if (!group.group_argsNode) {
-										generate_final_gqlArgObj();
-									} else {
-										dispatch('changed', e.detail);
-									}
-									console.log(e.detail);
+									handleChanged(e.detail);
 								}}
 							/>
 						{:else}
@@ -286,16 +279,7 @@
 								dd_displayType={activeArgumentData.dd_displayType}
 								rawValue={activeArgumentData?.chd_rawValue}
 								on:changed={(e) => {
-									Object.assign(activeArgumentData, e.detail);
-									Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-									Object.assign(group, generate_group_gqlArgObj(group));
-									console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-									if (!group.group_argsNode) {
-										generate_final_gqlArgObj();
-									} else {
-										dispatch('changed', e.detail);
-									}
-									console.log(e.detail);
+									handleChanged(e.detail);
 								}}
 							/>
 						{/if}
