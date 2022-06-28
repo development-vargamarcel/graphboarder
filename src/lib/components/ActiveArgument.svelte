@@ -113,6 +113,10 @@
 						Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
 						Object.assign(group, generate_group_gqlArgObj(group));
 					}
+
+					if (!canRunQuery) {
+						expandedVersion = true;
+					}
 				}}
 			/>
 			<div class="   text-xs  select-none flex grow flex-nowrap pt-1">
