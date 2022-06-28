@@ -103,6 +103,13 @@
 				class="checkbox input-primary hidden"
 				checked={activeArgumentData?.inUse}
 				on:change={() => {
+					if (!canRunQuery && !activeArgumentData.inUse) {
+						expandedVersion = true;
+					}
+					if (!canRunQuery && activeArgumentData.inUse && expandedVersion == true) {
+						expandedVersion = false;
+					}
+					/////
 					dispatch('inUseChanged');
 					activeArgumentData.inUse =
 						activeArgumentData.inUse !== undefined ? !activeArgumentData.inUse : true;
@@ -112,10 +119,6 @@
 						generate_final_gqlArgObj();
 						Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
 						Object.assign(group, generate_group_gqlArgObj(group));
-					}
-
-					if (!canRunQuery && activeArgumentData.inUse) {
-						expandedVersion = true;
 					}
 				}}
 			/>
