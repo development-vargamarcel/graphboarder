@@ -34,18 +34,7 @@
 	});
 
 	let currentQueryInfo = schemaData.get_QMS_Field(queryName, 'query');
-	let {
-		dd_kindsArray,
-		dd_namesArray,
-		dd_rootName,
-		dd_displayName,
-		dd_kindEl,
-		dd_kindEl_NON_NULL,
-		dd_kindList,
-		dd_kindList_NON_NULL,
-		dd_NON_NULL,
-		dd_relatedRoot
-	} = currentQueryInfo;
+	let { dd_relatedRoot } = currentQueryInfo;
 	if (!currentQueryInfo) {
 		goto('/queries');
 	}

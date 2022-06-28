@@ -21,6 +21,7 @@
 	import ActiveArgumentGroupHasFilterOperators from '$lib/components/ActiveArgumentGroupHasFilterOperators.svelte';
 	import SimpleDndZone from './SimpleDNDZone.svelte';
 	import Arg from './Arg.svelte';
+	import { generate_gqlArgObj_forHasOperators } from '$lib/utils/usefulFunctions';
 	const flipDurationMs = 200;
 	let dragDisabled = true;
 	const dispatch = createEventDispatcher();
@@ -281,6 +282,8 @@
 			{group}
 			bind:nodes={group.group_argsNode}
 			on:changed={() => {
+				let gqlArgObj_forHasOperators = generate_gqlArgObj_forHasOperators(group.group_argsNode);
+
 				let nodesClone = JSON.parse(JSON.stringify(group.group_argsNode));
 				let values = Object.values(nodesClone);
 				let valuesWithItems = values.filter((node) => {
