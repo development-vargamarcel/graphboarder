@@ -103,8 +103,8 @@
 				class="checkbox input-primary hidden"
 				checked={activeArgumentData?.inUse}
 				on:change={() => {
-					if (  valueToDisplay()==undefined || !canRunQuery) {
-						expandedVersion=!expandedVersion ;
+					if (!activeArgumentData?.inUse && (valueToDisplay()==undefined || !canRunQuery) ) {
+						expandedVersion=true;
 					}
 					
 					/////
