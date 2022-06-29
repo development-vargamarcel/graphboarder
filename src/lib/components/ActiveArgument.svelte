@@ -81,10 +81,29 @@
 		}
 		console.log(detail);
 		canRunQuery = activeArgumentData?.canRunQuery;
+		if (!activeArgumentData.inUse && valueToDisplay() !== undefined) {
+			inUse_toggle();
+		}
 	};
 	const handleClickOutside = () => {
 		console.log('clicked outside');
 		expandedVersion = false;
+	};
+	const inUse_toggle = () => {
+		if (!activeArgumentData?.inUse && (valueToDisplay() == undefined || !canRunQuery)) {
+			expandedVersion = true;
+		} else {
+			dispatch('inUseChanged');
+			activeArgumentData.inUse =
+				activeArgumentData.inUse !== undefined ? !activeArgumentData.inUse : true;
+
+			activeArgumentData = activeArgumentData;
+			if (!group.group_argsNode) {
+				generate_final_gqlArgObj();
+				Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+				Object.assign(group, generate_group_gqlArgObj(group));
+			}
+		}
 	};
 </script>
 
@@ -110,23 +129,7 @@
 				type="checkbox"
 				class="checkbox input-primary hidden"
 				checked={activeArgumentData?.inUse}
-				on:change={() => {
-					if (!activeArgumentData?.inUse && (valueToDisplay() == undefined || !canRunQuery)) {
-						expandedVersion = true;
-					}
-
-					/////
-					dispatch('inUseChanged');
-					activeArgumentData.inUse =
-						activeArgumentData.inUse !== undefined ? !activeArgumentData.inUse : true;
-
-					activeArgumentData = activeArgumentData;
-					if (!group.group_argsNode) {
-						generate_final_gqlArgObj();
-						Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-						Object.assign(group, generate_group_gqlArgObj(group));
-					}
-				}}
+				on:change={inUse_toggle}
 			/>
 			<div class="   text-xs  select-none flex grow flex-nowrap pt-1">
 				<div class="flex flex-nowrap  overflow-x-auto  max-w-[65vw] ">
