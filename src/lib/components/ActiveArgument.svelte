@@ -10,6 +10,7 @@
 	import { cubicIn } from 'svelte/easing';
 	import Map from './fields/Map.svelte';
 	import { generate_gqlArgObj, generate_group_gqlArgObj } from '$lib/utils/usefulFunctions';
+	import { clickOutside } from '$lib/actions/clickOutside';
 	let dispatch = createEventDispatcher();
 	export let activeArgumentData;
 	export let group;
@@ -79,14 +80,17 @@
 		}
 		console.log(detail);
 		canRunQuery = activeArgumentData?.canRunQuery;
-if (activeArgumentData?.inUse && !(valueToDisplay()==undefined || !canRunQuery) ) {
-						expandedVersion=false;
-					}
+	};
+	const handleClickOutside = () => {
+		console.log('clicked outside');
+		expandedVersion = false;
 	};
 </script>
 
 <!-- svelte-ignore a11y-label-has-associated-control -->
 <label
+	use:clickOutside
+	on:click_outside={handleClickOutside}
 	class="   rounded-box {expandedVersion
 		? 'p-2'
 		: ''}  my-1 flex   dnd-item {activeArgumentData?.inUse
@@ -106,10 +110,10 @@ if (activeArgumentData?.inUse && !(valueToDisplay()==undefined || !canRunQuery) 
 				class="checkbox input-primary hidden"
 				checked={activeArgumentData?.inUse}
 				on:change={() => {
-					if (!activeArgumentData?.inUse && (valueToDisplay()==undefined || !canRunQuery) ) {
-						expandedVersion=true;
+					if (!activeArgumentData?.inUse && (valueToDisplay() == undefined || !canRunQuery)) {
+						expandedVersion = true;
 					}
-					
+
 					/////
 					dispatch('inUseChanged');
 					activeArgumentData.inUse =
