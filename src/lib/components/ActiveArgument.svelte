@@ -84,6 +84,9 @@
 		if (!activeArgumentData.inUse && valueToDisplay() !== undefined) {
 			inUse_toggle();
 		}
+		if (activeArgumentData.inUse && valueToDisplay() == undefined) {
+			inUse_toggle();
+		}
 	};
 	const handleClickOutside = () => {
 		console.log('clicked outside');
