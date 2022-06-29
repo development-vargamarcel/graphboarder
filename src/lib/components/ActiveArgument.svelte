@@ -53,13 +53,14 @@
 		let value;
 		if (activeArgumentData.dd_displayType == 'ENUM') {
 			value = activeArgumentData.chd_chosen;
-		} else if (activeArgumentData.dd_displayType == 'geo') {
-			value = '[map]';
 		} else {
 			value = activeArgumentData.chd_dispatchValue;
 		}
-		// else if(){
-		// }
+
+		if (value && activeArgumentData.dd_displayType == 'geo') {
+			value = '[map]';
+		}
+
 		return value;
 	};
 	let canRunQuery = activeArgumentData?.canRunQuery;
