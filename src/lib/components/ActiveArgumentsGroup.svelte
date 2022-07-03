@@ -21,7 +21,24 @@
 	import ActiveArgumentGroupHasFilterOperators from '$lib/components/ActiveArgumentGroupHasFilterOperators.svelte';
 	import SimpleDndZone from './SimpleDNDZone.svelte';
 	import Arg from './Arg.svelte';
-	import { generate_gqlArgObj_forHasOperators } from '$lib/utils/usefulFunctions';
+	//import { generate_gqlArgObj_forHasOperators } from '$lib/utils/usefulFunctions';
+	/////
+	const generate_gqlArgObj_forHasOperators = (groupNodes) => {
+		let nodes = JSON.parse(JSON.stringify(groupNodes));
+		let nodesValues = Object.values(nodes);
+		let nodesValuesContainersWithItems = nodesValues.filter((node) => {
+			return node?.items?.length > 0;
+		});
+		console.log({ nodes });
+		console.log({ nodesValues });
+		console.log({ nodesValuesContainersWithItems });
+
+		let group_gqlArgObj = {};
+		let group_canRunQuery = true;
+
+		return group_gqlArgObj;
+	};
+	///
 	const flipDurationMs = 200;
 	let dragDisabled = true;
 	const dispatch = createEventDispatcher();

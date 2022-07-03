@@ -1,7 +1,7 @@
 <script lang="ts">
 	import DNDExample from './DNDExample.svelte';
 	import ActiveArgument from './ActiveArgument.svelte';
-	import { get_NamesArray } from './../utils/usefulFunctions.ts';
+	import { get_NamesArray } from './../utils/usefulFunctions.js';
 	import {
 		generate_final_gqlArgObjTEST,
 		generate_gqlArgObj,

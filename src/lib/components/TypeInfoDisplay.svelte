@@ -2,7 +2,7 @@
 	import {
 		stepsOfFieldsToQueryFragment,
 		stepsOfFieldsFlatten
-	} from './../utils/usefulFunctions.ts';
+	} from './../utils/usefulFunctions.js';
 	import { introspectionResult } from './../stores/introspectionResult.ts';
 	import { generateFragmentData, get_rootName } from '$lib/utils/usefulFunctions';
 	import { createEventDispatcher } from 'svelte';

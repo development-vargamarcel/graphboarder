@@ -24,6 +24,6 @@
 			chd_needsValue: true,
 			chd_needsChosen: false,
 			chd_rawValue: rawValue
-		}); //chd_ == chosen data
+		}); //chd_ == chosen data sdasd ss
 	}}
 />

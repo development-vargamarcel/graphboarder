@@ -193,7 +193,7 @@
 			<div
 				class="flex flex-col overflow-x-auto text-sm font-normal normal-case min-w-max  w-full  space-y-2"
 			>
-				{#key dd_relatedRoot.fields}
+				{#key dd_relatedRoot?.fields}
 					<input
 						type="text"
 						class="input input-sm input-bordered input-accent m-2"
