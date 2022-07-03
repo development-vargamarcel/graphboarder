@@ -121,6 +121,7 @@
 					mainContainer: {
 						operator: '_and',
 						isMain: true,
+						not: false,
 						items: [],
 						id: 'mainContainer'
 					}

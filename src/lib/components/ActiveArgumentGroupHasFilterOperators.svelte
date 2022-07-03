@@ -103,7 +103,7 @@
 			}}
 			on:keydown={handleKeyDown}
 			on:contextmenu|preventDefault|stopPropagation={() => {
-				if (node?.not !== undefined) {
+				if (!node?.isMain) {
 					node.not = !node.not;
 				}
 			}}
@@ -117,7 +117,7 @@
 {node?.operator && node?.not ? 'border-dashed  ' : ''} 
 {node?.operator == '_and' ? 'border-primary' : 'border-accent-focus '}"
 	on:contextmenu|preventDefault|stopPropagation={() => {
-		if (node?.not !== undefined) {
+		if (!node?.isMain) {
 			node.not = !node.not;
 		}
 	}}
@@ -163,7 +163,7 @@
 			>
 				<ActiveArgument
 					on:contextmenuUsed={() => {
-						if (node?.not !== undefined) {
+						if (!node?.isMain) {
 							node.not = !node.not;
 						}
 					}}
