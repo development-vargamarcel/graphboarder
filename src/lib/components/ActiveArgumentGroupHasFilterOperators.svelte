@@ -105,6 +105,7 @@
 			on:contextmenu|preventDefault|stopPropagation={() => {
 				if (!node?.isMain) {
 					node.not = !node.not;
+					dispatch('changed');
 				}
 			}}
 		/>
@@ -119,6 +120,7 @@
 	on:contextmenu|preventDefault|stopPropagation={() => {
 		if (!node?.isMain) {
 			node.not = !node.not;
+			dispatch('changed');
 		}
 	}}
 	bind:this={labelEl}
@@ -165,6 +167,7 @@
 					on:contextmenuUsed={() => {
 						if (!node?.isMain) {
 							node.not = !node.not;
+							dispatch('changed');
 						}
 					}}
 					on:inUseChanged={() => {}}
