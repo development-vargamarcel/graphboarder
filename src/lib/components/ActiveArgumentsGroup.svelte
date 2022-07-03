@@ -278,6 +278,7 @@
 
 {#if hasGroup_argsNode}
 	<!-- overflow-scroll overscroll-contain h-[75vh] -->
+
 	<div class=" ">
 		<ActiveArgumentGroupHasFilterOperators
 			on:updateQuery={() => {
@@ -294,6 +295,7 @@
 			}}
 			type={group.group_name + 'ActiveArgumentGroupHasFilterOperators'}
 			node={group.group_argsNode.mainContainer}
+			originalNodes={group.group_argsNode}
 			{group}
 			bind:nodes={group.group_argsNode}
 			on:changed={() => {

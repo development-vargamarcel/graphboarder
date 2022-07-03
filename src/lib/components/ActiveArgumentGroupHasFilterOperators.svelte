@@ -13,6 +13,7 @@
 	export let availableOperators;
 	export let group;
 	export let type;
+	export let originalNodes;
 	let dragDisabled = true;
 
 	const flipDurationMs = 300;
@@ -29,6 +30,15 @@
 		dragDisabled = true;
 	}
 
+	const deleteItem = (e) => {
+		node.items = node.items.filter((item) => {
+			return item.id !== e.detail.id;
+		});
+		// nodes[e.detail.id] = undefined;
+		//!!! to do: also delete the node from "nodes"
+		nodes = { ...nodes };
+		dispatch('changed');
+	};
 	//
 	let labelEl;
 	let shadowEl;
@@ -172,7 +182,9 @@
 					}}
 					on:updateQuery
 					on:inUseChanged={() => {}}
-					on:delete_activeArgument={() => {}}
+					on:delete_activeArgument={() => {
+						dispatch('deleteSubNode', node);
+					}}
 					activeArgumentData={node}
 					{group}
 				/>
@@ -206,6 +218,11 @@
 			}) as item (item.id)}
 				<div animate:flip={{ duration: flipDurationMs }} class="  flex   ">
 					<svelte:self
+						on:deleteSubNode={(e) => {
+							deleteItem(e);
+							console.log(e.detail.id, node);
+						}}
+						{originalNodes}
 						on:updateQuery
 						{type}
 						bind:nodes
