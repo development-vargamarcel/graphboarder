@@ -1,7 +1,10 @@
 <script lang="ts">
 	import DNDExample from './DNDExample.svelte';
 	import ActiveArgument from './ActiveArgument.svelte';
-	import { get_NamesArray } from './../utils/usefulFunctions.js';
+	import {
+		generate_FINAL_gqlArgObj_fromGroups,
+		get_NamesArray
+	} from './../utils/usefulFunctions.js';
 	import {
 		generate_final_gqlArgObjTEST,
 		generate_gqlArgObj,
@@ -41,56 +44,8 @@
 	let final_canRunQuery = true;
 
 	const generate_final_gqlArgObj = () => {
-		final_gqlArgObj = {};
-		final_canRunQuery = true;
-		activeArgumentsDataGrouped.forEach((group) => {
-			let group_argumentsData = group.group_args.filter((arg) => {
-				return arg.inUse;
-			});
-
-			if (group_argumentsData?.length > 0) {
-				console.log('group_argumentsData', group_argumentsData);
-
-				if (group.group_isRoot) {
-					console.log('root group handled');
-					let { gqlArgObj, canRunQuery } = generate_gqlArgObj(group_argumentsData);
-					final_gqlArgObj = { ...final_gqlArgObj, ...gqlArgObj };
-					if (canRunQuery == false) {
-						final_canRunQuery = false;
-					}
-				} else {
-					console.log('NON root group handled');
-					if (group.dd_kindList) {
-						let list = [];
-						list = group_argumentsData.map((arg) => {
-							let { gqlArgObj, canRunQuery } = generate_gqlArgObj([arg]);
-							console.log('-=-=-canRunQuery', canRunQuery);
-							if (canRunQuery == false) {
-								//will give off not good results for canRunQuery,must change handling in generate_gqlArgObj
-								final_canRunQuery = false;
-							}
-							return gqlArgObj[group.group_name];
-						});
-						final_gqlArgObj[group.group_name] = list;
-						final_gqlArgObj = { ...final_gqlArgObj };
-						console.log('list---', list);
-					} else {
-						let { gqlArgObj, canRunQuery } = generate_gqlArgObj(group_argumentsData);
-						final_gqlArgObj = { ...final_gqlArgObj, ...gqlArgObj };
-						if (canRunQuery == false) {
-							final_canRunQuery = false;
-						}
-					}
-				}
-			}
-		});
-		//handle root group
-
-		let final_gqlArgObj_string = JSON.stringify(final_gqlArgObj)
-			.replace(/"/g, '')
-			.replace(/'/g, `"`)
-			.slice(1, -1);
-		console.log('final_gqlArgObj_string', final_gqlArgObj_string);
+		let { final_gqlArgObj, final_gqlArgObj_string, final_canRunQuery } =
+			generate_FINAL_gqlArgObj_fromGroups(activeArgumentsDataGrouped);
 		if (final_canRunQuery) {
 			dispatch('argsChanged', {
 				gqlArgObj: final_gqlArgObj,

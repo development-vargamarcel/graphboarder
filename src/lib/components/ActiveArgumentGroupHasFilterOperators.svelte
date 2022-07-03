@@ -30,6 +30,7 @@
 	}
 
 	//
+	export let generate_final_gqlArgObj;
 	let labelEl;
 	let shadowEl;
 	let shadowHeight = 20;
@@ -164,12 +165,14 @@
 					: 'ring-error/0xxx'}"
 			>
 				<ActiveArgument
+					{generate_final_gqlArgObj}
 					on:contextmenuUsed={() => {
 						if (!node?.isMain) {
 							node.not = !node.not;
 							dispatch('changed');
 						}
 					}}
+					on:updateQuery
 					on:inUseChanged={() => {}}
 					on:delete_activeArgument={() => {}}
 					activeArgumentData={node}
@@ -206,6 +209,7 @@
 			}) as item (item.id)}
 				<div animate:flip={{ duration: flipDurationMs }} class="  flex   ">
 					<svelte:self
+						on:updateQuery
 						{type}
 						bind:nodes
 						node={nodes[item.id]}

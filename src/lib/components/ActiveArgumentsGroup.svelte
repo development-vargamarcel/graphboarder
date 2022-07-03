@@ -243,6 +243,7 @@
 					}}
 				>
 					<ActiveArgument
+						on:updateQuery
 						on:selectedForEditChanged={(e) => {
 							let { detail } = e;
 							console.log('detail.selectedForEditOn', detail.selectedForEditOn);
@@ -281,6 +282,19 @@
 	<!-- overflow-scroll overscroll-contain h-[75vh] -->
 	<div class=" ">
 		<ActiveArgumentGroupHasFilterOperators
+			on:updateQuery={() => {
+				let gqlArgObj_forHasOperators = generate_gqlArgObj_forHasOperators(
+					group.group_argsNode,
+					group.group_name
+				);
+				Object.assign(group, gqlArgObj_forHasOperators);
+				let FINAL_gqlArgObj_fromGroups = generate_FINAL_gqlArgObj_fromGroups(
+					activeArgumentsDataGrouped
+				);
+				dispatch('updateQuery');
+				console.log({ FINAL_gqlArgObj_fromGroups });
+			}}
+			{generate_final_gqlArgObj}
 			type={group.group_name + 'ActiveArgumentGroupHasFilterOperators'}
 			node={group.group_argsNode.mainContainer}
 			{group}
@@ -291,10 +305,8 @@
 					group.group_name
 				);
 				Object.assign(group, gqlArgObj_forHasOperators);
-				let FINAL_gqlArgObj_fromGroups = generate_FINAL_gqlArgObj_fromGroups(
-					activeArgumentsDataGrouped
-				);
-				console.log({ FINAL_gqlArgObj_fromGroups });
+
+				dispatch('updateQuery');
 			}}
 		/>
 	</div>

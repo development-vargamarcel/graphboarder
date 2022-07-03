@@ -811,6 +811,11 @@ export const generate_gqlArgObj_forHasOperators = (groupNodes, groupName) => {
         groupName,
         nodes
     );
+    if (group_gqlArgObj[groupName]['_and']?.length == 0) {
+        group_canRunQuery = false;
+        group_gqlArgObj = {}
+    }
+
 
     //
 
@@ -828,10 +833,11 @@ export const generate_gqlArgObj_forHasOperators = (groupNodes, groupName) => {
 
 export const generate_FINAL_gqlArgObj_fromGroups = (activeArgumentsDataGrouped) => {
     let final_gqlArgObj = {};
+    let final_canRunQuery = true
     activeArgumentsDataGrouped.forEach((group) => {
         Object.assign(final_gqlArgObj, group.group_gqlArgObj);
     })
     let final_gqlArgObj_string = gqlArgObjToString(final_gqlArgObj)
 
-    return { final_gqlArgObj, final_gqlArgObj_string };
-}
+    return { final_gqlArgObj, final_gqlArgObj_string, final_canRunQuery }
+};

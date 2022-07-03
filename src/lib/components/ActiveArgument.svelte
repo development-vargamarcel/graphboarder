@@ -72,11 +72,9 @@
 		console.log('generate_gqlArgObj', generate_gqlArgObj([activeArgumentData]));
 		console.log({ activeArgumentData });
 
-		if (!group.group_argsNode) {
-			generate_final_gqlArgObj();
-		} else {
-			dispatch('changed', detail);
-		}
+		//generate_final_gqlArgObj();
+		dispatch('changed', detail);
+		dispatch('updateQuery');
 		console.log(detail);
 		canRunQuery = activeArgumentData?.canRunQuery;
 		if (!activeArgumentData.inUse && valueToDisplay() !== undefined) {
@@ -101,9 +99,8 @@
 			activeArgumentData = activeArgumentData;
 			Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
 			Object.assign(group, generate_group_gqlArgObj(group));
-			if (!group.group_argsNode) {
-				generate_final_gqlArgObj();
-			}
+			//generate_final_gqlArgObj();
+			dispatch('updateQuery');
 		}
 	};
 </script>
@@ -193,21 +190,6 @@
 								rawValue={activeArgumentData?.chd_rawValue}
 								on:changed={(e) => {
 									handleChanged(e.detail);
-
-									// Object.assign(activeArgumentData, e.detail);
-									// Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-									// Object.assign(group, generate_group_gqlArgObj(group));
-									// console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-									// console.log(
-									// 	'generate_gqlArgObj([activeArgumentData])',
-									// 	generate_gqlArgObj([activeArgumentData])
-									// );
-									// if (!group.group_argsNode) {
-									// 	generate_final_gqlArgObj();
-									// } else {
-									// 	dispatch('changed', e.detail);
-									// }
-									// console.log(e.detail);
 								}}
 								id={activeArgumentData.stepsOfFieldsNew}
 								title="choose"
@@ -256,11 +238,9 @@
 								generate_gqlArgObj([activeArgumentData])
 							);
 
-							if (!group.group_argsNode) {
-								generate_final_gqlArgObj();
-							} else {
-								dispatch('changed', e.detail);
-							}
+							//generate_final_gqlArgObj();
+							dispatch('updateQuery');
+
 							console.log(e.detail);
 						}}
 						id={activeArgumentData.stepsOfFieldsNew}
