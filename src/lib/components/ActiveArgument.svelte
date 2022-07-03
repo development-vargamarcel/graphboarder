@@ -14,7 +14,6 @@
 	let dispatch = createEventDispatcher();
 	export let activeArgumentData;
 	export let group;
-	export let generate_final_gqlArgObj;
 	export let delete_activeArgument;
 	export let activeArgumentsDataGrouped;
 	let showDescription = false;
@@ -72,9 +71,10 @@
 		console.log('generate_gqlArgObj', generate_gqlArgObj([activeArgumentData]));
 		console.log({ activeArgumentData });
 
-		//generate_final_gqlArgObj();
 		dispatch('changed', detail);
-		dispatch('updateQuery');
+		if (activeArgumentData?.inUse) {
+			dispatch('updateQuery');
+		}
 		console.log(detail);
 		canRunQuery = activeArgumentData?.canRunQuery;
 		if (!activeArgumentData.inUse && valueToDisplay() !== undefined) {
@@ -99,7 +99,6 @@
 			activeArgumentData = activeArgumentData;
 			Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
 			Object.assign(group, generate_group_gqlArgObj(group));
-			//generate_final_gqlArgObj();
 			dispatch('updateQuery');
 		}
 	};
@@ -237,9 +236,9 @@
 								'generate_gqlArgObj([activeArgumentData])',
 								generate_gqlArgObj([activeArgumentData])
 							);
-
-							//generate_final_gqlArgObj();
-							dispatch('updateQuery');
+							if (activeArgumentData?.inUse) {
+								dispatch('updateQuery');
+							}
 
 							console.log(e.detail);
 						}}

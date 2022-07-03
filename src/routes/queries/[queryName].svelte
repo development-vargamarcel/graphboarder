@@ -58,6 +58,8 @@
 	let queryBody;
 	let queryData;
 	let gqlArgObj_string;
+	let columns = [];
+	let rows = [];
 	const runQuery = () => {
 		//queryFragments = generateQueryFragments(tableColsData);
 		queryFragmentsNew = tableColsData
@@ -90,6 +92,13 @@
 				queryData = { fetching, error, data };
 				console.log('result', result); // { data: ... }
 				console.log('queryData', queryData);
+				rows = queryData.data[queryName];
+				console.log('**** queryData.data[queryName]', rows);
+
+				if (rows?.length == undefined) {
+					rows = [rows];
+				}
+				console.log('**** rows', rows);
 			});
 	};
 	if (scalarFields.length == 0) {
@@ -107,12 +116,11 @@
 		console.log('hideColumn', e.detail);
 	};
 
-	let columns = [];
-	let rows = queryData.data[queryName];
+	rows = queryData.data[queryName];
 	$: columns = tableColsData.map((colData) => {
 		return colData.title;
 	});
-	$: if (queryData.data) {
+	$: if (queryData.fetching) {
 		rows = queryData.data[queryName];
 		console.log('**** queryData.data[queryName]', rows);
 
@@ -136,7 +144,7 @@
 			};
 			tableColsData = [...tableColsData, tableColData];
 			console.log('tableColsData', tableColsData);
-			runQuery();
+			//	runQuery();
 			column_stepsOfFieldsNew = '';
 		}
 	};

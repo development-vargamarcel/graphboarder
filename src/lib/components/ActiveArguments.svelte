@@ -125,7 +125,6 @@
 						{argsInfo}
 						{overwrite_activeArgumentsData}
 						{showDescription}
-						{generate_final_gqlArgObj}
 						{delete_activeArgument}
 						{activeArgumentsDataGrouped}
 					/>

@@ -5,7 +5,6 @@
 	export let activeArgumentsData;
 	export let update_activeArgumentsDataGrouped;
 	let showDescription;
-	export let generate_final_gqlArgObj;
 	export let delete_activeArgument;
 	export let activeArgumentsDataGrouped;
 	export let selectedForEdit;
@@ -267,7 +266,6 @@
 						}}
 						{activeArgumentData}
 						{group}
-						{generate_final_gqlArgObj}
 						{delete_activeArgument}
 						{activeArgumentsDataGrouped}
 						{activeArgumentsData}
@@ -294,7 +292,6 @@
 				dispatch('updateQuery');
 				console.log({ FINAL_gqlArgObj_fromGroups });
 			}}
-			{generate_final_gqlArgObj}
 			type={group.group_name + 'ActiveArgumentGroupHasFilterOperators'}
 			node={group.group_argsNode.mainContainer}
 			{group}

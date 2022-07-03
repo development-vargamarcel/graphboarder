@@ -30,7 +30,6 @@
 	}
 
 	//
-	export let generate_final_gqlArgObj;
 	let labelEl;
 	let shadowEl;
 	let shadowHeight = 20;
@@ -165,7 +164,6 @@
 					: 'ring-error/0xxx'}"
 			>
 				<ActiveArgument
-					{generate_final_gqlArgObj}
 					on:contextmenuUsed={() => {
 						if (!node?.isMain) {
 							node.not = !node.not;
@@ -181,7 +179,6 @@
 			</div>
 		</div>
 		<!-- 
-			{generate_final_gqlArgObj}
 			{delete_activeArgument}
 			{activeArgumentsDataGrouped}
 			{activeArgumentsData} -->
