@@ -24,19 +24,68 @@
 	//import { generate_gqlArgObj_forHasOperators } from '$lib/utils/usefulFunctions';
 	/////
 	const generate_gqlArgObj_forHasOperators = (groupNodes) => {
+		let gqlArgObj = { _and: [] };
+		let canRunQuery = true;
 		let nodes = JSON.parse(JSON.stringify(groupNodes));
-		let nodesValues = Object.values(nodes);
-		let nodesValuesContainersWithItems = nodesValues.filter((node) => {
+		let nodesArray = Object.values(nodes);
+		let mainContainer = nodesArray.filter((node) => {
+			return node.isMain;
+		})[0];
+		//
+		const validItems = (items, nodes) => {
+			return items.filter((item) => {
+				let itemData = nodes[item.id];
+
+				return (
+					itemData.inUse || (itemData.operator && validItems(itemData.items, nodes).length > 0)
+				);
+			});
+		};
+		//
+		const generate_gqlArgObjForItems = (items) => {
+			let itemsObj = items.map((item) => {
+				let itemData = nodes[item.id];
+
+				let itemObj = {};
+				let itemObjCurr = {};
+				//
+				if (itemData.not) {
+					itemObj['_not'] = {};
+					itemObjCurr = itemObj['_not'];
+				} else {
+					itemObjCurr = itemObj;
+				}
+				//
+				console.log({ itemObj });
+				if (itemData.operator) {
+					console.log('opp');
+					Object.assign(itemObjCurr, {
+						[itemData.operator]: generate_gqlArgObjForItems(validItems(itemData.items, nodes))
+					});
+				} else {
+					console.log('arg');
+					Object.assign(itemObjCurr, nodes[item.id]);
+				}
+				//
+				return itemObj;
+			});
+			return itemsObj;
+		};
+
+		gqlArgObj['_and'] = generate_gqlArgObjForItems(validItems(mainContainer?.items, nodes));
+
+		//
+
+		let nodesArrayContainersWithItems = nodesArray.filter((node) => {
 			return node?.items?.length > 0;
 		});
+
 		console.log({ nodes });
-		console.log({ nodesValues });
-		console.log({ nodesValuesContainersWithItems });
-
-		let group_gqlArgObj = {};
-		let group_canRunQuery = true;
-
-		return group_gqlArgObj;
+		console.log({ nodesArray });
+		console.log({ mainContainer });
+		console.log({ nodesArrayContainersWithItems });
+		console.log({ gqlArgObj });
+		return gqlArgObj;
 	};
 	////
 	const flipDurationMs = 200;
