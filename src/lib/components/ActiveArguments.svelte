@@ -102,7 +102,8 @@
 	//handle generating activeArgumentsDataGrouped
 	let rootGroup = { group_name: 'root', group_isRoot: true, dd_kindList: false, group_args: [] };
 	activeArgumentsDataGrouped = [rootGroup];
-	argsInfo.forEach((el) => {
+
+	argsInfo?.forEach((el) => {
 		console.log('el---', el);
 		if (!el.dd_isRootArg) {
 			let newGroupData = {

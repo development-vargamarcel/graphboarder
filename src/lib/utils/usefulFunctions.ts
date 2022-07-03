@@ -755,11 +755,12 @@ export const generate_group_gqlArgObj = (group) => {//if is where/filter (its re
 export const generate_gqlArgObj_forHasOperators = (groupNodes) => {
     let nodes = JSON.parse(JSON.stringify(groupNodes));
     let nodesValues = Object.values(nodes);
-    let nodesValuesItems = nodesValues.filter((node) => {
+    let nodesValuesContainersWithItems = nodesValues.filter((node) => {
         return node?.items?.length > 0;
     });
     console.log({ nodes })
     console.log({ nodesValues })
+    console.log({ nodesValuesContainersWithItems })
 
     let group_gqlArgObj = {};
     let group_canRunQuery = true;

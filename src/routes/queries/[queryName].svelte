@@ -34,7 +34,7 @@
 	});
 
 	let currentQueryInfo = schemaData.get_QMS_Field(queryName, 'query');
-	let { dd_relatedRoot } = currentQueryInfo;
+	let dd_relatedRoot = currentQueryInfo?.dd_relatedRoot;
 	if (!currentQueryInfo) {
 		goto('/queries');
 	}
