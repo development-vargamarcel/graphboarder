@@ -165,7 +165,7 @@
 				}}><i class="bi bi-chevron-expand" /></button
 			>
 		</div>
-		{#if showDescription}
+		{#if showDescription && expandedVersion}
 			<p class="text-secondary text-xs select-none">
 				({activeArgumentData.description})
 			</p>
