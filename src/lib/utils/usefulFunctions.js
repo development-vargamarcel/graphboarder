@@ -752,18 +752,86 @@ export const generate_group_gqlArgObj = (group) => {//if is where/filter (its re
 };
 
 //sss
-export const generate_gqlArgObj_forHasOperators = (groupNodes) => {
-    let nodes = JSON.parse(JSON.stringify(groupNodes));
-    let nodesValues = Object.values(nodes);
-    let nodesValuesContainersWithItems = nodesValues.filter((node) => {
-        return node?.items?.length > 0;
+/////
+const validItems = (items, nodes) => {
+    return items.filter((item) => {
+        let itemData = nodes[item.id];
+
+        return itemData.inUse || (itemData.operator && validItems(itemData.items, nodes).length > 0);
     });
-    console.log({ nodes })
-    console.log({ nodesValues })
-    console.log({ nodesValuesContainersWithItems })
+};
+//
+const generate_gqlArgObjForItems = (items, groupName, nodes) => {
+    let itemsObj = items.map((item) => {
+        let itemData = nodes[item.id];
 
-    let group_gqlArgObj = {};
+        let itemObj = {};
+        let itemObjCurr = {};
+        //
+        if (itemData.not) {
+            itemObj['_not'] = {};
+            itemObjCurr = itemObj['_not'];
+        } else {
+            itemObjCurr = itemObj;
+        }
+        //
+        console.log({ itemObj });
+        if (itemData.operator) {
+            console.log('opp');
+            Object.assign(itemObjCurr, {
+                [itemData.operator]: generate_gqlArgObjForItems(
+                    validItems(itemData.items, nodes),
+                    groupName,
+                    nodes
+                )
+            });
+        } else {
+            console.log('arg');
+            console.log('groupName', groupName);
+            Object.assign(itemObjCurr, nodes[item.id]?.gqlArgObj?.[groupName]);
+        }
+        //
+        return itemObj;
+    });
+    return itemsObj;
+};
+//
+export const generate_gqlArgObj_forHasOperators = (groupNodes, groupName) => {
+    let group_gqlArgObj = { [groupName]: { _and: [] } };
     let group_canRunQuery = true;
+    let nodes = JSON.parse(JSON.stringify(groupNodes));
+    let nodesArray = Object.values(nodes);
+    let mainContainer = nodesArray.filter((node) => {
+        return node.isMain;
+    })[0];
+    //
 
-    return group_gqlArgObj
+    group_gqlArgObj[groupName]['_and'] = generate_gqlArgObjForItems(
+        validItems(mainContainer?.items, nodes),
+        groupName,
+        nodes
+    );
+
+    //
+
+
+
+    console.log({ group_gqlArgObj });
+    let group_gqlArgObj_string = gqlArgObjToString(group_gqlArgObj)
+    return {
+        group_gqlArgObj,
+        group_gqlArgObj_string,
+        group_canRunQuery
+    }
+};
+////
+
+export const generate_FINAL_gqlArgObj_fromGroups = (activeArgumentsDataGrouped) => {
+    let final_gqlArgObj = {};
+    activeArgumentsDataGrouped.forEach((group) => {
+        Object.assign(final_gqlArgObj, group.group_gqlArgObj);
+    })
+    let final_gqlArgObj_string = gqlArgObjToString(final_gqlArgObj)
+
+    return { final_gqlArgObj, final_gqlArgObj_string };
 }

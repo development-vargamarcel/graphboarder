@@ -48,8 +48,8 @@
 		return get_KindsArray(field).includes('SCALAR');
 	});
 
-	console.log('*RootType*', RootType);
-	console.log('*allInputFieldsAreScalar*', allInputFieldsAreScalar);
+	// console.log('*RootType*', RootType);
+	// console.log('*allInputFieldsAreScalar*', allInputFieldsAreScalar);
 
 	/// do the above for enums
 

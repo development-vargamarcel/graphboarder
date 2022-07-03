@@ -68,11 +68,9 @@
 		Object.assign(activeArgumentData, detail);
 		Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
 		Object.assign(group, generate_group_gqlArgObj(group));
-		console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-		console.log(
-			'generate_gqlArgObj([activeArgumentData])',
-			generate_gqlArgObj([activeArgumentData])
-		);
+		console.log({ activeArgumentsDataGrouped });
+		console.log('generate_gqlArgObj', generate_gqlArgObj([activeArgumentData]));
+		console.log({ activeArgumentData });
 
 		if (!group.group_argsNode) {
 			generate_final_gqlArgObj();
@@ -101,10 +99,10 @@
 				activeArgumentData.inUse !== undefined ? !activeArgumentData.inUse : true;
 
 			activeArgumentData = activeArgumentData;
+			Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
+			Object.assign(group, generate_group_gqlArgObj(group));
 			if (!group.group_argsNode) {
 				generate_final_gqlArgObj();
-				Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-				Object.assign(group, generate_group_gqlArgObj(group));
 			}
 		}
 	};
