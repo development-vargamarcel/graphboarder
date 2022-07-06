@@ -59,6 +59,17 @@
 	if (browser && localStorage.getItem('graphqlEndpointURL')) {
 		graphqlEndpointURL = localStorage.getItem('graphqlEndpointURL');
 	}
+	if (browser && localStorage.getItem('headers')) {
+		let localStorage_headersValue = JSON.parse(localStorage.getItem('headers'));
+		let localStorage_headersValue_Entries = Object.entries(localStorage_headersValue);
+		headersValue = localStorage_headersValue_Entries
+			.map((el) => {
+				console.log({ el });
+				return el[0] + ':' + el[1];
+			})
+			.join('\n');
+	}
+
 	const store_graphqlEndpointURL = () => {
 		console.log(graphqlEndpointURL);
 		if (graphqlEndpointURL == '') {
