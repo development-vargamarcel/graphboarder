@@ -17,7 +17,8 @@
 				location = [e.coords.longitude, e.coords.latitude];
 				map.flyTo({
 					center: location,
-					essential: true // this animation is considered essential with respect to prefers-reduced-motion
+					speed: 20
+					//essential: true // this animation is considered essential with respect to prefers-reduced-motion
 				});
 			});
 		}
