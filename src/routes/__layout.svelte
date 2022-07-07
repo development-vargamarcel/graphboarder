@@ -64,7 +64,6 @@
 		let localStorage_headersValue_Entries = Object.entries(localStorage_headersValue);
 		headersValue = localStorage_headersValue_Entries
 			.map((el) => {
-				console.log({ el });
 				return el[0] + ':' + el[1];
 			})
 			.join('\n');
