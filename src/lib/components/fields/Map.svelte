@@ -34,6 +34,7 @@
 			zoom: 9 // starting zoom
 		});
 		map.resize();
+		map.addControl(new mapboxgl.FullscreenControl());
 		map.addControl(
 			new mapboxgl.GeolocateControl({
 				positionOptions: {
