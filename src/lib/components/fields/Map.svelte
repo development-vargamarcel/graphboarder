@@ -10,7 +10,20 @@
 	let mapContainer;
 	let dispatch = createEventDispatcher();
 	let draw;
+	let location;
 	onMount(() => {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition((e) => {
+				location = [e.coords.longitude, e.coords.latitude];
+				map.flyTo({
+					center: location,
+					essential: true // this animation is considered essential with respect to prefers-reduced-motion
+				});
+			});
+		}
+		if (location) {
+		}
+
 		if (containerEl) {
 			console.log('containerEl', containerEl);
 			mapContainer.style.width = `${containerEl.clientWidth - 60}px`;
@@ -32,6 +45,7 @@
 			style: 'mapbox://styles/mapbox/streets-v11', // style URL
 			center: [-74.5, 40], // starting position [lng, lat]
 			zoom: 9 // starting zoom
+			//cooperativeGestures: true
 		});
 		map.resize();
 		map.addControl(new mapboxgl.FullscreenControl());
@@ -119,12 +133,7 @@
 
 <div class="flex justify-center container" on:click|preventDefault={() => {}}>
 	<div class="">
-		<div
-			id="map"
-			bind:this={mapContainer}
-			class=" w-60
-h-60 "
-		/>
+		<div id="map" bind:this={mapContainer} class=" w-60 h-60 " />
 	</div>
 </div>
 
