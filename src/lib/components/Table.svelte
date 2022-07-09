@@ -165,7 +165,8 @@
 					<tr
 						class="bg-base-100 hover:bg-base-300 cursor-pointer hover z-0"
 						on:click={() => {
-							dispatch('clickedOnRow', { row: row, index: index });
+							document.getElementById('my-drawer-4').checked = true;
+							goto(`${$page.url.origin}/queries/${$page.params.queryName}/${row.id}`);
 						}}
 					>
 						<th class="z-0" on:click|stopPropagation={() => {}}>
