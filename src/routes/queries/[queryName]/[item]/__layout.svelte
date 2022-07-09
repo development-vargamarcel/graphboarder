@@ -13,7 +13,7 @@
 	let item = $page.params.item;
 	console.log({ item });
 	onMount(() => {
-		//document.getElementById('my-drawer-4').click();
+		document.getElementById('my-drawer-4').checked = true;
 	});
 </script>
 

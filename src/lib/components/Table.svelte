@@ -1,4 +1,6 @@
 <script>
+	import { goto } from '$app/navigation';
+
 	import { page } from '$app/stores';
 
 	import { formatData, getColResultData, getData } from '$lib/utils/usefulFunctions';
@@ -175,6 +177,10 @@
 							<a
 								class="block"
 								sveltekit:prefetch
+								on:click|preventDefault={() => {
+									document.getElementById('my-drawer-4').checked = true;
+									goto(`${$page.url.origin}/queries/${$page.params.queryName}/${row.id}`);
+								}}
 								href={`${$page.url.origin}/queries/${$page.params.queryName}/${row.id}`}
 							>
 								<i class="bi bi-pen-fill" />
