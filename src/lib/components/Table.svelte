@@ -1,4 +1,6 @@
 <script>
+	import { page } from '$app/stores';
+
 	import { formatData, getColResultData, getData } from '$lib/utils/usefulFunctions';
 
 	import { createEventDispatcher } from 'svelte';
@@ -95,6 +97,7 @@
 							<input type="checkbox" class="checkbox" />
 						</label>
 					</th>
+					<th>edit</th>
 					<th>#</th>
 					{#each columns as column, index}
 						{@const isLast = index == columns.length - 1}
@@ -160,6 +163,7 @@
 					<tr
 						class="bg-base-100 hover:bg-base-300 cursor-pointer hover z-0"
 						on:click={() => {
+							dispatch('clickedOnRow', { row: row, index: index });
 							document.getElementById('my-drawer-4').click();
 						}}
 					>
@@ -167,6 +171,15 @@
 							<label>
 								<input type="checkbox" class="checkbox" />
 							</label>
+						</th>
+						<th class="z-0" on:click|stopPropagation={() => {}}>
+							<a
+								class="block"
+								sveltekit:prefetch
+								href={`${$page.url.origin}/queries/${$page.params.queryName}/${row.id}`}
+							>
+								<i class="bi bi-pen-fill" />
+							</a>
 						</th>
 						<th class="z-0">{index + 1}</th>
 						{#each colsData as colData, index}
@@ -180,28 +193,5 @@
 		</table>
 	</div>
 
-	<div class="drawer-side  w-full flex-none h-full overscroll-contain">
-		<label for="my-drawer-4" class="drawer-overlay h-full" />
-		<div class="menu   bg-primary/0   text-base-content w-full ">
-			<div class="flex h-full  ">
-				<label for="my-drawer-4" class="sm:w-20 ">
-					<div class="bg-primary/0" />
-				</label>
-				<div class="  bg-base-100 w-full ">
-					<div class="flex space-x-2 sticky top-0 bg-base-100 shadow-md p-2">
-						<div class="flex-none w-14 h-14 ...">
-							<label for="my-drawer-4" class="drawer-button btn btn-primary w-min rounded-full"
-								>X</label
-							>
-						</div>
-						<div class="grow h-14 ..." />
-						<div class="flex-none w-14 h-14 ...">
-							<div class="btn btn-success mb-40">ok</div>
-						</div>
-					</div>
-					<div class="px-2 mt-4 pb-40">content here</div>
-				</div>
-			</div>
-		</div>
-	</div>
+	<slot name="itemDisplay" />
 </div>

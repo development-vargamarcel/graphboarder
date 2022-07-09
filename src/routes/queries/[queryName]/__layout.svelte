@@ -29,6 +29,7 @@
 	import { schemaData } from '$lib/stores/schemaData';
 	setClient($urqlClient);
 	let queryName = $page.params.queryName;
+	console.log('aaaaaaaaaaa', $page);
 	onDestroy(() => {
 		document.getElementById('my-drawer-3')?.click();
 	});
@@ -193,7 +194,19 @@
 		on:hideColumn={(e) => {
 			hideColumn(e);
 		}}
+		on:clickedOnRow={(e) => {
+			// //goto( e.detail.row.id);
+			// console.log('a', $page);
+			// let url = `${$page.url.origin}/${$page.params.queryName}/${e.detail.row.id}`;
+			// console.log('url', url);
+			// goto(url);
+			// console.log('clickedOnRow', e.detail);
+		}}
 	>
+		<div slot="itemDisplay" class="drawer-side  w-full flex-none h-full overscroll-contain">
+			<slot />
+		</div>
+
 		<div
 			slot="addColumnDisplay"
 			class="max-h-52 sm:max-h-72 md:max-h-90 overflow-auto overscroll-contain max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
