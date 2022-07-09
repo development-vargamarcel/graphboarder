@@ -47,7 +47,7 @@
 		</div>
 		<!-- overflow-auto h-full -->
 		<div class="w-full h-[89vh]">
-			{#key pathname}
+			{#key $page.params.queryName}
 				<slot />
 			{/key}
 		</div>
