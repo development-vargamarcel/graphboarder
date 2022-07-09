@@ -204,18 +204,7 @@
 		}}
 	>
 		<div slot="itemDisplay" class="drawer-side  w-full flex-none h-full overscroll-contain">
-			<input id="my-drawer-4" type="checkbox" checked class="drawer-toggle" />
-			<label for="my-drawer-4" class="drawer-overlay h-full" />
-			<div class="menu   bg-primary/0   text-base-content w-full ">
-				<div class="flex h-full  ">
-					<label for="my-drawer-4" class="sm:w-20 ">
-						<div class="bg-primary/0" />
-					</label>
-					{#key $page.params.item}
-						<slot />
-					{/key}
-				</div>
-			</div>
+			<slot />
 		</div>
 
 		<div
