@@ -7,7 +7,7 @@
 	import { setClient, getClient, operationStore, query } from '@urql/svelte';
 
 	import { urqlClient } from '$lib/stores/urqlClient';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 
 	setClient($urqlClient);
 	let item = $page.params.item;
@@ -15,27 +15,26 @@
 	onMount(() => {
 		document.getElementById('my-drawer-4').checked = true;
 	});
+	onDestroy(() => {
+		document.getElementById('my-drawer-4').checked = false;
+	});
 </script>
 
-<input id="my-drawer-4" type="checkbox" checked class="drawer-toggle" />
-<label for="my-drawer-4" class="drawer-overlay h-full" />
-<div class="menu   bg-primary/0   text-base-content w-full ">
-	<div class="flex h-full  ">
-		<label for="my-drawer-4" class="sm:w-20 ">
-			<div class="bg-primary/0" />
-		</label>
-		<div class="  bg-base-100 w-full ">
-			<div class="flex space-x-2 sticky top-0 bg-base-100 shadow-md p-2">
-				<div class="flex-none w-14 h-14 ...">
-					<label for="my-drawer-4" class="drawer-button btn btn-primary w-min rounded-full">X</label
-					>
-				</div>
-				<div class="grow h-14 ..." />
-				<div class="flex-none w-14 h-14 ...">
-					<div class="btn btn-success mb-40">ok</div>
-				</div>
-			</div>
-			<div class="px-2 mt-4 pb-40">content here</div>
+<div class="  bg-base-100 w-full ">
+	<div class="flex space-x-2 sticky top-0 bg-base-100 shadow-md p-2">
+		<div class="flex-none w-14 h-14 ...">
+			<label
+				for="my-drawer-4"
+				class="drawer-button btn btn-primary w-min rounded-full"
+				on:click={() => {
+					history.back();
+				}}>X</label
+			>
+		</div>
+		<div class="grow h-14 ..." />
+		<div class="flex-none w-14 h-14 ...">
+			<div class="btn btn-success mb-40">ok</div>
 		</div>
 	</div>
+	<div class="px-2 mt-4 pb-40">content here</div>
 </div>

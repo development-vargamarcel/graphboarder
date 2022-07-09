@@ -89,7 +89,7 @@
 </script>
 
 <div class="drawer drawer-end h-full	 ">
-	<input id="my-drawer-4" type="checkbox" checked class="drawer-toggle" />
+	<input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
 	<div class="drawer-content overscroll-contain ">
 		<table class="table table-compact w-full rounded-none  mb-32">
 			<thead class="sticky top-0 z-20">
@@ -99,7 +99,7 @@
 							<input type="checkbox" class="checkbox" />
 						</label>
 					</th>
-					<th>edit</th>
+					<!-- <th>edit</th> -->
 					<th>#</th>
 					{#each columns as column, index}
 						{@const isLast = index == columns.length - 1}
@@ -174,7 +174,7 @@
 								<input type="checkbox" class="checkbox" />
 							</label>
 						</th>
-						<th class="z-0">
+						<!-- <th class="z-0">
 							<a
 								class="block"
 								sveltekit:prefetch
@@ -186,7 +186,7 @@
 							>
 								<i class="bi bi-pen-fill" />
 							</a>
-						</th>
+						</th> -->
 						<th class="z-0">{index + 1}</th>
 						{#each colsData as colData, index}
 							<td class="z-0">
