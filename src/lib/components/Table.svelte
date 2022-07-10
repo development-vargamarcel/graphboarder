@@ -90,6 +90,7 @@
 
 <div class="drawer drawer-end h-full	 ">
 	<input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
+
 	<div class="drawer-content overscroll-contain ">
 		<table class="table table-compact w-full rounded-none  mb-32">
 			<thead class="sticky top-0 z-20">
@@ -165,7 +166,6 @@
 					<tr
 						class="bg-base-100 hover:bg-base-300 cursor-pointer hover z-0"
 						on:click={() => {
-							document.getElementById('my-drawer-4').checked = true;
 							goto(`${$page.url.origin}/queries/${$page.params.queryName}/${row.id}`);
 						}}
 					>

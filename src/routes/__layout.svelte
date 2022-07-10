@@ -34,6 +34,7 @@
 
 	import { browser } from '$app/env';
 	import { goto } from '$app/navigation';
+	import TabContainer from '$lib/components/TabContainer.svelte';
 	let showEdit = false;
 	let show_IntrospectionDataGenerator = true;
 	let graphqlEndpointURL = '';
@@ -186,11 +187,13 @@
 		</div>
 	{/if}
 
-	<div class="fixed bottom-0 right-0 p-2">
+	<div class="fixed top-0 right-0 pr-1">
 		<button class="btn btn-sm " on:click={editButtonClick}>{editText}</button>
 	</div>
+	<div class="z-50 fixed bottom-0 w-screen">
+		<TabContainer />
+	</div>
 </main>
-
 <footer />
 
 <style>

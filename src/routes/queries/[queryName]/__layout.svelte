@@ -167,6 +167,7 @@
 	};
 </script>
 
+<!-- <div class=" {$page.params.item ? 'h-0  overflow-y-auto' : ''}"> -->
 <ActiveArguments
 	argsInfo={currentQueryInfo?.args}
 	{activeArgumentsData}
@@ -178,6 +179,7 @@
 		runQuery();
 	}}
 />
+<!-- </div> -->
 
 {#if queryData.fetching}
 	<p>Loading...</p>
@@ -204,7 +206,10 @@
 		}}
 	>
 		<div slot="itemDisplay" class="drawer-side  w-full flex-none h-full overscroll-contain">
-			<label for="my-drawer-4" class="drawer-overlay h-full " />
+			{#key $page.params.item}
+				<slot />
+			{/key}
+			<!-- <label for="my-drawer-4" class="drawer-overlay h-full " />
 			<div class="menu   bg-primary/0   text-base-content w-full ">
 				<div class="flex h-full  {$page.params.item ?? 'h-0'}">
 					<label
@@ -221,7 +226,7 @@
 						<slot />
 					{/key}
 				</div>
-			</div>
+			</div> -->
 		</div>
 
 		<div
