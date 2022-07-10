@@ -52,7 +52,7 @@
 			{/key}
 		</div>
 	</div>
-	<div class="drawer-side md:z-0">
+	<div class="drawer-side lg:z-0">
 		<label for="my-drawer-3" class="drawer-overlay" />
 		<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 		<ul class="menu p-4 overflow-y-auto w-80 bg-base-100">

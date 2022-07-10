@@ -194,9 +194,6 @@
 		<button class="btn btn-sm " on:click={editButtonClick}>{editText}</button>
 	</div>
 
-	<!-- <div class="fixed bottom-0 z-0 w-full">
-		{$showTabs}
-	</div> -->
 	{#if $showTabs}
 		<div
 			class="fixed bottom-0 z-0 w-full"
