@@ -11,7 +11,8 @@
 	export let CustomId;
 	export let MenuItem;
 	export let RememberScroll = false;
-	showTabs.set(true); // must change this line !!!!!!!!!!!!!!
+	//showTabs.set(true); // must change this line !!!!!!!!!!!!!!
+
 	let hasPreviousPage = false;
 	if (browser) {
 		hasPreviousPage = window.history.length == 1 ? false : true;
@@ -45,6 +46,7 @@
 
 	onDestroy(() => {
 		if (browser) {
+			showTabs.set(true);
 			if (RememberScroll) {
 				let mainEl = document.getElementById(CustomId);
 				if (mainEl) {
@@ -54,6 +56,7 @@
 		}
 	});
 	onMount(() => {
+		showTabs.set(false);
 		if (RememberScroll) {
 			let mainEl = document.getElementById(CustomId);
 			if (mainEl) {

@@ -1,5 +1,8 @@
 <script lang="ts">
 	import IntrospectionDataGenerator from '$lib/components/IntrospectionDataGenerator.svelte';
+	import { fade, scale } from 'svelte/transition';
+
+	import { showTabs } from '$lib/stores/showTabs';
 
 	import Header from '$lib/header/Header.svelte';
 	import '../app.css';
@@ -190,9 +193,19 @@
 	<div class="fixed bottom-14 right-2 pr-1">
 		<button class="btn btn-sm " on:click={editButtonClick}>{editText}</button>
 	</div>
-	<div class="z-50 fixed bottom-0 w-screen">
-		<TabContainer />
-	</div>
+
+	<!-- <div class="fixed bottom-0 z-0 w-full">
+		{$showTabs}
+	</div> -->
+	{#if $showTabs}
+		<div
+			class="fixed bottom-0 z-0 w-full"
+			in:scale={{ duration: 350 }}
+			out:scale={{ duration: 200 }}
+		>
+			<TabContainer />
+		</div>
+	{/if}
 </main>
 <footer />
 

@@ -181,6 +181,8 @@
 />
 <!-- </div> -->
 
+<slot />
+
 {#if queryData.fetching}
 	<p>Loading...</p>
 {:else if queryData.error}
@@ -198,12 +200,6 @@
 		}}
 		on:clickedOnRow={(e) => {}}
 	>
-		<div slot="itemDisplay" class="drawer-side  w-full flex-none h-full overscroll-contain">
-			{#key $page.params.item}
-				<slot />
-			{/key}
-		</div>
-
 		<div
 			slot="addColumnDisplay"
 			class="max-h-52 sm:max-h-72 md:max-h-90 overflow-auto overscroll-contain max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
