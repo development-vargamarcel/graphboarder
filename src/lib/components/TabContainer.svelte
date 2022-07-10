@@ -3,9 +3,7 @@
 
 	let links = [
 		{ title: 'Home', url: '/', icon: 'bi-house', hasFill: true },
-		{ title: 'Queries', url: '/queries', icon: 'bi bi-asterisk', hasFill: false },
-
-		{ title: 'More', url: '/private_area/more', icon: 'bi-three-dots', hasFill: false }
+		{ title: 'Queries', url: '/queries', icon: 'bi bi-asterisk', hasFill: false }
 	];
 
 	import TabItem from '$lib/components/TabItem.svelte';
