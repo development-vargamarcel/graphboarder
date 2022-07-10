@@ -167,7 +167,6 @@
 	};
 </script>
 
-<!-- <div class=" {$page.params.item ? 'h-0  overflow-y-auto' : ''}"> -->
 <ActiveArguments
 	argsInfo={currentQueryInfo?.args}
 	{activeArgumentsData}
@@ -179,7 +178,6 @@
 		runQuery();
 	}}
 />
-<!-- </div> -->
 
 <slot />
 

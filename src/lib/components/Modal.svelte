@@ -33,7 +33,7 @@
 <!-- grid grid-cols-1 content-end -->
 <!-- scroll-smooth -->
 <div
-	class="fixed top-0 right-0 z-40  h-screen  w-screen lg:w-full  overflow-y-scroll overscroll-contain   bg-base-100/50 lg:pl-[330px]  "
+	class="fixed top-0 right-0 z-40  h-screen  w-screen lg:w-full  overflow-y-scroll overscroll-contain   bg-base-100/50   "
 	bind:this={mainDiv}
 	in:fade={{ delay: 0, duration: 100 }}
 	out:fade={{ delay: 0, duration: 100 }}
