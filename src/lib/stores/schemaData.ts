@@ -50,6 +50,7 @@ export const create_schemaData = () => {
             let storeValue = get(store)
             let { rootTypes, queryFields, mutationFields, schema } = storeValue
             let result = {}
+            let isQMSField = true
             QMS.forEach(_QMS_ => {// _QMS_ -> current QMS (one of: Query,Mutation,Subscription)
                 let _QMS_Type_name = schema?.[`${_QMS_}Type`]?.name
                 let new_QMS_Fields
@@ -61,7 +62,7 @@ export const create_schemaData = () => {
 
                 if (withDerivedData) {
                     new_QMS_Fields?.forEach(el => {
-                        Object.assign(el, generate_derivedData(el, rootTypes))
+                        Object.assign(el, generate_derivedData(el, rootTypes, isQMSField))
                         el?.args?.forEach(arg => {
                             Object.assign(arg, generate_derivedData(arg, rootTypes))
                         });

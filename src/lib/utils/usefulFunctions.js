@@ -493,7 +493,7 @@ export const sortByName = (array) => {
     return array
 }
 
-export const generate_derivedData = (type, rootTypes) => { //type/field  
+export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/field  
     let derivedData = {}
     derivedData.dd_kindsArray = get_KindsArray(type)
     derivedData.dd_namesArray = get_NamesArray(type)
@@ -550,7 +550,7 @@ export const generate_derivedData = (type, rootTypes) => { //type/field
     // derivedData.id = derivedData.dd_namesArray.join('-')
 
     derivedData.dd_shouldExpand = derivedData.dd_canExpand && !derivedData.dd_relatedRoot?.enumValues
-    derivedData.dd_isQMSField = 'to do this'
+    derivedData.dd_isQMSField = isQMSField ? true : false
     return derivedData
 }
 
