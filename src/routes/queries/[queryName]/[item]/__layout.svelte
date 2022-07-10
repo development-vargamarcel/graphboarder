@@ -15,4 +15,9 @@
 	console.log({ item });
 </script>
 
-<Page MenuItem={false} CustomId={item}>dsds</Page>
+<Page MenuItem={false} CustomId={item}
+	>dsds
+	<div>
+		{item}
+	</div>
+</Page>
