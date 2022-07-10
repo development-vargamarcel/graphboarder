@@ -551,6 +551,7 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/fi
 
     derivedData.dd_shouldExpand = derivedData.dd_canExpand && !derivedData.dd_relatedRoot?.enumValues
     derivedData.dd_isQMSField = isQMSField ? true : false
+
     return derivedData
 }
 
