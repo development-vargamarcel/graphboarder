@@ -15,9 +15,8 @@
 	console.log({ item });
 </script>
 
-<Page MenuItem={false} CustomId={item}
-	>dsds
-	<div>
+<Page MenuItem={false} CustomId={item} backPath={`/queries/${$page.params.queryName}`}>
+	<div class="p-2">
 		{item}
 	</div>
 </Page>
