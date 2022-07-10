@@ -187,7 +187,7 @@
 		</div>
 	{/if}
 
-	<div class="fixed top-0 right-0 pr-1">
+	<div class="fixed bottom-14 right-2 pr-1">
 		<button class="btn btn-sm " on:click={editButtonClick}>{editText}</button>
 	</div>
 	<div class="z-50 fixed bottom-0 w-screen">
