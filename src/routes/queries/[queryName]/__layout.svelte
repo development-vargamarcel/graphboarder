@@ -196,37 +196,12 @@
 		on:hideColumn={(e) => {
 			hideColumn(e);
 		}}
-		on:clickedOnRow={(e) => {
-			// //goto( e.detail.row.id);
-			// console.log('a', $page);
-			// let url = `${$page.url.origin}/${$page.params.queryName}/${e.detail.row.id}`;
-			// console.log('url', url);
-			// goto(url);
-			// console.log('clickedOnRow', e.detail);
-		}}
+		on:clickedOnRow={(e) => {}}
 	>
 		<div slot="itemDisplay" class="drawer-side  w-full flex-none h-full overscroll-contain">
 			{#key $page.params.item}
 				<slot />
 			{/key}
-			<!-- <label for="my-drawer-4" class="drawer-overlay h-full " />
-			<div class="menu   bg-primary/0   text-base-content w-full ">
-				<div class="flex h-full  {$page.params.item ?? 'h-0'}">
-					<label
-						for="my-drawer-4"
-						class="sm:w-20 "
-						on:click={() => {
-							history.back();
-						}}
-					>
-						<div class="bg-primary/0" />
-					</label>
-
-					{#key $page.params.item}
-						<slot />
-					{/key}
-				</div>
-			</div> -->
 		</div>
 
 		<div

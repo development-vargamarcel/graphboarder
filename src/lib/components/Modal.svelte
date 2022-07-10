@@ -38,6 +38,9 @@
 	in:fade={{ delay: 0, duration: 100 }}
 	out:fade={{ delay: 0, duration: 100 }}
 	on:introend={() => (mainDivIntroEnd = true)}
+	on:click|self|stopPropagation|preventDefault={() => {
+		dispatch('cancel', { modalIdetifier });
+	}}
 >
 	{#if mainDivIntroEnd}
 		<div
