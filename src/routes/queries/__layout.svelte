@@ -21,7 +21,7 @@
 	});
 </script>
 
-<SidebarAndMainArea>
+<SidebarAndMainArea title={$page.params.queryName}>
 	<div slot="sidebar">
 		<ul class="menu p-2 ">
 			{#each queries as query}

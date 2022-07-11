@@ -3,6 +3,7 @@
 
 	import Page from './Page.svelte';
 	let forceVisibleSidebar = false;
+	export let title;
 </script>
 
 <div class="flex w-full">
@@ -45,12 +46,12 @@
 					>
 				</label>
 			</div>
-			<div class="flex-1 px-2 mx-2">Navbar Title</div>
+			<div class="flex-1 px-2 mx-2">{title}</div>
 			<div class="flex-none hidden lg:block">
-				<ul class="menu menu-horizontal">
-					<!-- Navbar menu content here -->
-					<li><a>Navbar Item 1</a></li>
-					<li><a>Navbar Item 2</a></li>
+				<ul class="flex">
+					<li>
+						<button class="btn btn-sm "><i class="bi bi-plus-square-fill text-xl " /> </button>
+					</li>
 				</ul>
 			</div>
 		</div>
