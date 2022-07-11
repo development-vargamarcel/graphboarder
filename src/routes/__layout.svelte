@@ -196,7 +196,7 @@
 
 	{#if $showTabs}
 		<div
-			class="fixed bottom-0 z-0 w-full"
+			class="fixed bottom-0 z-20 w-full"
 			in:scale={{ duration: 350 }}
 			out:scale={{ duration: 200 }}
 		>

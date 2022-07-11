@@ -88,93 +88,90 @@
 	const dispatch = createEventDispatcher();
 </script>
 
-<div class="drawer drawer-end h-full	 ">
-	<input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
-
-	<div class="drawer-content overscroll-contain ">
-		<table class="table table-compact w-full rounded-none  mb-32">
-			<thead class="sticky top-0 z-20">
-				<tr class="sticky top-0 z-20">
-					<th>
-						<label>
-							<input type="checkbox" class="checkbox" />
-						</label>
-					</th>
-					<!-- <th>edit</th> -->
-					<th>#</th>
-					{#each columns as column, index}
-						{@const isLast = index == columns.length - 1}
-						<th class="normal-case">
-							<div class="dropdown dropdown-end  ">
-								<!-- svelte-ignore a11y-label-has-associated-control -->
-								<label tabindex="0" class="cursor-pointer ">
-									<div class="flex space-x-2 hover:text-primary rounded-box">
-										<div>{column}</div>
-										<div class="bi bi-chevron-down " />
-									</div>
-								</label>
-								<div
-									tabindex="0"
-									class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl"
-								>
-									<div
-										class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2"
-									>
-										<div class="w-full   p-2 rounded-box flex flex-col space-y-2">
-											<div
-												class="w-full pr-2 hover:text-primary cursor-pointer max-w-xs  md:max-w-sm overflow-x-auto"
-											>
-												<ColumnInfo stepsOfFieldsNew={colsData[index].stepsOfFieldsNew} />
-												<!-- {colsData[index].stepsOfFieldsNew.join(' > ')} -->
-											</div>
-											<div
-												class="w-full pr-2 hover:text-primary cursor-pointer "
-												on:click={() => {
-													dispatch('hideColumn', { column: column, index: index });
-												}}
-											>
-												hide field
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</th>
-					{/each}
-					<th>
-						<div class="dropdown dropdown-end">
+<div class=" h-[90vh] overscroll-contain	 overflow-y-auto">
+	<table class="table table-compact w-full rounded-none  mb-32">
+		<thead class="sticky top-0 z-20">
+			<tr class="sticky top-0 z-20">
+				<th>
+					<label>
+						<input type="checkbox" class="checkbox" />
+					</label>
+				</th>
+				<!-- <th>edit</th> -->
+				<th>#</th>
+				{#each columns as column, index}
+					{@const isLast = index == columns.length - 1}
+					<th class="normal-case">
+						<div class="dropdown dropdown-end  ">
 							<!-- svelte-ignore a11y-label-has-associated-control -->
-							<label
-								tabindex="0"
-								class="btn btn-sm bi bi-node-plus-fill text-lg p-1"
-								on:click={() => {
-									dispatch('addColumnDropdown');
-								}}
-							/>
+							<label tabindex="0" class="cursor-pointer ">
+								<div class="flex space-x-2 hover:text-primary rounded-box">
+									<div>{column}</div>
+									<div class="bi bi-chevron-down " />
+								</div>
+							</label>
 							<div
 								tabindex="0"
 								class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl"
 							>
-								<slot name="addColumnDisplay" />
+								<div
+									class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2"
+								>
+									<div class="w-full   p-2 rounded-box flex flex-col space-y-2">
+										<div
+											class="w-full pr-2 hover:text-primary cursor-pointer max-w-xs  md:max-w-sm overflow-x-auto"
+										>
+											<ColumnInfo stepsOfFieldsNew={colsData[index].stepsOfFieldsNew} />
+											<!-- {colsData[index].stepsOfFieldsNew.join(' > ')} -->
+										</div>
+										<div
+											class="w-full pr-2 hover:text-primary cursor-pointer "
+											on:click={() => {
+												dispatch('hideColumn', { column: column, index: index });
+											}}
+										>
+											hide field
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</th>
-				</tr>
-			</thead>
-			<tbody class="z-0">
-				{#each rows as row, index}
-					<tr
-						class="bg-base-100 hover:bg-base-300 cursor-pointer hover z-0"
-						on:click={() => {
-							goto(`${$page.url.origin}/queries/${$page.params.queryName}/${row.id}`);
-						}}
-					>
-						<th class="z-0" on:click|stopPropagation={() => {}}>
-							<label>
-								<input type="checkbox" class="checkbox" />
-							</label>
-						</th>
-						<!-- <th class="z-0">
+				{/each}
+				<th>
+					<div class="dropdown dropdown-end">
+						<!-- svelte-ignore a11y-label-has-associated-control -->
+						<label
+							tabindex="0"
+							class="btn btn-sm bi bi-node-plus-fill text-lg p-1"
+							on:click={() => {
+								dispatch('addColumnDropdown');
+							}}
+						/>
+						<div
+							tabindex="0"
+							class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl"
+						>
+							<slot name="addColumnDisplay" />
+						</div>
+					</div>
+				</th>
+			</tr>
+		</thead>
+		<tbody class="z-0">
+			{#each rows as row, index}
+				<tr
+					class="bg-base-100 hover:bg-base-300 cursor-pointer hover z-0"
+					on:click={() => {
+						goto(`${$page.url.origin}/queries/${$page.params.queryName}/${row.id}`);
+					}}
+				>
+					<th class="z-0" on:click|stopPropagation={() => {}}>
+						<label>
+							<input type="checkbox" class="checkbox" />
+						</label>
+					</th>
+					<!-- <th class="z-0">
 							<a
 								class="block"
 								sveltekit:prefetch
@@ -187,17 +184,16 @@
 								<i class="bi bi-pen-fill" />
 							</a>
 						</th> -->
-						<th class="z-0">{index + 1}</th>
-						{#each colsData as colData, index}
-							<td class="z-0">
-								{formatData(getData(row, colData, index), 40, true)}
-							</td>{/each}
-						<td class="z-0" />
-					</tr>
-				{/each}
-			</tbody>
-		</table>
-	</div>
+					<th class="z-0">{index + 1}</th>
+					{#each colsData as colData, index}
+						<td class="z-0">
+							{formatData(getData(row, colData, index), 40, true)}
+						</td>{/each}
+					<td class="z-0" />
+				</tr>
+			{/each}
+		</tbody>
+	</table>
 
 	<slot name="itemDisplay" />
 </div>
