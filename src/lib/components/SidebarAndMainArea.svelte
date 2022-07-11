@@ -47,10 +47,10 @@
 				</label>
 			</div>
 			<div class="flex-1 px-2 mx-2">{title}</div>
-			<div class="flex-none hidden lg:block">
+			<div class="flex-none block">
 				<ul class="flex">
 					<li>
-						<button class="btn btn-sm "><i class="bi bi-plus-square-fill text-xl " /> </button>
+						<button class="btn btn-sm "><i class="bi bi-plus-square text-xl " /> </button>
 					</li>
 				</ul>
 			</div>
