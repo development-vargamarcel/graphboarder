@@ -9,6 +9,10 @@
 	import { introspectionResult } from '$lib/stores/introspectionResult';
 	let testEndpoints = [
 		{
+			url: 'https://vgqkcskomrpikolllkix.nhost.run/v1/graphql',
+			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' }
+		},
+		{
 			url: 'https://mdunpmb9.directus.app/graphql',
 			headers: {
 				authorization: 'Bearer kdjskhfdkjshfdsfkljdshfkjdhsfk7u4y3f3h8rhef347hh4ueihf8934h'
@@ -20,10 +24,28 @@
 		{ url: 'https://beta.pokeapi.co/graphql/v1beta' },
 		{ url: 'https://dex-server.herokuapp.com/' },
 		{ url: 'https://graphql.anilist.co' },
+		{ url: 'https://countries.trevorblades.com/' },
+		{ url: 'https://api.digitransit.fi/routing/v1/routers/finland/index/graphql' },
+		{ url: 'https://portal.ehri-project.eu/api/graphql' },
+		{ url: 'https://etmdb.com/graphql?' },
 		{
-			url: 'https://vgqkcskomrpikolllkix.nhost.run/v1/graphql',
-			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' }
-		}
+			url: 'https://graphql.fauna.com/graphql',
+			headers: {
+				authorization: 'Basic Zm5BRFFVdWNRb0FDQ1VpZDAxeXVIdWt2SnptaVY4STI4a2R6Y0p2UDo='
+			}
+		},
+		{ url: 'https://gitlab.com/api/graphql' },
+		{ url: 'https://api.graphql.jobs/' },
+		{ url: 'https://hivdb.stanford.edu/graphql' },
+		{ url: 'https://api.react-finland.fi/graphql?' },
+		{ url: 'https://graphql-camara-deputados.herokuapp.com/' },
+		{ url: 'https://graphqlpokemon.favware.tech/' },
+		{ url: 'https://graphbrainz.herokuapp.com/?' },
+		{ url: 'https://demotivation-quotes-api.herokuapp.com/graphql' },
+		{ url: 'https://graphql-compose.herokuapp.com/northwind/' },
+		{ url: 'https://directions-graphql.herokuapp.com/graphql' },
+		{ url: 'https://graphql-weather-api.herokuapp.com/' },
+		{ url: 'https://fruits-api.netlify.app/graphql' }
 	];
 	let gotData = false;
 	let introspectionResultUnsubscribe = introspectionResult.subscribe((data) => {

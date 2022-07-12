@@ -46,7 +46,9 @@
 
 	onDestroy(() => {
 		if (browser) {
-			showTabs.set(true);
+			if (!MenuItem) {
+				showTabs.set(true);
+			}
 			if (RememberScroll) {
 				let mainEl = document.getElementById(CustomId);
 				if (mainEl) {
@@ -56,7 +58,9 @@
 		}
 	});
 	onMount(() => {
-		showTabs.set(false);
+		if (!MenuItem) {
+			showTabs.set(false);
+		}
 		if (RememberScroll) {
 			let mainEl = document.getElementById(CustomId);
 			if (mainEl) {
