@@ -150,7 +150,15 @@
 </script>
 
 <header />
-
+{#if $showTabs}
+	<div
+		class="fixed bottom-0 z-[1] w-full"
+		in:scale={{ duration: 350 }}
+		out:scale={{ duration: 200 }}
+	>
+		<TabContainer />
+	</div>
+{/if}
 <main class="bg-base-300 w-full w-min-max ">
 	{#if graphqlEndpointURL && graphqlEndpointURL !== ''}
 		{#if show_IntrospectionDataGenerator}
@@ -215,16 +223,6 @@
 	<div class="fixed bottom-14 right-2 pr-1">
 		<button class="btn btn-sm " on:click={editButtonClick}>{editText}</button>
 	</div>
-
-	{#if $showTabs}
-		<div
-			class="fixed bottom-0 z-20 w-full"
-			in:scale={{ duration: 350 }}
-			out:scale={{ duration: 200 }}
-		>
-			<TabContainer />
-		</div>
-	{/if}
 </main>
 <footer />
 

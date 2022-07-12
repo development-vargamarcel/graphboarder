@@ -295,7 +295,7 @@
 							</div>
 						{/each}
 					</ul>
-					<div class="flex space-x-2 pr-2 mt-2" />
+					<div class="flex space-x-2 pr-2 mt-10" />
 				{/if}
 			</div>
 		</div>
