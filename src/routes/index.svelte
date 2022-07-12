@@ -71,7 +71,7 @@
 	<title>Home</title>
 </svelte:head>
 <Page MenuItem={true}>
-	<section class=" min-w-max w-full ">
+	<section class="  h-screen pb-20 w-screen  overflow-auto ">
 		<br />
 		<br />
 		<button
@@ -84,9 +84,9 @@
 		<button class="btn bg-primary btn-sm" on:click={filterByWord}>filter</button>
 		<br />
 		<br />
-		<button class="btn" on:click={showRootTypes}>show all</button>
-		<button class="btn" on:click={showQueries}>show queries</button>
-		<button class="btn" on:click={showMutations}>show mutations</button>
+		<button class="btn btn-xs" on:click={showRootTypes}>show all</button>
+		<button class="btn btn-xs" on:click={showQueries}>show queries</button>
+		<button class="btn btn-xs" on:click={showMutations}>show mutations</button>
 		<div class="">
 			{#key whatToShow}
 				{#each whatToShow as type, index (index)}

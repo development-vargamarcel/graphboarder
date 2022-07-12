@@ -82,7 +82,7 @@
 		in:fade={{ duration: 350, delay: 200 }}
 		out:fade={{ duration: 200 }}
 		id={CustomId}
-		class=" z-0 h-screen w-full overflow-y-scroll "
+		class=" z-0 h-screen w-full overflow-y-scrollxxx overflow-hidden "
 	>
 		<slot />
 	</main>
