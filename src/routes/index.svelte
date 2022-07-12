@@ -6,6 +6,7 @@
 	import { introspectionResult } from '$lib/stores/introspectionResult';
 	console.log($introspectionResult);
 	import Type from '$lib/components/Type.svelte';
+	import Page from '$lib/components/Page.svelte';
 
 	let rootTypes = $introspectionResult.rootTypes;
 	let queries = $introspectionResult.queryFields;
@@ -69,39 +70,40 @@
 <svelte:head>
 	<title>Home</title>
 </svelte:head>
-
-<section class=" min-w-max w-full ">
-	<br />
-	<br />
-	<button
-		class="btn btn-primary btn-sm"
-		on:click={() => {
-			console.log(rootTypeByName('articles'));
-		}}>rootTypes_by_name</button
-	>
-	<input type="text" class="input input-sm" bind:value={sortingInputValue} />
-	<button class="btn bg-primary btn-sm" on:click={filterByWord}>filter</button>
-	<br />
-	<br />
-	<button class="btn" on:click={showRootTypes}>show all</button>
-	<button class="btn" on:click={showQueries}>show queries</button>
-	<button class="btn" on:click={showMutations}>show mutations</button>
-	<div class="">
-		{#key whatToShow}
-			{#each whatToShow as type, index (index)}
-				<Type
-					{index}
-					{type}
-					template="default"
-					depth={0}
-					on:colAddRequest={(e) => {
-						console.log(e);
-					}}
-				/>
-			{/each}
-		{/key}
-	</div>
-</section>
+<Page MenuItem={true}>
+	<section class=" min-w-max w-full ">
+		<br />
+		<br />
+		<button
+			class="btn btn-primary btn-sm"
+			on:click={() => {
+				console.log(rootTypeByName('articles'));
+			}}>rootTypes_by_name</button
+		>
+		<input type="text" class="input input-sm" bind:value={sortingInputValue} />
+		<button class="btn bg-primary btn-sm" on:click={filterByWord}>filter</button>
+		<br />
+		<br />
+		<button class="btn" on:click={showRootTypes}>show all</button>
+		<button class="btn" on:click={showQueries}>show queries</button>
+		<button class="btn" on:click={showMutations}>show mutations</button>
+		<div class="">
+			{#key whatToShow}
+				{#each whatToShow as type, index (index)}
+					<Type
+						{index}
+						{type}
+						template="default"
+						depth={0}
+						on:colAddRequest={(e) => {
+							console.log(e);
+						}}
+					/>
+				{/each}
+			{/key}
+		</div>
+	</section>
+</Page>
 
 <style>
 </style>
