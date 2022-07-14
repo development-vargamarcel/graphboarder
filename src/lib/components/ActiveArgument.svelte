@@ -86,7 +86,7 @@
 	};
 	const handleClickOutside = () => {
 		//console.log('clicked outside');
-		expandedVersion = false;
+		//expandedVersion = false; //!!! this is causing the expanded version to disappear when you click outside of it,but sometimes,is not desirable like when another modal with choises opens up and if you click on anything that upper modal disappears.
 	};
 	const inUse_toggle = () => {
 		if (!activeArgumentData?.inUse && (valueToDisplay() == undefined || !canRunQuery)) {
