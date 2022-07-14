@@ -42,8 +42,8 @@
 			<div
 				class="btn btn-xs btn-info normal-case font-light "
 				on:click={() => {
-					console.log(type);
-					console.log(dd_namesArray);
+					//console.log(type);
+					//console.log(dd_namesArray);
 				}}
 			>
 				{dd_displayName}
@@ -95,9 +95,9 @@
 					);
 					stepsOfFieldsNew.push(fragmentDataFlatten[0]);
 					stepsOfFieldsNew.push(fragmentDataFlatten[1]);
-					console.log('fragmentDataFlatten[1]', fragmentDataFlatten[1]);
+					//console.log('fragmentDataFlatten[1]', fragmentDataFlatten[1]);
 					//stepsOfFieldsNew.push([fragmentDataFlatten[0]], [fragmentDataFlatten[1]]);
-					console.log('stepsOfFieldsNew', stepsOfFieldsNew);
+					//console.log('stepsOfFieldsNew', stepsOfFieldsNew);
 				}
 				let stepsOfFieldsNew_Flat = stepsOfFieldsFlatten(stepsOfFieldsNew);
 				let stepsOfFieldsNew_useFlat = Array.isArray(stepsOfFieldsNew_Flat[0]);
@@ -112,8 +112,8 @@
 						  })
 						: stepsOfFieldsToQueryFragment(stepsOfFieldsNew)
 				});
-				// console.log(type);
-				// console.log(dd_rootName);
+				// //console.log(type);
+				// //console.log(dd_rootName);
 				stepsOfFieldsNew = [];
 			}}
 		>

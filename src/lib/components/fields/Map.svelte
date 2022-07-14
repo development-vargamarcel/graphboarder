@@ -4,7 +4,7 @@
 	let mapboxgl = mapboxglOriginal;
 	export let containerEl;
 	export let rawValue;
-	console.log('rawValue from outside', rawValue);
+	//console.log('rawValue from outside', rawValue);
 	export let dispatchValue;
 	let map;
 	let mapContainer;
@@ -26,7 +26,7 @@
 		}
 
 		if (containerEl) {
-			console.log('containerEl', containerEl);
+			//console.log('containerEl', containerEl);
 			mapContainer.style.width = `${containerEl.clientWidth - 60}px`;
 			mapContainer.style.height = `${containerEl.clientHeight - 60}px`;
 		} else {
@@ -81,7 +81,7 @@
 
 		function updateArea(e) {
 			const data = draw.getAll();
-			console.log('data', data);
+			//console.log('data', data);
 			let dataCopy = JSON.parse(JSON.stringify(data));
 			let dispatchValue = data.features.map((feature) => {
 				let geometry = feature.geometry;
@@ -110,8 +110,8 @@
 				});
 			}
 
-			console.log('map', map);
-			console.log('draw', draw);
+			//console.log('map', map);
+			//console.log('draw', draw);
 		}
 	});
 	let mapOnLoadHandler_set = false;
@@ -119,10 +119,10 @@
 		mapOnLoadHandler_set = true;
 		map.on('load', () => {
 			if (rawValue) {
-				console.log('rawValue', rawValue);
+				//console.log('rawValue', rawValue);
 				if (draw) {
 					rawValue.features.forEach((feature) => {
-						console.log('feature added');
+						//console.log('feature added');
 						draw.add(feature);
 					});
 				}

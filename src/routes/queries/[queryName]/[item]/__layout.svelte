@@ -12,7 +12,7 @@
 
 	setClient($urqlClient);
 	let item = $page.params.item;
-	console.log({ item });
+	//console.log({ item });
 </script>
 
 <Page MenuItem={false} CustomId={item} backPath={`/queries/${$page.params.queryName}`}>

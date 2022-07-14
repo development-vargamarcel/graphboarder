@@ -18,7 +18,7 @@ export default createClient({
 });
 
 let getToken = () => {
-    console.log('get token run');
+    //console.log('get token run');
     if (browser) {
         return localStorage.getItem('auth_token')
     } else { return null }

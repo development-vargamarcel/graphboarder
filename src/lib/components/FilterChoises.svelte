@@ -12,7 +12,7 @@
 	const dispatch = createEventDispatcher();
 	$: if (chosen || !chosen) {
 		dispatch('filterChanged', { id: id, chosen: chosen });
-		console.log('filterChanged');
+		//console.log('filterChanged');
 	}
 </script>
 

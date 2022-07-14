@@ -29,8 +29,8 @@
 		});
 		activeArgumentsDataGrouped[index] = groupNewData;
 		activeArgumentsDataGrouped = activeArgumentsDataGrouped;
-		console.log('groupNewData.group_args', groupNewData.group_args);
-		console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+		//console.log('groupNewData.group_args', groupNewData.group_args);
+		//console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 	};
 	let showActiveFilters;
 	const dispatch = createEventDispatcher();
@@ -38,7 +38,7 @@
 	export let overwrite_activeArgumentsData;
 	export let delete_activeArgument;
 	export let argsInfo;
-	console.log('argsInfo', argsInfo);
+	//console.log('argsInfo', argsInfo);
 	const handleArgsChanged = () => {};
 	let final_gqlArgObj = {};
 	let final_canRunQuery = true;
@@ -59,7 +59,7 @@
 	activeArgumentsDataGrouped = [rootGroup];
 
 	argsInfo?.forEach((el) => {
-		console.log('el---', el);
+		//console.log('el---', el);
 		if (!el.dd_isRootArg) {
 			let newGroupData = {
 				group_name: el.dd_displayName,
@@ -87,7 +87,7 @@
 		}
 	});
 
-	console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+	//console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 
 	//
 
@@ -109,7 +109,7 @@
 			}
 		}}
 		on:apply={(e) => {
-			console.log(']]]]]]]]]', e);
+			//console.log(']]]]]]]]]', e);
 		}}
 		><div class="  w-full  ">
 			<div class="mx-auto mt-2  w-full   space-y-2   pb-2  ">

@@ -22,7 +22,7 @@
 	choises.length == 1 ? (type = 'toggle') : '';
 	let reorder = false;
 	let selectedForEdit = [];
-	$: console.log('selectedForEdit', selectedForEdit);
+	//$: console.log('selectedForEdit', selectedForEdit);
 	let chosenPreChange;
 	let modalVisible = false;
 	let chosenNew = [];
@@ -55,7 +55,7 @@
 			modalVisible = false;
 			chosen = chosenInternal;
 		}
-		console.log('filterApplied', { id: id, chosen: chosen, extraData });
+		//console.log('filterApplied', { id: id, chosen: chosen, extraData });
 		dispatch('filterApplied', { id: id, chosen: chosen, extraData, choises: choises });
 		selectedForEdit = [];
 	};
@@ -71,8 +71,8 @@
 		if (type !== 'radio') {
 			syncOrder();
 		}
-		console.log('chosen:', chosen);
-		console.log('chosenInternal:', chosenInternal);
+		//console.log('chosen:', chosen);
+		//console.log('chosenInternal:', chosenInternal);
 		if (!modalVisible) {
 			chosenInternal = chosen;
 		}
@@ -91,8 +91,8 @@
 			type == 'radio' ? (title = chosen) : (extraInfo = `${chosen.length}`);
 		}
 	} else {
-		console.log('chosen:', chosen);
-		console.log('chosenInternal:', chosenInternal);
+		//console.log('chosen:', chosen);
+		//console.log('chosenInternal:', chosenInternal);
 		if (!modalVisible) {
 			chosenInternal = chosen;
 		}
@@ -136,7 +136,7 @@
 
 	function handleSort(e) {
 		choisesWithId = e.detail.items;
-		console.log('choisesWithId', choisesWithId);
+		//console.log('choisesWithId', choisesWithId);
 		syncOrder();
 
 		dragDisabled = true;

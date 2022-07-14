@@ -12,7 +12,7 @@
 	}
 	function handleDndFinalize(e) {
 		node.items = e.detail.items;
-		console.log(e);
+		//console.log(e);
 		nodes = { ...nodes };
 		dispatch('changed');
 	}

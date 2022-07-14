@@ -88,8 +88,8 @@
 	</main>
 {:else}
 	<main
-		in:fly={{ x: 200, duration: 300, opacity: 0, start: 6, easing: cubicOut }}
-		out:fly={{ x: 50, duration: 300, opacity: 0, start: 6, easing: quartIn }}
+		in:fly={{ x: 200, duration: 300, opacity: 0, start: 6 }}
+		out:fly={{ x: 300, duration: 300, opacity: 0, start: 6 }}
 		id={CustomId}
 		class="  overflow-y-scroll pb-96 fixed top-0 h-full w-full z-40 bg-base-100"
 	>

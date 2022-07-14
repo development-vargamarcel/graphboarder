@@ -43,7 +43,7 @@
 	}
 	let inDuration = 300;
 	const expand = () => {
-		console.log('dd_rootName', dd_rootName);
+		//console.log('dd_rootName', dd_rootName);
 		expandData = getRootType($introspectionResult.rootTypes, dd_rootName);
 		if (expandData) {
 			if (!showExpand) {
@@ -58,8 +58,8 @@
 
 		inDuration = expandData?.inputFields.length * 100;
 		inDuration = inDuration < 300 && inDuration > 200 ? inDuration : 300;
-		console.log('inDuration', inDuration);
-		console.log('expandData', expandData);
+		//console.log('inDuration', inDuration);
+		//console.log('expandData', expandData);
 	};
 </script>
 

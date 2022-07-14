@@ -128,16 +128,16 @@
 			not: false
 		}
 	};
-	console.log('aasas-nodes', nodes);
+	//console.log('aasas-nodes', nodes);
 	const handle_changed = () => {
 		let nodesClone = JSON.parse(JSON.stringify(nodes));
 		let values = Object.values(nodesClone);
 		let valuesWithItems = values.filter((node) => {
 			return node?.items?.length > 0;
 		});
-		console.log('nodes', nodes);
-		console.log({ values });
-		console.log({ valuesWithItems });
+		//console.log('nodes', nodes);
+		//console.log({ values });
+		//console.log({ valuesWithItems });
 	};
 	const availableOperators = ['_and', '_or', '_nor'];
 </script>

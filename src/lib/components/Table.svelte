@@ -10,7 +10,7 @@
 	export let colsData = [];
 	export let columns = [];
 	export let rows = [];
-	console.log('rows---------------', rows);
+	//console.log('rows---------------', rows);
 	const pathToData = (queryFragment) => {
 		let pathStepsArray = [];
 
@@ -34,25 +34,25 @@
 	};
 
 	const getDataUsing_pathToData = (pathToData, data) => {
-		console.log('-------------------------------------');
-		console.log('pathToData', pathToData);
+		//console.log('-------------------------------------');
+		//console.log('pathToData', pathToData);
 		if (pathToData[pathToData.length - 1] == false) {
-			console.log('********************');
+			//console.log('********************');
 			//or includes false maybe is better....
 			pathToData = [pathToData[0]];
 		}
 
 		pathToData.forEach((el) => {
 			if (typeof el !== 'string') {
-				console.log('hellllllloooooo=====', el, el[0], data);
+				//console.log('hellllllloooooo=====', el, el[0], data);
 			} else {
-				console.log('getDataUsing_pathToData_data', data);
+				//console.log('getDataUsing_pathToData_data', data);
 				if (data?.length) {
 					if (data.length > 0) {
-						console.log('0.0***********');
+						//console.log('0.0***********');
 
 						data = data.map((dataEl) => {
-							console.log('0.0insideMap***********', dataEl);
+							//console.log('0.0insideMap***********', dataEl);
 							if (dataEl.length) {
 								return dataEl.map((dataEl_El) => {
 									return dataEl_El?.[el];
@@ -62,28 +62,28 @@
 							}
 						});
 					} else {
-						console.log('0.1***********');
+						//console.log('0.1***********');
 
 						data = data;
 					}
 				} else if (data?.[el] !== undefined) {
-					console.log('1***********', el, data[el]);
+					//console.log('1***********', el, data[el]);
 					data = data[el];
 				} else {
-					console.log('2***********');
+					//console.log('2***********');
 
 					data = undefined; //might cause problems
 				}
 			}
 		});
-		console.log('FINAL-getDataUsing_pathToData_data', data);
+		//console.log('FINAL-getDataUsing_pathToData_data', data);
 
-		console.log('-------------------------------------');
+		//console.log('-------------------------------------');
 		return data;
 	};
 
-	console.log('columns', columns);
-	console.log('rows', rows);
+	//console.log('columns', columns);
+	//console.log('rows', rows);
 
 	const dispatch = createEventDispatcher();
 </script>

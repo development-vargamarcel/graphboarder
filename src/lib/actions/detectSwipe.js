@@ -1,6 +1,6 @@
 export function detectSwipe(node) {
-    console.log('node', node)
-    console.log('node id', node?.id)
+    //console.log('node', node)
+    //console.log('node id', node?.id)
     // Swipe Up / Down / Left / Right
     var initialX = null;
     var initialY = null;
@@ -27,7 +27,7 @@ export function detectSwipe(node) {
     }
     function touchend(e) {
 
-        console.log(e)
+        //console.log(e)
 
         if (diffX === null || diffY === null) {
             return;
@@ -35,9 +35,9 @@ export function detectSwipe(node) {
         finalTime = e.timeStamp;
 
         duration = finalTime - initialTime;
-        console.log('initialTime', initialTime)
-        console.log('finalTime', finalTime)
-        console.log('duration', duration)
+        //console.log('initialTime', initialTime)
+        //console.log('finalTime', finalTime)
+        //console.log('duration', duration)
 
         speedX = Math.abs(diffX / duration);
         speedY = Math.abs(diffY / duration);
@@ -45,8 +45,8 @@ export function detectSwipe(node) {
         //finalX = e.touches[0].clientX;
         //finalY = e.touches[0].clientY;
 
-        console.log('diffX', diffX)
-        console.log('diffY', diffY)
+        //console.log('diffX', diffX)
+        //console.log('diffY', diffY)
 
         if (Math.abs(diffX) > Math.abs(diffY) && speedX > minSpeed) {// sliding horizontally
             if (diffX > 0) {

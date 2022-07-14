@@ -29,7 +29,7 @@
 		shadowWidth = labelEl.clientWidth;
 	}
 
-	$: console.log(shadowEl);
+	//$: console.log(shadowEl);
 	$: if (shadowHeight && shadowEl) {
 		if (shadowEl.style.height == 0) {
 			//if (shadowEl.style.height == 0) ensures the bellow runs only once per grab of element to move
@@ -67,15 +67,15 @@
 		Object.assign(activeArgumentData, detail);
 		Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
 		Object.assign(group, generate_group_gqlArgObj(group));
-		console.log({ activeArgumentsDataGrouped });
-		console.log('generate_gqlArgObj', generate_gqlArgObj([activeArgumentData]));
-		console.log({ activeArgumentData });
+		//console.log({ activeArgumentsDataGrouped });
+		//console.log('generate_gqlArgObj', generate_gqlArgObj([activeArgumentData]));
+		//console.log({ activeArgumentData });
 
 		dispatch('changed', detail);
 		if (activeArgumentData?.inUse) {
 			dispatch('updateQuery');
 		}
-		console.log(detail);
+		//console.log(detail);
 		canRunQuery = activeArgumentData?.canRunQuery;
 		if (!activeArgumentData.inUse && valueToDisplay() !== undefined) {
 			inUse_toggle();
@@ -85,7 +85,7 @@
 		}
 	};
 	const handleClickOutside = () => {
-		console.log('clicked outside');
+		//console.log('clicked outside');
 		expandedVersion = false;
 	};
 	const inUse_toggle = () => {
@@ -231,16 +231,16 @@
 							Object.assign(activeArgumentData, e.detail);
 							Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
 							Object.assign(group, generate_group_gqlArgObj(group));
-							console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-							console.log(
-								'generate_gqlArgObj([activeArgumentData])',
-								generate_gqlArgObj([activeArgumentData])
-							);
+							//console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
+							// console.log(
+							// 	'generate_gqlArgObj([activeArgumentData])',
+							// 	generate_gqlArgObj([activeArgumentData])
+							// );
 							if (activeArgumentData?.inUse) {
 								dispatch('updateQuery');
 							}
 
-							console.log(e.detail);
+							//console.log(e.detail);
 						}}
 						id={activeArgumentData.stepsOfFieldsNew}
 						title="choose"

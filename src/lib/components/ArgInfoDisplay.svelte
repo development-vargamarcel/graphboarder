@@ -35,7 +35,7 @@
 		dd_shouldExpand
 	} = type;
 
-	console.log('====', dd_namesArray, dd_namesArray);
+	//console.log('====', dd_namesArray, dd_namesArray);
 	//only for  changeArguments
 	let inUse;
 
@@ -48,8 +48,8 @@
 		return get_KindsArray(field).includes('SCALAR');
 	});
 
-	// console.log('*RootType*', RootType);
-	// console.log('*allInputFieldsAreScalar*', allInputFieldsAreScalar);
+	// //console.log('*RootType*', RootType);
+	// //console.log('*allInputFieldsAreScalar*', allInputFieldsAreScalar);
 
 	/// do the above for enums
 
@@ -66,7 +66,7 @@
 			id: `${JSON.stringify(stepsOfFieldsNew)}${Math.random()}`,
 			...type
 		};
-		console.log('infoToCast', infoToCast);
+		//console.log('infoToCast', infoToCast);
 		//add it
 
 		dispatch('argAddRequest', infoToCast);
@@ -92,8 +92,8 @@
 			<div
 				class="btn btn-xs btn-info normal-case font-light "
 				on:click={() => {
-					console.log(type);
-					console.log(dd_namesArray);
+					//console.log(type);
+					//console.log(dd_namesArray);
 				}}
 			>
 				{dd_displayName}

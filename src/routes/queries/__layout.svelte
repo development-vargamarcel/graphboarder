@@ -7,14 +7,14 @@
 	import { onDestroy } from 'svelte';
 	import { schemaData } from '$lib/stores/schemaData';
 	import SidebarAndMainArea from '$lib/components/SidebarAndMainArea.svelte';
-	console.log('queries: ', queries);
+	//console.log('queries: ', queries);
 
 	let origin = $page.url.origin;
 	let pathname;
 
 	let pageUnsubscribe = page.subscribe((value) => {
 		pathname = value.url.pathname;
-		console.log('value===', value);
+		//console.log('value===', value);
 	});
 	onDestroy(() => {
 		pageUnsubscribe();

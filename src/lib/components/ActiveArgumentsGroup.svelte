@@ -30,7 +30,7 @@
 	const dispatch = createEventDispatcher();
 	function handleSort(e) {
 		group.group_args = e.detail.items;
-		console.log('choisesWithId', group.group_args);
+		//console.log('choisesWithId', group.group_args);
 
 		dragDisabled = true;
 	}
@@ -119,10 +119,10 @@
 												})
 											) {
 												group.group_args.push(newArgData);
-												console.log('aa group', group);
+												//console.log('aa group', group);
 												update_activeArgumentsDataGrouped(group);
 											} else {
-												console.log('already added');
+												//console.log('already added');
 											}
 										}
 									}}
@@ -167,7 +167,7 @@
 											group.group_args.push(newArgData);
 											update_activeArgumentsDataGrouped(group);
 										} else {
-											console.log('already added');
+											//console.log('already added');
 										}
 									}}
 								/>
@@ -245,7 +245,7 @@
 						on:updateQuery
 						on:selectedForEditChanged={(e) => {
 							let { detail } = e;
-							console.log('detail.selectedForEditOn', detail.selectedForEditOn);
+							//console.log('detail.selectedForEditOn', detail.selectedForEditOn);
 							if (detail.selectedForEditOn) {
 								if (!selectedForEdit.includes(detail.selectedForEditValue)) {
 									selectedForEdit = [...selectedForEdit, detail.selectedForEditValue];
@@ -291,7 +291,7 @@
 					activeArgumentsDataGrouped
 				);
 				dispatch('updateQuery');
-				console.log({ FINAL_gqlArgObj_fromGroups });
+				//console.log({ FINAL_gqlArgObj_fromGroups });
 			}}
 			type={group.group_name + 'ActiveArgumentGroupHasFilterOperators'}
 			node={group.group_argsNode.mainContainer}

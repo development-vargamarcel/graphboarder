@@ -18,13 +18,13 @@
 
 	const flipDurationMs = 300;
 	function handleDndConsider(e) {
-		console.log('considering', e, nodes);
+		//console.log('considering', e, nodes);
 		node.items = e.detail.items;
 		dragDisabled = true;
 	}
 	function handleDndFinalize(e) {
 		node.items = e.detail.items;
-		console.log(e);
+		//console.log(e);
 		nodes = { ...nodes };
 		dispatch('changed');
 		dragDisabled = true;
@@ -52,7 +52,7 @@
 		shadowWidth = labelEl.clientWidth;
 	}
 
-	$: console.log(shadowEl);
+	//$: console.log(shadowEl);
 	$: if (shadowHeight && shadowEl) {
 		if (shadowEl.style.height == 0) {
 			//if (shadowEl.style.height == 0) ensures the bellow runs only once per grab of element to move
@@ -222,7 +222,7 @@
 					<svelte:self
 						on:deleteSubNode={(e) => {
 							deleteItem(e);
-							console.log(e.detail.id, node);
+							//console.log(e.detail.id, node);
 						}}
 						{originalNodes}
 						on:updateQuery

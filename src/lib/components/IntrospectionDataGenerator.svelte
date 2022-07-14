@@ -13,7 +13,7 @@
 	let client = createClient({
 		url: graphqlEndpointURL,
 		fetchOptions: () => {
-			console.log('getHeaders() run', getHeaders());
+			//console.log('getHeaders() run', getHeaders());
 			return {
 				headers: getHeaders()
 			};
@@ -142,7 +142,7 @@
 	$: sortingArray = sortingInputValue.split(' ');
 
 	schemaData.subscribe((value) => {
-		console.log('schemaData value', value);
+		//console.log('schemaData value', value);
 	});
 
 	const handleData = () => {
@@ -165,12 +165,12 @@
 	};
 	$: if (!$queryStore.fetching) {
 		if (queryStore?.data) {
-			console.log($queryStore?.data);
+			//console.log($queryStore?.data);
 			handleData();
 		} else if ($queryStore?.error) {
-			console.log($queryStore?.error);
+			//console.log($queryStore?.error);
 		} else {
-			console.log('no data');
+			//console.log('no data');
 		}
 	}
 </script>

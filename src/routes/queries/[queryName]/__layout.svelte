@@ -29,7 +29,7 @@
 	import { schemaData } from '$lib/stores/schemaData';
 	setClient($urqlClient);
 	let queryName = $page.params.queryName;
-	console.log('aaaaaaaaaaa', $page);
+	//console.log('aaaaaaaaaaa', $page);
 	onDestroy(() => {
 		document.getElementById('my-drawer-3')?.click();
 	});
@@ -41,7 +41,7 @@
 	}
 
 	let { scalarFields, non_scalarFields } = getFields_Grouped(dd_relatedRoot);
-	console.log('currentQueryInfo ====', currentQueryInfo);
+	//console.log('currentQueryInfo ====', currentQueryInfo);
 	let currentQuery_fields_SCALAR_names = scalarFields.map((field) => {
 		return field.name;
 	});
@@ -53,7 +53,7 @@
 	let tableColsData = [];
 
 	tableColsData = [...scalarColsData];
-	console.log('tableColsData', tableColsData);
+	//console.log('tableColsData', tableColsData);
 	//let queryFragments;
 	let queryFragmentsNew;
 	let queryBody;
@@ -70,10 +70,10 @@
 			.map((colData) => {
 				return colData.queryFragmentNew;
 			});
-		console.log('tableColsData queryFragmentsNew', queryFragmentsNew);
-		//console.log('queryFragments', queryFragments);
+		//console.log('tableColsData queryFragmentsNew', queryFragmentsNew);
+		////console.log('queryFragments', queryFragments);
 		queryBody = buildQueryBody(queryName, queryFragmentsNew.join('\n'), gqlArgObj_string);
-		console.log('queryBody', queryBody);
+		//console.log('queryBody', queryBody);
 		let fetching = true;
 		let error = false;
 		let data = false;
@@ -91,15 +91,15 @@
 					error = result.error.message;
 				}
 				queryData = { fetching, error, data };
-				console.log('result', result); // { data: ... }
-				console.log('queryData', queryData);
+				//console.log('result', result); // { data: ... }
+				//console.log('queryData', queryData);
 				rows = queryData.data[queryName];
-				console.log('**** queryData.data[queryName]', rows);
+				//console.log('**** queryData.data[queryName]', rows);
 
 				if (rows?.length == undefined) {
 					rows = [rows];
 				}
-				console.log('**** rows', rows);
+				//console.log('**** rows', rows);
 			});
 	};
 	if (scalarFields.length == 0) {
@@ -114,7 +114,7 @@
 			return colData.title !== e.detail.column;
 		});
 
-		console.log('hideColumn', e.detail);
+		//console.log('hideColumn', e.detail);
 	};
 
 	rows = queryData.data[queryName];
@@ -123,12 +123,12 @@
 	});
 	$: if (queryData.fetching) {
 		rows = queryData.data[queryName];
-		console.log('**** queryData.data[queryName]', rows);
+		//console.log('**** queryData.data[queryName]', rows);
 
 		if (rows?.length == undefined) {
 			rows = [rows];
 		}
-		console.log('**** rows', rows);
+		//console.log('**** rows', rows);
 	}
 
 	let column_stepsOfFieldsNew = '';
@@ -144,7 +144,7 @@
 				queryFragmentNew: stepsOfFieldsToQueryFragment(stepsOfFieldsNew)
 			};
 			tableColsData = [...tableColsData, tableColData];
-			console.log('tableColsData', tableColsData);
+			//console.log('tableColsData', tableColsData);
 			//	runQuery();
 			column_stepsOfFieldsNew = '';
 		}
@@ -173,7 +173,7 @@
 	{delete_activeArgument}
 	{overwrite_activeArgumentsData}
 	on:argsChanged={(e) => {
-		console.log('argsChanged', e.detail);
+		//console.log('argsChanged', e.detail);
 		gqlArgObj_string = e.detail.gqlArgObj_string;
 		runQuery();
 	}}
@@ -191,7 +191,7 @@
 		{columns}
 		{rows}
 		on:addColumnDropdown={() => {
-			console.log('add column dropdown');
+			//console.log('add column dropdown');
 		}}
 		on:hideColumn={(e) => {
 			hideColumn(e);
@@ -221,9 +221,9 @@
 							stepsOfFieldsNew={[]}
 							depth={0}
 							on:colAddRequest={(e) => {
-								console.log(e);
+								//console.log(e);
 								tableColsData = [...tableColsData, e.detail];
-								console.log('tableColsData', tableColsData);
+								//console.log('tableColsData', tableColsData);
 								runQuery();
 								dd_relatedRoot.fields = dd_relatedRoot.fields; // this and key is used to re-render Type
 							}}

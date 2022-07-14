@@ -40,7 +40,7 @@
 		canExpand = true;
 	}
 	const expand = () => {
-		console.log('dd_rootName', dd_rootName);
+		//console.log('dd_rootName', dd_rootName);
 		expandData = getRootType($introspectionResult.rootTypes, dd_rootName);
 		if (expandData) {
 			if (!showExpand) {
@@ -51,7 +51,7 @@
 			}
 
 			showExpand = !showExpand;
-			console.log('expandData', expandData);
+			//console.log('expandData', expandData);
 			let typeLen =
 				expandData?.fields?.length ||
 				expandData?.inputFields?.length ||
@@ -64,8 +64,8 @@
 
 			inDuration = (typeLen + argLen) * 100;
 			inDuration = inDuration < 300 && inDuration > 200 ? inDuration : 300;
-			console.log('inDuration', inDuration);
-			console.log('expandData', expandData);
+			//console.log('inDuration', inDuration);
+			//console.log('expandData', expandData);
 		}
 	};
 </script>

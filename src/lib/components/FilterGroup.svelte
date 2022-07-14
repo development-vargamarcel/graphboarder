@@ -55,7 +55,7 @@
 					dispatchValue = chosenInputField.dd_displayType == 'text' ? `'${rawValue}'` : rawValue;
 				}
 			}
-			console.log('-----', rawValue);
+			//console.log('-----', rawValue);
 
 			if (valueCouldBeValid) {
 				dispatch('changed', {
@@ -109,8 +109,8 @@
 				return el.dd_displayName == detail.chosen;
 			})[0];
 
-			console.log('chosenInputField', chosenInputField);
-			console.log('detail', detail);
+			//console.log('chosenInputField', chosenInputField);
+			//console.log('detail', detail);
 			isINPUT_OBJECT = detail.extraData.dd_displayType == 'INPUT_OBJECT';
 			choises = detail.choises;
 			chosen = detail.chosen;
@@ -148,7 +148,7 @@
 					{containerEl}
 					{rawValue}
 					on:changed={(e) => {
-						console.log(e.detail);
+						//console.log(e.detail);
 						rawValue = e.detail.chd_rawValue;
 						dispatchValue = e.detail.chd_dispatchValue;
 

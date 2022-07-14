@@ -4,7 +4,7 @@
 	const flipDurationMs = 200;
 	function handleSort(e) {}
 	let handleConsider = () => {
-		console.log('aaaaaaaaaaaa');
+		//console.log('aaaaaaaaaaaa');
 	};
 	let items = [];
 	export let type = '';

@@ -18,7 +18,7 @@
 	setClient($urqlCoreClient);
 
 	export let queryName = '';
-	console.log(queryName);
+	//console.log(queryName);
 	onDestroy(() => {
 		document.getElementById('my-drawer-3').click();
 	});
@@ -65,7 +65,7 @@ ${queryFragments_scalar}
   }
 }
     `;
-	console.log(queryBody);
+	//console.log(queryBody);
 	let queryStore;
 	queryStore = operationStore(queryBody);
 	query(queryStore);
@@ -81,7 +81,7 @@ ${queryFragments_scalar}
 			return colData.title !== e.detail.column;
 		});
 
-		console.log('hideField', e.detail);
+		//console.log('hideField', e.detail);
 	};
 	const runQuery = () => {
 		query(queryStore);
@@ -93,7 +93,7 @@ ${queryFragments_scalar}
 		.query(queryBody)
 		.toPromise()
 		.then((result) => {
-			console.log('result', result); // { data: ... }
+			//console.log('result', result); // { data: ... }
 		});
 	///////
 </script>

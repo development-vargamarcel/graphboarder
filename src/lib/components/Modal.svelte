@@ -2,7 +2,7 @@
 	import { fly, fade, scale } from 'svelte/transition';
 	import { detectSwipe } from '$lib/actions/detectSwipe.js';
 	import { sineOut, sineIn } from 'svelte/easing';
-
+	import { portal } from 'svelte-portal';
 	export let modalIdetifier = 'modal';
 	export let showApplyBtn = true;
 	import { createEventDispatcher } from 'svelte';
@@ -16,7 +16,7 @@
 	const swipedown = (e) => {
 		const parent = e.target.parentNode;
 		let targetId = e.target?.id;
-		console.log('modalIdetifiertargetId', modalIdetifier == targetId);
+		//console.log('modalIdetifiertargetId', modalIdetifier == targetId);
 		dispatch('cancel', { modalIdetifier: targetId });
 	};
 
@@ -34,6 +34,8 @@
 <!-- scroll-smooth -->
 <div
 	class="fixed top-0 right-0 z-[99]  h-screen  w-screen lg:w-full  overflow-y-scroll overscroll-contain   bg-base-100/50   "
+	use:portal={'body'}
+	hidden
 	bind:this={mainDiv}
 	in:fade={{ delay: 0, duration: 100 }}
 	out:fade={{ delay: 0, duration: 100 }}
@@ -55,7 +57,7 @@
 				e.stopPropagation();
 				e.stopImmediatePropagation();
 				swipedown(e);
-				console.log('swipedown', e);
+				//console.log('swipedown', e);
 			}}
 		-->
 		<div
@@ -85,7 +87,7 @@
 		</div>
 	{/if}
 	{#if showApplyBtn}
-		<div class="fixed bottom-0  right-0 z-[99] w-full 	 lg:w-[170vh] pb-8">
+		<div class="fixed bottom-0  right-0 z-[99] w-full 	 lg:w-[170vh] ">
 			<!-- card-actions -->
 			<div
 				class="my-0  mx-auto w-full  lg:w-2/5  mx-auto justify-center bg-gradient-to-t from-base-100/100 via-base-100/70 to-base-100/10 px-2 pb-0"

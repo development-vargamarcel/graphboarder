@@ -51,7 +51,7 @@
 	let introspectionResultUnsubscribe = introspectionResult.subscribe((data) => {
 		if (data?.rootTypes.length > 0) {
 			gotData = true;
-			console.log('introspectionResult', data);
+			//console.log('introspectionResult', data);
 		}
 	});
 
@@ -96,7 +96,7 @@
 	}
 
 	const store_graphqlEndpointURL = () => {
-		console.log(graphqlEndpointURL);
+		//console.log(graphqlEndpointURL);
 		if (graphqlEndpointURL == '') {
 			localStorage.removeItem('graphqlEndpointURL');
 		} else {

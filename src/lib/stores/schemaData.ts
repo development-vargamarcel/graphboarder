@@ -95,7 +95,7 @@ export const create_schemaData = () => {
             let rootTypes = returnObject.set_rootTypes(true, true)
             let storeValue = get(store)
             let QMSFields = returnObject.set_QMSFields(true, false, ['query', 'mutation', 'subscription'])
-            console.log('QMSFields', QMSFields)
+            //console.log('QMSFields', QMSFields)
             set({
                 ...storeValue,
                 rootTypes,
