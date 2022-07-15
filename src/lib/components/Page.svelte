@@ -75,6 +75,7 @@
 	/// scroll logic end
 
 	import TabContainer from '$lib/components/TabContainer.svelte';
+	import { portal } from 'svelte-portal';
 </script>
 
 {#if MenuItem}
@@ -88,8 +89,10 @@
 	</main>
 {:else}
 	<main
-		in:fly={{ x: 200, duration: 300, opacity: 0, start: 6 }}
-		out:fly={{ x: 300, duration: 300, opacity: 0, start: 6 }}
+		use:portal={'body'}
+		hidden
+		in:scale={{ x: 200, duration: 300, opacity: 0, start: 0.97 }}
+		out:scale={{ x: 300, duration: 300, opacity: 0, start: 0.97 }}
 		id={CustomId}
 		class="  overflow-y-scroll pb-96 fixed top-0 h-full w-full z-40 bg-base-100"
 	>

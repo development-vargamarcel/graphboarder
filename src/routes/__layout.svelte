@@ -150,7 +150,7 @@
 </script>
 
 <header />
-{#if $showTabs}
+{#if true}
 	<div
 		class="fixed bottom-0 z-[1] w-full"
 		in:scale={{ duration: 350 }}
