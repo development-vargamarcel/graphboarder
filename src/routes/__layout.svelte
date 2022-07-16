@@ -150,16 +150,15 @@
 </script>
 
 <header />
-{#if true}
+
+<main class="bg-base-300 w-full w-min-max flex">
 	<div
-		class="fixed bottom-0 z-[1] w-full"
+		class="fixed left-0 top-0 md:static"
 		in:scale={{ duration: 350 }}
 		out:scale={{ duration: 200 }}
 	>
 		<TabContainer />
 	</div>
-{/if}
-<main class="bg-base-300 w-full w-min-max ">
 	{#if graphqlEndpointURL && graphqlEndpointURL !== ''}
 		{#if show_IntrospectionDataGenerator}
 			{#if gotData}

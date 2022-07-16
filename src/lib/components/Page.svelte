@@ -89,8 +89,6 @@
 	</main>
 {:else}
 	<main
-		use:portal={'body'}
-		hidden
 		in:scale={{ x: 200, duration: 300, opacity: 1, start: 0.97 }}
 		out:scale={{ x: 300, duration: 300, opacity: 0, start: 0.97 }}
 		id={CustomId}

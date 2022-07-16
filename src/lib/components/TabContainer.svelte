@@ -10,7 +10,7 @@
 </script>
 
 <ul
-	class="flex h-max w-full flex-auto  justify-center border-t-[1px] border-base-content border-opacity-5 bg-base-100 px-3 "
+	class="flex h-screen w-20 flex-col  justify-start border-t-[1px] border-base-content border-opacity-5 bg-base-100 px-3 "
 >
 	{#each links as link}
 		<TabItem title={link.title} url={link.url} icon={link.icon} hasFill={link.hasFill} />
