@@ -53,7 +53,7 @@
 	>
 		{#each itemsToShow as item}
 			<li class="rounded hover:bg-info/50  m-2 break-all">
-				<a href={item.url}>{item.title}</a>
+				<a href={item.url}>{item.title}, {item.url} </a>
 			</li>
 		{/each}
 	</ul>
