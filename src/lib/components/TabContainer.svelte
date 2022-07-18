@@ -49,7 +49,7 @@
 		{/each}
 	</ul>
 	<ul
-		class="space-y-2 px-4 h-screen overflow-y-auto  w-screen md:w-full  grow overflow-x-auto  bg-base-100 grow"
+		class="space-y-2 pr-4 mr-2 h-screen overflow-y-auto  w-screen md:w-full  grow overflow-x-auto  bg-base-100 grow"
 	>
 		{#each itemsToShow as item}
 			<li class="">
