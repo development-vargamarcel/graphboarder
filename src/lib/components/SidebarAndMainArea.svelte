@@ -8,7 +8,7 @@
 
 <div class="flex w-full">
 	<div
-		class="w-[40vh]  h-[100vh]  {forceVisibleSidebar
+		class="w-[30vh]  h-[100vh]  {forceVisibleSidebar
 			? 'visible '
 			: ' invisible'} fixed left-0 top-0 z-50 lg:z-0 lg:visible lg:static bg-base-200 overflow-y-auto"
 		use:clickOutside

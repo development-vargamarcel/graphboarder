@@ -147,82 +147,108 @@
 
 		graphqlEndpointURL = endpoint?.url;
 	};
+	let forceVisibleSidebar = false;
+	import { clickOutside } from '$lib/actions/clickOutside';
+	import Sidebar from '$lib/components/Sidebar.svelte';
 </script>
 
 <header />
 
-<main class="bg-base-300 w-full w-min-max flex">
-	<div
-		class="fixed left-0 top-0 z-[1] md:static"
-		in:scale={{ duration: 350 }}
-		out:scale={{ duration: 200 }}
-	>
-		<TabContainer />
+<main class="bg-base-300  flex w-[100vw] overflow-hidden">
+	<div class=" w-max-min">
+		<Sidebar {forceVisibleSidebar} />
 	</div>
-	{#if graphqlEndpointURL && graphqlEndpointURL !== ''}
-		{#if show_IntrospectionDataGenerator}
-			{#if gotData}
-				<slot />
-			{/if}
-			<IntrospectionDataGenerator {graphqlEndpointURL} />
-		{/if}
-	{/if}
-	{#if showEdit}
-		<div
-			class="fixed bottom-0 bg-base-200 w-screen h-screen overscroll-none overflow-y-auto pb-4 px-4 mx-auto"
-		>
-			<div class="form-control w-full max-w-xs mt-40">
-				<ul class="space-y-2 max-h-40 overflow-y-auto px-1 overscroll-contain">
-					{#each testEndpoints as endpoint}
-						<li
-							class="cursor-pointer bg-accent/5 p-2 rounded overflow-x-auto"
-							on:click={() => {
-								handleEndpointClick(endpoint);
-							}}
-						>
-							{endpoint.url}
-						</li>
-					{/each}
-				</ul>
-				<div class="divider">or</div>
-				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<label class="label">
-					<span class="label-text">graphqlEndpointURL</span>
-				</label>
-				<input
-					type="text"
-					placeholder="Type here"
-					class="input input-bordered input-sm w-full max-w-xs "
-					bind:value={graphqlEndpointURL}
-				/>
-
-				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<label class="label">
-					<span class="label-text">headers</span>
-				</label>
-
-				<textarea
-					type="textarea"
-					cols="40"
-					placeholder="header:value"
-					class="textarea textarea-bordered textarea-sm overflow-x-auto w-full max-w-xs "
-					bind:value={headersValue}
-				/>
-
-				<button class="btn bg-primary btn-sm normal-case w-content-min mt-2" on:click={storeAll}
-					>update</button
+	<div class="flex flex-col w-full md:w-[80vw]  shrink h-screen">
+		<div>
+			<div class=" bg-base-100">
+				<label
+					for="my-drawer-3"
+					class="btn btn-square btn-ghost "
+					on:click={() => {
+						forceVisibleSidebar = !forceVisibleSidebar;
+					}}
 				>
-				<button class="btn bg-warning btn-sm normal-case w-content-min mt-14" on:click={deleteAll}
-					>delete all</button
-				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						class="inline-block w-6 h-6 stroke-current"
+						><path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M4 6h16M4 12h16M4 18h16"
+						/></svg
+					>
+				</label>
 			</div>
 		</div>
-	{/if}
 
-	<div class="fixed bottom-14 right-2 pr-1">
-		<button class="btn btn-sm " on:click={editButtonClick}>{editText}</button>
+		{#if graphqlEndpointURL && graphqlEndpointURL !== ''}
+			{#if show_IntrospectionDataGenerator}
+				{#if gotData}
+					<slot />
+				{/if}
+				<IntrospectionDataGenerator {graphqlEndpointURL} />
+			{/if}
+		{/if}
 	</div>
 </main>
+{#if showEdit}
+	<div
+		class="fixed bottom-0 bg-base-200 w-screen h-screen overscroll-none overflow-y-auto pb-4 px-4 mx-auto"
+	>
+		<div class="form-control w-full max-w-xs mt-40">
+			<ul class="space-y-2 max-h-40 overflow-y-auto px-1 overscroll-contain">
+				{#each testEndpoints as endpoint}
+					<li
+						class="cursor-pointer bg-accent/5 p-2 rounded overflow-x-auto"
+						on:click={() => {
+							handleEndpointClick(endpoint);
+						}}
+					>
+						{endpoint.url}
+					</li>
+				{/each}
+			</ul>
+			<div class="divider">or</div>
+			<!-- svelte-ignore a11y-label-has-associated-control -->
+			<label class="label">
+				<span class="label-text">graphqlEndpointURL</span>
+			</label>
+			<input
+				type="text"
+				placeholder="Type here"
+				class="input input-bordered input-sm w-full max-w-xs "
+				bind:value={graphqlEndpointURL}
+			/>
+
+			<!-- svelte-ignore a11y-label-has-associated-control -->
+			<label class="label">
+				<span class="label-text">headers</span>
+			</label>
+
+			<textarea
+				type="textarea"
+				cols="40"
+				placeholder="header:value"
+				class="textarea textarea-bordered textarea-sm overflow-x-auto w-full max-w-xs "
+				bind:value={headersValue}
+			/>
+
+			<button class="btn bg-primary btn-sm normal-case w-content-min mt-2" on:click={storeAll}
+				>update</button
+			>
+			<button class="btn bg-warning btn-sm normal-case w-content-min mt-14" on:click={deleteAll}
+				>delete all</button
+			>
+		</div>
+	</div>
+{/if}
+
+<div class="fixed bottom-14 right-2 pr-1">
+	<button class="btn btn-sm " on:click={editButtonClick}>{editText}</button>
+</div>
 <footer />
 
 <style>

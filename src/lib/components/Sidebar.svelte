@@ -4,15 +4,22 @@
 
 	import Page from './Page.svelte';
 	import TabContainer from './TabContainer.svelte';
-	let forceVisibleSidebar = false;
+	export let forceVisibleSidebar = false;
 	export let portalSelector;
 	export let links;
+	import { introspectionResult } from '$lib/stores/introspectionResult';
+	let queries = $introspectionResult.queryFields;
+	import { schemaData } from '$lib/stores/schemaData';
+	import QueryLink from './QueryLink.svelte';
+	import { getStores, navigating, page, session, updated } from '$app/stores';
+
+	let origin = $page.url.origin;
 </script>
 
 <div
-	class="w-[100vh]  h-full {forceVisibleSidebar
+	class="w-full h-screen  {forceVisibleSidebar
 		? 'visible '
-		: ' invisible'} fixed left-0 top-0 z-50 md:w-[40vh] md:z-0 md:visible md:static  bg-base-200 overflow-y-auto flex"
+		: ' invisible'} fixed left-0  z-50  md:z-0 md:visible md:static  bg-base-100  flex"
 	use:clickOutside
 	on:click={() => {
 		forceVisibleSidebar = false;
@@ -21,10 +28,13 @@
 		forceVisibleSidebar = false;
 	}}
 >
+	<div class="h-screen">
+		<TabContainer />
+	</div>
 	<div>
-		<ul class="menu p-2 ">
+		<ul class="space-y-2 h-screen overflow-y-auto  w-screen md:w-max overflow-x-auto ">
 			{#each queries as query}
-				<li>
+				<li class="rounded hover:bg-info/50  p-2 ">
 					{#if $schemaData.queryFields.length > 0}
 						<QueryLink {query} {origin} />
 					{/if}
@@ -32,8 +42,4 @@
 			{/each}
 		</ul>
 	</div>
-	<div>
-		<TabContainer />
-	</div>
-	<div class="w-[10vw] h-full bg-base-100 " />
 </div>

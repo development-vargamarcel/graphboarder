@@ -21,7 +21,7 @@
 	});
 </script>
 
-<SidebarAndMainArea title={$page.params.queryName}>
+<!-- <SidebarAndMainArea title={$page.params.queryName}>
 	<div slot="sidebar">
 		<ul class="menu p-2 ">
 			{#each queries as query}
@@ -38,4 +38,9 @@
 			<slot />
 		{/key}
 	</div>
-</SidebarAndMainArea>
+</SidebarAndMainArea> -->
+<div class="w-full ">
+	{#key $page.params.queryName}
+		<slot />
+	{/key}
+</div>
