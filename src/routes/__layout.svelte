@@ -153,47 +153,47 @@
 </script>
 
 <header />
+{#if graphqlEndpointURL && graphqlEndpointURL !== ''}
+	{#if show_IntrospectionDataGenerator}
+		<IntrospectionDataGenerator {graphqlEndpointURL} />
+		{#if gotData}
+			<main class="bg-base-300  flex w-[100vw] overflow-hidden">
+				<div class=" w-max-min w-[20vw]">
+					<Sidebar bind:forceVisibleSidebar />
+				</div>
+				<div class="flex flex-col w-full md:w-[80vw]  shrink h-screen">
+					<div>
+						<div class=" bg-base-100">
+							<label
+								for="my-drawer-3"
+								class="btn btn-square btn-ghost "
+								on:click={() => {
+									forceVisibleSidebar = true;
+								}}
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									fill="none"
+									viewBox="0 0 24 24"
+									class="inline-block w-6 h-6 stroke-current"
+									><path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M4 6h16M4 12h16M4 18h16"
+									/></svg
+								>
+							</label>
+						</div>
+					</div>
 
-<main class="bg-base-300  flex w-[100vw] overflow-hidden">
-	<div class=" w-max-min">
-		<Sidebar {forceVisibleSidebar} />
-	</div>
-	<div class="flex flex-col w-full md:w-[80vw]  shrink h-screen">
-		<div>
-			<div class=" bg-base-100">
-				<label
-					for="my-drawer-3"
-					class="btn btn-square btn-ghost "
-					on:click={() => {
-						forceVisibleSidebar = !forceVisibleSidebar;
-					}}
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 24 24"
-						class="inline-block w-6 h-6 stroke-current"
-						><path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M4 6h16M4 12h16M4 18h16"
-						/></svg
-					>
-				</label>
-			</div>
-		</div>
-
-		{#if graphqlEndpointURL && graphqlEndpointURL !== ''}
-			{#if show_IntrospectionDataGenerator}
-				{#if gotData}
 					<slot />
-				{/if}
-				<IntrospectionDataGenerator {graphqlEndpointURL} />
-			{/if}
+				</div>
+			</main>
 		{/if}
-	</div>
-</main>
+	{/if}
+{/if}
+
 {#if showEdit}
 	<div
 		class="fixed bottom-0 bg-base-200 w-screen h-screen overscroll-none overflow-y-auto pb-4 px-4 mx-auto"
