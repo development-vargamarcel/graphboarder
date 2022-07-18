@@ -20,9 +20,14 @@
 	console.log({ QueryLinks });
 	const get_itemsToShow = () => {
 		let currentUrl = $page.url.pathname;
+		let currentUrlSplit = currentUrl.split('/');
+
+		console.log({ currentUrl });
 		return (itemsToShow =
 			links.filter((link) => {
-				return currentUrl == link.url;
+				let linkUrlSplit = link.url.split('/');
+				console.log(linkUrlSplit, currentUrlSplit);
+				return currentUrlSplit[1] == linkUrlSplit[1];
 			})[0]?.items ?? []);
 	};
 	onMount(() => {
@@ -44,7 +49,7 @@
 		{/each}
 	</ul>
 	<ul
-		class="space-y-2 h-screen overflow-y-auto  w-screen md:w-full overflow-x-auto  bg-base-100 grow"
+		class="space-y-2 h-screen overflow-y-auto  w-screen md:w-full  grow overflow-x-auto  bg-base-100 grow"
 	>
 		{#each itemsToShow as item}
 			<li class="rounded hover:bg-info/50  m-2 break-all">
