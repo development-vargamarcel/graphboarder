@@ -49,10 +49,10 @@
 		{/each}
 	</ul>
 	<ul
-		class="space-y-2 h-screen overflow-y-auto  w-screen md:w-full  grow overflow-x-auto  bg-base-100 grow"
+		class="space-y-2 px-4 h-screen overflow-y-auto  w-screen md:w-full  grow overflow-x-auto  bg-base-100 grow"
 	>
 		{#each itemsToShow as item}
-			<li class="px-2">
+			<li class="">
 				<a href={item.url} class="rounded hover:bg-info/50 text-base-content  break-all block w-full h-full p-2">{item.title}</a>
 			</li>
 		{/each}
