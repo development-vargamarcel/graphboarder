@@ -2,6 +2,8 @@
 
 import { get } from 'svelte/store';
 import { scalarsAndEnumsDisplayTypes } from '$lib/stores/scalarsAndEnumsDisplayTypes';
+import { schemaData } from '$lib/stores/schemaData';
+import { page } from '$app/stores';
 export const buildQueryBody = (queryName, queryFragments, gqlArgObj_string) => {
     return `
     query MyQuery {
@@ -842,3 +844,40 @@ export const generate_FINAL_gqlArgObj_fromGroups = (activeArgumentsDataGrouped) 
 
     return { final_gqlArgObj, final_gqlArgObj_string, final_canRunQuery }
 };
+
+
+export const getQueryLinks = () => {
+    let $page = get(page)
+    let origin = $page.url.origin;
+    let queryLinks = []
+    let $schemaData = get(schemaData)
+    queryLinks = $schemaData.queryFields.map((query) => {
+        let queryName = query.name;
+        let queryNameDisplay = queryName;
+        let queryTitleDisplay = '';
+        let currentQueryFromRootTypes = query.dd_relatedRoot;
+        let { scalarFields, non_scalarFields } = getFields_Grouped(currentQueryFromRootTypes);
+        let currentQuery_fields_SCALAR_names = scalarFields.map((field) => {
+            return field.name;
+        });
+
+        let mandatoryArgs = query?.args?.filter((arg) => {
+            return arg.dd_NON_NULL;
+        });
+        let ID_Args = query?.args?.filter((arg) => {
+            return arg.dd_rootName == 'ID';
+        });
+        if (mandatoryArgs?.length > 0) {
+            queryNameDisplay = `${queryNameDisplay} (${mandatoryArgs.length}) `;
+        }
+        if (ID_Args?.length > 0) {
+            queryNameDisplay = `${queryNameDisplay} <${ID_Args.length}> `;
+        }
+        if (scalarFields.length == 0) {
+            queryNameDisplay = queryNameDisplay + ' (no scalar)';
+        }
+        let queryLink = { url: `/queries/${queryName}`, title: queryNameDisplay }
+        return queryLink
+    })
+    return queryLinks
+}

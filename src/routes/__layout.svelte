@@ -158,7 +158,7 @@
 		<IntrospectionDataGenerator {graphqlEndpointURL} />
 		{#if gotData}
 			<main class="bg-base-300  flex w-[100vw] overflow-hidden">
-				<div class=" w-max-min w-[20vw]">
+				<div class=" w-max-min ">
 					<Sidebar bind:forceVisibleSidebar />
 				</div>
 				<div class="flex flex-col w-full md:w-[80vw]  shrink h-screen">

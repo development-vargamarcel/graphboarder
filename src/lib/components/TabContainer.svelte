@@ -1,21 +1,58 @@
 <script>
 	import { browser } from '$app/env';
-
+	import { page } from '$app/stores';
+	import TabItem from '$lib/components/TabItem.svelte';
+	import { getQueryLinks } from '$lib/utils/usefulFunctions';
+	import { onMount } from 'svelte';
 	let links = [
-		{ title: 'Home', url: '/', icon: 'bi-house', hasFill: true },
-		{ title: 'Queries', url: '/queries', icon: 'bi bi-asterisk', hasFill: false }
+		{ title: 'Home', url: '/', icon: 'bi-house', isSelected: false, hasFill: true, items: [] },
+		{
+			title: 'Queries',
+			url: '/queries',
+			icon: 'bi bi-asterisk',
+			isSelected: false,
+			hasFill: false,
+			items: getQueryLinks()
+		}
 	];
 
-	import TabItem from '$lib/components/TabItem.svelte';
+	let QueryLinks = getQueryLinks();
+	console.log({ QueryLinks });
+	const get_itemsToShow = () => {
+		let currentUrl = $page.url.pathname;
+		return (itemsToShow =
+			links.filter((link) => {
+				return currentUrl == link.url;
+			})[0]?.items ?? []);
+	};
+	onMount(() => {
+		get_itemsToShow();
+	});
+
+	$: if ($page.url.pathname) {
+		get_itemsToShow();
+	}
+	let itemsToShow = [];
 </script>
 
-<ul
-	class="flex h-screen w-18 flex-col  justify-start border-t-[1px] border-base-content border-opacity-5 bg-base-300 px-3 "
->
-	{#each links as link}
-		<TabItem title={link.title} url={link.url} icon={link.icon} hasFill={link.hasFill} />
-	{/each}
-</ul>
+<div class="flex">
+	<ul
+		class="flex h-screen w-18 flex-col  justify-start border-t-[1px] border-base-content border-opacity-5 bg-base-300  h-screen"
+	>
+		{#each links as link}
+			<TabItem title={link.title} url={link.url} icon={link.icon} hasFill={link.hasFill} />
+		{/each}
+	</ul>
+	<ul
+		class="space-y-2 h-screen overflow-y-auto  w-screen md:w-full overflow-x-auto  bg-base-100 grow"
+	>
+		{#each itemsToShow as item}
+			<li class="rounded hover:bg-info/50  m-2 break-all">
+				<a href={item.url}>{item.title}</a>
+			</li>
+		{/each}
+	</ul>
+</div>
 
 <style>
 	.shadowTop {

@@ -33,16 +33,5 @@
 		}
 	}}
 >
-	<div class="h-screen">
-		<TabContainer />
-	</div>
-	<ul class="space-y-2 h-screen overflow-y-auto   overflow-x-auto  bg-base-100 grow">
-		{#each queries as query}
-			<li class="rounded hover:bg-info/50  m-2 break-all">
-				{#if $schemaData.queryFields.length > 0}
-					<QueryLink {query} {origin} />
-				{/if}
-			</li>
-		{/each}
-	</ul>
+	<TabContainer />
 </div>
