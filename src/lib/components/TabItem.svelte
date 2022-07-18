@@ -6,18 +6,7 @@
 	export let icon;
 	export let url;
 	export let hasFill = true;
-const get_itemsToShow = () => {
-		let currentUrl = $page.url.pathname;
-		let currentUrlSplit = currentUrl.split('/');
 
-		console.log({ currentUrl });
-		return (itemsToShow =
-			links.filter((link) => {
-				let linkUrlSplit = link.url.split('/');
-				console.log(linkUrlSplit, currentUrlSplit);
-				return currentUrlSplit[1] == linkUrlSplit[1];
-			})[0]?.items ?? []);
-	};
 </script>
 
 <!-- <a
