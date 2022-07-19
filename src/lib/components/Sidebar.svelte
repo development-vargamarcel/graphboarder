@@ -12,6 +12,7 @@
 	import { schemaData } from '$lib/stores/schemaData';
 	import QueryLink from './QueryLink.svelte';
 	import { getStores, navigating, page, session, updated } from '$app/stores';
+	import { fade, fly } from 'svelte/transition';
 
 	let origin = $page.url.origin;
 	$: console.log({ forceVisibleSidebar });
@@ -20,7 +21,7 @@
 <div
 	class="w-full h-screen  {forceVisibleSidebar
 		? 'visible '
-		: ' invisible'} fixed left-0  z-50  md:z-0 md:visible md:static    flex"
+		: ' invisible'} fixed left-0  z-50  md:z-0 md:visible md:static flex"
 	use:clickOutside
 	on:click={() => {
 		if (forceVisibleSidebar) {
@@ -33,5 +34,14 @@
 		}
 	}}
 >
-	<TabContainer />
+	{#if forceVisibleSidebar}
+		<div class="bg-black/50">
+			<div class="md:hidden" transition:fly={{ x: -200, duration: 400 }}>
+				<TabContainer />
+			</div>
+		</div>
+	{/if}
+	<div class="invisible md:visible">
+		<TabContainer />
+	</div>
 </div>

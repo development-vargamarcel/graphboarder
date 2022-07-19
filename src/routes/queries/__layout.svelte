@@ -21,7 +21,6 @@
 	});
 </script>
 
-hjh
 <!-- <SidebarAndMainArea title={$page.params.queryName}>
 	<div slot="sidebar">
 		<ul class="menu p-2 ">
@@ -40,7 +39,7 @@ hjh
 		{/key}
 	</div>
 </SidebarAndMainArea> -->
-<div class="w-full ">
+<div class="w-full pt-2">
 	{#key $page.params.queryName}
 		<slot />
 	{/key}

@@ -40,7 +40,7 @@
 	let itemsToShow = [];
 </script>
 
-<div class="flex pr-4">
+<div class="flex ">
 	<ul
 		class="flex h-screen w-18 flex-col  justify-start border-t-[1px] border-base-content border-opacity-5 bg-base-300  h-screen"
 	>
@@ -48,15 +48,23 @@
 			<TabItem title={link.title} url={link.url} icon={link.icon} hasFill={link.hasFill} />
 		{/each}
 	</ul>
+
 	<ul
-		class="space-y-2 pr-4 mr-2 h-screen overflow-y-auto  w-screen md:w-full  grow overflow-x-auto  bg-base-100 grow"
+		class="space-y-2 px-4 h-screen overflow-y-auto  w-[60vw] md:w-full   overflow-x-auto  bg-base-100 grow"
 	>
 		{#each itemsToShow as item}
 			<li class="">
-				<a href={item.url} class="rounded hover:bg-info/50 text-base-content  break-all block w-full h-full p-2">{item.title}</a>
+				<a
+					href={item.url}
+					class="rounded hover:bg-info/50 text-base-content  break-all block w-full h-full p-2 {$page
+						.url.pathname == item.url
+						? 'font-bold bg-info/50'
+						: ''}">{item.title}</a
+				>
 			</li>
 		{/each}
 	</ul>
+	<div class="w-[30vw] h-screen  md:hidden" />
 </div>
 
 <style>
