@@ -48,10 +48,10 @@
 			class="space-y-2 px-4 py-4 h-screen overflow-y-auto  w-[60vw] md:w-full   overflow-x-auto  bg-base-100 grow"
 		>
 			{#each itemsToShow as item}
-				<li class="">
+				<li class=" ">
 					<a
 						href={item.url}
-						class="rounded hover:bg-info/50 text-base-content  break-all block w-full h-full px-2 text-sm {$page
+						class="rounded hover:bg-info/50 text-base-content  break-all block w-full h-full px-2 text-sm  {$page
 							.url.pathname == item.url || $page.url.pathname.startsWith(`${item.url}/`)
 							? 'font-bold bg-info/50 '
 							: ''}">{item.title}</a
