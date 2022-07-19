@@ -158,10 +158,10 @@
 		<IntrospectionDataGenerator {graphqlEndpointURL} />
 		{#if gotData}
 			<main class="bg-base-300  flex w-[100vw] overflow-hidden">
-				<div class=" w-max-min max-w-[20vw]">
+				<div class=" md:min-w-[250px] md:max-w-[300px]">
 					<Sidebar bind:forceVisibleSidebar />
 				</div>
-				<div class="flex flex-col w-full md:w-[80vw]  shrink h-screen">
+				<div class="flex flex-col w-full md:w-[65vw]   grow h-screen">
 					<div class=" bg-base-100 min-h-[50px] flex">
 						<!-- svelte-ignore a11y-label-has-associated-control -->
 						<label
