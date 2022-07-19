@@ -40,7 +40,7 @@
 	let itemsToShow = [];
 </script>
 
-<div class="flex">
+<div class="flex pr-4">
 	<ul
 		class="flex h-screen w-18 flex-col  justify-start border-t-[1px] border-base-content border-opacity-5 bg-base-300  h-screen"
 	>
