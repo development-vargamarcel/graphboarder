@@ -19,15 +19,9 @@
 	let QueryLinks = getQueryLinks();
 	console.log({ QueryLinks });
 	const get_itemsToShow = () => {
-		let currentUrl = $page.url.pathname;
-		let currentUrlSplit = currentUrl.split('/');
-
-		console.log({ currentUrl });
 		return (itemsToShow =
 			links.filter((link) => {
-				let linkUrlSplit = link.url.split('/');
-				console.log(linkUrlSplit, currentUrlSplit);
-				return currentUrlSplit[1] == linkUrlSplit[1];
+				return $page.url.pathname == link.url || $page.url.pathname.startsWith(`${link.url}/`);
 			})[0]?.items ?? []);
 	};
 	onMount(() => {
@@ -49,21 +43,24 @@
 		{/each}
 	</ul>
 
-	<ul
-		class="space-y-2 px-4 py-4 h-screen overflow-y-auto  w-[60vw] md:w-full   overflow-x-auto  bg-base-100 grow"
-	>
-		{#each itemsToShow as item}
-			<li class="">
-				<a
-					href={item.url}
-					class="rounded hover:bg-info/50 text-base-content  break-all block w-full h-full px-2 {$page
-						.url.pathname == item.url
-						? 'font-bold bg-info/50 '
-						: ''}">{item.title}</a
-				>
-			</li>
-		{/each}
-	</ul>
+	{#if itemsToShow.length > 0}
+		<ul
+			class="space-y-2 px-4 py-4 h-screen overflow-y-auto  w-[60vw] md:w-full   overflow-x-auto  bg-base-100 grow"
+		>
+			{#each itemsToShow as item}
+				<li class="">
+					<a
+						href={item.url}
+						class="rounded hover:bg-info/50 text-base-content  break-all block w-full h-full px-2 {$page
+							.url.pathname == item.url || $page.url.pathname.startsWith(`${item.url}/`)
+							? 'font-bold bg-info/50 '
+							: ''}">{item.title}</a
+					>
+				</li>
+			{/each}
+		</ul>
+	{/if}
+
 	<div class="w-[30vw] h-screen  md:hidden" />
 </div>
 
