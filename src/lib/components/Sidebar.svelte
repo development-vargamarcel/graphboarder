@@ -34,14 +34,18 @@
 		}
 	}}
 >
-	{#if forceVisibleSidebar}
-		<div class="bg-black/50">
-			<div class="md:hidden" transition:fly={{ x: -200, duration: 400 }}>
-				<TabContainer />
-			</div>
-		</div>
-	{/if}
 	<div class="invisible md:visible">
 		<TabContainer />
 	</div>
 </div>
+{#if forceVisibleSidebar}
+	<div class=" bg-black/50 fixed top-0 z-50">
+		<div
+			class="md:hidden "
+			in:fly={{ x: -300, duration: 600, opacity: 1 }}
+			out:fly={{ x: -350, duration: 300, opacity: 1 }}
+		>
+			<TabContainer />
+		</div>
+	</div>
+{/if}

@@ -162,29 +162,28 @@
 					<Sidebar bind:forceVisibleSidebar />
 				</div>
 				<div class="flex flex-col w-full md:w-[80vw]  shrink h-screen">
-					<div>
-						<div class=" bg-base-100">
-							<label
-								for="my-drawer-3"
-								class="btn btn-square btn-ghost "
-								on:click={() => {
-									forceVisibleSidebar = true;
-								}}
+					<div class=" bg-base-100 min-h-[50px] flex">
+						<!-- svelte-ignore a11y-label-has-associated-control -->
+						<label
+							class="btn btn-square btn-ghost  md:hidden"
+							on:click={() => {
+								forceVisibleSidebar = true;
+							}}
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								class="inline-block w-6 h-6 stroke-current "
+								><path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M4 6h16M4 12h16M4 18h16"
+								/></svg
 							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									fill="none"
-									viewBox="0 0 24 24"
-									class="inline-block w-6 h-6 stroke-current"
-									><path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M4 6h16M4 12h16M4 18h16"
-									/></svg
-								>
-							</label>
-						</div>
+						</label>
+						<div />
 					</div>
 
 					<slot />
