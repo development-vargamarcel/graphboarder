@@ -35,30 +35,37 @@
 </script>
 
 <div class="flex ">
-	<ul
-		class="flex h-screen w-16 flex-col  justify-start border-t-[1px] border-base-content border-opacity-5 bg-base-300  h-screen"
-	>
-		{#each links as link}
-			<TabItem title={link.title} url={link.url} icon={link.icon} hasFill={link.hasFill} />
-		{/each}
-	</ul>
-
-	{#if itemsToShow.length > 0}
+	<div>
+		<div class="h-[50px] bg-primary">{''}</div>
 		<ul
-			class="space-y-2 px-4 py-4 h-screen overflow-y-auto  w-[60vw] md:w-full   overflow-x-auto  bg-base-100 grow"
+			class="flex h-screen w-16 flex-col  justify-start border-t-[1px] border-base-content border-opacity-5 bg-base-300  h-screen"
 		>
-			{#each itemsToShow as item}
-				<li class=" ">
-					<a
-						href={item.url}
-						class="rounded hover:bg-info/50 text-base-content  break-all block w-full h-full px-2 text-sm leading-tight {$page
-							.url.pathname == item.url || $page.url.pathname.startsWith(`${item.url}/`)
-							? 'font-bold bg-info/50 '
-							: ''}">{item.title}</a
-					>
-				</li>
+			{#each links as link}
+				<TabItem title={link.title} url={link.url} icon={link.icon} hasFill={link.hasFill} />
 			{/each}
 		</ul>
+	</div>
+
+	{#if itemsToShow.length > 0}
+		<div>
+			<div class="h-[50px] bg-accent">{''}</div>
+			<ul
+				class="space-y-1 px-4 py-4 h-screen overflow-y-auto  w-[60vw] md:w-full   overflow-x-auto  bg-base-100  grow "
+			>
+				{#each itemsToShow as item}
+					<li class="md:w-[10vw] md:min-w-[170px] ">
+						<a
+							href={item.url}
+							class="rounded hover:bg-info/50 text-base-content  break-allxxx truncate ...  block w-full h-full px-2  py-2 text-sm leading-tight {$page
+								.url.pathname == item.url || $page.url.pathname.startsWith(`${item.url}/`)
+								? 'font-bold bg-info/50 '
+								: 'bg-info/5'}"
+							title={item.title}>{item.title}</a
+						>
+					</li>
+				{/each}
+			</ul>
+		</div>
 	{/if}
 
 	<div class="w-[30vw] h-screen  md:hidden" />
