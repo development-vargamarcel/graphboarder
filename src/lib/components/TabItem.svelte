@@ -6,6 +6,7 @@
 	export let icon;
 	export let url;
 	export let hasFill = true;
+	export let urlIsRoute;
 </script>
 
 <!-- <a
@@ -15,6 +16,7 @@
 		? ' font-medium scale-110  '
 		: ' opacity-50 '}  text-center text-base-content leading-none flex flex-col  mb-2 mt-1 justify-center  text-xs hover:no-underline focus:no-underline mx-auto border-b-4 border-base-content border-opacity-0 active:border-opacity-100 transform  cursor-pointer  ease-out duration-700"
 >	s</a> -->
+<!-- href={urlIsRoute ? url : '#' + url} -->
 <a
 	sveltekit:prefetch
 	href={url}

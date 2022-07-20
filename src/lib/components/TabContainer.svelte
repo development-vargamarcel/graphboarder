@@ -3,13 +3,24 @@
 	import { page } from '$app/stores';
 	import TabItem from '$lib/components/TabItem.svelte';
 	import { getQueryLinks } from '$lib/utils/usefulFunctions';
-	import { onMount } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 	import { fade, slide } from 'svelte/transition';
+	const dispatch = createEventDispatcher();
+	console.log($page);
 	let links = [
-		{ title: 'Home', url: '/', icon: 'bi-house', isSelected: false, hasFill: true, items: [] },
+		{
+			title: 'Home',
+			url: '/',
+			urlIsRoute: true,
+			icon: 'bi-house',
+			isSelected: false,
+			hasFill: true,
+			items: []
+		},
 		{
 			title: 'Queries',
 			url: '/queries',
+			urlIsRoute: false,
 			icon: 'bi bi-asterisk',
 			isSelected: false,
 			hasFill: false,
@@ -44,9 +55,20 @@
 		</div>
 		<ul
 			class="flex h-screen w-16xxx flex-col  justify-start border-t-[1px] border-base-content border-opacity-5 bg-base-300  h-screen pt-1"
+			on:click={() => {
+				// if (itemsToShow.length == 0) {
+				// 	dispatch('hideSidebar');
+				// }
+			}}
 		>
 			{#each links as link}
-				<TabItem title={link.title} url={link.url} icon={link.icon} hasFill={link.hasFill} />
+				<TabItem
+					title={link.title}
+					url={link.url}
+					icon={link.icon}
+					hasFill={link.hasFill}
+					urlIsRoute={link.urlIsRoute}
+				/>
 			{/each}
 		</ul>
 	</div>
@@ -56,6 +78,9 @@
 			<div class="h-[50px] bg-accent">{''}</div>
 			<ul
 				class="space-y-1 px-4 py-4 h-screen overflow-y-auto  w-[60vw] md:w-full   overflow-x-auto  bg-base-100  grow "
+				on:click={() => {
+					dispatch('hideSidebar');
+				}}
 			>
 				{#each itemsToShow as item}
 					<li class="md:w-[10vw] md:min-w-[170px] ">
@@ -73,7 +98,12 @@
 		</div>
 	{/if}
 
-	<div class="w-[30vw] h-screen  md:hidden" />
+	<div
+		class="w-[100vw] h-screen  md:hidden "
+		on:click={() => {
+			dispatch('hideSidebar');
+		}}
+	/>
 </div>
 
 <style>

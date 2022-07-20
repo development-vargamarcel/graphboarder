@@ -18,17 +18,18 @@
 	$: console.log({ forceVisibleSidebar });
 </script>
 
+<!-- on:click_outside={() => {
+		if (forceVisibleSidebar) {
+			forceVisibleSidebar = false;
+		}
+	}} -->
+
 <div
 	class="w-full h-screen  {forceVisibleSidebar
 		? 'visible '
 		: ' invisible'} fixed left-0  z-50  md:z-0 md:visible md:static flex  "
 	use:clickOutside
 	on:click={() => {
-		if (forceVisibleSidebar) {
-			forceVisibleSidebar = false;
-		}
-	}}
-	on:click_outside={() => {
 		if (forceVisibleSidebar) {
 			forceVisibleSidebar = false;
 		}
@@ -49,6 +50,12 @@
 		in:fly={{ x: -300, duration: 500, opacity: 1 }}
 		out:fly={{ x: -350, duration: 300, opacity: 1 }}
 	>
-		<TabContainer />
+		<TabContainer
+			on:hideSidebar={() => {
+				if (forceVisibleSidebar) {
+					forceVisibleSidebar = false;
+				}
+			}}
+		/>
 	</div>
 {/if}

@@ -21,24 +21,6 @@
 	});
 </script>
 
-<!-- <SidebarAndMainArea title={$page.params.queryName}>
-	<div slot="sidebar">
-		<ul class="menu p-2 ">
-			{#each queries as query}
-				<li>
-					{#if $schemaData.queryFields.length > 0}
-						<QueryLink {query} {origin} />
-					{/if}
-				</li>
-			{/each}
-		</ul>
-	</div>
-	<div slot="main">
-		{#key $page.params.queryName}
-			<slot />
-		{/key}
-	</div>
-</SidebarAndMainArea> -->
 <div class="w-full pt-2">
 	{#key $page.params.queryName}
 		<slot />
