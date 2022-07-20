@@ -4,6 +4,7 @@
 	import TabItem from '$lib/components/TabItem.svelte';
 	import { getQueryLinks } from '$lib/utils/usefulFunctions';
 	import { onMount } from 'svelte';
+	import { fade, slide } from 'svelte/transition';
 	let links = [
 		{ title: 'Home', url: '/', icon: 'bi-house', isSelected: false, hasFill: true, items: [] },
 		{
@@ -35,10 +36,14 @@
 </script>
 
 <div class="flex ">
-	<div>
-		<div class="h-[50px] bg-primary">{''}</div>
+	<div class="w-16">
+		<div class="h-[50px] bg-primary ">
+			<a href="/" class="block w-full h-full ">
+				<img src="/png_website_logo_placeholder.png" alt="" class="w-full h-full" />
+			</a>
+		</div>
 		<ul
-			class="flex h-screen w-16 flex-col  justify-start border-t-[1px] border-base-content border-opacity-5 bg-base-300  h-screen"
+			class="flex h-screen w-16xxx flex-col  justify-start border-t-[1px] border-base-content border-opacity-5 bg-base-300  h-screen pt-1"
 		>
 			{#each links as link}
 				<TabItem title={link.title} url={link.url} icon={link.icon} hasFill={link.hasFill} />
