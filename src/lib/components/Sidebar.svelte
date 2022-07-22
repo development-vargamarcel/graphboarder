@@ -41,7 +41,7 @@
 </div>
 {#if forceVisibleSidebar}
 	<div
-		class=" bg-black/30 fixed top-0 z-50 md:hidden h-screen w-screen"
+		class=" bg-base-100/50 fixed top-0 z-50 md:hidden h-screen w-screen"
 		in:fade={{ duration: 500, opacity: 1 }}
 		out:fade={{ duration: 300, opacity: 1 }}
 	/>
