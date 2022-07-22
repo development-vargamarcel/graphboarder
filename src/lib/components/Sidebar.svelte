@@ -42,12 +42,12 @@
 {#if forceVisibleSidebar}
 	<div
 		class=" bg-base-100/50 fixed top-0 z-50 md:hidden h-screen w-screen"
-		in:fade={{ duration: 500, opacity: 1 }}
+		in:fade={{ duration: 300, opacity: 1 }}
 		out:fade={{ duration: 300, opacity: 1 }}
 	/>
 	<div
 		class="md:hidden fixed top-0 z-50"
-		in:fly={{ x: -300, duration: 500, opacity: 1 }}
+		in:fly={{ x: -300, duration: 300, opacity: 1 }}
 		out:fly={{ x: -350, duration: 300, opacity: 1 }}
 	>
 		<TabContainer
