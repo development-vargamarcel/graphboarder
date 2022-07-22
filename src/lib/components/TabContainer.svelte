@@ -54,7 +54,7 @@
 			</a>
 		</div>
 		<ul
-			class="flex h-full w-16xxx flex-col  justify-start border-t-[1px] border-base-content border-opacity-5 bg-base-300   pt-1 pb-20"
+			class="flex h-full w-16xxx flex-col  justify-start border-t-[1px] border-base-content border-opacity-5 bg-base-300   pt-1 pb-40"
 			on:click={() => {
 				// if (itemsToShow.length == 0) {
 				// 	dispatch('hideSidebar');
@@ -77,7 +77,7 @@
 		<div class="">
 			<div class="h-[50px] bg-accent">{''}</div>
 			<ul
-				class="space-y-1 px-4 py-4 h-full overflow-y-auto  w-[60vw] md:w-full   overflow-x-auto  bg-base-100  grow pb-20"
+				class="space-y-1 px-4 py-4 h-full overflow-y-auto  w-[60vw] md:w-full   overflow-x-auto  bg-base-100  grow pb-40"
 				on:click={() => {
 					dispatch('hideSidebar');
 				}}
