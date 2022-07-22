@@ -46,7 +46,7 @@
 	let itemsToShow = [];
 </script>
 
-<div class="flex h-screen ">
+<div class="flex h-screen overscroll-contain">
 	<div class="w-16 ">
 		<div class="h-[50px] bg-primary ">
 			<a href="/" class="block w-full h-full ">
