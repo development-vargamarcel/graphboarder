@@ -46,15 +46,15 @@
 	let itemsToShow = [];
 </script>
 
-<div class="flex ">
-	<div class="w-16">
+<div class="flex h-screen pb-10">
+	<div class="w-16 ">
 		<div class="h-[50px] bg-primary ">
 			<a href="/" class="block w-full h-full ">
 				<img src="/png_website_logo_placeholder.png" alt="" class="w-full h-full" />
 			</a>
 		</div>
 		<ul
-			class="flex h-screen w-16xxx flex-col  justify-start border-t-[1px] border-base-content border-opacity-5 bg-base-300  h-screen pt-1"
+			class="flex h-full w-16xxx flex-col  justify-start border-t-[1px] border-base-content border-opacity-5 bg-base-300   pt-1"
 			on:click={() => {
 				// if (itemsToShow.length == 0) {
 				// 	dispatch('hideSidebar');
@@ -74,10 +74,10 @@
 	</div>
 
 	{#if itemsToShow.length > 0}
-		<div>
+		<div class="">
 			<div class="h-[50px] bg-accent">{''}</div>
 			<ul
-				class="space-y-1 px-4 py-4 h-screen overflow-y-auto  w-[60vw] md:w-full   overflow-x-auto  bg-base-100  grow "
+				class="space-y-1 px-4 py-4 h-full overflow-y-auto  w-[60vw] md:w-full   overflow-x-auto  bg-base-100  grow "
 				on:click={() => {
 					dispatch('hideSidebar');
 				}}
