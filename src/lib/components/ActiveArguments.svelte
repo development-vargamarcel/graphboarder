@@ -4,7 +4,7 @@
 	import {
 		generate_FINAL_gqlArgObj_fromGroups,
 		get_NamesArray
-	} from './../utils/usefulFunctions.js';
+	} from './../utils/usefulFunctions.ts';
 	import {
 		generate_final_gqlArgObjTEST,
 		generate_gqlArgObj,

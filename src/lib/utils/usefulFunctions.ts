@@ -495,6 +495,14 @@ export const sortByName = (array) => {
     return array
 }
 
+export const idFields_byProbability = (fields: Array<object>): Array<object> => {
+    fields = fields.filter((field) => {
+        return field.dd_NON_NULL && !dd_kindList && dd_kindEl == 'SCALAR';
+    })
+
+    return fields
+}
+
 export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/field  
     let derivedData = {}
     derivedData.dd_kindsArray = get_KindsArray(type)
@@ -844,6 +852,8 @@ export const generate_FINAL_gqlArgObj_fromGroups = (activeArgumentsDataGrouped) 
 
     return { final_gqlArgObj, final_gqlArgObj_string, final_canRunQuery }
 };
+
+
 
 
 export const getQueryLinks = () => {

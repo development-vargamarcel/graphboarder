@@ -101,6 +101,8 @@ export const create_schemaData = () => {
                 rootTypes,
                 ...QMSFields
             })
+            storeValue = get(store)
+            console.log('storeValue', storeValue)
         },
         get_rootType: (name) => {
             let storeValue = get(store)

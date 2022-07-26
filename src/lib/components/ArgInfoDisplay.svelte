@@ -92,7 +92,7 @@
 			<div
 				class="btn btn-xs btn-info normal-case font-light "
 				on:click={() => {
-					//console.log(type);
+					console.log(type);
 					//console.log(dd_namesArray);
 				}}
 			>

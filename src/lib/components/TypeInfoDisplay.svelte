@@ -2,7 +2,7 @@
 	import {
 		stepsOfFieldsToQueryFragment,
 		stepsOfFieldsFlatten
-	} from './../utils/usefulFunctions.js';
+	} from './../utils/usefulFunctions.ts';
 	import { introspectionResult } from './../stores/introspectionResult.ts';
 	import { generateFragmentData, get_rootName } from '$lib/utils/usefulFunctions';
 	import { createEventDispatcher } from 'svelte';
@@ -42,7 +42,7 @@
 			<div
 				class="btn btn-xs btn-info normal-case font-light "
 				on:click={() => {
-					//console.log(type);
+					console.log(type);
 					//console.log(dd_namesArray);
 				}}
 			>
