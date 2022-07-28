@@ -497,6 +497,7 @@ export const sortByName = (array) => {
 
 export const idFields_byProbability = (fields: Array<object>): Array<object> => {
     fields = fields.filter((field) => {
+        //keep in mind that a field can be an id field even if "field.dd_NON_NULL" is false
         return field.dd_NON_NULL && !field.dd_kindList && field.dd_kindEl == 'SCALAR' || field?.dd_rootName == 'ID';
     })
 
