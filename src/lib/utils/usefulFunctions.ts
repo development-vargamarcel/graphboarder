@@ -497,14 +497,14 @@ export const sortByName = (array) => {
 
 export const idFields_byProbability = (fields: Array<object>): Array<object> => {
     fields = fields.filter((field) => {
-        return field.dd_NON_NULL && !dd_kindList && dd_kindEl == 'SCALAR';
+        return field.dd_NON_NULL && !field.dd_kindList && field.dd_kindEl == 'SCALAR' || field?.dd_rootName == 'ID';
     })
 
     return fields
 }
 
 export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/field  
-    let derivedData = {}
+    let derivedData = { ...type }
     derivedData.dd_kindsArray = get_KindsArray(type)
     derivedData.dd_namesArray = get_NamesArray(type)
     derivedData.dd_rootName = get_rootName(derivedData.dd_namesArray)
@@ -561,6 +561,15 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/fi
 
     derivedData.dd_shouldExpand = derivedData.dd_canExpand && !derivedData.dd_relatedRoot?.enumValues
     derivedData.dd_isQMSField = isQMSField ? true : false
+    derivedData.dd_get_idFields_byProbability = function () {
+        if (this.fields) {
+            return idFields_byProbability(this.fields)
+        } else {
+            return []
+        }
+    }
+    derivedData.dd_idFields_byProbability = derivedData.dd_get_idFields_byProbability()
+
 
     return derivedData
 }

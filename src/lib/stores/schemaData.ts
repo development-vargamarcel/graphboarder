@@ -32,6 +32,9 @@ export const create_schemaData = () => {
                     el?.enumValues?.forEach(enumValue => {
                         Object.assign(enumValue, generate_derivedData(enumValue, new_rootTypes))
                     });
+                    if (el?.fields) {
+                        el.dd__idFields_byProbability = el.dd_get_idFields_byProbability()
+                    }
                 });
             }
 
@@ -78,6 +81,10 @@ export const create_schemaData = () => {
                         el?.enumValues?.forEach(enumValue => {
                             Object.assign(enumValue, generate_derivedData(enumValue, rootTypes))
                         });
+
+                        if (el?.fields) {
+                            el.dd_idFields_byProbability = el.dd_get_idFields_byProbability()
+                        }
                     });
                 }
 
