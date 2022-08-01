@@ -36,13 +36,15 @@ export const create_schemaData = () => {
                         el.dd__idFields_byProbability = el.dd_get_idFields_byProbability()
                     }
                 });
-            }
 
+
+            }
 
             if (set_storeVal) {
                 storeValue.rootTypes = new_rootTypes
                 set(storeValue) //works even without this but donno about reactivity
             }
+
 
             return new_rootTypes
         },

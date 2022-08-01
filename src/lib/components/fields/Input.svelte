@@ -5,6 +5,8 @@
 	let inputEl;
 	export let rawValue;
 	const dispatch = createEventDispatcher();
+	console.log({ dd_displayType });
+	//let castAs //most of the times as string
 </script>
 
 <input
@@ -20,7 +22,8 @@
 
 		dispatch('changed', {
 			chd_chosen: undefined,
-			chd_dispatchValue: dd_displayType == 'text' ? `'${rawValue}'` : rawValue,
+			chd_dispatchValue:
+				dd_displayType == 'text' || dd_displayType == undefined ? `'${rawValue}'` : rawValue,
 			chd_needsValue: true,
 			chd_needsChosen: false,
 			chd_rawValue: rawValue

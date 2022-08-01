@@ -546,6 +546,7 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/fi
         derivedData.dd_displayType = 'INPUT_OBJECT';
     } else {
         derivedData.dd_displayType = _scalarsAndEnumsDisplayTypes[derivedData.dd_rootName];
+
     }
     derivedData.dd_isArg = !type?.args
     derivedData.dd_relatedRoot_inputFields_allScalar = derivedData.dd_relatedRoot?.inputFields?.every((field) => {
@@ -561,7 +562,6 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/fi
         }
         derivedData.dd_isRootArg = !(derivedData.dd_canExpand && !derivedData.dd_relatedRoot_inputFields_allScalar && !derivedData?.dd_relatedRoot?.enumValues)
     }
-    // derivedData.id = derivedData.dd_namesArray.join('-')
 
     derivedData.dd_shouldExpand = derivedData.dd_canExpand && !derivedData.dd_relatedRoot?.enumValues
     derivedData.dd_isQMSField = isQMSField ? true : false
@@ -573,9 +573,11 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/fi
         }
     }
     derivedData.dd_idFields_byProbability = derivedData.dd_get_idFields_byProbability()
-
+    derivedData.dd_castType = 'implement this.possible values:string,number,graphqlGeoJson...' //example of why:date can be expected as timestamptz ("2016-07-20T17:30:15+05:30"),but must be casted as string
+    derivedData.dd_derivedTypeBorrowed = 'implement this? maybe not?'
 
     return derivedData
+
 }
 
 
