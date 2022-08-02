@@ -27,6 +27,7 @@
 	export let isINPUT_OBJECT = false;
 
 	const handleChanges = () => {
+		//!!! create a 'validate' function
 		let valueCouldBeValid = true;
 		if (chosenInputField) {
 			let rawValue_TypeOf = typeof rawValue;
@@ -120,56 +121,4 @@
 		}}
 	/>
 	<div />
-	<!-- 
-	{#if isINPUT_OBJECT}
-		<label class="label">
-			{#if chosenInputField.dd_kindList}
-				<List
-					dd_displayStructure={chosenInputField.dd_displayStructure}
-					dd_displayType={chosenInputField.dd_displayType}
-					{rawValue}
-					{dispatchValue}
-					on:changed={(e) => {
-						rawValue = e.detail.chd_rawValue;
-						handleChanges();
-					}}
-				/>
-			{:else if chosenInputField.dd_displayType == 'boolean'}
-				<label class="label  w-full ">
-					<Toggle
-						dd_displayStructure={chosenInputField.dd_displayStructure}
-						dd_displayType={chosenInputField.dd_displayType}
-						{rawValue}
-						on:changed={(e) => {
-							rawValue = e.detail.chd_rawValue;
-							handleChanges();
-						}}
-					/>
-				</label>
-			{:else if chosenInputField.dd_displayType == 'geo'}
-				<Map
-					dd_displayStructure={chosenInputField.dd_displayStructure}
-					{containerEl}
-					{rawValue}
-					on:changed={(e) => {
-						//console.log(e.detail);
-						rawValue = e.detail.chd_rawValue;
-						dispatchValue = e.detail.chd_dispatchValue;
-
-						handleChanges();
-					}}
-				/>
-			{:else}
-				<Input
-					dd_displayStructure={chosenInputField.dd_displayStructure}
-					dd_displayType={chosenInputField.dd_displayType}
-					{rawValue}
-					on:changed={(e) => {
-						rawValue = e.detail.chd_rawValue;
-						handleChanges();
-					}}
-				/>
-			{/if}
-		</label>
-	{/if} -->
 </div>
