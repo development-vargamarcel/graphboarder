@@ -511,9 +511,13 @@ export const get_idFields_byProbability = (fields: Array<object>): Array<object>
     }
 }
 
-export const get_displayType = (rootName) => {
+export const get_displayType = (dd_rootName, dd_kindEl) => {
     let _scalarsAndEnumsDisplayTypes = get(scalarsAndEnumsDisplayTypes);
-    let displayType = _scalarsAndEnumsDisplayTypes[rootName];
+    let displayType = _scalarsAndEnumsDisplayTypes[dd_rootName];
+    if (displayType == undefined) {
+        displayType = _scalarsAndEnumsDisplayTypes[dd_kindEl];
+
+    }
     return displayType
 }
 export const get_displayStructure = (rootName) => {
@@ -555,7 +559,7 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/fi
     });
 
 
-    let displayType = get_displayType(derivedData.dd_rootName) //change displayType to displayInterface
+    let displayType = get_displayType(derivedData.dd_rootName, derivedData.dd_kindEl) //change displayType to displayInterface
     if (["text", undefined].includes(derivedData.dd_displayType)) {
         derivedData.dd_displayType = displayType
     }

@@ -11,6 +11,7 @@
 	import Map from './fields/Map.svelte';
 	import { generate_gqlArgObj, generate_group_gqlArgObj } from '$lib/utils/usefulFunctions';
 	import { clickOutside } from '$lib/actions/clickOutside';
+	import Interface from './fields/Interface.svelte';
 	let dispatch = createEventDispatcher();
 	export let activeArgumentData;
 	export let group;
@@ -174,7 +175,28 @@
 			<div class="px-2 mt-2">
 				{#if activeArgumentData.dd_displayType == 'ENUM'}
 					<div class="flex flex-col">
-						{#if activeArgumentData.dd_kindList}
+						<FilterGroup
+							dd_displayStructure={activeArgumentData.dd_displayStructure}
+							containerEl={labelEl}
+							extraData={activeArgumentData}
+							choises={activeArgumentData?.chd_Choises
+								? activeArgumentData.chd_Choises
+								: activeArgumentData.enumValues.map((enumValue) => {
+										return enumValue.name;
+								  })}
+							chosen={activeArgumentData?.chd_chosen}
+							chosenInputField={activeArgumentData?.chosenInputField}
+							isINPUT_OBJECT={activeArgumentData?.isINPUT_OBJECT}
+							rawValue={activeArgumentData?.chd_rawValue}
+							on:changed={(e) => {
+								handleChanged(e.detail);
+							}}
+							id={activeArgumentData.stepsOfFieldsNew}
+							title="choose"
+							type={activeArgumentData.dd_kindList ? 'checkbox' : 'radio'}
+						/>
+
+						<!-- {#if activeArgumentData.dd_kindList}
 							<FilterGroup
 								dd_displayStructure={activeArgumentData.dd_displayStructure}
 								containerEl={labelEl}
@@ -215,7 +237,7 @@
 								title="choose"
 								type="radio"
 							/>
-						{/if}
+						{/if} -->
 					</div>
 				{:else if activeArgumentData.dd_displayType == 'INPUT_OBJECT'}
 					<FilterGroup
@@ -251,7 +273,29 @@
 					/>
 				{:else}
 					<div>
-						{#if activeArgumentData.dd_displayType == 'boolean'}
+						{#if activeArgumentData.dd_kindList}
+							<List
+								dd_displayType={activeArgumentData.dd_displayType}
+								dd_displayStructure={activeArgumentData.dd_displayStructure}
+								rawValue={activeArgumentData?.chd_rawValue}
+								dispatchValue={activeArgumentData?.chd_dispatchValue}
+								on:changed={(e) => {
+									handleChanged(e.detail);
+								}}
+							/>
+						{:else}
+							<Interface
+								dd_displayType={activeArgumentData.dd_displayType}
+								dd_displayStructure={activeArgumentData.dd_displayStructure}
+								rawValue={activeArgumentData?.chd_rawValue}
+								dispatchValue={activeArgumentData?.chd_dispatchValue}
+								on:changed={(e) => {
+									handleChanged(e.detail);
+								}}
+							/>
+						{/if}
+
+						<!-- {#if activeArgumentData.dd_displayType == 'boolean'}
 							<Toggle
 								dd_displayType={activeArgumentData.dd_displayType}
 								dd_displayStructure={activeArgumentData.dd_displayStructure}
@@ -287,7 +331,7 @@
 									handleChanged(e.detail);
 								}}
 							/>
-						{/if}
+						{/if} -->
 					</div>
 				{/if}
 			</div>

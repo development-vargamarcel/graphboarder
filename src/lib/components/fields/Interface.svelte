@@ -6,7 +6,17 @@
 	export let dd_displayType;
 	export let dd_displayStructure;
 	export let rawValue;
+
 	let componentToRender = Input;
+	if (['text', 'number', 'date', 'datetime-local'].includes(dd_displayType)) {
+		componentToRender = Input;
+	}
+	if (['geo'].includes(dd_displayType)) {
+		componentToRender = Map;
+	}
+	if (['boolean'].includes(dd_displayType)) {
+		componentToRender = Toggle;
+	}
 </script>
 
 <svelte:component
