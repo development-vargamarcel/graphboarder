@@ -219,57 +219,11 @@
 								}}
 							/>
 						{/if}
-
-						<!-- {#if activeArgumentData.dd_displayType == 'boolean'}
-							<Toggle
-								dd_displayType={activeArgumentData.dd_displayType}
-								dd_displayStructure={activeArgumentData.dd_displayStructure}
-								rawValue={activeArgumentData?.chd_rawValue}
-								on:changed={(e) => {
-									handleChanged(e.detail);
-								}}
-							/>
-						{:else if activeArgumentData.dd_displayType == 'geo'}
-							<Map
-								dd_displayStructure={activeArgumentData.dd_displayStructure}
-								rawValue={activeArgumentData?.chd_rawValue}
-								on:changed={(e) => {
-									handleChanged(e.detail);
-								}}
-							/>
-						{:else if activeArgumentData.dd_kindList}
-							<List
-								dd_displayType={activeArgumentData.dd_displayType}
-								dd_displayStructure={activeArgumentData.dd_displayStructure}
-								rawValue={activeArgumentData?.chd_rawValue}
-								dispatchValue={activeArgumentData?.chd_dispatchValue}
-								on:changed={(e) => {
-									handleChanged(e.detail);
-								}}
-							/>
-						{:else}
-							<Input
-								dd_displayType={activeArgumentData.dd_displayType}
-								dd_displayStructure={activeArgumentData.dd_displayStructure}
-								rawValue={activeArgumentData?.chd_rawValue}
-								on:changed={(e) => {
-									handleChanged(e.detail);
-								}}
-							/>
-						{/if} -->
 					</div>
 				{/if}
 			</div>
 		{/if}
 	</div>
-
-	<!-- <button
-		class="btn btn-sm"
-		on:click={() => {
-			dispatch('delete_activeArgument');
-			// delete_activeArgument(activeArgumentData.id);
-		}}><i class="bi bi-trash3-fill" /></button
-	> -->
 </label>
 
 {#if activeArgumentData[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
