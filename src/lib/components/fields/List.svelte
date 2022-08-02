@@ -10,8 +10,8 @@
 	console.log({ dd_displayType });
 	const dispatch = createEventDispatcher();
 
-	let elements = rawValue.map((el) => {
-		return { chd_rawValue: el };
+	let elements = rawValue.map((el,i) => {
+		return { chd_rawValue: el, chd_dispatchValue:dispatchValue[i] };
 	});
 	console.log(elements);
 	const add = () => {
