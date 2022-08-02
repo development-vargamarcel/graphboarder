@@ -2,6 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 
 	export let dd_displayType;
+	export let dd_displayStructure;
 	let inputEl;
 	export let rawValue;
 	const dispatch = createEventDispatcher();

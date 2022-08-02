@@ -554,7 +554,7 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/fi
 
 
     let displayType = get_displayType(derivedData.dd_rootName) //change displayType to displayInterface
-    if (!["text", undefined].includes(displayType)) {
+    if (["text", undefined].includes(displayType)) {
         derivedData.dd_displayType = displayType
     }
     derivedData.dd_displayStructure = get_displayStructure(derivedData.dd_rootName)

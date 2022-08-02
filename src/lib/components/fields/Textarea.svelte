@@ -6,6 +6,7 @@
 	export let rawValue = '';
 
 	export let dispatchValue = '';
+	export let dd_displayStructure;
 
 	const dispatch = createEventDispatcher();
 </script>

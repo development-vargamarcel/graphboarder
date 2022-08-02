@@ -6,6 +6,8 @@
 	export let rawValue;
 	//console.log('rawValue from outside', rawValue);
 	export let dispatchValue;
+	export let dd_displayStructure;
+
 	let map;
 	let mapContainer;
 	let dispatch = createEventDispatcher();
