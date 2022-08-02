@@ -17,6 +17,7 @@
 	export let chosenDefault;
 	export let chosen;
 	export let extraData;
+	export let dd_displayStructure;
 	let dispatch = createEventDispatcher();
 	let detail;
 	export let chosenInputField;
@@ -95,6 +96,7 @@
 
 <div class="w-full">
 	<FilterItem
+		dd_displayStructure
 		{extraData}
 		{id}
 		{choises}
@@ -117,12 +119,13 @@
 			handleChanges();
 		}}
 	/>
-
+	<div />
+	<!-- 
 	{#if isINPUT_OBJECT}
-		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label class="label">
 			{#if chosenInputField.dd_kindList}
 				<Textarea
+					dd_displayStructure={chosenInputField.dd_displayStructure}
 					dd_displayType={chosenInputField.dd_displayType}
 					{rawValue}
 					{dispatchValue}
@@ -132,9 +135,9 @@
 					}}
 				/>
 			{:else if chosenInputField.dd_displayType == 'boolean'}
-				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<label class="label  w-full ">
 					<Toggle
+						dd_displayStructure={chosenInputField.dd_displayStructure}
 						dd_displayType={chosenInputField.dd_displayType}
 						{rawValue}
 						on:changed={(e) => {
@@ -145,6 +148,7 @@
 				</label>
 			{:else if chosenInputField.dd_displayType == 'geo'}
 				<Map
+					dd_displayStructure={chosenInputField.dd_displayStructure}
 					{containerEl}
 					{rawValue}
 					on:changed={(e) => {
@@ -157,6 +161,7 @@
 				/>
 			{:else}
 				<Input
+					dd_displayStructure={chosenInputField.dd_displayStructure}
 					dd_displayType={chosenInputField.dd_displayType}
 					{rawValue}
 					on:changed={(e) => {
@@ -166,5 +171,5 @@
 				/>
 			{/if}
 		</label>
-	{/if}
+	{/if} -->
 </div>

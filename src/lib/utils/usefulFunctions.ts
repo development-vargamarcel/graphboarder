@@ -7,13 +7,15 @@ import { page } from '$app/stores';
 import { filterOperatorsDefaultDisplayType } from '$lib/stores/filterOperatorsDefaultDisplayType';
 import { displayStucture } from '$lib/stores/displayStructure';
 export const buildQueryBody = (queryName, queryFragments, gqlArgObj_string) => {
-    return `
+    let query = `
     query MyQuery {
   ${queryName}${gqlArgObj_string ? `(${gqlArgObj_string})` : ''}{
 ${queryFragments}
   }
 }
     `;
+    console.log(query)
+    return query
 };
 
 export const generateFragmentData = (field, rootTypes, flatten, deeperIfNoScalar = true) => {// !!! refactor this using current data
@@ -554,10 +556,12 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/fi
 
 
     let displayType = get_displayType(derivedData.dd_rootName) //change displayType to displayInterface
-    if (["text", undefined].includes(displayType)) {
+    if (["text", undefined].includes(derivedData.dd_displayType)) {
         derivedData.dd_displayType = displayType
     }
-    derivedData.dd_displayStructure = get_displayStructure(derivedData.dd_rootName)
+    if (!derivedData.dd_displayStructure) {
+        derivedData.dd_displayStructure = get_displayStructure(derivedData.dd_rootName)
+    }
 
     derivedData.dd_isArg = !type?.args
     derivedData.dd_relatedRoot_inputFields_allScalar = derivedData.dd_relatedRoot?.inputFields?.every((field) => {
@@ -589,14 +593,18 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/fi
     ////////// others
     if (derivedData?.dd_filterOperators) {
 
-        if (type?.inputFields) {
-            let defaultDisplayType = get(filterOperatorsDefaultDisplayType)[derivedData.dd_displayName]
-            if (defaultDisplayType) {
-                derivedData.dd_filterOperatorsDefaultDisplayType = defaultDisplayType
-                type?.inputFields.forEach(inputField => {
-                    Object.assign(inputField, { dd_displayType: defaultDisplayType })
-                })
-            };
+        let defaultDisplayType = get_displayType(derivedData.dd_rootName)
+        let defaultDisplayStructure = get_displayStructure(derivedData.dd_rootName)
+        if (type?.inputFields !== undefined) {
+            derivedData.dd_filterOperatorsDefaultDisplayType = defaultDisplayType
+            derivedData.dd_filterOperatorsDefaultDisplayStructure = defaultDisplayStructure
+            type.inputFields.forEach(inputField => {
+                Object.assign(inputField, { dd_displayType: defaultDisplayType, dd_displayStructure: defaultDisplayStructure })
+                // inputField.dd_displayType = defaultDisplayType
+                // inputField.dd_displayStructure = defaultDisplayStructure
+                // inputField.dd_test = 'test'
+            })
+
         }
 
 
@@ -938,4 +946,24 @@ export const getQueryLinks = () => {
         return queryLink
     })
     return queryLinks
+}
+
+
+////////////////////////
+
+
+
+export const convertTo_displayStructure = (displayStructure, value) => {
+    let converters = {
+        convertTo_ISO8601: (date) => {
+            let date_ISO8601 = new Date(date).toISOString();
+
+            return `'${date_ISO8601}'`;
+            // return `'2022-08-02T00:00:00'`;
+
+        }
+    }
+    let converterToUse = 'convertTo_' + 'ISO8601'
+    let convertingFunction = converters?.[converterToUse]
+    return convertingFunction(value);
 }

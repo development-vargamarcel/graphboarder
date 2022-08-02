@@ -1,4 +1,5 @@
 <script>
+	import { convertTo_displayStructure } from './../../utils/usefulFunctions.ts';
 	import { createEventDispatcher } from 'svelte';
 
 	export let dd_displayType;
@@ -7,6 +8,8 @@
 	export let rawValue;
 	const dispatch = createEventDispatcher();
 	console.log({ dd_displayType });
+	console.log(dd_displayStructure);
+
 	//let castAs //most of the times as string
 </script>
 
@@ -17,14 +20,19 @@
 	value={rawValue}
 	on:change={() => {
 		rawValue = inputEl.value;
+		console.log(convertTo_displayStructure(dd_displayStructure, rawValue));
 		if (dd_displayType == 'number' && rawValue == '') {
 			rawValue = undefined;
 		}
-
+		let chd_dispatchValue =
+			dd_displayType == 'text' || dd_displayType == undefined ? `'${rawValue}'` : rawValue;
+		if (dd_displayStructure) {
+			chd_dispatchValue = convertTo_displayStructure(dd_displayStructure, rawValue);
+		}
 		dispatch('changed', {
 			chd_chosen: undefined,
-			chd_dispatchValue:
-				dd_displayType == 'text' || dd_displayType == undefined ? `'${rawValue}'` : rawValue,
+			chd_dispatchValue,
+
 			chd_needsValue: true,
 			chd_needsChosen: false,
 			chd_rawValue: rawValue

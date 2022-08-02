@@ -176,6 +176,7 @@
 					<div class="flex flex-col">
 						{#if activeArgumentData.dd_kindList}
 							<FilterGroup
+								dd_displayStructure={activeArgumentData.dd_displayStructure}
 								containerEl={labelEl}
 								extraData={activeArgumentData}
 								choises={activeArgumentData?.chd_Choises
@@ -196,6 +197,7 @@
 							/>
 						{:else}
 							<FilterGroup
+								dd_displayStructure={activeArgumentData.dd_displayStructure}
 								containerEl={labelEl}
 								extraData={activeArgumentData}
 								choises={activeArgumentData.enumValues.map((enumValue) => {
@@ -217,6 +219,7 @@
 					</div>
 				{:else if activeArgumentData.dd_displayType == 'INPUT_OBJECT'}
 					<FilterGroup
+						dd_displayStructure={activeArgumentData.dd_displayStructure}
 						containerEl={labelEl}
 						extraData={activeArgumentData}
 						choises={activeArgumentData.inputFields.map((inputField) => {
@@ -251,7 +254,7 @@
 						{#if activeArgumentData.dd_displayType == 'boolean'}
 							<Toggle
 								dd_displayType={activeArgumentData.dd_displayType}
-								dd_displayStucture={activeArgumentData.dd_displayStucture}
+								dd_displayStructure={activeArgumentData.dd_displayStructure}
 								rawValue={activeArgumentData?.chd_rawValue}
 								on:changed={(e) => {
 									handleChanged(e.detail);
@@ -259,7 +262,7 @@
 							/>
 						{:else if activeArgumentData.dd_displayType == 'geo'}
 							<Map
-								dd_displayStucture={activeArgumentData.dd_displayStucture}
+								dd_displayStructure={activeArgumentData.dd_displayStructure}
 								rawValue={activeArgumentData?.chd_rawValue}
 								on:changed={(e) => {
 									handleChanged(e.detail);
@@ -268,7 +271,7 @@
 						{:else if activeArgumentData.dd_kindList}
 							<Textarea
 								dd_displayType={activeArgumentData.dd_displayType}
-								dd_displayStucture={activeArgumentData.dd_displayStucture}
+								dd_displayStructure={activeArgumentData.dd_displayStructure}
 								rawValue={activeArgumentData?.chd_rawValue}
 								dispatchValue={activeArgumentData?.chd_dispatchValue}
 								on:changed={(e) => {
@@ -278,7 +281,7 @@
 						{:else}
 							<Input
 								dd_displayType={activeArgumentData.dd_displayType}
-								dd_displayStucture={activeArgumentData.dd_displayStucture}
+								dd_displayStructure={activeArgumentData.dd_displayStructure}
 								rawValue={activeArgumentData?.chd_rawValue}
 								on:changed={(e) => {
 									handleChanged(e.detail);

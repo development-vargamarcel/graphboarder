@@ -28,6 +28,7 @@
 	let chosenNew = [];
 	let choisesNew = [];
 	let choisesWithId;
+	export let dd_displayStructure;
 	let showModalOrToggle = () => {
 		if (choises.length > 1) {
 			//show modal

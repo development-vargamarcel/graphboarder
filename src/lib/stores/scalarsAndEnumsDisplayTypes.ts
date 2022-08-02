@@ -10,7 +10,12 @@ export const scalarsAndEnumsDisplayTypes = writable({
     'Float': 'number',
     'GraphQLGeoJSON': 'geo',
     'geometry': 'geo',
-    'Date': 'date',
-    'timestamptz': 'date'
+    'Date': 'datetime-local',
+    'timestamptz': 'datetime-local',
+    "String_comparison_exp": "text",
+    'Int_comparison_exp': 'number',
+    'bigint_comparison_exp': 'number',
+    'geometry_comparison_exp': 'geo',
+    'date_filter_operators': 'datetime-local',
     // "ENUM": 'none'
 })
