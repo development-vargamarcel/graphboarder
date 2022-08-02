@@ -4,6 +4,8 @@ import { get } from 'svelte/store';
 import { scalarsAndEnumsDisplayTypes } from '$lib/stores/scalarsAndEnumsDisplayTypes';
 import { schemaData } from '$lib/stores/schemaData';
 import { page } from '$app/stores';
+import { filterOperatorsDefaultDisplayType } from '$lib/stores/filterOperatorsDefaultDisplayType';
+import { displayStucture } from '$lib/stores/displayStructure';
 export const buildQueryBody = (queryName, queryFragments, gqlArgObj_string) => {
     return `
     query MyQuery {
@@ -507,6 +509,17 @@ export const get_idFields_byProbability = (fields: Array<object>): Array<object>
     }
 }
 
+export const get_displayType = (rootName) => {
+    let _scalarsAndEnumsDisplayTypes = get(scalarsAndEnumsDisplayTypes);
+    let displayType = _scalarsAndEnumsDisplayTypes[rootName];
+    return displayType
+}
+export const get_displayStructure = (rootName) => {
+
+    let _displayStructure = get(displayStucture);
+    let displayStructure = _displayStructure[rootName];
+    return displayStructure
+}
 export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/field  
     let derivedData = { ...type }
     derivedData.dd_kindsArray = get_KindsArray(type)
@@ -539,15 +552,13 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/fi
         }
     });
 
-    let _scalarsAndEnumsDisplayTypes = get(scalarsAndEnumsDisplayTypes);
-    if (derivedData.dd_kindEl == 'ENUM') {
-        derivedData.dd_displayType = 'ENUM';
-    } else if (derivedData.dd_kindEl == 'INPUT_OBJECT') {
-        derivedData.dd_displayType = 'INPUT_OBJECT';
-    } else {
-        derivedData.dd_displayType = _scalarsAndEnumsDisplayTypes[derivedData.dd_rootName];
 
+    let displayType = get_displayType(derivedData.dd_rootName) //change displayType to displayInterface
+    if (!["text", undefined].includes(displayType)) {
+        derivedData.dd_displayType = displayType
     }
+    derivedData.dd_displayStructure = get_displayStructure(derivedData.dd_rootName)
+
     derivedData.dd_isArg = !type?.args
     derivedData.dd_relatedRoot_inputFields_allScalar = derivedData.dd_relatedRoot?.inputFields?.every((field) => {
         return get_KindsArray(field).includes('SCALAR');
@@ -575,6 +586,28 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/fi
     derivedData.dd_idFields_byProbability = derivedData.dd_get_idFields_byProbability()
     derivedData.dd_castType = 'implement this.possible values:string,number,graphqlGeoJson...' //example of why:date can be expected as timestamptz ("2016-07-20T17:30:15+05:30"),but must be casted as string
     derivedData.dd_derivedTypeBorrowed = 'implement this? maybe not?'
+    ////////// others
+    if (derivedData?.dd_filterOperators) {
+
+        if (type?.inputFields) {
+            let defaultDisplayType = get(filterOperatorsDefaultDisplayType)[derivedData.dd_displayName]
+            if (defaultDisplayType) {
+                derivedData.dd_filterOperatorsDefaultDisplayType = defaultDisplayType
+                type?.inputFields.forEach(inputField => {
+                    Object.assign(inputField, { dd_displayType: defaultDisplayType })
+                })
+            };
+        }
+
+
+
+
+
+    }
+
+
+
+
 
     return derivedData
 
