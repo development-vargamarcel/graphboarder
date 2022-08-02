@@ -955,15 +955,17 @@ export const getQueryLinks = () => {
 
 export const convertTo_displayStructure = (displayStructure, value) => {
     let converters = {
-        convertTo_ISO8601: (date) => {
+        ISO8601: (date) => {
             let date_ISO8601 = new Date(date).toISOString();
 
             return `'${date_ISO8601}'`;
-            // return `'2022-08-02T00:00:00'`;
-
         }
     }
-    let converterToUse = 'convertTo_' + 'ISO8601'
-    let convertingFunction = converters?.[converterToUse]
-    return convertingFunction(value);
+    let convertingFunction = converters?.[displayStructure]
+    if (convertingFunction) {
+        return convertingFunction(value)
+    }
+    console.log('no converting function available for:', displayStructure, ',returning value as is.');
+    return value
 }
+//console.log(convertTo_displayStructure('ISO86012', '2020-08-02T00:00:00'))

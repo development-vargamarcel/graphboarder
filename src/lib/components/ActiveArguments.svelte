@@ -16,7 +16,7 @@
 	import FilterItem from './FilterItem.svelte';
 	import { createEventDispatcher, each } from 'svelte/internal';
 	import Input from './fields/Input.svelte';
-	import Textarea from './fields/Textarea.svelte';
+	import List from './fields/List.svelte';
 	import Modal from './Modal.svelte';
 	import Toggle from './fields/Toggle.svelte';
 	import Arg from './Arg.svelte';

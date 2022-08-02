@@ -5,7 +5,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { loop_guard } from 'svelte/internal';
 	import Input from './fields/Input.svelte';
-	import Textarea from './fields/Textarea.svelte';
+	import List from './fields/List.svelte';
 	import Toggle from './fields/Toggle.svelte';
 	import Map from './fields/Map.svelte';
 	export let containerEl;
@@ -124,7 +124,7 @@
 	{#if isINPUT_OBJECT}
 		<label class="label">
 			{#if chosenInputField.dd_kindList}
-				<Textarea
+				<List
 					dd_displayStructure={chosenInputField.dd_displayStructure}
 					dd_displayType={chosenInputField.dd_displayType}
 					{rawValue}

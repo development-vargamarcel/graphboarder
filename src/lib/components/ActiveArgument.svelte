@@ -3,7 +3,7 @@
 	import { createEventDispatcher } from 'svelte';
 
 	import Input from './fields/Input.svelte';
-	import Textarea from './fields/Textarea.svelte';
+	import List from './fields/List.svelte';
 	import Toggle from './fields/Toggle.svelte';
 	import FilterGroup from './FilterGroup.svelte';
 	import { fade } from 'svelte/transition';
@@ -269,7 +269,7 @@
 								}}
 							/>
 						{:else if activeArgumentData.dd_kindList}
-							<Textarea
+							<List
 								dd_displayType={activeArgumentData.dd_displayType}
 								dd_displayStructure={activeArgumentData.dd_displayStructure}
 								rawValue={activeArgumentData?.chd_rawValue}
