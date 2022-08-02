@@ -11,11 +11,11 @@
 	const dispatch = createEventDispatcher();
 
 	let elements = rawValue.map((el) => {
-		return el;
+		return { chd_rawValue: el };
 	});
 	console.log(elements);
 	const add = () => {
-		elements.push({ rawValue: null });
+		elements.push({ chd_rawValue: null });
 		elements = elements;
 		console.log(elements);
 	};
@@ -53,7 +53,7 @@
 		<div class="flex">
 			<Interface
 				{dd_displayType}
-				rawValue={element}
+				rawValue={element.chd_rawValue}
 				{dispatchValue}
 				{dd_displayStructure}
 				on:changed={(e) => {
@@ -64,6 +64,7 @@
 			<button
 				class="btn btn-xs btn-danger"
 				on:click={(e) => {
+					// element.chd_rawValue=element
 					del(element.chd_rawValue);
 				}}><i class="bi bi-trash3-fill" /></button
 			>
