@@ -834,7 +834,7 @@ const validItems = (items, nodes) => {
 //
 const generate_gqlArgObjForItems = (items, groupName, nodes) => {
     //!!! this must be modified: example bug: _st_d_within has distance and from as dd_NON_NULL,you must combine the result in one object not two objects in an array,even if in _or.
-    //console.log({ nodes })
+    console.log({ nodes })
     let itemsObj = items.map((item) => {
         let itemData = nodes[item.id];
 
@@ -851,7 +851,7 @@ const generate_gqlArgObjForItems = (items, groupName, nodes) => {
         //console.log({ itemObj });
         if (itemData.operator) {
             let validItemsResult = validItems(itemData.items, nodes)
-            //console.log({ validItemsResult })
+            console.log({ validItemsResult })
             //console.log('opp');
             Object.assign(itemObjCurr, {
                 [itemData.operator]: generate_gqlArgObjForItems(
