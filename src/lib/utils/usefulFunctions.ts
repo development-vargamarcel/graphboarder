@@ -866,9 +866,9 @@ const generate_gqlArgObjForItems = (items, groupName, nodes) => {
                 console.log({ arrayOfObjects })
                 let mergeResult = {}
                 _.merge(mergeResult, ...arrayOfObjects)
-                Object.assign(itemObjCurr, {
-                    [itemData.operator]: mergeResult[groupName]
-                });
+                Object.assign(itemObjCurr,
+                    mergeResult[groupName]
+                );
                 console.log({ mergeResult })
                 console.log({ itemData })
             } else {
