@@ -93,7 +93,7 @@
 			tabindex={dragDisabled ? 0 : -1}
 			aria-label="drag-handle"
 			class="  transition:all duration-500 bi bi-grip-vertical ml-2  -mr-1 text-lg rounded-l-md {node?.operator ==
-			undefined
+				undefined || node?.isBond
 				? 'text-base-content'
 				: node?.operator == '_and'
 				? 'text-primary'
@@ -122,11 +122,19 @@
 	</div>{/if}
 
 <div
-	class=" w-full transition-all duration-500   {node?.operator
-		? 'rounded-l-md bg-gradient-to-rxxx   border-l-[1px] my-1'
-		: ''} 
+	class=" w-full transition-all duration-500
+	
+	
+	{node?.operator ? 'rounded-l-md bg-gradient-to-rxxx   border-l-[1px] my-1' : ''} 
 {node?.operator && node?.not ? 'border-dashed  ' : ''} 
-{node?.operator == '_and' ? 'border-primary' : 'border-accent-focus '}"
+{node.isBond
+		? 'border-base-content'
+		: node?.operator == '_and'
+		? 'border-primary'
+		: 'border-accent-focus '}
+
+
+"
 	on:contextmenu|preventDefault|stopPropagation={() => {
 		if (!node?.isMain) {
 			node.not = !node.not;
@@ -148,37 +156,26 @@
 		<div class="flex">
 			<p
 				style=""
-				class="btn btn-xs btn-ghost px-2 pb-1 text-xs font-light transition-all duration-500  rounded-full  normal-case {node?.operator ==
-				'_and'
+				class="btn btn-xs btn-ghost px-2 pb-1 text-xs font-light transition-all duration-500  rounded-full  normal-case  {node.isBond
+					? 'text-base-content'
+					: node?.operator == '_and'
 					? 'text-primary'
 					: 'text-accent-focus'}"
 				on:click={() => {
 					if (node?.operator && !node?.isMain) {
 						if (node?.operator == '_or') {
 							node.operator = '_and';
+						} else if (node?.operator == '_and' && !node?.isBond) {
+							node.isBond = true;
 						} else {
+							node.isBond = false;
 							node.operator = '_or';
 						}
 					}
 					dispatch('changed');
 				}}
 			>
-				{node.operator}
-			</p>
-			<p
-				class="btn btn-xs btn-ghost px-2 pb-1 text-xs font-light transition-all duration-500  rounded-full normal-case"
-				on:click={() => {
-					if (node?.operator && !node?.isMain) {
-						if (node?.isBond) {
-							node.isBond = false;
-						} else {
-							node.isBond = true;
-						}
-					}
-					dispatch('changed');
-				}}
-			>
-				{node.isBond ? 'bonded' : ''}
+				{!node.isBond ? node.operator : 'bonded'}
 			</p>
 		</div>
 	{:else}
