@@ -13,6 +13,8 @@ export const scalarsAndEnumsDisplayTypes = writable({
     'Date': 'datetime-local',
     'timestamptz': 'datetime-local',
     "String_comparison_exp": "text",
+    'timestamptz_comparison_exp': 'datetime-local',
+
     'Int_comparison_exp': 'number',
     'bigint_comparison_exp': 'number',
     'geometry_comparison_exp': 'geo',
