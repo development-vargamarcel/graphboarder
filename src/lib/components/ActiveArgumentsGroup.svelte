@@ -104,12 +104,32 @@
 										let newArgData = e.detail;
 
 										if (group.group_argsNode) {
-											//to prevent --> Uncaught TypeError: Converting circular structure to JSON
-											newArgData.dd_relatedRoot =
-												'overwritten to evade error: Uncaught TypeError: Converting circular structure to JSON';
-											newArgData.not = false;
-											group.group_argsNode[newArgData.id] = newArgData;
-											group.group_argsNode.mainContainer.items.push({ id: newArgData.id });
+											if (newArgData?.dd_NON_NULL) {
+												console.log(newArgData?.dd_NON_NULL);
+												//to prevent --> Uncaught TypeError: Converting circular structure to JSON
+												newArgData.dd_relatedRoot =
+													'overwritten to evade error: Uncaught TypeError: Converting circular structure to JSON';
+												newArgData.not = false;
+												group.group_argsNode[newArgData.id] = newArgData;
+												let randomNr = Math.random();
+												group.group_argsNode[`${randomNr}`] = {
+													id: randomNr,
+													operator: '_and',
+													not: false,
+													isMain: false,
+													isBond: true,
+													items: []
+												};
+												group.group_argsNode['mainContainer'].items.push({ id: randomNr });
+												group.group_argsNode[`${randomNr}`].items.push({ id: newArgData.id });
+											} else {
+												//to prevent --> Uncaught TypeError: Converting circular structure to JSON
+												newArgData.dd_relatedRoot =
+													'overwritten to evade error: Uncaught TypeError: Converting circular structure to JSON';
+												newArgData.not = false;
+												group.group_argsNode[newArgData.id] = newArgData;
+												group.group_argsNode.mainContainer.items.push({ id: newArgData.id });
+											}
 										} else {
 											if (
 												!group.group_args.some((el) => {
