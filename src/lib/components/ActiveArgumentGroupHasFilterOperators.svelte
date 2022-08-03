@@ -148,7 +148,7 @@
 		<div class="flex">
 			<p
 				style=""
-				class="px-2 pb-1 text-xs font-light transition-all duration-500  rounded-full rounded-tl-none {node?.operator ==
+				class="btn btn-xs btn-ghost px-2 pb-1 text-xs font-light transition-all duration-500  rounded-full  normal-case {node?.operator ==
 				'_and'
 					? 'text-primary'
 					: 'text-accent-focus'}"
@@ -164,6 +164,21 @@
 				}}
 			>
 				{node.operator}
+			</p>
+			<p
+				class="btn btn-xs btn-ghost px-2 pb-1 text-xs font-light transition-all duration-500  rounded-full normal-case"
+				on:click={() => {
+					if (node?.operator && !node?.isMain) {
+						if (node?.isBond) {
+							node.isBond = false;
+						} else {
+							node.isBond = true;
+						}
+					}
+					dispatch('changed');
+				}}
+			>
+				{node.isBond ? 'bonded' : ''}
 			</p>
 		</div>
 	{:else}
