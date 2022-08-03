@@ -156,7 +156,7 @@
 		<div class="flex">
 			<p
 				style=""
-				class="btn btn-xs btn-ghost px-2 pb-1 text-xs font-light transition-all duration-500  rounded-full  normal-case  {node.isBond
+				class="btn btn-xs btn-ghost px-2 pb-1 text-xs font-light transition-all duration-500  rounded-full  normal-case   {node.isBond
 					? 'text-base-content'
 					: node?.operator == '_and'
 					? 'text-primary'
@@ -177,6 +177,23 @@
 			>
 				{!node.isBond ? node.operator : 'bonded'}
 			</p>
+			<p class="grow" />
+			{#if !node?.isMain}
+				<p
+					class="btn btn-xs btn-ghost {node.isBond
+						? 'text-base-content'
+						: node?.operator == '_and'
+						? 'text-primary'
+						: 'text-accent-focus'}"
+					on:click={() => {
+						alert('not yet implemented');
+						console.log(
+							'not yet implemented,implement here.Delete node and his items and items of his items recursively until the very end of the tree.'
+						);
+					}}
+				>
+					<i class="bi bi-trash-fill" />
+				</p>{/if}
 		</div>
 	{:else}
 		<div class="pr-2 rounded-box  w-full">
