@@ -19,7 +19,9 @@
 		generateQueryFragments,
 		generateFragmentData,
 		stepsOfFieldsToQueryFragment,
-		get_displayName
+		get_displayName,
+		stepsOfFieldsNewToQueryFragmentObject,
+		queryFragmentsObjectsToQueryFragments
 	} from '$lib/utils/usefulFunctions';
 	import { onDestroy, onMount } from 'svelte';
 	import { goto } from '$app/navigation';
@@ -47,7 +49,13 @@
 	});
 
 	let scalarColsData = currentQuery_fields_SCALAR_names.map((name) => {
-		return { title: name, queryFragment: name, queryFragmentNew: name, stepsOfFieldsNew: [name] };
+		return {
+			title: name,
+			queryFragment: name,
+			queryFragmentNew: name,
+			stepsOfFieldsNew: [name],
+			queryFragmentObject: stepsOfFieldsNewToQueryFragmentObject([name])
+		};
 	});
 	let non_scalarColsData = [];
 	let tableColsData = [];
@@ -56,6 +64,7 @@
 	//console.log('tableColsData', tableColsData);
 	//let queryFragments;
 	let queryFragmentsNew;
+	let queryFragmentsObjectsNew;
 	let queryBody;
 	let queryData;
 	let gqlArgObj_string;
@@ -70,11 +79,25 @@
 			.map((colData) => {
 				return colData.queryFragmentNew;
 			});
+		queryFragmentsObjectsNew = tableColsData
+			.filter((colData) => {
+				return colData.queryFragmentNew !== undefined;
+			})
+			.map((colData) => {
+				return colData.queryFragmentObject;
+			});
 		console.log({ tableColsData });
 		console.log({ queryFragmentsNew });
 		//console.log('tableColsData queryFragmentsNew', queryFragmentsNew);
 		////console.log('queryFragments', queryFragments);
-		queryBody = buildQueryBody(queryName, queryFragmentsNew.join('\n'), gqlArgObj_string);
+		console.log({ queryFragmentsObjectsNew });
+		console.log(queryFragmentsObjectsToQueryFragments(queryFragmentsObjectsNew));
+		//queryFragmentsNew.join('\n')
+		queryBody = buildQueryBody(
+			queryName,
+			queryFragmentsObjectsToQueryFragments(queryFragmentsObjectsNew),
+			gqlArgObj_string
+		);
 		//console.log('queryBody', queryBody);
 		let fetching = true;
 		let error = false;

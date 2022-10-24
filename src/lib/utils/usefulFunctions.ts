@@ -994,3 +994,25 @@ export const convertTo_displayStructure = (displayStructure, value) => {
     return value
 }
 //console.log(convertTo_displayStructure('ISO86012', '2020-08-02T00:00:00'))
+export const stepsOfFieldsNewToQueryFragmentObject = (stepsOfFieldsNew) => {
+    let stepsOfFieldsNew_length = stepsOfFieldsNew.length
+    let queryObject = {}
+    let queryObjectCurrLevel = queryObject
+    stepsOfFieldsNew.forEach((fieldName, index) => {
+        if (stepsOfFieldsNew_length == index + 1) {
+            queryObjectCurrLevel[fieldName] = "novaluehere"
+        } else {
+            queryObjectCurrLevel[fieldName] = {}
+            queryObjectCurrLevel = queryObjectCurrLevel[fieldName]
+        }
+    });
+    return queryObject
+}
+
+export const queryFragmentsObjectsToQueryFragments = (queryFragmentsObjects) => {
+
+    const merged = _.merge(...queryFragmentsObjects);
+    const stringified = JSON.stringify(merged);
+    const queryFragments = stringified.replaceAll(/novaluehere|"|:/gi, '').slice(1, -1);
+    return queryFragments
+}

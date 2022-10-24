@@ -23,10 +23,6 @@
 
 	let merged = _.merge(...fragments);
 	let stringified = JSON.stringify(merged);
-	// let processed = stringified
-	// 	.replaceAll(':"novaluehere"', '')
-	// 	.replaceAll('"', '')
-	// 	.replaceAll(':', '');
 	let processed = stringified.replaceAll(/novaluehere|"|:/gi, '');
 	console.log(merged);
 	console.log(stringified);

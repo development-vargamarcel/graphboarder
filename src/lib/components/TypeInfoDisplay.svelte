@@ -4,7 +4,11 @@
 		stepsOfFieldsFlatten
 	} from './../utils/usefulFunctions.ts';
 	import { introspectionResult } from './../stores/introspectionResult.ts';
-	import { generateFragmentData, get_rootName } from '$lib/utils/usefulFunctions';
+	import {
+		generateFragmentData,
+		get_rootName,
+		stepsOfFieldsNewToQueryFragmentObject
+	} from '$lib/utils/usefulFunctions';
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 	export let canExpand;
@@ -106,6 +110,7 @@
 					stepsOfFieldsNew: stepsOfFieldsNew,
 					stepsOfFieldsNew_Flat: stepsOfFieldsNew_Flat,
 					stepsOfFieldsNew_useFlat: stepsOfFieldsNew_useFlat,
+					queryFragmentObject: stepsOfFieldsNewToQueryFragmentObject(stepsOfFieldsNew),
 					queryFragmentNew: stepsOfFieldsNew_useFlat
 						? stepsOfFieldsNew_Flat.map((el) => {
 								return stepsOfFieldsToQueryFragment(el);
