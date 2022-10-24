@@ -72,13 +72,13 @@
 	let rows = [];
 	const runQuery = () => {
 		//queryFragments = generateQueryFragments(tableColsData);
-		queryFragmentsNew = tableColsData
-			.filter((colData) => {
-				return colData.queryFragmentNew !== undefined;
-			})
-			.map((colData) => {
-				return colData.queryFragmentNew;
-			});
+		// queryFragmentsNew = tableColsData
+		// 	.filter((colData) => {
+		// 		return colData.queryFragmentNew !== undefined;
+		// 	})
+		// 	.map((colData) => {
+		// 		return colData.queryFragmentNew;
+		// 	});
 		queryFragmentsObjectsNew = tableColsData
 			.filter((colData) => {
 				return colData.queryFragmentNew !== undefined;
@@ -87,7 +87,7 @@
 				return colData.queryFragmentObject;
 			});
 		console.log({ tableColsData });
-		console.log({ queryFragmentsNew });
+
 		//console.log('tableColsData queryFragmentsNew', queryFragmentsNew);
 		////console.log('queryFragments', queryFragments);
 		console.log({ queryFragmentsObjectsNew });
