@@ -70,6 +70,8 @@
 			.map((colData) => {
 				return colData.queryFragmentNew;
 			});
+		console.log({ tableColsData });
+		console.log({ queryFragmentsNew });
 		//console.log('tableColsData queryFragmentsNew', queryFragmentsNew);
 		////console.log('queryFragments', queryFragments);
 		queryBody = buildQueryBody(queryName, queryFragmentsNew.join('\n'), gqlArgObj_string);
