@@ -15,7 +15,12 @@
 	export let template;
 	export let index;
 	export let type;
-	export let stepsOfFieldsNew = [];
+	export let stepsOfFieldsNew;
+	if (!stepsOfFieldsNew) {
+		stepsOfFieldsNew = [dd_displayName];
+	} else {
+		stepsOfFieldsNew = [...stepsOfFieldsNew, dd_displayName];
+	}
 	stepsOfFieldsNew = [...stepsOfFieldsNew]; // so each tree will have it's own stepsOfFieldsNew
 	export let depth = 0;
 	let inDuration = 300;
@@ -43,12 +48,12 @@
 		//console.log('dd_rootName', dd_rootName);
 		expandData = getRootType($introspectionResult.rootTypes, dd_rootName);
 		if (expandData) {
-			if (!showExpand) {
-				stepsOfFieldsNew.push(dd_displayName);
-			} else {
-				// does the trick if you hide one by one from last one
-				stepsOfFieldsNew.splice(-1);
-			}
+			// if (!showExpand) {
+			// 	stepsOfFieldsNew.push(dd_displayName);
+			// } else {
+			// 	// does the trick if you hide one by one from last one
+			// 	stepsOfFieldsNew.splice(-1);
+			// }
 
 			showExpand = !showExpand;
 			//console.log('expandData', expandData);
