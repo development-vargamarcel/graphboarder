@@ -6,11 +6,11 @@ import { schemaData } from '$lib/stores/schemaData';
 import { page } from '$app/stores';
 import { filterOperatorsDefaultDisplayType } from '$lib/stores/filterOperatorsDefaultDisplayType';
 import { displayStucture } from '$lib/stores/displayStructure';
-export const buildQueryBody = (queryName, queryFragments, gqlArgObj_string) => {
+export const buildQueryBody = (queryName, queryFields, gqlArgObj_string) => {
     let query = `
     query MyQuery {
   ${queryName}${gqlArgObj_string ? `(${gqlArgObj_string})` : ''}{
-${queryFragments}
+${queryFields}
   }
 }
     `;
@@ -81,20 +81,20 @@ export const fragmentDataToFragment = (fragmentData) => {
     return res;
 };
 
-export const generateQueryFragments = (tableColsData = []) => {
-    let body = ``;
-    let queryFragment;
-    tableColsData.forEach((colData) => {
-        queryFragment = colData?.queryFragment;
-        if (typeof queryFragment == 'string') {
-            body = body + `\n ${queryFragment}`;
-        } else {
-            body = body + `\n ${fragmentDataToFragment([queryFragment])}`;
-        }
-    });
+// export const generateQueryFragments = (tableColsData = []) => {
+//     let body = ``;
+//     let queryFragment;
+//     tableColsData.forEach((colData) => {
+//         queryFragment = colData?.queryFragment;
+//         if (typeof queryFragment == 'string') {
+//             body = body + `\n ${queryFragment}`;
+//         } else {
+//             body = body + `\n ${fragmentDataToFragment([queryFragment])}`;
+//         }
+//     });
 
-    return body;
-};
+//     return body;
+// };
 
 export const getQM_mandatoryArguments = (QM) => {
     //QM means QueryOrMutation
@@ -293,21 +293,21 @@ export const stepsOfFieldsFlatten = (stepsOfFields, stepsOfFildsStringAll) => {/
     }
     return stepsOfFieldsFlat
 }
-export const stepsOfFieldsToQueryFragment = (stepsOfFields) => {
-    let queryFragment;
+// export const stepsOfFieldsToQueryFragment = (stepsOfFields) => {
+//     let queryFragment;
 
-    if (typeof stepsOfFields[stepsOfFields.length - 1][0] == 'string') {
-        queryFragment = `${stepsOfFields.join('{')}${'}'.repeat(stepsOfFields.length - 1)}`;
-    } else {
+//     if (typeof stepsOfFields[stepsOfFields.length - 1][0] == 'string') {
+//         queryFragment = `${stepsOfFields.join('{')}${'}'.repeat(stepsOfFields.length - 1)}`;
+//     } else {
 
-        //console.log('stepsOfFieldsFlatten() teststeps', stepsOfFieldsFlatten(stepsOfFields))
+//         //console.log('stepsOfFieldsFlatten() teststeps', stepsOfFieldsFlatten(stepsOfFields))
 
-        console.error('--HANDLE THIS if important for app,most likely not---', stepsOfFields, `${stepsOfFields.join('{')}${'}'.repeat(stepsOfFields.length - 1)}`)
-        //here you must handle the situation where the selected data for column doesn't have direct scalar fields
-    }
+//         console.error('--HANDLE THIS if important for app,most likely not---', stepsOfFields, `${stepsOfFields.join('{')}${'}'.repeat(stepsOfFields.length - 1)}`)
+//         //here you must handle the situation where the selected data for column doesn't have direct scalar fields
+//     }
 
-    return queryFragment;
-};
+//     return queryFragment;
+// };
 
 //colData must become colInfo everywhere,for less ambiguity
 export const getColResultData = (colData, row_resultData) => {
@@ -1009,7 +1009,7 @@ export const stepsOfFieldsNewToQueryFragmentObject = (stepsOfFieldsNew) => {
     return queryObject
 }
 
-export const queryFragmentsObjectsToQueryFragments = (queryFragmentsObjects) => {
+export const queryFragmentsObjectsToQueryFields = (queryFragmentsObjects) => {
 
     const merged = _.merge(...queryFragmentsObjects);
     const stringified = JSON.stringify(merged);

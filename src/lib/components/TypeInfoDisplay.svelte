@@ -1,8 +1,5 @@
 <script>
-	import {
-		stepsOfFieldsToQueryFragment,
-		stepsOfFieldsFlatten
-	} from './../utils/usefulFunctions.ts';
+	import { stepsOfFieldsFlatten } from './../utils/usefulFunctions.ts';
 	import { introspectionResult } from './../stores/introspectionResult.ts';
 	import {
 		generateFragmentData,
@@ -18,18 +15,7 @@
 	export let showExpand;
 	export let template = 'default';
 	export let stepsOfFieldsNew;
-	let {
-		dd_kindsArray,
-		dd_namesArray,
-		dd_rootName,
-		dd_displayName,
-		dd_kindEl,
-		dd_kindEl_NON_NULL,
-		dd_kindList,
-		dd_kindList_NON_NULL,
-		dd_NON_NULL,
-		dd_relatedRoot
-	} = type;
+	let { dd_kindsArray, dd_namesArray, dd_displayName } = type;
 </script>
 
 {#if template == 'default'}
@@ -110,15 +96,9 @@
 					stepsOfFieldsNew: stepsOfFieldsNew,
 					stepsOfFieldsNew_Flat: stepsOfFieldsNew_Flat,
 					stepsOfFieldsNew_useFlat: stepsOfFieldsNew_useFlat,
-					queryFragmentObject: stepsOfFieldsNewToQueryFragmentObject(stepsOfFieldsNew),
-					queryFragmentNew: stepsOfFieldsNew_useFlat
-						? stepsOfFieldsNew_Flat.map((el) => {
-								return stepsOfFieldsToQueryFragment(el);
-						  })
-						: stepsOfFieldsToQueryFragment(stepsOfFieldsNew)
+					queryFragmentObject: stepsOfFieldsNewToQueryFragmentObject(stepsOfFieldsNew)
 				});
-				// //console.log(type);
-				// //console.log(dd_rootName);
+
 				stepsOfFieldsNew = [];
 			}}
 		>

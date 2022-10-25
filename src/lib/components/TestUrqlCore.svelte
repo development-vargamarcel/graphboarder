@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
 	import { setClient, getClient, operationStore, query } from '@urql/svelte';
 	import { introspectionResult } from '$lib/stores/introspectionResult';
 	import Table from '$lib/components/Table.svelte';
@@ -96,4 +96,4 @@ ${queryFragments_scalar}
 			//console.log('result', result); // { data: ... }
 		});
 	///////
-</script>
+</script> -->

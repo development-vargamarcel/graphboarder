@@ -1,37 +1,23 @@
 <script>
 	import { getStores, navigating, page, session, updated } from '$app/stores';
 	import { setClient, getClient, operationStore, query } from '@urql/svelte';
-	import { introspectionResult } from '$lib/stores/introspectionResult';
-	import client from '$lib/utils/urql_client';
 	import Table from '$lib/components/Table.svelte';
 	import { urqlClient } from '$lib/stores/urqlClient';
 	import { urqlCoreClient } from '$lib/stores/urqlCoreClient';
 
 	import {
-		getQM_Field,
-		getRootType,
-		get_rootName,
-		get_NamesArray,
 		getFields_Grouped,
-		getArguments_withInfo,
-		get_KindsArray,
 		buildQueryBody,
-		generateQueryFragments,
-		generateFragmentData,
-		stepsOfFieldsToQueryFragment,
-		get_displayName,
 		stepsOfFieldsNewToQueryFragmentObject,
-		queryFragmentsObjectsToQueryFragments
+		queryFragmentsObjectsToQueryFields
 	} from '$lib/utils/usefulFunctions';
 	import { onDestroy, onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import Type from '$lib/components/Type.svelte';
-	import Arg from '$lib/components/Arg.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	import { schemaData } from '$lib/stores/schemaData';
 	setClient($urqlClient);
 	let queryName = $page.params.queryName;
-	//console.log('aaaaaaaaaaa', $page);
 	onDestroy(() => {
 		document.getElementById('my-drawer-3')?.click();
 	});
@@ -43,7 +29,6 @@
 	}
 
 	let { scalarFields, non_scalarFields } = getFields_Grouped(dd_relatedRoot);
-	//console.log('currentQueryInfo ====', currentQueryInfo);
 	let currentQuery_fields_SCALAR_names = scalarFields.map((field) => {
 		return field.name;
 	});
@@ -61,9 +46,7 @@
 	let tableColsData = [];
 
 	tableColsData = [...scalarColsData];
-	//console.log('tableColsData', tableColsData);
-	//let queryFragments;
-	let queryFragmentsNew;
+
 	let queryFragmentsObjectsNew;
 	let queryBody;
 	let queryData;
@@ -71,31 +54,20 @@
 	let columns = [];
 	let rows = [];
 	const runQuery = () => {
-		//queryFragments = generateQueryFragments(tableColsData);
-		// queryFragmentsNew = tableColsData
-		// 	.filter((colData) => {
-		// 		return colData.queryFragmentNew !== undefined;
-		// 	})
-		// 	.map((colData) => {
-		// 		return colData.queryFragmentNew;
-		// 	});
 		queryFragmentsObjectsNew = tableColsData
 			.filter((colData) => {
-				return colData.queryFragmentNew !== undefined;
+				return colData.queryFragmentObject !== undefined;
 			})
 			.map((colData) => {
 				return colData.queryFragmentObject;
 			});
 		console.log({ tableColsData });
 
-		//console.log('tableColsData queryFragmentsNew', queryFragmentsNew);
-		////console.log('queryFragments', queryFragments);
 		console.log({ queryFragmentsObjectsNew });
-		console.log(queryFragmentsObjectsToQueryFragments(queryFragmentsObjectsNew));
-		//queryFragmentsNew.join('\n')
+		console.log(queryFragmentsObjectsToQueryFields(queryFragmentsObjectsNew));
 		queryBody = buildQueryBody(
 			queryName,
-			queryFragmentsObjectsToQueryFragments(queryFragmentsObjectsNew),
+			queryFragmentsObjectsToQueryFields(queryFragmentsObjectsNew),
 			gqlArgObj_string
 		);
 		//console.log('queryBody', queryBody);
@@ -166,18 +138,13 @@
 			let tableColData = {
 				title: `col-${Math.floor(Math.random() * 200)}`,
 				stepsOfFieldsNew: stepsOfFieldsNew,
-				queryFragmentNew: stepsOfFieldsToQueryFragment(stepsOfFieldsNew)
+				queryFragmentObject: stepsOfFieldsNewToQueryFragmentObject(stepsOfFieldsNew)
 			};
 			tableColsData = [...tableColsData, tableColData];
-			//console.log('tableColsData', tableColsData);
-			//	runQuery();
+
 			column_stepsOfFieldsNew = '';
 		}
 	};
-
-	// let identifier = Math.random();
-	// let nameToDisplay = get_displayName(get_NamesArray(currentQueryInfo));
-	// let kinds = get_KindsArray(currentQueryInfo);
 
 	//Active arguments logic
 	let activeArgumentsData = [];
