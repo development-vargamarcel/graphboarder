@@ -76,7 +76,7 @@
 			class="min-w-max  w-full  pr-2 text-md hover:text-primary active:font-black duration-100  "
 			on:click={() => {
 				if (dd_kindsArray.includes('SCALAR')) {
-					stepsOfFieldsNew.push(dd_displayName);
+					//stepsOfFieldsNew.push(dd_displayName);
 				} else {
 					let fragmentDataFlatten = generateFragmentData(
 						type,
