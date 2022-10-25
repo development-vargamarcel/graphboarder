@@ -83,7 +83,7 @@
 						$introspectionResult.rootTypes,
 						true
 					);
-					stepsOfFieldsNew.push(fragmentDataFlatten[0]);
+				//	stepsOfFieldsNew.push(fragmentDataFlatten[0]);
 					stepsOfFieldsNew.push(fragmentDataFlatten[1]);
 				}
 				let stepsOfFieldsNew_Flat = stepsOfFieldsFlatten(stepsOfFieldsNew);
