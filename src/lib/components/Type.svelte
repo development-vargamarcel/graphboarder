@@ -16,15 +16,6 @@
 	export let index;
 	export let type;
 	export let stepsOfFieldsNew;
-	if (!stepsOfFieldsNew) {
-		stepsOfFieldsNew = [dd_displayName];
-	} else {
-		stepsOfFieldsNew = [...stepsOfFieldsNew, dd_displayName];
-	}
-	stepsOfFieldsNew = [...stepsOfFieldsNew]; // so each tree will have it's own stepsOfFieldsNew
-	export let depth = 0;
-	let inDuration = 300;
-
 	let {
 		dd_kindsArray,
 		dd_namesArray,
@@ -37,6 +28,16 @@
 		dd_NON_NULL,
 		dd_relatedRoot
 	} = type;
+	if (!stepsOfFieldsNew) {
+		stepsOfFieldsNew = [dd_displayName];
+	} else {
+		stepsOfFieldsNew = [...stepsOfFieldsNew, dd_displayName];
+	}
+	stepsOfFieldsNew = [...stepsOfFieldsNew]; // so each tree will have it's own stepsOfFieldsNew
+	export let depth = 0;
+	let inDuration = 300;
+
+	
 
 	let showExpand = false;
 	let expandData = {};
