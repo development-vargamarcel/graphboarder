@@ -33,7 +33,7 @@
 	} else {
 		stepsOfFieldsNew = [...stepsOfFieldsNew, dd_displayName];
 	}
-	stepsOfFieldsNew = [...stepsOfFieldsNew]; // so each tree will have it's own stepsOfFieldsNew
+	//stepsOfFieldsNew = [...stepsOfFieldsNew]; // so each tree will have it's own stepsOfFieldsNew
 	export let depth = 0;
 	let inDuration = 300;
 
