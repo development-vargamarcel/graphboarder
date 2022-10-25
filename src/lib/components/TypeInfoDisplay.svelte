@@ -85,9 +85,6 @@
 					);
 					stepsOfFieldsNew.push(fragmentDataFlatten[0]);
 					stepsOfFieldsNew.push(fragmentDataFlatten[1]);
-					//console.log('fragmentDataFlatten[1]', fragmentDataFlatten[1]);
-					//stepsOfFieldsNew.push([fragmentDataFlatten[0]], [fragmentDataFlatten[1]]);
-					//console.log('stepsOfFieldsNew', stepsOfFieldsNew);
 				}
 				let stepsOfFieldsNew_Flat = stepsOfFieldsFlatten(stepsOfFieldsNew);
 				let stepsOfFieldsNew_useFlat = Array.isArray(stepsOfFieldsNew_Flat[0]);
