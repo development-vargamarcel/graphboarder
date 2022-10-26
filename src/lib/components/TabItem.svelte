@@ -10,7 +10,7 @@
 </script>
 
 <!-- <a
-	sveltekit:prefetch
+	data-sveltekit-prefetch
 	href={url}
 	class="{$page.url.pathname?.split('/')?.[1] === url?.split('/')?.[1]
 		? ' font-medium scale-110  '
@@ -18,7 +18,7 @@
 >	s</a> -->
 <!-- href={urlIsRoute ? url : '#' + url} -->
 <a
-	sveltekit:prefetch
+	data-sveltekit-prefetch
 	href={url}
 	class="{$page.url.pathname?.split('/')?.[1] === url?.split('/')?.[1]
 		? ' font-medium scale-110  bg-base-100'

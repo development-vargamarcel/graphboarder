@@ -1,7 +1,6 @@
 <script>
 	import { introspectionResult } from '$lib/stores/introspectionResult';
-	let queries = $introspectionResult.queryFields;
-	import { getStores, navigating, page, session, updated } from '$app/stores';
+	import { getStores, navigating, page, updated } from '$app/stores';
 	import QueryLink from '$lib/components/QueryLink.svelte';
 
 	import { onDestroy } from 'svelte';

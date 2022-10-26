@@ -174,7 +174,7 @@
 					<!-- <th class="z-0">
 							<a
 								class="block"
-								sveltekit:prefetch
+								data-sveltekit-prefetch
 								on:click|preventDefault={() => {
 									document.getElementById('my-drawer-4').checked = true;
 									goto(`${$page.url.origin}/queries/${$page.params.queryName}/${row.id}`);

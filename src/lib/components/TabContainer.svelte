@@ -1,5 +1,5 @@
 <script>
-	import { browser } from '$app/env';
+	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 	import TabItem from '$lib/components/TabItem.svelte';
 	import { getQueryLinks } from '$lib/utils/usefulFunctions';

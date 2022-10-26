@@ -1,6 +1,6 @@
 
 import { createClient, fetchExchange } from '@urql/svelte';
-import { amp, browser, dev, mode, prerendering } from '$app/env';
+import { amp, browser, dev, mode, prerendering } from '$app/environment';
 export default createClient({
     url: 'https://mdunpmb9.directus.app/graphql',
     fetchOptions: () => {

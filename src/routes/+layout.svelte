@@ -5,7 +5,7 @@
 	import { showTabs } from '$lib/stores/showTabs';
 
 	import Header from '$lib/header/Header.svelte';
-	import '../app.css';
+	import '../app.postcss';
 	import { introspectionResult } from '$lib/stores/introspectionResult';
 	let testEndpoints = [
 		{
@@ -57,7 +57,7 @@
 
 	////////////////////
 
-	import { browser } from '$app/env';
+	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import TabContainer from '$lib/components/TabContainer.svelte';
 	let showEdit = false;
