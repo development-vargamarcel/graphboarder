@@ -1,11 +1,5 @@
 <script>
-	import { stepsOfFieldsFlatten } from './../utils/usefulFunctions.ts';
-	import { introspectionResult } from './../stores/introspectionResult.ts';
-	import {
-		generateFragmentData,
-		get_rootName,
-		stepsOfFieldsNewToQueryFragmentObject
-	} from '$lib/utils/usefulFunctions';
+	import { get_rootName, stepsOfFieldsNewToQueryFragmentObject } from '$lib/utils/usefulFunctions';
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 	export let canExpand;
@@ -72,31 +66,21 @@
 	</div>
 {:else if template == 'columnAddDisplay'}
 	<div class="min-w-max  w-full  cursor-pointer   px-2 rounded-box flex text-base select-none">
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<div
 			class="min-w-max  w-full  pr-2 text-md hover:text-primary active:font-black duration-100  "
 			on:click={() => {
-				if (dd_kindsArray.includes('SCALAR')) {
-					//stepsOfFieldsNew.push(dd_displayName);
+				if (canExpand) {
+					expand();
 				} else {
-					let fragmentDataFlatten = generateFragmentData(
-						type,
-						$introspectionResult.rootTypes,
-						true
-					);
-					//	stepsOfFieldsNew.push(fragmentDataFlatten[0]);
-					stepsOfFieldsNew.push(fragmentDataFlatten[1]);
-				}
-				let stepsOfFieldsNew_Flat = stepsOfFieldsFlatten(stepsOfFieldsNew);
-				let stepsOfFieldsNew_useFlat = Array.isArray(stepsOfFieldsNew_Flat[0]);
-				dispatch('colAddRequest', {
-					title: `col-${Math.floor(Math.random() * 200)}`,
-					stepsOfFieldsNew: stepsOfFieldsNew,
-					stepsOfFieldsNew_Flat: stepsOfFieldsNew_Flat,
-					stepsOfFieldsNew_useFlat: stepsOfFieldsNew_useFlat,
-					queryFragmentObject: stepsOfFieldsNewToQueryFragmentObject(stepsOfFieldsNew)
-				});
+					dispatch('colAddRequest', {
+						title: `col-${Math.floor(Math.random() * 200)}`,
+						stepsOfFieldsNew: stepsOfFieldsNew,
+						queryFragmentObject: stepsOfFieldsNewToQueryFragmentObject(stepsOfFieldsNew)
+					});
 
-				stepsOfFieldsNew = [];
+					stepsOfFieldsNew = [];
+				}
 			}}
 		>
 			{dd_displayName}

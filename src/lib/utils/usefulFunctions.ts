@@ -17,50 +17,7 @@ ${queryFields}
     return query
 };
 
-export const generateFragmentData = (field, rootTypes, flatten, deeperIfNoScalar = true) => {// !!! refactor this using current data
-    let fieldName = field.name;
-    let isScalar = get_KindsArray(field).includes('SCALAR');
-    let fragmentData;
-    let subFields;
-    let subFields_scalar;
 
-    if (isScalar) {
-        if (flatten) {
-            fragmentData = fieldName;
-        } else {
-            fragmentData = [fieldName];
-        }
-    } else {
-        fragmentData = [fieldName];
-        subFields = getRootType(rootTypes, get_rootName(get_NamesArray(field))).fields;
-        subFields_scalar = subFields.filter((subField) => {
-            return get_KindsArray(subField).includes('SCALAR');
-        });
-
-        if (flatten) {
-            if (subFields_scalar.length > 0) {
-                fragmentData.push(
-                    subFields_scalar.map((subField) => {
-                        return subField.name;
-                    })
-                );
-            } else {
-                if (deeperIfNoScalar) {
-                    fragmentData.push(
-                        subFields.map((subField) => {
-                            return generateFragmentData(subField, rootTypes, true, true);
-                        })
-                    );
-                } else {
-                    return undefined;
-                }
-            }
-        } else {
-            fragmentData.push(subFields);
-        }
-    }
-    return fragmentData;
-};
 
 export const fragmentDataToFragment = (fragmentData) => {
     //accepts an array,so to be sure put input between [], ex:fragmentDataToFragment([input])
@@ -204,35 +161,7 @@ export const getArguments_withInfo = (QM) => {
 
 
 
-export const stepsOfFieldsFlatten = (stepsOfFields, stepsOfFildsStringAll) => {//if takes multiple paths,make one 'stepsOfFields' for each path,as to preserve the stepsOfFields syntax,where only the last element can be an array and that can only contain strings
-    let lastStepIndex = stepsOfFields.length - 1
-    let stepsOfFieldsFlat = []
 
-    let stepsOfFildsStringEl
-    let stepsOfFildsLastStep = stepsOfFields[lastStepIndex]
-    if (typeof stepsOfFields[lastStepIndex][0] == 'string') {
-        stepsOfFieldsFlat = stepsOfFields
-    } else {
-        stepsOfFildsStringEl = stepsOfFields.filter((el) => {
-            return !Array.isArray(el)
-        })
-        stepsOfFieldsFlat = stepsOfFildsLastStep.map((el) => {
-            let stepsOfFieldsForEl
-
-
-            if (typeof el[el.length - 1][el[el.length - 1].length - 1] == 'string') { //support one way in
-                stepsOfFieldsForEl = [...stepsOfFildsStringEl, ...el]
-            } else {//support deeper way in
-
-            }
-
-            return stepsOfFieldsForEl
-        })
-
-
-    }
-    return stepsOfFieldsFlat
-}
 
 
 //colData must become colInfo everywhere,for less ambiguity
