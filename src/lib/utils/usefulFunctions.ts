@@ -19,48 +19,9 @@ ${queryFields}
 
 
 
-export const fragmentDataToFragment = (fragmentData) => {
-    //accepts an array,so to be sure put input between [], ex:fragmentDataToFragment([input])
-    let res;
-    if (typeof fragmentData == 'string') {
-        res = fragmentData;
-    } else {
-        res = fragmentData.map((el) => {
-            if (typeof el == 'string') {
-                return el;
-            } else {
-                return [el[0], '\n{', fragmentDataToFragment(el[1]), '}\n'];
-            }
-        });
-    }
-    return res;
-};
 
 
 
-export const getQM_mandatoryArguments = (QM) => {
-    //QM means QueryOrMutation
-    if (QM?.args) {
-        let mandatoryArgs = [];
-        mandatoryArgs = QM?.args?.filter((arg) => {
-            return arg?.type?.kind === 'NON_NULL' || arg?.type?.name === 'ID';
-        });
-        if (mandatoryArgs.length >= 1) {
-            return mandatoryArgs;
-        } else {
-            return false;
-        }
-    } else {
-        return { has: false };
-    }
-};
-
-export const getQM_Field = (QMFields, queryName) => {
-    //QM means QueryOrMutation
-    return QMFields.filter((field) => {
-        return field.name == queryName;
-    })[0];
-};
 
 export const get_KindsArray = (type) => {
     let kinds = [];
@@ -149,15 +110,6 @@ export const getFields_Grouped = (rootField) => {
 
 
 
-export const getArguments_withInfo = (QM) => {
-    let args = QM?.args?.map((arg) => {
-        return {
-            arg: arg,
-            kindsArray: get_KindsArray(arg)
-        };
-    });
-    return args;
-};
 
 
 
@@ -269,28 +221,6 @@ export const formatData = (data = '', length, alwaysStringyfy = true) => {
     return resultingString;
 };
 
-export const elementToDisplay = (rawData) => {
-    let { kinds, names } = rawData;
-    let displayType;
-    let RootType_Name = get_rootName(names);
-    let _scalarsAndEnumsDisplayTypes = get(scalarsAndEnumsDisplayTypes);
-    let lastKind = kinds[kinds.length - 1];
-    if (lastKind == 'ENUM') {
-        displayType = 'ENUM';
-    } else if (lastKind == 'INPUT_OBJECT') {
-        displayType = 'INPUT_OBJECT';
-    } else {
-        displayType = _scalarsAndEnumsDisplayTypes[RootType_Name];
-    }
-
-    return {
-        required: kinds[0] == 'NON_NULL',
-        expectsList: kinds.includes('LIST'),
-        displayType,
-        displayName: get_displayName(names),
-        rawData
-    };
-};
 
 
 export const sortByName = (array) => {
@@ -318,6 +248,7 @@ export const get_idFields_byProbability = (fields: Array<object>): Array<object>
         return fields
     }
 }
+
 
 export const get_displayType = (dd_rootName, dd_kindEl) => {
     let _scalarsAndEnumsDisplayTypes = get(scalarsAndEnumsDisplayTypes);

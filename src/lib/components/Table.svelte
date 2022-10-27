@@ -104,12 +104,14 @@
 					<th class="normal-case">
 						<div class="dropdown dropdown-end  ">
 							<!-- svelte-ignore a11y-label-has-associated-control -->
+							<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 							<label tabindex="0" class="cursor-pointer ">
 								<div class="flex space-x-2 hover:text-primary rounded-box">
 									<div>{column}</div>
 									<div class="bi bi-chevron-down " />
 								</div>
 							</label>
+							<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 							<div
 								tabindex="0"
 								class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl"
@@ -124,6 +126,7 @@
 											<ColumnInfo stepsOfFieldsNew={colsData[index].stepsOfFieldsNew} />
 											<!-- {colsData[index].stepsOfFieldsNew.join(' > ')} -->
 										</div>
+										<!-- svelte-ignore a11y-click-events-have-key-events -->
 										<div
 											class="w-full pr-2 hover:text-primary cursor-pointer "
 											on:click={() => {
@@ -141,6 +144,8 @@
 				<th>
 					<div class="dropdown dropdown-end">
 						<!-- svelte-ignore a11y-label-has-associated-control -->
+						<!-- svelte-ignore a11y-click-events-have-key-events -->
+						<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 						<label
 							tabindex="0"
 							class="btn btn-sm bi bi-node-plus-fill text-lg p-1"
@@ -148,6 +153,7 @@
 								dispatch('addColumnDropdown');
 							}}
 						/>
+						<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 						<div
 							tabindex="0"
 							class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl"
