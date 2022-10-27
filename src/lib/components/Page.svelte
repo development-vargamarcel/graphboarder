@@ -1,7 +1,6 @@
 <script>
-	import { fly, fade, scale, slide } from 'svelte/transition';
+	import { fade, scale } from 'svelte/transition';
 	//import { cubicInOut } from 'svelte/easing';
-	import { backOut, backIn, quartIn, quartOut, cubicOut } from 'svelte/easing';
 	import { browser } from '$app/environment';
 
 	import { onDestroy, onMount, beforeUpdate, afterUpdate } from 'svelte';

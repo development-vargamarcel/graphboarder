@@ -4,7 +4,6 @@
 
 <script lang="ts">
 	////
-	import { onDestroy, setContext } from 'svelte';
 	export let graphqlEndpointURL = 'https://mdunpmb9.directus.app/graphql';
 
 	//import { createClient, fetchExchange } from '@urql/svelte';

@@ -1,10 +1,8 @@
 <script>
-	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 	import TabItem from '$lib/components/TabItem.svelte';
 	import { getQueryLinks } from '$lib/utils/usefulFunctions';
 	import { createEventDispatcher, onMount } from 'svelte';
-	import { fade, slide } from 'svelte/transition';
 	const dispatch = createEventDispatcher();
 	console.log($page);
 	let links = [

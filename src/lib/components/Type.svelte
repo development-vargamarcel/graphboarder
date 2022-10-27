@@ -1,14 +1,8 @@
 <script>
 	import { introspectionResult } from '$lib/stores/introspectionResult';
-	import { fade, fly, slide } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
 
-	import {
-		get_KindsArray,
-		get_rootName,
-		get_displayName,
-		getRootType,
-		get_NamesArray
-	} from '$lib/utils/usefulFunctions';
+	import { getRootType } from '$lib/utils/usefulFunctions';
 	import Arg from './Arg.svelte';
 	import TypeInfoDisplay from './TypeInfoDisplay.svelte';
 	import { expoIn, expoOut } from 'svelte/easing';

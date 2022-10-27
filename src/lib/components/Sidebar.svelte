@@ -1,20 +1,12 @@
 <script>
 	import { clickOutside } from '$lib/actions/clickOutside';
-	import { portal } from 'svelte-portal';
 
-	import Page from './Page.svelte';
 	import TabContainer from './TabContainer.svelte';
 	export let forceVisibleSidebar = false;
 	export let portalSelector;
 	export let links;
-	import { introspectionResult } from '$lib/stores/introspectionResult';
-	let queries = $introspectionResult.queryFields;
-	import { schemaData } from '$lib/stores/schemaData';
-	import QueryLink from './QueryLink.svelte';
-	import { getStores, navigating, page, session, updated } from '$app/stores';
 	import { fade, fly } from 'svelte/transition';
 
-	let origin = $page.url.origin;
 	$: console.log({ forceVisibleSidebar });
 </script>
 

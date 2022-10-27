@@ -1,9 +1,7 @@
 <script>
 	import Modal from '$lib/components/Modal.svelte';
 	import { dndzone, SHADOW_ITEM_MARKER_PROPERTY_NAME, SOURCES, TRIGGERS } from 'svelte-dnd-action';
-	import { fade, fly } from 'svelte/transition';
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
-	import { cubicIn } from 'svelte/easing';
 	export let extraData;
 	export let id;
 	export let choises = [''];

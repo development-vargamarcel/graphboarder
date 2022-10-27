@@ -1,13 +1,4 @@
 <script>
-	import { introspectionResult } from '$lib/stores/introspectionResult';
-
-	import {
-		getRootType,
-		get_KindsArray,
-		get_rootName,
-		get_NamesArray
-	} from '$lib/utils/usefulFunctions';
-	import { stringify } from 'postcss';
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 	export let expand;
@@ -25,10 +16,7 @@
 		dd_namesArray,
 		dd_rootName,
 		dd_displayName,
-		dd_kindEl,
-		dd_kindEl_NON_NULL,
-		dd_kindList,
-		dd_kindList_NON_NULL,
+
 		dd_NON_NULL,
 		dd_relatedRoot,
 		dd_canExpand,
@@ -40,16 +28,9 @@
 	let inUse;
 
 	// testing
-	let RootType_Name = dd_rootName;
 	let RootType = dd_relatedRoot;
 	let inputFields = RootType?.inputFields;
 	let enumValues = RootType?.enumValues;
-	let allInputFieldsAreScalar = inputFields?.every((field) => {
-		return get_KindsArray(field).includes('SCALAR');
-	});
-
-	// //console.log('*RootType*', RootType);
-	// //console.log('*allInputFieldsAreScalar*', allInputFieldsAreScalar);
 
 	/// do the above for enums
 

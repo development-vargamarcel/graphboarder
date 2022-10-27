@@ -2,13 +2,7 @@
 	//!!! ENUM TYPES WILL CREATE SOM PROBLEMS AS OF 5/6/2022
 	import { fade, fly, slide } from 'svelte/transition';
 	import { introspectionResult } from '$lib/stores/introspectionResult';
-	import {
-		get_KindsArray,
-		get_rootName,
-		get_displayName,
-		getRootType,
-		get_NamesArray
-	} from '$lib/utils/usefulFunctions';
+	import { getRootType } from '$lib/utils/usefulFunctions';
 	import ArgInfoDisplay from './ArgInfoDisplay.svelte';
 	import { circIn, expoIn, expoOut } from 'svelte/easing';
 
@@ -22,18 +16,7 @@
 	}
 	stepsOfFieldsNew = [...stepsOfFieldsNew]; // so each tree will have it's own stepsOfFieldsNew
 	let indetifier = Math.random();
-	let {
-		dd_kindsArray,
-		dd_namesArray,
-		dd_rootName,
-		dd_displayName,
-		dd_kindEl,
-		dd_kindEl_NON_NULL,
-		dd_kindList,
-		dd_kindList_NON_NULL,
-		dd_NON_NULL,
-		dd_relatedRoot
-	} = type;
+	let { dd_kindsArray, dd_rootName, dd_displayName } = type;
 
 	let showExpand = false;
 	let expandData = {};

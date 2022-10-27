@@ -1,27 +1,11 @@
 <script lang="ts">
-	import DNDExample from './DNDExample.svelte';
-	import ActiveArgument from './ActiveArgument.svelte';
-	import {
-		generate_FINAL_gqlArgObj_fromGroups,
-		get_NamesArray
-	} from './../utils/usefulFunctions.ts';
-	import {
-		generate_final_gqlArgObjTEST,
-		generate_gqlArgObj,
-		get_KindsArray
-	} from '$lib/utils/usefulFunctions';
-	import { scalarsAndEnumsDisplayTypes } from '$lib/stores/scalarsAndEnumsDisplayTypes';
-	import FilterChoises from '$lib/components/FilterChoises.svelte';
-	import FilterGroup from './FilterGroup.svelte';
-	import FilterItem from './FilterItem.svelte';
+	import { generate_FINAL_gqlArgObj_fromGroups } from './../utils/usefulFunctions.ts';
+
 	import { createEventDispatcher, each } from 'svelte/internal';
-	import Input from './fields/Input.svelte';
-	import List from './fields/List.svelte';
+
 	import Modal from './Modal.svelte';
-	import Toggle from './fields/Toggle.svelte';
-	import Arg from './Arg.svelte';
+
 	import ActiveArgumentsGroup from './ActiveArgumentsGroup.svelte';
-	let _scalarsAndEnumsDisplayTypes = $scalarsAndEnumsDisplayTypes;
 	let activeArgumentsDataGrouped = [];
 	const update_activeArgumentsDataGrouped = (groupNewData) => {
 		let index = activeArgumentsDataGrouped.findIndex((group) => {
@@ -40,8 +24,6 @@
 	export let argsInfo;
 	//console.log('argsInfo', argsInfo);
 	const handleArgsChanged = () => {};
-	let final_gqlArgObj = {};
-	let final_canRunQuery = true;
 
 	const generate_final_gqlArgObj = () => {
 		let { final_gqlArgObj, final_gqlArgObj_string, final_canRunQuery } =

@@ -11,14 +11,11 @@
 
 	//
 
-	import { dndzone, SHADOW_ITEM_MARKER_PROPERTY_NAME, SOURCES, TRIGGERS } from 'svelte-dnd-action';
-	import { fade } from 'svelte/transition';
+	import { dndzone, SOURCES, TRIGGERS } from 'svelte-dnd-action';
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
-	import { cubicIn } from 'svelte/easing';
 	import { flip } from 'svelte/animate';
 	import { createEventDispatcher } from 'svelte';
 	import ActiveArgumentGroupHasFilterOperators from '$lib/components/ActiveArgumentGroupHasFilterOperators.svelte';
-	import SimpleDndZone from './SimpleDNDZone.svelte';
 	import Arg from './Arg.svelte';
 	import {
 		generate_FINAL_gqlArgObj_fromGroups,
@@ -82,10 +79,12 @@
 		<div class=" ">
 			<div class="dropdown dropdown-start ">
 				<!-- svelte-ignore a11y-label-has-associated-control -->
+				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 				<label
 					tabindex="0"
 					class="btn btn-sm bi bi-plus-circle text-lg p-1 mr-2 overscroll-contain"
 				/>
+				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 				<div
 					tabindex="0"
 					class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl overflow-y-auto overscroll-contain  max-h-52 sm:max-h-72 md:max-h-90    max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"

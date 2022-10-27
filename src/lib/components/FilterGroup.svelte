@@ -1,13 +1,7 @@
 <script>
 	import FilterItem from './FilterItem.svelte';
-	import FilterChoises from './FilterChoises.svelte';
-	import { elementToDisplay, get_KindsArray, get_NamesArray } from '$lib/utils/usefulFunctions';
 	import { createEventDispatcher } from 'svelte';
-	import { loop_guard } from 'svelte/internal';
-	import Input from './fields/Input.svelte';
-	import List from './fields/List.svelte';
-	import Toggle from './fields/Toggle.svelte';
-	import Map from './fields/Map.svelte';
+
 	export let containerEl;
 	export let id;
 	export let choises;
