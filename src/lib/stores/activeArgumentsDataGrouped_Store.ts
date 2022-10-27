@@ -49,9 +49,6 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
                 return group.group_name == groupNewData.group_name;
             });
             activeArgumentsDataGrouped[index] = groupNewData;
-            activeArgumentsDataGrouped = activeArgumentsDataGrouped;
-            //console.log('groupNewData.group_args', groupNewData.group_args);
-            //console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
             set(activeArgumentsDataGrouped)
         }
 

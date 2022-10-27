@@ -5,7 +5,11 @@
 	import List from './fields/List.svelte';
 	import FilterGroup from './FilterGroup.svelte';
 
-	import { generate_gqlArgObj, generate_group_gqlArgObj } from '$lib/utils/usefulFunctions';
+	import {
+		argumentCanRunQuery,
+		generate_gqlArgObj,
+		generate_group_gqlArgObj
+	} from '$lib/utils/usefulFunctions';
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Interface from './fields/Interface.svelte';
 	let dispatch = createEventDispatcher();
@@ -59,9 +63,14 @@
 
 		return value;
 	};
-	let canRunQuery = activeArgumentData?.canRunQuery;
+	let canRunQuery = argumentCanRunQuery(activeArgumentData);
 	const handleChanged = (detail) => {
+		canRunQuery = argumentCanRunQuery(activeArgumentData);
+		activeArgumentData.canRunQuery = argumentCanRunQuery(activeArgumentData);
+		console.log({ canRunQuery });
+		console.log({ activeArgumentData });
 		Object.assign(activeArgumentData, detail);
+		Object.assign(activeArgumentData, { canRunQuery: canRunQuery });
 		Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
 		Object.assign(group, generate_group_gqlArgObj(group));
 		//console.log({ activeArgumentsDataGrouped });
@@ -73,7 +82,6 @@
 			dispatch('updateQuery');
 		}
 		//console.log(detail);
-		canRunQuery = activeArgumentData?.canRunQuery;
 		if (!activeArgumentData.inUse && valueToDisplay() !== undefined) {
 			inUse_toggle();
 		}
@@ -87,15 +95,18 @@
 	};
 	const inUse_toggle = () => {
 		if (!activeArgumentData?.inUse && (valueToDisplay() == undefined || !canRunQuery)) {
+			Object.assign(activeArgumentData, { canRunQuery: canRunQuery });
 			expandedVersion = true;
 		} else {
-			dispatch('inUseChanged');
 			activeArgumentData.inUse =
 				activeArgumentData.inUse !== undefined ? !activeArgumentData.inUse : true;
+			canRunQuery = argumentCanRunQuery(activeArgumentData);
 
-			activeArgumentData = activeArgumentData;
 			Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
 			Object.assign(group, generate_group_gqlArgObj(group));
+			Object.assign(activeArgumentData, { canRunQuery: canRunQuery });
+			activeArgumentData = activeArgumentData;
+			dispatch('inUseChanged');
 			dispatch('updateQuery');
 		}
 	};
