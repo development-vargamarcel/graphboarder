@@ -1,10 +1,6 @@
 <script>
 	import { flip } from 'svelte/animate';
-	import {
-		dndzone,
-		SHADOW_PLACEHOLDER_ITEM_ID,
-		SHADOW_ITEM_MARKER_PROPERTY_NAME
-	} from 'svelte-dnd-action';
+	import { dndzone, SHADOW_PLACEHOLDER_ITEM_ID } from 'svelte-dnd-action';
 	import { createEventDispatcher } from 'svelte';
 	import ActiveArgument from './ActiveArgument.svelte';
 	const dispatch = createEventDispatcher();

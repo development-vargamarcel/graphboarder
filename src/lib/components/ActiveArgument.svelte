@@ -2,13 +2,9 @@
 	import { SHADOW_ITEM_MARKER_PROPERTY_NAME } from 'svelte-dnd-action';
 	import { createEventDispatcher } from 'svelte';
 
-	import Input from './fields/Input.svelte';
 	import List from './fields/List.svelte';
-	import Toggle from './fields/Toggle.svelte';
 	import FilterGroup from './FilterGroup.svelte';
-	import { fade } from 'svelte/transition';
-	import { cubicIn } from 'svelte/easing';
-	import Map from './fields/Map.svelte';
+
 	import { generate_gqlArgObj, generate_group_gqlArgObj } from '$lib/utils/usefulFunctions';
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Interface from './fields/Interface.svelte';
