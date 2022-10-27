@@ -502,7 +502,7 @@ export const generate_group_gqlArgObj = (group) => {//if is where/filter (its re
     });
 
     if (group_argumentsData?.length > 0) {
-        //console.log('group_argumentsData', group_argumentsData);
+        console.log({ group_argumentsData });
 
         if (group.group_isRoot) {
             //console.log('root group handled');

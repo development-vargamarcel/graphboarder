@@ -1,13 +1,17 @@
 <script lang="ts">
+	import { activeArgumentsDataGrouped_Store } from './../stores/activeArgumentsDataGrouped_Store.ts';
 	import { generate_FINAL_gqlArgObj_fromGroups } from './../utils/usefulFunctions.ts';
 
-	import { createEventDispatcher, each } from 'svelte/internal';
+	import { createEventDispatcher, each, setContext } from 'svelte/internal';
 
 	import Modal from './Modal.svelte';
-
 	import ActiveArgumentsGroup from './ActiveArgumentsGroup.svelte';
 	let activeArgumentsDataGrouped = [];
+	$: console.log({ activeArgumentsDataGrouped });
 	const update_activeArgumentsDataGrouped = (groupNewData) => {
+		activeArgumentsDataGrouped_Store.update_groups(groupNewData);
+
+		console.log({ groupNewData });
 		let index = activeArgumentsDataGrouped.findIndex((group) => {
 			return group.group_name == groupNewData.group_name;
 		});
@@ -75,6 +79,11 @@
 
 	/////generate gqlArgObj to be used in query
 
+	setContext('activeArgumentsDataGrouped_Store', activeArgumentsDataGrouped_Store);
+	activeArgumentsDataGrouped_Store.set_groups(activeArgumentsDataGrouped, argsInfo);
+	activeArgumentsDataGrouped_Store.subscribe((activeArgumentsDataGrouped_Store) => {
+		console.log({ activeArgumentsDataGrouped_Store });
+	});
 	generate_final_gqlArgObj();
 
 	let showDescription = null;

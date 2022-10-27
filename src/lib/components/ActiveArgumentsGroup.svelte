@@ -206,6 +206,7 @@
 			{`(${group?.dd_relatedRoot?.dd_filterOperators?.join(',')})`}
 		{/if}
 		{#if group.group_name !== 'root'}
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<i
 				class="bi bi-info-circle text-secondary px-2"
 				title={group.description}
@@ -223,6 +224,49 @@
 				</p>
 			{/if}{/if}
 	</div>
+</div>
+
+{#if hasGroup_argsNode}
+	<!-- overflow-scroll overscroll-contain h-[75vh] -->
+
+	<div class=" ">
+		<ActiveArgumentGroupHasFilterOperators
+			on:updateQuery={() => {
+				let gqlArgObj_forHasOperators = generate_gqlArgObj_forHasOperators(
+					group.group_argsNode,
+					group.group_name
+				);
+				Object.assign(group, gqlArgObj_forHasOperators);
+				let FINAL_gqlArgObj_fromGroups = generate_FINAL_gqlArgObj_fromGroups(
+					activeArgumentsDataGrouped
+				);
+				dispatch('updateQuery');
+				//console.log({ FINAL_gqlArgObj_fromGroups });
+				group.group_args = Object.values(group.group_argsNode)?.filter((node) => {
+					return !node?.operator;
+				});
+				update_activeArgumentsDataGrouped(group);
+			}}
+			type={group.group_name + 'ActiveArgumentGroupHasFilterOperators'}
+			node={group.group_argsNode.mainContainer}
+			originalNodes={group.group_argsNode}
+			{group}
+			bind:nodes={group.group_argsNode}
+			on:changed={() => {
+				let gqlArgObj_forHasOperators = generate_gqlArgObj_forHasOperators(
+					group.group_argsNode,
+					group.group_name
+				);
+				Object.assign(group, gqlArgObj_forHasOperators);
+				group.group_args = Object.values(group.group_argsNode)?.filter((node) => {
+					return !node?.operator;
+				});
+				update_activeArgumentsDataGrouped(group);
+				dispatch('updateQuery');
+			}}
+		/>
+	</div>
+{:else}
 	<ul
 		use:dndzone={{
 			items: group.group_args,
@@ -292,40 +336,4 @@
 				</div>
 			</div>
 		{/each}
-	</ul>
-</div>
-
-{#if hasGroup_argsNode}
-	<!-- overflow-scroll overscroll-contain h-[75vh] -->
-
-	<div class=" ">
-		<ActiveArgumentGroupHasFilterOperators
-			on:updateQuery={() => {
-				let gqlArgObj_forHasOperators = generate_gqlArgObj_forHasOperators(
-					group.group_argsNode,
-					group.group_name
-				);
-				Object.assign(group, gqlArgObj_forHasOperators);
-				let FINAL_gqlArgObj_fromGroups = generate_FINAL_gqlArgObj_fromGroups(
-					activeArgumentsDataGrouped
-				);
-				dispatch('updateQuery');
-				//console.log({ FINAL_gqlArgObj_fromGroups });
-			}}
-			type={group.group_name + 'ActiveArgumentGroupHasFilterOperators'}
-			node={group.group_argsNode.mainContainer}
-			originalNodes={group.group_argsNode}
-			{group}
-			bind:nodes={group.group_argsNode}
-			on:changed={() => {
-				let gqlArgObj_forHasOperators = generate_gqlArgObj_forHasOperators(
-					group.group_argsNode,
-					group.group_name
-				);
-				Object.assign(group, gqlArgObj_forHasOperators);
-
-				dispatch('updateQuery');
-			}}
-		/>
-	</div>
-{/if}
+	</ul>{/if}
