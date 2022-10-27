@@ -1,4 +1,4 @@
-//QM means QueryOrMutation
+//QMS means QueryOrMutationOrSubscription
 import _ from "lodash";
 import { get } from 'svelte/store';
 import { scalarsAndEnumsDisplayTypes } from '$lib/stores/scalarsAndEnumsDisplayTypes';
