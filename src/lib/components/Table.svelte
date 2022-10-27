@@ -177,19 +177,7 @@
 							<input type="checkbox" class="checkbox" />
 						</label>
 					</th>
-					<!-- <th class="z-0">
-							<a
-								class="block"
-								data-sveltekit-prefetch
-								on:click|preventDefault={() => {
-									document.getElementById('my-drawer-4').checked = true;
-									goto(`${$page.url.origin}/queries/${$page.params.queryName}/${row.id}`);
-								}}
-								href={`${$page.url.origin}/queries/${$page.params.queryName}/${row.id}`}
-							>
-								<i class="bi bi-pen-fill" />
-							</a>
-						</th> -->
+
 					<th class="z-0">{index + 1}</th>
 					{#each colsData as colData, index}
 						<td class="z-0">
