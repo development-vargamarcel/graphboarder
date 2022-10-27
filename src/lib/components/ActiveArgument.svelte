@@ -65,17 +65,15 @@
 	};
 	let canRunQuery = argumentCanRunQuery(activeArgumentData);
 	const handleChanged = (detail) => {
-		canRunQuery = argumentCanRunQuery(activeArgumentData);
-		activeArgumentData.canRunQuery = argumentCanRunQuery(activeArgumentData);
+		console.log({ detail });
+		canRunQuery = argumentCanRunQuery(detail);
+		detail.canRunQuery = canRunQuery;
 		console.log({ canRunQuery });
 		console.log({ activeArgumentData });
 		Object.assign(activeArgumentData, detail);
+		Object.assign(activeArgumentData, generate_gqlArgObj([detail]));
 		Object.assign(activeArgumentData, { canRunQuery: canRunQuery });
-		Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
 		Object.assign(group, generate_group_gqlArgObj(group));
-		//console.log({ activeArgumentsDataGrouped });
-		//console.log('generate_gqlArgObj', generate_gqlArgObj([activeArgumentData]));
-		//console.log({ activeArgumentData });
 
 		dispatch('changed', detail);
 		if (activeArgumentData?.inUse) {
