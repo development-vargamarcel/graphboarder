@@ -5,13 +5,10 @@
 	import List from './fields/List.svelte';
 	import FilterGroup from './FilterGroup.svelte';
 
-	import {
-		argumentCanRunQuery,
-		generate_gqlArgObj,
-		generate_group_gqlArgObj
-	} from '$lib/utils/usefulFunctions';
+	import { generate_gqlArgObj, generate_group_gqlArgObj } from '$lib/utils/usefulFunctions';
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Interface from './fields/Interface.svelte';
+	import { activeArgumentsDataGrouped_Store } from '$lib/stores/activeArgumentsDataGrouped_Store';
 	let dispatch = createEventDispatcher();
 	export let activeArgumentData;
 	export let group;
@@ -63,17 +60,13 @@
 
 		return value;
 	};
-	let canRunQuery = argumentCanRunQuery(activeArgumentData);
 	const handleChanged = (detail) => {
-		console.log({ detail });
-		canRunQuery = argumentCanRunQuery(detail);
-		detail.canRunQuery = canRunQuery;
-		console.log({ canRunQuery });
 		console.log({ activeArgumentData });
 		Object.assign(activeArgumentData, detail);
 		Object.assign(activeArgumentData, generate_gqlArgObj([detail]));
-		Object.assign(activeArgumentData, { canRunQuery: canRunQuery });
+
 		Object.assign(group, generate_group_gqlArgObj(group));
+		activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
 
 		dispatch('changed', detail);
 		if (activeArgumentData?.inUse) {
@@ -92,21 +85,23 @@
 		//expandedVersion = false; //!!! this is causing the expanded version to disappear when you click outside of it,but sometimes,is not desirable like when another modal with choises opens up and if you click on anything that upper modal disappears.
 	};
 	const inUse_toggle = () => {
-		if (!activeArgumentData?.inUse && (valueToDisplay() == undefined || !canRunQuery)) {
-			Object.assign(activeArgumentData, { canRunQuery: canRunQuery });
+		if (
+			!activeArgumentData?.inUse &&
+			(valueToDisplay() == undefined || !activeArgumentData.canRunQuery)
+		) {
 			expandedVersion = true;
 		} else {
 			activeArgumentData.inUse =
 				activeArgumentData.inUse !== undefined ? !activeArgumentData.inUse : true;
-			canRunQuery = argumentCanRunQuery(activeArgumentData);
 
 			Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
 			Object.assign(group, generate_group_gqlArgObj(group));
-			Object.assign(activeArgumentData, { canRunQuery: canRunQuery });
 			activeArgumentData = activeArgumentData;
 			dispatch('inUseChanged');
 			dispatch('updateQuery');
 		}
+
+		activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
 	};
 </script>
 
@@ -117,7 +112,7 @@
 	class="   rounded-box {expandedVersion
 		? 'p-2'
 		: ''}  my-1 flex   dnd-item {activeArgumentData?.inUse
-		? canRunQuery
+		? activeArgumentData.canRunQuery
 			? 'ring ring-[1px]  bg-base-300 ring-primary/50'
 			: 'ring ring-[1px]  ring-primary/50 bg-error/50'
 		: 'bg-base-200'} "

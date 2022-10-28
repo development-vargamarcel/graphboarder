@@ -106,7 +106,7 @@
 			<div class="mx-auto mt-2  w-full   space-y-2   pb-2  ">
 				<div class="w-2" />
 
-				{#each activeArgumentsDataGrouped as group}
+				{#each $activeArgumentsDataGrouped_Store as group}
 					<ActiveArgumentsGroup
 						on:updateQuery={() => {
 							generate_final_gqlArgObj();

@@ -1,3 +1,4 @@
+import { argumentCanRunQuery } from "$lib/utils/usefulFunctions";
 import { get, writable } from "svelte/store";
 
 export const Create_activeArgumentsDataGrouped_Store = () => {
@@ -52,13 +53,33 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
             set(activeArgumentsDataGrouped)
         }, update_activeArgument: (activeArgumentData, groupName
         ) => {
-            let activeArgumentsDataGrouped = get(store)
-            let group = activeArgumentsDataGrouped.filter((group) => { return group.group_name == groupName })
+            let canRunQuery = argumentCanRunQuery(activeArgumentData)
+            //     Object.assign(activeArgumentData, { canRunQueryabcdef: canRunQuery });
+            activeArgumentData.canRunQueryabcdef = canRunQuery
+            console.log('--', { activeArgumentData }, { canRunQuery })
+
+            const activeArgumentsDataGrouped = get(store)
+            const group = activeArgumentsDataGrouped?.filter((group) => { return group.group_name == groupName })
+
+            const activeArgument = group.group_args?.filter((arg) => { return arg.id == activeArgumentData.id })
+            console.log('--', { activeArgument })
             if (group.group_argsNode) {
+                const activeArgumentNode = group.group_argsNode[activeArgumentData.id]
+                if (activeArgumentNode) {
+                    Object.assign(activeArgumentNode, activeArgumentData);
+                }
+                if (activeArgument) {
 
+                    Object.assign(activeArgument, activeArgumentData);
+                }
             } else {
+                if (activeArgument) {
 
+                    Object.assign(activeArgument, activeArgumentData);
+                }
             }
+            console.log("---", { activeArgumentsDataGrouped })
+            set(activeArgumentsDataGrouped)
         }
 
     }
