@@ -99,6 +99,7 @@
 									type={arg}
 									template="changeArguments"
 									predefinedFirstSteps={[group.group_name]}
+									groupName={group.group_name ?? 'root'}
 									on:argAddRequest={(e) => {
 										let newArgData = e.detail;
 
@@ -174,6 +175,7 @@
 									type={arg}
 									template="changeArguments"
 									predefinedFirstSteps={[]}
+									groupName={group.group_name ?? 'root'}
 									on:argAddRequest={(e) => {
 										let newArgData = e.detail;
 										if (

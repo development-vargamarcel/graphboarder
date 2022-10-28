@@ -9,8 +9,9 @@
 	export let index;
 	export let type;
 	export let template;
-	export let predefinedFirstSteps;
+	export let predefinedFirstSteps; //is actually group_name
 	export let stepsOfFieldsNew = [];
+	export let groupName;
 	if (stepsOfFieldsNew.length == 0 && predefinedFirstSteps) {
 		stepsOfFieldsNew = [...predefinedFirstSteps];
 	}
@@ -63,6 +64,7 @@
 		{index}
 		{type}
 		{stepsOfFieldsNew}
+		{groupName}
 		on:argAddRequest
 	/>
 
@@ -83,6 +85,7 @@
 							{template}
 							{stepsOfFieldsNew}
 							predefinedFirstSteps={[]}
+							{groupName}
 							on:argAddRequest
 						/>
 					</div>

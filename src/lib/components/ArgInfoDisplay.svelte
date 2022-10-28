@@ -8,6 +8,7 @@
 	export let template;
 	export let stepsOfFieldsNew;
 	export let predefinedFirstSteps;
+	export let groupName;
 	if (stepsOfFieldsNew.length == 0 && predefinedFirstSteps) {
 		stepsOfFieldsNew = [...predefinedFirstSteps];
 	}
@@ -49,7 +50,7 @@
 		};
 		//console.log('infoToCast', infoToCast);
 		//add it
-
+		console.log({ groupName });
 		dispatch('argAddRequest', infoToCast);
 
 		//infos about enums:
