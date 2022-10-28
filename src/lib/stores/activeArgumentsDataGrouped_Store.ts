@@ -50,9 +50,11 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
             });
             activeArgumentsDataGrouped[index] = groupNewData;
             set(activeArgumentsDataGrouped)
-        }, update_activeArgument: (activeArgumentData
+        }, update_activeArgument: (activeArgumentData, groupName
         ) => {
-            if (activeArgumentData.group_argsNode) {
+            let activeArgumentsDataGrouped = get(store)
+            let group = activeArgumentsDataGrouped.filter((group) => { return group.group_name == groupName })
+            if (group.group_argsNode) {
 
             } else {
 
