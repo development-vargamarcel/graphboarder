@@ -1,6 +1,6 @@
 <script>
 	import { SHADOW_ITEM_MARKER_PROPERTY_NAME } from 'svelte-dnd-action';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 
 	import List from './fields/List.svelte';
 	import FilterGroup from './FilterGroup.svelte';
@@ -8,7 +8,8 @@
 	import { generate_gqlArgObj, generate_group_gqlArgObj } from '$lib/utils/usefulFunctions';
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Interface from './fields/Interface.svelte';
-	import { activeArgumentsDataGrouped_Store } from '$lib/stores/activeArgumentsDataGrouped_Store';
+	//import { activeArgumentsDataGrouped_Store } from '$lib/stores/activeArgumentsDataGrouped_Store';
+	const activeArgumentsDataGrouped_Store = getContext('activeArgumentsDataGrouped_Store');
 	let dispatch = createEventDispatcher();
 	export let activeArgumentData;
 	export let group;

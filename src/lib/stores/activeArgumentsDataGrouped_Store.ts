@@ -54,8 +54,7 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
         }, update_activeArgument: (activeArgumentData, groupName
         ) => {
             let canRunQuery = argumentCanRunQuery(activeArgumentData)
-            //     Object.assign(activeArgumentData, { canRunQueryabcdef: canRunQuery });
-            activeArgumentData.canRunQueryabcdef = canRunQuery
+            activeArgumentData.canRunQuery = canRunQuery
             console.log('--', { activeArgumentData }, { canRunQuery })
 
             const activeArgumentsDataGrouped = get(store)
