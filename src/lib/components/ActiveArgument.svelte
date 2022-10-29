@@ -154,7 +154,11 @@
 				<button
 					class="btn btn-xs"
 					on:click={() => {
-						dispatch('delete_activeArgument');
+						//dispatch('delete_activeArgument');
+						activeArgumentsDataGrouped_Store.delete_activeArgument(
+							activeArgumentData,
+							group.group_name
+						);
 						// delete_activeArgument(activeArgumentData.id);
 					}}><i class="bi bi-trash3-fill" /></button
 				>

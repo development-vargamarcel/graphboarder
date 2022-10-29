@@ -1,5 +1,5 @@
 import { argumentCanRunQuery } from "$lib/utils/usefulFunctions";
-import { get, writable } from "svelte/store";
+import { writable } from "svelte/store";
 
 export const Create_activeArgumentsDataGrouped_Store = () => {
 
@@ -44,41 +44,62 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
                 }
             });
         }, update_groups: (groupNewData) => {
-            let activeArgumentsDataGrouped = get(store)
-            console.log({ groupNewData });
-            let index = activeArgumentsDataGrouped.findIndex((group) => {
-                return group.group_name == groupNewData.group_name;
-            });
-            activeArgumentsDataGrouped[index] = groupNewData;
-            set(activeArgumentsDataGrouped)
+            update((activeArgumentsDataGrouped) => {
+                let index = activeArgumentsDataGrouped.findIndex((group) => {
+                    return group.group_name == groupNewData.group_name;
+                });
+                activeArgumentsDataGrouped[index] = groupNewData;
+                return activeArgumentsDataGrouped
+            })
+
         }, update_activeArgument: (activeArgumentData, groupName
         ) => {
-            let canRunQuery = argumentCanRunQuery(activeArgumentData)
-            activeArgumentData.canRunQuery = canRunQuery
-            console.log('--', { activeArgumentData }, { canRunQuery })
-
-            const activeArgumentsDataGrouped = get(store)
-            const group = activeArgumentsDataGrouped?.filter((group) => { return group.group_name == groupName })
-
-            const activeArgument = group.group_args?.filter((arg) => { return arg.id == activeArgumentData.id })
-            console.log('--', { activeArgument })
-            if (group.group_argsNode) {
-                const activeArgumentNode = group.group_argsNode[activeArgumentData.id]
-                if (activeArgumentNode) {
-                    Object.assign(activeArgumentNode, activeArgumentData);
+            update(
+                (activeArgumentsDataGrouped) => {
+                    let canRunQuery = argumentCanRunQuery(activeArgumentData)
+                    activeArgumentData.canRunQuery = canRunQuery
+                    const group = activeArgumentsDataGrouped?.filter((group) => { return group.group_name == groupName })
+                    const activeArgument = group.group_args?.filter((arg) => { return arg.id == activeArgumentData.id })
+                    if (group.group_argsNode) {
+                        const activeArgumentNode = group.group_argsNode[activeArgumentData.id]
+                        if (activeArgumentNode) {
+                            Object.assign(activeArgumentNode, activeArgumentData);
+                        }
+                        if (activeArgument) {
+                            Object.assign(activeArgument, activeArgumentData);
+                        }
+                    } else {
+                        if (activeArgument) {
+                            Object.assign(activeArgument, activeArgumentData);
+                        }
+                    }
+                    return activeArgumentsDataGrouped
                 }
-                if (activeArgument) {
+            )
 
-                    Object.assign(activeArgument, activeArgumentData);
-                }
-            } else {
-                if (activeArgument) {
+        },
+        delete_activeArgument: (activeArgumentData, groupName) => {
+            update(
+                (activeArgumentsDataGrouped) => {
+                    let group = activeArgumentsDataGrouped?.filter((group) => { return group.group_name == groupName })[0]
+                    const activeArgumentIndex = group.group_args?.findIndex((arg) => { return arg.id == activeArgumentData.id })
+                    if (group.group_argsNode) {
+                        let containers = Object.values(group.group_argsNode).filter((container) => {
+                            return container?.items
+                        })
+                        let argumentContainerId = containers.find((container) => { return container.items.find((item) => { return item.id == activeArgumentData.id }) }).id
+                        if (argumentContainerId) {
+                            group.group_argsNode[argumentContainerId].items = group.group_argsNode[argumentContainerId].items.filter((item) => { return item.id != activeArgumentData.id })
+                        }
 
-                    Object.assign(activeArgument, activeArgumentData);
-                }
-            }
-            console.log("---", { activeArgumentsDataGrouped })
-            set(activeArgumentsDataGrouped)
+                        if (activeArgumentIndex) {
+                            group.group_args.splice(activeArgumentIndex, 1)
+                        }
+                    } else {
+                        group.group_args.splice(activeArgumentIndex, 1)
+                    }
+                    return activeArgumentsDataGrouped
+                })
         }
 
     }
