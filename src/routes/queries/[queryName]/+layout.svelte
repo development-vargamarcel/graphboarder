@@ -1,17 +1,21 @@
 <script>
-	import { getStores, navigating, page, session, updated } from '$app/stores';
+	import { fulfilledQuery_Store } from './../../../lib/stores/fulfilledQuery_Store.ts';
+	import { getStores, navigating, page, updated } from '$app/stores';
 	import { setClient, getClient, operationStore, query } from '@urql/svelte';
 	import Table from '$lib/components/Table.svelte';
 	import { urqlClient } from '$lib/stores/urqlClient';
 	import { urqlCoreClient } from '$lib/stores/urqlCoreClient';
-
+	setContext('fulfilledQuery_Store', fulfilledQuery_Store);
+	fulfilledQuery_Store.subscribe((data) => {
+		console.log(data);
+	});
 	import {
 		getFields_Grouped,
 		buildQueryBody,
 		stepsOfFieldsNewToQueryFragmentObject,
 		queryFragmentsObjectsToQueryFields
 	} from '$lib/utils/usefulFunctions';
-	import { onDestroy, onMount } from 'svelte';
+	import { onDestroy, onMount, setContext } from 'svelte';
 	import { goto } from '$app/navigation';
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';

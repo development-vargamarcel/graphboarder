@@ -8,7 +8,6 @@
 	import { generate_gqlArgObj, generate_group_gqlArgObj } from '$lib/utils/usefulFunctions';
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Interface from './fields/Interface.svelte';
-	//import { activeArgumentsDataGrouped_Store } from '$lib/stores/activeArgumentsDataGrouped_Store';
 	const activeArgumentsDataGrouped_Store = getContext('activeArgumentsDataGrouped_Store');
 	let dispatch = createEventDispatcher();
 	export let activeArgumentData;
