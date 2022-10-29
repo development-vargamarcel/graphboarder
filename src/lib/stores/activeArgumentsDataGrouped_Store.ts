@@ -9,7 +9,6 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
     return {
         subscribe, set, update,
         set_groups: (activeArgumentsDataGrouped, argsInfo) => {
-            console.log('-----------')
             //handle generating activeArgumentsDataGrouped
             const rootGroup = { group_name: 'root', group_isRoot: true, dd_kindList: false, group_args: [] };
             activeArgumentsDataGrouped = [rootGroup];

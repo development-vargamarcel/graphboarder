@@ -10,28 +10,17 @@
 	$: console.log({ activeArgumentsDataGrouped });
 	const update_activeArgumentsDataGrouped = (groupNewData) => {
 		activeArgumentsDataGrouped_Store.update_groups(groupNewData);
-
-		console.log({ groupNewData });
-		let index = activeArgumentsDataGrouped.findIndex((group) => {
-			return group.group_name == groupNewData.group_name;
-		});
-		activeArgumentsDataGrouped[index] = groupNewData;
-		activeArgumentsDataGrouped = activeArgumentsDataGrouped;
-		//console.log('groupNewData.group_args', groupNewData.group_args);
-		//console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
 	};
 	let showActiveFilters;
 	const dispatch = createEventDispatcher();
 	let showModal = false;
-	export let overwrite_activeArgumentsData;
-	export let delete_activeArgument;
 	export let argsInfo;
-	//console.log('argsInfo', argsInfo);
+
 	const handleArgsChanged = () => {};
 
 	const generate_final_gqlArgObj = () => {
 		let { final_gqlArgObj, final_gqlArgObj_string, final_canRunQuery } =
-			generate_FINAL_gqlArgObj_fromGroups(activeArgumentsDataGrouped);
+			generate_FINAL_gqlArgObj_fromGroups($activeArgumentsDataGrouped_Store);
 		if (final_canRunQuery) {
 			dispatch('argsChanged', {
 				gqlArgObj: final_gqlArgObj,
@@ -39,45 +28,6 @@
 			});
 		}
 	};
-
-	//handle generating activeArgumentsDataGrouped
-	let rootGroup = { group_name: 'root', group_isRoot: true, dd_kindList: false, group_args: [] };
-	activeArgumentsDataGrouped = [rootGroup];
-
-	argsInfo?.forEach((el) => {
-		//console.log('el---', el);
-		if (!el.dd_isRootArg) {
-			let newGroupData = {
-				group_name: el.dd_displayName,
-				group_isRoot: false,
-				// group_info: el,
-				...el,
-				group_args: []
-			};
-
-			const hasFilterOperators = el.dd_relatedRoot?.dd_filterOperators?.length > 0;
-
-			if (hasFilterOperators) {
-				newGroupData.group_argsNode = {
-					mainContainer: {
-						operator: '_and',
-						isMain: true,
-						not: false,
-						items: [],
-						id: 'mainContainer'
-					}
-				};
-			}
-
-			activeArgumentsDataGrouped.push(newGroupData);
-		}
-	});
-
-	//console.log('activeArgumentsDataGrouped', activeArgumentsDataGrouped);
-
-	//
-
-	/////generate gqlArgObj to be used in query
 
 	setContext('activeArgumentsDataGrouped_Store', activeArgumentsDataGrouped_Store);
 	activeArgumentsDataGrouped_Store.set_groups(activeArgumentsDataGrouped, argsInfo);
@@ -114,9 +64,7 @@
 						{update_activeArgumentsDataGrouped}
 						{group}
 						{argsInfo}
-						{overwrite_activeArgumentsData}
 						{showDescription}
-						{delete_activeArgument}
 						{activeArgumentsDataGrouped}
 					/>
 				{/each}

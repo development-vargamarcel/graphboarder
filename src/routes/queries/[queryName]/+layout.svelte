@@ -148,22 +148,11 @@
 
 	//Active arguments logic
 	let activeArgumentsData = [];
-
-	const delete_activeArgument = (id) => {
-		activeArgumentsData = activeArgumentsData.filter((activeArgData) => {
-			return activeArgData.id !== id;
-		});
-	};
-	const overwrite_activeArgumentsData = (new_activeArgumentsData) => {
-		activeArgumentsData = new_activeArgumentsData;
-	};
 </script>
 
 <ActiveArguments
 	argsInfo={currentQueryInfo?.args}
 	{activeArgumentsData}
-	{delete_activeArgument}
-	{overwrite_activeArgumentsData}
 	on:argsChanged={(e) => {
 		//console.log('argsChanged', e.detail);
 		gqlArgObj_string = e.detail.gqlArgObj_string;

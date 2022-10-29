@@ -5,7 +5,6 @@
 	export let activeArgumentsData;
 	export let update_activeArgumentsDataGrouped;
 	let showDescription;
-	export let delete_activeArgument;
 	export let activeArgumentsDataGrouped;
 	export let selectedForEdit;
 
@@ -324,14 +323,8 @@
 						on:inUseChanged={() => {
 							update_activeArgumentsDataGrouped(group);
 						}}
-						on:delete_activeArgument={() => {
-							group.group_args = group.group_args.filter((arg) => {
-								return arg.id !== activeArgumentData.id;
-							});
-						}}
 						{activeArgumentData}
 						{group}
-						{delete_activeArgument}
 						{activeArgumentsDataGrouped}
 						{activeArgumentsData}
 					/>

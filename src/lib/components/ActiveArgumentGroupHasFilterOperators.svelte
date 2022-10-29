@@ -207,18 +207,11 @@
 					}}
 					on:updateQuery
 					on:inUseChanged={() => {}}
-					on:delete_activeArgument={() => {
-						dispatch('deleteSubNode', node);
-					}}
 					activeArgumentData={node}
 					{group}
 				/>
 			</div>
 		</div>
-		<!-- 
-			{delete_activeArgument}
-			{activeArgumentsDataGrouped}
-			{activeArgumentsData} -->
 	{/if}
 
 	{#if node.hasOwnProperty('items')}

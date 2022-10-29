@@ -13,7 +13,6 @@
 	let dispatch = createEventDispatcher();
 	export let activeArgumentData;
 	export let group;
-	export let delete_activeArgument;
 	export let activeArgumentsDataGrouped;
 	let showDescription = false;
 	let labelEl;
@@ -154,12 +153,10 @@
 				<button
 					class="btn btn-xs"
 					on:click={() => {
-						//dispatch('delete_activeArgument');
 						activeArgumentsDataGrouped_Store.delete_activeArgument(
 							activeArgumentData,
 							group.group_name
 						);
-						// delete_activeArgument(activeArgumentData.id);
 					}}><i class="bi bi-trash3-fill" /></button
 				>
 			{/if}
