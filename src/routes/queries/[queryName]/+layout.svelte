@@ -49,7 +49,7 @@
 	});
 	let non_scalarColsData = [];
 	let tableColsData = [];
-
+	$: console.log({ tableColsData });
 	tableColsData = [...scalarColsData];
 
 	let queryFragmentsObjectsNew;
