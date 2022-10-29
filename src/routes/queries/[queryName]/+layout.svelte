@@ -1,10 +1,11 @@
 <script>
-	import { fulfilledQuery_Store } from './../../../lib/stores/fulfilledQuery_Store.ts';
+	import { Create_fulfilledQuery_Store } from './../../../lib/stores/fulfilledQuery_Store.ts';
 	import { getStores, navigating, page, updated } from '$app/stores';
 	import { setClient, getClient, operationStore, query } from '@urql/svelte';
 	import Table from '$lib/components/Table.svelte';
 	import { urqlClient } from '$lib/stores/urqlClient';
 	import { urqlCoreClient } from '$lib/stores/urqlCoreClient';
+	const fulfilledQuery_Store = Create_fulfilledQuery_Store();
 	setContext('fulfilledQuery_Store', fulfilledQuery_Store);
 	fulfilledQuery_Store.subscribe((data) => {
 		console.log(data);

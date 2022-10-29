@@ -22,4 +22,3 @@ export const Create_fulfilledQuery_Store = () => {
 
     }
 }
-export const fulfilledQuery_Store = Create_fulfilledQuery_Store()
