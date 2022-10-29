@@ -7,7 +7,7 @@ export const Create_fulfilledQuery_Store = () => {
 
     return {
         subscribe, set, update,
-        setNewData: (requestString, isFullfield) => {
+        updateDatSmart: (requestString, isFullfield) => {
             update((prevData) => {
                 if (!isFullfield) {
                     prevData.requestString = requestString
