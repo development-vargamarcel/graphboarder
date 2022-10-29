@@ -10,6 +10,13 @@
 	fulfilledQuery_Store.subscribe((data) => {
 		console.log(data);
 	});
+
+	import { Create_tableColsData_Store } from '$lib/stores/tableColsData_Store';
+	const tableColsData_Store = Create_tableColsData_Store();
+	setContext('tableColsData_Store', tableColsData_Store);
+	tableColsData_Store.subscribe((data) => {
+		console.log(data);
+	});
 	import {
 		getFields_Grouped,
 		buildQueryBody,
@@ -50,6 +57,7 @@
 	let non_scalarColsData = [];
 	let tableColsData = [];
 	$: console.log({ tableColsData });
+	tableColsData_Store.set([...scalarColsData]);
 	tableColsData = [...scalarColsData];
 
 	let queryFragmentsObjectsNew;
@@ -112,6 +120,7 @@
 	}
 
 	const hideColumn = (e) => {
+		tableColsData_Store.removeColumn(e.detail.column);
 		tableColsData = tableColsData.filter((colData) => {
 			return colData.title !== e.detail.column;
 		});
@@ -146,7 +155,7 @@
 				queryFragmentObject: stepsOfFieldsNewToQueryFragmentObject(stepsOfFieldsNew)
 			};
 			tableColsData = [...tableColsData, tableColData];
-
+			tableColsData_Store.addColumn(tableColData);
 			column_stepsOfFieldsNew = '';
 		}
 	};
@@ -209,6 +218,8 @@
 							on:colAddRequest={(e) => {
 								//console.log(e);
 								tableColsData = [...tableColsData, e.detail];
+								tableColsData_Store.addColumn(e.detail);
+
 								//console.log('tableColsData', tableColsData);
 								runQuery();
 								dd_relatedRoot.fields = dd_relatedRoot.fields; // this and key is used to re-render Type
