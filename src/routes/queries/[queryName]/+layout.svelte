@@ -1,16 +1,15 @@
 <script>
-	import { Create_fulfilledQuery_Store } from './../../../lib/stores/fulfilledQuery_Store.ts';
+	import { Create_QMS_body_Store } from './../../../lib/stores/QMS_body_Store.ts';
 	import { getStores, navigating, page, updated } from '$app/stores';
 	import { setClient, getClient, operationStore, query } from '@urql/svelte';
 	import Table from '$lib/components/Table.svelte';
 	import { urqlClient } from '$lib/stores/urqlClient';
 	import { urqlCoreClient } from '$lib/stores/urqlCoreClient';
-	const fulfilledQuery_Store = Create_fulfilledQuery_Store();
-	setContext('fulfilledQuery_Store', fulfilledQuery_Store);
-	fulfilledQuery_Store.subscribe((data) => {
-		console.log(data);
-	});
+	import { Create_activeArgumentsDataGrouped_Store } from './../../../lib/stores/activeArgumentsDataGrouped_Store.ts';
 
+	let activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store();
+
+	setContext('activeArgumentsDataGrouped_Store', activeArgumentsDataGrouped_Store);
 	import { Create_tableColsData_Store } from '$lib/stores/tableColsData_Store';
 	const tableColsData_Store = Create_tableColsData_Store();
 	setContext('tableColsData_Store', tableColsData_Store);
@@ -30,6 +29,16 @@
 	import { schemaData } from '$lib/stores/schemaData';
 	setClient($urqlClient);
 	let queryName = $page.params.queryName;
+	const QMS_body_Store = Create_QMS_body_Store(
+		tableColsData_Store,
+		activeArgumentsDataGrouped_Store,
+		'query',
+		queryName
+	);
+	setContext('QMS_body_Store', QMS_body_Store);
+	QMS_body_Store.subscribe((data) => {
+		console.log(data.QMS_body);
+	});
 	onDestroy(() => {
 		document.getElementById('my-drawer-3')?.click();
 	});
@@ -64,6 +73,7 @@
 	let columns = [];
 	let rows = [];
 	const runQuery = () => {
+		QMS_body_Store.generateQMS();
 		queryBody = build_QMS_body(
 			queryName,
 			tableColsDataToQueryFields($tableColsData_Store),

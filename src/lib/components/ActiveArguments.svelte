@@ -1,11 +1,10 @@
 <script lang="ts">
-	import { Create_activeArgumentsDataGrouped_Store } from './../stores/activeArgumentsDataGrouped_Store.ts';
 	import { generate_FINAL_gqlArgObj_fromGroups } from './../utils/usefulFunctions.ts';
-	const fulfilledQuery_Store = getContext('fulfilledQuery_Store');
+	const QMS_body_Store = getContext('QMS_body_Store');
 	import { createEventDispatcher, each, getContext, setContext } from 'svelte/internal';
-	let activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store();
 	import Modal from './Modal.svelte';
 	import ActiveArgumentsGroup from './ActiveArgumentsGroup.svelte';
+	let activeArgumentsDataGrouped_Store = getContext('activeArgumentsDataGrouped_Store');
 	let activeArgumentsDataGrouped = [];
 	$: console.log({ activeArgumentsDataGrouped });
 	const update_activeArgumentsDataGrouped = (groupNewData) => {
@@ -22,7 +21,6 @@
 		let { final_gqlArgObj, final_gqlArgObj_string, final_canRunQuery } =
 			generate_FINAL_gqlArgObj_fromGroups($activeArgumentsDataGrouped_Store);
 		if (final_canRunQuery) {
-			fulfilledQuery_Store.updateDataSmart(final_gqlArgObj_string, false);
 			dispatch('argsChanged', {
 				gqlArgObj: final_gqlArgObj,
 				gqlArgObj_string: final_gqlArgObj_string
@@ -30,7 +28,6 @@
 		}
 	};
 
-	setContext('activeArgumentsDataGrouped_Store', activeArgumentsDataGrouped_Store);
 	activeArgumentsDataGrouped_Store.set_groups(activeArgumentsDataGrouped, argsInfo);
 	activeArgumentsDataGrouped_Store.subscribe((activeArgumentsDataGrouped_Store) => {
 		console.log({ activeArgumentsDataGrouped_Store });
