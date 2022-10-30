@@ -19,7 +19,7 @@
 	});
 	import {
 		getFields_Grouped,
-		buildQueryBody,
+		build_QMS_body,
 		stepsOfFieldsNewToQueryFragmentObject,
 		queryFragmentsObjectsToQueryFields
 	} from '$lib/utils/usefulFunctions';
@@ -72,7 +72,7 @@
 				return colData.queryFragmentObject;
 			});
 		console.log({ queryFragmentsObjectsNew });
-		queryBody = buildQueryBody(
+		queryBody = build_QMS_body(
 			queryName,
 			queryFragmentsObjectsToQueryFields(queryFragmentsObjectsNew),
 			gqlArgObj_string

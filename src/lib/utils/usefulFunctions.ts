@@ -5,7 +5,7 @@ import { scalarsAndEnumsDisplayTypes } from '$lib/stores/scalarsAndEnumsDisplayT
 import { schemaData } from '$lib/stores/schemaData';
 import { page } from '$app/stores';
 import { displayStucture } from '$lib/stores/displayStructure';
-export const buildQueryBody = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query') => {
+export const build_QMS_body = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query') => {
     let QMS_body = `
     ${QMS_type}{
   ${QMS_name}${QMS_args ? `(${QMS_args})` : ''}{
