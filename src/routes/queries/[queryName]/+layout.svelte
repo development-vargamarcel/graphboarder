@@ -36,9 +36,7 @@
 		queryName
 	);
 	setContext('QMS_body_Store', QMS_body_Store);
-	QMS_body_Store.subscribe((data) => {
-		console.log(data.QMS_body);
-	});
+
 	onDestroy(() => {
 		document.getElementById('my-drawer-3')?.click();
 	});
@@ -72,13 +70,8 @@
 	let gqlArgObj_string;
 	let columns = [];
 	let rows = [];
-	const runQuery = () => {
-		QMS_body_Store.generateQMS();
-		queryBody = build_QMS_body(
-			queryName,
-			tableColsDataToQueryFields($tableColsData_Store),
-			gqlArgObj_string
-		);
+
+	const runQuery = (queryBody) => {
 		let fetching = true;
 		let error = false;
 		let data = false;
@@ -104,16 +97,23 @@
 				}
 			});
 	};
+	QMS_body_Store.subscribe((data) => {
+		let QMS_body = data.QMS_body;
+		if (QMS_body !== '') {
+			runQuery(QMS_body);
+		}
+		console.log(data.QMS_body);
+	});
 	if (scalarFields.length == 0) {
 		queryData = { fetching: false, error: false, data: false };
 	} else {
 		queryData = { fetching: true, error: false, data: false };
-		runQuery();
+		QMS_body_Store.generateQMS();
 	}
 
 	const hideColumn = (e) => {
 		tableColsData_Store.removeColumn(e.detail.column);
-		runQuery(); //ctually is fine even if i do not rerun here,data is already here... usefull only for subscriptions maybe
+		QMS_body_Store.generateQMS(); //ctually is fine even if i do not rerun here,data is already here... usefull only for subscriptions maybe
 	};
 
 	rows = queryData.data[queryName];
@@ -141,7 +141,7 @@
 				queryFragmentObject: stepsOfFieldsNewToQueryFragmentObject(stepsOfFieldsNew)
 			};
 			tableColsData_Store.addColumn(tableColData);
-			runQuery();
+			QMS_body_Store.generateQMS();
 			column_stepsOfFieldsNew = '';
 		}
 	};
@@ -155,7 +155,7 @@
 	{activeArgumentsData}
 	on:argsChanged={(e) => {
 		gqlArgObj_string = e.detail.gqlArgObj_string;
-		runQuery();
+		QMS_body_Store.generateQMS();
 	}}
 />
 
@@ -202,7 +202,7 @@
 							depth={0}
 							on:colAddRequest={(e) => {
 								tableColsData_Store.addColumn(e.detail);
-								runQuery();
+								QMS_body_Store.generateQMS();
 								dd_relatedRoot.fields = dd_relatedRoot.fields; // this and key is used to re-render Type
 							}}
 						/>
