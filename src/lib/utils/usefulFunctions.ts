@@ -5,16 +5,16 @@ import { scalarsAndEnumsDisplayTypes } from '$lib/stores/scalarsAndEnumsDisplayT
 import { schemaData } from '$lib/stores/schemaData';
 import { page } from '$app/stores';
 import { displayStucture } from '$lib/stores/displayStructure';
-export const buildQueryBody = (queryName, queryFields, gqlArgObj_string) => {
-    let query = `
-    query MyQuery {
-  ${queryName}${gqlArgObj_string ? `(${gqlArgObj_string})` : ''}{
-${queryFields}
+export const buildQueryBody = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query') => {
+    let QMS_body = `
+    ${QMS_type}{
+  ${QMS_name}${QMS_args ? `(${QMS_args})` : ''}{
+${QMS_fields}
   }
 }
     `;
-    console.log(query)
-    return query
+    console.log(QMS_body)
+    return QMS_body
 };
 
 
