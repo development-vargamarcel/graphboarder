@@ -77,7 +77,6 @@
 			queryFragmentsObjectsToQueryFields(queryFragmentsObjectsNew),
 			gqlArgObj_string
 		);
-		//console.log('queryBody', queryBody);
 		let fetching = true;
 		let error = false;
 		let data = false;
@@ -95,15 +94,12 @@
 					error = result.error.message;
 				}
 				queryData = { fetching, error, data };
-				//console.log('result', result); // { data: ... }
-				//console.log('queryData', queryData);
+
 				rows = queryData.data[queryName];
-				//console.log('**** queryData.data[queryName]', rows);
 
 				if (rows?.length == undefined) {
 					rows = [rows];
 				}
-				//console.log('**** rows', rows);
 			});
 	};
 	if (scalarFields.length == 0) {
@@ -115,8 +111,7 @@
 
 	const hideColumn = (e) => {
 		tableColsData_Store.removeColumn(e.detail.column);
-
-		//console.log('hideColumn', e.detail);
+		runQuery(); //ctually is fine even if i do not rerun here,data is already here... usefull only for subscriptions maybe
 	};
 
 	rows = queryData.data[queryName];
@@ -125,12 +120,10 @@
 	});
 	$: if (queryData.fetching) {
 		rows = queryData.data[queryName];
-		//console.log('**** queryData.data[queryName]', rows);
 
 		if (rows?.length == undefined) {
 			rows = [rows];
 		}
-		//console.log('**** rows', rows);
 	}
 
 	let column_stepsOfFieldsNew = '';
@@ -158,7 +151,6 @@
 	argsInfo={currentQueryInfo?.args}
 	{activeArgumentsData}
 	on:argsChanged={(e) => {
-		//console.log('argsChanged', e.detail);
 		gqlArgObj_string = e.detail.gqlArgObj_string;
 		runQuery();
 	}}
@@ -207,7 +199,6 @@
 							depth={0}
 							on:colAddRequest={(e) => {
 								tableColsData_Store.addColumn(e.detail);
-
 								runQuery();
 								dd_relatedRoot.fields = dd_relatedRoot.fields; // this and key is used to re-render Type
 							}}
