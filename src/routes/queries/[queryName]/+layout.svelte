@@ -131,6 +131,7 @@
 				queryFragmentObject: stepsOfFieldsNewToQueryFragmentObject(stepsOfFieldsNew)
 			};
 			tableColsData_Store.addColumn(tableColData);
+			runQuery();
 			column_stepsOfFieldsNew = '';
 		}
 	};
