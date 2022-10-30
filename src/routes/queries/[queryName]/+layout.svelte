@@ -55,10 +55,7 @@
 		};
 	});
 	let non_scalarColsData = [];
-	let tableColsData = [];
-	$: console.log({ tableColsData });
 	tableColsData_Store.set([...scalarColsData]);
-	tableColsData = [...scalarColsData];
 
 	let queryFragmentsObjectsNew;
 	let queryBody;
@@ -67,17 +64,14 @@
 	let columns = [];
 	let rows = [];
 	const runQuery = () => {
-		queryFragmentsObjectsNew = tableColsData
+		queryFragmentsObjectsNew = $tableColsData_Store
 			.filter((colData) => {
 				return colData.queryFragmentObject !== undefined;
 			})
 			.map((colData) => {
 				return colData.queryFragmentObject;
 			});
-		console.log({ tableColsData });
-
 		console.log({ queryFragmentsObjectsNew });
-		console.log(queryFragmentsObjectsToQueryFields(queryFragmentsObjectsNew));
 		queryBody = buildQueryBody(
 			queryName,
 			queryFragmentsObjectsToQueryFields(queryFragmentsObjectsNew),
@@ -121,15 +115,12 @@
 
 	const hideColumn = (e) => {
 		tableColsData_Store.removeColumn(e.detail.column);
-		tableColsData = tableColsData.filter((colData) => {
-			return colData.title !== e.detail.column;
-		});
 
 		//console.log('hideColumn', e.detail);
 	};
 
 	rows = queryData.data[queryName];
-	$: columns = tableColsData.map((colData) => {
+	$: columns = $tableColsData_Store.map((colData) => {
 		return colData.title;
 	});
 	$: if (queryData.fetching) {
@@ -154,7 +145,6 @@
 				stepsOfFieldsNew: stepsOfFieldsNew,
 				queryFragmentObject: stepsOfFieldsNewToQueryFragmentObject(stepsOfFieldsNew)
 			};
-			tableColsData = [...tableColsData, tableColData];
 			tableColsData_Store.addColumn(tableColData);
 			column_stepsOfFieldsNew = '';
 		}
@@ -182,7 +172,7 @@
 	<p>Oh no... {queryData.error}</p>
 {:else}
 	<Table
-		colsData={tableColsData}
+		colsData={$tableColsData_Store}
 		{columns}
 		{rows}
 		on:addColumnDropdown={() => {
@@ -216,11 +206,8 @@
 							stepsOfFieldsNew={[]}
 							depth={0}
 							on:colAddRequest={(e) => {
-								//console.log(e);
-								tableColsData = [...tableColsData, e.detail];
 								tableColsData_Store.addColumn(e.detail);
 
-								//console.log('tableColsData', tableColsData);
 								runQuery();
 								dd_relatedRoot.fields = dd_relatedRoot.fields; // this and key is used to re-render Type
 							}}

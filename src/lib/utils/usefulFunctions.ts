@@ -678,8 +678,9 @@ export const stepsOfFieldsNewToQueryFragmentObject = (stepsOfFieldsNew) => {
 }
 
 export const queryFragmentsObjectsToQueryFields = (queryFragmentsObjects) => {
+    const _queryFragmentsObjects = JSON.parse(JSON.stringify(queryFragmentsObjects))
 
-    const merged = _.merge(...queryFragmentsObjects);
+    const merged = _.merge(..._queryFragmentsObjects);
     const stringified = JSON.stringify(merged);
     const queryFragments = stringified.replaceAll(/novaluehere|"|:/gi, '').slice(1, -1);
     return queryFragments
