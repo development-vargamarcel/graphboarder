@@ -677,7 +677,14 @@ export const stepsOfFieldsNewToQueryFragmentObject = (stepsOfFieldsNew) => {
     return queryObject
 }
 
-export const queryFragmentsObjectsToQueryFields = (queryFragmentsObjects) => {
+export const tableColsDataToQueryFields = (tableColsData) => {
+    let queryFragmentsObjects = tableColsData
+        .filter((colData) => {
+            return colData.queryFragmentObject !== undefined;
+        })
+        .map((colData) => {
+            return colData.queryFragmentObject;
+        });
     const _queryFragmentsObjects = JSON.parse(JSON.stringify(queryFragmentsObjects))
 
     const merged = _.merge(..._queryFragmentsObjects);

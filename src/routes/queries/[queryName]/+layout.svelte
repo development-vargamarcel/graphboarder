@@ -21,7 +21,7 @@
 		getFields_Grouped,
 		build_QMS_body,
 		stepsOfFieldsNewToQueryFragmentObject,
-		queryFragmentsObjectsToQueryFields
+		tableColsDataToQueryFields
 	} from '$lib/utils/usefulFunctions';
 	import { onDestroy, onMount, setContext } from 'svelte';
 	import { goto } from '$app/navigation';
@@ -64,17 +64,9 @@
 	let columns = [];
 	let rows = [];
 	const runQuery = () => {
-		queryFragmentsObjectsNew = $tableColsData_Store
-			.filter((colData) => {
-				return colData.queryFragmentObject !== undefined;
-			})
-			.map((colData) => {
-				return colData.queryFragmentObject;
-			});
-		console.log({ queryFragmentsObjectsNew });
 		queryBody = build_QMS_body(
 			queryName,
-			queryFragmentsObjectsToQueryFields(queryFragmentsObjectsNew),
+			tableColsDataToQueryFields($tableColsData_Store),
 			gqlArgObj_string
 		);
 		let fetching = true;
