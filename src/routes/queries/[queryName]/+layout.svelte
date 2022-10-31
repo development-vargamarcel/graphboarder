@@ -138,19 +138,19 @@
 	let activeArgumentsData = [];
 </script>
 
-<div class="flex pl-2">
-	<div class="dropdown grow">
+<div class="flex space-x-2">
+	<div class="dropdown grow ">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-		<label tabindex="0" class="btn btn-xs bi bi-node-plus-fill text-lg p-1  w-full" />
+		<label tabindex="0" class="btn btn-xs bi bi-node-plus-fill text-lg p-1 ml-2  w-full" />
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 		<div
 			tabindex="0"
-			class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl"
+			class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max max-w-screen text-sm shadow-2xl"
 		>
 			<div
-				class="max-h-52 sm:max-h-72 md:max-h-90 overflow-auto overscroll-contain max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
+				class="max-h-[80vh] sm:max-h-[80vh] md:max-h-[80vh] overflow-auto overscroll-contain max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
 			>
 				<div
 					class="flex flex-col overflow-x-auto text-sm font-normal normal-case min-w-max  w-full  space-y-2"
