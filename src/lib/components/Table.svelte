@@ -141,27 +141,6 @@
 						</div>
 					</th>
 				{/each}
-				<th>
-					<div class="dropdown dropdown-end">
-						<!-- svelte-ignore a11y-label-has-associated-control -->
-						<!-- svelte-ignore a11y-click-events-have-key-events -->
-						<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-						<label
-							tabindex="0"
-							class="btn btn-sm bi bi-node-plus-fill text-lg p-1"
-							on:click={() => {
-								dispatch('addColumnDropdown');
-							}}
-						/>
-						<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-						<div
-							tabindex="0"
-							class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl"
-						>
-							<slot name="addColumnDisplay" />
-						</div>
-					</div>
-				</th>
 			</tr>
 		</thead>
 		<tbody class="z-0">
@@ -183,7 +162,6 @@
 						<td class="z-0">
 							{formatData(getData(row, colData, index), 40, true)}
 						</td>{/each}
-					<td class="z-0" />
 				</tr>
 			{/each}
 		</tbody>

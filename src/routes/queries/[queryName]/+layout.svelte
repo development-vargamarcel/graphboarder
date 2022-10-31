@@ -1,7 +1,7 @@
 <script>
 	import { Create_QMS_body_Store } from './../../../lib/stores/QMS_body_Store.ts';
-	import { getStores, navigating, page, updated } from '$app/stores';
-	import { setClient, getClient, operationStore, query } from '@urql/svelte';
+	import { page } from '$app/stores';
+	import { setClient } from '@urql/svelte';
 	import Table from '$lib/components/Table.svelte';
 	import { urqlClient } from '$lib/stores/urqlClient';
 	import { urqlCoreClient } from '$lib/stores/urqlCoreClient';
@@ -13,14 +13,10 @@
 	import { Create_tableColsData_Store } from '$lib/stores/tableColsData_Store';
 	const tableColsData_Store = Create_tableColsData_Store();
 	setContext('tableColsData_Store', tableColsData_Store);
-	tableColsData_Store.subscribe((data) => {
-		console.log(data);
-	});
+
 	import {
 		getFields_Grouped,
-		build_QMS_body,
-		stepsOfFieldsNewToQueryFragmentObject,
-		tableColsDataToQueryFields
+		stepsOfFieldsNewToQueryFragmentObject
 	} from '$lib/utils/usefulFunctions';
 	import { onDestroy, onMount, setContext } from 'svelte';
 	import { goto } from '$app/navigation';
@@ -47,7 +43,7 @@
 		goto('/queries');
 	}
 
-	let { scalarFields, non_scalarFields } = getFields_Grouped(dd_relatedRoot);
+	let { scalarFields } = getFields_Grouped(dd_relatedRoot);
 	let currentQuery_fields_SCALAR_names = scalarFields.map((field) => {
 		return field.name;
 	});
@@ -61,13 +57,9 @@
 			queryFragmentObject: stepsOfFieldsNewToQueryFragmentObject([name])
 		};
 	});
-	let non_scalarColsData = [];
 	tableColsData_Store.set([...scalarColsData]);
 
-	let queryFragmentsObjectsNew;
-	let queryBody;
 	let queryData;
-	let gqlArgObj_string;
 	let columns = [];
 	let rows = [];
 
@@ -95,14 +87,16 @@
 				if (rows?.length == undefined) {
 					rows = [rows];
 				}
+				if (rows?.length == undefined) {
+					rows = [rows];
+				}
 			});
 	};
 	QMS_body_Store.subscribe((data) => {
-		let QMS_body = data.QMS_body;
+		let { QMS_body } = data;
 		if (QMS_body !== '') {
 			runQuery(QMS_body);
 		}
-		console.log(data.QMS_body);
 	});
 	if (scalarFields.length == 0) {
 		queryData = { fetching: false, error: false, data: false };
@@ -115,18 +109,12 @@
 		tableColsData_Store.removeColumn(e.detail.column);
 		QMS_body_Store.generateQMS(); //ctually is fine even if i do not rerun here,data is already here... usefull only for subscriptions maybe
 	};
-
-	rows = queryData.data[queryName];
-	$: columns = $tableColsData_Store.map((colData) => {
-		return colData.title;
+	tableColsData_Store.subscribe((data) => {
+		console.log(data);
+		columns = data.map((colData) => {
+			return colData.title;
+		});
 	});
-	$: if (queryData.fetching) {
-		rows = queryData.data[queryName];
-
-		if (rows?.length == undefined) {
-			rows = [rows];
-		}
-	}
 
 	let column_stepsOfFieldsNew = '';
 	const addColumnFromInput = (e) => {
@@ -150,21 +138,85 @@
 	let activeArgumentsData = [];
 </script>
 
-<ActiveArguments
-	argsInfo={currentQueryInfo?.args}
-	{activeArgumentsData}
-	on:argsChanged={(e) => {
-		gqlArgObj_string = e.detail.gqlArgObj_string;
-		QMS_body_Store.generateQMS();
-	}}
-/>
+<div class="flex pl-2">
+	<div class="dropdown grow">
+		<!-- svelte-ignore a11y-label-has-associated-control -->
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+		<label tabindex="0" class="btn btn-xs bi bi-node-plus-fill text-lg p-1  w-full" />
+		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+		<div
+			tabindex="0"
+			class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl"
+		>
+			<div
+				class="max-h-52 sm:max-h-72 md:max-h-90 overflow-auto overscroll-contain max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
+			>
+				<div
+					class="flex flex-col overflow-x-auto text-sm font-normal normal-case min-w-max  w-full  space-y-2"
+				>
+					{#key dd_relatedRoot?.fields}
+						<input
+							type="text"
+							class="input input-sm input-bordered input-accent m-2"
+							placeholder="(> or .) producer>films>title "
+							bind:value={column_stepsOfFieldsNew}
+							on:keypress={addColumnFromInput}
+						/>
+						{#each dd_relatedRoot.fields as type, index (index)}
+							<Type
+								{index}
+								{type}
+								template="columnAddDisplay"
+								stepsOfFieldsNew={[]}
+								depth={0}
+								on:colAddRequest={(e) => {
+									tableColsData_Store.addColumn(e.detail);
+									QMS_body_Store.generateQMS();
+									dd_relatedRoot.fields = dd_relatedRoot.fields; // this and key is used to re-render Type
+								}}
+							/>
+						{/each}
+					{/key}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="grow">
+		<ActiveArguments
+			argsInfo={currentQueryInfo?.args}
+			{activeArgumentsData}
+			on:argsChanged={(e) => {
+				QMS_body_Store.generateQMS();
+			}}
+		/>
+	</div>
+</div>
 
 <slot />
 
 {#if queryData.fetching}
 	<p>Loading...</p>
 {:else if queryData.error}
-	<p>Oh no... {queryData.error}</p>
+	<div class="px-4 mx-auto">
+		<div class="alert alert-error shadow-lg">
+			<div>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="stroke-current flex-shrink-0 h-6 w-6"
+					fill="none"
+					viewBox="0 0 24 24"
+					><path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+					/></svg
+				>
+				<span>{queryData.error}</span>
+			</div>
+		</div>
+	</div>
 {:else}
 	<Table
 		colsData={$tableColsData_Store}
@@ -177,38 +229,5 @@
 			hideColumn(e);
 		}}
 		on:clickedOnRow={(e) => {}}
-	>
-		<div
-			slot="addColumnDisplay"
-			class="max-h-52 sm:max-h-72 md:max-h-90 overflow-auto overscroll-contain max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
-		>
-			<div
-				class="flex flex-col overflow-x-auto text-sm font-normal normal-case min-w-max  w-full  space-y-2"
-			>
-				{#key dd_relatedRoot?.fields}
-					<input
-						type="text"
-						class="input input-sm input-bordered input-accent m-2"
-						placeholder="(> or .) producer>films>title "
-						bind:value={column_stepsOfFieldsNew}
-						on:keypress={addColumnFromInput}
-					/>
-					{#each dd_relatedRoot.fields as type, index (index)}
-						<Type
-							{index}
-							{type}
-							template="columnAddDisplay"
-							stepsOfFieldsNew={[]}
-							depth={0}
-							on:colAddRequest={(e) => {
-								tableColsData_Store.addColumn(e.detail);
-								QMS_body_Store.generateQMS();
-								dd_relatedRoot.fields = dd_relatedRoot.fields; // this and key is used to re-render Type
-							}}
-						/>
-					{/each}
-				{/key}
-			</div>
-		</div>
-	</Table>
+	/>
 {/if}
