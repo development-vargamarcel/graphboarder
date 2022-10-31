@@ -139,7 +139,7 @@
 </script>
 
 <div class="flex space-x-2">
-	<div class="dropdown grow w-full">
+	<div class="dropdown grow ">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
