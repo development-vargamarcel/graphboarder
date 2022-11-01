@@ -155,29 +155,27 @@
 				<div
 					class="flex flex-col overflow-x-auto text-sm font-normal normal-case min-w-max  w-full  space-y-2"
 				>
-					{#key dd_relatedRoot?.fields}
-						<input
-							type="text"
-							class="input input-sm input-bordered input-accent m-2"
-							placeholder="(> or .) producer>films>title "
-							bind:value={column_stepsOfFieldsNew}
-							on:keypress={addColumnFromInput}
+					<input
+						type="text"
+						class="input input-sm input-bordered input-accent m-2"
+						placeholder="(> or .) producer>films>title "
+						bind:value={column_stepsOfFieldsNew}
+						on:keypress={addColumnFromInput}
+					/>
+					{#each dd_relatedRoot.fields as type, index (index)}
+						<Type
+							{index}
+							{type}
+							template="columnAddDisplay"
+							stepsOfFieldsNew={[]}
+							depth={0}
+							on:colAddRequest={(e) => {
+								tableColsData_Store.addColumn(e.detail);
+								QMS_body_Store.generateQMS();
+								//	dd_relatedRoot.fields = dd_relatedRoot.fields; // this and key is used to re-render Type
+							}}
 						/>
-						{#each dd_relatedRoot.fields as type, index (index)}
-							<Type
-								{index}
-								{type}
-								template="columnAddDisplay"
-								stepsOfFieldsNew={[]}
-								depth={0}
-								on:colAddRequest={(e) => {
-									tableColsData_Store.addColumn(e.detail);
-									QMS_body_Store.generateQMS();
-									dd_relatedRoot.fields = dd_relatedRoot.fields; // this and key is used to re-render Type
-								}}
-							/>
-						{/each}
-					{/key}
+					{/each}
 				</div>
 			</div>
 		</div>

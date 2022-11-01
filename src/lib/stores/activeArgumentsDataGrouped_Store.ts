@@ -8,10 +8,10 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 
     return {
         subscribe, set, update,
-        set_groups: (activeArgumentsDataGrouped, argsInfo) => {
+        set_groups: (argsInfo) => {
             //handle generating activeArgumentsDataGrouped
             const rootGroup = { group_name: 'root', group_isRoot: true, dd_kindList: false, group_args: [] };
-            activeArgumentsDataGrouped = [rootGroup];
+            let activeArgumentsDataGrouped = [rootGroup];
 
             argsInfo?.forEach((el) => {
                 //console.log('el---', el);
@@ -39,9 +39,12 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
                     }
 
                     activeArgumentsDataGrouped.push(newGroupData);
-                    set(activeArgumentsDataGrouped)
+
                 }
             });
+            console.log({ activeArgumentsDataGrouped })
+
+            set(activeArgumentsDataGrouped)
         }, update_groups: (groupNewData) => {
             update((activeArgumentsDataGrouped) => {
                 let index = activeArgumentsDataGrouped.findIndex((group) => {

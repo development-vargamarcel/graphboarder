@@ -28,7 +28,7 @@
 		}
 	};
 
-	activeArgumentsDataGrouped_Store.set_groups(activeArgumentsDataGrouped, argsInfo);
+	activeArgumentsDataGrouped_Store.set_groups(argsInfo);
 	activeArgumentsDataGrouped_Store.subscribe((activeArgumentsDataGrouped_Store) => {
 		console.log({ activeArgumentsDataGrouped_Store });
 	});
