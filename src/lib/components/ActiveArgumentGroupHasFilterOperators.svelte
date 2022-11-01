@@ -1,7 +1,7 @@
 <script>
 	import { flip } from 'svelte/animate';
 	import { dndzone, SHADOW_PLACEHOLDER_ITEM_ID } from 'svelte-dnd-action';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 	import ActiveArgument from './ActiveArgument.svelte';
 	const dispatch = createEventDispatcher();
 	export let nodes;
@@ -11,12 +11,13 @@
 	export let type;
 	export let originalNodes;
 	let dragDisabled = true;
-
-	const flipDurationMs = 300;
+	let isDraggingStore = getContext('isDraggingStore');
+	const flipDurationMs = 100;
 	function handleDndConsider(e) {
 		//console.log('considering', e, nodes);
 		node.items = e.detail.items;
 		dragDisabled = true;
+		isDraggingStore.set(true);
 	}
 	function handleDndFinalize(e) {
 		node.items = e.detail.items;
@@ -24,6 +25,7 @@
 		nodes = { ...nodes };
 		dispatch('changed');
 		dragDisabled = true;
+		isDraggingStore.set(false);
 	}
 
 	const deleteItem = (e) => {
@@ -85,6 +87,7 @@
 
 {#if !node?.isMain}
 	<div class=" grid   content-center  rounded-full ">
+		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 		<div
 			tabindex={dragDisabled ? 0 : -1}
 			aria-label="drag-handle"
@@ -121,7 +124,8 @@
 	class=" w-full transition-all duration-500
 	
 	
-	{node?.operator ? 'rounded-l-md bg-gradient-to-rxxx   border-l-[1px] my-1' : ''} 
+	{node?.operator ? 'rounded-l-md bg-gradient-to-rxxx   border-l-[1px] my-1 shadow-sm' : ''} 
+	
 {node?.operator && node?.not ? 'border-dashed  ' : ''} 
 {node.isBond
 		? 'border-base-content'
@@ -149,7 +153,8 @@
 	}}
 >
 	{#if node?.operator}
-		<div class="flex">
+		<div class="flex ">
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<p
 				style=""
 				class="btn btn-xs btn-ghost px-2 pb-1 text-xs font-light transition-all duration-500  rounded-full  normal-case   {node.isBond
@@ -175,6 +180,7 @@
 			</p>
 			<p class="grow" />
 			{#if !node?.isMain}
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<p
 					class="btn btn-xs btn-ghost {node.isBond
 						? 'text-base-content'

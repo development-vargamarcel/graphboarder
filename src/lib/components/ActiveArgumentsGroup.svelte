@@ -1,4 +1,5 @@
 <script>
+	import { Create_isDragging_Store } from './../stores/isDragging_Store.ts';
 	import ActiveArgument from '$lib/components/ActiveArgument.svelte';
 	export let group;
 	export let argsInfo;
@@ -13,7 +14,7 @@
 	import { dndzone, SOURCES, TRIGGERS } from 'svelte-dnd-action';
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
 	import { flip } from 'svelte/animate';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, setContext } from 'svelte';
 	import ActiveArgumentGroupHasFilterOperators from '$lib/components/ActiveArgumentGroupHasFilterOperators.svelte';
 	import Arg from './Arg.svelte';
 	import {
@@ -71,6 +72,7 @@
 
 	const hasGroup_argsNode = group.group_argsNode;
 	//
+	setContext('isDraggingStore', Create_isDragging_Store());
 </script>
 
 <div class="bg-base-100 p-2 rounded-box">
