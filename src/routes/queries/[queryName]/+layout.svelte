@@ -216,16 +216,18 @@
 		</div>
 	</div>
 {:else}
-	<Table
-		colsData={$tableColsData_Store}
-		{columns}
-		{rows}
-		on:addColumnDropdown={() => {
-			//console.log('add column dropdown');
-		}}
-		on:hideColumn={(e) => {
-			hideColumn(e);
-		}}
-		on:clickedOnRow={(e) => {}}
-	/>
+	<div class="md:px-2">
+		<Table
+			colsData={$tableColsData_Store}
+			{columns}
+			{rows}
+			on:addColumnDropdown={() => {
+				//console.log('add column dropdown');
+			}}
+			on:hideColumn={(e) => {
+				hideColumn(e);
+			}}
+			on:clickedOnRow={(e) => {}}
+		/>
+	</div>
 {/if}

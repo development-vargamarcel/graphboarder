@@ -88,10 +88,10 @@
 	const dispatch = createEventDispatcher();
 </script>
 
-<div class=" h-[90vh] overscroll-contain	 overflow-y-auto">
-	<table class="table table-compact w-full rounded-none  mb-32">
+<div class=" h-[90vh] overscroll-contain	 overflow-y-auto ">
+	<table class="table table-compact w-full rounded-none  mb-32 ">
 		<thead class="sticky top-0 z-20">
-			<tr class="sticky top-0 z-20">
+			<tr class="sticky top-0 z-20 ">
 				<th>
 					<label>
 						<input type="checkbox" class="checkbox" />
@@ -141,6 +141,7 @@
 						</div>
 					</th>
 				{/each}
+				<th class="sticky right-0 z-0 w-2" />
 			</tr>
 		</thead>
 		<tbody class="z-0">
@@ -162,6 +163,7 @@
 						<td class="z-0">
 							{formatData(getData(row, colData, index), 40, true)}
 						</td>{/each}
+					<td class="sticky right-0 z-0 w-2" />
 				</tr>
 			{/each}
 		</tbody>
