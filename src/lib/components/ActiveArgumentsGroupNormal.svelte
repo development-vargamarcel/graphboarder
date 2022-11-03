@@ -88,6 +88,7 @@
 	{#each group.group_args as activeArgumentData (activeArgumentData.id)}
 		<div animate:flip={{ duration: flipDurationMs }} class="relative flex">
 			<div class="grid   content-center  rounded-full ">
+				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 				<div
 					tabindex={dragDisabled ? 0 : -1}
 					aria-label="drag-handle"
