@@ -87,14 +87,14 @@
 		</div>
 	{/if}
 	{#if showApplyBtn}
-		<div class="fixed bottom-0  right-0 z-[99] w-full 	 lg:w-[170vh] ">
+		<div class="fixed bottom-0  left-0 z-[99] w-full 	">
 			<!-- card-actions -->
 			<div
-				class="my-0  mx-auto w-full  lg:w-2/5  mx-auto justify-center bg-gradient-to-t from-base-100/100 via-base-100/70 to-base-100/10 px-2 pb-0"
+				class="my-0  mx-auto w-full  mx-auto justify-center bg-gradient-to-t from-base-100/100 via-base-100/70 to-base-100/10 px-2 pb-0 "
 			>
 				<div class=" mx-auto w-11/12    lg:pb-4 ">
 					<button
-						class="btn btn-primary btn-lg    w-full  justify-center normal-case shadow-2xl drop-shadow-2xl "
+						class="btn btn-primary btn-lg    w-full  mx-auto  justify-center normal-case shadow-2xl drop-shadow-2xl "
 						on:click={apply}>Apply</button
 					>
 				</div>
