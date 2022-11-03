@@ -55,7 +55,6 @@
 		if (source === SOURCES.POINTER) {
 			dragDisabled = true;
 		}
-		update_activeArgumentsDataGrouped(group);
 		dispatch('updateQuery');
 	}
 	function startDrag(e) {
@@ -113,7 +112,7 @@
 				<ActiveArgument
 					on:updateQuery
 					on:inUseChanged={() => {
-						update_activeArgumentsDataGrouped(group);
+						dispatch('updateQuery');
 					}}
 					{activeArgumentData}
 					{group}

@@ -127,8 +127,9 @@
 	</div>
 {:else}
 	<ActiveArgumentsGroupNormal
-		on:changed
-		on:updateQuery
+		on:updateQuery={() => {
+			update_activeArgumentsDataGrouped(group);
+		}}
 		bind:group
 		bind:argsInfo
 		bind:activeArgumentsData
