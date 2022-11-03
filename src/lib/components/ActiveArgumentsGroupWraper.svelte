@@ -1,4 +1,6 @@
 <script>
+	import ActiveArgumentsGroupNormal from './ActiveArgumentsGroupNormal.svelte';
+
 	import { Create_isDragging_Store } from './../stores/isDragging_Store.ts';
 	import ActiveArgument from '$lib/components/ActiveArgument.svelte';
 	export let group;
@@ -270,67 +272,14 @@
 		/>
 	</div>
 {:else}
-	<ul
-		use:dndzone={{
-			items: group.group_args,
-			dragDisabled,
-			flipDurationMs,
-			transformDraggedElement,
-			type: group.group_name
-		}}
-		on:consider={handleConsider}
-		on:finalize={handleFinalize}
-		class="mt-2 pt-2 pr-2 rounded-box"
-	>
-		{#each group.group_args as activeArgumentData (activeArgumentData.id)}
-			<div animate:flip={{ duration: flipDurationMs }} class="relative flex">
-				<div class="grid   content-center  rounded-full ">
-					<div
-						tabindex={dragDisabled ? 0 : -1}
-						aria-label="drag-handle"
-						class="bi bi-grip-vertical ml-2  -mr-1"
-						style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
-						on:mousedown={startDrag}
-						on:touchstart={startDrag}
-						on:keydown={handleKeyDown}
-					/>
-				</div>
-				<div
-					class="w-full "
-					on:mousedown={() => {
-						dragDisabled = true;
-					}}
-					on:touchstart={() => {
-						dragDisabled = true;
-					}}
-					on:keydown={() => {
-						dragDisabled = true;
-					}}
-				>
-					<ActiveArgument
-						on:updateQuery
-						on:selectedForEditChanged={(e) => {
-							let { detail } = e;
-							//console.log('detail.selectedForEditOn', detail.selectedForEditOn);
-							if (detail.selectedForEditOn) {
-								if (!selectedForEdit.includes(detail.selectedForEditValue)) {
-									selectedForEdit = [...selectedForEdit, detail.selectedForEditValue];
-								}
-							} else {
-								selectedForEdit = selectedForEdit.filter((el) => {
-									return el !== detail.selectedForEditValue;
-								});
-							}
-						}}
-						on:inUseChanged={() => {
-							update_activeArgumentsDataGrouped(group);
-						}}
-						{activeArgumentData}
-						{group}
-						{activeArgumentsDataGrouped}
-						{activeArgumentsData}
-					/>
-				</div>
-			</div>
-		{/each}
-	</ul>{/if}
+	<ActiveArgumentsGroupNormal
+		on:changed
+		on:updateQuery
+		bind:group
+		bind:argsInfo
+		bind:activeArgumentsData
+		bind:update_activeArgumentsDataGrouped
+		bind:activeArgumentsDataGrouped
+		bind:selectedForEdit
+	/>
+{/if}
