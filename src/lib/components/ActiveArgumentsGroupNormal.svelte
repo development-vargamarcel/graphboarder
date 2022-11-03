@@ -5,7 +5,6 @@
 	export let activeArgumentsData;
 	export let update_activeArgumentsDataGrouped;
 	export let activeArgumentsDataGrouped;
-	export let selectedForEdit;
 	let showDescription;
 
 	//
@@ -113,19 +112,6 @@
 			>
 				<ActiveArgument
 					on:updateQuery
-					on:selectedForEditChanged={(e) => {
-						let { detail } = e;
-						//console.log('detail.selectedForEditOn', detail.selectedForEditOn);
-						if (detail.selectedForEditOn) {
-							if (!selectedForEdit.includes(detail.selectedForEditValue)) {
-								selectedForEdit = [...selectedForEdit, detail.selectedForEditValue];
-							}
-						} else {
-							selectedForEdit = selectedForEdit.filter((el) => {
-								return el !== detail.selectedForEditValue;
-							});
-						}
-					}}
 					on:inUseChanged={() => {
 						update_activeArgumentsDataGrouped(group);
 					}}

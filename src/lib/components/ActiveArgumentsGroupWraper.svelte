@@ -9,7 +9,6 @@
 	export let update_activeArgumentsDataGrouped;
 	let showDescription;
 	export let activeArgumentsDataGrouped;
-	export let selectedForEdit;
 
 	//
 
@@ -232,8 +231,6 @@
 </div>
 
 {#if hasGroup_argsNode}
-	<!-- overflow-scroll overscroll-contain h-[75vh] -->
-
 	<div class=" ">
 		<ActiveArgumentsGroupHasFilterOperators
 			on:updateQuery={() => {
@@ -280,6 +277,5 @@
 		bind:activeArgumentsData
 		bind:update_activeArgumentsDataGrouped
 		bind:activeArgumentsDataGrouped
-		bind:selectedForEdit
 	/>
 {/if}
