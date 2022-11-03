@@ -3,7 +3,7 @@
 	const QMS_body_Store = getContext('QMS_body_Store');
 	import { createEventDispatcher, each, getContext, setContext } from 'svelte/internal';
 	import Modal from './Modal.svelte';
-	import ActiveArgumentsGroup from './ActiveArgumentsGroup.svelte';
+	import ActiveArgumentsGroupWraper from './ActiveArgumentsGroupWraper.svelte';
 	let activeArgumentsDataGrouped_Store = getContext('activeArgumentsDataGrouped_Store');
 	let activeArgumentsDataGrouped = [];
 	$: console.log({ activeArgumentsDataGrouped });
@@ -55,7 +55,7 @@
 				<div class="w-2" />
 
 				{#each $activeArgumentsDataGrouped_Store as group}
-					<ActiveArgumentsGroup
+					<ActiveArgumentsGroupWraper
 						on:updateQuery={() => {
 							generate_final_gqlArgObj();
 						}}
