@@ -17,7 +17,7 @@
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
 	import { flip } from 'svelte/animate';
 	import { createEventDispatcher, setContext } from 'svelte';
-	import ActiveArgumentGroupHasFilterOperators from '$lib/components/ActiveArgumentGroupHasFilterOperators.svelte';
+	import ActiveArgumentsGroupHasFilterOperators from '$lib/components/ActiveArgumentsGroupHasFilterOperators.svelte';
 	import Arg from './Arg.svelte';
 	import {
 		generate_FINAL_gqlArgObj_fromGroups,
@@ -235,7 +235,7 @@
 	<!-- overflow-scroll overscroll-contain h-[75vh] -->
 
 	<div class=" ">
-		<ActiveArgumentGroupHasFilterOperators
+		<ActiveArgumentsGroupHasFilterOperators
 			on:updateQuery={() => {
 				let gqlArgObj_forHasOperators = generate_gqlArgObj_forHasOperators(
 					group.group_argsNode,
@@ -252,7 +252,7 @@
 				});
 				update_activeArgumentsDataGrouped(group);
 			}}
-			type={group.group_name + 'ActiveArgumentGroupHasFilterOperators'}
+			type={group.group_name + 'ActiveArgumentsGroupHasFilterOperators'}
 			node={group.group_argsNode.mainContainer}
 			originalNodes={group.group_argsNode}
 			{group}
