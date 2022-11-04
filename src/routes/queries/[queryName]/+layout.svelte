@@ -1,11 +1,12 @@
 <script>
-	import { Create_QMS_body_Store } from './../../../lib/stores/QMS_body_Store.ts';
+	import { Create_QMS_body_Store } from '$lib/stores/QMS_body_Store.ts';
 	import { page } from '$app/stores';
 	import { setClient } from '@urql/svelte';
 	import Table from '$lib/components/Table.svelte';
 	import { urqlClient } from '$lib/stores/urqlClient';
 	import { urqlCoreClient } from '$lib/stores/urqlCoreClient';
-	import { Create_activeArgumentsDataGrouped_Store } from './../../../lib/stores/activeArgumentsDataGrouped_Store.ts';
+	import { Create_activeArgumentsDataGrouped_Store } from '$lib/stores/activeArgumentsDataGrouped_Store.ts';
+	import { Create_activeArgumentsDataGrouped_gqlArgObj_Store } from '$lib/stores/activeArgumentsDataGrouped_gqlArgObj_Store';
 
 	let activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store();
 
@@ -13,7 +14,16 @@
 	import { Create_tableColsData_Store } from '$lib/stores/tableColsData_Store';
 	const tableColsData_Store = Create_tableColsData_Store();
 	setContext('tableColsData_Store', tableColsData_Store);
-
+	const activeArgumentsDataGrouped_gqlArgObj_Store =
+		Create_activeArgumentsDataGrouped_gqlArgObj_Store(activeArgumentsDataGrouped_Store);
+	setContext(
+		'activeArgumentsDataGrouped_gqlArgObj_Store',
+		activeArgumentsDataGrouped_gqlArgObj_Store
+	);
+	$: console.log(
+		'activeArgumentsDataGrouped_gqlArgObj_Store',
+		$activeArgumentsDataGrouped_gqlArgObj_Store
+	);
 	import {
 		getFields_Grouped,
 		stepsOfFieldsNewToQueryFragmentObject

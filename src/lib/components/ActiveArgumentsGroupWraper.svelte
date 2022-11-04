@@ -17,7 +17,7 @@
 	import { dndzone, SOURCES, TRIGGERS } from 'svelte-dnd-action';
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
 	import { flip } from 'svelte/animate';
-	import { createEventDispatcher, setContext } from 'svelte';
+	import { createEventDispatcher, getContext, setContext } from 'svelte';
 	import ActiveArgumentsGroupHasFilterOperators from '$lib/components/ActiveArgumentsGroupHasFilterOperators.svelte';
 	import Arg from './Arg.svelte';
 	import {
@@ -75,6 +75,9 @@
 
 	const hasGroup_argsNode = group.group_argsNode;
 	//
+	const activeArgumentsDataGrouped_gqlArgObj_Store = getContext(
+		'activeArgumentsDataGrouped_gqlArgObj_Store'
+	);
 	setContext('isDraggingStore', Create_isDragging_Store());
 </script>
 
@@ -96,15 +99,15 @@
 					group.group_name
 				);
 				Object.assign(group, gqlArgObj_forHasOperators);
-				let FINAL_gqlArgObj_fromGroups = generate_FINAL_gqlArgObj_fromGroups(
-					activeArgumentsDataGrouped
-				);
+
 				dispatch('updateQuery');
 				//console.log({ FINAL_gqlArgObj_fromGroups });
 				group.group_args = Object.values(group.group_argsNode)?.filter((node) => {
 					return !node?.operator;
 				});
 				update_activeArgumentsDataGrouped(group);
+
+				activeArgumentsDataGrouped_gqlArgObj_Store.updateGroup(group);
 			}}
 			type={group.group_name + 'ActiveArgumentsGroupHasFilterOperators'}
 			node={group.group_argsNode.mainContainer}
@@ -129,6 +132,7 @@
 	<ActiveArgumentsGroupNormal
 		on:updateQuery={() => {
 			update_activeArgumentsDataGrouped(group);
+			activeArgumentsDataGrouped_gqlArgObj_Store.updateGroup(group);
 		}}
 		bind:group
 		bind:argsInfo

@@ -60,47 +60,23 @@
 		return value;
 	};
 	const handleChanged = (detail) => {
-		console.log({ activeArgumentData });
 		Object.assign(activeArgumentData, detail);
-		Object.assign(activeArgumentData, generate_gqlArgObj([detail]));
-
-		Object.assign(group, generate_group_gqlArgObj(group));
 		activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
-
-		dispatch('changed', detail);
-		if (activeArgumentData?.inUse) {
-			dispatch('updateQuery');
-		}
-		//console.log(detail);
 		if (!activeArgumentData.inUse && valueToDisplay() !== undefined) {
 			inUse_toggle();
 		}
-		if (activeArgumentData.inUse && valueToDisplay() == undefined) {
-			inUse_toggle();
-		}
+		dispatch('changed', detail);
+		dispatch('updateQuery');
 	};
 	const handleClickOutside = () => {
 		//console.log('clicked outside');
 		//expandedVersion = false; //!!! this is causing the expanded version to disappear when you click outside of it,but sometimes,is not desirable like when another modal with choises opens up and if you click on anything that upper modal disappears.
 	};
 	const inUse_toggle = () => {
-		if (
-			!activeArgumentData?.inUse &&
-			(valueToDisplay() == undefined || !activeArgumentData.canRunQuery)
-		) {
-			expandedVersion = true;
-		} else {
-			activeArgumentData.inUse =
-				activeArgumentData.inUse !== undefined ? !activeArgumentData.inUse : true;
-
-			Object.assign(activeArgumentData, generate_gqlArgObj([activeArgumentData]));
-			Object.assign(group, generate_group_gqlArgObj(group));
-			activeArgumentData = activeArgumentData;
-			dispatch('inUseChanged');
-			dispatch('updateQuery');
-		}
-
+		activeArgumentData.inUse = !activeArgumentData.inUse;
 		activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
+		dispatch('inUseChanged');
+		dispatch('updateQuery');
 	};
 </script>
 

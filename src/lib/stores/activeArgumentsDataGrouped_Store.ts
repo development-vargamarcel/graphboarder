@@ -1,4 +1,4 @@
-import { argumentCanRunQuery } from "$lib/utils/usefulFunctions";
+import { argumentCanRunQuery, generate_gqlArgObj } from "$lib/utils/usefulFunctions";
 import { writable } from "svelte/store";
 
 export const Create_activeArgumentsDataGrouped_Store = () => {
@@ -58,23 +58,19 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
         ) => {
             update(
                 (activeArgumentsDataGrouped) => {
-                    let canRunQuery = argumentCanRunQuery(activeArgumentData)
-                    activeArgumentData.canRunQuery = canRunQuery
+                    const gqlArgObj = generate_gqlArgObj([activeArgumentData])
+                    const canRunQuery = argumentCanRunQuery(activeArgumentData)
+                    Object.assign(activeArgumentData, { ...gqlArgObj, canRunQuery });
                     const group = activeArgumentsDataGrouped?.filter((group) => { return group.group_name == groupName })
                     const activeArgument = group.group_args?.filter((arg) => { return arg.id == activeArgumentData.id })
-                    if (group.group_argsNode) {
-                        const activeArgumentNode = group.group_argsNode[activeArgumentData.id]
-                        if (activeArgumentNode) {
-                            Object.assign(activeArgumentNode, activeArgumentData);
-                        }
-                        if (activeArgument) {
-                            Object.assign(activeArgument, activeArgumentData);
-                        }
-                    } else {
-                        if (activeArgument) {
-                            Object.assign(activeArgument, activeArgumentData);
-                        }
+                    const activeArgumentNode = group?.group_argsNode?.[activeArgumentData.id]
+                    if (activeArgumentNode) {
+                        Object.assign(activeArgumentNode, activeArgumentData);
                     }
+                    if (activeArgument) {
+                        Object.assign(activeArgument, activeArgumentData);
+                    }
+
                     return activeArgumentsDataGrouped
                 }
             )
