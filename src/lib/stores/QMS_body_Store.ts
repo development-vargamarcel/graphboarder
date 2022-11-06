@@ -19,7 +19,8 @@ export const Create_QMS_body_Store = (_tableColsData_Store, _activeArgumentsData
                 let QMS_body = build_QMS_body(
                     QMS_name,
                     tableColsDataToQueryFields(get(_tableColsData_Store)),
-                    generate_final_gqlArgObj_string(get(_activeArgumentsDataGrouped_Store))
+                    generate_final_gqlArgObj_string(get(_activeArgumentsDataGrouped_Store)),
+                    QMS_type
                 );
                 return { QMS_body }
             })

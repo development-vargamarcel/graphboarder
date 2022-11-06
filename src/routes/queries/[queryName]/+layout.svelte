@@ -16,6 +16,7 @@
 	setContext('tableColsData_Store', tableColsData_Store);
 	const final_gqlArgObj_Store = Create_final_gqlArgObj_Store(activeArgumentsDataGrouped_Store);
 	setContext('final_gqlArgObj_Store', final_gqlArgObj_Store);
+
 	$: console.log('final_gqlArgObj_Store', $final_gqlArgObj_Store);
 	import {
 		getFields_Grouped,
@@ -26,6 +27,7 @@
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	import { schemaData } from '$lib/stores/schemaData';
+	import { Create_QMS_body_StoreDerived } from '$lib/stores/QMS_body_StoreDerived';
 	setClient($urqlClient);
 	let queryName = $page.params.queryName;
 	const QMS_body_Store = Create_QMS_body_Store(
@@ -35,7 +37,14 @@
 		queryName
 	);
 	setContext('QMS_body_Store', QMS_body_Store);
-
+	const QMS_body_StoreDerived = Create_QMS_body_StoreDerived(
+		final_gqlArgObj_Store,
+		tableColsData_Store,
+		'query',
+		queryName
+	);
+	console.log('$QMS_body_StoreDerived', $QMS_body_StoreDerived);
+	$: console.log('$QMS_body_StoreDerived', $QMS_body_StoreDerived);
 	onDestroy(() => {
 		document.getElementById('my-drawer-3')?.click();
 	});
