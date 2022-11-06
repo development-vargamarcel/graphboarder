@@ -43,7 +43,6 @@
 		'query',
 		queryName
 	);
-	console.log('$QMS_body_StoreDerived', $QMS_body_StoreDerived);
 	$: console.log('$QMS_body_StoreDerived', $QMS_body_StoreDerived);
 	onDestroy(() => {
 		document.getElementById('my-drawer-3')?.click();
