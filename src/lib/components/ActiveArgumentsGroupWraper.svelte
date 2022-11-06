@@ -75,9 +75,7 @@
 
 	const hasGroup_argsNode = group.group_argsNode;
 	//
-	const activeArgumentsDataGrouped_gqlArgObj_Store = getContext(
-		'activeArgumentsDataGrouped_gqlArgObj_Store'
-	);
+	const final_gqlArgObj_Store = getContext('final_gqlArgObj_Store');
 	setContext('isDraggingStore', Create_isDragging_Store());
 </script>
 
@@ -107,7 +105,7 @@
 				});
 				update_activeArgumentsDataGrouped(group);
 
-				activeArgumentsDataGrouped_gqlArgObj_Store.updateGroup(group);
+				final_gqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
 			}}
 			type={group.group_name + 'ActiveArgumentsGroupHasFilterOperators'}
 			node={group.group_argsNode.mainContainer}
@@ -132,7 +130,7 @@
 	<ActiveArgumentsGroupNormal
 		on:updateQuery={() => {
 			update_activeArgumentsDataGrouped(group);
-			activeArgumentsDataGrouped_gqlArgObj_Store.updateGroup(group);
+			final_gqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
 		}}
 		bind:group
 		bind:argsInfo
