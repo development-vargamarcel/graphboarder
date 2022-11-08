@@ -68,7 +68,6 @@
 			inUse_toggle();
 		}
 		dispatch('changed', detail);
-		dispatch('updateQuery');
 		final_gqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
 	};
 	const handleClickOutside = () => {
@@ -79,7 +78,6 @@
 		activeArgumentData.inUse = !activeArgumentData.inUse;
 		activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
 		dispatch('inUseChanged');
-		dispatch('updateQuery');
 		final_gqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
 	};
 </script>

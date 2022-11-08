@@ -12,12 +12,12 @@
 	const activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store();
 	const tableColsData_Store = Create_tableColsData_Store();
 	const final_gqlArgObj_Store = Create_final_gqlArgObj_Store(activeArgumentsDataGrouped_Store);
-	const QMS_body_Store = Create_QMS_body_Store(
-		tableColsData_Store,
-		activeArgumentsDataGrouped_Store,
-		QMSType,
-		QMSName
-	);
+	// const QMS_body_Store = Create_QMS_body_Store(
+	// 	tableColsData_Store,
+	// 	activeArgumentsDataGrouped_Store,
+	// 	QMSType,
+	// 	QMSName
+	// );
 	const QMS_body_StoreDerived = Create_QMS_body_StoreDerived(
 		final_gqlArgObj_Store,
 		tableColsData_Store,
@@ -27,7 +27,7 @@
 	setContext(`${prefix}activeArgumentsDataGrouped_Store`, activeArgumentsDataGrouped_Store);
 	setContext(`${prefix}tableColsData_Store`, tableColsData_Store);
 	setContext(`${prefix}final_gqlArgObj_Store`, final_gqlArgObj_Store);
-	setContext(`${prefix}QMS_body_Store`, QMS_body_Store);
+	// setContext(`${prefix}QMS_body_Store`, QMS_body_Store);
 	setContext(`${prefix}QMS_body_StoreDerived`, QMS_body_StoreDerived);
 </script>
 
