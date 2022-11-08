@@ -555,7 +555,8 @@ const generate_gqlArgObjForItems = (items, groupName, nodes) => {
     return itemsObj;
 };
 //
-export const generate_gqlArgObj_forHasOperators = (groupNodes, groupName) => {
+export const generate_gqlArgObj_forHasOperators = (group) => {
+    let { groupNodes, groupName } = group
     let group_gqlArgObj = { [groupName]: { _and: [] } };
     let group_canRunQuery = true;
     let nodes = JSON.parse(JSON.stringify(groupNodes));

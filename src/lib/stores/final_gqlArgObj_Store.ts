@@ -12,10 +12,7 @@ export const Create_final_gqlArgObj_Store = (_activeArgumentsDataGrouped_Store) 
             console.log('regenerate_groupsAndfinal_gqlArgObj RUN')
             let groups_gqlArgObj = get(_activeArgumentsDataGrouped_Store).map((group) => {
                 if (group.group_argsNode) {
-                    return generate_gqlArgObj_forHasOperators(
-                        group.group_argsNode,
-                        group.group_name
-                    );
+                    return generate_gqlArgObj_forHasOperators(group);
                 } else {
                     return generate_group_gqlArgObj(group)
                 }
