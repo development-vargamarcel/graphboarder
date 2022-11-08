@@ -134,6 +134,7 @@
 							activeArgumentData,
 							group.group_name
 						);
+						final_gqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
 					}}><i class="bi bi-trash3-fill" /></button
 				>
 			{/if}
