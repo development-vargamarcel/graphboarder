@@ -86,8 +86,7 @@
 				}
 			});
 	};
-	QMS_body_Store.subscribe((data) => {
-		let { QMS_body } = data;
+	QMS_body_StoreDerived.subscribe((QMS_body) => {
 		if (QMS_body !== '') {
 			runQuery(QMS_body);
 		}
