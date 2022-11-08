@@ -8,23 +8,7 @@ export const Create_final_gqlArgObj_Store = (_activeArgumentsDataGrouped_Store) 
     const { subscribe, set, update } = store
 
     return {
-        subscribe, set, update, updateGroup: (group) => {
-            update((storeVal) => {
-                console.log({ group })
-
-                if (group.group_argsNode) {
-                    storeVal[group.group_name] = generate_gqlArgObj_forHasOperators(
-                        group.group_argsNode,
-                        group.group_name
-                    );
-                } else {
-                    storeVal[group.group_name] = generate_gqlArgObj(group.group_args)
-                }
-                return storeVal
-            })
-
-
-        }, regenerate_groupsAndfinal_gqlArgObj: () => {
+        subscribe, set, update, regenerate_groupsAndfinal_gqlArgObj: () => {
             console.log('regenerate_groupsAndfinal_gqlArgObj RUN')
             let groups_gqlArgObj = get(_activeArgumentsDataGrouped_Store).map((group) => {
                 if (group.group_argsNode) {

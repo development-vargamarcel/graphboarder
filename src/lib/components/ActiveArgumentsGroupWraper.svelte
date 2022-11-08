@@ -20,10 +20,6 @@
 	import { createEventDispatcher, getContext, setContext } from 'svelte';
 	import ActiveArgumentsGroupHasFilterOperators from '$lib/components/ActiveArgumentsGroupHasFilterOperators.svelte';
 	import Arg from './Arg.svelte';
-	import {
-		generate_FINAL_gqlArgObj_fromGroups,
-		generate_gqlArgObj_forHasOperators
-	} from '$lib/utils/usefulFunctions';
 
 	const flipDurationMs = 200;
 	let dragDisabled = true;
@@ -92,12 +88,6 @@
 	<div class=" ">
 		<ActiveArgumentsGroupHasFilterOperators
 			on:updateQuery={() => {
-				let gqlArgObj_forHasOperators = generate_gqlArgObj_forHasOperators(
-					group.group_argsNode,
-					group.group_name
-				);
-				Object.assign(group, gqlArgObj_forHasOperators);
-
 				dispatch('updateQuery');
 				//console.log({ FINAL_gqlArgObj_fromGroups });
 				group.group_args = Object.values(group.group_argsNode)?.filter((node) => {
@@ -113,11 +103,6 @@
 			{group}
 			bind:nodes={group.group_argsNode}
 			on:changed={() => {
-				let gqlArgObj_forHasOperators = generate_gqlArgObj_forHasOperators(
-					group.group_argsNode,
-					group.group_name
-				);
-				Object.assign(group, gqlArgObj_forHasOperators);
 				group.group_args = Object.values(group.group_argsNode)?.filter((node) => {
 					return !node?.operator;
 				});

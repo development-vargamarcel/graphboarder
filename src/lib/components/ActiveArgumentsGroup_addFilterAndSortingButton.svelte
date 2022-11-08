@@ -18,10 +18,6 @@
 	import { createEventDispatcher, setContext } from 'svelte';
 	import ActiveArgumentsGroupHasFilterOperators from '$lib/components/ActiveArgumentsGroupHasFilterOperators.svelte';
 	import Arg from './Arg.svelte';
-	import {
-		generate_FINAL_gqlArgObj_fromGroups,
-		generate_gqlArgObj_forHasOperators
-	} from '$lib/utils/usefulFunctions';
 
 	const flipDurationMs = 200;
 	let dragDisabled = true;
