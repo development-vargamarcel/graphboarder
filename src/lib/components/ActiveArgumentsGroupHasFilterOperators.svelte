@@ -23,6 +23,7 @@
 		node.items = e.detail.items;
 		//console.log(e);
 		nodes = { ...nodes };
+		handleChanged();
 		dispatch('changed');
 		dragDisabled = true;
 		isDraggingStore.set(false);
