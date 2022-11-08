@@ -446,13 +446,11 @@ export const generate_group_gqlArgObj = (group) => {//if is where/filter (its re
     let group_canRunQuery = group.group_args.every((arg) => {
         return arg.canRunQuery
     })
-    console.log({ group_canRunQuery })
     let group_argumentsData = group.group_args.filter((arg) => {
         return arg.inUse;
     });
 
     if (group_argumentsData?.length > 0) {
-        console.log({ group_argumentsData });
 
         if (group.group_isRoot) {
             //console.log('root group handled');
@@ -502,9 +500,8 @@ const validItems = (items, nodes) => {
 
 
 //
-const generate_gqlArgObjForItems = (items, groupName, nodes) => {
+const generate_gqlArgObjForItems = (items, group_name, nodes) => {
     //!!! this must be modified: example bug: _st_d_within has distance and from as dd_NON_NULL,you must combine the result in one object not two objects in an array,even if in _or.
-    console.log({ nodes })
     let itemsObj = items.map((item) => {
         let itemData = nodes[item.id];
 
@@ -530,7 +527,7 @@ const generate_gqlArgObjForItems = (items, groupName, nodes) => {
                 let mergeResult = {}
                 _.merge(mergeResult, ...arrayOfObjects)
                 Object.assign(itemObjCurr,
-                    mergeResult[groupName]
+                    mergeResult[group_name]
                 );
                 console.log({ mergeResult })
                 console.log({ itemData })
@@ -538,7 +535,7 @@ const generate_gqlArgObjForItems = (items, groupName, nodes) => {
                 Object.assign(itemObjCurr, {
                     [itemData.operator]: generate_gqlArgObjForItems(
                         validItemsResult,
-                        groupName,
+                        group_name,
                         nodes
                     )
                 });
@@ -546,8 +543,8 @@ const generate_gqlArgObjForItems = (items, groupName, nodes) => {
 
         } else {
             //console.log('arg');
-            //console.log('groupName', groupName);
-            Object.assign(itemObjCurr, nodes[item.id]?.gqlArgObj?.[groupName]);
+            //console.log('group_name', group_name);
+            Object.assign(itemObjCurr, nodes[item.id]?.gqlArgObj?.[group_name]);
         }
         //
         return itemObj;
@@ -556,22 +553,22 @@ const generate_gqlArgObjForItems = (items, groupName, nodes) => {
 };
 //
 export const generate_gqlArgObj_forHasOperators = (group) => {
-    let { groupNodes, groupName } = group
-    let group_gqlArgObj = { [groupName]: { _and: [] } };
+    let { group_argsNode, group_name } = group
+    let group_gqlArgObj = { [group_name]: { _and: [] } };
     let group_canRunQuery = true;
-    let nodes = JSON.parse(JSON.stringify(groupNodes));
+    let nodes = JSON.parse(JSON.stringify(group_argsNode));
     let nodesArray = Object.values(nodes);
     let mainContainer = nodesArray.filter((node) => {
         return node.isMain;
     })[0];
     //
 
-    group_gqlArgObj[groupName]['_and'] = generate_gqlArgObjForItems(
+    group_gqlArgObj[group_name]['_and'] = generate_gqlArgObjForItems(
         validItems(mainContainer?.items, nodes),
-        groupName,
+        group_name,
         nodes
     );
-    if (group_gqlArgObj[groupName]['_and']?.length == 0) {
+    if (group_gqlArgObj[group_name]['_and']?.length == 0) {
         group_canRunQuery = false;
         group_gqlArgObj = {}
     }
@@ -581,7 +578,6 @@ export const generate_gqlArgObj_forHasOperators = (group) => {
 
 
 
-    console.log({ group_gqlArgObj });
     let group_gqlArgObj_string = gqlArgObjToString(group_gqlArgObj)
     return {
         group_gqlArgObj,
