@@ -46,7 +46,6 @@
 			shadowEl.appendChild(labelElClone);
 		}
 	}
-	let expandedVersion = false;
 	let valueToDisplay = () => {
 		let value;
 		if (activeArgumentData.dd_displayType == 'ENUM') {
@@ -61,6 +60,7 @@
 
 		return value;
 	};
+	let expandedVersion = !valueToDisplay();
 	const handleChanged = (detail) => {
 		Object.assign(activeArgumentData, detail);
 		activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
