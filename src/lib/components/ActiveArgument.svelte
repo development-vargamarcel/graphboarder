@@ -9,6 +9,8 @@
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Interface from './fields/Interface.svelte';
 	const activeArgumentsDataGrouped_Store = getContext('activeArgumentsDataGrouped_Store');
+	const final_gqlArgObj_Store = getContext('final_gqlArgObj_Store');
+
 	let dispatch = createEventDispatcher();
 	export let activeArgumentData;
 	export let group;
@@ -67,6 +69,7 @@
 		}
 		dispatch('changed', detail);
 		dispatch('updateQuery');
+		final_gqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
 	};
 	const handleClickOutside = () => {
 		//console.log('clicked outside');
@@ -77,6 +80,7 @@
 		activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
 		dispatch('inUseChanged');
 		dispatch('updateQuery');
+		final_gqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
 	};
 </script>
 

@@ -13,7 +13,6 @@ ${QMS_fields}
   }
 }
     `;
-    console.log(QMS_body)
     return QMS_body
 };
 
