@@ -1,4 +1,4 @@
-import { build_QMS_body, generate_FINAL_gqlArgObj_fromGroups, generate_gqlArgObj, generate_gqlArgObj_forHasOperators, tableColsDataToQueryFields } from "$lib/utils/usefulFunctions";
+import { build_QMS_body, generate_FINAL_gqlArgObj_fromGroups, generate_gqlArgObj, generate_gqlArgObj_forHasOperators, generate_group_gqlArgObj, tableColsDataToQueryFields } from "$lib/utils/usefulFunctions";
 import { writable, get } from "svelte/store";
 
 
@@ -33,11 +33,14 @@ export const Create_final_gqlArgObj_Store = (_activeArgumentsDataGrouped_Store) 
                         group.group_name
                     );
                 } else {
-                    return generate_gqlArgObj(group.group_args)
+                    return generate_group_gqlArgObj(group)
                 }
             })
+            console.log('groups_gqlArgObj', groups_gqlArgObj)
             let { final_gqlArgObj, final_gqlArgObj_string, final_canRunQuery } =
                 generate_FINAL_gqlArgObj_fromGroups(groups_gqlArgObj)
+            console.log('final_gqlArgObj', final_gqlArgObj)
+
             //better set an array
             set({ final_gqlArgObj, final_gqlArgObj_string, final_canRunQuery })
         }
