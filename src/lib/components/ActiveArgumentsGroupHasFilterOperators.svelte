@@ -35,6 +35,7 @@
 		// nodes[e.detail.id] = undefined;
 		//!!! to do: also delete the node from "nodes"
 		nodes = { ...nodes };
+		handleChanged();
 		dispatch('changed');
 	};
 	//
@@ -83,6 +84,10 @@
 	};
 	//
 	const dragDisabledConstantTest = true;
+	let final_gqlArgObj_Store = getContext('final_gqlArgObj_Store');
+	const handleChanged = () => {
+		final_gqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
+	};
 </script>
 
 {#if !node?.isMain}
@@ -114,6 +119,7 @@
 			on:contextmenu|preventDefault|stopPropagation={() => {
 				if (!node?.isMain) {
 					node.not = !node.not;
+					handleChanged();
 					dispatch('changed');
 				}
 			}}
@@ -138,6 +144,7 @@
 	on:contextmenu|preventDefault|stopPropagation={() => {
 		if (!node?.isMain) {
 			node.not = !node.not;
+			handleChanged();
 			dispatch('changed');
 		}
 	}}
@@ -173,6 +180,7 @@
 							node.operator = '_or';
 						}
 					}
+					handleChanged();
 					dispatch('changed');
 				}}
 			>
@@ -208,6 +216,7 @@
 					on:contextmenuUsed={() => {
 						if (!node?.isMain) {
 							node.not = !node.not;
+							handleChanged();
 							dispatch('changed');
 						}
 					}}
