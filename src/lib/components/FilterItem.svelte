@@ -19,8 +19,6 @@
 	let titlePreChange = title;
 	choises.length == 1 ? (type = 'toggle') : '';
 	let reorder = false;
-	let selectedForEdit = [];
-	//$: console.log('selectedForEdit', selectedForEdit);
 	let chosenPreChange;
 	let modalVisible = false;
 	let chosenNew = [];
@@ -56,7 +54,6 @@
 		}
 		//console.log('filterApplied', { id: id, chosen: chosen, extraData });
 		dispatch('filterApplied', { id: id, chosen: chosen, extraData, choises: choises });
-		selectedForEdit = [];
 	};
 	$: if (title) {
 		if (type == 'toggle') {
@@ -178,6 +175,7 @@
 	//
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <btn
 	class="btn btn-sm btn-{size} {btnExtraClass}  flex  w-full normal-case"
 	on:click|stopPropagation|preventDefault|capture={showModalOrToggle}
@@ -239,6 +237,7 @@
 					>
 						{#each choisesWithId as choice (choice.id)}
 							<div animate:flip={{ duration: flipDurationMs }} class="relative flex">
+								<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 								<div
 									tabindex={dragDisabled ? 0 : -1}
 									aria-label="drag-handle"

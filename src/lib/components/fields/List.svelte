@@ -10,8 +10,8 @@
 	console.log({ dd_displayType });
 	const dispatch = createEventDispatcher();
 
-	let elements = rawValue.map((el,i) => {
-		return { chd_rawValue: el, chd_dispatchValue:dispatchValue[i] };
+	let elements = rawValue.map((el, i) => {
+		return { chd_rawValue: el, chd_dispatchValue: dispatchValue[i] };
 	});
 	console.log(elements);
 	const add = () => {
@@ -72,24 +72,3 @@
 	{/each}
 	<button class="btn btn-sm btn-primary w-full" on:click={add}>add</button>
 </div>
-
-<!-- <textarea
-	type={dd_displayType}
-	class="textarea textarea-primary w-full"
-	bind:this={inputEl}
-	value={rawValue}
-	on:change={() => {
-		rawValue = inputEl.value;
-		dispatchValue = rawValue.split('\n');
-		dispatchValue = dispatchValue.map((elVal) => {
-			return dd_displayType == 'text' ? `'${elVal}'` : elVal || '';
-		});
-		dispatch('changed', {
-			chd_chosen: undefined,
-			chd_dispatchValue: dispatchValue || '',
-			chd_needsValue: true,
-			chd_needsChosen: false,
-			chd_rawValue: rawValue
-		}); //chd_ == chosen data
-	}}
-/> -->
