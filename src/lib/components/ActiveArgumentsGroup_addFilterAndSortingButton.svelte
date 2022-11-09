@@ -10,22 +10,8 @@
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
 	import { createEventDispatcher, setContext } from 'svelte';
 	import Arg from './Arg.svelte';
-
-	const flipDurationMs = 200;
 	let dragDisabled = true;
-	const dispatch = createEventDispatcher();
-	function handleSort(e) {
-		group.group_args = e.detail.items;
-		//console.log('choisesWithId', group.group_args);
-
-		dragDisabled = true;
-	}
-	const transformDraggedElement = (draggedEl, data, index) => {
-		draggedEl.querySelector('.dnd-item').classList.add('bg-accent/20', 'border-2', 'border-accent');
-	};
-
 	const hasGroup_argsNode = group.group_argsNode;
-
 	setContext('isDraggingStore', Create_isDragging_Store());
 </script>
 
