@@ -131,9 +131,7 @@
 										} else {
 											if (
 												!group.group_args.some((el) => {
-													return (
-														el.stepsOfFieldsNewStringified == newArgData.stepsOfFieldsNewStringified
-													);
+													return el.stepsOfFieldsStringified == newArgData.stepsOfFieldsStringified;
 												})
 											) {
 												group.group_args.push(newArgData);
@@ -178,9 +176,7 @@
 										let newArgData = e.detail;
 										if (
 											!group.group_args.some((el) => {
-												return (
-													el.stepsOfFieldsNewStringified == newArgData.stepsOfFieldsNewStringified
-												);
+												return el.stepsOfFieldsStringified == newArgData.stepsOfFieldsStringified;
 											})
 										) {
 											group.group_args.push(newArgData);

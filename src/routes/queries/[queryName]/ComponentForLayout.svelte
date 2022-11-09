@@ -17,7 +17,7 @@
 	$: console.log('final_gqlArgObj_Store', $final_gqlArgObj_Store);
 	import {
 		getFields_Grouped,
-		stepsOfFieldsNewToQueryFragmentObject
+		stepsOfFieldsToQueryFragmentObject
 	} from '$lib/utils/usefulFunctions';
 	import { onDestroy, onMount, getContext } from 'svelte';
 	import { goto } from '$app/navigation';
@@ -46,9 +46,9 @@
 		return {
 			title: name,
 			queryFragment: name,
-			queryFragmentNew: name,
-			stepsOfFieldsNew: [name],
-			queryFragmentObject: stepsOfFieldsNewToQueryFragmentObject([name])
+			//queryFragmentNew: name,
+			stepsOfFields: [name],
+			queryFragmentObject: stepsOfFieldsToQueryFragmentObject([name])
 		};
 	});
 	tableColsData_Store.set([...scalarColsData]);
@@ -109,21 +109,18 @@
 		});
 	});
 
-	let column_stepsOfFieldsNew = '';
+	let column_stepsOfFields = '';
 	const addColumnFromInput = (e) => {
 		if (e.key == 'Enter') {
-			let stepsOfFieldsNew = column_stepsOfFieldsNew
-				.replace(/\s/g, '')
-				.replace(/\./g, '>')
-				.split('>');
+			let stepsOfFields = column_stepsOfFields.replace(/\s/g, '').replace(/\./g, '>').split('>');
 			let tableColData = {
 				title: `col-${Math.floor(Math.random() * 200)}`,
-				stepsOfFieldsNew: stepsOfFieldsNew,
-				queryFragmentObject: stepsOfFieldsNewToQueryFragmentObject(stepsOfFieldsNew)
+				stepsOfFields: stepsOfFields,
+				queryFragmentObject: stepsOfFieldsToQueryFragmentObject(stepsOfFields)
 			};
 			tableColsData_Store.addColumn(tableColData);
 			//	QMS_body_Store.generateQMS();
-			column_stepsOfFieldsNew = '';
+			column_stepsOfFields = '';
 		}
 	};
 
@@ -152,7 +149,7 @@
 						type="text"
 						class="input input-sm input-bordered input-accent m-2"
 						placeholder="(> or .) producer>films>title "
-						bind:value={column_stepsOfFieldsNew}
+						bind:value={column_stepsOfFields}
 						on:keypress={addColumnFromInput}
 					/>
 					{#each dd_relatedRoot.fields as type, index (index)}
@@ -160,7 +157,7 @@
 							{index}
 							{type}
 							template="columnAddDisplay"
-							stepsOfFieldsNew={[]}
+							stepsOfFields={[]}
 							depth={0}
 							on:colAddRequest={(e) => {
 								tableColsData_Store.addColumn(e.detail);

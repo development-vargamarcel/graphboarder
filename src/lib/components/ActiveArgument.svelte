@@ -103,7 +103,7 @@
 			<div class="   text-xs  select-none flex grow flex-nowrap pt-1">
 				<div class="flex flex-nowrap  overflow-x-auto  max-w-[65vw] ">
 					<p class="  pr-1 font-semibold shrink-0  text-base-content">
-						{activeArgumentData.stepsOfFieldsNew?.join(' > ') + ':'}
+						{activeArgumentData.stepsOfFields?.join(' > ') + ':'}
 					</p>
 
 					{#if !expandedVersion}
@@ -165,7 +165,7 @@
 							on:changed={(e) => {
 								handleChanged(e.detail);
 							}}
-							id={activeArgumentData.stepsOfFieldsNew}
+							id={activeArgumentData.stepsOfFields}
 							title="choose"
 							type={activeArgumentData.dd_kindList ? 'checkbox' : 'radio'}
 						/>

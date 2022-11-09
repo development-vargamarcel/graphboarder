@@ -9,7 +9,7 @@
 	export let template;
 	export let index;
 	export let type;
-	export let stepsOfFieldsNew;
+	export let stepsOfFields;
 	let {
 		dd_kindsArray,
 		dd_namesArray,
@@ -22,12 +22,12 @@
 		dd_NON_NULL,
 		dd_relatedRoot
 	} = type;
-	if (!stepsOfFieldsNew) {
-		stepsOfFieldsNew = [dd_displayName];
+	if (!stepsOfFields) {
+		stepsOfFields = [dd_displayName];
 	} else {
-		stepsOfFieldsNew = [...stepsOfFieldsNew, dd_displayName];
+		stepsOfFields = [...stepsOfFields, dd_displayName];
 	}
-	//stepsOfFieldsNew = [...stepsOfFieldsNew]; // so each tree will have it's own stepsOfFieldsNew
+	//stepsOfFields = [...stepsOfFields]; // so each tree will have it's own stepsOfFields
 	export let depth = 0;
 	let inDuration = 300;
 
@@ -42,10 +42,10 @@
 		expandData = getRootType($introspectionResult.rootTypes, dd_rootName);
 		if (expandData) {
 			// if (!showExpand) {
-			// 	stepsOfFieldsNew.push(dd_displayName);
+			// 	stepsOfFields.push(dd_displayName);
 			// } else {
 			// 	// does the trick if you hide one by one from last one
-			// 	stepsOfFieldsNew.splice(-1);
+			// 	stepsOfFields.splice(-1);
 			// }
 
 			showExpand = !showExpand;
@@ -85,7 +85,7 @@
 		{index}
 		{showExpand}
 		{template}
-		{stepsOfFieldsNew}
+		{stepsOfFields}
 	/>
 
 	{#if showExpand}
@@ -108,7 +108,7 @@
 			<div class="border-l-2 bg-accent/5">
 				<div class="w-min-max w-full">
 					{#each expandData.fields || expandData.inputFields || expandData.enumValues as type, index (index)}
-						<svelte:self {index} {type} {template} {stepsOfFieldsNew} {depth} on:colAddRequest />
+						<svelte:self {index} {type} {template} {stepsOfFields} {depth} on:colAddRequest />
 					{/each}
 				</div>
 			</div>

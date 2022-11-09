@@ -6,11 +6,11 @@
 	export let index;
 	export let type;
 	export let template;
-	export let stepsOfFieldsNew;
+	export let stepsOfFields;
 	export let predefinedFirstSteps;
 	export let groupName;
-	if (stepsOfFieldsNew.length == 0 && predefinedFirstSteps) {
-		stepsOfFieldsNew = [...predefinedFirstSteps];
+	if (stepsOfFields.length == 0 && predefinedFirstSteps) {
+		stepsOfFields = [...predefinedFirstSteps];
 	}
 	let {
 		dd_kindsArray,
@@ -36,16 +36,16 @@
 	/// do the above for enums
 
 	const addFilter = () => {
-		if (stepsOfFieldsNew[stepsOfFieldsNew.length - 1] !== dd_displayName) {
-			stepsOfFieldsNew.push(dd_displayName); //take care might caus eproblems
+		if (stepsOfFields[stepsOfFields.length - 1] !== dd_displayName) {
+			stepsOfFields.push(dd_displayName); //take care might caus eproblems
 		}
 
 		let infoToCast = {
 			inputFields,
 			enumValues,
-			stepsOfFieldsNew,
-			stepsOfFieldsNewStringified: JSON.stringify(stepsOfFieldsNew),
-			id: `${JSON.stringify(stepsOfFieldsNew)}${Math.random()}`,
+			stepsOfFields,
+			stepsOfFieldsStringified: JSON.stringify(stepsOfFields),
+			id: `${JSON.stringify(stepsOfFields)}${Math.random()}`,
 			...type
 		};
 		//console.log('infoToCast', infoToCast);

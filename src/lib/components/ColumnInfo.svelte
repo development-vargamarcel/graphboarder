@@ -1,6 +1,6 @@
 <script>
-	export let stepsOfFieldsNew;
-	let stepsOfFieldsNew_display = stepsOfFieldsNew
+	export let stepsOfFields;
+	let stepsOfFields_display = stepsOfFields
 		.map((el) => {
 			if (typeof el == 'string') {
 				return el;
@@ -12,5 +12,5 @@
 </script>
 
 <div class="select-all">
-	{stepsOfFieldsNew_display}
+	{stepsOfFields_display}
 </div>

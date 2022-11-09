@@ -1,5 +1,5 @@
 <script>
-	import { stepsOfFieldsNewToQueryFragmentObject } from '$lib/utils/usefulFunctions';
+	import { stepsOfFieldsToQueryFragmentObject } from '$lib/utils/usefulFunctions';
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 	export let canExpand;
@@ -8,7 +8,7 @@
 	export let index;
 	export let showExpand;
 	export let template = 'default';
-	export let stepsOfFieldsNew;
+	export let stepsOfFields;
 	let { dd_kindsArray, dd_namesArray, dd_displayName } = type;
 </script>
 
@@ -75,11 +75,11 @@
 				} else {
 					dispatch('colAddRequest', {
 						title: `col-${Math.floor(Math.random() * 200)}`,
-						stepsOfFieldsNew: stepsOfFieldsNew,
-						queryFragmentObject: stepsOfFieldsNewToQueryFragmentObject(stepsOfFieldsNew)
+						stepsOfFields: stepsOfFields,
+						queryFragmentObject: stepsOfFieldsToQueryFragmentObject(stepsOfFields)
 					});
 
-					stepsOfFieldsNew = [];
+					stepsOfFields = [];
 				}
 			}}
 		>

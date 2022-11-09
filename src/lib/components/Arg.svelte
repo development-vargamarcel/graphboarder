@@ -10,12 +10,12 @@
 	export let type;
 	export let template;
 	export let predefinedFirstSteps; //is actually group_name
-	export let stepsOfFieldsNew = [];
+	export let stepsOfFields = [];
 	export let groupName;
-	if (stepsOfFieldsNew.length == 0 && predefinedFirstSteps) {
-		stepsOfFieldsNew = [...predefinedFirstSteps];
+	if (stepsOfFields.length == 0 && predefinedFirstSteps) {
+		stepsOfFields = [...predefinedFirstSteps];
 	}
-	stepsOfFieldsNew = [...stepsOfFieldsNew]; // so each tree will have it's own stepsOfFieldsNew
+	stepsOfFields = [...stepsOfFields]; // so each tree will have it's own stepsOfFields
 	let indetifier = Math.random();
 	let { dd_kindsArray, dd_rootName, dd_displayName } = type;
 
@@ -31,10 +31,10 @@
 		expandData = getRootType($introspectionResult.rootTypes, dd_rootName);
 		if (expandData) {
 			if (!showExpand) {
-				stepsOfFieldsNew.push(dd_displayName);
+				stepsOfFields.push(dd_displayName);
 			} else {
 				// does the trick if you hide one by one from last one
-				stepsOfFieldsNew.splice(-1);
+				stepsOfFields.splice(-1);
 			}
 
 			showExpand = !showExpand;
@@ -63,7 +63,7 @@
 		{showExpand}
 		{index}
 		{type}
-		{stepsOfFieldsNew}
+		{stepsOfFields}
 		{groupName}
 		on:argAddRequest
 	/>
@@ -83,7 +83,7 @@
 							{index}
 							type={arg}
 							{template}
-							{stepsOfFieldsNew}
+							{stepsOfFields}
 							predefinedFirstSteps={[]}
 							{groupName}
 							on:argAddRequest

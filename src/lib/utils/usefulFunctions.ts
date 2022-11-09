@@ -117,8 +117,8 @@ export const getFields_Grouped = (rootField) => {
 
 //colData must become colInfo everywhere,for less ambiguity
 export const getColResultData = (colData, row_resultData) => {
-    //col data is column info like colData.stepsOfFieldsNew,not the result's column data
-    let stepsOfFieldsNew = colData.stepsOfFieldsNew;
+    //col data is column info like colData.stepsOfFields,not the result's column data
+    let stepsOfFields = colData.stepsOfFields;
     let colResultData;
 
     const handleArray = (array, element) => {
@@ -136,7 +136,7 @@ export const getColResultData = (colData, row_resultData) => {
     };
 
 
-    stepsOfFieldsNew.forEach((element) => {
+    stepsOfFields.forEach((element) => {
         if (typeof element == 'string') {
             if (colResultData?.length > 0) {
                 //is array
@@ -370,12 +370,12 @@ export const generate_gqlArgObj = (group_argumentsData) => {
     let canRunQuery = true;
     group_argumentsData.forEach((argData) => {
         if (argData.inUse) {
-            let { chd_chosen, chd_dispatchValue, chd_needsValue, chd_needsChosen, stepsOfFieldsNew } =
+            let { chd_chosen, chd_dispatchValue, chd_needsValue, chd_needsChosen, stepsOfFields } =
                 argData;
 
             let curr_gqlArgObj = gqlArgObj;
-            stepsOfFieldsNew.forEach((step, index) => {
-                let isLast = index == stepsOfFieldsNew.length - 1;
+            stepsOfFields.forEach((step, index) => {
+                let isLast = index == stepsOfFields.length - 1;
                 if (isLast) {
                     if (!chd_needsChosen) {
                         if (!curr_gqlArgObj?.[step]) {
@@ -658,12 +658,12 @@ export const convertTo_displayStructure = (displayStructure, value) => {
     return value
 }
 //console.log(convertTo_displayStructure('ISO86012', '2020-08-02T00:00:00'))
-export const stepsOfFieldsNewToQueryFragmentObject = (stepsOfFieldsNew) => {
-    let stepsOfFieldsNew_length = stepsOfFieldsNew.length
+export const stepsOfFieldsToQueryFragmentObject = (stepsOfFields) => {
+    let stepsOfFields_length = stepsOfFields.length
     let queryObject = {}
     let queryObjectCurrLevel = queryObject
-    stepsOfFieldsNew.forEach((fieldName, index) => {
-        if (stepsOfFieldsNew_length == index + 1) {
+    stepsOfFields.forEach((fieldName, index) => {
+        if (stepsOfFields_length == index + 1) {
             queryObjectCurrLevel[fieldName] = "novaluehere"
         } else {
             queryObjectCurrLevel[fieldName] = {}
