@@ -37,6 +37,7 @@
 			chosenInputField = detail.extraData.inputFields?.filter((el) => {
 				return el.dd_displayName == detail.chosen;
 			})[0];
+
 			isINPUT_OBJECT = detail.extraData.dd_displayType == 'INPUT_OBJECT';
 			choises = detail.choises;
 			chosen = detail.chosen;
