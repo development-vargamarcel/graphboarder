@@ -153,8 +153,8 @@
 							dd_displayStructure={activeArgumentData.dd_displayStructure}
 							containerEl={labelEl}
 							extraData={activeArgumentData}
-							choises={activeArgumentData?.chd_Choises
-								? activeArgumentData.chd_Choises
+							choises={activeArgumentData?.chd_choises
+								? activeArgumentData.chd_choises
 								: activeArgumentData.enumValues.map((enumValue) => {
 										return enumValue.name;
 								  })}

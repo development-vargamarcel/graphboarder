@@ -60,7 +60,7 @@
 					chd_needsValue: true,
 					chd_needsChosen: true,
 					chd_rawValue: rawValue,
-					chd_Choises: choises,
+					chd_choises: choises,
 					isINPUT_OBJECT,
 					chosenInputField
 				}); //chd_ == chosen data
@@ -70,7 +70,7 @@
 					chd_dispatchValue: dispatchValue,
 					chd_needsValue: false,
 					chd_needsChosen: true,
-					chd_Choises: choises,
+					chd_choises: choises,
 					isINPUT_OBJECT,
 					chosenInputField
 				}); //chd_ == chosen data
@@ -81,7 +81,7 @@
 				chd_dispatchValue: dispatchValue,
 				chd_needsValue: false,
 				chd_needsChosen: true,
-				chd_Choises: choises,
+				chd_choises: choises,
 				isINPUT_OBJECT,
 				chosenInputField
 			}); //chd_ == chosen data
