@@ -67,7 +67,7 @@
 			my-0 max-h-min space-y-0 rounded-b-none border-transparent bg-base-100 p-0 py-0 mx-auto md:w-2/3 pb-8"
 			in:fly={{
 				delay: 20,
-				duration: 300,
+				duration: 200,
 				x: 0,
 				y: 400,
 				opacity: 0,
