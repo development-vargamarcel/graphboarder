@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { generate_FINAL_gqlArgObj_fromGroups } from './../utils/usefulFunctions.ts';
 	const QMS_body_Store = getContext('QMS_body_Store');
 	import { createEventDispatcher, each, getContext, setContext } from 'svelte/internal';
 	import Modal from './Modal.svelte';
@@ -17,22 +16,10 @@
 
 	const handleArgsChanged = () => {};
 
-	const generate_final_gqlArgObj = () => {
-		let { final_gqlArgObj, final_gqlArgObj_string, final_canRunQuery } =
-			generate_FINAL_gqlArgObj_fromGroups($activeArgumentsDataGrouped_Store);
-		if (final_canRunQuery) {
-			dispatch('argsChanged', {
-				gqlArgObj: final_gqlArgObj,
-				gqlArgObj_string: final_gqlArgObj_string
-			});
-		}
-	};
-
 	activeArgumentsDataGrouped_Store.set_groups(argsInfo);
 	activeArgumentsDataGrouped_Store.subscribe((activeArgumentsDataGrouped_Store) => {
 		console.log({ activeArgumentsDataGrouped_Store });
 	});
-	generate_final_gqlArgObj();
 
 	let showDescription = null;
 </script>
@@ -56,9 +43,7 @@
 
 				{#each $activeArgumentsDataGrouped_Store as group}
 					<ActiveArgumentsGroupWraper
-						on:updateQuery={() => {
-							generate_final_gqlArgObj();
-						}}
+						on:updateQuery={() => {}}
 						{update_activeArgumentsDataGrouped}
 						{group}
 						{argsInfo}
