@@ -6,6 +6,10 @@ import { schemaData } from '$lib/stores/schemaData';
 import { page } from '$app/stores';
 import { displayStucture } from '$lib/stores/displayStructure';
 export const build_QMS_body = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query') => {
+    if (QMS_fields.length == '') {
+        console.error('no cols data,choose at least one field')
+        return null
+    }
     let QMS_body = `
     ${QMS_type}{
   ${QMS_name}${QMS_args ? `(${QMS_args})` : ''}{
@@ -674,6 +678,9 @@ export const stepsOfFieldsToQueryFragmentObject = (stepsOfFields) => {
 }
 
 export const tableColsDataToQueryFields = (tableColsData) => {
+    if (tableColsData.length == '') {
+        return ``
+    }
     let queryFragmentsObjects = tableColsData
         .filter((colData) => {
             return colData.queryFragmentObject !== undefined;
