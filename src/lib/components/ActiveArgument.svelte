@@ -5,7 +5,6 @@
 	import List from './fields/List.svelte';
 	import FilterGroup from './FilterGroup.svelte';
 
-	import { generate_gqlArgObj, generate_group_gqlArgObj } from '$lib/utils/usefulFunctions';
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Interface from './fields/Interface.svelte';
 	const activeArgumentsDataGrouped_Store = getContext('activeArgumentsDataGrouped_Store');
@@ -31,14 +30,9 @@
 	//$: console.log(shadowEl);
 	$: if (shadowHeight && shadowEl) {
 		if (shadowEl.style.height == 0) {
-			//if (shadowEl.style.height == 0) ensures the bellow runs only once per grab of element to move
 			shadowEl.style.height = `${shadowHeight + 18}px`;
 			shadowEl.style.width = `${shadowWidth}px`;
 
-			//put labelElClone in place of shadowEl
-			// if (labelElClone) {
-			// 	shadowEl.removeChild(labelElClone);
-			// }
 			labelElClone = labelEl.cloneNode(true);
 			labelElClone.classList.remove('dnd-item');
 			labelElClone.classList.add('border-2', 'border-accent');
