@@ -1,8 +1,8 @@
 <script>
 	import { page } from '$app/stores';
-	import { setClient } from '@urql/svelte';
+	//import { setClient } from '@urql/svelte';
 	import Table from '$lib/components/Table.svelte';
-	import { urqlClient } from '$lib/stores/urqlClient';
+	//import { urqlClient } from '$lib/stores/urqlClient';
 	import { urqlCoreClient } from '$lib/stores/urqlCoreClient';
 
 	let queryName = $page.params.queryName;
@@ -22,7 +22,7 @@
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	import { schemaData } from '$lib/stores/schemaData';
-	setClient($urqlClient);
+	//setClient($urqlClient);
 	$: console.log('$QMS_body_StoreDerived', $QMS_body_StoreDerived);
 	onDestroy(() => {
 		document.getElementById('my-drawer-3')?.click();
