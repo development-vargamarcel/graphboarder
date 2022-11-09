@@ -24,7 +24,6 @@
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	import { schemaData } from '$lib/stores/schemaData';
-	import ComponentForLayout from './ComponentForLayout.svelte';
 	setClient($urqlClient);
 	$: console.log('$QMS_body_StoreDerived', $QMS_body_StoreDerived);
 	onDestroy(() => {
