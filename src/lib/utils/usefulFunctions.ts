@@ -696,13 +696,24 @@ export const tableColsDataToQueryFields = (tableColsData) => {
 }
 
 export const argumentCanRunQuery = (arg) => {
-    if (!arg.inUse) {
+    const { inUse, chd_needsChosen, chd_chosen, chd_needsValue, chd_dispatchValue, dd_kindEl, dd_kindEl_NON_NULL, dd_kindList, dd_kindList_NON_NULL, } = arg
+    let argFinalValue = chd_needsChosen ? chd_chosen : chd_dispatchValue
+    if (!inUse) {
         return true
     }
-    if (arg.chd_needsChosen && arg.chd_chosen.length == 0) {
+    if (dd_kindList && !Array.isArray(argFinalValue)) {
         return false
     }
-    if (arg.chd_needsValue && typeof arg.chd_dispatchValue == undefined) {
+    if (dd_kindList_NON_NULL && argFinalValue == null) {
+        return false
+    }
+    if (dd_kindEl && (!argFinalValue || argFinalValue.length == 0)) {
+        return false
+    }
+    if (chd_needsChosen && chd_chosen.length == 0) {
+        return false
+    }
+    if (chd_needsValue && typeof chd_dispatchValue == undefined) {
         return false
     }
     return true
