@@ -1,5 +1,4 @@
 <script>
-	import { Create_QMS_body_Store } from '$lib/stores/QMS_body_Store.ts';
 	import { page } from '$app/stores';
 	import { setClient } from '@urql/svelte';
 	import Table from '$lib/components/Table.svelte';
@@ -11,7 +10,6 @@
 	const activeArgumentsDataGrouped_Store = getContext('activeArgumentsDataGrouped_Store');
 	const tableColsData_Store = getContext('tableColsData_Store');
 	const final_gqlArgObj_Store = getContext('final_gqlArgObj_Store');
-	//const QMS_body_Store = getContext('QMS_body_Store');
 	const QMS_body_StoreDerived = getContext('QMS_body_StoreDerived');
 
 	$: console.log('final_gqlArgObj_Store', $final_gqlArgObj_Store);
@@ -80,9 +78,6 @@
 				if (rows?.length == undefined) {
 					rows = [rows];
 				}
-				if (rows?.length == undefined) {
-					rows = [rows];
-				}
 			});
 	};
 	QMS_body_StoreDerived.subscribe((QMS_body) => {
@@ -94,12 +89,10 @@
 		queryData = { fetching: false, error: false, data: false };
 	} else {
 		queryData = { fetching: true, error: false, data: false };
-		//	QMS_body_Store.generateQMS();
 	}
 
 	const hideColumn = (e) => {
 		tableColsData_Store.removeColumn(e.detail.column);
-		//	QMS_body_Store.generateQMS(); //ctually is fine even if i do not rerun here,data is already here... usefull only for subscriptions maybe
 	};
 	tableColsData_Store.subscribe((data) => {
 		console.log(data);
@@ -118,7 +111,6 @@
 				queryFragmentObject: stepsOfFieldsToQueryFragmentObject(stepsOfFields)
 			};
 			tableColsData_Store.addColumn(tableColData);
-			//	QMS_body_Store.generateQMS();
 			column_stepsOfFields = '';
 		}
 	};
@@ -160,7 +152,6 @@
 							depth={0}
 							on:colAddRequest={(e) => {
 								tableColsData_Store.addColumn(e.detail);
-								//QMS_body_Store.generateQMS();
 								//	dd_relatedRoot.fields = dd_relatedRoot.fields; // this and key is used to re-render Type
 							}}
 						/>
@@ -173,9 +164,7 @@
 		<ActiveArguments
 			argsInfo={currentQueryInfo?.args}
 			{activeArgumentsData}
-			on:argsChanged={(e) => {
-				//QMS_body_Store.generateQMS();
-			}}
+			on:argsChanged={(e) => {}}
 		/>
 	</div>
 </div>

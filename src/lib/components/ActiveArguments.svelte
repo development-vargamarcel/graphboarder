@@ -1,5 +1,4 @@
 <script lang="ts">
-	const QMS_body_Store = getContext('QMS_body_Store');
 	import { createEventDispatcher, each, getContext, setContext } from 'svelte/internal';
 	import Modal from './Modal.svelte';
 	import ActiveArgumentsGroupWraper from './ActiveArgumentsGroupWraper.svelte';
