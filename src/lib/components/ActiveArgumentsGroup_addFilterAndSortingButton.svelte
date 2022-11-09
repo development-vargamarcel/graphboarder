@@ -8,7 +8,7 @@
 	let showDescription;
 
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
-	import { createEventDispatcher, setContext } from 'svelte';
+	import { setContext } from 'svelte';
 	import Arg from './Arg.svelte';
 	let dragDisabled = true;
 	const hasGroup_argsNode = group.group_argsNode;
