@@ -14,7 +14,6 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
             let activeArgumentsDataGrouped = [rootGroup];
 
             argsInfo?.forEach((el) => {
-                //console.log('el---', el);
                 if (!el.dd_isRootArg) {
                     const newGroupData = {
                         group_name: el.dd_displayName,
@@ -42,7 +41,6 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 
                 }
             });
-            console.log({ activeArgumentsDataGrouped })
 
             set(activeArgumentsDataGrouped)
         }, update_groups: (groupNewData) => {

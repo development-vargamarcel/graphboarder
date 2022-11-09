@@ -17,12 +17,10 @@ export const Create_final_gqlArgObj_Store = (_activeArgumentsDataGrouped_Store) 
                     return generate_group_gqlArgObj(group)
                 }
             })
-            console.log('groups_gqlArgObj', groups_gqlArgObj)
             let { final_gqlArgObj, final_gqlArgObj_string, final_canRunQuery } =
                 generate_FINAL_gqlArgObj_fromGroups(groups_gqlArgObj)
-            console.log('final_gqlArgObj', final_gqlArgObj)
 
-            //better set an array
+            //better set an array?
             set({ final_gqlArgObj, final_gqlArgObj_string, final_canRunQuery })
         }
     }
