@@ -1,8 +1,5 @@
 <script>
-	import ActiveArgumentsGroupNormal from './ActiveArgumentsGroupNormal.svelte';
-
 	import { Create_isDragging_Store } from '../stores/isDragging_Store.ts';
-	import ActiveArgument from '$lib/components/ActiveArgument.svelte';
 	export let group;
 	export let argsInfo;
 	export let activeArgumentsData;
@@ -10,13 +7,8 @@
 	export let activeArgumentsDataGrouped;
 	let showDescription;
 
-	//
-
-	import { dndzone, SOURCES, TRIGGERS } from 'svelte-dnd-action';
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
-	import { flip } from 'svelte/animate';
 	import { createEventDispatcher, setContext } from 'svelte';
-	import ActiveArgumentsGroupHasFilterOperators from '$lib/components/ActiveArgumentsGroupHasFilterOperators.svelte';
 	import Arg from './Arg.svelte';
 
 	const flipDurationMs = 200;
@@ -32,43 +24,8 @@
 		draggedEl.querySelector('.dnd-item').classList.add('bg-accent/20', 'border-2', 'border-accent');
 	};
 
-	//
-	function handleConsider(e) {
-		const {
-			items: newItems,
-			info: { source, trigger }
-		} = e.detail;
-		handleSort(e);
-		// Ensure dragging is stopped on drag finish via keyboard
-		if (source === SOURCES.KEYBOARD && trigger === TRIGGERS.DRAG_STOPPED) {
-			dragDisabled = true;
-		}
-	}
-	function handleFinalize(e) {
-		const {
-			items: newItems,
-			info: { source }
-		} = e.detail;
-		handleSort(e);
-		// Ensure dragging is stopped on drag finish via pointer (mouse, touch)
-		if (source === SOURCES.POINTER) {
-			dragDisabled = true;
-		}
-		update_activeArgumentsDataGrouped(group);
-		dispatch('updateQuery');
-	}
-	function startDrag(e) {
-		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
-		e.preventDefault();
-		dragDisabled = false;
-	}
-	function handleKeyDown(e) {
-		if ((e.key === 'Enter' || e.key === ' ') && dragDisabled) dragDisabled = false;
-	}
-	//
-
 	const hasGroup_argsNode = group.group_argsNode;
-	//
+
 	setContext('isDraggingStore', Create_isDragging_Store());
 </script>
 
