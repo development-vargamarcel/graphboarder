@@ -10,14 +10,13 @@ export const build_QMS_body = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query
         console.error('no cols data,choose at least one field')
         return null
     }
-    let QMS_body = `
+    return `
     ${QMS_type}{
   ${QMS_name}${QMS_args ? `(${QMS_args})` : ''}{
 ${QMS_fields}
   }
 }
-    `;
-    return QMS_body
+`;
 };
 
 
