@@ -159,11 +159,11 @@
 							{index}
 							{type}
 							template="columnAddDisplay"
-							stepsOfFields={[]}
+							stepsOfFields={[queryName]}
 							depth={0}
 							on:colAddRequest={(e) => {
 								let tableColData = e.detail;
-								tableColData.stepsOfFields = [queryName, ...tableColData.stepsOfFields];
+								//tableColData.stepsOfFields = [queryName, ...tableColData.stepsOfFields];
 
 								tableColsData_Store.addColumn(tableColData);
 							}}

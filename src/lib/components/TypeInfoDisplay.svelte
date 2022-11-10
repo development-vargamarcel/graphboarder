@@ -77,7 +77,7 @@
 						stepsOfFields: stepsOfFields
 					});
 
-					stepsOfFields = [];
+					//stepsOfFields = [];
 				}
 			}}
 		>
