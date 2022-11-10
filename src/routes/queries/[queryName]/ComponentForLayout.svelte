@@ -83,6 +83,7 @@
 				if (rows?.length == undefined) {
 					rows = [rows];
 				}
+				console.log({ rows });
 			});
 	};
 	QMS_bodyPart_StoreDerived.subscribe((QMS_body) => {
@@ -213,19 +214,18 @@
 {#if queryData.fetching}
 	<p>Loading...</p>
 {/if}
-{#if queryData.data}
-	<div class="md:px-2">
-		<Table
-			colsData={$tableColsData_Store}
-			{columns}
-			{rows}
-			on:addColumnDropdown={() => {
-				//console.log('add column dropdown');
-			}}
-			on:hideColumn={(e) => {
-				hideColumn(e);
-			}}
-			on:clickedOnRow={(e) => {}}
-		/>
-	</div>
-{/if}
+
+<div class="md:px-2">
+	<Table
+		colsData={$tableColsData_Store}
+		{columns}
+		{rows}
+		on:addColumnDropdown={() => {
+			//console.log('add column dropdown');
+		}}
+		on:hideColumn={(e) => {
+			hideColumn(e);
+		}}
+		on:clickedOnRow={(e) => {}}
+	/>
+</div>
