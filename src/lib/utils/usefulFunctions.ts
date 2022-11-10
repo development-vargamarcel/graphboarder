@@ -664,7 +664,6 @@ export const convertTo_displayStructure = (displayStructure, value) => {
 export const stepsOfFieldsToQueryFragmentObject = (stepsOfFields) => {
     let _stepsOfFields = [...stepsOfFields]
     _stepsOfFields.shift()
-    console.log(_stepsOfFields)
     let _stepsOfFields_length = _stepsOfFields.length
     let queryObject = {}
     let queryObjectCurrLevel = queryObject
