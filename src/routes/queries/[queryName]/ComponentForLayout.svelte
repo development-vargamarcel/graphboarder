@@ -67,8 +67,18 @@
 					error = result.error.message;
 				}
 				queryData = { fetching, error, data };
-
-				rows = queryData.data[queryName];
+				if (queryData.data[queryName]?.edges) {
+					//needed for: https://swapi-graphql.netlify.app/.netlify/functions/index
+					rows = queryData.data[queryName]?.edges;
+				} else if (queryData.data[queryName]?.results) {
+					//needed for:https://rickandmortyapi.com/graphql
+					rows = queryData.data[queryName]?.results;
+				} else if (queryData.data[queryName]?.nodes) {
+					//needed for:https://beta.pokeapi.co/graphql/v1beta
+					rows = queryData.data[queryName]?.nodes;
+				} else {
+					rows = queryData.data[queryName];
+				}
 
 				if (rows?.length == undefined) {
 					rows = [rows];
@@ -156,7 +166,6 @@
 								tableColData.stepsOfFields = [queryName, ...tableColData.stepsOfFields];
 
 								tableColsData_Store.addColumn(tableColData);
-
 							}}
 						/>
 					{/each}
