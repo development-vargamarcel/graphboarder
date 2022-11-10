@@ -13,9 +13,9 @@
 			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' }
 		},
 		{
-			url: 'https://mdunpmb9.directus.app/graphql',
+			url: 'https://7rsm0d0d.directus.app/graphql',
 			headers: {
-				authorization: 'Bearer kdjskhfdkjshfdsfkljdshfkjdhsfk7u4y3f3h8rhef347hh4ueihf8934h'
+				authorization: 'Bearer aKUvsqBR4-rfnL2z6nqEQmLPRIur4c1m'
 			}
 		},
 		{ url: 'https://api.spacex.land/graphql/' },
