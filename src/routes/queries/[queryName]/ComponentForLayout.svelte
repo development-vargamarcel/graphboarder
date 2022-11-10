@@ -156,8 +156,7 @@
 								tableColData.stepsOfFields = [queryName, ...tableColData.stepsOfFields];
 
 								tableColsData_Store.addColumn(tableColData);
-								//tableColsData_Store.addColumn(e.detail);
-								//	dd_relatedRoot.fields = dd_relatedRoot.fields; // this and key is used to re-render Type
+
 							}}
 						/>
 					{/each}
