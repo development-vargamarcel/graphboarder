@@ -6,7 +6,7 @@ import { schemaData } from '$lib/stores/schemaData';
 import { page } from '$app/stores';
 import { displayStucture } from '$lib/stores/displayStructure';
 export const build_QMS_body = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query') => {
-    if (QMS_fields.length == '') {
+    if (QMS_fields == '') {
         console.error('no cols data,choose at least one field')
         return null
     }
