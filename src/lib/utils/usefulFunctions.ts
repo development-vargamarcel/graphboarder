@@ -684,10 +684,10 @@ export const tableColsDataToQueryFields = (tableColsData) => {
     }
     let queryFragmentsObjects = tableColsData
         .filter((colData) => {
-            return colData.queryFragmentObject !== undefined;
+            return stepsOfFieldsToQueryFragmentObject(colData.stepsOfFields) !== undefined;
         })
         .map((colData) => {
-            return colData.queryFragmentObject;
+            return stepsOfFieldsToQueryFragmentObject(colData.stepsOfFields);
         });
     const _queryFragmentsObjects = JSON.parse(JSON.stringify(queryFragmentsObjects))
 

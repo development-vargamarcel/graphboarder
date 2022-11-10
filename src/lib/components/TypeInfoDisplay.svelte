@@ -1,5 +1,4 @@
 <script>
-	import { stepsOfFieldsToQueryFragmentObject } from '$lib/utils/usefulFunctions';
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 	export let canExpand;
@@ -75,8 +74,7 @@
 				} else {
 					dispatch('colAddRequest', {
 						title: `col-${Math.floor(Math.random() * 200)}`,
-						stepsOfFields: stepsOfFields,
-						queryFragmentObject: stepsOfFieldsToQueryFragmentObject(stepsOfFields)
+						stepsOfFields: stepsOfFields
 					});
 
 					stepsOfFields = [];

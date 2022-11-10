@@ -13,10 +13,7 @@
 	const QMS_bodyPart_StoreDerived = getContext('QMS_bodyPart_StoreDerived');
 
 	$: console.log('final_gqlArgObj_Store', $final_gqlArgObj_Store);
-	import {
-		getFields_Grouped,
-		stepsOfFieldsToQueryFragmentObject
-	} from '$lib/utils/usefulFunctions';
+	import { getFields_Grouped } from '$lib/utils/usefulFunctions';
 	import { onDestroy, onMount, getContext } from 'svelte';
 	import { goto } from '$app/navigation';
 	import Type from '$lib/components/Type.svelte';
@@ -44,9 +41,6 @@
 			title: name,
 			stepsOfFields: [queryName, name]
 		};
-		scalarColData.queryFragmentObject = stepsOfFieldsToQueryFragmentObject(
-			scalarColData.stepsOfFields
-		);
 		return scalarColData;
 	});
 	tableColsData_Store.set([...scalarColsData]);
@@ -91,6 +85,7 @@
 			);
 		}
 	});
+	$: console.log({ queryData });
 	if (scalarFields.length == 0) {
 		queryData = { fetching: false, error: false, data: false };
 	} else {
@@ -113,12 +108,9 @@
 			let stepsOfFields = column_stepsOfFields.replace(/\s/g, '').replace(/\./g, '>').split('>');
 			let tableColData = {
 				title: `col-${Math.floor(Math.random() * 200)}`,
-				stepsOfFields: [queryName, ...stepsOfFields],
-				queryFragmentObject: stepsOfFieldsToQueryFragmentObject(stepsOfFields)
+				stepsOfFields: [queryName, ...stepsOfFields]
 			};
-			tableColData.queryFragmentObject = stepsOfFieldsToQueryFragmentObject(
-				tableColData.stepsOfFields
-			);
+
 			tableColsData_Store.addColumn(tableColData);
 			column_stepsOfFields = '';
 		}
@@ -162,9 +154,7 @@
 							on:colAddRequest={(e) => {
 								let tableColData = e.detail;
 								tableColData.stepsOfFields = [queryName, ...tableColData.stepsOfFields];
-								tableColData.queryFragmentObject = stepsOfFieldsToQueryFragmentObject(
-									tableColData.stepsOfFields
-								);
+
 								tableColsData_Store.addColumn(tableColData);
 								//tableColsData_Store.addColumn(e.detail);
 								//	dd_relatedRoot.fields = dd_relatedRoot.fields; // this and key is used to re-render Type
