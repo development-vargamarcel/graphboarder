@@ -10,7 +10,7 @@
 	const activeArgumentsDataGrouped_Store = getContext('activeArgumentsDataGrouped_Store');
 	const tableColsData_Store = getContext('tableColsData_Store');
 	const final_gqlArgObj_Store = getContext('final_gqlArgObj_Store');
-	const QMS_body_StoreDerived = getContext('QMS_body_StoreDerived');
+	const QMS_bodyPart_StoreDerived = getContext('QMS_bodyPart_StoreDerived');
 
 	$: console.log('final_gqlArgObj_Store', $final_gqlArgObj_Store);
 	import {
@@ -23,7 +23,7 @@
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	import { schemaData } from '$lib/stores/schemaData';
 	//setClient($urqlClient);
-	$: console.log('$QMS_body_StoreDerived', $QMS_body_StoreDerived);
+	$: console.log('$QMS_bodyPart_StoreDerived', $QMS_bodyPart_StoreDerived);
 	onDestroy(() => {
 		document.getElementById('my-drawer-3')?.click();
 	});
@@ -81,7 +81,7 @@
 				}
 			});
 	};
-	QMS_body_StoreDerived.subscribe((QMS_body) => {
+	QMS_bodyPart_StoreDerived.subscribe((QMS_body) => {
 		if (QMS_body && QMS_body !== '') {
 			runQuery(
 				`query {
