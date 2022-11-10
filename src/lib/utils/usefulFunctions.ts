@@ -119,9 +119,9 @@ export const getFields_Grouped = (rootField) => {
 
 
 //colData must become colInfo everywhere,for less ambiguity
-export const getColResultData = (colData, row_resultData) => {
-    //col data is column info like colData.stepsOfFields,not the result's column data
-    let stepsOfFields = colData.stepsOfFields;
+export const getColResultData = (colInfo, row_resultData) => {
+    //col data is column info like colInfo.stepsOfFields,not the result's column data
+    let stepsOfFields = colInfo.stepsOfFields;
     let colResultData;
 
     const handleArray = (array, element) => {
