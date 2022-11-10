@@ -40,13 +40,14 @@
 	});
 
 	let scalarColsData = currentQuery_fields_SCALAR_names.map((name) => {
-		return {
+		let scalarColData = {
 			title: name,
-			queryFragment: name,
-			//queryFragmentNew: name,
-			stepsOfFields: [name],
-			queryFragmentObject: stepsOfFieldsToQueryFragmentObject([name])
+			stepsOfFields: [queryName, name]
 		};
+		scalarColData.queryFragmentObject = stepsOfFieldsToQueryFragmentObject(
+			scalarColData.stepsOfFields
+		);
+		return scalarColData;
 	});
 	tableColsData_Store.set([...scalarColsData]);
 
@@ -82,7 +83,12 @@
 	};
 	QMS_body_StoreDerived.subscribe((QMS_body) => {
 		if (QMS_body && QMS_body !== '') {
-			runQuery(QMS_body);
+			runQuery(
+				`query {
+				${QMS_body}
+		}
+				`
+			);
 		}
 	});
 	if (scalarFields.length == 0) {
@@ -107,9 +113,12 @@
 			let stepsOfFields = column_stepsOfFields.replace(/\s/g, '').replace(/\./g, '>').split('>');
 			let tableColData = {
 				title: `col-${Math.floor(Math.random() * 200)}`,
-				stepsOfFields: stepsOfFields,
+				stepsOfFields: [queryName, ...stepsOfFields],
 				queryFragmentObject: stepsOfFieldsToQueryFragmentObject(stepsOfFields)
 			};
+			tableColData.queryFragmentObject = stepsOfFieldsToQueryFragmentObject(
+				tableColData.stepsOfFields
+			);
 			tableColsData_Store.addColumn(tableColData);
 			column_stepsOfFields = '';
 		}
@@ -151,7 +160,13 @@
 							stepsOfFields={[]}
 							depth={0}
 							on:colAddRequest={(e) => {
-								tableColsData_Store.addColumn(e.detail);
+								let tableColData = e.detail;
+								tableColData.stepsOfFields = [queryName, ...tableColData.stepsOfFields];
+								tableColData.queryFragmentObject = stepsOfFieldsToQueryFragmentObject(
+									tableColData.stepsOfFields
+								);
+								tableColsData_Store.addColumn(tableColData);
+								//tableColsData_Store.addColumn(e.detail);
 								//	dd_relatedRoot.fields = dd_relatedRoot.fields; // this and key is used to re-render Type
 							}}
 						/>

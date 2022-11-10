@@ -11,11 +11,11 @@ export const build_QMS_body = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query
         return null
     }
     return `
-    ${QMS_type}{
+    
   ${QMS_name}${QMS_args ? `(${QMS_args})` : ''}{
 ${QMS_fields}
   }
-}
+
 `;
 };
 
@@ -662,11 +662,14 @@ export const convertTo_displayStructure = (displayStructure, value) => {
 }
 //console.log(convertTo_displayStructure('ISO86012', '2020-08-02T00:00:00'))
 export const stepsOfFieldsToQueryFragmentObject = (stepsOfFields) => {
-    let stepsOfFields_length = stepsOfFields.length
+    let _stepsOfFields = [...stepsOfFields]
+    _stepsOfFields.shift()
+    console.log(_stepsOfFields)
+    let _stepsOfFields_length = _stepsOfFields.length
     let queryObject = {}
     let queryObjectCurrLevel = queryObject
-    stepsOfFields.forEach((fieldName, index) => {
-        if (stepsOfFields_length == index + 1) {
+    _stepsOfFields.forEach((fieldName, index) => {
+        if (_stepsOfFields_length == index + 1) {
             queryObjectCurrLevel[fieldName] = "novaluehere"
         } else {
             queryObjectCurrLevel[fieldName] = {}
