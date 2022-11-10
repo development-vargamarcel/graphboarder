@@ -20,7 +20,7 @@
 		QMSName
 	);
 	const QMS_bodyPartsUnifier_StoreDerived = Create_QMS_bodyPartsUnifier_StoreDerived(
-		[QMS_bodyPart_StoreDerived, QMS_bodyPart_StoreDerived, QMS_bodyPart_StoreDerived],
+		[QMS_bodyPart_StoreDerived],
 		QMSType
 	);
 
