@@ -186,14 +186,14 @@ export const getColResultData = (colData, row_resultData) => {
     return colResultData;
 };
 
-export const getData = (row, colData, index) => {
+export const getTableCellData = (rowData, colData, index) => {
     let data;
-    if (row) {
-        if (row[index] !== undefined) {
-            //row[index] //Not good,causes problems when two or more fields share fields,because in the results they will have data under the same column
-            data = getColResultData(colData, row[index]);
+    if (rowData) {
+        if (rowData[index] !== undefined) {
+            //rowData[index] //Not good,causes problems when two or more fields share fields,because in the results they will have data under the same column
+            data = getColResultData(colData, rowData[index]);
         } else {
-            data = getColResultData(colData, row);
+            data = getColResultData(colData, rowData);
         }
     } else {
         data = 'loading...';

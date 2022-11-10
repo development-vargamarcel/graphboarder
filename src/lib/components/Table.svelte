@@ -3,7 +3,7 @@
 
 	import { page } from '$app/stores';
 
-	import { formatData, getColResultData, getData } from '$lib/utils/usefulFunctions';
+	import { formatData, getColResultData, getTableCellData } from '$lib/utils/usefulFunctions';
 
 	import { createEventDispatcher } from 'svelte';
 	import ColumnInfo from './ColumnInfo.svelte';
@@ -86,7 +86,7 @@
 					<th class="z-0">{index + 1}</th>
 					{#each colsData as colData, index}
 						<td class="z-0">
-							{formatData(getData(row, colData, index), 40, true)}
+							{formatData(getTableCellData(row, colData, index), 40, true)}
 						</td>{/each}
 					<td class="sticky right-0 z-0 w-2" />
 				</tr>
