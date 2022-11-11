@@ -19,7 +19,6 @@
 	import { flip } from 'svelte/animate';
 	import { createEventDispatcher, getContext, setContext } from 'svelte';
 	import ActiveArgumentsGroupHasFilterOperators from '$lib/components/ActiveArgumentsGroupHasFilterOperators.svelte';
-	import Arg from './Arg.svelte';
 
 	const flipDurationMs = 200;
 	let dragDisabled = true;

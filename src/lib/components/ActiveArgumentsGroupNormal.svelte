@@ -13,8 +13,6 @@
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
 	import { flip } from 'svelte/animate';
 	import { createEventDispatcher, setContext } from 'svelte';
-	import ActiveArgumentsGroupHasFilterOperators from '$lib/components/ActiveArgumentsGroupHasFilterOperators.svelte';
-	import Arg from './Arg.svelte';
 
 	const flipDurationMs = 200;
 	let dragDisabled = true;
