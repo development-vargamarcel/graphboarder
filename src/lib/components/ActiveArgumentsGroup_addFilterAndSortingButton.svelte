@@ -20,7 +20,6 @@
 	let NON_rootArgs = group?.dd_relatedRoot?.inputFields;
 	let groupArgsPossibilities = NON_rootArgs ? NON_rootArgs : rootArgs;
 	let predefinedFirstSteps = NON_rootArgs ? [group.group_name] : [];
-	console.log({ predefinedFirstSteps });
 </script>
 
 <div class="bg-base-100 p-2 rounded-box">
