@@ -17,9 +17,10 @@
 	let rootArgs = argsInfo.filter((arg) => {
 		return arg.dd_isRootArg;
 	});
-	let groupArgsPossibilities = group?.dd_relatedRoot?.inputFields;
-	groupArgsPossibilities = groupArgsPossibilities ? groupArgsPossibilities : rootArgs;
-	let predefinedFirstSteps = groupArgsPossibilities ? [group.group_name] : [];
+	let NON_rootArgs = group?.dd_relatedRoot?.inputFields;
+	let groupArgsPossibilities = NON_rootArgs ? NON_rootArgs : rootArgs;
+	let predefinedFirstSteps = NON_rootArgs ? [group.group_name] : [];
+	console.log({ predefinedFirstSteps });
 </script>
 
 <div class="bg-base-100 p-2 rounded-box">
