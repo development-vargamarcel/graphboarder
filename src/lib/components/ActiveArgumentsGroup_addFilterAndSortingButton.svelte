@@ -5,16 +5,8 @@
 	export let activeArgumentsData;
 	export let update_activeArgumentsDataGrouped;
 	export let activeArgumentsDataGrouped;
-	export let prefix = '';
-	console.log({ group });
-	let rootArgs = argsInfo.filter((arg) => {
-		return arg.dd_isRootArg;
-	});
-	let groupArgsPossibilities = group?.dd_relatedRoot?.inputFields;
-	groupArgsPossibilities = groupArgsPossibilities ? groupArgsPossibilities : rootArgs;
-
 	let showDescription;
-
+	export let prefix = '';
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
 	import { getContext, setContext } from 'svelte';
 	import Arg from './Arg.svelte';
@@ -42,37 +34,60 @@
 					<div
 						class="flex flex-col overflow-x-auto overscroll-contain text-sm font-normal normal-case min-w-max w-full "
 					>
-						{#each groupArgsPossibilities as arg, index}
-							<Arg
-								{index}
-								type={arg}
-								template="changeArguments"
-								predefinedFirstSteps={arg.dd_isRootArg ? [] : [group.group_name]}
-								groupName={group.group_name}
-								on:argAddRequest={(e) => {
-									let newArgData = e.detail;
-									activeArgumentsDataGrouped_Store.add_activeArgument(newArgData, group.group_name);
-									update_activeArgumentsDataGrouped(group);
-								}}
-							/>
-						{/each}
-						{#if hasGroup_argsNode}
-							<button
-								class="btn btn-primary btn-sm"
-								on:click={() => {
-									let randomNr = Math.random();
-									group.group_argsNode[`${randomNr}`] = {
-										id: randomNr,
-										operator: '_or',
-										not: false,
-										isMain: false,
-										items: []
-									};
-									group.group_argsNode['mainContainer'].items.push({ id: randomNr });
-								}}
-							>
-								OR/And group
-							</button>
+						{#if group?.dd_relatedRoot?.inputFields}
+							{#each group?.dd_relatedRoot?.inputFields as arg, index}
+								<Arg
+									{index}
+									type={arg}
+									template="changeArguments"
+									predefinedFirstSteps={[group.group_name]}
+									groupName={group.group_name}
+									on:argAddRequest={(e) => {
+										let newArgData = e.detail;
+										activeArgumentsDataGrouped_Store.add_activeArgument(
+											newArgData,
+											group.group_name
+										);
+									}}
+								/>
+							{/each}
+							{#if hasGroup_argsNode}
+								<button
+									class="btn btn-primary btn-sm"
+									on:click={() => {
+										let randomNr = Math.random();
+										group.group_argsNode[`${randomNr}`] = {
+											id: randomNr,
+											operator: '_or',
+											not: false,
+											isMain: false,
+											items: []
+										};
+										group.group_argsNode['mainContainer'].items.push({ id: randomNr });
+									}}
+								>
+									OR/And group
+								</button>
+							{/if}
+						{:else}
+							{#each argsInfo.filter((arg) => {
+								return arg.dd_isRootArg;
+							}) as arg, index}
+								<Arg
+									{index}
+									type={arg}
+									template="changeArguments"
+									predefinedFirstSteps={[]}
+									groupName={group.group_name}
+									on:argAddRequest={(e) => {
+										let newArgData = e.detail;
+										activeArgumentsDataGrouped_Store.add_activeArgument(
+											newArgData,
+											group.group_name
+										);
+									}}
+								/>
+							{/each}
 						{/if}
 					</div>
 				</div>
