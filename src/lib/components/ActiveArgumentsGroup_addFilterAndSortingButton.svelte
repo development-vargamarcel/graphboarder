@@ -42,7 +42,7 @@
 					>
 						{#if hasGroup_argsNode}
 							<button
-								class="btn btn-primary btn-xs mt-4 normal-case font-thin text-base"
+								class="btn btn-primary btn-xs mt-4 normal-case font-thin text-base sticky top-0"
 								on:click={() => {
 									let randomNr = Math.random();
 									group.group_argsNode[`${randomNr}`] = {
