@@ -56,12 +56,14 @@
 	};
 	let expandedVersion = !valueToDisplay();
 	const handleChanged = (detail) => {
+		console.log('detail', detail);
 		Object.assign(activeArgumentData, detail);
 		activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
 		if (!activeArgumentData.inUse && valueToDisplay() !== undefined) {
 			inUse_toggle();
 		}
 		dispatch('changed', detail);
+		console.log('activeArgumentsDataGrouped_Store', $activeArgumentsDataGrouped_Store);
 		final_gqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
 	};
 	const handleClickOutside = () => {

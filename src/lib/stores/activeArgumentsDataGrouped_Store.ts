@@ -57,16 +57,24 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
         ) => {
             update(
                 (activeArgumentsDataGrouped) => {
+                    console.log('pppppppp activeArgumentData', activeArgumentData)
                     const gqlArgObj = generate_gqlArgObj([activeArgumentData])
                     const canRunQuery = argumentCanRunQuery(activeArgumentData)
                     Object.assign(activeArgumentData, { ...gqlArgObj, canRunQuery });
-                    const group = activeArgumentsDataGrouped?.filter((group) => { return group.group_name == groupName })
-                    const activeArgument = group.group_args?.filter((arg) => { return arg.id == activeArgumentData.id })
+                    const group = activeArgumentsDataGrouped?.find((group) => { return group.group_name == groupName })
+                    console.log('ppppp group', group)
+                    const activeArgument = group.group_args?.find((arg) => { return arg.id == activeArgumentData.id })
                     const activeArgumentNode = group?.group_argsNode?.[activeArgumentData.id]
+                    if (!activeArgument && !activeArgumentNode) {
+                        console.log('nothing updated')
+                    }
                     if (activeArgumentNode) {
+                        console.log('updated activeArgumentNode', activeArgumentNode)
                         Object.assign(activeArgumentNode, activeArgumentData);
                     }
                     if (activeArgument) {
+                        console.log('updated activeArgument', activeArgument)
+
                         Object.assign(activeArgument, activeArgumentData);
                     }
 
@@ -105,6 +113,60 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
                 }
             )?.group_args?.find((arg) => { return arg.stepsOfFieldsStringified == JSON.stringify(stepsOfFields) });
 
+        }, add_activeArgument: (newArgData, groupName) => {
+            update(
+                (activeArgumentsDataGrouped) => {
+                    let group = activeArgumentsDataGrouped?.filter((group) => { return group.group_name == groupName })[0]
+                    const activeArgumentIndex = group.group_args?.findIndex((arg) => { return arg.id == newArgData.id })
+
+
+                    {
+
+
+                        if (group.group_argsNode) {
+                            if (newArgData?.dd_NON_NULL) {
+                                console.log(newArgData?.dd_NON_NULL);
+                                //to prevent --> Uncaught TypeError: Converting circular structure to JSON
+                                newArgData.dd_relatedRoot =
+                                    'overwritten to evade error: Uncaught TypeError: Converting circular structure to JSON';
+                                newArgData.not = false;
+                                group.group_argsNode[newArgData.id] = newArgData;
+                                let randomNr = Math.random();
+                                group.group_argsNode[`${randomNr}`] = {
+                                    id: randomNr,
+                                    operator: '_and',
+                                    not: false,
+                                    isMain: false,
+                                    isBond: true,
+                                    items: []
+                                };
+                                group.group_argsNode['mainContainer'].items.push({ id: randomNr });
+                                group.group_argsNode[`${randomNr}`].items.push({ id: newArgData.id });
+                            } else {
+                                //to prevent --> Uncaught TypeError: Converting circular structure to JSON
+                                newArgData.dd_relatedRoot =
+                                    'overwritten to evade error: Uncaught TypeError: Converting circular structure to JSON';
+                                newArgData.not = false;
+                                group.group_argsNode[newArgData.id] = newArgData;
+                                group.group_argsNode.mainContainer.items.push({ id: newArgData.id });
+                            }
+                        } else {
+                            if (
+                                !group.group_args.some((el) => {
+                                    return el.stepsOfFieldsStringified == newArgData.stepsOfFieldsStringified;
+                                })
+                            ) {
+                                group.group_args.push(newArgData);
+                                //console.log('aa group', group);
+                                //  update_activeArgumentsDataGrouped(group);
+                            } else {
+                                console.log('already added')
+                                //console.log('already added');
+                            }
+                        }
+                    }
+                    return activeArgumentsDataGrouped
+                })
         }
 
     }

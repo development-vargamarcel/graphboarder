@@ -5,14 +5,23 @@
 	export let activeArgumentsData;
 	export let update_activeArgumentsDataGrouped;
 	export let activeArgumentsDataGrouped;
+	export let prefix = '';
+	console.log({ group });
+	let rootArgs = argsInfo.filter((arg) => {
+		return arg.dd_isRootArg;
+	});
+	let groupArgsPossibilities = group?.dd_relatedRoot?.inputFields;
+	groupArgsPossibilities = groupArgsPossibilities ? groupArgsPossibilities : rootArgs;
+
 	let showDescription;
 
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
-	import { setContext } from 'svelte';
+	import { getContext, setContext } from 'svelte';
 	import Arg from './Arg.svelte';
 	let dragDisabled = true;
 	const hasGroup_argsNode = group.group_argsNode;
 	setContext('isDraggingStore', Create_isDragging_Store());
+	const activeArgumentsDataGrouped_Store = getContext(`${prefix}activeArgumentsDataGrouped_Store`);
 </script>
 
 <div class="bg-base-100 p-2 rounded-box">
@@ -33,103 +42,37 @@
 					<div
 						class="flex flex-col overflow-x-auto overscroll-contain text-sm font-normal normal-case min-w-max w-full "
 					>
-						{#if group?.dd_relatedRoot?.inputFields}
-							{#each group?.dd_relatedRoot?.inputFields as arg, index}
-								<Arg
-									{index}
-									type={arg}
-									template="changeArguments"
-									predefinedFirstSteps={[group.group_name]}
-									groupName={group.group_name}
-									on:argAddRequest={(e) => {
-										let newArgData = e.detail;
-
-										if (group.group_argsNode) {
-											if (newArgData?.dd_NON_NULL) {
-												console.log(newArgData?.dd_NON_NULL);
-												//to prevent --> Uncaught TypeError: Converting circular structure to JSON
-												newArgData.dd_relatedRoot =
-													'overwritten to evade error: Uncaught TypeError: Converting circular structure to JSON';
-												newArgData.not = false;
-												group.group_argsNode[newArgData.id] = newArgData;
-												let randomNr = Math.random();
-												group.group_argsNode[`${randomNr}`] = {
-													id: randomNr,
-													operator: '_and',
-													not: false,
-													isMain: false,
-													isBond: true,
-													items: []
-												};
-												group.group_argsNode['mainContainer'].items.push({ id: randomNr });
-												group.group_argsNode[`${randomNr}`].items.push({ id: newArgData.id });
-											} else {
-												//to prevent --> Uncaught TypeError: Converting circular structure to JSON
-												newArgData.dd_relatedRoot =
-													'overwritten to evade error: Uncaught TypeError: Converting circular structure to JSON';
-												newArgData.not = false;
-												group.group_argsNode[newArgData.id] = newArgData;
-												group.group_argsNode.mainContainer.items.push({ id: newArgData.id });
-											}
-										} else {
-											if (
-												!group.group_args.some((el) => {
-													return el.stepsOfFieldsStringified == newArgData.stepsOfFieldsStringified;
-												})
-											) {
-												group.group_args.push(newArgData);
-												//console.log('aa group', group);
-												update_activeArgumentsDataGrouped(group);
-											} else {
-												//console.log('already added');
-											}
-										}
-									}}
-								/>
-							{/each}
-							{#if hasGroup_argsNode}
-								<button
-									class="btn btn-primary btn-sm"
-									on:click={() => {
-										let randomNr = Math.random();
-										group.group_argsNode[`${randomNr}`] = {
-											id: randomNr,
-											operator: '_or',
-											not: false,
-											isMain: false,
-											items: []
-										};
-										group.group_argsNode['mainContainer'].items.push({ id: randomNr });
-									}}
-								>
-									OR/And group
-								</button>
-							{/if}
-						{:else}
-							{#each argsInfo.filter((arg) => {
-								return arg.dd_isRootArg;
-							}) as arg, index}
-								<Arg
-									{index}
-									type={arg}
-									template="changeArguments"
-									predefinedFirstSteps={[]}
-									groupName={group.group_name}
-									on:argAddRequest={(e) => {
-										let newArgData = e.detail;
-										if (
-											!group.group_args.some((el) => {
-												return el.stepsOfFieldsStringified == newArgData.stepsOfFieldsStringified;
-											})
-										) {
-											group.group_args.push(newArgData);
-											update_activeArgumentsDataGrouped(group);
-										} else {
-											//console.log('already added');
-										}
-									}}
-								/>
-							{/each}
+						{#each groupArgsPossibilities as arg, index}
+							<Arg
+								{index}
+								type={arg}
+								template="changeArguments"
+								predefinedFirstSteps={arg.dd_isRootArg ? [] : [group.group_name]}
+								groupName={group.group_name}
+								on:argAddRequest={(e) => {
+									let newArgData = e.detail;
+									activeArgumentsDataGrouped_Store.add_activeArgument(newArgData, group.group_name);
+									update_activeArgumentsDataGrouped(group);
+								}}
+							/>
+						{/each}
+						{#if hasGroup_argsNode}
+							<button
+								class="btn btn-primary btn-sm"
+								on:click={() => {
+									let randomNr = Math.random();
+									group.group_argsNode[`${randomNr}`] = {
+										id: randomNr,
+										operator: '_or',
+										not: false,
+										isMain: false,
+										items: []
+									};
+									group.group_argsNode['mainContainer'].items.push({ id: randomNr });
+								}}
+							>
+								OR/And group
+							</button>
 						{/if}
 					</div>
 				</div>
