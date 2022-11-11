@@ -14,6 +14,11 @@
 	const hasGroup_argsNode = group.group_argsNode;
 	setContext('isDraggingStore', Create_isDragging_Store());
 	const activeArgumentsDataGrouped_Store = getContext(`${prefix}activeArgumentsDataGrouped_Store`);
+	let rootArgs = argsInfo.filter((arg) => {
+		return arg.dd_isRootArg;
+	});
+	let groupArgsPossibilities = group?.dd_relatedRoot?.inputFields;
+	groupArgsPossibilities = groupArgsPossibilities ? groupArgsPossibilities : rootArgs;
 </script>
 
 <div class="bg-base-100 p-2 rounded-box">
