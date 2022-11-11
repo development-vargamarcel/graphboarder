@@ -1,5 +1,6 @@
 import { argumentCanRunQuery, generate_gqlArgObj } from "$lib/utils/usefulFunctions";
-import { writable } from "svelte/store";
+import { json } from "@sveltejs/kit";
+import { get, writable } from "svelte/store";
 
 export const Create_activeArgumentsDataGrouped_Store = () => {
 
@@ -96,6 +97,14 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
                     }
                     return activeArgumentsDataGrouped
                 })
+        }, get_activeArgument: (stepsOfFields, group_name = 'root') => {
+            const storeValue = get(store)
+            return storeValue.find(
+                (group) => {
+                    return group.group_name == group_name;
+                }
+            )?.group_args?.find((arg) => { return arg.stepsOfFieldsStringified == JSON.stringify(stepsOfFields) });
+
         }
 
     }

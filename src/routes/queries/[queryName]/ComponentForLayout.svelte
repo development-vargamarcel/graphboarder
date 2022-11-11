@@ -19,15 +19,16 @@
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	import { schemaData } from '$lib/stores/schemaData';
+	import OffsetPagination from '$lib/components/pagination/OffsetPagination.svelte';
 	//setClient($urqlClient);
 	$: console.log('$QMS_bodyPart_StoreDerived', $QMS_bodyPart_StoreDerived);
 	onDestroy(() => {
 		document.getElementById('my-drawer-3')?.click();
 	});
 
-	let currentQueryInfo = schemaData.get_QMS_Field(queryName, 'query');
-	let dd_relatedRoot = currentQueryInfo?.dd_relatedRoot;
-	if (!currentQueryInfo) {
+	let currentQMS_Info = schemaData.get_QMS_Field(queryName, 'query');
+	let dd_relatedRoot = currentQMS_Info?.dd_relatedRoot;
+	if (!currentQMS_Info) {
 		goto('/queries');
 	}
 
@@ -131,6 +132,9 @@
 	let activeArgumentsData = [];
 </script>
 
+<!-- pagination testing -->
+<OffsetPagination {currentQMS_Info} />
+<!-- main -->
 <div class="flex space-x-2">
 	<div class="dropdown grow ">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
@@ -176,7 +180,7 @@
 	</div>
 	<div class="grow">
 		<ActiveArguments
-			argsInfo={currentQueryInfo?.args}
+			argsInfo={currentQMS_Info?.args}
 			{activeArgumentsData}
 			on:argsChanged={(e) => {}}
 		/>
