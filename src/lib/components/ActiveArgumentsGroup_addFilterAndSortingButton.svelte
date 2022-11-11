@@ -51,24 +51,6 @@
 									}}
 								/>
 							{/each}
-							{#if hasGroup_argsNode}
-								<button
-									class="btn btn-primary btn-sm"
-									on:click={() => {
-										let randomNr = Math.random();
-										group.group_argsNode[`${randomNr}`] = {
-											id: randomNr,
-											operator: '_or',
-											not: false,
-											isMain: false,
-											items: []
-										};
-										group.group_argsNode['mainContainer'].items.push({ id: randomNr });
-									}}
-								>
-									OR/And group
-								</button>
-							{/if}
 						{:else}
 							{#each argsInfo.filter((arg) => {
 								return arg.dd_isRootArg;
@@ -88,6 +70,24 @@
 									}}
 								/>
 							{/each}
+						{/if}
+						{#if hasGroup_argsNode}
+							<button
+								class="btn btn-primary btn-sm"
+								on:click={() => {
+									let randomNr = Math.random();
+									group.group_argsNode[`${randomNr}`] = {
+										id: randomNr,
+										operator: '_or',
+										not: false,
+										isMain: false,
+										items: []
+									};
+									group.group_argsNode['mainContainer'].items.push({ id: randomNr });
+								}}
+							>
+								OR/And group
+							</button>
 						{/if}
 					</div>
 				</div>
