@@ -57,7 +57,6 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
         ) => {
             update(
                 (activeArgumentsDataGrouped) => {
-                    console.log('pppppppp activeArgumentData', activeArgumentData)
                     const gqlArgObj = generate_gqlArgObj([activeArgumentData])
                     const canRunQuery = argumentCanRunQuery(activeArgumentData)
                     Object.assign(activeArgumentData, { ...gqlArgObj, canRunQuery });

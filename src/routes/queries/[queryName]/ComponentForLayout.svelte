@@ -13,13 +13,14 @@
 	const QMS_bodyPart_StoreDerived = getContext('QMS_bodyPart_StoreDerived');
 
 	$: console.log('final_gqlArgObj_Store', $final_gqlArgObj_Store);
-	import { getFields_Grouped } from '$lib/utils/usefulFunctions';
+	import { Check_supportsOffsetPagination, getFields_Grouped } from '$lib/utils/usefulFunctions';
 	import { onDestroy, onMount, getContext } from 'svelte';
 	import { goto } from '$app/navigation';
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	import { schemaData } from '$lib/stores/schemaData';
 	import OffsetPagination from '$lib/components/pagination/OffsetPagination.svelte';
+
 	//setClient($urqlClient);
 	$: console.log('$QMS_bodyPart_StoreDerived', $QMS_bodyPart_StoreDerived);
 	onDestroy(() => {
@@ -31,7 +32,13 @@
 	if (!currentQMS_Info) {
 		goto('/queries');
 	}
-
+	//
+	let activeArgumentsData = [];
+	let OffsetPaginationSupport = Check_supportsOffsetPagination(currentQMS_Info.args);
+	let activeArgumentsDataGrouped_Store_IS_SET = false;
+	$: activeArgumentsDataGrouped_Store_IS_SET =
+		$activeArgumentsDataGrouped_Store.length > 0 ? true : false;
+	//
 	let { scalarFields } = getFields_Grouped(dd_relatedRoot);
 	let currentQuery_fields_SCALAR_names = scalarFields.map((field) => {
 		return field.name;
@@ -88,7 +95,7 @@
 			});
 	};
 	QMS_bodyPart_StoreDerived.subscribe((QMS_body) => {
-		if (QMS_body && QMS_body !== '') {
+		if (activeArgumentsDataGrouped_Store_IS_SET && QMS_body && QMS_body !== '') {
 			runQuery(
 				`query {
 				${QMS_body}
@@ -129,11 +136,12 @@
 	};
 
 	//Active arguments logic
-	let activeArgumentsData = [];
 </script>
 
 <!-- pagination testing -->
-<OffsetPagination {currentQMS_Info} />
+{#if OffsetPaginationSupport && activeArgumentsDataGrouped_Store_IS_SET}
+	<OffsetPagination {currentQMS_Info} />
+{/if}
 <!-- main -->
 <div class="flex space-x-2">
 	<div class="dropdown grow ">

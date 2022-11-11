@@ -720,3 +720,13 @@ export const argumentCanRunQuery = (arg) => {
     }
     return true
 }
+
+//////
+
+export const Check_supportsOffsetPagination = (args) => {
+    return (
+        args.filter((arg) => {
+            return ['limit', 'offset'].includes(arg.dd_displayName);
+        })?.length == 2
+    );
+};

@@ -10,7 +10,6 @@ export const Create_final_gqlArgObj_Store = (_activeArgumentsDataGrouped_Store) 
     return {
         subscribe, set, update, regenerate_groupsAndfinal_gqlArgObj: () => {
             console.log('regenerate_groupsAndfinal_gqlArgObj RUN')
-            console.log('_activeArgumentsDataGrouped_Store aaaaa', get(_activeArgumentsDataGrouped_Store))
             let groups_gqlArgObj = get(_activeArgumentsDataGrouped_Store).map((group) => {
                 if (group.group_argsNode) {
                     return generate_gqlArgObj_forHasOperators(group);
