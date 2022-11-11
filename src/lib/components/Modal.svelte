@@ -37,8 +37,8 @@
 	use:portal={'body'}
 	hidden
 	bind:this={mainDiv}
-	in:fade={{ delay: 0, duration: 100 }}
-	out:fade={{ delay: 0, duration: 100 }}
+	in:fade={{ delay: 0, duration: 50 }}
+	out:fade={{ delay: 0, duration: 50 }}
 	on:introend={() => (mainDivIntroEnd = true)}
 	on:click|self|stopPropagation|preventDefault={() => {
 		dispatch('cancel', { modalIdetifier });
