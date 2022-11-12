@@ -2,17 +2,14 @@
 	import { Check_supportsOffsetPagination } from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
 
+	export let prefix = '';
 	export let limit = 10;
 	export let offset = 0;
-	export let prefix = '';
+	export let limit_name = 'limit';
+	export let offset_name = 'offset';
 	export let currentQMS_Info;
 	let args = currentQMS_Info.args;
-
-	let OffsetPaginationSupport = Check_supportsOffsetPagination(args);
-	console.log({ OffsetPaginationSupport });
-	console.log({ currentQMS_Info });
 	const activeArgumentsDataGrouped_Store = getContext(`${prefix}activeArgumentsDataGrouped_Store`);
-
 	const final_gqlArgObj_Store = getContext(`${prefix}final_gqlArgObj_Store`);
 
 	const generateNewArgData = (stepsOfFields, type, extraData = {}) => {
@@ -26,13 +23,13 @@
 		return infoToCast;
 	};
 
-	if (!activeArgumentsDataGrouped_Store.get_activeArgument(['limit'], 'root')) {
+	if (!activeArgumentsDataGrouped_Store.get_activeArgument([limit_name], 'root')) {
 		//add limit argument
 		activeArgumentsDataGrouped_Store.add_activeArgument(
 			generateNewArgData(
-				['limit'],
+				[limit_name],
 				args.find((arg) => {
-					return arg.dd_displayName == 'limit';
+					return arg.dd_displayName == limit_name;
 				}),
 				{
 					chd_chosen: undefined,
@@ -47,14 +44,14 @@
 		);
 	}
 
-	if (!activeArgumentsDataGrouped_Store.get_activeArgument(['offset'], 'root')) {
+	if (!activeArgumentsDataGrouped_Store.get_activeArgument([offset_name], 'root')) {
 		//add offset argument
 
 		activeArgumentsDataGrouped_Store.add_activeArgument(
 			generateNewArgData(
-				['offset'],
+				[offset_name],
 				args.find((arg) => {
-					return arg.dd_displayName == 'offset';
+					return arg.dd_displayName == offset_name;
 				}),
 				{
 					chd_chosen: undefined,
