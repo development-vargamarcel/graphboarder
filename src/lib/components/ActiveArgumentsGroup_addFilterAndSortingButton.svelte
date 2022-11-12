@@ -17,7 +17,8 @@
 	let rootArgs = argsInfo.filter((arg) => {
 		return arg.dd_isRootArg;
 	});
-	let groupArgsPossibilities = group.group_isRoot ? group.dd_relatedRoot.inputFields : rootArgs;
+
+	let groupArgsPossibilities = group.group_isRoot ? rootArgs : group.dd_relatedRoot.inputFields;
 	let predefinedFirstSteps = group.group_isRoot ? [] : [group.group_name];
 </script>
 
