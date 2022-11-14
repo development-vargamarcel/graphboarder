@@ -1,5 +1,6 @@
 <script>
 	import { offsetBasedPagination_Store } from '$lib/stores/pagination/offsetBasedPagination';
+	import { generateNewArgData } from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
 	const { limitPossibleNames, offsetPossibleNames } = $offsetBasedPagination_Store;
 
@@ -9,16 +10,7 @@
 	export let offset = 0;
 	const activeArgumentsDataGrouped_Store = getContext(`${prefix}activeArgumentsDataGrouped_Store`);
 	const final_gqlArgObj_Store = getContext(`${prefix}final_gqlArgObj_Store`);
-	const generateNewArgData = (stepsOfFields, type, extraData = {}) => {
-		let infoToCast = {
-			stepsOfFields,
-			stepsOfFieldsStringified: JSON.stringify(stepsOfFields),
-			id: `${JSON.stringify(stepsOfFields)}${Math.random()}`,
-			...type,
-			...extraData
-		};
-		return infoToCast;
-	};
+
 	const offset_argument = offsetPaginationArguments.find((arg) => {
 		return offsetPossibleNames.includes(arg.dd_displayName);
 	});

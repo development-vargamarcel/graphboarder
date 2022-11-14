@@ -734,3 +734,13 @@ export const get_OffsetPaginationArguments = (args) => {
         return [...limitPossibleNames, ...offsetPossibleNames].includes(arg.dd_displayName);
     })
 };
+export const generateNewArgData = (stepsOfFields, type, extraData = {}) => {
+    let infoToCast = {
+        stepsOfFields,
+        stepsOfFieldsStringified: JSON.stringify(stepsOfFields),
+        id: `${JSON.stringify(stepsOfFields)}${Math.random()}`,
+        ...type,
+        ...extraData
+    };
+    return infoToCast;
+};
