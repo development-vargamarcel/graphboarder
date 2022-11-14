@@ -13,7 +13,11 @@
 	const QMS_bodyPart_StoreDerived = getContext('QMS_bodyPart_StoreDerived');
 
 	$: console.log('final_gqlArgObj_Store', $final_gqlArgObj_Store);
-	import { Check_supportsOffsetPagination, getFields_Grouped } from '$lib/utils/usefulFunctions';
+	import {
+		Check_supportsOffsetPagination,
+		getFields_Grouped,
+		get_OffsetPaginationArguments
+	} from '$lib/utils/usefulFunctions';
 	import { onDestroy, onMount, getContext } from 'svelte';
 	import { goto } from '$app/navigation';
 	import Type from '$lib/components/Type.svelte';
@@ -34,7 +38,13 @@
 	}
 	//
 	let activeArgumentsData = [];
-	let OffsetPaginationSupport = Check_supportsOffsetPagination(currentQMS_Info.args);
+
+	let offsetPaginationArguments = get_OffsetPaginationArguments(
+		currentQMS_Info.args,
+		['limit'],
+		['offset', 'skip']
+	);
+	let OffsetPaginationSupport = Check_supportsOffsetPagination(offsetPaginationArguments);
 	let activeArgumentsDataGrouped_Store_IS_SET = false;
 	$: activeArgumentsDataGrouped_Store_IS_SET =
 		$activeArgumentsDataGrouped_Store.length > 0 ? true : false;
@@ -140,7 +150,7 @@
 
 <!-- pagination testing -->
 {#if OffsetPaginationSupport && activeArgumentsDataGrouped_Store_IS_SET}
-	<OffsetPagination {currentQMS_Info} />
+	<OffsetPagination {offsetPaginationArguments} />
 {/if}
 <!-- main -->
 <div class="flex space-x-2">
