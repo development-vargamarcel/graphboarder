@@ -1,18 +1,27 @@
 <script>
-	import { offsetBasedPaginationPossibleNames_Store } from '$lib/stores/pagination/offsetBasedPaginationPosssibleNames';
+	import { Create_offsetBasedPaginationState } from './../../stores/pagination/offsetBasedPaginationState.ts';
 	import { generateNewArgData } from '$lib/utils/usefulFunctions';
-	import { getContext } from 'svelte';
-	const { limitPossibleNames, offsetPossibleNames } = $offsetBasedPaginationPossibleNames_Store;
+	import { getContext, setContext } from 'svelte';
 
 	export let prefix = '';
 	export let OffsetPaginationArguments;
-	export const limit = 10;
+	export let limit = 10;
 	export let offset = 0;
 	const activeArgumentsDataGrouped_Store = getContext(`${prefix}activeArgumentsDataGrouped_Store`);
 	const final_gqlArgObj_Store = getContext(`${prefix}final_gqlArgObj_Store`);
 	const { offsetArg, limitArg } = OffsetPaginationArguments;
 	const offset_name = offsetArg.dd_displayName;
 	const limit_name = limitArg.dd_displayName;
+
+	const offsetBasedPaginationState = Create_offsetBasedPaginationState({
+		limit,
+		offset
+	});
+	setContext(`${prefix}offsetBasedPaginationState`, offsetBasedPaginationState);
+	offsetBasedPaginationState.subscribe((val) => {
+		limit = val.limit;
+		offset = val.offset;
+	});
 	//
 
 	Object.values(OffsetPaginationArguments).forEach((arg) => {
@@ -49,10 +58,14 @@
 	}
 	//
 	const prevPage = () => {
-		offset = offset - limit;
+		// $offsetBasedPaginationState.offset =
+		// 	$offsetBasedPaginationState.offset - $offsetBasedPaginationState.limit;
+		$offsetBasedPaginationState.offset = offset - limit;
 	};
 	const nextPage = () => {
-		offset = offset + limit;
+		// $offsetBasedPaginationState.offset =
+		// 	$offsetBasedPaginationState.offset + $offsetBasedPaginationState.limit;
+		$offsetBasedPaginationState.offset = offset + limit;
 	};
 </script>
 
