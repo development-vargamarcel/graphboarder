@@ -1,12 +1,11 @@
 <script>
-	import { offsetBasedPagination_Store } from '$lib/stores/pagination/offsetBasedPagination';
+	import { offsetBasedPaginationPossibleNames_Store } from '$lib/stores/pagination/offsetBasedPaginationPosssibleNames';
 	import { generateNewArgData } from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
-	const { limitPossibleNames, offsetPossibleNames } = $offsetBasedPagination_Store;
+	const { limitPossibleNames, offsetPossibleNames } = $offsetBasedPaginationPossibleNames_Store;
 
 	export let prefix = '';
 	export let OffsetPaginationArguments;
-
 	export const limit = 10;
 	export let offset = 0;
 	const activeArgumentsDataGrouped_Store = getContext(`${prefix}activeArgumentsDataGrouped_Store`);
