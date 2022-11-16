@@ -39,12 +39,13 @@
 	//
 	let activeArgumentsData = [];
 
-	let offsetPaginationArguments = get_OffsetPaginationArguments(
+	let OffsetPaginationArguments = get_OffsetPaginationArguments(
 		currentQMS_Info.args,
 		['limit'],
 		['offset', 'skip']
 	);
-	let OffsetPaginationSupport = Check_supportsOffsetPagination(offsetPaginationArguments);
+	console.log({ OffsetPaginationArguments });
+	let OffsetPaginationSupport = Check_supportsOffsetPagination(OffsetPaginationArguments);
 	let activeArgumentsDataGrouped_Store_IS_SET = false;
 	$: activeArgumentsDataGrouped_Store_IS_SET =
 		$activeArgumentsDataGrouped_Store.length > 0 ? true : false;
@@ -150,7 +151,7 @@
 
 <!-- pagination testing -->
 {#if OffsetPaginationSupport && activeArgumentsDataGrouped_Store_IS_SET}
-	<OffsetPagination {offsetPaginationArguments} />
+	<OffsetPagination {OffsetPaginationArguments} />
 {/if}
 <!-- main -->
 <div class="flex space-x-2">

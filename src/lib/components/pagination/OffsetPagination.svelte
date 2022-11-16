@@ -5,19 +5,17 @@
 	const { limitPossibleNames, offsetPossibleNames } = $offsetBasedPagination_Store;
 
 	export let prefix = '';
-	export let offsetPaginationArguments;
+	export let OffsetPaginationArguments;
+
 	export const limit = 10;
 	export let offset = 0;
 	const activeArgumentsDataGrouped_Store = getContext(`${prefix}activeArgumentsDataGrouped_Store`);
 	const final_gqlArgObj_Store = getContext(`${prefix}final_gqlArgObj_Store`);
-
-	const offset_argument = offsetPaginationArguments.find((arg) => {
-		return offsetPossibleNames.includes(arg.dd_displayName);
-	});
-	const offset_name = offset_argument.dd_displayName;
-
+	const { offsetArg, limitArg } = OffsetPaginationArguments;
+	const offset_name = offsetArg.dd_displayName;
+	const limit_name = limitArg.dd_displayName;
 	//
-	offsetPaginationArguments.forEach((arg) => {
+	[offsetArg, limitArg].forEach((arg) => {
 		let isOffsetArg;
 		if (arg.dd_displayName == offset_name) {
 			isOffsetArg = true;

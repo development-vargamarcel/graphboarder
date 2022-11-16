@@ -725,14 +725,21 @@ export const argumentCanRunQuery = (arg) => {
 //////
 
 export const Check_supportsOffsetPagination = (offsetPaginationArguments) => {
-    return offsetPaginationArguments?.length == 2
+    return offsetPaginationArguments?.limitArg && offsetPaginationArguments?.offsetArg
 
 };
+
 export const get_OffsetPaginationArguments = (args) => {
     const { limitPossibleNames, offsetPossibleNames } = get(offsetBasedPagination_Store)
-    return args.filter((arg) => {
-        return [...limitPossibleNames, ...offsetPossibleNames].includes(arg.dd_displayName);
-    })
+    return _.merge(
+        ...args.map((arg) => {
+            if (limitPossibleNames.includes(arg.dd_displayName)) {
+                return { 'limitArg': arg };
+            }
+            if (offsetPossibleNames.includes(arg.dd_displayName)) {
+                return { 'offsetArg': arg };
+            }
+        }).filter((arg) => { return arg }))
 };
 export const generateNewArgData = (stepsOfFields, type, extraData = {}) => {
     let infoToCast = {
