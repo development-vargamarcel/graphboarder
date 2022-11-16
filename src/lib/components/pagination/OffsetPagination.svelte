@@ -15,7 +15,8 @@
 	const offset_name = offsetArg.dd_displayName;
 	const limit_name = limitArg.dd_displayName;
 	//
-	[offsetArg, limitArg].forEach((arg) => {
+
+	Object.values(OffsetPaginationArguments).forEach((arg) => {
 		let isOffsetArg;
 		if (arg.dd_displayName == offset_name) {
 			isOffsetArg = true;
