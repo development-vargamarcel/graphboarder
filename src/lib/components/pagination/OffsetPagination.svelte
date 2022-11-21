@@ -58,14 +58,10 @@
 	}
 	//
 	const prevPage = () => {
-		// $offsetBasedPaginationState.offset =
-		// 	$offsetBasedPaginationState.offset - $offsetBasedPaginationState.limit;
-		$offsetBasedPaginationState.offset = offset - limit;
+		offsetBasedPaginationState.prevPage();
 	};
 	const nextPage = () => {
-		// $offsetBasedPaginationState.offset =
-		// 	$offsetBasedPaginationState.offset + $offsetBasedPaginationState.limit;
-		$offsetBasedPaginationState.offset = offset + limit;
+		offsetBasedPaginationState.nextPage();
 	};
 </script>
 

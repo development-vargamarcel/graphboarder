@@ -11,6 +11,7 @@
 	const tableColsData_Store = getContext('tableColsData_Store');
 	const final_gqlArgObj_Store = getContext('final_gqlArgObj_Store');
 	const QMS_bodyPart_StoreDerived = getContext('QMS_bodyPart_StoreDerived');
+	const offsetBasedPaginationOptions = getContext('offsetBasedPaginationOptions');
 
 	$: console.log('final_gqlArgObj_Store', $final_gqlArgObj_Store);
 	import {
@@ -62,6 +63,7 @@
 	let rows = [];
 
 	const runQuery = (queryBody) => {
+		let rowsCurrent = [];
 		let fetching = true;
 		let error = false;
 		let data = false;
@@ -81,21 +83,27 @@
 				queryData = { fetching, error, data };
 				if (queryData.data[queryName]?.edges) {
 					//needed for: https://swapi-graphql.netlify.app/.netlify/functions/index
-					rows = queryData.data[queryName]?.edges;
+					rowsCurrent = queryData.data[queryName]?.edges;
 				} else if (queryData.data[queryName]?.results) {
 					//needed for:https://rickandmortyapi.com/graphql
-					rows = queryData.data[queryName]?.results;
+					rowsCurrent = queryData.data[queryName]?.results;
 				} else if (queryData.data[queryName]?.nodes) {
 					//needed for:https://beta.pokeapi.co/graphql/v1beta
-					rows = queryData.data[queryName]?.nodes;
+					rowsCurrent = queryData.data[queryName]?.nodes;
 				} else {
-					rows = queryData.data[queryName];
+					rowsCurrent = queryData.data[queryName];
 				}
 
-				if (rows?.length == undefined) {
-					rows = [rows];
+				if (rowsCurrent?.length == undefined) {
+					rowsCurrent = [rowsCurrent];
 				}
-				console.log({ rows });
+				if ($offsetBasedPaginationOptions.infiniteScroll) {
+					rows = [...rows, ...rowsCurrent];
+				} else {
+					rows = rowsCurrent;
+				}
+
+				console.log({ rows }, { rowsCurrent });
 			});
 	};
 	QMS_bodyPart_StoreDerived.subscribe((QMS_body) => {
