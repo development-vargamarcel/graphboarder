@@ -27,10 +27,7 @@
 		QMSType
 	);
 	const offsetBasedPaginationOptions = Create_offsetBasedPaginationOptions();
-	const offsetBasedPaginationState = Create_offsetBasedPaginationState({
-		limit: 10,
-		offset: 10
-	});
+	const offsetBasedPaginationState = Create_offsetBasedPaginationState();
 	$: console.log('QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
 	setContext(`${prefix}activeArgumentsDataGrouped_Store`, activeArgumentsDataGrouped_Store);
 	setContext(`${prefix}tableColsData_Store`, tableColsData_Store);
