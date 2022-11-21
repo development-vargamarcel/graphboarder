@@ -1,11 +1,11 @@
 <script>
 	import { generateNewArgData } from '$lib/utils/usefulFunctions';
-	import { getContext, setContext } from 'svelte';
+	import { getContext } from 'svelte';
 
 	export let prefix = '';
-	export let limit = 10;
-	export let offset = 0;
 	export let QMS;
+	let limit = 10;
+	let offset = 0;
 	const activeArgumentsDataGrouped_Store = getContext(`${prefix}activeArgumentsDataGrouped_Store`);
 	const final_gqlArgObj_Store = getContext(`${prefix}final_gqlArgObj_Store`);
 	const { offsetArg, limitArg } = QMS.offsetPaginationArgs;
@@ -16,6 +16,7 @@
 		limit = val.limit;
 		offset = val.offset;
 	});
+
 	//
 
 	Object.values(QMS.offsetPaginationArgs).forEach((arg) => {
