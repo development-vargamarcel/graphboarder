@@ -213,6 +213,7 @@
 		<div class="alert alert-error shadow-lg ">
 			<div>
 				<button class="btn btn-ghost btn-sm p-0">
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<svg
 						on:click={() => {
 							queryData.error = null;
