@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
 
-
-export const Create_offsetBasedPaginationState = (initialValue = { limit: 20, offset: 0 }) => {
+const defaultInitialValue = { limit: 20, offset: 0 }
+export const Create_offsetBasedPaginationState = (initialValue = JSON.parse(JSON.stringify(defaultInitialValue))) => {
 
     const store = writable(initialValue)
     const { subscribe, set, update } = store
@@ -21,6 +21,10 @@ export const Create_offsetBasedPaginationState = (initialValue = { limit: 20, of
             update((val) => {
                 val.offset = val.limit * page
                 return val
+            })
+        }, resetToDefault: () => {
+            update(() => {
+                return JSON.parse(JSON.stringify(defaultInitialValue))
             })
         }
     }

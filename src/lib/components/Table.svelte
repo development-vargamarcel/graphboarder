@@ -4,16 +4,18 @@
 	import { page } from '$app/stores';
 
 	import { formatData, getColResultData, getTableCellData } from '$lib/utils/usefulFunctions';
-
+	import InfiniteLoading from 'svelte-infinite-loading';
 	import { createEventDispatcher } from 'svelte';
 	import ColumnInfo from './ColumnInfo.svelte';
 	export let colsData = [];
 	export let columns = [];
 	export let rows = [];
+	export let infiniteHandler;
+	export let infiniteId;
 	const dispatch = createEventDispatcher();
 </script>
 
-<div class=" h-[90vh] overscroll-contain	 overflow-y-auto rounded-box">
+<div class=" h-[80vh] overscroll-contain	 overflow-y-auto rounded-box bg-black">
 	<table class="table table-compact w-full rounded-none  mb-32 ">
 		<thead class="sticky top-0 z-20">
 			<tr class="sticky top-0 z-20 ">
@@ -95,4 +97,5 @@
 	</table>
 
 	<slot name="itemDisplay" />
+	<InfiniteLoading on:infinite={infiniteHandler} identifier={infiniteId} />
 </div>

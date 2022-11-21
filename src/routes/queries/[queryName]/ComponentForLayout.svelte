@@ -61,9 +61,21 @@
 	let queryData;
 	let columns = [];
 	let rows = [];
-
+	let rowsCurrent = [];
+	let loadedF;
+	let completeF;
+	let infiniteId = 0;
+	const offsetBasedPaginationState = getContext(`offsetBasedPaginationState`);
+	function infiniteHandler({ detail: { loaded, complete } }) {
+		loadedF = loaded;
+		completeF = complete;
+		console.log({ loaded }, { complete });
+		if (rows.length > 0) {
+			offsetBasedPaginationState.nextPage();
+		}
+		console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+	}
 	const runQuery = (queryBody) => {
-		let rowsCurrent = [];
 		let fetching = true;
 		let error = false;
 		let data = false;
@@ -73,12 +85,11 @@
 			.then((result) => {
 				fetching = false;
 
-				if (result.data) {
-					data = result.data;
-				}
-
 				if (result.error) {
 					error = result.error.message;
+				}
+				if (result.data) {
+					data = result.data;
 				}
 				queryData = { fetching, error, data };
 				if (queryData.data[queryName]?.edges) {
@@ -102,8 +113,15 @@
 				} else {
 					rows = rowsCurrent;
 				}
-
+				if (rowsCurrent?.length > 0) {
+					loadedF();
+					console.log('loadedF');
+				} else {
+					completeF();
+					console.log('completeF');
+				}
 				console.log({ rows }, { rowsCurrent });
+				rowsCurrent = [];
 			});
 	};
 	QMS_bodyPart_StoreDerived.subscribe((QMS_body) => {
@@ -150,6 +168,16 @@
 	//Active arguments logic
 </script>
 
+<button
+	class="btn btn-sm btn-info"
+	on:click={() => {
+		offsetBasedPaginationState.resetToDefault();
+		infiniteId += 1;
+		rows = [];
+	}}
+>
+	infiniteId
+</button>
 <!-- pagination testing -->
 {#if currentQMS_Info.paginationType == 'offsetBased' && activeArgumentsDataGrouped_Store_IS_SET}
 	<OffsetPagination QMS={currentQMS_Info} />
@@ -242,6 +270,8 @@
 
 <div class="md:px-2">
 	<Table
+		{infiniteId}
+		{infiniteHandler}
 		colsData={$tableColsData_Store}
 		{columns}
 		{rows}
