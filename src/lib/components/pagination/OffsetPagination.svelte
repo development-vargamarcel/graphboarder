@@ -1,5 +1,4 @@
 <script>
-	import { Create_offsetBasedPaginationState } from './../../stores/pagination/offsetBasedPaginationState.ts';
 	import { generateNewArgData } from '$lib/utils/usefulFunctions';
 	import { getContext, setContext } from 'svelte';
 
@@ -12,12 +11,7 @@
 	const { offsetArg, limitArg } = QMS.offsetPaginationArgs;
 	const offsetName = offsetArg.dd_displayName;
 	const limitName = limitArg.dd_displayName;
-
-	const offsetBasedPaginationState = Create_offsetBasedPaginationState({
-		limit,
-		offset
-	});
-	setContext(`${prefix}offsetBasedPaginationState`, offsetBasedPaginationState);
+	const offsetBasedPaginationState = getContext(`${prefix}offsetBasedPaginationState`);
 	offsetBasedPaginationState.subscribe((val) => {
 		limit = val.limit;
 		offset = val.offset;
@@ -46,6 +40,7 @@
 	});
 
 	$: {
+		//updates when offset changes
 		activeArgumentsDataGrouped_Store.update_activeArgument(
 			Object.assign(activeArgumentsDataGrouped_Store.get_activeArgument([offsetName], 'root'), {
 				chd_dispatchValue: offset,
