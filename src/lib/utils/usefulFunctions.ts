@@ -268,6 +268,24 @@ export const get_displayStructure = (rootName) => {
     let displayStructure = _displayStructure[rootName];
     return displayStructure
 }
+
+export const Check_supportsOffsetPagination = (offsetPaginationArguments) => {
+    return offsetPaginationArguments?.limitArg && offsetPaginationArguments?.offsetArg
+
+};
+
+export const get_OffsetPaginationArguments = (args) => {
+    const { limitPossibleNames, offsetPossibleNames } = get(offsetBasedPaginationPossibleNames_Store)
+    return _.merge(
+        ...args.map((arg) => {
+            if (limitPossibleNames.includes(arg.dd_displayName)) {
+                return { 'limitArg': arg };
+            }
+            if (offsetPossibleNames.includes(arg.dd_displayName)) {
+                return { 'offsetArg': arg };
+            }
+        }).filter((arg) => { return arg }))
+};
 export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/field  
     let derivedData = { ...type }
     derivedData.dd_kindsArray = get_KindsArray(type)
@@ -350,11 +368,10 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/fi
             })
 
         }
-
-
-
-
-
+    }
+    if (derivedData.args) {
+        derivedData.offsetPaginationArgs = get_OffsetPaginationArguments(derivedData.args)
+        derivedData.paginationType = Check_supportsOffsetPagination(derivedData.offsetPaginationArgs) ? 'offsetBased' : null
     }
 
 
@@ -724,23 +741,7 @@ export const argumentCanRunQuery = (arg) => {
 
 //////
 
-export const Check_supportsOffsetPagination = (offsetPaginationArguments) => {
-    return offsetPaginationArguments?.limitArg && offsetPaginationArguments?.offsetArg
 
-};
-
-export const get_OffsetPaginationArguments = (args) => {
-    const { limitPossibleNames, offsetPossibleNames } = get(offsetBasedPaginationPossibleNames_Store)
-    return _.merge(
-        ...args.map((arg) => {
-            if (limitPossibleNames.includes(arg.dd_displayName)) {
-                return { 'limitArg': arg };
-            }
-            if (offsetPossibleNames.includes(arg.dd_displayName)) {
-                return { 'offsetArg': arg };
-            }
-        }).filter((arg) => { return arg }))
-};
 export const generateNewArgData = (stepsOfFields, type, extraData = {}) => {
     let infoToCast = {
         stepsOfFields,
