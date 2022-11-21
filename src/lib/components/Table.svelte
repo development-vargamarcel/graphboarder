@@ -15,7 +15,7 @@
 	const dispatch = createEventDispatcher();
 </script>
 
-<div class=" h-[80vh] overscroll-contain	 overflow-y-auto rounded-box bg-black">
+<div class=" h-[80vh] overscroll-contain	 overflow-y-auto rounded-box">
 	<table class="table table-compact w-full rounded-none  mb-32 ">
 		<thead class="sticky top-0 z-20">
 			<tr class="sticky top-0 z-20 ">
