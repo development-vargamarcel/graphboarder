@@ -17,6 +17,11 @@ export const Create_offsetBasedPaginationState = (initialValue = { limit: 10, of
                 val.offset = val.offset - val.limit
                 return val
             })
+        }, toPage: (page: number) => {
+            update((val) => {
+                val.offset = val.limit * page
+                return val
+            })
         }
     }
 }
