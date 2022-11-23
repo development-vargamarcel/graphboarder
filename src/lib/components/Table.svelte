@@ -93,9 +93,31 @@
 					<td class="sticky right-0 z-0 w-2" />
 				</tr>
 			{/each}
+			<InfiniteLoading on:infinite={infiniteHandler} identifier={infiniteId} />
+
+			{#each ['', '', ''] as row, index}
+				<tr
+					class="animate-pulse bg-base-100 hover:bg-base-300 cursor-pointer hover z-0"
+					on:click={() => {
+						goto(`${$page.url.origin}/queries/${$page.params.queryName}/${row.id}`);
+					}}
+				>
+					<th class="z-0" on:click|stopPropagation={() => {}}>
+						<label>
+							<input type="checkbox" class="checkbox" />
+						</label>
+					</th>
+
+					<th class="z-0">{index + 1 + rows.length}</th>
+					{#each colsData as colData, index}
+						<td class="z-0">
+							{''}
+						</td>{/each}
+					<td class="sticky right-0 z-0 w-2" />
+				</tr>
+			{/each}
 		</tbody>
 	</table>
 
 	<slot name="itemDisplay" />
-	<InfiniteLoading on:infinite={infiniteHandler} identifier={infiniteId} />
 </div>
