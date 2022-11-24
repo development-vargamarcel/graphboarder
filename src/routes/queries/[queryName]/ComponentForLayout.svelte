@@ -114,10 +114,11 @@
 					rows = rowsCurrent;
 				}
 				if (rowsCurrent?.length > 0) {
-					loadedF();
-					console.log('loadedF');
+					loadedF && loadedF();
+
+					console.log('loadedF ');
 				} else {
-					completeF();
+					completeF && completeF();
 					console.log('completeF');
 				}
 				console.log({ rows }, { rowsCurrent });
