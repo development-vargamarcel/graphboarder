@@ -97,7 +97,7 @@
 		</tbody>
 	</table>
 	{#if $offsetBasedPaginationOptions?.infiniteScroll}
-		<InfiniteLoading on:infinite={infiniteHandler} identifier={infiniteId} distance={400} />
+		<InfiniteLoading on:infinite={infiniteHandler} identifier={infiniteId} distance={300} />
 	{/if}
 	<slot name="itemDisplay" />
 </div>
