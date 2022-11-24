@@ -16,8 +16,8 @@
 	const offsetBasedPaginationOptions = getContext(`${prefix}offsetBasedPaginationOptions`);
 </script>
 
-<div class=" h-[80vh] overscroll-contain	 overflow-y-auto rounded-box">
-	<table class="table table-compact w-full rounded-none  mb-32 ">
+<div class=" h-[80vh] overscroll-contain	 overflow-y-auto rounded-box pb-32 ">
+	<table class="table table-compact w-full rounded-none  ">
 		<thead class="sticky top-0 z-20">
 			<tr class="sticky top-0 z-20 ">
 				<th>
@@ -94,33 +94,10 @@
 					<td class="sticky right-0 z-0 w-2" />
 				</tr>
 			{/each}
-			{#if $offsetBasedPaginationOptions?.infiniteScroll}
-				<InfiniteLoading on:infinite={infiniteHandler} identifier={infiniteId} />
-
-				{#each ['', '', ''] as row, index}
-					<tr
-						class="animate-pulse bg-base-100 hover:bg-base-300 cursor-pointer hover z-0"
-						on:click={() => {
-							goto(`${$page.url.origin}/queries/${$page.params.queryName}/${row.id}`);
-						}}
-					>
-						<th class="z-0" on:click|stopPropagation={() => {}}>
-							<label>
-								<input type="checkbox" class="checkbox" />
-							</label>
-						</th>
-
-						<th class="z-0">{index + 2 + rows.length}</th>
-						{#each colsData as colData, index}
-							<td class="z-0">
-								{''}
-							</td>{/each}
-						<td class="sticky right-0 z-0 w-2" />
-					</tr>
-				{/each}
-			{/if}
 		</tbody>
 	</table>
-
+	{#if $offsetBasedPaginationOptions?.infiniteScroll}
+		<InfiniteLoading on:infinite={infiniteHandler} identifier={infiniteId} distance={300} />
+	{/if}
 	<slot name="itemDisplay" />
 </div>
