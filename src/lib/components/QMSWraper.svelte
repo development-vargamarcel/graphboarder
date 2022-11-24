@@ -23,7 +23,8 @@
 		final_gqlArgObj_Store,
 		tableColsData_Store,
 		QMSType,
-		QMSName
+		QMSName,
+		offsetBasedPaginationOptions
 	);
 	const QMS_bodyPartsUnifier_StoreDerived = Create_QMS_bodyPartsUnifier_StoreDerived(
 		[QMS_bodyPart_StoreDerived],
