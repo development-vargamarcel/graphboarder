@@ -108,17 +108,25 @@
 				if (rowsCurrent?.length == undefined) {
 					rowsCurrent = [rowsCurrent];
 				}
+				console.log('qqqqq', $offsetBasedPaginationState.offset);
 				if ($offsetBasedPaginationOptions.infiniteScroll) {
-					rows = [...rows, ...rowsCurrent];
+					if ($offsetBasedPaginationState.offset == 0) {
+						infiniteId += 1;
+						rows = rowsCurrent;
+					} else {
+						rows = [...rows, ...rowsCurrent];
+					}
 				} else {
 					rows = rowsCurrent;
 				}
-				if (rowsCurrent?.length > 0) {
+				if (rowsCurrent?.length == $offsetBasedPaginationState.limit) {
 					loadedF && loadedF();
 
 					console.log('loadedF ');
 				} else {
 					completeF && completeF();
+
+					offsetBasedPaginationState.resetToDefault();
 					console.log('completeF');
 				}
 				console.log({ rows }, { rowsCurrent });
