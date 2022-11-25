@@ -108,7 +108,6 @@
 				if (rowsCurrent?.length == undefined) {
 					rowsCurrent = [rowsCurrent];
 				}
-				console.log('qqqqq', $offsetBasedPaginationState.offset);
 				if ($offsetBasedPaginationOptions.infiniteScroll) {
 					if ($offsetBasedPaginationState.offset == 0) {
 						infiniteId += 1;
