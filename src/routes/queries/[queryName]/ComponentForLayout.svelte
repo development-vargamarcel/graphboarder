@@ -176,16 +176,6 @@
 	//Active arguments logic
 </script>
 
-<button
-	class="btn btn-sm btn-info"
-	on:click={() => {
-		offsetBasedPaginationState.resetToDefault();
-		infiniteId += 1;
-		rows = [];
-	}}
->
-	infiniteId
-</button>
 <!-- pagination testing -->
 {#if currentQMS_Info.paginationType == 'offsetBased' && activeArgumentsDataGrouped_Store_IS_SET}
 	<OffsetPagination QMS={currentQMS_Info} />

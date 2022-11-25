@@ -52,16 +52,4 @@
 		console.log({ offset });
 		final_gqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
 	}
-	//
-	const prevPage = () => {
-		offsetBasedPaginationState.prevPage();
-	};
-	const nextPage = () => {
-		offsetBasedPaginationState.nextPage();
-	};
 </script>
-
-<button class="btn btn-xs btn-accent {offset == 0 ? 'btn-disabled' : ''}" on:click={prevPage}>
-	prev page
-</button>
-<button class="btn btn-xs btn-accent" on:click={nextPage}> next page </button>
