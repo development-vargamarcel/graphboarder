@@ -8,12 +8,12 @@ export const Create_QMS_bodyPart_StoreDerived = (_final_grqlArgObj_Store, _table
     let lastOffset
 
     return derived([_final_grqlArgObj_Store, _tableColsData_Store], ([$_final_grqlArgObj_Store, $_tableColsData_Store], set) => {
+
+
         let QMS_Info = schemaData.get_QMS_Field(QMS_name, QMS_type);
-        let offsetName = QMS_Info?.offsetPaginationArgs.offsetArg.dd_displayName
-        let currentOffset = $_final_grqlArgObj_Store?.final_gqlArgObj?.[offsetName]
-
         if (QMS_Info?.paginationType == "offsetBased" && get(offsetBasedPaginationOptions_Store)?.infiniteScroll) {
-
+            let offsetName = QMS_Info?.offsetPaginationArgs.offsetArg.dd_displayName
+            let currentOffset = $_final_grqlArgObj_Store?.final_gqlArgObj?.[offsetName]
 
             console.log({ lastOffset })
             if (lastOffset == null || currentOffset != 0) {

@@ -17,7 +17,10 @@
 	const activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store();
 	const tableColsData_Store = Create_tableColsData_Store();
 	const final_gqlArgObj_Store = Create_final_gqlArgObj_Store(activeArgumentsDataGrouped_Store);
-	const paginationInfo = Create_paginationInfo({ paginationType: 'offset', paginationData: {} });
+	const paginationInfo = Create_paginationInfo({
+		paginationType: 'offsetBased',
+		paginationData: {}
+	});
 	const offsetBasedPaginationOptions = Create_offsetBasedPaginationOptions();
 	const QMS_bodyPart_StoreDerived = Create_QMS_bodyPart_StoreDerived(
 		final_gqlArgObj_Store,

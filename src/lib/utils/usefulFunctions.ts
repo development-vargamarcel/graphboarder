@@ -5,7 +5,7 @@ import { scalarsAndEnumsDisplayTypes } from '$lib/stores/scalarsAndEnumsDisplayT
 import { schemaData } from '$lib/stores/schemaData';
 import { page } from '$app/stores';
 import { displayStucture } from '$lib/stores/displayStructure';
-import { offsetBasedPaginationPossibleNames_Store } from "$lib/stores/pagination/offsetBasedPaginationPosssibleNames";
+import { paginationPossibleNames_Store } from "$lib/stores/pagination/paginationPossibleNames_Store";
 export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query') => {
     if (QMS_fields == '') {
         console.error('no cols data,choose at least one field')
@@ -275,7 +275,7 @@ export const Check_supportsOffsetPagination = (offsetPaginationArguments) => {
 };
 
 export const get_OffsetPaginationArguments = (args) => {
-    const { limitPossibleNames, offsetPossibleNames } = get(offsetBasedPaginationPossibleNames_Store)
+    const { limitPossibleNames, offsetPossibleNames } = get(paginationPossibleNames_Store)
     return _.merge(
         ...args.map((arg) => {
             if (limitPossibleNames.includes(arg.dd_displayName)) {

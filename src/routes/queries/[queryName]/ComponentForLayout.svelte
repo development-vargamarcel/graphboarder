@@ -111,7 +111,7 @@
 				if ($offsetBasedPaginationOptions.infiniteScroll) {
 					if ($offsetBasedPaginationState.offset == 0) {
 						infiniteId += 1;
-						rows = rowsCurrent;
+						rows = [...rowsCurrent];
 					} else {
 						rows = [...rows, ...rowsCurrent];
 					}
