@@ -16,13 +16,17 @@
 	console.log({ currentQMS_Info });
 	const activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store();
 	const tableColsData_Store = Create_tableColsData_Store();
-	const final_gqlArgObj_Store = Create_final_gqlArgObj_Store(activeArgumentsDataGrouped_Store);
+	const offsetBasedPaginationOptions = Create_offsetBasedPaginationOptions();
+	const offsetBasedPaginationState = Create_offsetBasedPaginationState();
+	const final_gqlArgObj_Store = Create_final_gqlArgObj_Store(
+		activeArgumentsDataGrouped_Store,
+		offsetBasedPaginationState
+	);
 	const paginationInfo = Create_paginationInfo({
 		paginationType: 'offsetBased',
 		paginationData: {}
 	});
-	const offsetBasedPaginationOptions = Create_offsetBasedPaginationOptions();
-	const offsetBasedPaginationState = Create_offsetBasedPaginationState();
+
 	const QMS_bodyPart_StoreDerived = Create_QMS_bodyPart_StoreDerived(
 		final_gqlArgObj_Store,
 		tableColsData_Store,

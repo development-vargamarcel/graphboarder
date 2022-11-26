@@ -125,7 +125,6 @@
 				} else {
 					completeF && completeF();
 
-					offsetBasedPaginationState.resetToDefault();
 					console.log('completeF');
 				}
 				console.log({ rows }, { rowsCurrent });
