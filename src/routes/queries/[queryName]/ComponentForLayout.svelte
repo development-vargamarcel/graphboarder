@@ -133,7 +133,7 @@
 			});
 	};
 	QMS_bodyPart_StoreDerived.subscribe((QMS_body) => {
-		if (activeArgumentsDataGrouped_Store_IS_SET && QMS_body && QMS_body !== '') {
+		if (QMS_body && QMS_body !== '') {
 			runQuery(
 				`query {
 				${QMS_body}

@@ -608,7 +608,7 @@ export const generate_gqlArgObj_forHasOperators = (group) => {
 };
 ////
 
-export const generate_FINAL_gqlArgObj_fromGroups = (activeArgumentsDataGrouped) => {
+export const generate_FINAL_gqlArgObj_fromGroups = (activeArgumentsDataGrouped: []) => {
     let final_gqlArgObj = {};
     let final_canRunQuery = true
     activeArgumentsDataGrouped.forEach((group) => {

@@ -22,19 +22,20 @@
 		paginationData: {}
 	});
 	const offsetBasedPaginationOptions = Create_offsetBasedPaginationOptions();
+	const offsetBasedPaginationState = Create_offsetBasedPaginationState();
 	const QMS_bodyPart_StoreDerived = Create_QMS_bodyPart_StoreDerived(
 		final_gqlArgObj_Store,
 		tableColsData_Store,
 		QMSType,
 		QMSName,
-		offsetBasedPaginationOptions
+		offsetBasedPaginationOptions,
+		offsetBasedPaginationState
 	);
 	const QMS_bodyPartsUnifier_StoreDerived = Create_QMS_bodyPartsUnifier_StoreDerived(
 		[QMS_bodyPart_StoreDerived],
 		QMSType
 	);
 
-	const offsetBasedPaginationState = Create_offsetBasedPaginationState();
 	$: console.log('QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
 	setContext(`${prefix}activeArgumentsDataGrouped_Store`, activeArgumentsDataGrouped_Store);
 	setContext(`${prefix}tableColsData_Store`, tableColsData_Store);

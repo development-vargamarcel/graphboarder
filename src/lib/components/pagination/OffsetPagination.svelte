@@ -19,37 +19,37 @@
 
 	//
 
-	Object.values(QMS.offsetPaginationArgs).forEach((arg) => {
-		let isOffsetArg;
-		if (arg.dd_displayName == offsetName) {
-			isOffsetArg = true;
-		}
-		if (!activeArgumentsDataGrouped_Store.get_activeArgument([arg.dd_displayName], 'root')) {
-			//add limit argument
-			activeArgumentsDataGrouped_Store.add_activeArgument(
-				generateNewArgData([arg.dd_displayName], arg, {
-					chd_chosen: undefined,
-					chd_dispatchValue: isOffsetArg ? offset : limit,
-					chd_needsChosen: false,
-					chd_needsValue: true,
-					chd_rawValue: isOffsetArg ? offset : limit,
-					inUse: true
-				}),
-				'root'
-			);
-		}
-	});
+	// Object.values(QMS.offsetPaginationArgs).forEach((arg) => {
+	// 	let isOffsetArg;
+	// 	if (arg.dd_displayName == offsetName) {
+	// 		isOffsetArg = true;
+	// 	}
+	// 	if (!activeArgumentsDataGrouped_Store.get_activeArgument([arg.dd_displayName], 'root')) {
+	// 		//add limit argument
+	// 		activeArgumentsDataGrouped_Store.add_activeArgument(
+	// 			generateNewArgData([arg.dd_displayName], arg, {
+	// 				chd_chosen: undefined,
+	// 				chd_dispatchValue: isOffsetArg ? offset : limit,
+	// 				chd_needsChosen: false,
+	// 				chd_needsValue: true,
+	// 				chd_rawValue: isOffsetArg ? offset : limit,
+	// 				inUse: true
+	// 			}),
+	// 			'root'
+	// 		);
+	// 	}
+	// });
 
-	$: {
-		//updates when offset changes
-		activeArgumentsDataGrouped_Store.update_activeArgument(
-			Object.assign(activeArgumentsDataGrouped_Store.get_activeArgument([offsetName], 'root'), {
-				chd_dispatchValue: offset,
-				chd_rawValue: offset
-			}),
-			'root'
-		);
-		console.log({ offset });
-		final_gqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
-	}
+	// $: {
+	// 	//updates when offset changes
+	// 	activeArgumentsDataGrouped_Store.update_activeArgument(
+	// 		Object.assign(activeArgumentsDataGrouped_Store.get_activeArgument([offsetName], 'root'), {
+	// 			chd_dispatchValue: offset,
+	// 			chd_rawValue: offset
+	// 		}),
+	// 		'root'
+	// 	);
+	// 	console.log({ offset });
+	// 	final_gqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
+	// }
 </script>
