@@ -239,9 +239,9 @@
 			/>
 
 			<button class="btn bg-primary btn-sm normal-case w-content-min mt-2" on:click={storeAll}
-				>update</button
+				>apply</button
 			>
-			<button class="btn bg-warning btn-sm normal-case w-content-min mt-14" on:click={deleteAll}
+			<button class="btn bg-warning btn-sm normal-case w-content-min mt-10" on:click={deleteAll}
 				>delete all</button
 			>
 		</div>
