@@ -265,23 +265,38 @@ export const get_displayStructure = (rootName) => {
     return displayStructure
 }
 
-export const Check_supportsOffsetPagination = (offsetPaginationArguments) => {
-    return offsetPaginationArguments?.limitArg && offsetPaginationArguments?.offsetArg
 
-};
 
-export const get_OffsetPaginationArguments = (args) => {
-    const { limitPossibleNames, offsetPossibleNames } = get(paginationPossibleNames_Store)
-    return _.merge(
-        ...args.map((arg) => {
-            if (limitPossibleNames.includes(arg.dd_displayName)) {
-                return { 'limitArg': arg };
-            }
-            if (offsetPossibleNames.includes(arg.dd_displayName)) {
-                return { 'offsetArg': arg };
-            }
-        }).filter((arg) => { return arg }))
-};
+
+
+export const get_paginationArgs = (args) => {
+    const paginationPossibleNames = get(paginationPossibleNames_Store)
+    const paginationPossibleNamesKeys = Object.keys(paginationPossibleNames)
+    let paginationArgs = []
+    paginationArgs = args.reduce((accumulator, arg) => {
+        let matchingKey = paginationPossibleNamesKeys.find((key) => {
+            return paginationPossibleNames[key].includes(arg.dd_displayName)
+        })
+        if (matchingKey) {
+            return accumulator = { ...accumulator, [matchingKey]: arg }
+        } else {
+            return accumulator
+        }
+
+    }, {})
+    return { ...paginationArgs }
+}
+
+export const get_paginationType = (paginationArgs) => {
+    const paginationArgsKeys = Object.keys(paginationArgs)
+    if (paginationArgsKeys.length == 0) {
+        return 'notAvailable'
+    }
+    if (paginationArgs?.limit && paginationArgs?.offset) {
+        return 'offsetBased'
+    }
+    return 'unknown'
+}
 export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/field  
     let derivedData = { ...type }
     derivedData.dd_kindsArray = get_KindsArray(type)
@@ -366,8 +381,8 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/fi
         }
     }
     if (derivedData.args) {
-        derivedData.offsetPaginationArgs = get_OffsetPaginationArguments(derivedData.args)
-        derivedData.paginationType = Check_supportsOffsetPagination(derivedData.offsetPaginationArgs) ? 'offsetBased' : null
+        derivedData.paginationArgs = get_paginationArgs(derivedData.args)
+        derivedData.paginationType = get_paginationType(derivedData.paginationArgs)
     }
 
 
