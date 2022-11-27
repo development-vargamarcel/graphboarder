@@ -11,13 +11,9 @@ export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'q
         console.error('no cols data,choose at least one field')
         return null
     }
-    return `
-    
-  ${QMS_name}${QMS_args ? `(${QMS_args})` : ''}{
+    return ` ${QMS_name}${QMS_args ? `(${QMS_args})` : ''}{
 ${QMS_fields}
-  }
-
-`;
+  } `;
 };
 
 

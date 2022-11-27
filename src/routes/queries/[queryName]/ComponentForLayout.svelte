@@ -76,6 +76,7 @@
 		console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
 	}
 	const runQuery = (queryBody) => {
+		console.log('queryBody', queryBody);
 		let fetching = true;
 		let error = false;
 		let data = false;
@@ -136,8 +137,7 @@
 			runQuery(
 				`query {
 				${QMS_body}
-		}
-				`
+		}`
 			);
 		}
 	});

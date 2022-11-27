@@ -9,6 +9,7 @@
 	import { Create_QMS_bodyPartsUnifier_StoreDerived } from '$lib/stores/QMS_bodyPartsUnifier_StoreDerived';
 	import { Create_offsetBasedPaginationState } from '$lib/stores/pagination/offsetBasedPaginationState';
 	import { schemaData } from '$lib/stores/schemaData';
+	import { Create_ofsetBasedPaginationState_derived } from '$lib/stores/pagination/ofsetBasedPaginationState_derived';
 	export let prefix = '';
 	export let QMSType = 'query';
 	export let QMSName;
@@ -18,6 +19,9 @@
 	const tableColsData_Store = Create_tableColsData_Store();
 	const offsetBasedPaginationOptions = Create_offsetBasedPaginationOptions();
 	const offsetBasedPaginationState = Create_offsetBasedPaginationState();
+	const ofsetBasedPaginationState_derived = Create_ofsetBasedPaginationState_derived(
+		offsetBasedPaginationState
+	);
 	const final_gqlArgObj_Store = Create_final_gqlArgObj_Store(
 		activeArgumentsDataGrouped_Store,
 		offsetBasedPaginationState
@@ -33,6 +37,7 @@
 		QMSType,
 		QMSName,
 		offsetBasedPaginationOptions,
+		ofsetBasedPaginationState_derived,
 		offsetBasedPaginationState
 	);
 	const QMS_bodyPartsUnifier_StoreDerived = Create_QMS_bodyPartsUnifier_StoreDerived(
@@ -40,7 +45,7 @@
 		QMSType
 	);
 
-	$: console.log('QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
+	//$: console.log('QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
 	setContext(`${prefix}activeArgumentsDataGrouped_Store`, activeArgumentsDataGrouped_Store);
 	setContext(`${prefix}tableColsData_Store`, tableColsData_Store);
 	setContext(`${prefix}final_gqlArgObj_Store`, final_gqlArgObj_Store);
