@@ -197,11 +197,14 @@
 	<div
 		class="fixed bottom-0 bg-base-200 w-screen h-screen overscroll-none overflow-y-auto pb-4 px-4 mx-auto"
 	>
-		<div class="form-control w-full max-w-xs mt-40">
-			<ul class="space-y-2 max-h-40 overflow-y-auto px-1 overscroll-contain">
+		<div class="form-control w-full max-w-xs md:max-w-md lg:max-w-lg mt-20 mx-auto">
+			<ul class="space-y-2 max-h-60 md:max-h-80   overflow-y-auto px-1 overscroll-contain">
 				{#each testEndpoints as endpoint}
 					<li
-						class="cursor-pointer bg-accent/5 p-2 rounded overflow-x-auto"
+						class="cursor-pointer bg-accent/5 p-2 rounded overflow-x-auto {endpoint.url ==
+						graphqlEndpointURL
+							? 'bg-accent/50'
+							: ''}"
 						on:click={() => {
 							handleEndpointClick(endpoint);
 						}}
@@ -218,7 +221,7 @@
 			<input
 				type="text"
 				placeholder="Type here"
-				class="input input-bordered input-sm w-full max-w-xs "
+				class="input input-bordered input-sm w-full max-w-xs md:max-w-md lg:max-w-lg"
 				bind:value={graphqlEndpointURL}
 			/>
 
@@ -231,7 +234,7 @@
 				type="textarea"
 				cols="40"
 				placeholder="header:value"
-				class="textarea textarea-bordered textarea-sm overflow-x-auto w-full max-w-xs "
+				class="textarea textarea-bordered textarea-sm overflow-x-auto w-full max-w-xs md:max-w-md lg:max-w-lg"
 				bind:value={headersValue}
 			/>
 

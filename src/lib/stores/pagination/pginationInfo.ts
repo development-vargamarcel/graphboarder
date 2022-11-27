@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
 
 type paginationInfo = {
-    paginationType: 'offsetBased' | 'edgeBased' | 'idBased' | 'notAvailable' | 'unknown',
+    paginationType: 'offsetBased' | 'edgeBased' | 'idBased' | 'pageBased' | 'notAvailable' | 'unknown',
     paginationData: Record<string, unknown>
 }
 export const Create_paginationInfo = (paginationInfo: paginationInfo = { paginationType: 'offsetBased', paginationData: {} }) => {
