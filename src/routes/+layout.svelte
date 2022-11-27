@@ -201,7 +201,7 @@
 			<ul class="space-y-2 max-h-60 md:max-h-80   overflow-y-auto px-1 overscroll-contain">
 				{#each testEndpoints as endpoint}
 					<li
-						class="cursor-pointer bg-accent/5 p-2 rounded overflow-x-auto {endpoint.url ==
+						class="cursor-pointer bg-accent/5 p-2 rounded overflow-x-auto break-all {endpoint.url ==
 						graphqlEndpointURL
 							? 'bg-accent/50'
 							: ''}"
