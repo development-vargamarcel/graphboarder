@@ -197,7 +197,7 @@
 	<div
 		class="fixed bottom-0 bg-base-200 w-screen h-screen overscroll-none overflow-y-auto pb-4 px-4 mx-auto"
 	>
-		<div class="form-control w-full max-w-xs md:max-w-md lg:max-w-lg mt-20 mx-auto">
+		<div class="form-control w-full max-w-xs md:max-w-md lg:max-w-lg mt-32 mx-auto">
 			<ul class="space-y-2 max-h-60 md:max-h-80   overflow-y-auto px-1 overscroll-contain">
 				{#each testEndpoints as endpoint}
 					<li
