@@ -7,4 +7,5 @@ export const paginationPossibleNames_Store = writable({
     lastPossibleNames: ['last'],
     afterPossibleNames: ['after'],
     beforePossibleNames: ['before'],
+    fromPossibleNames: ['from']
 })
