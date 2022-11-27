@@ -27,7 +27,7 @@
 		offsetBasedPaginationState
 	);
 	const paginationInfo = Create_paginationInfo({
-		paginationType: 'offsetBased',
+		paginationType: currentQMS_Info.dd_paginationType,
 		paginationData: {}
 	});
 
@@ -38,7 +38,7 @@
 		QMSName,
 		offsetBasedPaginationOptions,
 		ofsetBasedPaginationState_derived,
-		offsetBasedPaginationState
+		$paginationInfo.paginationType ? offsetBasedPaginationState : null
 	);
 	const QMS_bodyPartsUnifier_StoreDerived = Create_QMS_bodyPartsUnifier_StoreDerived(
 		[QMS_bodyPart_StoreDerived],
