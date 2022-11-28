@@ -6,6 +6,7 @@ import { schemaData } from '$lib/stores/schemaData';
 import { page } from '$app/stores';
 import { displayStucture } from '$lib/stores/displayStructure';
 import { paginationPossibleNames_Store } from "$lib/stores/pagination/paginationPossibleNames_Store";
+import { paginationTypes } from "$lib/stores/pagination/paginationTypes";
 export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query') => {
     if (QMS_fields == '') {
         console.error('no cols data,choose at least one field')
@@ -290,17 +291,9 @@ export const get_paginationType = (paginationArgs) => {
     const standsForArray = paginationArgs.map((arg) => {
         return arg.dd_standsFor
     })
-    if (paginationArgs.length == 0) {
-        return 'notAvailable'
-    }
-    if (standsForArray.includes('limit') && standsForArray.includes('offset')) {
-        return 'offsetBased'
-    }
-    if (standsForArray.includes('first') || standsForArray.includes('last') && standsForArray.includes('after') || standsForArray.includes('before')) {
-        return 'edgeBased'
-    }
-    if (standsForArray.includes('page')) {
-        return 'pageBased'
+    const paginationType = paginationTypes.find((paginationType) => { return paginationType.checker(standsForArray) })?.name
+    if (paginationType) {
+        return paginationType
     }
     return 'unknown'
 }
