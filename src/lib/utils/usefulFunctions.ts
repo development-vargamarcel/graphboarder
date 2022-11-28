@@ -269,7 +269,7 @@ export const get_displayStructure = (rootName) => {
 
 
 
-export const get_paginationArgs = (args) => {
+export const getAndmark_paginationArgs = (args) => {
     const paginationPossibleNames = get(paginationPossibleNames_Store)
     const paginationPossibleNamesKeys = Object.keys(paginationPossibleNames)
     let paginationArgs = []
@@ -278,8 +278,12 @@ export const get_paginationArgs = (args) => {
             return paginationPossibleNames[key].includes(arg.dd_displayName)
         })
         if (matchingKey) {
+            arg.dd_isPaginationArg = true
+            arg.dd_standsFor = matchingKey
+
             return accumulator = { ...accumulator, [matchingKey]: arg }
         } else {
+            arg.dd_isPaginationArg = false
             return accumulator
         }
 
@@ -381,7 +385,7 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/fi
         }
     }
     if (derivedData.args) {
-        derivedData.paginationArgs = get_paginationArgs(derivedData.args)
+        derivedData.paginationArgs = getAndmark_paginationArgs(derivedData.args)
         derivedData.paginationType = get_paginationType(derivedData.paginationArgs)
     }
 
