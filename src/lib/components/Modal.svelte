@@ -64,7 +64,7 @@
 			bind:this={bodyDiv}
 			id={modalIdetifier}
 			class=" shadowTop card-bordered card rounded-box z-[99]
-			my-0 max-h-min space-y-0 rounded-b-none border-transparent bg-base-100 p-0 py-0 mx-auto md:w-2/3 pb-8"
+			my-0 min-h-[50vh] max-h-min space-y-0 rounded-b-none border-transparent bg-base-100 p-0 py-0 mx-auto md:w-2/3 pb-8"
 			in:fly={{
 				delay: 20,
 				duration: 200,

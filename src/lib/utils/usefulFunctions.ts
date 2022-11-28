@@ -299,6 +299,9 @@ export const get_paginationType = (paginationArgs) => {
     if (standsForArray.includes('first') || standsForArray.includes('last') && standsForArray.includes('after') || standsForArray.includes('before')) {
         return 'edgeBased'
     }
+    if (standsForArray.includes('page')) {
+        return 'pageBased'
+    }
     return 'unknown'
 }
 export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/field  
