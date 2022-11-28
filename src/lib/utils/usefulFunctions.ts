@@ -269,34 +269,31 @@ export const get_displayStructure = (rootName) => {
 
 
 
-export const getAndmark_paginationArgs = (args) => {
+export const mark_paginationArgs = (args) => {
     const paginationPossibleNames = get(paginationPossibleNames_Store)
     const paginationPossibleNamesKeys = Object.keys(paginationPossibleNames)
-    let paginationArgs = []
-    paginationArgs = args.reduce((accumulator, arg) => {
+    args.forEach((arg) => {
         let matchingKey = paginationPossibleNamesKeys.find((key) => {
             return paginationPossibleNames[key].includes(arg.dd_displayName)
         })
         if (matchingKey) {
             arg.dd_isPaginationArg = true
             arg.dd_standsFor = matchingKey
-
-            return accumulator = { ...accumulator, [matchingKey]: arg }
         } else {
             arg.dd_isPaginationArg = false
-            return accumulator
         }
-
-    }, {})
-    return { ...paginationArgs }
+    })
 }
 
+
 export const get_paginationType = (paginationArgs) => {
-    const paginationArgsKeys = Object.keys(paginationArgs)
-    if (paginationArgsKeys.length == 0) {
+    const standsForArray = paginationArgs.map((arg) => {
+        return arg.dd_standsFor
+    })
+    if (paginationArgs.length == 0) {
         return 'notAvailable'
     }
-    if (paginationArgs?.limit && paginationArgs?.offset) {
+    if (standsForArray.includes('limit') && standsForArray.includes('offset')) {
         return 'offsetBased'
     }
     return 'unknown'
@@ -385,8 +382,9 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/fi
         }
     }
     if (derivedData.args) {
-        derivedData.paginationArgs = getAndmark_paginationArgs(derivedData.args)
-        derivedData.paginationType = get_paginationType(derivedData.paginationArgs)
+        mark_paginationArgs(derivedData.args)
+        derivedData.dd_paginationArgs = derivedData.args.filter((arg) => { return arg.dd_isPaginationArg })
+        derivedData.dd_paginationType = get_paginationType(derivedData.dd_paginationArgs)
     }
 
 

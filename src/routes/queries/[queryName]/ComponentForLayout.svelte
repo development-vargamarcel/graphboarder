@@ -172,7 +172,7 @@
 </script>
 
 <!-- pagination testing -->
-{#if currentQMS_Info.paginationType == 'offsetBased' && activeArgumentsDataGrouped_Store_IS_SET}
+{#if currentQMS_Info.dd_paginationType == 'offsetBased' && activeArgumentsDataGrouped_Store_IS_SET}
 	<OffsetPagination QMS={currentQMS_Info} />
 {/if}
 <!-- main -->
