@@ -16,12 +16,12 @@
 	let currentQMS_Info = schemaData.get_QMS_Field(QMSName, QMSType);
 	console.log({ currentQMS_Info });
 	const activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store();
-	const tableColsData_Store = Create_tableColsData_Store();
 	const offsetBasedPaginationOptions = Create_offsetBasedPaginationOptions();
 	const offsetBasedPaginationState = Create_offsetBasedPaginationState();
 	const ofsetBasedPaginationState_derived = Create_ofsetBasedPaginationState_derived(
 		offsetBasedPaginationState
 	);
+	const tableColsData_Store = Create_tableColsData_Store(offsetBasedPaginationState);
 	const final_gqlArgObj_Store = Create_final_gqlArgObj_Store(
 		activeArgumentsDataGrouped_Store,
 		offsetBasedPaginationState
