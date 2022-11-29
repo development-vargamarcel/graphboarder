@@ -61,13 +61,16 @@ export const paginationTypes = [
             delete _state[afterName]
             delete _state[beforeName]
             return _state
-        }, stepsOfFieldsToCursor: ['edges', 'cursor'], get_nextPageState: (state, paginationArgs, currentResultData) => {
+        }, get_dependencyColsData: (QMS_name) => {
+            return [{ title: 'cursor', stepsOfFields: [QMS_name, 'edges', 'cursor'] }]
+        }, get_nextPageState: (state, paginationArgs, currentRows_LastRow) => {
             const afterName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'after' })?.dd_displayName
             const stepsOfFieldsToCursor = ['edges', 'cursor']
             const _state = JSON.parse(JSON.stringify(state))
-            _state[afterName] = getColResultData(undefined, currentResultData, stepsOfFieldsToCursor)
+            _state[afterName] = `'${getColResultData(undefined, currentRows_LastRow, stepsOfFieldsToCursor)}'`
+            console.log({ _state })
             return _state
-        }, get_prevPageState: (state, paginationArgs, currentResultData) => {
+        }, get_prevPageState: (state, paginationArgs, currentRows_LastRow) => {
             const _state = JSON.parse(JSON.stringify(state))
             return _state
         }, pageIsGreaterThenFirst: (_pagination_state_Store, paginationArgs) => {

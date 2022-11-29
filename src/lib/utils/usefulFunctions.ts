@@ -769,3 +769,19 @@ export const generateNewArgData = (stepsOfFields, type, extraData = {}) => {
     };
     return infoToCast;
 };
+
+export const get_scalarColsData = (currentQMS_Info) => {
+    let dd_relatedRoot = currentQMS_Info?.dd_relatedRoot;
+    let { scalarFields } = getFields_Grouped(dd_relatedRoot);
+    let currentQuery_fields_SCALAR_names = scalarFields.map((field) => {
+        return field.name;
+    });
+    let scalarColsData = currentQuery_fields_SCALAR_names.map((name) => {
+        let scalarColData = {
+            title: name,
+            stepsOfFields: [queryName, name]
+        };
+        return scalarColData;
+    });
+    return scalarColsData;
+};

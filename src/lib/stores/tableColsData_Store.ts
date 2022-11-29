@@ -7,9 +7,19 @@ export const Create_tableColsData_Store = (_pagination_state_Store, initialCols 
 
     return {
         subscribe, set, update
-        , addColumn: (newCollData) => {
+        ,
+        addColumns: (newCollsData) => {
             _pagination_state_Store.resetToDefault()
             update((storeData) => {
+                console.log('qwerrt', { storeData })
+                return [...storeData, ...newCollsData]
+            })
+        },
+
+        addColumn: (newCollData) => {
+            _pagination_state_Store.resetToDefault()
+            update((storeData) => {
+                console.log('qwerrt', { storeData })
                 return [...storeData, newCollData]
             })
         },

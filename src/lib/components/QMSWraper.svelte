@@ -10,11 +10,16 @@
 	import { Create_paginationState } from '$lib/stores/pagination/paginationState';
 	import { schemaData } from '$lib/stores/schemaData';
 	import { Create_paginationState_derived } from '$lib/stores/pagination/paginationState_derived';
+	import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
+	import { get_scalarColsData } from '$lib/utils/usefulFunctions';
 	export let prefix = '';
 	export let QMSType = 'query';
 	export let QMSName;
 	let currentQMS_Info = schemaData.get_QMS_Field(QMSName, QMSType);
 	console.log({ currentQMS_Info });
+	let paginationTypeInfo = paginationTypes.find((pagType) => {
+		return pagType.name == currentQMS_Info.dd_paginationType;
+	});
 	const activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store();
 	const offsetBasedPaginationOptions = Create_offsetBasedPaginationOptions();
 	const paginationState = Create_paginationState(
@@ -27,7 +32,20 @@
 		currentQMS_Info.dd_paginationArgs,
 		currentQMS_Info.dd_paginationType
 	);
-	const tableColsData_Store = Create_tableColsData_Store(paginationState);
+
+	let tableColsData_StoreInitialValue = get_scalarColsData();
+	const dependencyColsData = paginationTypeInfo?.get_dependencyColsData(QMSName);
+	if (dependencyColsData) {
+		tableColsData_StoreInitialValue = [...tableColsData_StoreInitialValue, ...dependencyColsData];
+	}
+	const tableColsData_Store = Create_tableColsData_Store(
+		paginationState,
+		tableColsData_StoreInitialValue
+	);
+	tableColsData_Store.subscribe((val) => {
+		console.log('1234', val);
+	});
+
 	const final_gqlArgObj_Store = Create_final_gqlArgObj_Store(
 		activeArgumentsDataGrouped_Store,
 		paginationState

@@ -22,6 +22,7 @@
 	import { schemaData } from '$lib/stores/schemaData';
 	import OffsetPagination from '$lib/components/pagination/OffsetPagination.svelte';
 	import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
+	import { stringify } from 'postcss';
 
 	//setClient($urqlClient);
 	$: console.log('$QMS_bodyPart_StoreDerived', $QMS_bodyPart_StoreDerived);
@@ -43,19 +44,8 @@
 	$: activeArgumentsDataGrouped_Store_IS_SET =
 		$activeArgumentsDataGrouped_Store.length > 0 ? true : false;
 	//
-	let { scalarFields } = getFields_Grouped(dd_relatedRoot);
-	let currentQuery_fields_SCALAR_names = scalarFields.map((field) => {
-		return field.name;
-	});
 
-	let scalarColsData = currentQuery_fields_SCALAR_names.map((name) => {
-		let scalarColData = {
-			title: name,
-			stepsOfFields: [queryName, name]
-		};
-		return scalarColData;
-	});
-	tableColsData_Store.set([...scalarColsData]);
+	let { scalarFields } = getFields_Grouped(dd_relatedRoot);
 
 	let queryData;
 	let columns = [];
@@ -70,7 +60,7 @@
 		completeF = complete;
 		console.log({ loaded }, { complete });
 		if (rows.length > 0) {
-			paginationState.nextPage(queryData);
+			paginationState.nextPage(rows[rows.length - 1]);
 		}
 		console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
 	}
@@ -182,10 +172,13 @@
 	//Active arguments logic
 </script>
 
-<!-- pagination testing -->
-{#if currentQMS_Info.dd_paginationType == 'offsetBased' && activeArgumentsDataGrouped_Store_IS_SET}
-	<OffsetPagination QMS={currentQMS_Info} />
-{/if}
+<button
+	on:click={() => {
+		paginationState.nextPage(rows[rows.length - 1]);
+	}}
+>
+	next page
+</button>
 <!-- main -->
 <div class="flex space-x-2">
 	<div class="dropdown grow ">
