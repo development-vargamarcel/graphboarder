@@ -20,7 +20,7 @@ export const paginationTypes = [
             const offsetName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'offset' })?.dd_displayName
             const limitName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'limit' })?.dd_displayName
             return {
-                [limitName]: 10,
+                [limitName]: 20,
                 [offsetName]: 0
             }
 
@@ -55,7 +55,7 @@ export const paginationTypes = [
         name: 'edgeBased', dynamic: ['after', 'before'], get_initialState: (paginationArgs) => {
             const firstName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'first' })?.dd_displayName
             return {
-                [firstName]: 10,
+                [firstName]: 20,
             }
 
         }, get_defaultPaginationStateForDynamic: (state, paginationArgs) => {
