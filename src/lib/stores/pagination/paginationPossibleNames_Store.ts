@@ -3,9 +3,9 @@ import { writable } from "svelte/store";
 export const paginationPossibleNames_Store = writable({
     limit: ['limit'],
     offset: ['offset', 'skip'],
-    first: ['first'],
+    first: ['first', '_size'],
     last: ['last'],
-    after: ['after'],
+    after: ['after', '_cursor'],
     before: ['before'],
     from: ['from'],
     page: ['page']
