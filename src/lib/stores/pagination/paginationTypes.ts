@@ -54,9 +54,19 @@ export const paginationTypes = [
     },
     {
         name: 'pageBased', dynamic: ['page'], get_defaultPaginationStateForDynamic: (state, paginationArgs) => {
-            let pageName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'page' })?.dd_displayName
+            const pageName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'page' })?.dd_displayName
             let _state = JSON.parse(JSON.stringify(state))
             _state = { ..._state, [pageName]: 1 }
+            return _state
+        }, get_nextPageState: (state, paginationArgs) => {
+            const pageName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'page' })?.dd_displayName
+            const _state = JSON.parse(JSON.stringify(state))
+            _state[pageName]++
+            return _state
+        }, get_prevPageState: (state, paginationArgs) => {
+            const pageName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'page' })?.dd_displayName
+            const _state = JSON.parse(JSON.stringify(state))
+            _state[pageName]--
             return _state
         }, pageIsGreaterThenFirst: (_pagination_state_Store, paginationArgs) => {
             let pageName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'page' })?.dd_displayName
