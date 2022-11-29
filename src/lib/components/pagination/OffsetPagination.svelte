@@ -8,7 +8,7 @@
 
 	const paginationState = getContext(`${prefix}paginationState`);
 	paginationState.subscribe((val) => {
-		limit = val.limit;
-		offset = val.offset;
+		limit = val?.limit;
+		offset = val?.offset;
 	});
 </script>

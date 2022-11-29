@@ -21,6 +21,7 @@
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	import { schemaData } from '$lib/stores/schemaData';
 	import OffsetPagination from '$lib/components/pagination/OffsetPagination.svelte';
+	import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
 
 	//setClient($urqlClient);
 	$: console.log('$QMS_bodyPart_StoreDerived', $QMS_bodyPart_StoreDerived);
@@ -35,7 +36,9 @@
 	}
 	//
 	let activeArgumentsData = [];
-
+	const paginationTypeInfo = paginationTypes.find((pagType) => {
+		return pagType.name == currentQMS_Info.dd_paginationType;
+	});
 	let activeArgumentsDataGrouped_Store_IS_SET = false;
 	$: activeArgumentsDataGrouped_Store_IS_SET =
 		$activeArgumentsDataGrouped_Store.length > 0 ? true : false;
@@ -98,6 +101,9 @@
 				} else if (queryData.data[queryName]?.nodes) {
 					//needed for:https://beta.pokeapi.co/graphql/v1beta
 					rowsCurrent = queryData.data[queryName]?.nodes;
+				} else if (queryData.data[queryName]?.data) {
+					//needed for:https://graphql.fauna.com/graphql
+					rowsCurrent = queryData.data[queryName]?.data;
 				} else {
 					rowsCurrent = queryData.data[queryName];
 				}
@@ -106,7 +112,12 @@
 					rowsCurrent = [rowsCurrent];
 				}
 				if ($offsetBasedPaginationOptions.infiniteScroll) {
-					if ($paginationState.offset == 0) {
+					if (
+						!paginationTypeInfo?.pageIsGreaterThenFirst(
+							paginationState,
+							currentQMS_Info.dd_paginationArgs
+						)
+					) {
 						infiniteId += 1;
 						rows = [...rowsCurrent];
 					} else {
