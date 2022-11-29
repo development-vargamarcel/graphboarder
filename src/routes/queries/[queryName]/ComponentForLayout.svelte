@@ -61,13 +61,13 @@
 	let loadedF;
 	let completeF;
 	let infiniteId = 0;
-	const offsetBasedPaginationState = getContext(`offsetBasedPaginationState`);
+	const paginationState = getContext(`paginationState`);
 	function infiniteHandler({ detail: { loaded, complete } }) {
 		loadedF = loaded;
 		completeF = complete;
 		console.log({ loaded }, { complete });
 		if (rows.length > 0) {
-			offsetBasedPaginationState.nextPage();
+			paginationState.nextPage();
 		}
 		console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
 	}
@@ -106,7 +106,7 @@
 					rowsCurrent = [rowsCurrent];
 				}
 				if ($offsetBasedPaginationOptions.infiniteScroll) {
-					if ($offsetBasedPaginationState.offset == 0) {
+					if ($paginationState.offset == 0) {
 						infiniteId += 1;
 						rows = [...rowsCurrent];
 					} else {
@@ -115,7 +115,7 @@
 				} else {
 					rows = rowsCurrent;
 				}
-				if (rowsCurrent?.length == $offsetBasedPaginationState.limit) {
+				if (rowsCurrent?.length == $paginationState.limit) {
 					loadedF && loadedF();
 
 					console.log('loadedF ');

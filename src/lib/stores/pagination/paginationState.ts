@@ -1,13 +1,13 @@
 import { writable } from "svelte/store";
 import { paginationTypes } from "./paginationTypes";
 
-const defaultInitialValue = { limit: 20, offset: 0 }
-export const Create_offsetBasedPaginationState = (initialValue = JSON.parse(JSON.stringify(defaultInitialValue)), paginationArgs, paginationType) => {
+
+export const Create_paginationState = (initialValue, paginationArgs, paginationType) => {
     const paginationTypeInfo = paginationTypes.find((pagType) => {
         return pagType.name == paginationType
     })
     console.log(paginationTypeInfo)
-    const store = writable(initialValue)
+    const store = writable(initialValue ? initialValue : paginationTypeInfo?.get_initialState(paginationArgs))
     const { subscribe, set, update } = store
 
     return {

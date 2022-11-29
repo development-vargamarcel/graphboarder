@@ -7,7 +7,7 @@
 	import { Create_QMS_bodyPart_StoreDerived } from '$lib/stores/QMS_bodyPart_StoreDerived';
 	import { setContext } from 'svelte';
 	import { Create_QMS_bodyPartsUnifier_StoreDerived } from '$lib/stores/QMS_bodyPartsUnifier_StoreDerived';
-	import { Create_offsetBasedPaginationState } from '$lib/stores/pagination/offsetBasedPaginationState';
+	import { Create_paginationState } from '$lib/stores/pagination/paginationState';
 	import { schemaData } from '$lib/stores/schemaData';
 	import { Create_paginationState_derived } from '$lib/stores/pagination/paginationState_derived';
 	export let prefix = '';
@@ -17,20 +17,20 @@
 	console.log({ currentQMS_Info });
 	const activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store();
 	const offsetBasedPaginationOptions = Create_offsetBasedPaginationOptions();
-	const offsetBasedPaginationState = Create_offsetBasedPaginationState(
-		{ limit: 20, offset: 0 },
+	const paginationState = Create_paginationState(
+		undefined,
 		currentQMS_Info.dd_paginationArgs,
 		currentQMS_Info.dd_paginationType
 	);
 	const paginationState_derived = Create_paginationState_derived(
-		offsetBasedPaginationState,
+		paginationState,
 		currentQMS_Info.dd_paginationArgs,
 		currentQMS_Info.dd_paginationType
 	);
-	const tableColsData_Store = Create_tableColsData_Store(offsetBasedPaginationState);
+	const tableColsData_Store = Create_tableColsData_Store(paginationState);
 	const final_gqlArgObj_Store = Create_final_gqlArgObj_Store(
 		activeArgumentsDataGrouped_Store,
-		offsetBasedPaginationState
+		paginationState
 	);
 	const paginationInfo = Create_paginationInfo({
 		paginationType: currentQMS_Info.dd_paginationType,
@@ -44,7 +44,7 @@
 		QMSName,
 		offsetBasedPaginationOptions,
 		paginationState_derived,
-		currentQMS_Info.dd_paginationType == 'offsetBased' ? offsetBasedPaginationState : null
+		paginationState
 	);
 	const QMS_bodyPartsUnifier_StoreDerived = Create_QMS_bodyPartsUnifier_StoreDerived(
 		[QMS_bodyPart_StoreDerived],
@@ -57,7 +57,7 @@
 	setContext(`${prefix}final_gqlArgObj_Store`, final_gqlArgObj_Store);
 	setContext(`${prefix}QMS_bodyPart_StoreDerived`, QMS_bodyPart_StoreDerived);
 	setContext(`${prefix}offsetBasedPaginationOptions`, offsetBasedPaginationOptions);
-	setContext(`${prefix}offsetBasedPaginationState`, offsetBasedPaginationState);
+	setContext(`${prefix}paginationState`, paginationState);
 </script>
 
 <slot><!-- optional fallback --></slot>

@@ -60,7 +60,13 @@ export const paginationTypes = [
             delete _state[afterName]
             delete _state[beforeName]
             return _state
-        }, stepsOfFieldsToCursor: ['edges', 'cursor'], pageIsGreaterThenFirst: (_pagination_state_Store, paginationArgs) => {
+        }, stepsOfFieldsToCursor: ['edges', 'cursor'], get_nextPageState: (state, paginationArgs) => {
+            const _state = JSON.parse(JSON.stringify(state))
+            return _state
+        }, get_prevPageState: (state, paginationArgs) => {
+            const _state = JSON.parse(JSON.stringify(state))
+            return _state
+        }, pageIsGreaterThenFirst: (_pagination_state_Store, paginationArgs) => {
             const afterName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'after' })?.dd_displayName
             const beforeName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'before' })?.dd_displayName
             return get(_pagination_state_Store)?.[afterName] || get(_pagination_state_Store)?.[beforeName]

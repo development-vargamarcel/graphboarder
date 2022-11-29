@@ -6,8 +6,8 @@
 	let limit = 10;
 	let offset = 0;
 
-	const offsetBasedPaginationState = getContext(`${prefix}offsetBasedPaginationState`);
-	offsetBasedPaginationState.subscribe((val) => {
+	const paginationState = getContext(`${prefix}paginationState`);
+	paginationState.subscribe((val) => {
 		limit = val.limit;
 		offset = val.offset;
 	});
