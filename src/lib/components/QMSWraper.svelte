@@ -42,9 +42,6 @@
 		paginationState,
 		tableColsData_StoreInitialValue
 	);
-	tableColsData_Store.subscribe((val) => {
-		console.log('1234', val);
-	});
 
 	const final_gqlArgObj_Store = Create_final_gqlArgObj_Store(
 		activeArgumentsDataGrouped_Store,
