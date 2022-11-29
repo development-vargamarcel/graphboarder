@@ -116,7 +116,7 @@
 				} else {
 					rows = rowsCurrent;
 				}
-				if (rowsCurrent?.length == $paginationState.limit) {
+				if (rowsCurrent?.length > 0) {
 					loadedF && loadedF();
 
 					console.log('loadedF ');
