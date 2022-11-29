@@ -70,7 +70,7 @@
 		completeF = complete;
 		console.log({ loaded }, { complete });
 		if (rows.length > 0) {
-			paginationState.nextPage();
+			paginationState.nextPage(queryData);
 		}
 		console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
 	}

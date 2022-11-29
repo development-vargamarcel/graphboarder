@@ -1,3 +1,4 @@
+import { getColResultData } from "$lib/utils/usefulFunctions"
 import { get } from "svelte/store"
 //!!!replace pageIsGreaterThenFirst function with an isFirstPage function,and update app everywhere accordingly,not important,only for aesthetics
 export const paginationTypes = [
@@ -50,7 +51,7 @@ export const paginationTypes = [
         name: 'edgeBased', dynamic: ['after', 'before'], get_initialState: (paginationArgs) => {
             const firstName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'first' })?.dd_displayName
             return {
-                [firstName]: 20,
+                [firstName]: 2,
             }
 
         }, get_defaultPaginationStateForDynamic: (state, paginationArgs) => {
@@ -60,10 +61,13 @@ export const paginationTypes = [
             delete _state[afterName]
             delete _state[beforeName]
             return _state
-        }, stepsOfFieldsToCursor: ['edges', 'cursor'], get_nextPageState: (state, paginationArgs) => {
+        }, stepsOfFieldsToCursor: ['edges', 'cursor'], get_nextPageState: (state, paginationArgs, currentResultData) => {
+            const afterName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'after' })?.dd_displayName
+            const stepsOfFieldsToCursor = ['edges', 'cursor']
             const _state = JSON.parse(JSON.stringify(state))
+            _state[afterName] = getColResultData(undefined, currentResultData, stepsOfFieldsToCursor)
             return _state
-        }, get_prevPageState: (state, paginationArgs) => {
+        }, get_prevPageState: (state, paginationArgs, currentResultData) => {
             const _state = JSON.parse(JSON.stringify(state))
             return _state
         }, pageIsGreaterThenFirst: (_pagination_state_Store, paginationArgs) => {

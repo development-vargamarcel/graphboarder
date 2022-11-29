@@ -44,7 +44,7 @@
 		QMSName,
 		offsetBasedPaginationOptions,
 		paginationState_derived,
-		paginationState
+		currentQMS_Info.dd_paginationType !== 'notAvailable' ? paginationState : null
 	);
 	const QMS_bodyPartsUnifier_StoreDerived = Create_QMS_bodyPartsUnifier_StoreDerived(
 		[QMS_bodyPart_StoreDerived],

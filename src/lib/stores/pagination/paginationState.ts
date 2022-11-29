@@ -11,18 +11,18 @@ export const Create_paginationState = (initialValue, paginationArgs, paginationT
     const { subscribe, set, update } = store
 
     return {
-        subscribe, set, update, nextPage: () => {
+        subscribe, set, update, nextPage: (currentResultData) => {
             update((val) => {
-                return paginationTypeInfo.get_nextPageState(val, paginationArgs)
+                return paginationTypeInfo.get_nextPageState(val, paginationArgs, currentResultData)
 
             })
-        }, prevPage: () => {
+        }, prevPage: (currentResultData) => {
             update((val) => {
-                return paginationTypeInfo.get_prevPageState(val, paginationArgs)
+                return paginationTypeInfo.get_prevPageState(val, paginationArgs, currentResultData)
             })
         }, resetToDefault: () => {
             update((val) => {
-                return paginationTypeInfo.get_defaultPaginationStateForDynamic(val, paginationArgs)
+                return paginationTypeInfo.get_defaultPaginationStateForDynamic(val, paginationArgs,)
 
             })
         }
