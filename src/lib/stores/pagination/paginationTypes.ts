@@ -1,6 +1,11 @@
 import { getColResultData } from "$lib/utils/usefulFunctions"
 import { get } from "svelte/store"
 //!!!replace pageIsGreaterThenFirst function with an isFirstPage function,and update app everywhere accordingly,not important,only for aesthetics
+//to do:
+//hasNextPage function
+//hasPreviousPage function
+//the above can be simple with edgeBsed,you can find them under pageInfo,named haxNextPage,hasPreviousPage,also there are other usefull info like previousPage and NextPage,dunno what they are,maybe just cursors.
+
 export const paginationTypes = [
     {
         name: 'notAvailable', get_initialState: (paginationArgs) => {
