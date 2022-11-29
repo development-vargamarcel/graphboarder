@@ -1,5 +1,5 @@
 import { get } from "svelte/store"
-
+//!!!replace pageIsGreaterThenFirst function with an isFirstPage function,and update app everywhere accordingly,not important,only for aesthetics
 export const paginationTypes = [
     {
         name: 'notAvailable', get_initialState: (paginationArgs) => {
