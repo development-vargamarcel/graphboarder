@@ -16,7 +16,7 @@ export const paginationTypes = [
         }
     },
     {
-        name: 'edgeBased', dynamic: ['after', 'before'], pageIsGreaterThenFirst: (_pagination_state_Store, paginationArgs) => {
+        name: 'edgeBased', dynamic: ['after', 'before'], stepsOfFieldsToCursor: ['edges', 'cursor'], pageIsGreaterThenFirst: (_pagination_state_Store, paginationArgs) => {
             let afterName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'after' })?.dd_displayName
             let beforeName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'before' })?.dd_displayName
             return get(_pagination_state_Store)?.[afterName] || get(_pagination_state_Store)?.[beforeName]

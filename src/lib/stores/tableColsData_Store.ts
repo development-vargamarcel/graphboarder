@@ -1,8 +1,8 @@
 import { writable } from "svelte/store";
 
-export const Create_tableColsData_Store = (_pagination_state_Store) => {
+export const Create_tableColsData_Store = (_pagination_state_Store, initialCols = []) => {
 
-    const store = writable([])
+    const store = writable(initialCols)
     const { subscribe, set, update } = store
 
     return {
