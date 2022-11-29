@@ -17,7 +17,11 @@
 	console.log({ currentQMS_Info });
 	const activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store();
 	const offsetBasedPaginationOptions = Create_offsetBasedPaginationOptions();
-	const offsetBasedPaginationState = Create_offsetBasedPaginationState();
+	const offsetBasedPaginationState = Create_offsetBasedPaginationState(
+		{ limit: 20, offset: 0 },
+		currentQMS_Info.dd_paginationArgs,
+		currentQMS_Info.dd_paginationType
+	);
 	const paginationState_derived = Create_paginationState_derived(
 		offsetBasedPaginationState,
 		currentQMS_Info.dd_paginationArgs,
