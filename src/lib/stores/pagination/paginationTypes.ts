@@ -5,6 +5,8 @@ export const paginationTypes = [
     {
         name: 'notAvailable', get_initialState: (paginationArgs) => {
             console.log('notAvailable')
+        }, get_dependencyColsData: (QMS_name) => {
+            return []
         }, get_nextPageState: (state, paginationArgs) => {
             console.log('notAvailable')
         }, get_prevPageState: (state, paginationArgs) => {
@@ -18,10 +20,12 @@ export const paginationTypes = [
             const offsetName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'offset' })?.dd_displayName
             const limitName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'limit' })?.dd_displayName
             return {
-                [limitName]: 20,
+                [limitName]: 5,
                 [offsetName]: 0
             }
 
+        }, get_dependencyColsData: (QMS_name) => {
+            return []
         }, get_defaultPaginationStateForDynamic: (state, paginationArgs) => {
             const offsetName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'offset' })?.dd_displayName
             const _state = JSON.parse(JSON.stringify(state))
@@ -51,7 +55,7 @@ export const paginationTypes = [
         name: 'edgeBased', dynamic: ['after', 'before'], get_initialState: (paginationArgs) => {
             const firstName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'first' })?.dd_displayName
             return {
-                [firstName]: 2,
+                [firstName]: 5,
             }
 
         }, get_defaultPaginationStateForDynamic: (state, paginationArgs) => {
@@ -87,6 +91,8 @@ export const paginationTypes = [
             return {
                 [pageName]: 1
             }
+        }, get_dependencyColsData: (QMS_name) => {
+            return []
         }, get_defaultPaginationStateForDynamic: (state, paginationArgs) => {
             const pageName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'page' })?.dd_displayName
             let _state = JSON.parse(JSON.stringify(state))

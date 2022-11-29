@@ -10,10 +10,12 @@
 	let testEndpoints = [
 		{
 			url: 'https://vgqkcskomrpikolllkix.nhost.run/v1/graphql',
+			info: 'offsetBased pagination',
 			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' }
 		},
 		{
 			url: 'https://7rsm0d0d.directus.app/graphql',
+			info: 'offsetBased pagination',
 			headers: {
 				authorization: 'Bearer aKUvsqBR4-rfnL2z6nqEQmLPRIur4c1m'
 			}
@@ -26,7 +28,7 @@
 		{ url: 'https://graphql.anilist.co' },
 		{ url: 'https://countries.trevorblades.com/' },
 		{ url: 'https://api.digitransit.fi/routing/v1/routers/finland/index/graphql' },
-		{ url: 'https://portal.ehri-project.eu/api/graphql' },
+		{ url: 'https://portal.ehri-project.eu/api/graphql', info: 'edgeBased pagination' },
 		{ url: 'https://etmdb.com/graphql?' },
 		{
 			url: 'https://graphql.fauna.com/graphql',
@@ -210,6 +212,7 @@
 						}}
 					>
 						{endpoint.url}
+						<div class="text-xs">{endpoint.info ? endpoint.info : ''}</div>
 					</li>
 				{/each}
 			</ul>

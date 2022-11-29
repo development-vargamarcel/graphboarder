@@ -33,16 +33,19 @@
 		currentQMS_Info.dd_paginationType
 	);
 
-	let tableColsData_StoreInitialValue = get_scalarColsData();
+	let tableColsData_StoreInitialValue = [];
+	let scalarColsData = get_scalarColsData(currentQMS_Info);
+
 	const dependencyColsData = paginationTypeInfo?.get_dependencyColsData(QMSName);
-	if (dependencyColsData) {
-		tableColsData_StoreInitialValue = [...tableColsData_StoreInitialValue, ...dependencyColsData];
-	}
+	tableColsData_StoreInitialValue = [...scalarColsData, ...dependencyColsData];
+
 	const tableColsData_Store = Create_tableColsData_Store(
 		paginationState,
 		tableColsData_StoreInitialValue
 	);
-
+	tableColsData_Store.subscribe((val) => {
+		console.log('1234', val);
+	});
 	const final_gqlArgObj_Store = Create_final_gqlArgObj_Store(
 		activeArgumentsDataGrouped_Store,
 		paginationState

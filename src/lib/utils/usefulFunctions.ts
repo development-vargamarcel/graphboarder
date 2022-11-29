@@ -779,7 +779,7 @@ export const get_scalarColsData = (currentQMS_Info) => {
     let scalarColsData = currentQuery_fields_SCALAR_names.map((name) => {
         let scalarColData = {
             title: name,
-            stepsOfFields: [queryName, name]
+            stepsOfFields: [currentQMS_Info.dd_displayName, name]
         };
         return scalarColData;
     });
