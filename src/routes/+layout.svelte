@@ -47,7 +47,7 @@
 		{ url: 'https://graphql-compose.herokuapp.com/northwind/' },
 		{ url: 'https://directions-graphql.herokuapp.com/graphql' },
 		{ url: 'https://graphql-weather-api.herokuapp.com/' , info: 'notAvailable pagination' },
-		{ url: 'https://fruits-api.netlify.app/graphql' }
+		{ url: 'https://fruits-api.netlify.app/graphql', info: 'notAvailable pagination'  }
 	];
 	let gotData = false;
 	let introspectionResultUnsubscribe = introspectionResult.subscribe((data) => {
