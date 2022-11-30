@@ -46,7 +46,7 @@
 		{ url: 'https://demotivation-quotes-api.herokuapp.com/graphql' , info: 'notAvailable pagination' },
 		{ url: 'https://graphql-compose.herokuapp.com/northwind/' },
 		{ url: 'https://directions-graphql.herokuapp.com/graphql' },
-		{ url: 'https://graphql-weather-api.herokuapp.com/' },
+		{ url: 'https://graphql-weather-api.herokuapp.com/' , info: 'notAvailable pagination' },
 		{ url: 'https://fruits-api.netlify.app/graphql' }
 	];
 	let gotData = false;
