@@ -22,7 +22,7 @@
 		},
 		{ url: 'https://api.spacex.land/graphql/' },
 		{ url: 'https://swapi-graphql.netlify.app/.netlify/functions/index', authToken: '' },
-		{ url: 'https://rickandmortyapi.com/graphql' },
+		{ url: 'https://rickandmortyapi.com/graphql', info: 'pageBased pagination'  },
 		{ url: 'https://beta.pokeapi.co/graphql/v1beta' },
 		{ url: 'https://dex-server.herokuapp.com/' , info: '?? notAvailable pagination' },
 		{ url: 'https://graphql.anilist.co', info: '?? notAvailable pagination'  },
