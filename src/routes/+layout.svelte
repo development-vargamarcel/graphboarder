@@ -40,7 +40,7 @@
 		{ url: 'https://api.graphql.jobs/', info: 'notAvailable pagination'  },
 		{ url: 'https://hivdb.stanford.edu/graphql' },
 		{ url: 'https://api.react-finland.fi/graphql?' },
-		{ url: 'https://graphql-camara-deputados.herokuapp.com/' },
+		{ url: 'https://graphql-camara-deputados.herokuapp.com/', info: 'edgeBased pagination'  },
 		{ url: 'https://graphqlpokemon.favware.tech/' },
 		{ url: 'https://graphbrainz.herokuapp.com/?' },
 		{ url: 'https://demotivation-quotes-api.herokuapp.com/graphql' },
