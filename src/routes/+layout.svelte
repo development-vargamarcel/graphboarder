@@ -43,7 +43,7 @@
 		{ url: 'https://graphql-camara-deputados.herokuapp.com/', info: 'edgeBased pagination'  },
 		{ url: 'https://graphqlpokemon.favware.tech/' },
 		{ url: 'https://graphbrainz.herokuapp.com/?' },
-		{ url: 'https://demotivation-quotes-api.herokuapp.com/graphql' },
+		{ url: 'https://demotivation-quotes-api.herokuapp.com/graphql' , info: 'notAvailable pagination' },
 		{ url: 'https://graphql-compose.herokuapp.com/northwind/' },
 		{ url: 'https://directions-graphql.herokuapp.com/graphql' },
 		{ url: 'https://graphql-weather-api.herokuapp.com/' },
