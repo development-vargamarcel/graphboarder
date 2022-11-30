@@ -37,7 +37,7 @@
 			}
 		},
 		{ url: 'https://gitlab.com/api/graphql' , info: 'edgeBased pagination' },
-		{ url: 'https://api.graphql.jobs/' },
+		{ url: 'https://api.graphql.jobs/', info: 'notAvailable pagination'  },
 		{ url: 'https://hivdb.stanford.edu/graphql' },
 		{ url: 'https://api.react-finland.fi/graphql?' },
 		{ url: 'https://graphql-camara-deputados.herokuapp.com/' },
