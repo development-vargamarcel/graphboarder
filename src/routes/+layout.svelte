@@ -25,7 +25,7 @@
 		{ url: 'https://rickandmortyapi.com/graphql' },
 		{ url: 'https://beta.pokeapi.co/graphql/v1beta' },
 		{ url: 'https://dex-server.herokuapp.com/' },
-		{ url: 'https://graphql.anilist.co' },
+		{ url: 'https://graphql.anilist.co', info: '?? notAvailable pagination'  },
 		{ url: 'https://countries.trevorblades.com/', info: 'notAvailable pagination'  },
 		{ url: 'https://api.digitransit.fi/routing/v1/routers/finland/index/graphql' , info: '?? notAvailable pagination' },
 		{ url: 'https://portal.ehri-project.eu/api/graphql', info: '?? edgeBased pagination' },
