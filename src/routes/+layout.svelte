@@ -36,7 +36,7 @@
 				authorization: 'Basic Zm5BRFFVdWNRb0FDQ1VpZDAxeXVIdWt2SnptaVY4STI4a2R6Y0p2UDo='
 			}
 		},
-		{ url: 'https://gitlab.com/api/graphql' },
+		{ url: 'https://gitlab.com/api/graphql' , info: 'edgeBased pagination' },
 		{ url: 'https://api.graphql.jobs/' },
 		{ url: 'https://hivdb.stanford.edu/graphql' },
 		{ url: 'https://api.react-finland.fi/graphql?' },
