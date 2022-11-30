@@ -31,7 +31,7 @@
 		{ url: 'https://portal.ehri-project.eu/api/graphql', info: '?? edgeBased pagination' },
 		{ url: 'https://etmdb.com/graphql?' },
 		{
-			url: 'https://graphql.fauna.com/graphql',, info: 'edgeBased pagination', 
+			url: 'https://graphql.fauna.com/graphql', info: 'edgeBased pagination', 
 			headers: {
 				authorization: 'Basic Zm5BRFFVdWNRb0FDQ1VpZDAxeXVIdWt2SnptaVY4STI4a2R6Y0p2UDo='
 			}
