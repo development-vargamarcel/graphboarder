@@ -20,7 +20,7 @@
 				authorization: 'Bearer aKUvsqBR4-rfnL2z6nqEQmLPRIur4c1m'
 			}
 		},
-		{ url: 'https://api.spacex.land/graphql/' },
+		{ url: 'https://api.spacex.land/graphql/' , info: 'offsetBased pagination' },
 		{ url: 'https://swapi-graphql.netlify.app/.netlify/functions/index', authToken: '' , info: 'edgeBased pagination' },
 		{ url: 'https://rickandmortyapi.com/graphql', info: 'pageBased pagination'  },
 		{ url: 'https://beta.pokeapi.co/graphql/v1beta' },
