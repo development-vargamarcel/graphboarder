@@ -13,6 +13,11 @@
 			info: 'offsetBased pagination',
 			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' }
 		},
+{
+			url: 'https://vgqkcskomrpikolllkix.nhost.run/v1beta1/relay',
+			info: 'edgeBased pagination',
+			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' }
+		},
 		{
 			url: 'https://7rsm0d0d.directus.app/graphql',
 			info: 'offsetBased pagination',
