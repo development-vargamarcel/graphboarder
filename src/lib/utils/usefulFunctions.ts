@@ -5,7 +5,7 @@ import { scalarsAndEnumsDisplayTypes } from '$lib/stores/scalarsAndEnumsDisplayT
 import { schemaData } from '$lib/stores/schemaData';
 import { page } from '$app/stores';
 import { displayStucture } from '$lib/stores/displayStructure';
-import { paginationPossibleNames_Store } from "$lib/stores/pagination/paginationPossibleNames_Store";
+import { paginationArgsPossibleNames_Store } from "$lib/stores/pagination/paginationArgsPossibleNames_Store";
 import { paginationTypes } from "$lib/stores/pagination/paginationTypes";
 export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query') => {
     if (QMS_fields == '') {
@@ -276,7 +276,7 @@ export const get_displayStructure = (rootName) => {
 
 
 export const mark_paginationArgs = (args) => {
-    const paginationPossibleNames = get(paginationPossibleNames_Store)
+    const paginationPossibleNames = get(paginationArgsPossibleNames_Store)
     const paginationPossibleNamesKeys = Object.keys(paginationPossibleNames)
     args.forEach((arg) => {
         let matchingKey = paginationPossibleNamesKeys.find((key) => {

@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
 
-export const paginationPossibleNames_Store = writable({
+export const paginationArgsPossibleNames_Store = writable({
     limit: ['limit'],
     offset: ['offset', 'skip'],
     first: ['first', '_size'],
