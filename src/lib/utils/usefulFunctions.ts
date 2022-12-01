@@ -1,4 +1,6 @@
 //QMS means QueryOrMutationOrSubscription
+//TODO:
+//create stepsOfFieldsChecker,started,named "check_stepsOfFields"
 import _ from "lodash";
 import { get } from 'svelte/store';
 import { scalarsAndEnumsDisplayTypes } from '$lib/stores/scalarsAndEnumsDisplayTypes';
@@ -785,3 +787,9 @@ export const get_scalarColsData = (currentQMS_Info) => {
     });
     return scalarColsData;
 };
+
+export const check_stepsOfFields = (stepsOfFields) => {
+    const currentQMS_Info = schemaData.get_QMS_Field(stepsOfFields[0], 'query');
+
+
+}
