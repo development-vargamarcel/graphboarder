@@ -60,7 +60,7 @@
 		completeF = complete;
 		console.log({ loaded }, { complete });
 		if (rows.length > 0) {
-			paginationState.nextPage(rows[rows.length - 1]);
+			paginationState.nextPage(rows[rows.length - 1], queryData?.data);
 		}
 		console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
 	}
@@ -172,13 +172,13 @@
 	//Active arguments logic
 </script>
 
-<button
+<!-- <button
 	on:click={() => {
-		paginationState.nextPage(rows[rows.length - 1]);
+		paginationState.nextPage(rows[rows.length - 1], queryData?.data);
 	}}
 >
 	next page
-</button>
+</button> -->
 <!-- main -->
 <div class="flex space-x-2">
 	<div class="dropdown grow ">

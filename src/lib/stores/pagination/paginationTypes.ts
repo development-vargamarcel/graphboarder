@@ -71,15 +71,16 @@ export const paginationTypes = [
             delete _state[beforeName]
             return _state
         }, get_dependencyColsData: (QMS_name) => {
-            return [{ title: 'cursor', stepsOfFields: [QMS_name, 'edges', 'cursor'] }]
-        }, get_nextPageState: (state, paginationArgs, currentRows_LastRow) => {
+            //using 'pageInfo' for getting next page cursor,'nextPage' is not a standard,some use another name like 'endCursor' { title: 'nextPageCursor', stepsOfFields: [QMS_name, 'pageInfo', 'nextPage'] }
+            return [{ title: 'cursor', stepsOfFields: [QMS_name, 'edges', 'cursor'] },]
+        }, get_nextPageState: (state, paginationArgs, currentRows_LastRow, returnedDataBatch_last) => {
             const afterName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'after' })?.dd_displayName
             const stepsOfFieldsToCursor = ['edges', 'cursor']
             const _state = JSON.parse(JSON.stringify(state))
             _state[afterName] = `'${getColResultData(undefined, currentRows_LastRow, stepsOfFieldsToCursor)}'`
             console.log({ _state })
             return _state
-        }, get_prevPageState: (state, paginationArgs, currentRows_LastRow) => {
+        }, get_prevPageState: (state, paginationArgs, currentRows_LastRow, returnedDataBatch_last) => {
             const _state = JSON.parse(JSON.stringify(state))
             return _state
         }, pageIsGreaterThenFirst: (_pagination_state_Store, paginationArgs) => {
