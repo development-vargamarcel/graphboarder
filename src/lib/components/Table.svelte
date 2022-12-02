@@ -10,10 +10,7 @@
 	export let colsData = [];
 	let visibleColsData = [];
 	let visibleColumns = [];
-	$: if (colsData.length) {
-	}
-
-	{
+	$: {
 		visibleColsData = colsData.filter((colData) => {
 			return !colData?.hidden;
 		});

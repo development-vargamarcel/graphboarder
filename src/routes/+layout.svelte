@@ -31,6 +31,8 @@
 			url: 'https://vgqkcskomrpikolllkix.nhost.run/v1beta1/relay',
 			description: 'edgeBased pagination',
 			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
+			pageInfoFieldsLocation: ['pageInfo'],
+
 			namings: {
 				hasNextPage: 'hasNextPage',
 				hasPreviousPage: 'hasPreviousPage',
@@ -39,16 +41,53 @@
 				cursor: 'cursor'
 			}
 		},
-		{ url: 'https://portal.ehri-project.eu/api/graphql', description: 'edgeBased pagination' },
-		{ url: 'https://gitlab.com/api/graphql', description: 'edgeBased pagination' },
+		{
+			url: 'https://portal.ehri-project.eu/api/graphql',
+			description: 'edgeBased pagination',
+			pageInfoFieldsLocation: ['pageInfo'],
+
+			namings: {
+				hasNextPage: 'hasNextPage',
+				hasPreviousPage: 'hasPreviousPage',
+				startCursor: 'previousPage',
+				endCursor: 'nextPage',
+				cursor: 'cursor'
+			}
+		},
+		{
+			url: 'https://gitlab.com/api/graphql',
+			description: 'edgeBased pagination',
+			pageInfoFieldsLocation: ['pageInfo'],
+
+			namings: {
+				hasNextPage: 'hasNextPage',
+				hasPreviousPage: 'hasPreviousPage',
+				startCursor: 'startCursor',
+				endCursor: 'endCursor',
+				cursor: 'cursor'
+			}
+		},
 		{
 			url: 'https://swapi-graphql.netlify.app/.netlify/functions/index',
 			authToken: '',
-			description: 'edgeBased pagination'
+			description: 'edgeBased pagination',
+			pageInfoFieldsLocation: ['pageInfo'],
+			namings: {
+				hasNextPage: 'hasNextPage',
+				hasPreviousPage: 'hasPreviousPage',
+				startCursor: 'startCursor',
+				endCursor: 'endCursor',
+				cursor: 'cursor'
+			}
 		},
 		{
 			url: 'https://graphql.fauna.com/graphql',
 			description: 'edgeBased pagination',
+			pageInfoFieldsLocation: [],
+			namings: {
+				startCursor: 'after',
+				endCursor: 'before'
+			},
 			headers: {
 				authorization: 'Basic Zm5BRFFVdWNRb0FDQ1VpZDAxeXVIdWt2SnptaVY4STI4a2R6Y0p2UDo='
 			}

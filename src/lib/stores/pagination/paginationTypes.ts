@@ -77,17 +77,19 @@ export const paginationTypes = [
             const dependencyColsData = []
             const endpointInfoVal = get(endpointInfo)
             const namings = endpointInfoVal?.namings
+            const pageInfoFieldsLocation = endpointInfoVal.pageInfoFieldsLocation
+
             if (namings?.hasNextPage) {
-                dependencyColsData.push({ title: namings.hasNextPage, hidden: true, stepsOfFields: [QMS_name, 'pageInfo', namings.hasNextPage] })
+                dependencyColsData.push({ title: namings.hasNextPage, hidden: true, stepsOfFields: [QMS_name, ...pageInfoFieldsLocation, namings.hasNextPage] })
             }
             if (namings?.hasPreviousPage) {
-                dependencyColsData.push({ title: namings.hasPreviousPage, hidden: true, stepsOfFields: [QMS_name, 'pageInfo', namings.hasPreviousPage] })
+                dependencyColsData.push({ title: namings.hasPreviousPage, hidden: true, stepsOfFields: [QMS_name, ...pageInfoFieldsLocation, namings.hasPreviousPage] })
             }
             if (namings?.startCursor) {
-                dependencyColsData.push({ title: namings.startCursor, hidden: true, stepsOfFields: [QMS_name, 'pageInfo', namings.startCursor] })
+                dependencyColsData.push({ title: namings.startCursor, hidden: true, stepsOfFields: [QMS_name, ...pageInfoFieldsLocation, namings.startCursor] })
             }
             if (namings?.endCursor) {
-                dependencyColsData.push({ title: namings.endCursor, hidden: true, stepsOfFields: [QMS_name, 'pageInfo', namings.endCursor] })
+                dependencyColsData.push({ title: namings.endCursor, hidden: true, stepsOfFields: [QMS_name, ...pageInfoFieldsLocation, namings.endCursor] })
             }
             if (namings?.cursor) {
                 dependencyColsData.push({ title: namings.cursor, stepsOfFields: [QMS_name, 'edges', namings.cursor] })
@@ -95,11 +97,14 @@ export const paginationTypes = [
             console.log({ dependencyColsData })
             return dependencyColsData
         }, get_nextPageState: (state, paginationArgs, currentRows_LastRow, returnedDataBatch_last) => {
+            const endpointInfoVal = get(endpointInfo)
             const afterName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'after' })?.dd_displayName
             const stepsOfFieldsToCursor = ['edges', 'cursor']
             const _state = JSON.parse(JSON.stringify(state))
-            _state[afterName] = `'${getColResultData(undefined, currentRows_LastRow, stepsOfFieldsToCursor)}'`
-            console.log({ _state })
+            if (endpointInfoVal?.namings?.cursor) {
+                _state[afterName] = `'${getColResultData(undefined, currentRows_LastRow, stepsOfFieldsToCursor)}'`
+                console.log({ _state })
+            }
             return _state
         }, get_prevPageState: (state, paginationArgs, currentRows_LastRow, returnedDataBatch_last) => {
             const _state = JSON.parse(JSON.stringify(state))
