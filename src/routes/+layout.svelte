@@ -31,11 +31,12 @@
 			url: 'https://vgqkcskomrpikolllkix.nhost.run/v1beta1/relay',
 			description: 'edgeBased pagination',
 			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
-			naming: {
+			namings: {
 				hasNextPage: 'hasNextPage',
 				hasPreviousPage: 'hasPreviousPage',
 				startCursor: 'startCursor', //after,nextPage
-				endCursor: 'endCursor' //before,previousPage
+				endCursor: 'endCursor', //before,previousPage
+				cursor: 'cursor'
 			},
 			cursorLocations: {
 				//StepsOfFields
@@ -189,16 +190,11 @@
 	let forceVisibleSidebar = false;
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Sidebar from '$lib/components/Sidebar.svelte';
-	import { Create_endpointInfo } from '$lib/stores/endpointInfo/endpointInfo';
+	import { endpointInfo } from '$lib/stores/endpointInfo/endpointInfo';
 	import { setContext } from 'svelte';
-	const endpointInfo = Create_endpointInfo(
-		testEndpoints.find((endpoint) => {
-			return endpoint.url == graphqlEndpointURL;
-		})
-	);
 	setContext('endpointInfo', endpointInfo);
 	$: if (gotData) {
-		if ($endpointInfo.url != graphqlEndpointURL) {
+		if ($endpointInfo?.url != graphqlEndpointURL) {
 			endpointInfo.set(
 				testEndpoints.find((endpoint) => {
 					return endpoint.url == graphqlEndpointURL;
@@ -208,7 +204,7 @@
 	}
 	$: {
 		console.log('endpointInfo', $endpointInfo);
-		if ($endpointInfo.url == 'https://vgqkcskomrpikolllkix.nhost.run/v1beta1/relay') {
+		if ($endpointInfo?.url == 'https://vgqkcskomrpikolllkix.nhost.run/v1beta1/relay') {
 			console.log($endpointInfo.cursorLocations.get_endCursor('qmsname'));
 		}
 	}

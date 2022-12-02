@@ -48,7 +48,6 @@
 	let { scalarFields } = getFields_Grouped(dd_relatedRoot);
 
 	let queryData;
-	let columns = [];
 	let rows = [];
 	let rowsCurrent = [];
 	let loadedF;
@@ -150,9 +149,6 @@
 	};
 	tableColsData_Store.subscribe((data) => {
 		console.log(data);
-		columns = data.map((colData) => {
-			return colData.title;
-		});
 	});
 
 	let column_stepsOfFields = '';
@@ -270,7 +266,6 @@
 		{infiniteId}
 		{infiniteHandler}
 		colsData={$tableColsData_Store}
-		{columns}
 		{rows}
 		on:addColumnDropdown={() => {
 			//console.log('add column dropdown');

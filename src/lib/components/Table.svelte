@@ -8,7 +8,20 @@
 	import { createEventDispatcher, getContext } from 'svelte';
 	import ColumnInfo from './ColumnInfo.svelte';
 	export let colsData = [];
-	export let columns = [];
+	let visibleColsData = [];
+	let visibleColumns = [];
+	$: if (colsData.length) {
+	}
+
+	{
+		visibleColsData = colsData.filter((colData) => {
+			return !colData?.hidden;
+		});
+		visibleColumns = visibleColsData.map((colData) => {
+			return colData.title;
+		});
+	}
+
 	export let rows = [];
 	export let infiniteHandler;
 	export let infiniteId;
@@ -27,8 +40,7 @@
 				</th>
 				<!-- <th>edit</th> -->
 				<th>#</th>
-				{#each columns as column, index}
-					{@const isLast = index == columns.length - 1}
+				{#each visibleColumns as column, index}
 					<th class="normal-case">
 						<div class="dropdown dropdown-end  ">
 							<!-- svelte-ignore a11y-label-has-associated-control -->
@@ -87,7 +99,7 @@
 					</th>
 
 					<th class="z-0">{index + 1}</th>
-					{#each colsData as colData, index}
+					{#each visibleColsData as colData, index}
 						<td class="z-0">
 							{formatData(getTableCellData(row, colData, index), 40, true)}
 						</td>{/each}

@@ -1,11 +1,13 @@
 import { getColResultData } from "$lib/utils/usefulFunctions"
 import { get } from "svelte/store"
+import { endpointInfo } from "../endpointInfo/endpointInfo"
+//const endpointInfoVal = get(endpointInfo)
 //!!!replace pageIsGreaterThenFirst function with an isFirstPage function,and update app everywhere accordingly,not important,only for aesthetics
 //to do:
 //totalCount()
 //hasNextPage()  //rows.length-totalCount()>0
 
-
+//console.log('asdasdasda', endpointInfo)
 export const paginationTypes = [
     {
         name: 'notAvailable', get_initialState: (paginationArgs) => {
@@ -72,7 +74,26 @@ export const paginationTypes = [
             return _state
         }, get_dependencyColsData: (QMS_name) => {
             //using 'pageInfo' for getting next page cursor,'nextPage' is not a standard,some use another name like 'endCursor' { title: 'nextPageCursor', stepsOfFields: [QMS_name, 'pageInfo', 'nextPage'] }
-            return [{ title: 'cursor', stepsOfFields: [QMS_name, 'edges', 'cursor'] },]
+            const dependencyColsData = []
+            const endpointInfoVal = get(endpointInfo)
+            const namings = endpointInfoVal?.namings
+            if (namings?.hasNextPage) {
+                dependencyColsData.push({ title: namings.hasNextPage, hidden: true, stepsOfFields: [QMS_name, 'pageInfo', namings.hasNextPage] })
+            }
+            if (namings?.hasPreviousPage) {
+                dependencyColsData.push({ title: namings.hasPreviousPage, hidden: true, stepsOfFields: [QMS_name, 'pageInfo', namings.hasPreviousPage] })
+            }
+            if (namings?.startCursor) {
+                dependencyColsData.push({ title: namings.startCursor, hidden: true, stepsOfFields: [QMS_name, 'pageInfo', namings.startCursor] })
+            }
+            if (namings?.endCursor) {
+                dependencyColsData.push({ title: namings.endCursor, hidden: true, stepsOfFields: [QMS_name, 'pageInfo', namings.endCursor] })
+            }
+            if (namings?.cursor) {
+                dependencyColsData.push({ title: namings.cursor, stepsOfFields: [QMS_name, 'edges', namings.cursor] })
+            }
+            console.log({ dependencyColsData })
+            return dependencyColsData
         }, get_nextPageState: (state, paginationArgs, currentRows_LastRow, returnedDataBatch_last) => {
             const afterName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'after' })?.dd_displayName
             const stepsOfFieldsToCursor = ['edges', 'cursor']
