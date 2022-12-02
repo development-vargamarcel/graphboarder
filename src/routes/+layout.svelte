@@ -173,6 +173,23 @@
 	let forceVisibleSidebar = false;
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Sidebar from '$lib/components/Sidebar.svelte';
+	import { Create_endpointInfo } from '$lib/stores/endpointInfo/endpointInfo';
+	import { setContext } from 'svelte';
+	const endpointInfo = Create_endpointInfo(
+		testEndpoints.find((endpoint) => {
+			return endpoint.url == graphqlEndpointURL;
+		})
+	);
+	setContext('endpointInfo', endpointInfo);
+	$: if (gotData) {
+		if ($endpointInfo.url != graphqlEndpointURL) {
+			endpointInfo.set(
+				testEndpoints.find((endpoint) => {
+					return endpoint.url == graphqlEndpointURL;
+				})
+			);
+		}
+	}
 </script>
 
 <header />
