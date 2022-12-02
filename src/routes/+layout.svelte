@@ -17,6 +17,7 @@
 			info: 'offsetBased pagination',
 			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' }
 		},
+
 		{
 			url: 'https://7rsm0d0d.directus.app/graphql',
 			info: 'offsetBased pagination',
@@ -26,7 +27,12 @@
 		},
 		{ url: 'https://api.spacex.land/graphql/', info: 'offsetBased pagination' },
 		{ url: 'https://rickandmortyapi.com/graphql', info: 'pageBased pagination' },
-		{ url: 'https://portal.ehri-project.eu/api/graphql', info: '?? edgeBased pagination' },
+{
+			url: 'https://vgqkcskomrpikolllkix.nhost.run/v1beta1/relay',
+			info: 'edgeBased pagination',
+			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' }
+		},
+		{ url: 'https://portal.ehri-project.eu/api/graphql', info: 'edgeBased pagination' },
 		{ url: 'https://gitlab.com/api/graphql', info: 'edgeBased pagination' },
 		{
 			url: 'https://swapi-graphql.netlify.app/.netlify/functions/index',
