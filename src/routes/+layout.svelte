@@ -192,12 +192,6 @@
 			);
 		}
 	}
-	$: {
-		console.log('endpointInfo', $endpointInfo);
-		if ($endpointInfo?.url == 'https://vgqkcskomrpikolllkix.nhost.run/v1beta1/relay') {
-			console.log($endpointInfo.cursorLocations.get_endCursor('qmsname'));
-		}
-	}
 </script>
 
 <header />
