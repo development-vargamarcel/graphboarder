@@ -14,54 +14,54 @@
 	let testEndpoints = [
 		{
 			url: 'https://vgqkcskomrpikolllkix.nhost.run/v1/graphql',
-			info: 'offsetBased pagination',
+			description: 'offsetBased pagination',
 			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' }
 		},
 
 		{
 			url: 'https://7rsm0d0d.directus.app/graphql',
-			info: 'offsetBased pagination',
+			description: 'offsetBased pagination',
 			headers: {
 				authorization: 'Bearer aKUvsqBR4-rfnL2z6nqEQmLPRIur4c1m'
 			}
 		},
-		{ url: 'https://api.spacex.land/graphql/', info: 'offsetBased pagination' },
-		{ url: 'https://rickandmortyapi.com/graphql', info: 'pageBased pagination' },
-{
+		{ url: 'https://api.spacex.land/graphql/', description: 'offsetBased pagination' },
+		{ url: 'https://rickandmortyapi.com/graphql', description: 'pageBased pagination' },
+		{
 			url: 'https://vgqkcskomrpikolllkix.nhost.run/v1beta1/relay',
-			info: 'edgeBased pagination',
+			description: 'edgeBased pagination',
 			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' }
 		},
-		{ url: 'https://portal.ehri-project.eu/api/graphql', info: 'edgeBased pagination' },
-		{ url: 'https://gitlab.com/api/graphql', info: 'edgeBased pagination' },
+		{ url: 'https://portal.ehri-project.eu/api/graphql', description: 'edgeBased pagination' },
+		{ url: 'https://gitlab.com/api/graphql', description: 'edgeBased pagination' },
 		{
 			url: 'https://swapi-graphql.netlify.app/.netlify/functions/index',
 			authToken: '',
-			info: 'edgeBased pagination'
+			description: 'edgeBased pagination'
 		},
 		{
 			url: 'https://graphql.fauna.com/graphql',
-			info: 'edgeBased pagination',
+			description: 'edgeBased pagination',
 			headers: {
 				authorization: 'Basic Zm5BRFFVdWNRb0FDQ1VpZDAxeXVIdWt2SnptaVY4STI4a2R6Y0p2UDo='
 			}
 		},
-		{ url: 'https://graphql-camara-deputados.herokuapp.com/', info: 'edgeBased pagination' },
-		{ url: 'https://countries.trevorblades.com/', info: 'notAvailable pagination' },
-		{ url: 'https://dex-server.herokuapp.com/', info: '?? notAvailable pagination' },
-		{ url: 'https://graphql.anilist.co', info: '?? notAvailable pagination' },
+		{ url: 'https://graphql-camara-deputados.herokuapp.com/', description: 'edgeBased pagination' },
+		{ url: 'https://countries.trevorblades.com/', description: 'notAvailable pagination' },
+		{ url: 'https://dex-server.herokuapp.com/', description: '?? notAvailable pagination' },
+		{ url: 'https://graphql.anilist.co', description: '?? notAvailable pagination' },
 		{
 			url: 'https://api.digitransit.fi/routing/v1/routers/finland/index/graphql',
-			info: '?? notAvailable pagination'
+			description: '?? notAvailable pagination'
 		},
 		{ url: 'https://etmdb.com/graphql?' },
-		{ url: 'https://api.graphql.jobs/', info: 'notAvailable pagination' },
+		{ url: 'https://api.graphql.jobs/', description: 'notAvailable pagination' },
 		{
 			url: 'https://demotivation-quotes-api.herokuapp.com/graphql',
-			info: 'notAvailable pagination'
+			description: 'notAvailable pagination'
 		},
-		{ url: 'https://graphql-weather-api.herokuapp.com/', info: 'notAvailable pagination' },
-		{ url: 'https://fruits-api.netlify.app/graphql', info: 'notAvailable pagination' },
+		{ url: 'https://graphql-weather-api.herokuapp.com/', description: 'notAvailable pagination' },
+		{ url: 'https://fruits-api.netlify.app/graphql', description: 'notAvailable pagination' },
 		{ url: 'https://graphql-compose.herokuapp.com/northwind/' },
 		{ url: 'https://directions-graphql.herokuapp.com/graphql' },
 		{ url: 'https://beta.pokeapi.co/graphql/v1beta' },
@@ -233,7 +233,7 @@
 						}}
 					>
 						{endpoint.url}
-						<div class="text-xs">{endpoint.info ? endpoint.info : ''}</div>
+						<div class="text-xs">{endpoint.description ? endpoint.description : ''}</div>
 					</li>
 				{/each}
 			</ul>
