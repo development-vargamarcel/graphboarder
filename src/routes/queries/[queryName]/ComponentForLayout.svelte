@@ -59,7 +59,7 @@
 		completeF = complete;
 		console.log({ loaded }, { complete });
 		if (rows.length > 0) {
-			paginationState.nextPage(rows[rows.length - 1], queryData?.data);
+			paginationState.nextPage(rows[rows.length - 1], queryData?.data, queryName);
 		}
 		console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
 	}

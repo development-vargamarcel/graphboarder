@@ -12,6 +12,8 @@
 	import { Create_paginationState_derived } from '$lib/stores/pagination/paginationState_derived';
 	import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
 	import { get_scalarColsData } from '$lib/utils/usefulFunctions';
+	import { endpointInfo } from '$lib/stores/endpointInfo/endpointInfo';
+	import { get } from 'svelte/store';
 	export let prefix = '';
 	export let QMSType = 'query';
 	export let QMSName;
@@ -34,6 +36,16 @@
 	);
 
 	let tableColsData_StoreInitialValue = [];
+	const get_nodeFieldsQMS_Info = (QMS_Info, nodeFieldsLocation) => {
+		if (nodeFieldsLocation?.length == 0) {
+			return QMS_Info;
+		}
+ 
+		//the basic ideea:
+		//first element of nodeFieldsLocation:curr_QMS_Info=QMS_Info.dd_relatedRoot.fields.find((field)=>{return field.dd_displayName==curr_nodeFieldsLocation}) 
+	};
+	const nodeFieldsLocation = $endpointInfo.nodeFieldsLocation;
+	const nodeFieldsQMS_Info = get_nodeFieldsQMS_Info(currentQMS_Info, nodeFieldsLocation);
 	let scalarColsData = get_scalarColsData(currentQMS_Info);
 
 	const dependencyColsData = paginationTypeInfo?.get_dependencyColsData(QMSName);
