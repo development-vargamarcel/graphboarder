@@ -30,7 +30,23 @@
 		{
 			url: 'https://vgqkcskomrpikolllkix.nhost.run/v1beta1/relay',
 			description: 'edgeBased pagination',
-			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' }
+			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
+			naming: {
+				hasNextPage: 'hasNextPage',
+				hasPreviousPage: 'hasPreviousPage',
+				startCursor: 'startCursor', //after,nextPage
+				endCursor: 'endCursor' //before,previousPage
+			},
+			cursorLocations: {
+				//StepsOfFields
+				get_startCursor: (QMS_name) => {
+					return [QMS_name, 'pageInfo', 'startCursor'];
+				},
+
+				get_endCursor: (QMS_name) => {
+					return [QMS_name, 'pageInfo', 'endCursor'];
+				}
+			}
 		},
 		{ url: 'https://portal.ehri-project.eu/api/graphql', description: 'edgeBased pagination' },
 		{ url: 'https://gitlab.com/api/graphql', description: 'edgeBased pagination' },
@@ -188,6 +204,12 @@
 					return endpoint.url == graphqlEndpointURL;
 				})
 			);
+		}
+	}
+	$: {
+		console.log('endpointInfo', $endpointInfo);
+		if ($endpointInfo.url == 'https://vgqkcskomrpikolllkix.nhost.run/v1beta1/relay') {
+			console.log($endpointInfo.cursorLocations.get_endCursor('qmsname'));
 		}
 	}
 </script>

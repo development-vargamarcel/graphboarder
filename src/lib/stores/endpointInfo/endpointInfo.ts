@@ -11,8 +11,8 @@ export const example_endpointInfo = {
         endCursor: "endCursor"//before,previousPage
     },
     cursorLocations: {//StepsOfFields
-        startCursor: (QMS_name) => { return [QMS_name, 'pageInfo', example_endpointInfo.naming.startCursor] },
-        endCursor: (QMS_name) => { return [QMS_name, 'pageInfo', example_endpointInfo.naming.endCursor] },
+        get_startCursor: (QMS_name) => { return [QMS_name, 'pageInfo', example_endpointInfo.naming.startCursor] },
+        get_endCursor: (QMS_name) => { return [QMS_name, 'pageInfo', example_endpointInfo.naming.endCursor] },
     }
 }
 export const Create_endpointInfo = (startingValue = example_endpointInfo) => {
