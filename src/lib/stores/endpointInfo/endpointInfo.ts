@@ -10,10 +10,6 @@ export const example_endpointInfo = {
         startCursor: "startCursor",//after,nextPage
         endCursor: "endCursor",//before,previousPage
         cursor: 'cursor'
-    },
-    cursorLocations: {//StepsOfFields
-        get_startCursor: (QMS_name) => { return [QMS_name, 'pageInfo', example_endpointInfo.naming.startCursor] },
-        get_endCursor: (QMS_name) => { return [QMS_name, 'pageInfo', example_endpointInfo.naming.endCursor] },
     }
 }
 export const endpointInfo = writable(null)

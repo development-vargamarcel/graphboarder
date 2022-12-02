@@ -34,19 +34,9 @@
 			namings: {
 				hasNextPage: 'hasNextPage',
 				hasPreviousPage: 'hasPreviousPage',
-				startCursor: 'startCursor', //after,nextPage
-				endCursor: 'endCursor', //before,previousPage
+				startCursor: 'startCursor',
+				endCursor: 'endCursor',
 				cursor: 'cursor'
-			},
-			cursorLocations: {
-				//StepsOfFields
-				get_startCursor: (QMS_name) => {
-					return [QMS_name, 'pageInfo', 'startCursor'];
-				},
-
-				get_endCursor: (QMS_name) => {
-					return [QMS_name, 'pageInfo', 'endCursor'];
-				}
 			}
 		},
 		{ url: 'https://portal.ehri-project.eu/api/graphql', description: 'edgeBased pagination' },
