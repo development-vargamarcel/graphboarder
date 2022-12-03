@@ -9,6 +9,7 @@ import { page } from '$app/stores';
 import { displayStucture } from '$lib/stores/displayStructure';
 import { paginationArgsPossibleNames_Store } from "$lib/stores/pagination/paginationArgsPossibleNames_Store";
 import { paginationTypes } from "$lib/stores/pagination/paginationTypes";
+import { endpointInfo } from "$lib/stores/endpointInfo/endpointInfo";
 export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query') => {
     if (QMS_fields == '') {
         console.error('no cols data,choose at least one field')
@@ -651,7 +652,19 @@ export const getQueryLinks = () => {
         let queryNameDisplay = queryName;
         let queryTitleDisplay = '';
         let currentQueryFromRootTypes = query.dd_relatedRoot;
-        let { scalarFields, non_scalarFields } = getFields_Grouped(currentQueryFromRootTypes);
+        let currentQMS_Info = schemaData.get_QMS_Field(queryName, 'query');
+        let endpointInfoVal = get(endpointInfo)
+        const nodeFieldsLocation = endpointInfoVal.nodeFieldsLocationPossibilities.find(
+            (nodeFieldsLocation) => {
+                return nodeFieldsLocation.checker(currentQMS_Info);
+            }
+        ).nodeFieldsLocation;
+        const nodeFieldsQMS_Info = get_nodeFieldsQMS_Info(currentQMS_Info, nodeFieldsLocation);
+        let scalarFields = get_scalarColsData(nodeFieldsQMS_Info, [
+            currentQMS_Info.dd_displayName,
+            ...nodeFieldsLocation
+        ]);
+
         let currentQuery_fields_SCALAR_names = scalarFields.map((field) => {
             return field.name;
         });
@@ -772,20 +785,45 @@ export const generateNewArgData = (stepsOfFields, type, extraData = {}) => {
     return infoToCast;
 };
 
-export const get_scalarColsData = (currentQMS_Info) => {
+export const get_scalarColsData = (currentQMS_Info, prefixStepsOfFields = []) => {
+    let keep_currentQMS_Info_dd_displayName = true
+    if (prefixStepsOfFields.length > 0) {
+        keep_currentQMS_Info_dd_displayName = false
+    }
     let dd_relatedRoot = currentQMS_Info?.dd_relatedRoot;
     let { scalarFields } = getFields_Grouped(dd_relatedRoot);
     let currentQuery_fields_SCALAR_names = scalarFields.map((field) => {
         return field.name;
     });
     let scalarColsData = currentQuery_fields_SCALAR_names.map((name) => {
+        let stepsOfFields
+        if (keep_currentQMS_Info_dd_displayName) {
+            stepsOfFields = [...prefixStepsOfFields, currentQMS_Info.dd_displayName, name]
+        } else {
+            stepsOfFields = [...prefixStepsOfFields, name]
+
+        }
+
         let scalarColData = {
             title: name,
-            stepsOfFields: [currentQMS_Info.dd_displayName, name]
+            stepsOfFields: stepsOfFields
         };
         return scalarColData;
     });
     return scalarColsData;
+};
+
+export const get_nodeFieldsQMS_Info = (QMS_Info, nodeFieldsLocation) => {
+    if (nodeFieldsLocation?.length == 0) {
+        return QMS_Info;
+    }
+    let nodeFieldsQMS_Info = QMS_Info;
+    nodeFieldsLocation.forEach((curr_nodeFieldsLocation) => {
+        nodeFieldsQMS_Info = nodeFieldsQMS_Info?.dd_relatedRoot.fields.find((field) => {
+            return field.dd_displayName == curr_nodeFieldsLocation;
+        });
+    });
+    return nodeFieldsQMS_Info;
 };
 
 export const check_stepsOfFields = (stepsOfFields) => {

@@ -11,7 +11,7 @@
 	import { schemaData } from '$lib/stores/schemaData';
 	import { Create_paginationState_derived } from '$lib/stores/pagination/paginationState_derived';
 	import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
-	import { get_scalarColsData } from '$lib/utils/usefulFunctions';
+	import { get_scalarColsData, get_nodeFieldsQMS_Info } from '$lib/utils/usefulFunctions';
 	import { endpointInfo } from '$lib/stores/endpointInfo/endpointInfo';
 	import { get } from 'svelte/store';
 	export let prefix = '';
@@ -36,17 +36,18 @@
 	);
 
 	let tableColsData_StoreInitialValue = [];
-	const get_nodeFieldsQMS_Info = (QMS_Info, nodeFieldsLocation) => {
-		if (nodeFieldsLocation?.length == 0) {
-			return QMS_Info;
+
+	const nodeFieldsLocation = $endpointInfo.nodeFieldsLocationPossibilities.find(
+		(nodeFieldsLocation) => {
+			return nodeFieldsLocation.checker(currentQMS_Info);
 		}
- 
-		//the basic ideea:
-		//first element of nodeFieldsLocation:curr_QMS_Info=QMS_Info.dd_relatedRoot.fields.find((field)=>{return field.dd_displayName==curr_nodeFieldsLocation}) 
-	};
-	const nodeFieldsLocation = $endpointInfo.nodeFieldsLocation;
+	).nodeFieldsLocation;
+	console.log({ nodeFieldsLocation });
 	const nodeFieldsQMS_Info = get_nodeFieldsQMS_Info(currentQMS_Info, nodeFieldsLocation);
-	let scalarColsData = get_scalarColsData(currentQMS_Info);
+	let scalarColsData = get_scalarColsData(nodeFieldsQMS_Info, [
+		currentQMS_Info.dd_displayName,
+		...nodeFieldsLocation
+	]);
 
 	const dependencyColsData = paginationTypeInfo?.get_dependencyColsData(QMSName);
 	tableColsData_StoreInitialValue = [...scalarColsData, ...dependencyColsData];

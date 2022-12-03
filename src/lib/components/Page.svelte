@@ -72,9 +72,6 @@
 	});
 
 	/// scroll logic end
-
-	import TabContainer from '$lib/components/TabContainer.svelte';
-	import { portal } from 'svelte-portal';
 </script>
 
 {#if MenuItem}

@@ -16,7 +16,27 @@
 			url: 'https://vgqkcskomrpikolllkix.nhost.run/v1/graphql',
 			description: 'offsetBased pagination',
 			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
-			nodeFieldsLocation: []
+			nodeFieldsLocation: ['nodes'],
+			nodeFieldsLocationPossibilities: [
+				{
+					nodeFieldsLocation: ['nodes'],
+					checker: (QMS_Info) => {
+						return (
+							QMS_Info.dd_displayName.endsWith('Aggregate') ||
+							QMS_Info.dd_displayName.endsWith('aggregate')
+						);
+					}
+				},
+				{
+					nodeFieldsLocation: [],
+					checker: (QMS_Info) => {
+						return (
+							!QMS_Info.dd_displayName.endsWith('Aggregate') &&
+							!QMS_Info.dd_displayName.endsWith('aggregate')
+						);
+					}
+				}
+			]
 		},
 
 		{
@@ -42,6 +62,15 @@
 			description: 'edgeBased pagination',
 			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
 			pageInfoFieldsLocation: ['pageInfo'],
+			nodeFieldsLocation: ['edges', 'node'],
+			nodeFieldsLocationPossibilities: [
+				{
+					nodeFieldsLocation: ['edges', 'node'],
+					checker: (QMS_Info) => {
+						return true;
+					}
+				}
+			],
 			namings: {
 				hasNextPage: 'hasNextPage',
 				hasPreviousPage: 'hasPreviousPage',
@@ -55,6 +84,14 @@
 			description: 'edgeBased pagination',
 			pageInfoFieldsLocation: ['pageInfo'],
 			nodeFieldsLocation: ['edges', 'node'],
+			nodeFieldsLocationPossibilities: [
+				{
+					nodeFieldsLocation: ['edges', 'node'],
+					checker: (QMS_Info) => {
+						return true;
+					}
+				}
+			],
 			namings: {
 				hasNextPage: 'hasNextPage',
 				hasPreviousPage: 'hasPreviousPage',
@@ -68,6 +105,14 @@
 			description: 'edgeBased pagination',
 			pageInfoFieldsLocation: ['pageInfo'],
 			nodeFieldsLocation: ['edges', 'node'],
+			nodeFieldsLocationPossibilities: [
+				{
+					nodeFieldsLocation: ['edges', 'node'],
+					checker: (QMS_Info) => {
+						return true;
+					}
+				}
+			],
 			namings: {
 				hasNextPage: 'hasNextPage',
 				hasPreviousPage: 'hasPreviousPage',
@@ -81,7 +126,15 @@
 			authToken: '',
 			description: 'edgeBased pagination',
 			pageInfoFieldsLocation: ['pageInfo'],
-			nodeFieldsLocation: ['data'],
+			nodeFieldsLocation: ['edges', 'node'],
+			nodeFieldsLocationPossibilities: [
+				{
+					nodeFieldsLocation: ['edges', 'node'],
+					checker: (QMS_Info) => {
+						return true;
+					}
+				}
+			],
 			namings: {
 				hasNextPage: 'hasNextPage',
 				hasPreviousPage: 'hasPreviousPage',
@@ -94,7 +147,15 @@
 			url: 'https://graphql.fauna.com/graphql',
 			description: 'edgeBased pagination',
 			pageInfoFieldsLocation: [],
-			nodeFieldsLocation: ['edges', 'node'],
+			nodeFieldsLocation: ['data'],
+			nodeFieldsLocationPossibilities: [
+				{
+					nodeFieldsLocation: ['data'],
+					checker: (QMS_Info) => {
+						return true;
+					}
+				}
+			],
 			namings: {
 				startCursor: 'after',
 				endCursor: 'before'
@@ -165,7 +226,6 @@
 
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import TabContainer from '$lib/components/TabContainer.svelte';
 	let showEdit = false;
 	let show_IntrospectionDataGenerator = true;
 	let graphqlEndpointURL = '';
@@ -277,7 +337,9 @@
 		{#if gotData}
 			<main class="bg-base-300  flex w-[100vw] overflow-hidden">
 				<div class="  md:max-w-[300px]">
-					<Sidebar bind:forceVisibleSidebar />
+					{#if $endpointInfo}
+						<Sidebar bind:forceVisibleSidebar />
+					{/if}
 				</div>
 				<div class="flex flex-col w-full md:w-[65vw]   grow h-screen">
 					<div class=" bg-base-100 min-h-[50px] flex">
@@ -303,8 +365,9 @@
 						</label>
 						<div />
 					</div>
-
-					<slot />
+					{#if $endpointInfo}
+						<slot />
+					{/if}
 				</div>
 			</main>
 		{/if}

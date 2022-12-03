@@ -1,5 +1,11 @@
 <script>
-	import { getFields_Grouped } from '$lib/utils/usefulFunctions';
+	import { endpointInfo } from '$lib/stores/endpointInfo/endpointInfo';
+	import { schemaData } from '$lib/stores/schemaData';
+	import {
+		getFields_Grouped,
+		get_scalarColsData,
+		get_nodeFieldsQMS_Info
+	} from '$lib/utils/usefulFunctions';
 
 	export let origin;
 	export let query;
@@ -7,7 +13,14 @@
 	let queryNameDisplay = queryName;
 	let queryTitleDisplay = '';
 	let currentQueryFromRootTypes = query.dd_relatedRoot;
-	let { scalarFields, non_scalarFields } = getFields_Grouped(currentQueryFromRootTypes);
+	//let { scalarFields, non_scalarFields } = getFields_Grouped(currentQueryFromRootTypes);
+	let currentQMS_Info = schemaData.get_QMS_Field(queryName, 'query');
+	const nodeFieldsLocation = $endpointInfo.nodeFieldsLocation;
+	const nodeFieldsQMS_Info = get_nodeFieldsQMS_Info(currentQMS_Info, nodeFieldsLocation);
+	let scalarFields = get_scalarColsData(nodeFieldsQMS_Info, [
+		currentQMS_Info.dd_displayName,
+		...nodeFieldsLocation
+	]);
 
 	let mandatoryArgs = query?.args?.filter((arg) => {
 		return arg.dd_NON_NULL;

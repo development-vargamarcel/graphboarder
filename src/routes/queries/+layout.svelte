@@ -1,11 +1,7 @@
 <script>
-	import { introspectionResult } from '$lib/stores/introspectionResult';
 	import { getStores, navigating, page, updated } from '$app/stores';
-	import QueryLink from '$lib/components/QueryLink.svelte';
 
 	import { onDestroy } from 'svelte';
-	import { schemaData } from '$lib/stores/schemaData';
-	import SidebarAndMainArea from '$lib/components/SidebarAndMainArea.svelte';
 	//console.log('queries: ', queries);
 
 	let origin = $page.url.origin;
