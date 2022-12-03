@@ -101,15 +101,21 @@
 						infiniteId += 1;
 						rows = [...rowsCurrent];
 					} else {
-						rows = [...rows, ...rowsCurrent];
+						if (rowsCurrent?.[0] != undefined) {
+							rows = [...rows, ...rowsCurrent];
+						}
 					}
 				} else {
 					rows = rowsCurrent;
 				}
 				if (
-					rowsCurrent?.length == $paginationState?.['limit'] ||
-					rowsCurrent?.length == $paginationState?.['_size'] ||
-					rowsCurrent?.length == $paginationState?.['first']
+					paginationTypeInfo?.get_rowLimitingArgNames(currentQMS_Info.dd_paginationArgs).length >
+						0 &&
+					paginationTypeInfo
+						?.get_rowLimitingArgNames(currentQMS_Info.dd_paginationArgs)
+						.some((argName) => {
+							return rowsCurrent?.length == $paginationState?.[argName];
+						})
 				) {
 					loadedF && loadedF();
 					console.log('loadedF ');
