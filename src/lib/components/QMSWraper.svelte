@@ -22,6 +22,7 @@
 	let paginationTypeInfo = paginationTypes.find((pagType) => {
 		return pagType.name == currentQMS_Info.dd_paginationType;
 	});
+
 	const activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store();
 	const offsetBasedPaginationOptions = Create_offsetBasedPaginationOptions();
 	const paginationState = Create_paginationState(
@@ -48,7 +49,6 @@
 		currentQMS_Info.dd_displayName,
 		...nodeFieldsLocation
 	]);
-
 	const dependencyColsData = paginationTypeInfo?.get_dependencyColsData(QMSName);
 	tableColsData_StoreInitialValue = [...scalarColsData, ...dependencyColsData];
 

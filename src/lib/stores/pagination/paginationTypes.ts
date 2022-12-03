@@ -12,6 +12,8 @@ export const paginationTypes = [
     {
         name: 'notAvailable', get_initialState: (paginationArgs) => {
             console.log('notAvailable')
+        }, get_defaultPaginationStateForDynamic: (state) => {
+            return state
         }, get_dependencyColsData: (QMS_name) => {
             return []
         }, get_nextPageState: (state, paginationArgs) => {
@@ -165,5 +167,20 @@ export const paginationTypes = [
         }, checker: (standsForArray) => {
             return standsForArray.includes('page')
         }
-    }
+    },
+    {
+        name: 'unknown', get_initialState: (paginationArgs) => {
+            console.log('unknown')
+        }, get_defaultPaginationStateForDynamic: (state) => {
+            return state
+        }, get_dependencyColsData: (QMS_name) => {
+            return []
+        }, get_nextPageState: (state, paginationArgs) => {
+            console.log('unknown')
+        }, get_prevPageState: (state, paginationArgs) => {
+            console.log('unknown')
+        }, pageIsGreaterThenFirst: (_pagination_state_Store, paginationArgs) => { return false }, checker: (standsForArray) => {
+            return standsForArray.length == 0
+        }
+    },
 ]

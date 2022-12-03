@@ -19,7 +19,7 @@
 			nodeFieldsLocation: ['nodes'],
 			nodeFieldsLocationPossibilities: [
 				{
-					nodeFieldsLocation: ['nodes'],
+					nodeFieldsLocation: ['aggregate'],
 					checker: (QMS_Info) => {
 						return (
 							QMS_Info.dd_displayName.endsWith('Aggregate') ||
@@ -45,17 +45,77 @@
 			headers: {
 				authorization: 'Bearer aKUvsqBR4-rfnL2z6nqEQmLPRIur4c1m'
 			},
-			nodeFieldsLocation: []
+			nodeFieldsLocation: [],
+			nodeFieldsLocationPossibilities: [
+				{
+					nodeFieldsLocation: [], //'countDistinct'
+					checker: (QMS_Info) => {
+						return (
+							QMS_Info.dd_displayName.endsWith('Aggregated') ||
+							QMS_Info.dd_displayName.endsWith('aggregated')
+						);
+					}
+				},
+				{
+					nodeFieldsLocation: [],
+					checker: (QMS_Info) => {
+						return (
+							!QMS_Info.dd_displayName.endsWith('Aggregated') &&
+							!QMS_Info.dd_displayName.endsWith('aggregated')
+						);
+					}
+				}
+			]
 		},
 		{
 			url: 'https://api.spacex.land/graphql/',
 			description: 'offsetBased pagination',
-			nodeFieldsLocation: []
+			nodeFieldsLocation: [],
+			nodeFieldsLocationPossibilities: [
+				{
+					nodeFieldsLocation: ['nodes'],
+					checker: (QMS_Info) => {
+						return (
+							QMS_Info.dd_displayName.endsWith('Aggregate') ||
+							QMS_Info.dd_displayName.endsWith('aggregate')
+						);
+					}
+				},
+				{
+					nodeFieldsLocation: [],
+					checker: (QMS_Info) => {
+						return (
+							!QMS_Info.dd_displayName.endsWith('Aggregate') &&
+							!QMS_Info.dd_displayName.endsWith('aggregate')
+						);
+					}
+				}
+			]
 		},
 		{
 			url: 'https://rickandmortyapi.com/graphql',
 			description: 'pageBased pagination',
-			nodeFieldsLocation: []
+			nodeFieldsLocation: [],
+			nodeFieldsLocationPossibilities: [
+				{
+					nodeFieldsLocation: ['nodes'],
+					checker: (QMS_Info) => {
+						return (
+							QMS_Info.dd_displayName.endsWith('Aggregate') ||
+							QMS_Info.dd_displayName.endsWith('aggregate')
+						);
+					}
+				},
+				{
+					nodeFieldsLocation: [],
+					checker: (QMS_Info) => {
+						return (
+							!QMS_Info.dd_displayName.endsWith('Aggregate') &&
+							!QMS_Info.dd_displayName.endsWith('aggregate')
+						);
+					}
+				}
+			]
 		},
 		{
 			url: 'https://vgqkcskomrpikolllkix.nhost.run/v1beta1/relay',

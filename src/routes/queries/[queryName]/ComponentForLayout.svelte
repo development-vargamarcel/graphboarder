@@ -115,13 +115,15 @@
 				} else {
 					rows = rowsCurrent;
 				}
-				if (rowsCurrent?.length > 0) {
+				if (
+					rowsCurrent?.length == $paginationState?.['limit'] ||
+					rowsCurrent?.length == $paginationState?.['_size'] ||
+					rowsCurrent?.length == $paginationState?.['first']
+				) {
 					loadedF && loadedF();
-
 					console.log('loadedF ');
 				} else {
 					completeF && completeF();
-
 					console.log('completeF');
 				}
 				console.log({ rows }, { rowsCurrent });
