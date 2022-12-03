@@ -7,7 +7,10 @@ import { schemaData } from "../schemaData"
 //console.log('asdasdasda', endpointInfo)
 export const paginationTypes = [
     {
-        name: 'notAvailable', get_initialState: (paginationArgs) => {
+        name: 'notAvailable', get_rowLimitingArgNames: (paginationArgs) => {
+            return []
+
+        }, get_initialState: (paginationArgs) => {
             console.log('notAvailable')
         }, get_defaultPaginationStateForDynamic: (state) => {
             return state
@@ -22,7 +25,11 @@ export const paginationTypes = [
         }
     },
     {
-        name: 'offsetBased', get_initialState: (paginationArgs) => {
+        name: 'offsetBased', get_rowLimitingArgNames: (paginationArgs) => {
+            const limitName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'limit' })?.dd_displayName
+            return [limitName]
+
+        }, get_initialState: (paginationArgs) => {
             const offsetName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'offset' })?.dd_displayName
             const limitName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'limit' })?.dd_displayName
             return {
@@ -58,7 +65,11 @@ export const paginationTypes = [
         }
     },
     {
-        name: 'edgeBased', get_initialState: (paginationArgs) => {
+        name: 'edgeBased', get_rowLimitingArgNames: (paginationArgs) => {
+            const firstName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'first' })?.dd_displayName
+            const lastName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'last' })?.dd_displayName
+            return [firstName, lastName]
+        }, get_initialState: (paginationArgs) => {
             const firstName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'first' })?.dd_displayName
             return {
                 [firstName]: 20,
@@ -150,7 +161,9 @@ export const paginationTypes = [
         }
     },
     {
-        name: 'pageBased', get_initialState: (paginationArgs) => {
+        name: 'pageBased', get_rowLimitingArgNames: (paginationArgs) => {
+            return []
+        }, get_initialState: (paginationArgs) => {
             const pageName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'page' })?.dd_displayName
             return {
                 [pageName]: 1
@@ -180,7 +193,10 @@ export const paginationTypes = [
         }
     },
     {
-        name: 'unknown', get_initialState: (paginationArgs) => {
+        name: 'unknown', get_rowLimitingArgNames: (paginationArgs) => {
+            return []
+
+        }, get_initialState: (paginationArgs) => {
             console.log('unknown')
         }, get_defaultPaginationStateForDynamic: (state) => {
             return state
