@@ -2,11 +2,7 @@ import { getDataGivenStepsOfFields } from "$lib/utils/usefulFunctions"
 import { get } from "svelte/store"
 import { endpointInfo } from "../endpointInfo/endpointInfo"
 import { schemaData } from "../schemaData"
-//const endpointInfoVal = get(endpointInfo)
-//!!!replace pageIsGreaterThenFirst function with an isFirstPage function,and update app everywhere accordingly,not important,only for aesthetics
-//to do:
-//totalCount()
-//hasNextPage()  //rows.length-totalCount()>0
+
 
 //console.log('asdasdasda', endpointInfo)
 export const paginationTypes = [
@@ -26,7 +22,7 @@ export const paginationTypes = [
         }
     },
     {
-        name: 'offsetBased', dynamic: ['offset'], get_initialState: (paginationArgs) => {
+        name: 'offsetBased', get_initialState: (paginationArgs) => {
             const offsetName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'offset' })?.dd_displayName
             const limitName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'limit' })?.dd_displayName
             return {
@@ -62,7 +58,7 @@ export const paginationTypes = [
         }
     },
     {
-        name: 'edgeBased', dynamic: ['after', 'before'], get_initialState: (paginationArgs) => {
+        name: 'edgeBased', get_initialState: (paginationArgs) => {
             const firstName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'first' })?.dd_displayName
             return {
                 [firstName]: 20,
@@ -154,7 +150,7 @@ export const paginationTypes = [
         }
     },
     {
-        name: 'pageBased', dynamic: ['page'], get_initialState: (paginationArgs) => {
+        name: 'pageBased', get_initialState: (paginationArgs) => {
             const pageName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'page' })?.dd_displayName
             return {
                 [pageName]: 1
