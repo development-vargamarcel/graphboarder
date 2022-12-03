@@ -86,12 +86,7 @@
 						return rowsLocation.checker(currentQMS_Info);
 					}).rowsLocation
 				]);
-				console.log(
-					'aaaa',
-					$endpointInfo.rowsLocationPossibilities.find((rowsLocation) => {
-						return rowsLocation.checker(currentQMS_Info);
-					}).rowsLocation
-				);
+
 				if (rowsCurrent?.length == undefined) {
 					rowsCurrent = [rowsCurrent];
 				}
