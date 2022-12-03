@@ -185,7 +185,7 @@
 <!-- main -->
 <div class="flex space-x-2">
 	<button
-		class="btn btn-xs grow normal-case"
+		class="btn btn-xs grow normal-case ml-2"
 		on:click={() => {
 			showQMSBody = !showQMSBody;
 		}}>QMS body</button
@@ -194,7 +194,7 @@
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-		<label tabindex="0" class="btn btn-xs bi bi-node-plus-fill text-lg p-1 ml-2  w-full" />
+		<label tabindex="0" class="btn btn-xs bi bi-node-plus-fill text-lg p-1   w-full" />
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 		<div
 			tabindex="0"
@@ -283,7 +283,7 @@
 			{/if}
 		</div>
 		<button
-			class="btn btn-xs btn-accent mx-atuo absolute top-4 right-4 normal-case"
+			class="btn btn-xs btn-accent mx-atuo absolute top-3 right-4 normal-case"
 			on:click={() => {
 				showNonPrettifiedQMSBody = !showNonPrettifiedQMSBody;
 			}}
