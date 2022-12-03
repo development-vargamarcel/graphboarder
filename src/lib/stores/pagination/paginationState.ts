@@ -11,14 +11,14 @@ export const Create_paginationState = (initialValue, paginationArgs, paginationT
     const { subscribe, set, update } = store
 
     return {
-        subscribe, set, update, nextPage: (currentRows_LastRow, returnedDataBatch_last, QMS_name, QMS_type) => {
+        subscribe, set, update, nextPage: (returnedDataBatch_last, QMS_name, QMS_type) => {
             update((val) => {
-                return paginationTypeInfo.get_nextPageState(val, paginationArgs, currentRows_LastRow, returnedDataBatch_last, QMS_name, QMS_type)
+                return paginationTypeInfo.get_nextPageState(val, paginationArgs, returnedDataBatch_last, QMS_name, QMS_type)
 
             })
-        }, prevPage: (currentRows_LastRow, returnedDataBatch_last, QMS_name, QMS_type) => {
+        }, prevPage: (returnedDataBatch_last, QMS_name, QMS_type) => {
             update((val) => {
-                return paginationTypeInfo.get_prevPageState(val, paginationArgs, currentRows_LastRow, returnedDataBatch_last, QMS_name, QMS_type)
+                return paginationTypeInfo.get_prevPageState(val, paginationArgs, returnedDataBatch_last, QMS_name, QMS_type)
             })
         }, resetToDefault: () => {
             update((val) => {

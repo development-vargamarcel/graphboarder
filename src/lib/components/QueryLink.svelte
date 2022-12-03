@@ -15,11 +15,11 @@
 	let currentQueryFromRootTypes = query.dd_relatedRoot;
 	//let { scalarFields, non_scalarFields } = getFields_Grouped(currentQueryFromRootTypes);
 	let currentQMS_Info = schemaData.get_QMS_Field(queryName, 'query');
-	const nodeFieldsLocation = $endpointInfo.nodeFieldsLocation;
-	const nodeFieldsQMS_Info = get_nodeFieldsQMS_Info(currentQMS_Info, nodeFieldsLocation);
+	const rowsLocation = $endpointInfo.rowsLocation;
+	const nodeFieldsQMS_Info = get_nodeFieldsQMS_Info(currentQMS_Info, rowsLocation);
 	let scalarFields = get_scalarColsData(nodeFieldsQMS_Info, [
 		currentQMS_Info.dd_displayName,
-		...nodeFieldsLocation
+		...rowsLocation
 	]);
 
 	let mandatoryArgs = query?.args?.filter((arg) => {

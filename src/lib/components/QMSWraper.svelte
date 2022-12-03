@@ -38,18 +38,16 @@
 
 	let tableColsData_StoreInitialValue = [];
 
-	const nodeFieldsLocation = $endpointInfo.nodeFieldsLocationPossibilities.find(
-		(nodeFieldsLocation) => {
-			return nodeFieldsLocation.checker(currentQMS_Info);
-		}
-	).nodeFieldsLocation;
-	console.log({ nodeFieldsLocation });
-	const nodeFieldsQMS_Info = get_nodeFieldsQMS_Info(currentQMS_Info, nodeFieldsLocation);
+	const rowsLocation = $endpointInfo.rowsLocationPossibilities.find((rowsLocation) => {
+		return rowsLocation.checker(currentQMS_Info);
+	}).rowsLocation;
+	console.log({ rowsLocation });
+	const nodeFieldsQMS_Info = get_nodeFieldsQMS_Info(currentQMS_Info, rowsLocation);
 	let scalarColsData = get_scalarColsData(nodeFieldsQMS_Info, [
 		currentQMS_Info.dd_displayName,
-		...nodeFieldsLocation
+		...rowsLocation
 	]);
-	const dependencyColsData = paginationTypeInfo?.get_dependencyColsData(QMSName);
+	const dependencyColsData = paginationTypeInfo?.get_dependencyColsData(QMSName, 'query');
 	tableColsData_StoreInitialValue = [...scalarColsData, ...dependencyColsData];
 
 	const tableColsData_Store = Create_tableColsData_Store(

@@ -16,10 +16,10 @@
 			url: 'https://vgqkcskomrpikolllkix.nhost.run/v1/graphql',
 			description: 'offsetBased pagination',
 			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
-			nodeFieldsLocation: ['nodes'],
-			nodeFieldsLocationPossibilities: [
+			rowsLocation: ['nodes'],
+			rowsLocationPossibilities: [
 				{
-					nodeFieldsLocation: ['aggregate'],
+					rowsLocation: ['aggregate'],
 					checker: (QMS_Info) => {
 						return (
 							QMS_Info.dd_displayName.endsWith('Aggregate') ||
@@ -28,7 +28,7 @@
 					}
 				},
 				{
-					nodeFieldsLocation: [],
+					rowsLocation: [],
 					checker: (QMS_Info) => {
 						return (
 							!QMS_Info.dd_displayName.endsWith('Aggregate') &&
@@ -45,10 +45,10 @@
 			headers: {
 				authorization: 'Bearer aKUvsqBR4-rfnL2z6nqEQmLPRIur4c1m'
 			},
-			nodeFieldsLocation: [],
-			nodeFieldsLocationPossibilities: [
+			rowsLocation: [],
+			rowsLocationPossibilities: [
 				{
-					nodeFieldsLocation: [], //'countDistinct'
+					rowsLocation: [], //'countDistinct'
 					checker: (QMS_Info) => {
 						return (
 							QMS_Info.dd_displayName.endsWith('Aggregated') ||
@@ -57,7 +57,7 @@
 					}
 				},
 				{
-					nodeFieldsLocation: [],
+					rowsLocation: [],
 					checker: (QMS_Info) => {
 						return (
 							!QMS_Info.dd_displayName.endsWith('Aggregated') &&
@@ -70,10 +70,10 @@
 		{
 			url: 'https://api.spacex.land/graphql/',
 			description: 'offsetBased pagination',
-			nodeFieldsLocation: [],
-			nodeFieldsLocationPossibilities: [
+			rowsLocation: [],
+			rowsLocationPossibilities: [
 				{
-					nodeFieldsLocation: ['nodes'],
+					rowsLocation: ['nodes'],
 					checker: (QMS_Info) => {
 						return (
 							QMS_Info.dd_displayName.endsWith('Aggregate') ||
@@ -82,7 +82,7 @@
 					}
 				},
 				{
-					nodeFieldsLocation: [],
+					rowsLocation: [],
 					checker: (QMS_Info) => {
 						return (
 							!QMS_Info.dd_displayName.endsWith('Aggregate') &&
@@ -95,10 +95,10 @@
 		{
 			url: 'https://rickandmortyapi.com/graphql',
 			description: 'pageBased pagination',
-			nodeFieldsLocation: [],
-			nodeFieldsLocationPossibilities: [
+			rowsLocation: [],
+			rowsLocationPossibilities: [
 				{
-					nodeFieldsLocation: ['nodes'],
+					rowsLocation: ['nodes'],
 					checker: (QMS_Info) => {
 						return (
 							QMS_Info.dd_displayName.endsWith('Aggregate') ||
@@ -107,7 +107,7 @@
 					}
 				},
 				{
-					nodeFieldsLocation: [],
+					rowsLocation: [],
 					checker: (QMS_Info) => {
 						return (
 							!QMS_Info.dd_displayName.endsWith('Aggregate') &&
@@ -122,10 +122,10 @@
 			description: 'edgeBased pagination',
 			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
 			pageInfoFieldsLocation: ['pageInfo'],
-			nodeFieldsLocation: ['edges'],
-			nodeFieldsLocationPossibilities: [
+			rowsLocation: ['edges'],
+			rowsLocationPossibilities: [
 				{
-					nodeFieldsLocation: ['edges'],
+					rowsLocation: ['edges'],
 					checker: (QMS_Info) => {
 						return true;
 					}
@@ -143,10 +143,10 @@
 			url: 'https://portal.ehri-project.eu/api/graphql',
 			description: 'edgeBased pagination',
 			pageInfoFieldsLocation: ['pageInfo'],
-			nodeFieldsLocation: ['edges'],
-			nodeFieldsLocationPossibilities: [
+			rowsLocation: ['edges'],
+			rowsLocationPossibilities: [
 				{
-					nodeFieldsLocation: ['edges'],
+					rowsLocation: ['edges'],
 					checker: (QMS_Info) => {
 						return true;
 					}
@@ -164,10 +164,10 @@
 			url: 'https://gitlab.com/api/graphql',
 			description: 'edgeBased pagination',
 			pageInfoFieldsLocation: ['pageInfo'],
-			nodeFieldsLocation: ['edges'],
-			nodeFieldsLocationPossibilities: [
+			rowsLocation: ['edges'],
+			rowsLocationPossibilities: [
 				{
-					nodeFieldsLocation: ['edges'],
+					rowsLocation: ['edges'],
 					checker: (QMS_Info) => {
 						return true;
 					}
@@ -186,10 +186,10 @@
 			authToken: '',
 			description: 'edgeBased pagination',
 			pageInfoFieldsLocation: ['pageInfo'],
-			nodeFieldsLocation: ['edges'],
-			nodeFieldsLocationPossibilities: [
+			rowsLocation: ['edges'],
+			rowsLocationPossibilities: [
 				{
-					nodeFieldsLocation: ['edges'],
+					rowsLocation: ['edges'],
 					checker: (QMS_Info) => {
 						return true;
 					}
@@ -207,10 +207,10 @@
 			url: 'https://graphql.fauna.com/graphql',
 			description: 'edgeBased pagination',
 			pageInfoFieldsLocation: [],
-			nodeFieldsLocation: ['data'],
-			nodeFieldsLocationPossibilities: [
+			rowsLocation: ['data'],
+			rowsLocationPossibilities: [
 				{
-					nodeFieldsLocation: ['data'],
+					rowsLocation: ['data'],
 					checker: (QMS_Info) => {
 						return true;
 					}
@@ -228,51 +228,51 @@
 		{
 			url: 'https://countries.trevorblades.com/',
 			description: 'notAvailable pagination',
-			nodeFieldsLocation: []
+			rowsLocation: []
 		},
 		{
 			url: 'https://dex-server.herokuapp.com/',
 			description: '?? notAvailable pagination',
-			nodeFieldsLocation: []
+			rowsLocation: []
 		},
 		{
 			url: 'https://graphql.anilist.co',
 			description: '?? notAvailable pagination',
-			nodeFieldsLocation: []
+			rowsLocation: []
 		},
 		{
 			url: 'https://api.digitransit.fi/routing/v1/routers/finland/index/graphql',
 			description: '?? notAvailable pagination',
-			nodeFieldsLocation: []
+			rowsLocation: []
 		},
-		{ url: 'https://etmdb.com/graphql?', nodeFieldsLocation: [] },
+		{ url: 'https://etmdb.com/graphql?', rowsLocation: [] },
 		{
 			url: 'https://api.graphql.jobs/',
 			description: 'notAvailable pagination',
-			nodeFieldsLocation: []
+			rowsLocation: []
 		},
 		{
 			url: 'https://demotivation-quotes-api.herokuapp.com/graphql',
 			description: 'notAvailable pagination',
-			nodeFieldsLocation: []
+			rowsLocation: []
 		},
 		{
 			url: 'https://graphql-weather-api.herokuapp.com/',
 			description: 'notAvailable pagination',
-			nodeFieldsLocation: []
+			rowsLocation: []
 		},
 		{
 			url: 'https://fruits-api.netlify.app/graphql',
 			description: 'notAvailable pagination',
-			nodeFieldsLocation: []
+			rowsLocation: []
 		},
-		{ url: 'https://graphql-compose.herokuapp.com/northwind/', nodeFieldsLocation: [] },
-		{ url: 'https://directions-graphql.herokuapp.com/graphql', nodeFieldsLocation: [] },
-		{ url: 'https://beta.pokeapi.co/graphql/v1beta', nodeFieldsLocation: [] },
-		{ url: 'https://hivdb.stanford.edu/graphql', nodeFieldsLocation: [] },
-		{ url: 'https://api.react-finland.fi/graphql?', nodeFieldsLocation: [] },
-		{ url: 'https://graphqlpokemon.favware.tech/', nodeFieldsLocation: [] },
-		{ url: 'https://graphbrainz.herokuapp.com/?', nodeFieldsLocation: [] }
+		{ url: 'https://graphql-compose.herokuapp.com/northwind/', rowsLocation: [] },
+		{ url: 'https://directions-graphql.herokuapp.com/graphql', rowsLocation: [] },
+		{ url: 'https://beta.pokeapi.co/graphql/v1beta', rowsLocation: [] },
+		{ url: 'https://hivdb.stanford.edu/graphql', rowsLocation: [] },
+		{ url: 'https://api.react-finland.fi/graphql?', rowsLocation: [] },
+		{ url: 'https://graphqlpokemon.favware.tech/', rowsLocation: [] },
+		{ url: 'https://graphbrainz.herokuapp.com/?', rowsLocation: [] }
 	];
 	let gotData = false;
 	let introspectionResultUnsubscribe = introspectionResult.subscribe((data) => {

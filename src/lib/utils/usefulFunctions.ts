@@ -654,15 +654,15 @@ export const getQueryLinks = () => {
         let currentQueryFromRootTypes = query.dd_relatedRoot;
         let currentQMS_Info = schemaData.get_QMS_Field(queryName, 'query');
         let endpointInfoVal = get(endpointInfo)
-        const nodeFieldsLocation = endpointInfoVal.nodeFieldsLocationPossibilities.find(
-            (nodeFieldsLocation) => {
-                return nodeFieldsLocation.checker(currentQMS_Info);
+        const rowsLocation = endpointInfoVal.rowsLocationPossibilities.find(
+            (rowsLocation) => {
+                return rowsLocation.checker(currentQMS_Info);
             }
-        ).nodeFieldsLocation;
-        const nodeFieldsQMS_Info = get_nodeFieldsQMS_Info(currentQMS_Info, nodeFieldsLocation);
+        ).rowsLocation;
+        const nodeFieldsQMS_Info = get_nodeFieldsQMS_Info(currentQMS_Info, rowsLocation);
         let scalarFields = get_scalarColsData(nodeFieldsQMS_Info, [
             currentQMS_Info.dd_displayName,
-            ...nodeFieldsLocation
+            ...rowsLocation
         ]);
 
         let currentQuery_fields_SCALAR_names = scalarFields.map((field) => {
@@ -813,14 +813,14 @@ export const get_scalarColsData = (currentQMS_Info, prefixStepsOfFields = []) =>
     return scalarColsData;
 };
 
-export const get_nodeFieldsQMS_Info = (QMS_Info, nodeFieldsLocation) => {
-    if (nodeFieldsLocation?.length == 0) {
+export const get_nodeFieldsQMS_Info = (QMS_Info, rowsLocation) => {
+    if (rowsLocation?.length == 0) {
         return QMS_Info;
     }
     let nodeFieldsQMS_Info = QMS_Info;
-    nodeFieldsLocation.forEach((curr_nodeFieldsLocation) => {
+    rowsLocation.forEach((curr_rowsLocation) => {
         nodeFieldsQMS_Info = nodeFieldsQMS_Info?.dd_relatedRoot.fields.find((field) => {
-            return field.dd_displayName == curr_nodeFieldsLocation;
+            return field.dd_displayName == curr_rowsLocation;
         });
     });
     return nodeFieldsQMS_Info;

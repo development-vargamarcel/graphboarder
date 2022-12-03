@@ -75,12 +75,18 @@ export const paginationTypes = [
             delete _state[afterName]
             delete _state[beforeName]
             return _state
-        }, get_dependencyColsData: (QMS_name) => {
+        }, get_dependencyColsData: (QMS_name, QMS_type) => {
             //using 'pageInfo' for getting next page cursor,'nextPage' is not a standard,some use another name like 'endCursor' { title: 'nextPageCursor', stepsOfFields: [QMS_name, 'pageInfo', 'nextPage'] }
             const dependencyColsData = []
             const endpointInfoVal = get(endpointInfo)
             const namings = endpointInfoVal?.namings
             const pageInfoFieldsLocation = endpointInfoVal.pageInfoFieldsLocation
+            let currentQMS_Info = schemaData.get_QMS_Field(QMS_name, QMS_type);
+            const rowsLocation = endpointInfoVal.rowsLocationPossibilities.find(
+                (rowsLocation) => {
+                    return rowsLocation.checker(currentQMS_Info);
+                }
+            ).rowsLocation;
             if (namings?.endCursor || namings?.startCursor) {
                 if (namings?.hasNextPage) {
                     dependencyColsData.push({ title: namings.hasNextPage, hidden: true, stepsOfFields: [QMS_name, ...pageInfoFieldsLocation, namings.hasNextPage] })
@@ -99,23 +105,23 @@ export const paginationTypes = [
 
 
             if (namings?.cursor) {
-                dependencyColsData.push({ title: namings.cursor, stepsOfFields: [QMS_name, 'edges', namings.cursor] })
+                dependencyColsData.push({ title: namings.cursor, stepsOfFields: [QMS_name, ...rowsLocation, namings.cursor] })
             }
             return dependencyColsData
 
 
 
 
-        }, get_nextPageState: (state, paginationArgs, currentRows_LastRow, returnedDataBatch_last, QMS_name, QMS_type) => {
+        }, get_nextPageState: (state, paginationArgs, returnedDataBatch_last, QMS_name, QMS_type) => {
             const endpointInfoVal = get(endpointInfo)
             const namings = endpointInfoVal?.namings
             let currentQMS_Info = schemaData.get_QMS_Field(QMS_name, QMS_type);
             const pageInfoFieldsLocation = endpointInfoVal.pageInfoFieldsLocation
-            const nodeFieldsLocation = endpointInfoVal.nodeFieldsLocationPossibilities.find(
-                (nodeFieldsLocation) => {
-                    return nodeFieldsLocation.checker(currentQMS_Info);
+            const rowsLocation = endpointInfoVal.rowsLocationPossibilities.find(
+                (rowsLocation) => {
+                    return rowsLocation.checker(currentQMS_Info);
                 }
-            ).nodeFieldsLocation;
+            ).rowsLocation;
 
             const afterName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'after' })?.dd_displayName
             const stepsOfFieldsToCursor = ['edges', 'cursor']
@@ -129,14 +135,14 @@ export const paginationTypes = [
                 console.log({ _state }, { returnedDataBatch_last })
             } else
                 if (namings?.cursor) {
-                    let rows = getColResultData(undefined, returnedDataBatch_last, [currentQMS_Info.dd_displayName, ...nodeFieldsLocation])
+                    let rows = getColResultData(undefined, returnedDataBatch_last, [currentQMS_Info.dd_displayName, ...rowsLocation])
                     let lastRow = rows[rows.length - 1]
                     console.log({ lastRow })
                     _state[afterName] = `'${getColResultData(undefined, lastRow, stepsOfFieldsToCursor)}'`
                     console.log({ _state })
                 }
             return _state
-        }, get_prevPageState: (state, paginationArgs, currentRows_LastRow, returnedDataBatch_last, QMS_name) => {
+        }, get_prevPageState: (state, paginationArgs, returnedDataBatch_last, QMS_name) => {
             const _state = JSON.parse(JSON.stringify(state))
             return _state
         }, pageIsGreaterThenFirst: (_pagination_state_Store, paginationArgs) => {
