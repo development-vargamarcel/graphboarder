@@ -91,6 +91,10 @@
 					rowsCurrent = [rowsCurrent];
 				}
 				if ($offsetBasedPaginationOptions.infiniteScroll) {
+					console.log(
+						'isFirstPage',
+						paginationTypeInfo?.isFirstPage(paginationState, currentQMS_Info.dd_paginationArgs)
+					);
 					if (
 						paginationTypeInfo?.isFirstPage(paginationState, currentQMS_Info.dd_paginationArgs) &&
 						rowsCurrent?.length > 0
