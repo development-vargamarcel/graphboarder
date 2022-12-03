@@ -171,6 +171,8 @@
 
 	//Active arguments logic
 	let showQMSBody = false;
+	let showNonPrettifiedQMSBody = false;
+	import { format } from 'graphql-formatter';
 </script>
 
 <!-- <button
@@ -272,9 +274,24 @@
 	<p>Loading...</p>
 {/if}
 {#if showQMSBody}
-	<div class="mockup-code bg-base text-content my-1 mx-2 px-2 max-h-40 overflow-y-auto">
-		<code class="px-10">{$QMS_bodyPartsUnifier_StoreDerived}</code>
-	</div>{/if}
+	<div class="mockup-code bg-base text-content my-1 mx-2 px-2 ">
+		<div class="max-h-32 overflow-y-auto">
+			{#if showNonPrettifiedQMSBody}
+				<code class="px-10">{$QMS_bodyPartsUnifier_StoreDerived}</code>
+			{:else}
+				<code class="px-10 ">{format($QMS_bodyPartsUnifier_StoreDerived)}</code>
+			{/if}
+		</div>
+		<button
+			class="btn btn-xs btn-accent mx-atuo absolute top-4 right-4 normal-case"
+			on:click={() => {
+				showNonPrettifiedQMSBody = !showNonPrettifiedQMSBody;
+			}}
+		>
+			{showNonPrettifiedQMSBody ? ' show prettified ' : ' show non-prettified '}</button
+		>
+	</div>
+{/if}
 
 <div class="md:px-2">
 	<Table
