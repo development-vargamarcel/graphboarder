@@ -61,7 +61,6 @@
 		if (rows.length > 0) {
 			paginationState.nextPage(queryData?.data, queryName, 'query');
 		}
-		console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
 	}
 	const runQuery = (queryBody) => {
 		console.log('queryBody', queryBody);
@@ -81,9 +80,14 @@
 					data = result.data;
 				}
 				queryData = { fetching, error, data };
-				rowsCurrent = getDataGivenStepsOfFields(
-					undefined,
-					queryData.data[queryName],
+				rowsCurrent = getDataGivenStepsOfFields(undefined, queryData.data[queryName], [
+					currentQMS_Info.dd_displayName,
+					...$endpointInfo.rowsLocationPossibilities.find((rowsLocation) => {
+						return rowsLocation.checker(currentQMS_Info);
+					}).rowsLocation
+				]);
+				console.log(
+					'aaaa',
 					$endpointInfo.rowsLocationPossibilities.find((rowsLocation) => {
 						return rowsLocation.checker(currentQMS_Info);
 					}).rowsLocation
@@ -96,7 +100,8 @@
 						!paginationTypeInfo?.pageIsGreaterThenFirst(
 							paginationState,
 							currentQMS_Info.dd_paginationArgs
-						)
+						) &&
+						rowsCurrent?.length > 0
 					) {
 						infiniteId += 1;
 						rows = [...rowsCurrent];
@@ -117,6 +122,7 @@
 					completeF && completeF();
 					console.log('completeF');
 				}
+
 				console.log({ rows }, { rowsCurrent });
 				rowsCurrent = [];
 			});
