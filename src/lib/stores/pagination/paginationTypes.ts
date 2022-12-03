@@ -1,4 +1,4 @@
-import { getColResultData } from "$lib/utils/usefulFunctions"
+import { getDataGivenStepsOfFields } from "$lib/utils/usefulFunctions"
 import { get } from "svelte/store"
 import { endpointInfo } from "../endpointInfo/endpointInfo"
 import { schemaData } from "../schemaData"
@@ -128,17 +128,17 @@ export const paginationTypes = [
             const stepsOfFieldsToEndCursor = [QMS_name, ...pageInfoFieldsLocation, namings.endCursor]
             const _state = JSON.parse(JSON.stringify(state))
             if (namings?.endCursor && returnedDataBatch_last) {
-                let endCursorValue = getColResultData(undefined, returnedDataBatch_last, stepsOfFieldsToEndCursor)
+                let endCursorValue = getDataGivenStepsOfFields(undefined, returnedDataBatch_last, stepsOfFieldsToEndCursor)
                 if (endCursorValue) {
                     _state[afterName] = `'${endCursorValue}'`
                 }
                 console.log({ _state }, { returnedDataBatch_last })
             } else
                 if (namings?.cursor) {
-                    let rows = getColResultData(undefined, returnedDataBatch_last, [currentQMS_Info.dd_displayName, ...rowsLocation])
+                    let rows = getDataGivenStepsOfFields(undefined, returnedDataBatch_last, [currentQMS_Info.dd_displayName, ...rowsLocation])
                     let lastRow = rows[rows.length - 1]
                     console.log({ lastRow })
-                    _state[afterName] = `'${getColResultData(undefined, lastRow, stepsOfFieldsToCursor)}'`
+                    _state[afterName] = `'${getDataGivenStepsOfFields(undefined, lastRow, stepsOfFieldsToCursor)}'`
                     console.log({ _state })
                 }
             return _state

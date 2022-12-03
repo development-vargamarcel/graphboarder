@@ -3,7 +3,11 @@
 
 	import { page } from '$app/stores';
 	export let prefix = '';
-	import { formatData, getColResultData, getTableCellData } from '$lib/utils/usefulFunctions';
+	import {
+		formatData,
+		getDataGivenStepsOfFields,
+		getTableCellData
+	} from '$lib/utils/usefulFunctions';
 	import InfiniteLoading from 'svelte-infinite-loading';
 	import { createEventDispatcher, getContext } from 'svelte';
 	import ColumnInfo from './ColumnInfo.svelte';

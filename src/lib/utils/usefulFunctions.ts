@@ -120,7 +120,7 @@ export const getFields_Grouped = (rootField) => {
 
 
 //colData must become colInfo everywhere,for less ambiguity
-export const getColResultData = (colInfo, row_resultData, stepsOfFieldsInput) => {
+export const getDataGivenStepsOfFields = (colInfo, row_resultData, stepsOfFieldsInput) => {
     //col data is column info like colInfo.stepsOfFields,not the result's column data
     let stepsOfFields
     if (stepsOfFieldsInput) {
@@ -197,9 +197,9 @@ export const getTableCellData = (rowData, colData, index) => {
     if (rowData) {
         if (rowData[index] !== undefined) {
             //rowData[index] //Not good,causes problems when two or more fields share fields,because in the results they will have data under the same column
-            data = getColResultData(colData, rowData[index]);
+            data = getDataGivenStepsOfFields(colData, rowData[index]);
         } else {
-            data = getColResultData(colData, rowData);
+            data = getDataGivenStepsOfFields(colData, rowData);
         }
     } else {
         data = 'loading...';

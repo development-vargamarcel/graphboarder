@@ -94,21 +94,9 @@
 			description: 'pageBased pagination',
 			rowsLocationPossibilities: [
 				{
-					rowsLocation: ['nodes'],
+					rowsLocation: ['results'],
 					checker: (QMS_Info) => {
-						return (
-							QMS_Info.dd_displayName.endsWith('Aggregate') ||
-							QMS_Info.dd_displayName.endsWith('aggregate')
-						);
-					}
-				},
-				{
-					rowsLocation: [],
-					checker: (QMS_Info) => {
-						return (
-							!QMS_Info.dd_displayName.endsWith('Aggregate') &&
-							!QMS_Info.dd_displayName.endsWith('aggregate')
-						);
+						return true;
 					}
 				}
 			]
@@ -350,9 +338,21 @@
 			url: 'https://beta.pokeapi.co/graphql/v1beta',
 			rowsLocationPossibilities: [
 				{
+					rowsLocation: ['aggregate'],
+					checker: (QMS_Info) => {
+						return (
+							QMS_Info.dd_displayName.endsWith('Aggregate') ||
+							QMS_Info.dd_displayName.endsWith('aggregate')
+						);
+					}
+				},
+				{
 					rowsLocation: [],
 					checker: (QMS_Info) => {
-						return true;
+						return (
+							!QMS_Info.dd_displayName.endsWith('Aggregate') &&
+							!QMS_Info.dd_displayName.endsWith('aggregate')
+						);
 					}
 				}
 			]
