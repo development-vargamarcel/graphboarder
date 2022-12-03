@@ -1,6 +1,7 @@
 import { getColResultData } from "$lib/utils/usefulFunctions"
 import { get } from "svelte/store"
 import { endpointInfo } from "../endpointInfo/endpointInfo"
+import { schemaData } from "../schemaData"
 //const endpointInfoVal = get(endpointInfo)
 //!!!replace pageIsGreaterThenFirst function with an isFirstPage function,and update app everywhere accordingly,not important,only for aesthetics
 //to do:
@@ -105,10 +106,16 @@ export const paginationTypes = [
 
 
 
-        }, get_nextPageState: (state, paginationArgs, currentRows_LastRow, returnedDataBatch_last, QMS_name) => {
+        }, get_nextPageState: (state, paginationArgs, currentRows_LastRow, returnedDataBatch_last, QMS_name, QMS_type) => {
             const endpointInfoVal = get(endpointInfo)
-            const pageInfoFieldsLocation = endpointInfoVal.pageInfoFieldsLocation
             const namings = endpointInfoVal?.namings
+            let currentQMS_Info = schemaData.get_QMS_Field(QMS_name, QMS_type);
+            const pageInfoFieldsLocation = endpointInfoVal.pageInfoFieldsLocation
+            const nodeFieldsLocation = endpointInfoVal.nodeFieldsLocationPossibilities.find(
+                (nodeFieldsLocation) => {
+                    return nodeFieldsLocation.checker(currentQMS_Info);
+                }
+            ).nodeFieldsLocation;
 
             const afterName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'after' })?.dd_displayName
             const stepsOfFieldsToCursor = ['edges', 'cursor']
@@ -122,10 +129,12 @@ export const paginationTypes = [
                 console.log({ _state }, { returnedDataBatch_last })
             } else
                 if (namings?.cursor) {
-                    _state[afterName] = `'${getColResultData(undefined, currentRows_LastRow, stepsOfFieldsToCursor)}'`
+                    let rows = getColResultData(undefined, returnedDataBatch_last, [currentQMS_Info.dd_displayName, ...nodeFieldsLocation])
+                    let lastRow = rows[rows.length - 1]
+                    console.log({ lastRow })
+                    _state[afterName] = `'${getColResultData(undefined, lastRow, stepsOfFieldsToCursor)}'`
                     console.log({ _state })
                 }
-
             return _state
         }, get_prevPageState: (state, paginationArgs, currentRows_LastRow, returnedDataBatch_last, QMS_name) => {
             const _state = JSON.parse(JSON.stringify(state))

@@ -58,7 +58,7 @@
 		loadedF = loaded;
 		completeF = complete;
 		if (rows.length > 0) {
-			paginationState.nextPage(rows[rows.length - 1], queryData?.data, queryName);
+			paginationState.nextPage(rows[rows.length - 1], queryData?.data, queryName, 'query');
 		}
 		console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
 	}

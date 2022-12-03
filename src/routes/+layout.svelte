@@ -122,10 +122,10 @@
 			description: 'edgeBased pagination',
 			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
 			pageInfoFieldsLocation: ['pageInfo'],
-			nodeFieldsLocation: ['edges', 'node'],
+			nodeFieldsLocation: ['edges'],
 			nodeFieldsLocationPossibilities: [
 				{
-					nodeFieldsLocation: ['edges', 'node'],
+					nodeFieldsLocation: ['edges'],
 					checker: (QMS_Info) => {
 						return true;
 					}
@@ -143,10 +143,10 @@
 			url: 'https://portal.ehri-project.eu/api/graphql',
 			description: 'edgeBased pagination',
 			pageInfoFieldsLocation: ['pageInfo'],
-			nodeFieldsLocation: ['edges', 'node'],
+			nodeFieldsLocation: ['edges'],
 			nodeFieldsLocationPossibilities: [
 				{
-					nodeFieldsLocation: ['edges', 'node'],
+					nodeFieldsLocation: ['edges'],
 					checker: (QMS_Info) => {
 						return true;
 					}
@@ -164,10 +164,10 @@
 			url: 'https://gitlab.com/api/graphql',
 			description: 'edgeBased pagination',
 			pageInfoFieldsLocation: ['pageInfo'],
-			nodeFieldsLocation: ['edges', 'node'],
+			nodeFieldsLocation: ['edges'],
 			nodeFieldsLocationPossibilities: [
 				{
-					nodeFieldsLocation: ['edges', 'node'],
+					nodeFieldsLocation: ['edges'],
 					checker: (QMS_Info) => {
 						return true;
 					}
@@ -186,10 +186,10 @@
 			authToken: '',
 			description: 'edgeBased pagination',
 			pageInfoFieldsLocation: ['pageInfo'],
-			nodeFieldsLocation: ['edges', 'node'],
+			nodeFieldsLocation: ['edges'],
 			nodeFieldsLocationPossibilities: [
 				{
-					nodeFieldsLocation: ['edges', 'node'],
+					nodeFieldsLocation: ['edges'],
 					checker: (QMS_Info) => {
 						return true;
 					}
