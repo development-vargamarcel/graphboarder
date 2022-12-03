@@ -20,7 +20,7 @@ export const paginationTypes = [
             console.log('notAvailable')
         }, get_prevPageState: (state, paginationArgs) => {
             console.log('notAvailable')
-        }, pageIsGreaterThenFirst: (_pagination_state_Store, paginationArgs) => { return false }, checker: (standsForArray) => {
+        }, isFirstPage: (_pagination_state_Store, paginationArgs) => { return true }, checker: (standsForArray) => {
             return standsForArray.length == 0
         }
     },
@@ -56,9 +56,9 @@ export const paginationTypes = [
             const _state = JSON.parse(JSON.stringify(state))
             _state[offsetName] -= _state[limitName]
             return _state
-        }, pageIsGreaterThenFirst: (_pagination_state_Store, paginationArgs) => {
+        }, isFirstPage: (_pagination_state_Store, paginationArgs) => {
             const offsetName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'offset' })?.dd_displayName
-            return get(_pagination_state_Store)?.[offsetName] > 0
+            return !get(_pagination_state_Store)?.[offsetName] > 0
 
         }, checker: (standsForArray) => {
             return standsForArray.includes('limit') && standsForArray.includes('offset')
@@ -152,10 +152,10 @@ export const paginationTypes = [
         }, get_prevPageState: (state, paginationArgs, returnedDataBatch_last, QMS_name) => {
             const _state = JSON.parse(JSON.stringify(state))
             return _state
-        }, pageIsGreaterThenFirst: (_pagination_state_Store, paginationArgs) => {
+        }, isFirstPage: (_pagination_state_Store, paginationArgs) => {
             const afterName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'after' })?.dd_displayName
             const beforeName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'before' })?.dd_displayName
-            return get(_pagination_state_Store)?.[afterName] || get(_pagination_state_Store)?.[beforeName]
+            return !get(_pagination_state_Store)?.[afterName] && !get(_pagination_state_Store)?.[beforeName]
         }, checker: (standsForArray) => {
             return standsForArray.includes('first') || standsForArray.includes('last') && standsForArray.includes('after') || standsForArray.includes('before')
         }
@@ -185,9 +185,9 @@ export const paginationTypes = [
             const _state = JSON.parse(JSON.stringify(state))
             _state[pageName]--
             return _state
-        }, pageIsGreaterThenFirst: (_pagination_state_Store, paginationArgs) => {
+        }, isFirstPage: (_pagination_state_Store, paginationArgs) => {
             let pageName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'page' })?.dd_displayName
-            return get(_pagination_state_Store)?.[pageName] > 1
+            return get(_pagination_state_Store)?.[pageName] == 1
         }, checker: (standsForArray) => {
             return standsForArray.includes('page')
         }
@@ -206,7 +206,7 @@ export const paginationTypes = [
             console.log('unknown')
         }, get_prevPageState: (state, paginationArgs) => {
             console.log('unknown')
-        }, pageIsGreaterThenFirst: (_pagination_state_Store, paginationArgs) => { return false }, checker: (standsForArray) => {
+        }, isFirstPage: (_pagination_state_Store, paginationArgs) => { return true }, checker: (standsForArray) => {
             return standsForArray.length == 0
         }
     },

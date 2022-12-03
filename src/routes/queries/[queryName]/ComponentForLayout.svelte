@@ -92,10 +92,7 @@
 				}
 				if ($offsetBasedPaginationOptions.infiniteScroll) {
 					if (
-						!paginationTypeInfo?.pageIsGreaterThenFirst(
-							paginationState,
-							currentQMS_Info.dd_paginationArgs
-						) &&
+						paginationTypeInfo?.isFirstPage(paginationState, currentQMS_Info.dd_paginationArgs) &&
 						rowsCurrent?.length > 0
 					) {
 						infiniteId += 1;
