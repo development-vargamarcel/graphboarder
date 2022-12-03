@@ -88,8 +88,6 @@
 						return rowsLocation.checker(currentQMS_Info);
 					}).rowsLocation
 				);
-				console.log(rowsCurrent);
-
 				if (rowsCurrent?.length == undefined) {
 					rowsCurrent = [rowsCurrent];
 				}
