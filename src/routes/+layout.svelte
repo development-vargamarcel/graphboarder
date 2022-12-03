@@ -16,7 +16,6 @@
 			url: 'https://vgqkcskomrpikolllkix.nhost.run/v1/graphql',
 			description: 'offsetBased pagination',
 			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
-			rowsLocation: ['nodes'],
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: ['aggregate'],
@@ -45,7 +44,6 @@
 			headers: {
 				authorization: 'Bearer aKUvsqBR4-rfnL2z6nqEQmLPRIur4c1m'
 			},
-			rowsLocation: [],
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: [], //'countDistinct'
@@ -70,7 +68,6 @@
 		{
 			url: 'https://api.spacex.land/graphql/',
 			description: 'offsetBased pagination',
-			rowsLocation: [],
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: ['nodes'],
@@ -95,7 +92,6 @@
 		{
 			url: 'https://rickandmortyapi.com/graphql',
 			description: 'pageBased pagination',
-			rowsLocation: [],
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: ['nodes'],
@@ -122,7 +118,7 @@
 			description: 'edgeBased pagination',
 			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
 			pageInfoFieldsLocation: ['pageInfo'],
-			rowsLocation: ['edges'],
+
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: ['edges'],
@@ -143,7 +139,6 @@
 			url: 'https://portal.ehri-project.eu/api/graphql',
 			description: 'edgeBased pagination',
 			pageInfoFieldsLocation: ['pageInfo'],
-			rowsLocation: ['edges'],
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: ['edges'],
@@ -164,7 +159,6 @@
 			url: 'https://gitlab.com/api/graphql',
 			description: 'edgeBased pagination',
 			pageInfoFieldsLocation: ['pageInfo'],
-			rowsLocation: ['edges'],
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: ['edges'],
@@ -186,7 +180,6 @@
 			authToken: '',
 			description: 'edgeBased pagination',
 			pageInfoFieldsLocation: ['pageInfo'],
-			rowsLocation: ['edges'],
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: ['edges'],
@@ -207,7 +200,6 @@
 			url: 'https://graphql.fauna.com/graphql',
 			description: 'edgeBased pagination',
 			pageInfoFieldsLocation: [],
-			rowsLocation: ['data'],
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: ['data'],
@@ -228,51 +220,187 @@
 		{
 			url: 'https://countries.trevorblades.com/',
 			description: 'notAvailable pagination',
-			rowsLocation: []
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
+					}
+				}
+			]
 		},
 		{
 			url: 'https://dex-server.herokuapp.com/',
 			description: '?? notAvailable pagination',
-			rowsLocation: []
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
+					}
+				}
+			]
 		},
 		{
 			url: 'https://graphql.anilist.co',
 			description: '?? notAvailable pagination',
-			rowsLocation: []
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
+					}
+				}
+			]
 		},
 		{
 			url: 'https://api.digitransit.fi/routing/v1/routers/finland/index/graphql',
 			description: '?? notAvailable pagination',
-			rowsLocation: []
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
+					}
+				}
+			]
 		},
-		{ url: 'https://etmdb.com/graphql?', rowsLocation: [] },
+		{
+			url: 'https://etmdb.com/graphql?',
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
+					}
+				}
+			]
+		},
 		{
 			url: 'https://api.graphql.jobs/',
 			description: 'notAvailable pagination',
-			rowsLocation: []
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
+					}
+				}
+			]
 		},
 		{
 			url: 'https://demotivation-quotes-api.herokuapp.com/graphql',
 			description: 'notAvailable pagination',
-			rowsLocation: []
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
+					}
+				}
+			]
 		},
 		{
 			url: 'https://graphql-weather-api.herokuapp.com/',
 			description: 'notAvailable pagination',
-			rowsLocation: []
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
+					}
+				}
+			]
 		},
 		{
 			url: 'https://fruits-api.netlify.app/graphql',
 			description: 'notAvailable pagination',
-			rowsLocation: []
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
+					}
+				}
+			]
 		},
-		{ url: 'https://graphql-compose.herokuapp.com/northwind/', rowsLocation: [] },
-		{ url: 'https://directions-graphql.herokuapp.com/graphql', rowsLocation: [] },
-		{ url: 'https://beta.pokeapi.co/graphql/v1beta', rowsLocation: [] },
-		{ url: 'https://hivdb.stanford.edu/graphql', rowsLocation: [] },
-		{ url: 'https://api.react-finland.fi/graphql?', rowsLocation: [] },
-		{ url: 'https://graphqlpokemon.favware.tech/', rowsLocation: [] },
-		{ url: 'https://graphbrainz.herokuapp.com/?', rowsLocation: [] }
+		{
+			url: 'https://graphql-compose.herokuapp.com/northwind/',
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
+					}
+				}
+			]
+		},
+		{
+			url: 'https://directions-graphql.herokuapp.com/graphql',
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
+					}
+				}
+			]
+		},
+		{
+			url: 'https://beta.pokeapi.co/graphql/v1beta',
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
+					}
+				}
+			]
+		},
+		{
+			url: 'https://hivdb.stanford.edu/graphql',
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
+					}
+				}
+			]
+		},
+		{
+			url: 'https://api.react-finland.fi/graphql?',
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
+					}
+				}
+			]
+		},
+		{
+			url: 'https://graphqlpokemon.favware.tech/',
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
+					}
+				}
+			]
+		},
+		{
+			url: 'https://graphbrainz.herokuapp.com/?',
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
+					}
+				}
+			]
+		}
 	];
 	let gotData = false;
 	let introspectionResultUnsubscribe = introspectionResult.subscribe((data) => {
