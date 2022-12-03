@@ -12,6 +12,8 @@
 	const tableColsData_Store = getContext('tableColsData_Store');
 	const final_gqlArgObj_Store = getContext('final_gqlArgObj_Store');
 	const QMS_bodyPart_StoreDerived = getContext('QMS_bodyPart_StoreDerived');
+	const QMS_bodyPartsUnifier_StoreDerived = getContext('QMS_bodyPartsUnifier_StoreDerived');
+
 	const offsetBasedPaginationOptions = getContext('offsetBasedPaginationOptions');
 
 	$: console.log('final_gqlArgObj_Store', $final_gqlArgObj_Store);
@@ -138,6 +140,7 @@
 			);
 		}
 	});
+
 	$: console.log({ queryData });
 	if (scalarFields.length == 0) {
 		queryData = { fetching: false, error: false, data: false };
@@ -167,6 +170,7 @@
 	};
 
 	//Active arguments logic
+	let showQMSBody = false;
 </script>
 
 <!-- <button
@@ -178,6 +182,12 @@
 </button> -->
 <!-- main -->
 <div class="flex space-x-2">
+	<button
+		class="btn btn-xs grow normal-case"
+		on:click={() => {
+			showQMSBody = !showQMSBody;
+		}}>QMS body</button
+	>
 	<div class="dropdown grow ">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -261,6 +271,10 @@
 {#if queryData.fetching}
 	<p>Loading...</p>
 {/if}
+{#if showQMSBody}
+	<div class="mockup-code bg-base text-content my-1 mx-2 px-2 max-h-40 overflow-y-auto">
+		<code class="px-10">{$QMS_bodyPartsUnifier_StoreDerived}</code>
+	</div>{/if}
 
 <div class="md:px-2">
 	<Table
@@ -277,3 +291,4 @@
 		on:clickedOnRow={(e) => {}}
 	/>
 </div>
+<div />
