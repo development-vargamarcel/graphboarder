@@ -173,6 +173,14 @@
 	let showQMSBody = false;
 	let showNonPrettifiedQMSBody = false;
 	import { format } from 'graphql-formatter';
+	import hljs from 'highlight.js/lib/core';
+	import graphql from 'highlight.js/lib/languages/graphql';
+	import 'highlight.js/styles/base16/solarized-dark.css';
+
+	onMount(() => {
+		hljs.registerLanguage('graphql', graphql);
+		hljs.highlightAll();
+	});
 </script>
 
 <!-- <button
@@ -279,7 +287,11 @@
 			{#if showNonPrettifiedQMSBody}
 				<code class="px-10">{$QMS_bodyPartsUnifier_StoreDerived}</code>
 			{:else}
-				<code class="px-10 ">{format($QMS_bodyPartsUnifier_StoreDerived)}</code>
+				<code class="language-graphql "
+					>{@html hljs
+						.highlight(format($QMS_bodyPartsUnifier_StoreDerived), { language: 'graphql' })
+						.value.trim()}</code
+				>
 			{/if}
 		</div>
 		<button
