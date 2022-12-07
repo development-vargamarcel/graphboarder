@@ -191,18 +191,12 @@
 	next page
 </button> -->
 <!-- main -->
-<div class="flex space-x-2">
-	<button
-		class="btn btn-xs grow normal-case ml-2"
-		on:click={() => {
-			showQMSBody = !showQMSBody;
-		}}>QMS body</button
-	>
+<div class="flex space-x-2 mx-2">
 	<div class="dropdown grow ">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-		<label tabindex="0" class="btn btn-xs bi bi-node-plus-fill text-lg p-1   w-full" />
+		<label tabindex="0" class="btn btn-xs bi bi-node-plus-fill text-lg p-1  w-full" />
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 		<div
 			tabindex="0"
@@ -247,6 +241,12 @@
 			on:argsChanged={(e) => {}}
 		/>
 	</div>
+	<button
+		class=" btn btn-xs grow normal-case "
+		on:click={() => {
+			showQMSBody = !showQMSBody;
+		}}>QMS body</button
+	>
 </div>
 
 <slot />
