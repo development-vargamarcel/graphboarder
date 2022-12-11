@@ -1,6 +1,6 @@
 <script>
-	import { Create_paginationInfo } from './../stores/pagination/pginationInfo.ts';
-	import { Create_offsetBasedPaginationOptions } from './../stores/pagination/offsetBasedPaginationOptions.ts';
+	import { Create_paginationInfo } from '$lib/stores/pagination/paginationInfo';
+	import { Create_offsetBasedPaginationOptions } from '$lib/stores/pagination/offsetBasedPaginationOptions';
 	import { Create_activeArgumentsDataGrouped_Store } from '$lib/stores/activeArgumentsDataGrouped_Store';
 	import { Create_final_gqlArgObj_Store } from '$lib/stores/final_gqlArgObj_Store';
 	import { Create_tableColsData_Store } from '$lib/stores/tableColsData_Store';
