@@ -3,7 +3,7 @@
 
 	import ActiveArgumentsGroupNormal from './ActiveArgumentsGroupNormal.svelte';
 
-	import { Create_isDragging_Store } from './../stores/isDragging_Store.ts';
+	import { Create_isDragging_Store } from './../stores/isDragging_Store';
 	import ActiveArgument from '$lib/components/ActiveArgument.svelte';
 	export let group;
 	export let argsInfo;

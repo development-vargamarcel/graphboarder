@@ -1,5 +1,5 @@
 <script>
-	import { Create_isDragging_Store } from '../stores/isDragging_Store.ts';
+	import { Create_isDragging_Store } from '../stores/isDragging_Store';
 	export let group;
 	export let argsInfo;
 	export let activeArgumentsData;
