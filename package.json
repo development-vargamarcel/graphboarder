@@ -1,6 +1,6 @@
 {
 	"name": "schemaster",
-	"version": "0.0.7",
+	"version": "0.0.10",
 	"private": false,
 	"scripts": {
 		"dev": "vite dev",
