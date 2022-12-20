@@ -1,5 +1,5 @@
 <script>
-	import { convertTo_displayStructure } from './../../utils/usefulFunctions';
+	import { convertTo_displayStructure } from '$lib/utils/usefulFunctions';
 	import { createEventDispatcher } from 'svelte';
 
 	export let dd_displayType;

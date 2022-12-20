@@ -8,7 +8,7 @@
 
 	//import { createClient, fetchExchange } from '@urql/svelte';
 	import { createClient, fetchExchange } from '@urql/core';
-	import { browser, prerendering } from '$app/environment';
+	import { browser } from '$app/environment';
 	let client = createClient({
 		url: graphqlEndpointURL,
 		fetchOptions: () => {

@@ -10,7 +10,7 @@
 	} from '$lib/utils/usefulFunctions';
 	import InfiniteLoading from 'svelte-infinite-loading';
 	import { createEventDispatcher, getContext } from 'svelte';
-	import ColumnInfo from './ColumnInfo.svelte';
+	import ColumnInfo from '$lib/components/ColumnInfo.svelte';
 	export let colsData = [];
 	let visibleColsData = [];
 	let visibleColumns = [];

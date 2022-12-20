@@ -2,7 +2,7 @@
 	import { flip } from 'svelte/animate';
 	import { dndzone, SHADOW_PLACEHOLDER_ITEM_ID } from 'svelte-dnd-action';
 	import { createEventDispatcher, getContext } from 'svelte';
-	import ActiveArgument from './ActiveArgument.svelte';
+	import ActiveArgument from '$lib/components/ActiveArgument.svelte';
 	const dispatch = createEventDispatcher();
 	export let nodes;
 	export let node;

@@ -1,7 +1,7 @@
 <script>
 	import { clickOutside } from '$lib/actions/clickOutside';
 
-	import TabContainer from './TabContainer.svelte';
+	import TabContainer from '$lib/components/TabContainer.svelte';
 	export let forceVisibleSidebar = false;
 	export let portalSelector;
 	export let links;

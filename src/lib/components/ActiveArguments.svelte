@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher, each, getContext, setContext } from 'svelte/internal';
-	import Modal from './Modal.svelte';
-	import ActiveArgumentsGroupWraper from './ActiveArgumentsGroupWraper.svelte';
+	import Modal from '$lib/components/Modal.svelte';
+	import ActiveArgumentsGroupWraper from '$lib/components/ActiveArgumentsGroupWraper.svelte';
 	let activeArgumentsDataGrouped_Store = getContext('activeArgumentsDataGrouped_Store');
 	let activeArgumentsDataGrouped = [];
 	$: console.log({ activeArgumentsDataGrouped });

@@ -3,7 +3,7 @@
 	import { fade, fly, slide } from 'svelte/transition';
 	import { introspectionResult } from '$lib/stores/introspectionResult';
 	import { getRootType } from '$lib/utils/usefulFunctions';
-	import ArgInfoDisplay from './ArgInfoDisplay.svelte';
+	import ArgInfoDisplay from '$lib/components/ArgInfoDisplay.svelte';
 	import { circIn, expoIn, expoOut } from 'svelte/easing';
 
 	export let index;

@@ -1,6 +1,6 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
-	import Interface from './Interface.svelte';
+	import Interface from '$lib/components/fields/Interface.svelte';
 
 	export let dd_displayType;
 	let inputEl;

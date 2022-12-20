@@ -1,7 +1,7 @@
 <script>
 	import { clickOutside } from '$lib/actions/clickOutside';
 
-	import Page from './Page.svelte';
+	import Page from '$lib/Page.svelte';
 	let forceVisibleSidebar = false;
 	export let title;
 </script>
