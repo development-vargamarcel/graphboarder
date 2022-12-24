@@ -4,11 +4,7 @@
 	//testing
 
 	import IntrospectionDataGenerator from '$lib/components/IntrospectionDataGenerator.svelte';
-	import { fade, scale } from 'svelte/transition';
 
-	import { showTabs } from '$lib/stores/showTabs';
-
-	import Header from '$lib/header/Header.svelte';
 	import '../app.postcss';
 	import { introspectionResult } from '$lib/stores/introspectionResult';
 	let testEndpoints = [
