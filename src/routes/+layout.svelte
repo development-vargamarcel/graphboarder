@@ -20,19 +20,13 @@
 				{
 					rowsLocation: ['aggregate'],
 					checker: (QMS_Info) => {
-						return (
-							QMS_Info.dd_displayName.endsWith('Aggregate') ||
-							QMS_Info.dd_displayName.endsWith('aggregate')
-						);
+						return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
 					}
 				},
 				{
 					rowsLocation: [],
 					checker: (QMS_Info) => {
-						return (
-							!QMS_Info.dd_displayName.endsWith('Aggregate') &&
-							!QMS_Info.dd_displayName.endsWith('aggregate')
-						);
+						return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
 					}
 				}
 			]
@@ -48,19 +42,13 @@
 				{
 					rowsLocation: [], //'countDistinct'
 					checker: (QMS_Info) => {
-						return (
-							QMS_Info.dd_displayName.endsWith('Aggregated') ||
-							QMS_Info.dd_displayName.endsWith('aggregated')
-						);
+						return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
 					}
 				},
 				{
 					rowsLocation: [],
 					checker: (QMS_Info) => {
-						return (
-							!QMS_Info.dd_displayName.endsWith('Aggregated') &&
-							!QMS_Info.dd_displayName.endsWith('aggregated')
-						);
+						return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
 					}
 				}
 			]
@@ -72,19 +60,13 @@
 				{
 					rowsLocation: ['nodes'],
 					checker: (QMS_Info) => {
-						return (
-							QMS_Info.dd_displayName.endsWith('Aggregate') ||
-							QMS_Info.dd_displayName.endsWith('aggregate')
-						);
+						return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
 					}
 				},
 				{
 					rowsLocation: [],
 					checker: (QMS_Info) => {
-						return (
-							!QMS_Info.dd_displayName.endsWith('Aggregate') &&
-							!QMS_Info.dd_displayName.endsWith('aggregate')
-						);
+						return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
 					}
 				}
 			]
@@ -340,19 +322,13 @@
 				{
 					rowsLocation: ['aggregate'],
 					checker: (QMS_Info) => {
-						return (
-							QMS_Info.dd_displayName.endsWith('Aggregate') ||
-							QMS_Info.dd_displayName.endsWith('aggregate')
-						);
+						return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
 					}
 				},
 				{
 					rowsLocation: [],
 					checker: (QMS_Info) => {
-						return (
-							!QMS_Info.dd_displayName.endsWith('Aggregate') &&
-							!QMS_Info.dd_displayName.endsWith('aggregate')
-						);
+						return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
 					}
 				}
 			]
