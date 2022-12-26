@@ -7,6 +7,10 @@
 
 	import '../app.postcss';
 	import { introspectionResult } from '$lib/stores/introspectionResult';
+
+	//TODO:
+	//id field naming convention possibilities
+	//countLocationPossibilities
 	let testEndpoints = [
 		{
 			url: 'https://vgqkcskomrpikolllkix.nhost.run/v1/graphql',
