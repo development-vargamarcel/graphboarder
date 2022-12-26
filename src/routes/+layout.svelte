@@ -9,7 +9,7 @@
 	import { introspectionResult } from '$lib/stores/introspectionResult';
 
 	//TODO:
-	//id field naming convention possibilities
+	//idFieldNamePossibilities (naming convention)
 	//countLocationPossibilities
 
 	//rowsLocationPossibilities is important for other things too in edgeBased pagination
