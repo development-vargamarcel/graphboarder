@@ -12,7 +12,7 @@
 	//idFieldNamePossibilities (naming convention)
 	//countLocationPossibilities
 
-	//!!!importantrowsLocationPossibilities is important for other things too in edgeBased pagination
+	//!!!important:  rowsLocationPossibilities is important for other things too in edgeBased pagination
 	let testEndpoints = [
 		{
 			url: 'https://vgqkcskomrpikolllkix.nhost.run/v1/graphql',
