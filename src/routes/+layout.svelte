@@ -486,12 +486,25 @@
 	import { setContext } from 'svelte';
 	setContext('endpointInfo', endpointInfo);
 	$: if (gotData) {
+		console.log('gotData');
 		if ($endpointInfo?.url != graphqlEndpointURL) {
-			endpointInfo.set(
-				testEndpoints.find((endpoint) => {
-					return endpoint.url == graphqlEndpointURL;
-				})
-			);
+			let testEndpoint = testEndpoints.find((endpoint) => {
+				return endpoint.url == graphqlEndpointURL;
+			});
+			let endpointInfoToSet = testEndpoint
+				? testEndpoint
+				: {
+						url: graphqlEndpointURL,
+						rowsLocationPossibilities: [
+							{
+								rowsLocation: [],
+								checker: (QMS_Info) => {
+									return true;
+								}
+							}
+						]
+				  };
+			endpointInfo.set(endpointInfoToSet);
 		}
 	}
 </script>
