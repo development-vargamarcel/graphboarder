@@ -18,6 +18,20 @@
 			url: 'https://vgqkcskomrpikolllkix.nhost.run/v1/graphql',
 			description: 'offsetBased pagination',
 			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: ['aggregate'],
+					checker: (QMS_Info) => {
+						return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
+					}
+				},
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
+					}
+				}
+			],
 			get_rowsLocation: (QMS_Info) => {
 				const rowsLocationPossibilities = [
 					{
@@ -33,11 +47,11 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			},
-			get_countLocation: (QMS_Info) => {
+			get_rowCountLocation: (QMS_Info) => {
 				let countLocationPossibilities = [
 					{
 						countLocation: [QMS_Info.dd_displayName, 'aggregate', 'count'],
@@ -79,8 +93,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			}
 		},
@@ -103,8 +117,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			}
 		},
@@ -120,8 +134,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			}
 		},
@@ -140,8 +154,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			},
 			namings: {
@@ -165,8 +179,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			},
 			namings: {
@@ -191,8 +205,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			},
 			namings: {
@@ -217,8 +231,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			},
 			namings: {
@@ -242,8 +256,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			},
 			namings: {
@@ -267,8 +281,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			}
 		},
@@ -284,8 +298,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			}
 		},
@@ -301,8 +315,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			}
 		},
@@ -318,8 +332,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			}
 		},
@@ -334,8 +348,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			}
 		},
@@ -351,8 +365,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			}
 		},
@@ -368,8 +382,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			}
 		},
@@ -385,8 +399,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			}
 		},
@@ -402,8 +416,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			}
 		},
@@ -418,8 +432,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			}
 		},
@@ -434,8 +448,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			}
 		},
@@ -456,8 +470,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			}
 		},
@@ -472,8 +486,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			}
 		},
@@ -488,8 +502,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			}
 		},
@@ -504,8 +518,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			}
 		},
@@ -520,8 +534,8 @@
 						}
 					}
 				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-					return rowsLocationPossibilitiey.checker(QMS_Info);
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.checker(QMS_Info);
 				}).rowsLocation;
 			}
 		}
@@ -650,8 +664,8 @@
 									}
 								}
 							];
-							return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
-								return rowsLocationPossibilitiey.checker(QMS_Info);
+							return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+								return rowsLocationPossibilitiy.checker(QMS_Info);
 							}).rowsLocation;
 						}
 				  };

@@ -631,11 +631,7 @@ export const getQueryLinks = () => {
         let currentQueryFromRootTypes = query.dd_relatedRoot;
         let currentQMS_Info = schemaData.get_QMS_Field(queryName, 'query');
         let endpointInfoVal = get(endpointInfo)
-        const rowsLocation = endpointInfoVal.rowsLocationPossibilities.find(
-            (rowsLocation) => {
-                return rowsLocation.checker(currentQMS_Info);
-            }
-        ).rowsLocation;
+        const rowsLocation = endpointInfoVal.get_rowsLocation(currentQMS_Info);
         const nodeFieldsQMS_Info = get_nodeFieldsQMS_Info(currentQMS_Info, rowsLocation);
         let scalarFields = get_scalarColsData(nodeFieldsQMS_Info, [
             currentQMS_Info.dd_displayName,
