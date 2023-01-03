@@ -162,7 +162,8 @@ export const paginationTypes = [
     },
     {
         name: 'pageBased', get_rowLimitingArgNames: (paginationArgs) => {
-            return []
+            const page = paginationArgs.find((arg) => { return arg.dd_standsFor == 'page' })?.dd_displayName
+            return [page]
         }, get_initialState: (paginationArgs) => {
             const pageName = paginationArgs.find((arg) => { return arg.dd_standsFor == 'page' })?.dd_displayName
             return {

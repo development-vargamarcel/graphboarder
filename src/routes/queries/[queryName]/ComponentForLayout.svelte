@@ -60,10 +60,22 @@
 	function infiniteHandler({ detail: { loaded, complete } }) {
 		loadedF = loaded;
 		completeF = complete;
-		if (rows.length > 0) {
-			//!!!change here to: rows.length==pageSize.  (like:limit/fist/last/_size)  or to hasNextPage/hasPrevousPage
+		const rowLimitingArgNames = paginationTypeInfo?.get_rowLimitingArgNames(
+			currentQMS_Info.dd_paginationArgs
+		);
+		if (
+			rowLimitingArgNames?.some((argName) => {
+				return rows.length / $paginationState?.[argName] >= 1; //means that all previous pages contained nr of items == page items size
+			})
+		) {
 			paginationState.nextPage(queryData?.data, queryName, 'query');
+		} else {
+			loaded();
+			complete();
 		}
+		// if (rows.length > 0) {
+		// 	paginationState.nextPage(queryData?.data, queryName, 'query');
+		// }
 	}
 	const runQuery = (queryBody) => {
 		console.log('queryBody', queryBody);
