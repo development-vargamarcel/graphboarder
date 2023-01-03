@@ -31,7 +31,21 @@
 						return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
 					}
 				}
-			]
+			],
+			countLocationPossibilities:[
+								{
+					countLocation: ['aggregate'],
+					checker: (QMS_Info) => {
+						return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
+					}
+				},
+				{
+					countLocation: [],
+					checker: (QMS_Info) => {
+						return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
+					}
+				},
+]
 		},
 
 		{

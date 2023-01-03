@@ -61,6 +61,7 @@
 		loadedF = loaded;
 		completeF = complete;
 		if (rows.length > 0) {
+			//!!!change here to: rows.length==pageSize.  (like:limit/fist/last/_size)  or to hasNextPage/hasPrevousPage
 			paginationState.nextPage(queryData?.data, queryName, 'query');
 		}
 	}
@@ -82,14 +83,15 @@
 					data = result.data;
 				}
 				queryData = { fetching, error, data };
-				rowsCurrent = getDataGivenStepsOfFields(undefined, queryData.data[queryName], [
+				let stepsOfFieldsInput = [
 					currentQMS_Info.dd_displayName,
 					...$endpointInfo.rowsLocationPossibilities.find((rowsLocation) => {
 						return rowsLocation.checker(currentQMS_Info);
 					}).rowsLocation
-				]);
-
-				if (rowsCurrent?.length == undefined) {
+				];
+				console.log({ stepsOfFieldsInput }, currentQMS_Info.dd_displayName);
+				rowsCurrent = getDataGivenStepsOfFields(undefined, queryData.data, stepsOfFieldsInput);
+				if (rowsCurrent && !Array.isArray(rowsCurrent)) {
 					rowsCurrent = [rowsCurrent];
 				}
 				if ($offsetBasedPaginationOptions.infiniteScroll) {

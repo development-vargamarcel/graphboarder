@@ -128,66 +128,44 @@ export const getDataGivenStepsOfFields = (colInfo, row_resultData, stepsOfFields
     } else {
         stepsOfFields = colInfo.stepsOfFields;
     }
-    let colResultData;
-
-    const handleArray = (array, element) => {
-        array = array.map((subElement) => {
-            if (subElement?.[element] !== undefined) {
-                return subElement[element];
-            } else if (typeof subElement == 'object' && subElement.length > 0) {
-                return handleArray(subElement, element);
-            } else {
-                return [];
-            }
-            // return subElement[element]
-        });
-        return array;
-    };
 
 
-    stepsOfFields.forEach((element) => {
-        if (typeof element == 'string') {
-            if (colResultData?.length > 0) {
-                //is array
+    // const handleArray = (array, element) => {
+    //     console.log('aaaa', { array })
+    //     array = array.map((subElement) => {
+    //         if (subElement?.[element] !== undefined) {
+    //             return subElement[element];
+    //         }
+    //         if (Array.isArray(subElement) && subElement.length > 0) {
+    //             return handleArray(subElement, element);
+    //         }
+    //         return []
+    //         // return subElement[element]
+    //     });
+    //     return array;
+    // };
 
-                let handleArrayResult = handleArray(colResultData, element);
-                colResultData = handleArrayResult;
 
-            } else if (colResultData?.length == 0) {
-                //do nothing in this case
-
-            } else if (colResultData !== undefined) {
-                //is not array but is defined
-
-                if (colResultData?.[element] !== undefined) {
-                    colResultData = colResultData[element];
-
-                } else {
-                    //? may cause problems
-                    colResultData = null; //? may cause problems
-                } //? may cause problems
-            } else {
-                //is undefined
-                if (row_resultData?.[element] !== undefined) {
-                    colResultData = row_resultData[element];
-                } else if (typeof row_resultData == 'object') {
-                    if (row_resultData?.length > 0) {
-                        //is array
-
-                        colResultData = row_resultData;
-
-                    } else if (colResultData?.length == 0) {
-                        //do nothing in this case
-
-                    }
-                } else if (typeof row_resultData == 'number') {
-                    colResultData = row_resultData;
-                } else {
-
-                }
-            }
+    const handleStep = (step, colResultData) => {
+        if (colResultData && colResultData?.[step] !== undefined) {
+            return colResultData[step]
         }
-
+        //is undefined
+        if (colResultData == undefined && row_resultData?.[step] !== undefined) {
+            return row_resultData[step]
+        }
+        if (colResultData == undefined && Array.isArray(row_resultData)) {
+            return row_resultData
+        }
+        if (colResultData == undefined) {
+            return row_resultData
+        }
+        return colResultData
+    }
+    let colResultData;
+    stepsOfFields.forEach((step) => {
+        colResultData = handleStep(step, colResultData)
+        console.log('cccc', { colResultData })
     });
     return colResultData;
 };
