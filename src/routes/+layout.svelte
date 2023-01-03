@@ -32,20 +32,44 @@
 					}
 				}
 			],
-			countLocationPossibilities:[
-								{
-					countLocation: ['aggregate'],
-					checker: (QMS_Info) => {
-						return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
+			get_rowsLocation: (QMS_Info) => {
+				const rowsLocationPossibilities = [
+					{
+						rowsLocation: ['aggregate'],
+						checker: (QMS_Info) => {
+							return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
+						}
+					},
+					{
+						rowsLocation: [],
+						checker: (QMS_Info) => {
+							return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
+						}
 					}
-				},
-				{
-					countLocation: [],
-					checker: (QMS_Info) => {
-						return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
+				];
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
+					return rowsLocationPossibilitiey.checker(QMS_Info);
+				}).rowsLocation;
+			},
+			get_countLocation: (QMS_Info) => {
+				let countLocationPossibilities = [
+					{
+						countLocation: [QMS_Info.dd_displayName, 'aggregate', 'count'],
+						checker: (QMS_Info) => {
+							return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregate');
+						}
+					},
+					{
+						countLocation: [`${QMS_Info.dd_displayName}Aggregate`, 'aggregate', 'count'],
+						checker: (QMS_Info) => {
+							return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregate');
+						}
 					}
-				},
-]
+				];
+				return countLocationPossibilities.find((countLocationPossibility) => {
+					return countLocationPossibility.checker(QMS_Info);
+				}).countLocation;
+			}
 		},
 
 		{
@@ -54,20 +78,25 @@
 			headers: {
 				authorization: 'Bearer aKUvsqBR4-rfnL2z6nqEQmLPRIur4c1m'
 			},
-			rowsLocationPossibilities: [
-				{
-					rowsLocation: [], //'countDistinct'
-					checker: (QMS_Info) => {
-						return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
+			get_rowsLocation: (QMS_Info) => {
+				const rowsLocationPossibilities = [
+					{
+						rowsLocation: [], //'countDistinct'
+						checker: (QMS_Info) => {
+							return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
+						}
+					},
+					{
+						rowsLocation: [],
+						checker: (QMS_Info) => {
+							return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
+						}
 					}
-				},
-				{
-					rowsLocation: [],
-					checker: (QMS_Info) => {
-						return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
-					}
-				}
-			]
+				];
+				return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
+					return rowsLocationPossibilitiey.checker(QMS_Info);
+				}).rowsLocation;
+			}
 		},
 		{
 			url: 'https://api.spacex.land/graphql/',
