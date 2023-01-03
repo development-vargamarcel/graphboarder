@@ -641,14 +641,19 @@
 				? testEndpoint
 				: {
 						url: graphqlEndpointURL,
-						rowsLocationPossibilities: [
-							{
-								rowsLocation: [],
-								checker: (QMS_Info) => {
-									return true;
+						get_rowsLocation: (QMS_Info) => {
+							const rowsLocationPossibilities = [
+								{
+									rowsLocation: [],
+									checker: (QMS_Info) => {
+										return true;
+									}
 								}
-							}
-						]
+							];
+							return rowsLocationPossibilities.find((rowsLocationPossibilitiey) => {
+								return rowsLocationPossibilitiey.checker(QMS_Info);
+							}).rowsLocation;
+						}
 				  };
 			endpointInfo.set(endpointInfoToSet);
 		}
