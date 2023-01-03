@@ -165,7 +165,6 @@ export const getDataGivenStepsOfFields = (colInfo, row_resultData, stepsOfFields
     let colResultData;
     stepsOfFields.forEach((step) => {
         colResultData = handleStep(step, colResultData)
-        console.log('cccc', { colResultData })
     });
     return colResultData;
 };
