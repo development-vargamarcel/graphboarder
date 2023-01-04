@@ -18,6 +18,10 @@ const store = writable(null)
 export const endpointInfo = {
     ...store, get_rowsLocation: function (QMS_Info) {
         const storeVal = get(store)
+        if (!storeVal?.rowsLocationPossibilities?.length > 0) {
+            return []
+        }
+
         let rowsLocationPossibilitiy = storeVal.rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
             return rowsLocationPossibilitiy.check(QMS_Info);
         });
