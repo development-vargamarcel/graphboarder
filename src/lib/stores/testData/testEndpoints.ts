@@ -1,4 +1,6 @@
+import { get_nodeFieldsQMS_Info } from "$lib/utils/usefulFunctions";
 import { writable } from "svelte/store";
+import { schemaData } from "../schemaData";
 //TODO:
 //idFieldNamePossibilities (id naming convention)
 //countLocationPossibilities
@@ -68,6 +70,29 @@ let test = [
                     return []
                 }
                 ,
+                check: (QMS_Info) => {
+                    return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
+                }
+            }
+        ],
+        rowCountLocationPossibilities: [
+            {
+                get_Val: (QMS_Info, endpointInfo) => {
+                    const nodeFieldsQMS_Info = get_nodeFieldsQMS_Info(QMS_Info, ['count']).dd_relatedRoot.fields[0].dd_displayName
+                    console.log({ nodeFieldsQMS_Info }, endpointInfo.get_rowsLocation(QMS_Info))
+                    return [QMS_Info.dd_displayName, 'count', nodeFieldsQMS_Info];
+                },
+                check: (QMS_Info) => {
+                    return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
+                }
+            },
+            {
+                get_Val: (QMS_Info, endpointInfo) => {
+                    const aggregatedQMS_Info = schemaData.get_QMS_Field(`${QMS_Info.dd_displayName}_aggregated`, 'query')
+                    const nodeFieldsQMS_Info = get_nodeFieldsQMS_Info(aggregatedQMS_Info, ['count']).dd_relatedRoot.fields[0].dd_displayName
+                    console.log({ nodeFieldsQMS_Info }, endpointInfo.get_rowsLocation(QMS_Info))
+                    return [`${QMS_Info.dd_displayName}_aggregated`, 'count', nodeFieldsQMS_Info];
+                },
                 check: (QMS_Info) => {
                     return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
                 }

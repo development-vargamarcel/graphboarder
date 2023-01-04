@@ -83,8 +83,8 @@
 		QMSType,
 		QMSName,
 		offsetBasedPaginationOptions,
-		writable({}),
-		currentQMS_Info.dd_paginationType !== 'notAvailable' ? paginationState : null
+		null,
+		null
 	);
 	$: console.log('QMS_bodyPart_StoreDerived_rowsCount', $QMS_bodyPart_StoreDerived_rowsCount);
 	setContext(`${prefix}activeArgumentsDataGrouped_Store`, activeArgumentsDataGrouped_Store);
