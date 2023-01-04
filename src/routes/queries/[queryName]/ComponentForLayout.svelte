@@ -182,6 +182,7 @@
 	import hljs from 'highlight.js/lib/core';
 	import graphql from 'highlight.js/lib/languages/graphql';
 	import 'highlight.js/styles/base16/solarized-dark.css';
+	import RowCount from '$lib/components/UI/rowCount.svelte';
 
 	onMount(() => {
 		hljs.registerLanguage('graphql', graphql);
@@ -189,6 +190,10 @@
 	});
 </script>
 
+<RowCount
+	QMS_bodyPart_StoreDerived={getContext('rowsCountQMS_bodyPart_StoreDerived')}
+	QMS_Info={currentQMS_Info}
+/>
 <!-- <button
 	on:click={() => {
 		paginationState.nextPage(rows[rows.length - 1], queryData?.data);
