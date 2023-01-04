@@ -35,11 +35,11 @@ export const endpointInfo = {
             return null
         }
         const rowCountLocationPossibility = storeVal.rowCountLocationPossibilities.find((rowCountLocationPossibility) => {
-            return rowCountLocationPossibility.check(QMS_Info, this);
+            return rowCountLocationPossibility.check(QMS_Info);
         })
 
         if (rowCountLocationPossibility) {
-            return rowCountLocationPossibility.get_Val(QMS_Info, this);
+            return rowCountLocationPossibility.get_Val(QMS_Info);
         }
         return null
     }

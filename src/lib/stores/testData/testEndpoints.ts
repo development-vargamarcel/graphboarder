@@ -77,9 +77,8 @@ let test = [
         ],
         rowCountLocationPossibilities: [
             {
-                get_Val: (QMS_Info, endpointInfo) => {
+                get_Val: (QMS_Info) => {
                     const nodeFieldsQMS_Info = get_nodeFieldsQMS_Info(QMS_Info, ['count']).dd_relatedRoot.fields[0].dd_displayName
-                    console.log({ nodeFieldsQMS_Info }, endpointInfo.get_rowsLocation(QMS_Info))
                     return [QMS_Info.dd_displayName, 'count', nodeFieldsQMS_Info];
                 },
                 check: (QMS_Info) => {
@@ -87,10 +86,9 @@ let test = [
                 }
             },
             {
-                get_Val: (QMS_Info, endpointInfo) => {
+                get_Val: (QMS_Info) => {
                     const aggregatedQMS_Info = schemaData.get_QMS_Field(`${QMS_Info.dd_displayName}_aggregated`, 'query')
                     const nodeFieldsQMS_Info = get_nodeFieldsQMS_Info(aggregatedQMS_Info, ['count']).dd_relatedRoot.fields[0].dd_displayName
-                    console.log({ nodeFieldsQMS_Info }, endpointInfo.get_rowsLocation(QMS_Info))
                     return [`${QMS_Info.dd_displayName}_aggregated`, 'count', nodeFieldsQMS_Info];
                 },
                 check: (QMS_Info) => {

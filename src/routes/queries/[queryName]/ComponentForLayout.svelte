@@ -23,9 +23,7 @@
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	import { schemaData } from '$lib/stores/schemaData';
-	import OffsetPagination from '$lib/components/pagination/OffsetPagination.svelte';
 	import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
-	import { stringify } from 'postcss';
 
 	//setClient($urqlClient);
 	$: console.log('$QMS_bodyPart_StoreDerived', $QMS_bodyPart_StoreDerived);
