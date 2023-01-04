@@ -13,25 +13,20 @@
 	//countLocationPossibilities
 
 	//!!!important:  rowsLocationPossibilities is important for other things too in edgeBased pagination
+	const get_rowsLocation = (rowsLocationPossibilities) => {
+		let rowsLocationPossibilitiy = rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+			return rowsLocationPossibilitiy.checker(QMS_Info);
+		});
+		if (rowsLocationPossibilitiy) {
+			return rowsLocationPossibilitiy.rowsLocation;
+		}
+		return null;
+	};
 	let testEndpoints = [
 		{
 			url: 'https://vgqkcskomrpikolllkix.nhost.run/v1/graphql',
 			description: 'offsetBased pagination',
 			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
-			rowsLocationPossibilities: [
-				{
-					rowsLocation: ['aggregate'],
-					checker: (QMS_Info) => {
-						return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
-					}
-				},
-				{
-					rowsLocation: [],
-					checker: (QMS_Info) => {
-						return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
-					}
-				}
-			],
 			get_rowsLocation: (QMS_Info) => {
 				const rowsLocationPossibilities = [
 					{
