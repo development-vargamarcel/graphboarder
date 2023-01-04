@@ -8,10 +8,6 @@
 	import '../app.postcss';
 	import { introspectionResult } from '$lib/stores/introspectionResult';
 
-	//TODO:
-	//idFieldNamePossibilities (naming convention)
-	//countLocationPossibilities
-
 	//!!!important:  rowsLocationPossibilities is important for other things too in edgeBased pagination
 	const get_rowsLocation = (rowsLocationPossibilities) => {
 		let rowsLocationPossibilitiy = rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {

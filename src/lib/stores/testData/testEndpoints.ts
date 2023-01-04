@@ -1,5 +1,7 @@
 import { writable } from "svelte/store";
-
+//TODO:
+//idFieldNamePossibilities (id naming convention)
+//countLocationPossibilities
 let test = [
     {
         url: 'https://vgqkcskomrpikolllkix.nhost.run/v1/graphql',
