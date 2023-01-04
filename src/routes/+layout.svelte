@@ -15,7 +15,7 @@
 	//!!!important:  rowsLocationPossibilities is important for other things too in edgeBased pagination
 	const get_rowsLocation = (rowsLocationPossibilities) => {
 		let rowsLocationPossibilitiy = rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-			return rowsLocationPossibilitiy.checker(QMS_Info);
+			return rowsLocationPossibilitiy.check(QMS_Info);
 		});
 		if (rowsLocationPossibilitiy) {
 			return rowsLocationPossibilitiy.rowsLocation;
@@ -30,36 +30,35 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: ['aggregate'],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
 					}
 				},
 				{
 					rowsLocation: [],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
 					}
 				}
 			],
-			get_rowCountLocation: (QMS_Info) => {
-				let countLocationPossibilities = [
-					{
-						countLocation: [QMS_Info.dd_displayName, 'aggregate', 'count'],
-						checker: (QMS_Info) => {
-							return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregate');
-						}
+			rowCountLocationPossibilities: [
+				{
+					get_Val: (QMS_Info) => {
+						return [QMS_Info.dd_displayName, 'aggregate', 'count'];
 					},
-					{
-						countLocation: [`${QMS_Info.dd_displayName}Aggregate`, 'aggregate', 'count'],
-						checker: (QMS_Info) => {
-							return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregate');
-						}
+					check: (QMS_Info) => {
+						return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregate');
 					}
-				];
-				return countLocationPossibilities.find((countLocationPossibility) => {
-					return countLocationPossibility.checker(QMS_Info);
-				}).countLocation;
-			}
+				},
+				{
+					get_Val: (QMS_Info) => {
+						return [`${QMS_Info.dd_displayName}Aggregate`, 'aggregate', 'count'];
+					},
+					check: (QMS_Info) => {
+						return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregate');
+					}
+				}
+			]
 		},
 
 		{
@@ -71,13 +70,13 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: [], //'countDistinct'
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
 					}
 				},
 				{
 					rowsLocation: [],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
 					}
 				}
@@ -90,13 +89,13 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: ['nodes'],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
 					}
 				},
 				{
 					rowsLocation: [],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
 					}
 				}
@@ -108,7 +107,7 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: ['results'],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return true;
 					}
 				}
@@ -123,7 +122,7 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: ['edges'],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return true;
 					}
 				}
@@ -143,7 +142,7 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: ['edges'],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return true;
 					}
 				}
@@ -164,7 +163,7 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: ['edges'],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return true;
 					}
 				}
@@ -185,7 +184,7 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: ['edges'],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return true;
 					}
 				}
@@ -205,7 +204,7 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: ['data'],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return true;
 					}
 				}
@@ -225,7 +224,7 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: [],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return true;
 					}
 				}
@@ -237,7 +236,7 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: [],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return true;
 					}
 				}
@@ -249,7 +248,7 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: [],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return true;
 					}
 				}
@@ -261,7 +260,7 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: [],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return true;
 					}
 				}
@@ -272,7 +271,7 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: [],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return true;
 					}
 				}
@@ -284,7 +283,7 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: [],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return true;
 					}
 				}
@@ -296,7 +295,7 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: [],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return true;
 					}
 				}
@@ -308,7 +307,7 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: [],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return true;
 					}
 				}
@@ -320,7 +319,7 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: [],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return true;
 					}
 				}
@@ -331,7 +330,7 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: [],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return true;
 					}
 				}
@@ -342,7 +341,7 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: [],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return true;
 					}
 				}
@@ -353,13 +352,13 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: ['aggregate'],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
 					}
 				},
 				{
 					rowsLocation: [],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
 					}
 				}
@@ -370,7 +369,7 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: [],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return true;
 					}
 				}
@@ -381,7 +380,7 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: [],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return true;
 					}
 				}
@@ -392,7 +391,7 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: [],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return true;
 					}
 				}
@@ -403,7 +402,7 @@
 			rowsLocationPossibilities: [
 				{
 					rowsLocation: [],
-					checker: (QMS_Info) => {
+					check: (QMS_Info) => {
 						return true;
 					}
 				}
@@ -528,7 +527,7 @@
 						rowsLocationPossibilities: [
 							{
 								rowsLocation: [],
-								checker: (QMS_Info) => {
+								check: (QMS_Info) => {
 									return true;
 								}
 							}

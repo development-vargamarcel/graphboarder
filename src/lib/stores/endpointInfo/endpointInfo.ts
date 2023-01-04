@@ -18,9 +18,26 @@ const store = writable(null)
 export const endpointInfo = {
     ...store, get_rowsLocation: function (QMS_Info) {
         const storeVal = get(store)
-        return storeVal.rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-            return rowsLocationPossibilitiy.checker(QMS_Info);
-        }).rowsLocation;
+        let rowsLocationPossibilitiy = storeVal.rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+            return rowsLocationPossibilitiy.check(QMS_Info);
+        });
+        if (rowsLocationPossibilitiy) {
+            return rowsLocationPossibilitiy.rowsLocation;
+        }
+        return [];
+    }, get_rowCountLocation: function (QMS_Info) {
+        const storeVal = get(store)
+        if (!storeVal) {
+            return null
+        }
+        const rowCountLocationPossibility = storeVal.rowCountLocationPossibilities.find((rowCountLocationPossibility) => {
+            return rowCountLocationPossibility.check(QMS_Info);
+        })
+
+        if (rowCountLocationPossibility) {
+            return rowCountLocationPossibility.get_Val(QMS_Info);
+        }
+        return null
     }
 }
 

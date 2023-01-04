@@ -98,7 +98,7 @@
 				let stepsOfFieldsInput = [
 					currentQMS_Info.dd_displayName,
 					...$endpointInfo.rowsLocationPossibilities.find((rowsLocation) => {
-						return rowsLocation.checker(currentQMS_Info);
+						return rowsLocation.check(currentQMS_Info);
 					}).rowsLocation
 				];
 				console.log({ stepsOfFieldsInput }, currentQMS_Info.dd_displayName);

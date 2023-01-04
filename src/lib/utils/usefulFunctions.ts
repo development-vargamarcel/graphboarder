@@ -1,6 +1,6 @@
 //QMS means QueryOrMutationOrSubscription
 //TODO:
-//create stepsOfFieldsChecker,started,named "check_stepsOfFields"
+//create stepsOfFieldscheck,started,named "check_stepsOfFields"
 import _ from "lodash";
 import { get } from 'svelte/store';
 import { scalarsAndEnumsDisplayTypes } from '$lib/stores/scalarsAndEnumsDisplayTypes';
@@ -276,7 +276,7 @@ export const get_paginationType = (paginationArgs) => {
     const standsForArray = paginationArgs.map((arg) => {
         return arg.dd_standsFor
     })
-    const paginationType = paginationTypes.find((paginationType) => { return paginationType.checker(standsForArray) })?.name
+    const paginationType = paginationTypes.find((paginationType) => { return paginationType.check(standsForArray) })?.name
     if (paginationType) {
         return paginationType
     }
