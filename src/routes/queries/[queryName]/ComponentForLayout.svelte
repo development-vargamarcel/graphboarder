@@ -113,6 +113,9 @@
 						if (rowsCurrent?.[0] != undefined) {
 							rows = [...rows, ...rowsCurrent];
 						}
+						if (rowsCurrent?.length == 0) {
+							rows = rowsCurrent;
+						}
 					}
 				} else {
 					rows = rowsCurrent;
