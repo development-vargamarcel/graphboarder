@@ -113,7 +113,10 @@
 						if (rowsCurrent?.[0] != undefined) {
 							rows = [...rows, ...rowsCurrent];
 						}
-						if (rowsCurrent?.length == 0) {
+						if (
+							paginationTypeInfo?.isFirstPage(paginationState, currentQMS_Info.dd_paginationArgs) &&
+							rowsCurrent?.length == 0
+						) {
 							rows = rowsCurrent;
 						}
 					}
@@ -257,7 +260,8 @@
 			showQMSBody = !showQMSBody;
 		}}>QMS body</button
 	>
-	<div class="badge badge-primary">
+	<div class="badge badge-primary flex space-x-2">
+		{rows.length}/
 		<RowCount
 			QMS_bodyPart_StoreDerived={getContext('rowsCountQMS_bodyPart_StoreDerived')}
 			QMS_Info={currentQMS_Info}
