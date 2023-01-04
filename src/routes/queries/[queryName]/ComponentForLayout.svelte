@@ -193,10 +193,6 @@
 	});
 </script>
 
-<RowCount
-	QMS_bodyPart_StoreDerived={getContext('rowsCountQMS_bodyPart_StoreDerived')}
-	QMS_Info={currentQMS_Info}
-/>
 <!-- <button
 	on:click={() => {
 		paginationState.nextPage(rows[rows.length - 1], queryData?.data);
@@ -261,6 +257,12 @@
 			showQMSBody = !showQMSBody;
 		}}>QMS body</button
 	>
+	<div class="badge badge-primary">
+		<RowCount
+			QMS_bodyPart_StoreDerived={getContext('rowsCountQMS_bodyPart_StoreDerived')}
+			QMS_Info={currentQMS_Info}
+		/>
+	</div>
 </div>
 
 <slot />
