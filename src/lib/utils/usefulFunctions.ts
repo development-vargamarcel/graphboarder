@@ -163,7 +163,7 @@ export const getDataGivenStepsOfFields = (colInfo, row_resultData, stepsOfFields
             if (colResultData && colResultData?.length == 0 && colResultData?.[0]?.[step] !== undefined) {
                 return colResultData[0][step]
             }
-            //!!!the bellow is not perfect,but always works,only that it doesn't go so deep.you could enhance it by passing each element into 'handleStep' func
+            //!!!the bellow is not perfect,but always works,only that it doesn't go so deep.Keep it as deep though else performance mmight get hurt
             if (colResultData && colResultData?.length > 0 && colResultData?.[0]?.[step] !== undefined) {
                 return colResultData.map((element) => {
                     return handleStep(step, element?.[step])
