@@ -1,4 +1,4 @@
-import { writable } from "svelte/store"
+import { writable, get } from "svelte/store"
 
 export const example_endpointInfo = {
     url: 'https://vgqkcskomrpikolllkix.nhost.run/v1beta1/relay',
@@ -13,5 +13,14 @@ export const example_endpointInfo = {
         cursor: 'cursor'
     }
 }
-export const endpointInfo = writable(null)
+
+const store = writable(null)
+export const endpointInfo = {
+    ...store, get_rowsLocation: function (QMS_Info) {
+        const storeVal = get(store)
+        return storeVal.rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
+            return rowsLocationPossibilitiy.checker(QMS_Info);
+        }).rowsLocation;
+    }
+}
 

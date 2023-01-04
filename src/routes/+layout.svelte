@@ -27,25 +27,20 @@
 			url: 'https://vgqkcskomrpikolllkix.nhost.run/v1/graphql',
 			description: 'offsetBased pagination',
 			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: ['aggregate'],
-						checker: (QMS_Info) => {
-							return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
-						}
-					},
-					{
-						rowsLocation: [],
-						checker: (QMS_Info) => {
-							return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: ['aggregate'],
+					checker: (QMS_Info) => {
+						return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			},
+				},
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
+					}
+				}
+			],
 			get_rowCountLocation: (QMS_Info) => {
 				let countLocationPossibilities = [
 					{
@@ -73,66 +68,51 @@
 			headers: {
 				authorization: 'Bearer aKUvsqBR4-rfnL2z6nqEQmLPRIur4c1m'
 			},
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: [], //'countDistinct'
-						checker: (QMS_Info) => {
-							return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
-						}
-					},
-					{
-						rowsLocation: [],
-						checker: (QMS_Info) => {
-							return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [], //'countDistinct'
+					checker: (QMS_Info) => {
+						return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			}
+				},
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
+					}
+				}
+			]
 		},
 		{
 			url: 'https://api.spacex.land/graphql/',
 			description: 'offsetBased pagination',
 
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: ['nodes'],
-						checker: (QMS_Info) => {
-							return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
-						}
-					},
-					{
-						rowsLocation: [],
-						checker: (QMS_Info) => {
-							return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: ['nodes'],
+					checker: (QMS_Info) => {
+						return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			}
+				},
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
+					}
+				}
+			]
 		},
 		{
 			url: 'https://rickandmortyapi.com/graphql',
 			description: 'pageBased pagination',
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: ['results'],
-						checker: (QMS_Info) => {
-							return true;
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: ['results'],
+					checker: (QMS_Info) => {
+						return true;
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			}
+				}
+			]
 		},
 		{
 			url: 'https://vgqkcskomrpikolllkix.nhost.run/v1beta1/relay',
@@ -140,19 +120,14 @@
 			headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
 			pageInfoFieldsLocation: ['pageInfo'],
 
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: ['edges'],
-						checker: (QMS_Info) => {
-							return true;
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: ['edges'],
+					checker: (QMS_Info) => {
+						return true;
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			},
+				}
+			],
 			namings: {
 				hasNextPage: 'hasNextPage',
 				hasPreviousPage: 'hasPreviousPage',
@@ -165,19 +140,14 @@
 			url: 'https://portal.ehri-project.eu/api/graphql',
 			description: 'edgeBased pagination',
 			pageInfoFieldsLocation: ['pageInfo'],
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: ['edges'],
-						checker: (QMS_Info) => {
-							return true;
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: ['edges'],
+					checker: (QMS_Info) => {
+						return true;
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			},
+				}
+			],
 			namings: {
 				hasNextPage: 'hasNextPage',
 				hasPreviousPage: 'hasPreviousPage',
@@ -191,19 +161,14 @@
 			description: 'edgeBased pagination',
 			pageInfoFieldsLocation: ['pageInfo'],
 
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: ['edges'],
-						checker: (QMS_Info) => {
-							return true;
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: ['edges'],
+					checker: (QMS_Info) => {
+						return true;
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			},
+				}
+			],
 			namings: {
 				hasNextPage: 'hasNextPage',
 				hasPreviousPage: 'hasPreviousPage',
@@ -217,19 +182,14 @@
 			authToken: '',
 			description: 'edgeBased pagination',
 			pageInfoFieldsLocation: ['pageInfo'],
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: ['edges'],
-						checker: (QMS_Info) => {
-							return true;
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: ['edges'],
+					checker: (QMS_Info) => {
+						return true;
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			},
+				}
+			],
 			namings: {
 				hasNextPage: 'hasNextPage',
 				hasPreviousPage: 'hasPreviousPage',
@@ -242,19 +202,14 @@
 			url: 'https://graphql.fauna.com/graphql',
 			description: 'edgeBased pagination',
 			pageInfoFieldsLocation: [],
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: ['data'],
-						checker: (QMS_Info) => {
-							return true;
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: ['data'],
+					checker: (QMS_Info) => {
+						return true;
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			},
+				}
+			],
 			namings: {
 				startCursor: 'after',
 				endCursor: 'before'
@@ -267,272 +222,192 @@
 		{
 			url: 'https://countries.trevorblades.com/',
 			description: 'notAvailable pagination',
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: [],
-						checker: (QMS_Info) => {
-							return true;
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			}
+				}
+			]
 		},
 		{
 			url: 'https://dex-server.herokuapp.com/',
 			description: '?? notAvailable pagination',
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: [],
-						checker: (QMS_Info) => {
-							return true;
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			}
+				}
+			]
 		},
 		{
 			url: 'https://graphql.anilist.co',
 			description: '?? notAvailable pagination',
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: [],
-						checker: (QMS_Info) => {
-							return true;
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			}
+				}
+			]
 		},
 		{
 			url: 'https://api.digitransit.fi/routing/v1/routers/finland/index/graphql',
 			description: '?? notAvailable pagination',
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: [],
-						checker: (QMS_Info) => {
-							return true;
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			}
+				}
+			]
 		},
 		{
 			url: 'https://etmdb.com/graphql?',
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: [],
-						checker: (QMS_Info) => {
-							return true;
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			}
+				}
+			]
 		},
 		{
 			url: 'https://api.graphql.jobs/',
 			description: 'notAvailable pagination',
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: [],
-						checker: (QMS_Info) => {
-							return true;
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			}
+				}
+			]
 		},
 		{
 			url: 'https://demotivation-quotes-api.herokuapp.com/graphql',
 			description: 'notAvailable pagination',
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: [],
-						checker: (QMS_Info) => {
-							return true;
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			}
+				}
+			]
 		},
 		{
 			url: 'https://graphql-weather-api.herokuapp.com/',
 			description: 'notAvailable pagination',
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: [],
-						checker: (QMS_Info) => {
-							return true;
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			}
+				}
+			]
 		},
 		{
 			url: 'https://fruits-api.netlify.app/graphql',
 			description: 'notAvailable pagination',
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: [],
-						checker: (QMS_Info) => {
-							return true;
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			}
+				}
+			]
 		},
 		{
 			url: 'https://graphql-compose.herokuapp.com/northwind/',
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: [],
-						checker: (QMS_Info) => {
-							return true;
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			}
+				}
+			]
 		},
 		{
 			url: 'https://directions-graphql.herokuapp.com/graphql',
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: [],
-						checker: (QMS_Info) => {
-							return true;
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			}
+				}
+			]
 		},
 		{
 			url: 'https://beta.pokeapi.co/graphql/v1beta',
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: ['aggregate'],
-						checker: (QMS_Info) => {
-							return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
-						}
-					},
-					{
-						rowsLocation: [],
-						checker: (QMS_Info) => {
-							return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: ['aggregate'],
+					checker: (QMS_Info) => {
+						return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			}
+				},
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
+					}
+				}
+			]
 		},
 		{
 			url: 'https://hivdb.stanford.edu/graphql',
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: [],
-						checker: (QMS_Info) => {
-							return true;
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			}
+				}
+			]
 		},
 		{
 			url: 'https://api.react-finland.fi/graphql?',
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: [],
-						checker: (QMS_Info) => {
-							return true;
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			}
+				}
+			]
 		},
 		{
 			url: 'https://graphqlpokemon.favware.tech/',
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: [],
-						checker: (QMS_Info) => {
-							return true;
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			}
+				}
+			]
 		},
 		{
 			url: 'https://graphbrainz.herokuapp.com/?',
-			get_rowsLocation: (QMS_Info) => {
-				const rowsLocationPossibilities = [
-					{
-						rowsLocation: [],
-						checker: (QMS_Info) => {
-							return true;
-						}
+			rowsLocationPossibilities: [
+				{
+					rowsLocation: [],
+					checker: (QMS_Info) => {
+						return true;
 					}
-				];
-				return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.checker(QMS_Info);
-				}).rowsLocation;
-			}
+				}
+			]
 		}
 	];
 	let gotData = false;
@@ -650,19 +525,14 @@
 				? testEndpoint
 				: {
 						url: graphqlEndpointURL,
-						get_rowsLocation: (QMS_Info) => {
-							const rowsLocationPossibilities = [
-								{
-									rowsLocation: [],
-									checker: (QMS_Info) => {
-										return true;
-									}
+						rowsLocationPossibilities: [
+							{
+								rowsLocation: [],
+								checker: (QMS_Info) => {
+									return true;
 								}
-							];
-							return rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-								return rowsLocationPossibilitiy.checker(QMS_Info);
-							}).rowsLocation;
-						}
+							}
+						]
 				  };
 			endpointInfo.set(endpointInfoToSet);
 		}

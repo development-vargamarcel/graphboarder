@@ -89,11 +89,8 @@ export const paginationTypes = [
             const namings = endpointInfoVal?.namings
             const pageInfoFieldsLocation = endpointInfoVal.pageInfoFieldsLocation
             let currentQMS_Info = schemaData.get_QMS_Field(QMS_name, QMS_type);
-            const rowsLocation = endpointInfoVal.rowsLocationPossibilities.find(
-                (rowsLocation) => {
-                    return rowsLocation.checker(currentQMS_Info);
-                }
-            ).rowsLocation;
+            const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_Info);
+
             if (namings?.endCursor || namings?.startCursor) {
                 if (namings?.hasNextPage) {
                     dependencyColsData.push({ title: namings.hasNextPage, hidden: true, stepsOfFields: [QMS_name, ...pageInfoFieldsLocation, namings.hasNextPage] })

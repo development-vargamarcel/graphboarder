@@ -38,7 +38,7 @@
 
 	let tableColsData_StoreInitialValue = [];
 
-	const rowsLocation = $endpointInfo.get_rowsLocation(currentQMS_Info);
+	const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_Info);
 	console.log('get_rowCountLocation', $endpointInfo.get_rowCountLocation(currentQMS_Info));
 	const nodeFieldsQMS_Info = get_nodeFieldsQMS_Info(currentQMS_Info, rowsLocation);
 	let scalarColsData = get_scalarColsData(nodeFieldsQMS_Info, [
