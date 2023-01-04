@@ -12,7 +12,7 @@ let test = [
         rowsLocationPossibilities: [
             {
                 get_Val: (QMS_Info) => {
-                    return ['aggregate']
+                    return []
                 }
                 ,
                 check: (QMS_Info) => {

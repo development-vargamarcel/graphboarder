@@ -160,8 +160,15 @@ export const getDataGivenStepsOfFields = (colInfo, row_resultData, stepsOfFields
         //is defined
         if (Array.isArray(colResultData)) {
             //!!!colResultData?.[0] in most cases is fine,but if needs be make a map,as to handle all elements of the array not only one.for count for example is perfect this way of handling,count is present only once.
-            if (colResultData && colResultData?.[0]?.[step] !== undefined) {
+            if (colResultData && colResultData?.length == 0 && colResultData?.[0]?.[step] !== undefined) {
                 return colResultData[0][step]
+            }
+            //!!!the bellow is not perfect,but always works,only that it doesn't go so deep.you could enhance it by passing each element into 'handleStep' func
+            if (colResultData && colResultData?.length > 0 && colResultData?.[0]?.[step] !== undefined) {
+                return colResultData.map((element) => {
+                    return handleStep(step, element?.[step])
+                    //return element?.[step]
+                })
             }
         }
         if (colResultData && colResultData?.[step] !== undefined) {
