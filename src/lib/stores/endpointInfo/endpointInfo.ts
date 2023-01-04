@@ -22,7 +22,7 @@ export const endpointInfo = {
             return rowsLocationPossibilitiy.check(QMS_Info);
         });
         if (rowsLocationPossibilitiy) {
-            return rowsLocationPossibilitiy.get_Val();
+            return rowsLocationPossibilitiy.get_Val(QMS_Info);
         }
         return [];
     }, get_rowCountLocation: function (QMS_Info) {
