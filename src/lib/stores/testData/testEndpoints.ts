@@ -9,13 +9,19 @@ let test = [
         headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
         rowsLocationPossibilities: [
             {
-                rowsLocation: ['aggregate'],
+                get_Val: (QMS_Info) => {
+                    return ['aggregate']
+                }
+                ,
                 check: (QMS_Info) => {
                     return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
                 }
             },
             {
-                rowsLocation: [],
+                get_Val: (QMS_Info) => {
+                    return []
+                }
+                ,
                 check: (QMS_Info) => {
                     return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
                 }
@@ -49,13 +55,19 @@ let test = [
         },
         rowsLocationPossibilities: [
             {
-                rowsLocation: [], //'countDistinct'
+                get_Val: (QMS_Info) => {
+                    return []
+                }
+                , //'countDistinct'
                 check: (QMS_Info) => {
                     return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
                 }
             },
             {
-                rowsLocation: [],
+                get_Val: (QMS_Info) => {
+                    return []
+                }
+                ,
                 check: (QMS_Info) => {
                     return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
                 }
@@ -68,13 +80,19 @@ let test = [
 
         rowsLocationPossibilities: [
             {
-                rowsLocation: ['nodes'],
+                get_Val: (QMS_Info) => {
+                    return ['nodes']
+                }
+                ,
                 check: (QMS_Info) => {
                     return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
                 }
             },
             {
-                rowsLocation: [],
+                get_Val: (QMS_Info) => {
+                    return []
+                }
+                ,
                 check: (QMS_Info) => {
                     return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
                 }
@@ -86,7 +104,10 @@ let test = [
         description: 'pageBased pagination',
         rowsLocationPossibilities: [
             {
-                rowsLocation: ['results'],
+                get_Val: (QMS_Info) => {
+                    return ['results']
+                }
+                ,
                 check: (QMS_Info) => {
                     return true;
                 }
@@ -101,7 +122,10 @@ let test = [
 
         rowsLocationPossibilities: [
             {
-                rowsLocation: ['edges'],
+                get_Val: (QMS_Info) => {
+                    return ['edges']
+                }
+                ,
                 check: (QMS_Info) => {
                     return true;
                 }
@@ -121,7 +145,10 @@ let test = [
         pageInfoFieldsLocation: ['pageInfo'],
         rowsLocationPossibilities: [
             {
-                rowsLocation: ['edges'],
+                get_Val: (QMS_Info) => {
+                    return ['edges']
+                }
+                ,
                 check: (QMS_Info) => {
                     return true;
                 }
@@ -142,7 +169,10 @@ let test = [
 
         rowsLocationPossibilities: [
             {
-                rowsLocation: ['edges'],
+                get_Val: (QMS_Info) => {
+                    return ['edges']
+                }
+                ,
                 check: (QMS_Info) => {
                     return true;
                 }
@@ -163,7 +193,10 @@ let test = [
         pageInfoFieldsLocation: ['pageInfo'],
         rowsLocationPossibilities: [
             {
-                rowsLocation: ['edges'],
+                get_Val: (QMS_Info) => {
+                    return ['edges']
+                }
+                ,
                 check: (QMS_Info) => {
                     return true;
                 }
@@ -183,7 +216,10 @@ let test = [
         pageInfoFieldsLocation: [],
         rowsLocationPossibilities: [
             {
-                rowsLocation: ['data'],
+                get_Val: (QMS_Info) => {
+                    return ['data']
+                }
+                ,
                 check: (QMS_Info) => {
                     return true;
                 }
@@ -203,7 +239,10 @@ let test = [
         description: 'notAvailable pagination',
         rowsLocationPossibilities: [
             {
-                rowsLocation: [],
+                get_Val: (QMS_Info) => {
+                    return []
+                }
+                ,
                 check: (QMS_Info) => {
                     return true;
                 }
@@ -215,7 +254,10 @@ let test = [
         description: '?? notAvailable pagination',
         rowsLocationPossibilities: [
             {
-                rowsLocation: [],
+                get_Val: (QMS_Info) => {
+                    return []
+                }
+                ,
                 check: (QMS_Info) => {
                     return true;
                 }
@@ -227,7 +269,10 @@ let test = [
         description: '?? notAvailable pagination',
         rowsLocationPossibilities: [
             {
-                rowsLocation: [],
+                get_Val: (QMS_Info) => {
+                    return []
+                }
+                ,
                 check: (QMS_Info) => {
                     return true;
                 }
@@ -239,7 +284,10 @@ let test = [
         description: '?? notAvailable pagination',
         rowsLocationPossibilities: [
             {
-                rowsLocation: [],
+                get_Val: (QMS_Info) => {
+                    return []
+                }
+                ,
                 check: (QMS_Info) => {
                     return true;
                 }
@@ -250,7 +298,10 @@ let test = [
         url: 'https://etmdb.com/graphql?',
         rowsLocationPossibilities: [
             {
-                rowsLocation: [],
+                get_Val: (QMS_Info) => {
+                    return []
+                }
+                ,
                 check: (QMS_Info) => {
                     return true;
                 }
@@ -262,7 +313,10 @@ let test = [
         description: 'notAvailable pagination',
         rowsLocationPossibilities: [
             {
-                rowsLocation: [],
+                get_Val: (QMS_Info) => {
+                    return []
+                }
+                ,
                 check: (QMS_Info) => {
                     return true;
                 }
@@ -274,7 +328,10 @@ let test = [
         description: 'notAvailable pagination',
         rowsLocationPossibilities: [
             {
-                rowsLocation: [],
+                get_Val: (QMS_Info) => {
+                    return []
+                }
+                ,
                 check: (QMS_Info) => {
                     return true;
                 }
@@ -286,7 +343,10 @@ let test = [
         description: 'notAvailable pagination',
         rowsLocationPossibilities: [
             {
-                rowsLocation: [],
+                get_Val: (QMS_Info) => {
+                    return []
+                }
+                ,
                 check: (QMS_Info) => {
                     return true;
                 }
@@ -298,7 +358,10 @@ let test = [
         description: 'notAvailable pagination',
         rowsLocationPossibilities: [
             {
-                rowsLocation: [],
+                get_Val: (QMS_Info) => {
+                    return []
+                }
+                ,
                 check: (QMS_Info) => {
                     return true;
                 }
@@ -309,7 +372,10 @@ let test = [
         url: 'https://graphql-compose.herokuapp.com/northwind/',
         rowsLocationPossibilities: [
             {
-                rowsLocation: [],
+                get_Val: (QMS_Info) => {
+                    return []
+                }
+                ,
                 check: (QMS_Info) => {
                     return true;
                 }
@@ -320,7 +386,10 @@ let test = [
         url: 'https://directions-graphql.herokuapp.com/graphql',
         rowsLocationPossibilities: [
             {
-                rowsLocation: [],
+                get_Val: (QMS_Info) => {
+                    return []
+                }
+                ,
                 check: (QMS_Info) => {
                     return true;
                 }
@@ -331,13 +400,19 @@ let test = [
         url: 'https://beta.pokeapi.co/graphql/v1beta',
         rowsLocationPossibilities: [
             {
-                rowsLocation: ['aggregate'],
+                get_Val: (QMS_Info) => {
+                    return ['aggregate']
+                }
+                ,
                 check: (QMS_Info) => {
                     return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
                 }
             },
             {
-                rowsLocation: [],
+                get_Val: (QMS_Info) => {
+                    return []
+                }
+                ,
                 check: (QMS_Info) => {
                     return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
                 }
@@ -348,7 +423,10 @@ let test = [
         url: 'https://hivdb.stanford.edu/graphql',
         rowsLocationPossibilities: [
             {
-                rowsLocation: [],
+                get_Val: (QMS_Info) => {
+                    return []
+                }
+                ,
                 check: (QMS_Info) => {
                     return true;
                 }
@@ -359,7 +437,10 @@ let test = [
         url: 'https://api.react-finland.fi/graphql?',
         rowsLocationPossibilities: [
             {
-                rowsLocation: [],
+                get_Val: (QMS_Info) => {
+                    return []
+                }
+                ,
                 check: (QMS_Info) => {
                     return true;
                 }
@@ -370,7 +451,10 @@ let test = [
         url: 'https://graphqlpokemon.favware.tech/',
         rowsLocationPossibilities: [
             {
-                rowsLocation: [],
+                get_Val: (QMS_Info) => {
+                    return []
+                }
+                ,
                 check: (QMS_Info) => {
                     return true;
                 }
@@ -381,7 +465,10 @@ let test = [
         url: 'https://graphbrainz.herokuapp.com/?',
         rowsLocationPossibilities: [
             {
-                rowsLocation: [],
+                get_Val: (QMS_Info) => {
+                    return []
+                }
+                ,
                 check: (QMS_Info) => {
                     return true;
                 }
