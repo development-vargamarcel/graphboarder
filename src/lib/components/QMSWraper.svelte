@@ -40,7 +40,6 @@
 
 	const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_Info);
 	const rowCountLocation = endpointInfo.get_rowCountLocation(currentQMS_Info);
-	console.log('get_rowCountLocation', rowCountLocation);
 	const nodeFieldsQMS_Info = get_nodeFieldsQMS_Info(currentQMS_Info, rowsLocation);
 	let scalarColsData = get_scalarColsData(nodeFieldsQMS_Info, [
 		currentQMS_Info.dd_displayName,
@@ -80,7 +79,6 @@
 	const tableColsData_Store_rowsCount = writable([
 		{ stepsOfFields: rowCountLocation, title: 'count' }
 	]);
-	console.log('rowCountLocation', rowCountLocation);
 	const QMS_bodyPart_StoreDerived_rowsCount = Create_QMS_bodyPart_StoreDerived(
 		final_gqlArgObj_Store,
 		tableColsData_Store_rowsCount,
