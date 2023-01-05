@@ -199,11 +199,11 @@
 		class="fixed bottom-0 bg-base-200 w-screen h-screen overscroll-none overflow-y-auto pb-4 px-4 mx-auto"
 	>
 		<div class="form-control w-full max-w-xs md:max-w-md lg:max-w-lg mt-32 mx-auto">
-			<ul class="space-y-2 max-h-60 md:max-h-80   overflow-y-auto px-1 overscroll-contain">
+			<ul class="space-y-2 max-h-60 md:max-h-80   overflow-y-auto pr-1 overscroll-contain">
 				{#each testEndpoints as endpoint}
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<li
-						class="cursor-pointer bg-accent/5 p-2 rounded overflow-x-auto break-all {endpoint.url ==
+						class="cursor-pointer bg-accent/5 p-2 rounded overflow-x-auto break-all flex {endpoint.url ==
 						graphqlEndpointURL
 							? 'bg-accent/50'
 							: ''}"
@@ -211,8 +211,11 @@
 							handleEndpointClick(endpoint);
 						}}
 					>
-						{endpoint.url}
-						<div class="text-xs">{endpoint.description ? endpoint.description : ''}</div>
+						<div class="rounded p-[1px] mr-1 {endpoint.isMantained ? 'bg-success' : 'bg-error'}" />
+						<div>
+							{endpoint.url}
+							<div class="text-xs">{endpoint.description ? endpoint.description : ''}</div>
+						</div>
 					</li>
 				{/each}
 			</ul>

@@ -7,7 +7,7 @@ import { schemaData } from "../schemaData";
 let test = [
     {
         url: 'https://vgqkcskomrpikolllkix.nhost.run/v1/graphql',
-        description: 'offsetBased pagination,rowCount set',
+        isMantained: true, description: 'offsetBased pagination,rowCount set',
         headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
         rowsLocationPossibilities: [
             {
@@ -51,7 +51,7 @@ let test = [
 
     {
         url: 'https://7rsm0d0d.directus.app/graphql',
-        description: 'offsetBased pagination,rowCount set',
+        isMantained: true, description: 'offsetBased pagination,rowCount set',
         headers: {
             authorization: 'Bearer aKUvsqBR4-rfnL2z6nqEQmLPRIur4c1m'
         },
@@ -99,7 +99,7 @@ let test = [
     },
     {
         url: 'https://api.spacex.land/graphql/',
-        description: 'offsetBased pagination',
+        isMantained: true, description: 'offsetBased pagination,no rowCount avalable',
 
         rowsLocationPossibilities: [
             {
@@ -124,7 +124,7 @@ let test = [
     },
     {
         url: 'https://rickandmortyapi.com/graphql',
-        description: 'pageBased pagination,rowCount set',
+        isMantained: true, description: 'pageBased pagination,rowCount set',
         rowsLocationPossibilities: [
             {
                 get_Val: (QMS_Info) => {
@@ -149,7 +149,7 @@ let test = [
     },
     {
         url: 'https://vgqkcskomrpikolllkix.nhost.run/v1beta1/relay',
-        description: 'edgeBased pagination',
+        isMantained: true, description: 'edgeBased pagination,no rowCount avalable',
         headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
         pageInfoFieldsLocation: ['pageInfo'],
 
@@ -174,7 +174,7 @@ let test = [
     },
     {
         url: 'https://portal.ehri-project.eu/api/graphql',
-        description: 'edgeBased pagination',
+        isMantained: true, description: 'edgeBased pagination,no rowCount avalable',
         pageInfoFieldsLocation: ['pageInfo'],
         rowsLocationPossibilities: [
             {
@@ -197,7 +197,7 @@ let test = [
     },
     {
         url: 'https://gitlab.com/api/graphql',
-        description: 'edgeBased pagination',
+        isMantained: true, description: 'edgeBased pagination,no rowCount avalable',
         pageInfoFieldsLocation: ['pageInfo'],
 
         rowsLocationPossibilities: [
@@ -222,7 +222,7 @@ let test = [
     {
         url: 'https://swapi-graphql.netlify.app/.netlify/functions/index',
         authToken: '',
-        description: 'edgeBased pagination',
+        isMantained: true, description: 'edgeBased pagination,rowCount set',
         pageInfoFieldsLocation: ['pageInfo'],
         rowsLocationPossibilities: [
             {
@@ -256,7 +256,7 @@ let test = [
     },
     {
         url: 'https://graphql.fauna.com/graphql',
-        description: 'edgeBased pagination',
+        isMantained: false, description: 'edgeBased pagination',
         pageInfoFieldsLocation: [],
         rowsLocationPossibilities: [
             {
@@ -277,10 +277,10 @@ let test = [
             authorization: 'Basic Zm5BRFFVdWNRb0FDQ1VpZDAxeXVIdWt2SnptaVY4STI4a2R6Y0p2UDo='
         }
     },
-    { url: 'https://graphql-camara-deputados.herokuapp.com/', description: 'edgeBased pagination' },
+    { url: 'https://graphql-camara-deputados.herokuapp.com/', isMantained: false, description: 'edgeBased pagination' },
     {
         url: 'https://countries.trevorblades.com/',
-        description: 'notAvailable pagination',
+        isMantained: false, description: 'notAvailable pagination',
         rowsLocationPossibilities: [
             {
                 get_Val: (QMS_Info) => {
@@ -295,7 +295,7 @@ let test = [
     },
     {
         url: 'https://dex-server.herokuapp.com/',
-        description: '?? notAvailable pagination',
+        isMantained: false, description: '?? notAvailable pagination',
         rowsLocationPossibilities: [
             {
                 get_Val: (QMS_Info) => {
@@ -310,7 +310,7 @@ let test = [
     },
     {
         url: 'https://graphql.anilist.co',
-        description: '?? notAvailable pagination',
+        isMantained: false, description: '?? notAvailable pagination',
         rowsLocationPossibilities: [
             {
                 get_Val: (QMS_Info) => {
@@ -325,7 +325,7 @@ let test = [
     },
     {
         url: 'https://api.digitransit.fi/routing/v1/routers/finland/index/graphql',
-        description: '?? notAvailable pagination',
+        isMantained: false, description: '?? notAvailable pagination',
         rowsLocationPossibilities: [
             {
                 get_Val: (QMS_Info) => {
@@ -354,7 +354,7 @@ let test = [
     },
     {
         url: 'https://api.graphql.jobs/',
-        description: 'notAvailable pagination',
+        isMantained: false, description: 'notAvailable pagination',
         rowsLocationPossibilities: [
             {
                 get_Val: (QMS_Info) => {
@@ -369,7 +369,7 @@ let test = [
     },
     {
         url: 'https://demotivation-quotes-api.herokuapp.com/graphql',
-        description: 'notAvailable pagination',
+        isMantained: false, description: 'notAvailable pagination',
         rowsLocationPossibilities: [
             {
                 get_Val: (QMS_Info) => {
@@ -384,7 +384,7 @@ let test = [
     },
     {
         url: 'https://graphql-weather-api.herokuapp.com/',
-        description: 'notAvailable pagination',
+        isMantained: false, description: 'notAvailable pagination',
         rowsLocationPossibilities: [
             {
                 get_Val: (QMS_Info) => {
@@ -399,7 +399,7 @@ let test = [
     },
     {
         url: 'https://fruits-api.netlify.app/graphql',
-        description: 'notAvailable pagination',
+        isMantained: false, description: 'notAvailable pagination',
         rowsLocationPossibilities: [
             {
                 get_Val: (QMS_Info) => {
