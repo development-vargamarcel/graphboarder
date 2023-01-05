@@ -21,7 +21,17 @@ export const endpointInfoDefaultValues = {
         startCursor: 'previousPage',
         endCursor: 'nextPage',
         cursor: 'cursor'
-    }
+    }, idFieldPossibilities: [
+        {
+            get_Val: function (QMS_Info) {
+                return this.check(QMS_Info)
+            },
+            check: (QMS_Info) => {
+                let possibleNames = ['id', `${QMS_Info.dd_displayName}_id`, `${QMS_Info.dd_displayName}Id`]
+                return QMS_Info.dd_relatedRoot?.fields.find((field) => { return possibleNames.includes(field.dd_displayName) })
+            }
+        }
+    ]
 }
 
 const store = writable(null)
@@ -52,6 +62,20 @@ export const endpointInfo = {
             return rowCountLocationPossibility.get_Val(QMS_Info);
         }
         return null
+    }, get_idField: (QMS_Info) => {
+        const storeVal = get(store)
+        if (!storeVal) {
+            return null
+        }
+        const idFieldPossibility = storeVal.idFieldPossibilities.find((idFieldPossibility) => {
+            return idFieldPossibility.check(QMS_Info);
+        })
+
+        if (idFieldPossibility) {
+            return idFieldPossibility.get_Val(QMS_Info);
+        }
+        return null
+
     }
 }
 

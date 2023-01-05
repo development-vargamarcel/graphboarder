@@ -99,6 +99,9 @@
 	setContext(`${prefix}QMS_bodyPartsUnifier_StoreDerived`, QMS_bodyPartsUnifier_StoreDerived);
 	setContext(`${prefix}offsetBasedPaginationOptions`, offsetBasedPaginationOptions);
 	setContext(`${prefix}paginationState`, paginationState);
+
+	//testing
+	console.log('get_idField', endpointInfo.get_idField(currentQMS_Info));
 </script>
 
 <slot><!-- optional fallback --></slot>
