@@ -16,7 +16,7 @@ let test = [
                 }
                 ,
                 check: (QMS_Info) => {
-                    return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
+                    return QMS_Info.dd_displayName.toLowerCase().endsWith('aggregate');
                 }
             },
             {
@@ -25,7 +25,7 @@ let test = [
                 }
                 ,
                 check: (QMS_Info) => {
-                    return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregated');
+                    return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregate');
                 }
             }
         ],
@@ -40,7 +40,11 @@ let test = [
             },
             {
                 get_Val: (QMS_Info) => {
-                    return [`${QMS_Info.dd_displayName}Aggregate`, 'aggregate', 'count'];
+                    if (schemaData.get_QMS_Field(`${QMS_Info.dd_displayName}Aggregate`, 'query')) {
+                        return [`${QMS_Info.dd_displayName}Aggregate`, 'aggregate', 'count'];
+                    }
+                    return [`${QMS_Info.dd_displayName}_aggregate`, 'aggregate', 'count'];
+
                 },
                 check: (QMS_Info) => {
                     return !QMS_Info.dd_displayName.toLowerCase().endsWith('aggregate');
