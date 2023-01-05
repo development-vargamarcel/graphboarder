@@ -124,7 +124,7 @@ let test = [
     },
     {
         url: 'https://rickandmortyapi.com/graphql',
-        description: 'pageBased pagination',
+        description: 'pageBased pagination,rowCount set',
         rowsLocationPossibilities: [
             {
                 get_Val: (QMS_Info) => {
@@ -135,6 +135,16 @@ let test = [
                     return true;
                 }
             }
+        ], rowCountLocationPossibilities: [
+            {
+                get_Val: (QMS_Info) => {
+                    return [QMS_Info.dd_displayName, 'info', 'count'];
+                },
+                check: (QMS_Info) => {
+                    return QMS_Info.dd_displayName.toLowerCase().endsWith('s') && !QMS_Info.dd_displayName.toLowerCase().endsWith('byids');
+                }
+            },
+
         ]
     },
     {

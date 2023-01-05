@@ -64,7 +64,8 @@
 		if (
 			rowLimitingArgNames?.some((argName) => {
 				return rows.length / $paginationState?.[argName] >= 1; //means that all previous pages contained nr of items == page items size
-			})
+			}) ||
+			paginationTypeInfo?.name == 'pageBased'
 		) {
 			paginationState.nextPage(queryData?.data, queryName, 'query');
 		} else {
@@ -124,13 +125,14 @@
 					rows = rowsCurrent;
 				}
 				if (
-					paginationTypeInfo?.get_rowLimitingArgNames(currentQMS_Info.dd_paginationArgs).length >
+					(paginationTypeInfo?.get_rowLimitingArgNames(currentQMS_Info.dd_paginationArgs).length >
 						0 &&
-					paginationTypeInfo
-						?.get_rowLimitingArgNames(currentQMS_Info.dd_paginationArgs)
-						.some((argName) => {
-							return rowsCurrent?.length == $paginationState?.[argName];
-						})
+						paginationTypeInfo
+							?.get_rowLimitingArgNames(currentQMS_Info.dd_paginationArgs)
+							.some((argName) => {
+								return rowsCurrent?.length == $paginationState?.[argName];
+							})) ||
+					paginationTypeInfo?.name == 'pageBased'
 				) {
 					loadedF && loadedF();
 					console.log('loadedF ');

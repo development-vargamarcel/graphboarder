@@ -805,8 +805,16 @@ export const get_nodeFieldsQMS_Info = (QMS_Info, rowsLocation) => {
     if (rowsLocation?.length == 0) {
         return QMS_Info;
     }
+    console.log({ QMS_Info })
+
     let nodeFieldsQMS_Info = QMS_Info;
+    if (!nodeFieldsQMS_Info?.dd_relatedRoot?.fields) {
+        return nodeFieldsQMS_Info
+    }
     rowsLocation.forEach((curr_rowsLocation) => {
+        if (!nodeFieldsQMS_Info?.dd_relatedRoot?.fields) {
+            return nodeFieldsQMS_Info
+        }
         nodeFieldsQMS_Info = nodeFieldsQMS_Info?.dd_relatedRoot.fields.find((field) => {
             return field.dd_displayName == curr_rowsLocation;
         });
