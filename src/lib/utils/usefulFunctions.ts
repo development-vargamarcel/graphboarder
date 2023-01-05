@@ -828,7 +828,6 @@ export const check_stepsOfFields = (stepsOfFields) => {
 }
 
 export const generateTitleFromStepsOfFields = (stepsOfFields) => {
-    console.log({ stepsOfFields })
     const title = stepsOfFields.map((step, index) => {
         if (stepsOfFields.length - index - 1 == 0) {
             return `${step}`
