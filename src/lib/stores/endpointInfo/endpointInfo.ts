@@ -28,7 +28,7 @@ export const endpointInfoDefaultValues = {
             },
             check: (QMS_Info) => {
                 let possibleNames = ['id', `${QMS_Info.dd_displayName}_id`, `${QMS_Info.dd_displayName}Id`]
-                return QMS_Info.dd_relatedRoot?.fields?.find((field) => { return possibleNames.includes(field.dd_displayName) })
+                return QMS_Info.dd_relatedRoot?.fields?.find((field) => { return possibleNames.includes(field.dd_displayName) || field.dd_rootName == 'ID' })
             }
         }
     ]
