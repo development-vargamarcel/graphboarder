@@ -1,4 +1,5 @@
 <script>
+	import { generateTitleFromStepsOfFields } from '$lib/utils/usefulFunctions';
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 	export let canExpand;
@@ -73,7 +74,9 @@
 					expand();
 				} else {
 					dispatch('colAddRequest', {
-						title: `col-${Math.floor(Math.random() * 200)}`,
+						title: `col-${Math.floor(Math.random() * 200)},${generateTitleFromStepsOfFields(
+							stepsOfFields
+						)} `,
 						stepsOfFields: stepsOfFields
 					});
 

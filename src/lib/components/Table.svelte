@@ -64,7 +64,7 @@
 										<div
 											class="w-full pr-2 hover:text-primary cursor-pointer max-w-xs  md:max-w-sm overflow-x-auto"
 										>
-											<ColumnInfo stepsOfFields={colsData[index].stepsOfFields} />
+											<ColumnInfo stepsOfFields={visibleColsData[index].stepsOfFields} />
 											<!-- {colsData[index].stepsOfFields.join(' > ')} -->
 										</div>
 										<!-- svelte-ignore a11y-click-events-have-key-events -->

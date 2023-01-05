@@ -17,7 +17,11 @@
 	const offsetBasedPaginationOptions = getContext('offsetBasedPaginationOptions');
 
 	$: console.log('final_gqlArgObj_Store', $final_gqlArgObj_Store);
-	import { getDataGivenStepsOfFields, getFields_Grouped } from '$lib/utils/usefulFunctions';
+	import {
+		generateTitleFromStepsOfFields,
+		getDataGivenStepsOfFields,
+		getFields_Grouped
+	} from '$lib/utils/usefulFunctions';
 	import { onDestroy, onMount, getContext } from 'svelte';
 	import { goto } from '$app/navigation';
 	import Type from '$lib/components/Type.svelte';
@@ -174,7 +178,9 @@
 		if (e.key == 'Enter') {
 			let stepsOfFields = column_stepsOfFields.replace(/\s/g, '').replace(/\./g, '>').split('>');
 			let tableColData = {
-				title: `col-${Math.floor(Math.random() * 200)}`,
+				title: `col-${Math.floor(Math.random() * 200)},${generateTitleFromStepsOfFields(
+					stepsOfFields
+				)}`,
 				stepsOfFields: [queryName, ...stepsOfFields]
 			};
 
@@ -239,6 +245,7 @@
 							depth={0}
 							on:colAddRequest={(e) => {
 								let tableColData = e.detail;
+
 								//tableColData.stepsOfFields = [queryName, ...tableColData.stepsOfFields];
 
 								tableColsData_Store.addColumn(tableColData);
