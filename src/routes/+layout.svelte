@@ -144,7 +144,7 @@
 							}
 						]
 				  };
-			endpointInfo.set(endpointInfoToSet);
+			endpointInfo.smartSet(endpointInfoToSet);
 		}
 	}
 </script>

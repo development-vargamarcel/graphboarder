@@ -7,7 +7,7 @@ import { schemaData } from "../schemaData";
 let test = [
     {
         url: 'https://vgqkcskomrpikolllkix.nhost.run/v1/graphql',
-        description: 'offsetBased pagination',
+        description: 'offsetBased pagination,rowCount set',
         headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
         rowsLocationPossibilities: [
             {
@@ -51,7 +51,7 @@ let test = [
 
     {
         url: 'https://7rsm0d0d.directus.app/graphql',
-        description: 'offsetBased pagination',
+        description: 'offsetBased pagination,rowCount set',
         headers: {
             authorization: 'Bearer aKUvsqBR4-rfnL2z6nqEQmLPRIur4c1m'
         },

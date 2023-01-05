@@ -1,22 +1,32 @@
 import { writable, get } from "svelte/store"
 
-export const example_endpointInfo = {
-    url: 'https://vgqkcskomrpikolllkix.nhost.run/v1beta1/relay',
-    description: 'edgeBased pagination',
-    headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
-    pageInfoFieldsLocation: [],
+export const endpointInfoDefaultValues = {
+    description: 'no description',
+    rowsLocationPossibilities: [
+        {
+            get_Val: (QMS_Info) => {
+                return []
+            }
+            ,
+            check: (QMS_Info) => {
+                return true
+            }
+        },
+
+    ],
+    rowCountLocationPossibilities: [],
     namings: {
-        hasNextPage: "hasNextPage",
-        hasPreviousPage: "hasPreviousPage",
-        startCursor: "startCursor",//after,nextPage
-        endCursor: "endCursor",//before,previousPage
+        hasNextPage: 'hasNextPage',
+        hasPreviousPage: 'hasPreviousPage',
+        startCursor: 'previousPage',
+        endCursor: 'nextPage',
         cursor: 'cursor'
     }
 }
 
 const store = writable(null)
 export const endpointInfo = {
-    ...store, get_rowsLocation: function (QMS_Info) {
+    ...store, smartSet: (newEndpoint) => { store.set({ ...endpointInfoDefaultValues, ...newEndpoint, }) }, get_rowsLocation: function (QMS_Info) {
         const storeVal = get(store)
         if (!storeVal?.rowsLocationPossibilities?.length > 0) {
             return []
