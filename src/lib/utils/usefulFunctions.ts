@@ -805,7 +805,6 @@ export const get_nodeFieldsQMS_Info = (QMS_Info, rowsLocation) => {
     if (rowsLocation?.length == 0) {
         return QMS_Info;
     }
-    console.log({ QMS_Info })
 
     let nodeFieldsQMS_Info = QMS_Info;
     if (!nodeFieldsQMS_Info?.dd_relatedRoot?.fields) {

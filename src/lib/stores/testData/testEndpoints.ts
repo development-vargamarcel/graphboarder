@@ -234,7 +234,18 @@ let test = [
                     return true;
                 }
             }
+        ], rowCountLocationPossibilities: [
+            {
+                get_Val: (QMS_Info) => {
+                    return [QMS_Info.dd_displayName, 'totalCount'];
+                },
+                check: (QMS_Info) => {
+                    return QMS_Info.dd_displayName.toLowerCase().startsWith('all')
+                }
+            },
+
         ],
+
         namings: {
             hasNextPage: 'hasNextPage',
             hasPreviousPage: 'hasPreviousPage',
