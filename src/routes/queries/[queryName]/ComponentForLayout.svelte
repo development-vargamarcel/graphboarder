@@ -236,22 +236,24 @@
 						bind:value={column_stepsOfFields}
 						on:keypress={addColumnFromInput}
 					/>
-					{#each dd_relatedRoot.fields as type, index (index)}
-						<Type
-							{index}
-							{type}
-							template="columnAddDisplay"
-							stepsOfFields={[queryName]}
-							depth={0}
-							on:colAddRequest={(e) => {
-								let tableColData = e.detail;
+					{#if dd_relatedRoot?.fields}
+						{#each dd_relatedRoot.fields as type, index (index)}
+							<Type
+								{index}
+								{type}
+								template="columnAddDisplay"
+								stepsOfFields={[queryName]}
+								depth={0}
+								on:colAddRequest={(e) => {
+									let tableColData = e.detail;
 
-								//tableColData.stepsOfFields = [queryName, ...tableColData.stepsOfFields];
+									//tableColData.stepsOfFields = [queryName, ...tableColData.stepsOfFields];
 
-								tableColsData_Store.addColumn(tableColData);
-							}}
-						/>
-					{/each}
+									tableColsData_Store.addColumn(tableColData);
+								}}
+							/>
+						{/each}
+					{/if}
 				</div>
 			</div>
 		</div>

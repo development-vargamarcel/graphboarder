@@ -28,7 +28,7 @@ export const endpointInfoDefaultValues = {
             },
             check: (QMS_Info) => {
                 let possibleNames = ['id', `${QMS_Info.dd_displayName}_id`, `${QMS_Info.dd_displayName}Id`]
-                return QMS_Info.dd_relatedRoot?.fields.find((field) => { return possibleNames.includes(field.dd_displayName) })
+                return QMS_Info.dd_relatedRoot?.fields?.find((field) => { return possibleNames.includes(field.dd_displayName) })
             }
         }
     ]
@@ -61,6 +61,7 @@ export const endpointInfo = {
         if (rowCountLocationPossibility) {
             return rowCountLocationPossibility.get_Val(QMS_Info);
         }
+        console.warn('no rowCountLocation found')
         return null
     }, get_idField: (QMS_Info) => {
         const storeVal = get(store)
@@ -74,6 +75,8 @@ export const endpointInfo = {
         if (idFieldPossibility) {
             return idFieldPossibility.get_Val(QMS_Info);
         }
+        console.warn('no idField found')
+
         return null
 
     }
