@@ -96,7 +96,7 @@ let test = [
                     return [`${QMS_info.dd_displayName}_aggregated`, 'count', nodeFieldsQMS_info];
                 },
                 check: (QMS_info) => {
-                    return !QMS_info.dd_displayName.toLowerCase().endsWith('aggregated');
+                    return !QMS_info.dd_displayName.toLowerCase().endsWith('aggregated') && !QMS_info.dd_displayName.toLowerCase().endsWith('by_id');
                 }
             }
         ]
