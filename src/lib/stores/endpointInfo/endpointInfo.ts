@@ -51,9 +51,10 @@ export const endpointInfo = {
         return [];
     }, get_rowCountLocation: function (QMS_info) {
         const storeVal = get(store)
-        if (!storeVal) {
+        if (!storeVal || !storeVal?.rowCountLocationPossibilities?.length > 0) {
             return null
         }
+
         const rowCountLocationPossibility = storeVal.rowCountLocationPossibilities.find((rowCountLocationPossibility) => {
             return rowCountLocationPossibility.check(QMS_info);
         })
@@ -65,7 +66,7 @@ export const endpointInfo = {
         return null
     }, get_idField: (QMS_info) => {
         const storeVal = get(store)
-        if (!storeVal) {
+        if (!storeVal || !storeVal?.idFieldPossibilities?.length > 0) {
             return null
         }
         const idFieldPossibility = storeVal.idFieldPossibilities.find((idFieldPossibility) => {
