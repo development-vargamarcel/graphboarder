@@ -80,20 +80,23 @@ let test = [
             }
         ],
         rowCountLocationPossibilities: [
-            {
-                get_Val: (QMS_info) => {
-                    const nodeFieldsQMS_info = get_nodeFieldsQMS_info(QMS_info, ['count']).dd_relatedRoot.fields[0].dd_displayName
-                    return [QMS_info.dd_displayName, 'count', nodeFieldsQMS_info];
-                },
-                check: (QMS_info) => {
-                    return QMS_info.dd_displayName.toLowerCase().endsWith('aggregated');
-                }
-            },
+            // {
+            //     get_Val: (QMS_info) => {
+            //         const nodeFieldsQMS_info = get_nodeFieldsQMS_info(QMS_info, ['count']).dd_relatedRoot.fields[0].dd_displayName
+            //         return [QMS_info.dd_displayName, 'count', nodeFieldsQMS_info];
+            //     },
+            //     check: (QMS_info) => {
+            //         return QMS_info.dd_displayName.toLowerCase().endsWith('aggregated');
+            //     }
+            // },
             {
                 get_Val: (QMS_info) => {
                     const aggregatedQMS_info = schemaData.get_QMS_Field(`${QMS_info.dd_displayName}_aggregated`, 'query')
-                    const nodeFieldsQMS_info = get_nodeFieldsQMS_info(aggregatedQMS_info, ['count']).dd_relatedRoot.fields[0].dd_displayName
-                    return [`${QMS_info.dd_displayName}_aggregated`, 'count', nodeFieldsQMS_info];
+                    const nodeFieldsQMS_info = get_nodeFieldsQMS_info(aggregatedQMS_info, ['count'])?.dd_relatedRoot.fields[0].dd_displayName
+                    if (nodeFieldsQMS_info) {
+                        return [`${QMS_info.dd_displayName}_aggregated`, 'count', nodeFieldsQMS_info];
+                    }
+                    return null
                 },
                 check: (QMS_info) => {
                     return !QMS_info.dd_displayName.toLowerCase().endsWith('aggregated') && !QMS_info.dd_displayName.toLowerCase().endsWith('by_id');
