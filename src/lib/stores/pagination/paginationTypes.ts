@@ -88,8 +88,8 @@ export const paginationTypes = [
             const endpointInfoVal = get(endpointInfo)
             const namings = endpointInfoVal?.namings
             const pageInfoFieldsLocation = endpointInfoVal.pageInfoFieldsLocation
-            let currentQMS_Info = schemaData.get_QMS_Field(QMS_name, QMS_type);
-            const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_Info);
+            let currentQMS_info = schemaData.get_QMS_Field(QMS_name, QMS_type);
+            const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_info);
 
             if (namings?.endCursor || namings?.startCursor) {
                 if (namings?.hasNextPage) {
@@ -119,11 +119,11 @@ export const paginationTypes = [
         }, get_nextPageState: (state, paginationArgs, returnedDataBatch_last, QMS_name, QMS_type) => {
             const endpointInfoVal = get(endpointInfo)
             const namings = endpointInfoVal?.namings
-            let currentQMS_Info = schemaData.get_QMS_Field(QMS_name, QMS_type);
+            let currentQMS_info = schemaData.get_QMS_Field(QMS_name, QMS_type);
             const pageInfoFieldsLocation = endpointInfoVal.pageInfoFieldsLocation
             const rowsLocation = endpointInfoVal.rowsLocationPossibilities.find(
                 (rowsLocation) => {
-                    return rowsLocation.check(currentQMS_Info);
+                    return rowsLocation.check(currentQMS_info);
                 }
             ).rowsLocation;
 
@@ -139,7 +139,7 @@ export const paginationTypes = [
                 console.log({ _state }, { returnedDataBatch_last })
             } else
                 if (namings?.cursor) {
-                    let rows = getDataGivenStepsOfFields(undefined, returnedDataBatch_last, [currentQMS_Info.dd_displayName, ...rowsLocation])
+                    let rows = getDataGivenStepsOfFields(undefined, returnedDataBatch_last, [currentQMS_info.dd_displayName, ...rowsLocation])
                     let lastRow = rows[rows.length - 1]
                     console.log({ lastRow })
                     _state[afterName] = `'${getDataGivenStepsOfFields(undefined, lastRow, stepsOfFieldsToCursor)}'`

@@ -11,7 +11,7 @@
 	//!!!important:  rowsLocationPossibilities is important for other things too in edgeBased pagination
 	const get_rowsLocation = (rowsLocationPossibilities) => {
 		let rowsLocationPossibilitiy = rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-			return rowsLocationPossibilitiy.check(QMS_Info);
+			return rowsLocationPossibilitiy.check(QMS_info);
 		});
 		if (rowsLocationPossibilitiy) {
 			return rowsLocationPossibilitiy.rowsLocation;
@@ -138,7 +138,7 @@
 						rowsLocationPossibilities: [
 							{
 								rowsLocation: [],
-								check: (QMS_Info) => {
+								check: (QMS_info) => {
 									return true;
 								}
 							}

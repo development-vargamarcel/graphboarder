@@ -11,37 +11,37 @@
 	import { schemaData } from '$lib/stores/schemaData';
 	import { Create_paginationState_derived } from '$lib/stores/pagination/paginationState_derived';
 	import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
-	import { get_scalarColsData, get_nodeFieldsQMS_Info } from '$lib/utils/usefulFunctions';
+	import { get_scalarColsData, get_nodeFieldsQMS_info } from '$lib/utils/usefulFunctions';
 	import { endpointInfo } from '$lib/stores/endpointInfo/endpointInfo';
 	import { get, writable } from 'svelte/store';
 	export let prefix = '';
 	export let QMSType = 'query';
 	export let QMSName;
-	let currentQMS_Info = schemaData.get_QMS_Field(QMSName, QMSType);
-	console.log({ currentQMS_Info });
+	let currentQMS_info = schemaData.get_QMS_Field(QMSName, QMSType);
+	console.log({ currentQMS_info });
 	let paginationTypeInfo = paginationTypes.find((pagType) => {
-		return pagType.name == currentQMS_Info.dd_paginationType;
+		return pagType.name == currentQMS_info.dd_paginationType;
 	});
 
 	const activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store();
 	const offsetBasedPaginationOptions = Create_offsetBasedPaginationOptions();
 	const paginationState = Create_paginationState(
 		undefined,
-		currentQMS_Info.dd_paginationArgs,
-		currentQMS_Info.dd_paginationType
+		currentQMS_info.dd_paginationArgs,
+		currentQMS_info.dd_paginationType
 	);
 	const paginationState_derived = Create_paginationState_derived(
 		paginationState,
-		currentQMS_Info.dd_paginationArgs,
-		currentQMS_Info.dd_paginationType
+		currentQMS_info.dd_paginationArgs,
+		currentQMS_info.dd_paginationType
 	);
 
 	let tableColsData_StoreInitialValue = [];
 
-	const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_Info);
-	const nodeFieldsQMS_Info = get_nodeFieldsQMS_Info(currentQMS_Info, rowsLocation);
-	let scalarColsData = get_scalarColsData(nodeFieldsQMS_Info, [
-		currentQMS_Info.dd_displayName,
+	const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_info);
+	const nodeFieldsQMS_info = get_nodeFieldsQMS_info(currentQMS_info, rowsLocation);
+	let scalarColsData = get_scalarColsData(nodeFieldsQMS_info, [
+		currentQMS_info.dd_displayName,
 		...rowsLocation
 	]);
 	const dependencyColsData = paginationTypeInfo?.get_dependencyColsData(QMSName, 'query');
@@ -57,7 +57,7 @@
 		paginationState
 	);
 	const paginationInfo = Create_paginationInfo({
-		paginationType: currentQMS_Info.dd_paginationType,
+		paginationType: currentQMS_info.dd_paginationType,
 		paginationData: {}
 	});
 
@@ -68,14 +68,14 @@
 		QMSName,
 		offsetBasedPaginationOptions,
 		paginationState_derived,
-		currentQMS_Info.dd_paginationType !== 'notAvailable' ? paginationState : null
+		currentQMS_info.dd_paginationType !== 'notAvailable' ? paginationState : null
 	);
 
 	const QMS_bodyPartsUnifier_StoreDerived = Create_QMS_bodyPartsUnifier_StoreDerived(
 		[QMS_bodyPart_StoreDerived],
 		QMSType
 	);
-	const rowCountLocation = endpointInfo.get_rowCountLocation(currentQMS_Info);
+	const rowCountLocation = endpointInfo.get_rowCountLocation(currentQMS_info);
 	if (rowCountLocation) {
 		const tableColsData_Store_rowsCount = writable([
 			{ stepsOfFields: rowCountLocation, title: 'count' }
@@ -101,7 +101,7 @@
 	setContext(`${prefix}paginationState`, paginationState);
 
 	//testing
-	console.log('get_idField', endpointInfo.get_idField(currentQMS_Info));
+	console.log('get_idField', endpointInfo.get_idField(currentQMS_info));
 </script>
 
 <slot><!-- optional fallback --></slot>

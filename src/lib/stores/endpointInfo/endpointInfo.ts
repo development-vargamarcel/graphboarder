@@ -4,11 +4,11 @@ export const endpointInfoDefaultValues = {
     description: 'no description',
     rowsLocationPossibilities: [
         {
-            get_Val: (QMS_Info) => {
+            get_Val: (QMS_info) => {
                 return []
             }
             ,
-            check: (QMS_Info) => {
+            check: (QMS_info) => {
                 return true
             }
         },
@@ -23,12 +23,12 @@ export const endpointInfoDefaultValues = {
         cursor: 'cursor'
     }, idFieldPossibilities: [
         {
-            get_Val: function (QMS_Info) {
-                return this.check(QMS_Info)
+            get_Val: function (QMS_info) {
+                return this.check(QMS_info)
             },
-            check: (QMS_Info) => {
-                let possibleNames = ['id', `${QMS_Info.dd_displayName}_id`, `${QMS_Info.dd_displayName}Id`]
-                return QMS_Info.dd_relatedRoot?.fields?.find((field) => { return possibleNames.includes(field.dd_displayName) || field.dd_rootName == 'ID' })
+            check: (QMS_info) => {
+                let possibleNames = ['id', `${QMS_info.dd_displayName}_id`, `${QMS_info.dd_displayName}Id`]
+                return QMS_info.dd_relatedRoot?.fields?.find((field) => { return possibleNames.includes(field.dd_displayName) || field.dd_rootName == 'ID' })
             }
         }
     ]
@@ -36,44 +36,44 @@ export const endpointInfoDefaultValues = {
 
 const store = writable(null)
 export const endpointInfo = {
-    ...store, smartSet: (newEndpoint) => { store.set({ ...endpointInfoDefaultValues, ...newEndpoint, }) }, get_rowsLocation: function (QMS_Info) {
+    ...store, smartSet: (newEndpoint) => { store.set({ ...endpointInfoDefaultValues, ...newEndpoint, }) }, get_rowsLocation: function (QMS_info) {
         const storeVal = get(store)
         if (!storeVal?.rowsLocationPossibilities?.length > 0) {
             return []
         }
 
         let rowsLocationPossibilitiy = storeVal.rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
-            return rowsLocationPossibilitiy.check(QMS_Info);
+            return rowsLocationPossibilitiy.check(QMS_info);
         });
         if (rowsLocationPossibilitiy) {
-            return rowsLocationPossibilitiy.get_Val(QMS_Info);
+            return rowsLocationPossibilitiy.get_Val(QMS_info);
         }
         return [];
-    }, get_rowCountLocation: function (QMS_Info) {
+    }, get_rowCountLocation: function (QMS_info) {
         const storeVal = get(store)
         if (!storeVal) {
             return null
         }
         const rowCountLocationPossibility = storeVal.rowCountLocationPossibilities.find((rowCountLocationPossibility) => {
-            return rowCountLocationPossibility.check(QMS_Info);
+            return rowCountLocationPossibility.check(QMS_info);
         })
 
         if (rowCountLocationPossibility) {
-            return rowCountLocationPossibility.get_Val(QMS_Info);
+            return rowCountLocationPossibility.get_Val(QMS_info);
         }
         console.warn('no rowCountLocation found')
         return null
-    }, get_idField: (QMS_Info) => {
+    }, get_idField: (QMS_info) => {
         const storeVal = get(store)
         if (!storeVal) {
             return null
         }
         const idFieldPossibility = storeVal.idFieldPossibilities.find((idFieldPossibility) => {
-            return idFieldPossibility.check(QMS_Info);
+            return idFieldPossibility.check(QMS_info);
         })
 
         if (idFieldPossibility) {
-            return idFieldPossibility.get_Val(QMS_Info);
+            return idFieldPossibility.get_Val(QMS_info);
         }
         console.warn('no idField found')
 

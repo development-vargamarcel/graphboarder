@@ -4,7 +4,7 @@
 	import { getDataGivenStepsOfFields } from '$lib/utils/usefulFunctions';
 
 	export let QMS_bodyPart_StoreDerived;
-	export let QMS_Info;
+	export let QMS_info;
 
 	let countValue;
 	let queryData;
@@ -32,7 +32,7 @@
 			countValue = getDataGivenStepsOfFields(
 				null,
 				queryData.data,
-				endpointInfo.get_rowCountLocation(QMS_Info)
+				endpointInfo.get_rowCountLocation(QMS_info)
 			);
 		} else {
 			countValue = '?';

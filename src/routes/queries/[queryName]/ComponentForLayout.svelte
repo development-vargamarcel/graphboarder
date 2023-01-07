@@ -35,15 +35,15 @@
 		document.getElementById('my-drawer-3')?.click();
 	});
 
-	let currentQMS_Info = schemaData.get_QMS_Field(queryName, 'query');
-	let dd_relatedRoot = currentQMS_Info?.dd_relatedRoot;
-	if (!currentQMS_Info) {
+	let currentQMS_info = schemaData.get_QMS_Field(queryName, 'query');
+	let dd_relatedRoot = currentQMS_info?.dd_relatedRoot;
+	if (!currentQMS_info) {
 		goto('/queries');
 	}
 	//
 	let activeArgumentsData = [];
 	const paginationTypeInfo = paginationTypes.find((pagType) => {
-		return pagType.name == currentQMS_Info.dd_paginationType;
+		return pagType.name == currentQMS_info.dd_paginationType;
 	});
 	let activeArgumentsDataGrouped_Store_IS_SET = false;
 	$: activeArgumentsDataGrouped_Store_IS_SET =
@@ -63,7 +63,7 @@
 		loadedF = loaded;
 		completeF = complete;
 		const rowLimitingArgNames = paginationTypeInfo?.get_rowLimitingArgNames(
-			currentQMS_Info.dd_paginationArgs
+			currentQMS_info.dd_paginationArgs
 		);
 		if (
 			rowLimitingArgNames?.some((argName) => {
@@ -99,17 +99,17 @@
 				}
 				queryData = { fetching, error, data };
 				let stepsOfFieldsInput = [
-					currentQMS_Info.dd_displayName,
-					...endpointInfo.get_rowsLocation(currentQMS_Info)
+					currentQMS_info.dd_displayName,
+					...endpointInfo.get_rowsLocation(currentQMS_info)
 				];
-				console.log({ stepsOfFieldsInput }, currentQMS_Info.dd_displayName);
+				console.log({ stepsOfFieldsInput }, currentQMS_info.dd_displayName);
 				rowsCurrent = getDataGivenStepsOfFields(undefined, queryData.data, stepsOfFieldsInput);
 				if (rowsCurrent && !Array.isArray(rowsCurrent)) {
 					rowsCurrent = [rowsCurrent];
 				}
 				if ($offsetBasedPaginationOptions.infiniteScroll) {
 					if (
-						paginationTypeInfo?.isFirstPage(paginationState, currentQMS_Info.dd_paginationArgs) &&
+						paginationTypeInfo?.isFirstPage(paginationState, currentQMS_info.dd_paginationArgs) &&
 						rowsCurrent?.length > 0
 					) {
 						infiniteId += 1;
@@ -119,7 +119,7 @@
 							rows = [...rows, ...rowsCurrent];
 						}
 						if (
-							paginationTypeInfo?.isFirstPage(paginationState, currentQMS_Info.dd_paginationArgs) &&
+							paginationTypeInfo?.isFirstPage(paginationState, currentQMS_info.dd_paginationArgs) &&
 							rowsCurrent?.length == 0
 						) {
 							rows = rowsCurrent;
@@ -129,10 +129,10 @@
 					rows = rowsCurrent;
 				}
 				if (
-					(paginationTypeInfo?.get_rowLimitingArgNames(currentQMS_Info.dd_paginationArgs).length >
+					(paginationTypeInfo?.get_rowLimitingArgNames(currentQMS_info.dd_paginationArgs).length >
 						0 &&
 						paginationTypeInfo
-							?.get_rowLimitingArgNames(currentQMS_Info.dd_paginationArgs)
+							?.get_rowLimitingArgNames(currentQMS_info.dd_paginationArgs)
 							.some((argName) => {
 								return rowsCurrent?.length == $paginationState?.[argName];
 							})) ||
@@ -260,7 +260,7 @@
 	</div>
 	<div class="grow">
 		<ActiveArguments
-			argsInfo={currentQMS_Info?.args}
+			argsInfo={currentQMS_info?.args}
 			{activeArgumentsData}
 			on:argsChanged={(e) => {}}
 		/>
@@ -276,7 +276,7 @@
 			{rows.length}/
 			<RowCount
 				QMS_bodyPart_StoreDerived={getContext('rowsCountQMS_bodyPart_StoreDerived')}
-				QMS_Info={currentQMS_Info}
+				QMS_info={currentQMS_info}
 			/>
 		</div>
 	{/if}
