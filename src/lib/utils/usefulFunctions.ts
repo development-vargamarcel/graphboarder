@@ -3,7 +3,6 @@
 //create stepsOfFieldscheck,started,named "check_stepsOfFields"
 import _ from "lodash";
 import { get } from 'svelte/store';
-import { scalarsAndEnumsdisplayInterfaces } from '$lib/stores/scalarsAndEnumsdisplayInterfaces';
 import { schemaData } from '$lib/stores/schemaData';
 import { page } from '$app/stores';
 import { displayStucture } from '$lib/stores/displayStructure';
