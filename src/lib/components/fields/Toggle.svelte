@@ -1,7 +1,7 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
 
-	export let dd_displayInterface;
+	export let displayInterface;
 	let inputEl;
 	export let rawValue = true;
 	export let dd_displayStructure;
@@ -18,7 +18,7 @@
 		on:change={() => {
 			rawValue = inputEl.checked ? true : false;
 			dispatch('changed', {
-				chd_dispatchValue: dd_displayInterface == 'text' ? `'${rawValue}'` : rawValue,
+				chd_dispatchValue: displayInterface == 'text' ? `'${rawValue}'` : rawValue,
 				chd_rawValue: rawValue,
 				chd_needsValue: true,
 				chd_needsChosen: false

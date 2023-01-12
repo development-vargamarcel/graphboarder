@@ -6,9 +6,13 @@ export const ISO8601_transformer = (value) => {
   return string_transformer(date_ISO8601);
 }
 export const geojson_transformer = (value) => {
+  const featuresLength = value.features.length
   return value.features.map((feature) => {
     const geometry = feature.geometry;
     geometry.type = string_transformer(geometry.type)
+    if (featuresLength == 1) {
+      return geometry[0];
+    }
     return geometry;
   });
 }
