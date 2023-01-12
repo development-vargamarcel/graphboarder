@@ -21,7 +21,7 @@
 				chd_rawValue: rawValue,
 				chd_needsValue: true,
 				chd_needsChosen: false
-			}); //chd_ == chosen data
+			});
 		}}
 	/>
 	<p class="flex grow" />
