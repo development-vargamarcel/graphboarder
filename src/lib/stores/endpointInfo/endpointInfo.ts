@@ -33,7 +33,7 @@ export const endpointInfoDefaultValues = {
             }
         }
     ], typesExtraData: [{
-        get_Val: (dd_rootName) => {
+        get_Val: () => {
             return { displayType: 'text', get_convertedValue: string_transformer }
         },
         check: function (dd_rootName) {
@@ -41,7 +41,7 @@ export const endpointInfoDefaultValues = {
             return dd_rootNameLowerCase.includes('string') || dd_rootNameLowerCase.includes('text')
         }
     }, {
-        get_Val: (dd_rootName) => {
+        get_Val: () => {
             return { displayType: 'datetime-local', get_convertedValue: ISO8601_transformer }
         },
         check: function (dd_rootName) {
@@ -50,7 +50,7 @@ export const endpointInfoDefaultValues = {
         }
     },
     {
-        get_Val: (dd_rootName) => {
+        get_Val: () => {
             return { displayType: 'number', get_convertedValue: (value) => { return value } }
         },
         check: function (dd_rootName) {
@@ -58,7 +58,7 @@ export const endpointInfoDefaultValues = {
             return dd_rootNameLowerCase.includes('int') || dd_rootNameLowerCase.includes('float')
         }
     }, {
-        get_Val: (dd_rootName) => {
+        get_Val: () => {
             return { displayType: 'geo', get_convertedValue: geojson_transformer }
         },
         check: function (dd_rootName) {
@@ -66,7 +66,7 @@ export const endpointInfoDefaultValues = {
             return dd_rootNameLowerCase.includes('geo')
         }
     }, {
-        get_Val: (dd_rootName) => {
+        get_Val: () => {
             return { displayType: 'boolean', get_convertedValue: (value) => { return value } }
         },
         check: function (dd_rootName) {
