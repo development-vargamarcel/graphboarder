@@ -3,7 +3,6 @@
 
 	import ActiveArgumentsGroupNormal from '$lib/components/ActiveArgumentsGroupNormal.svelte';
 
-	import { Create_isDragging_Store } from '$lib/stores/isDragging_Store';
 	import ActiveArgument from '$lib/components/ActiveArgument.svelte';
 	export let group;
 	export let argsInfo;
@@ -71,7 +70,6 @@
 	const hasGroup_argsNode = group.group_argsNode;
 	//
 	const final_gqlArgObj_Store = getContext('final_gqlArgObj_Store');
-	setContext('isDraggingStore', Create_isDragging_Store());
 </script>
 
 <ActiveArgumentsGroup_addFilterAndSortingButton

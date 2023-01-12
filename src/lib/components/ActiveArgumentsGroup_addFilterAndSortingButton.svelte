@@ -1,5 +1,4 @@
 <script>
-	import { Create_isDragging_Store } from '$lib/stores/isDragging_Store';
 	export let group;
 	export let argsInfo;
 	export let activeArgumentsData;
@@ -12,7 +11,6 @@
 	import Arg from '$lib/components/Arg.svelte';
 	let dragDisabled = true;
 	const hasGroup_argsNode = group.group_argsNode;
-	setContext('isDraggingStore', Create_isDragging_Store());
 	const activeArgumentsDataGrouped_Store = getContext(`${prefix}activeArgumentsDataGrouped_Store`);
 	let rootArgs = argsInfo.filter((arg) => {
 		return arg.dd_isRootArg;
