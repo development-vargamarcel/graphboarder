@@ -33,45 +33,45 @@ export const endpointInfoDefaultValues = {
             }
         }
     ], typesExtraData: [{
-        get_Val: (dd_displayName) => {
+        get_Val: (dd_rootName) => {
             return { displayType: 'text', get_convertedValue: string_transformer }
         },
-        check: function (dd_displayName) {
-            const dd_displayNameLowerCase = dd_displayName.toLowerCase()
-            return dd_displayNameLowerCase.includes('string') || dd_displayNameLowerCase.includes('text')
+        check: function (dd_rootName) {
+            const dd_rootNameLowerCase = dd_rootName.toLowerCase()
+            return dd_rootNameLowerCase.includes('string') || dd_rootNameLowerCase.includes('text')
         }
     }, {
-        get_Val: (dd_displayName) => {
+        get_Val: (dd_rootName) => {
             return { displayType: 'datetime-local', get_convertedValue: ISO8601_transformer }
         },
-        check: function (dd_displayName) {
-            const dd_displayNameLowerCase = dd_displayName.toLowerCase()
-            return dd_displayNameLowerCase.includes('timestamp') || dd_displayNameLowerCase.includes('date') || dd_displayNameLowerCase.includes('time')
+        check: function (dd_rootName) {
+            const dd_rootNameLowerCase = dd_rootName.toLowerCase()
+            return dd_rootNameLowerCase.includes('timestamp') || dd_rootNameLowerCase.includes('date') || dd_rootNameLowerCase.includes('time')
         }
     },
     {
-        get_Val: (dd_displayName) => {
+        get_Val: (dd_rootName) => {
             return { displayType: 'number', get_convertedValue: (value) => { return value } }
         },
-        check: function (dd_displayName) {
-            const dd_displayNameLowerCase = dd_displayName.toLowerCase()
-            return dd_displayNameLowerCase.includes('int') || dd_displayNameLowerCase.includes('float')
+        check: function (dd_rootName) {
+            const dd_rootNameLowerCase = dd_rootName.toLowerCase()
+            return dd_rootNameLowerCase.includes('int') || dd_rootNameLowerCase.includes('float')
         }
     }, {
-        get_Val: (dd_displayName) => {
+        get_Val: (dd_rootName) => {
             return { displayType: 'geo', get_convertedValue: geojson_transformer }
         },
-        check: function (dd_displayName) {
-            const dd_displayNameLowerCase = dd_displayName.toLowerCase()
-            return dd_displayNameLowerCase.includes('geo')
+        check: function (dd_rootName) {
+            const dd_rootNameLowerCase = dd_rootName.toLowerCase()
+            return dd_rootNameLowerCase.includes('geo')
         }
     }, {
-        get_Val: (dd_displayName) => {
+        get_Val: (dd_rootName) => {
             return { displayType: 'boolean', get_convertedValue: (value) => { return value } }
         },
-        check: function (dd_displayName) {
-            const dd_displayNameLowerCase = dd_displayName.toLowerCase()
-            return dd_displayNameLowerCase.includes('bool')
+        check: function (dd_rootName) {
+            const dd_rootNameLowerCase = dd_rootName.toLowerCase()
+            return dd_rootNameLowerCase.includes('bool')
         }
     }
     ]
