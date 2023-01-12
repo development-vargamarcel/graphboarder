@@ -89,37 +89,13 @@
 
 		function updateArea(e) {
 			const data = draw.getAll();
-			//console.log('data', data);
 			let dataCopy = JSON.parse(JSON.stringify(data));
-			let dispatchValue = data.features.map((feature) => {
-				let geometry = feature.geometry;
-				geometry.type = `'${geometry.type}'`;
-				return geometry;
+			dispatch('changed', {
+				chd_chosen: undefined,
+				chd_needsValue: true,
+				chd_needsChosen: false,
+				chd_rawValue: dataCopy
 			});
-
-			if (data.features.length == 1) {
-				//rawValue = JSON.parse(JSON.stringify(data));
-				// dispatchValue = data.features[0].geometry;
-				// dispatchValue.type = `'${dispatchValue.type}'`;
-				dispatch('changed', {
-					chd_chosen: undefined,
-					chd_dispatchValue: dispatchValue[0],
-					chd_needsValue: true,
-					chd_needsChosen: false,
-					chd_rawValue: dataCopy
-				});
-			} else {
-				dispatch('changed', {
-					chd_chosen: undefined,
-					chd_dispatchValue: dispatchValue,
-					chd_needsValue: true,
-					chd_needsChosen: false,
-					chd_rawValue: dataCopy
-				});
-			}
-
-			//console.log('map', map);
-			//console.log('draw', draw);
 		}
 	});
 	let mapOnLoadHandler_set = false;
