@@ -1,4 +1,4 @@
-import { ISO8601_transformer, string_transformer } from "$lib/utils/dataStructureTransformers"
+import { geojson_transformer, ISO8601_transformer, string_transformer } from "$lib/utils/dataStructureTransformers"
 import { writable, get } from "svelte/store"
 
 export const endpointInfoDefaultValues = {
@@ -57,7 +57,16 @@ export const endpointInfoDefaultValues = {
             const dd_displayNameLowerCase = dd_displayName.toLowerCase()
             return dd_displayNameLowerCase.includes('int') || dd_displayNameLowerCase.includes('float')
         }
-    }]
+    }, {
+        get_Val: (dd_displayName, value) => {
+            return { displayType: 'geo', convertedValue: geojson_transformer(value) }
+        },
+        check: function (dd_displayName) {
+            const dd_displayNameLowerCase = dd_displayName.toLowerCase()
+            return dd_displayNameLowerCase.includes('geo')
+        }
+    }
+    ]
 }
 
 const store = writable(null)
