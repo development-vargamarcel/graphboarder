@@ -1,3 +1,4 @@
+import { ISO8601_transformer, string_transformer } from "$lib/utils/dataStructureTransformers"
 import { writable, get } from "svelte/store"
 
 export const endpointInfoDefaultValues = {
@@ -31,7 +32,32 @@ export const endpointInfoDefaultValues = {
                 return QMS_info.dd_relatedRoot?.fields?.find((field) => { return possibleNames.includes(field.dd_displayName) || field.dd_rootName == 'ID' })
             }
         }
-    ]
+    ], typesExtraData: [{
+        get_Val: (dd_displayName, value) => {
+            return { displayType: 'text', convertedValue: string_transformer(value) }
+        },
+        check: function (dd_displayName) {
+            const dd_displayNameLowerCase = dd_displayName.toLowerCase()
+            return dd_displayNameLowerCase.includes('string') || dd_displayNameLowerCase.includes('text')
+        }
+    }, {
+        get_Val: (dd_displayName, value) => {
+            return { displayType: 'datetime-local', convertedValue: ISO8601_transformer(value) }
+        },
+        check: function (dd_displayName) {
+            const dd_displayNameLowerCase = dd_displayName.toLowerCase()
+            return dd_displayNameLowerCase.includes('timestamp') || dd_displayNameLowerCase.includes('date') || dd_displayNameLowerCase.includes('time')
+        }
+    },
+    {
+        get_Val: (dd_displayName, value) => {
+            return { displayType: 'number', convertedValue: value }
+        },
+        check: function (dd_displayName) {
+            const dd_displayNameLowerCase = dd_displayName.toLowerCase()
+            return dd_displayNameLowerCase.includes('int') || dd_displayNameLowerCase.includes('float')
+        }
+    }]
 }
 
 const store = writable(null)
