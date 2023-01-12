@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
 
-export const filterOperatorsDefaultDisplayType = writable({
+export const filterOperatorsDefaultdisplayInterface = writable({
     "String_comparison_exp": "text",
     'Int_comparison_exp': 'number',
     'timestamptz_comparison_exp': 'datetime-local',

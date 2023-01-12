@@ -3,7 +3,7 @@
 //create stepsOfFieldscheck,started,named "check_stepsOfFields"
 import _ from "lodash";
 import { get } from 'svelte/store';
-import { scalarsAndEnumsDisplayTypes } from '$lib/stores/scalarsAndEnumsDisplayTypes';
+import { scalarsAndEnumsdisplayInterfaces } from '$lib/stores/scalarsAndEnumsdisplayInterfaces';
 import { schemaData } from '$lib/stores/schemaData';
 import { page } from '$app/stores';
 import { displayStucture } from '$lib/stores/displayStructure';
@@ -250,9 +250,9 @@ export const get_idFields_byProbability = (fields: Array<object>): Array<object>
 }
 
 
-export const get_displayType = (typeInfo) => {
+export const get_displayInterface = (typeInfo) => {
     if (endpointInfo.get_typeExtraData(typeInfo)) {
-        return endpointInfo.get_typeExtraData(typeInfo).displayType
+        return endpointInfo.get_typeExtraData(typeInfo).displayInterface
     }
     return null
 }
@@ -327,9 +327,9 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/fi
     });
 
 
-    let displayType = get_displayType(derivedData) //change displayType to displayInterface
-    if (["text", undefined].includes(derivedData.dd_displayType)) {
-        derivedData.dd_displayType = displayType
+    let displayInterface = get_displayInterface(derivedData) //change displayInterface to displayInterface
+    if (["text", undefined].includes(derivedData.dd_displayInterface)) {
+        derivedData.dd_displayInterface = displayInterface
     }
     if (!derivedData.dd_displayStructure) {
         derivedData.dd_displayStructure = get_displayStructure(derivedData.dd_rootName)
@@ -365,13 +365,13 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/fi
     ////////// others
     if (derivedData?.dd_filterOperators) {
 
-        let defaultDisplayType = get_displayType(derivedData.dd_rootName)
+        let defaultdisplayInterface = get_displayInterface(derivedData.dd_rootName)
         let defaultDisplayStructure = get_displayStructure(derivedData.dd_rootName)
         if (type?.inputFields !== undefined) {
-            derivedData.dd_filterOperatorsDefaultDisplayType = defaultDisplayType
+            derivedData.dd_filterOperatorsDefaultdisplayInterface = defaultdisplayInterface
             derivedData.dd_filterOperatorsDefaultDisplayStructure = defaultDisplayStructure
             type.inputFields.forEach(inputField => {
-                Object.assign(inputField, { dd_displayType: defaultDisplayType, dd_displayStructure: defaultDisplayStructure })
+                Object.assign(inputField, { dd_displayInterface: defaultdisplayInterface, dd_displayStructure: defaultDisplayStructure })
 
             })
 

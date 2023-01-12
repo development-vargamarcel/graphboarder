@@ -38,7 +38,7 @@
 				return el.dd_displayName == detail.chosen;
 			})[0];
 
-			isINPUT_OBJECT = detail.extraData.dd_displayType == 'INPUT_OBJECT';
+			isINPUT_OBJECT = detail.extraData.dd_displayInterface == 'INPUT_OBJECT';
 			choises = detail.choises;
 			chosen = detail.chosen;
 			dispatch('changed', {

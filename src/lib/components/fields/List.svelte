@@ -2,12 +2,14 @@
 	import { createEventDispatcher } from 'svelte';
 	import Interface from '$lib/components/fields/Interface.svelte';
 
-	export let dd_displayType;
+	export let dd_displayInterface;
 	let inputEl;
 	export let rawValue = [];
 	export let dispatchValue = [];
 	export let dd_displayStructure;
-	console.log({ dd_displayType });
+	export let typeInfo;
+
+	console.log({ dd_displayInterface });
 	const dispatch = createEventDispatcher();
 
 	let elements = rawValue.map((el, i) => {
@@ -52,7 +54,8 @@
 	{#each elements as element}
 		<div class="flex">
 			<Interface
-				{dd_displayType}
+				{typeInfo}
+				{dd_displayInterface}
 				rawValue={element.chd_rawValue}
 				{dispatchValue}
 				{dd_displayStructure}

@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
 
-export const scalarsAndEnumsDisplayTypes = writable({
+export const scalarsAndEnumsdisplayInterfaces = writable({
     "ENUM": "ENUM",//leave this always
     "INPUT_OBJECT": "INPUT_OBJECT",//leave this always
     "Boolean": "boolean",

@@ -42,13 +42,13 @@
 	}
 	let valueToDisplay = () => {
 		let value;
-		if (activeArgumentData.dd_displayType == 'ENUM') {
+		if (activeArgumentData.dd_displayInterface == 'ENUM') {
 			value = activeArgumentData.chd_chosen;
 		} else {
 			value = activeArgumentData.chd_dispatchValue;
 		}
 
-		if (value && activeArgumentData.dd_displayType == 'geo') {
+		if (value && activeArgumentData.dd_displayInterface == 'geo') {
 			value = '[map]';
 		}
 
@@ -149,7 +149,7 @@
 		{/if}
 		{#if expandedVersion}
 			<div class="px-2 mt-2">
-				{#if activeArgumentData.dd_displayType == 'ENUM'}
+				{#if activeArgumentData.dd_displayInterface == 'ENUM'}
 					<div class="flex flex-col">
 						<FilterGroup
 							dd_displayStructure={activeArgumentData.dd_displayStructure}
@@ -176,7 +176,8 @@
 					<div>
 						{#if activeArgumentData.dd_kindList}
 							<List
-								dd_displayType={activeArgumentData.dd_displayType}
+								typeInfo={activeArgumentData}
+								dd_displayInterface={activeArgumentData.dd_displayInterface}
 								dd_displayStructure={activeArgumentData.dd_displayStructure}
 								rawValue={activeArgumentData?.chd_rawValue}
 								dispatchValue={activeArgumentData?.chd_dispatchValue}
@@ -186,7 +187,8 @@
 							/>
 						{:else}
 							<Interface
-								dd_displayType={activeArgumentData.dd_displayType}
+								typeInfo={activeArgumentData}
+								dd_displayInterface={activeArgumentData.dd_displayInterface}
 								dd_displayStructure={activeArgumentData.dd_displayStructure}
 								rawValue={activeArgumentData?.chd_rawValue}
 								dispatchValue={activeArgumentData?.chd_dispatchValue}

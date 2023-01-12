@@ -34,7 +34,7 @@ export const endpointInfoDefaultValues = {
         }
     ], typesExtraDataPossibilities: [{
         get_Val: () => {
-            return { displayType: 'text', get_convertedValue: string_transformer }
+            return { displayInterface: 'text', get_convertedValue: string_transformer }
         },
         check: function (dd_rootName) {
             const dd_rootNameLowerCase = dd_rootName.toLowerCase()
@@ -42,7 +42,7 @@ export const endpointInfoDefaultValues = {
         }
     }, {
         get_Val: () => {
-            return { displayType: 'datetime-local', get_convertedValue: ISO8601_transformer }
+            return { displayInterface: 'datetime-local', get_convertedValue: ISO8601_transformer }
         },
         check: function (dd_rootName) {
             const dd_rootNameLowerCase = dd_rootName.toLowerCase()
@@ -51,7 +51,7 @@ export const endpointInfoDefaultValues = {
     },
     {
         get_Val: () => {
-            return { displayType: 'number', get_convertedValue: (value) => { return value } }
+            return { displayInterface: 'number', get_convertedValue: (value) => { return value } }
         },
         check: function (dd_rootName) {
             const dd_rootNameLowerCase = dd_rootName.toLowerCase()
@@ -59,7 +59,7 @@ export const endpointInfoDefaultValues = {
         }
     }, {
         get_Val: () => {
-            return { displayType: 'geo', get_convertedValue: geojson_transformer }
+            return { displayInterface: 'geo', get_convertedValue: geojson_transformer }
         },
         check: function (dd_rootName) {
             const dd_rootNameLowerCase = dd_rootName.toLowerCase()
@@ -67,7 +67,7 @@ export const endpointInfoDefaultValues = {
         }
     }, {
         get_Val: () => {
-            return { displayType: 'boolean', get_convertedValue: (value) => { return value } }
+            return { displayInterface: 'boolean', get_convertedValue: (value) => { return value } }
         },
         check: function (dd_rootName) {
             const dd_rootNameLowerCase = dd_rootName.toLowerCase()
