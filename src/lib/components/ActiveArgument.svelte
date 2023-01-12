@@ -105,7 +105,11 @@
 			<div class="   text-xs  select-none flex grow flex-nowrap pt-1">
 				<div class="flex flex-nowrap  overflow-x-auto  max-w-[65vw] ">
 					<p class="  pr-1 font-semibold shrink-0  text-base-content">
-						{activeArgumentData.stepsOfFields?.join(' > ') + ':'}
+						{#if group.group_name == 'root'}
+							{activeArgumentData.stepsOfFields?.join(' > ') + ':'}
+						{:else}
+							{activeArgumentData.stepsOfFields?.slice(1)?.join(' > ') + ':'}
+						{/if}
 					</p>
 
 					{#if !expandedVersion}
