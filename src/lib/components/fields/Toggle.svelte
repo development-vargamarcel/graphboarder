@@ -18,7 +18,6 @@
 		on:change={() => {
 			rawValue = inputEl.checked ? true : false;
 			dispatch('changed', {
-				chd_dispatchValue: displayInterface == 'text' ? `'${rawValue}'` : rawValue,
 				chd_rawValue: rawValue,
 				chd_needsValue: true,
 				chd_needsChosen: false

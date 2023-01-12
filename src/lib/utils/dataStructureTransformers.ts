@@ -16,4 +16,9 @@ export const geojson_transformer = (value) => {
     return geometry;
   });
 }
-
+export const boolean_transformer = (value) => {
+  if (value == undefined) {
+    return false
+  }
+  return value;
+}

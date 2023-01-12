@@ -1,4 +1,4 @@
-import { geojson_transformer, ISO8601_transformer, string_transformer } from "$lib/utils/dataStructureTransformers"
+import { boolean_transformer, geojson_transformer, ISO8601_transformer, string_transformer } from "$lib/utils/dataStructureTransformers"
 import { writable, get } from "svelte/store"
 
 export const endpointInfoDefaultValues = {
@@ -67,7 +67,7 @@ export const endpointInfoDefaultValues = {
         }
     }, {
         get_Val: () => {
-            return { displayInterface: 'boolean', get_convertedValue: (value) => { return value } }
+            return { displayInterface: 'boolean', get_convertedValue: boolean_transformer }
         },
         check: function (dd_rootName) {
             const dd_rootNameLowerCase = dd_rootName.toLowerCase()
