@@ -251,13 +251,7 @@ export const get_idFields_byProbability = (fields: Array<object>): Array<object>
 
 
 export const get_displayType = (dd_rootName, dd_kindEl) => {
-    let _scalarsAndEnumsDisplayTypes = get(scalarsAndEnumsDisplayTypes);
-    let displayType = _scalarsAndEnumsDisplayTypes[dd_rootName];
-    if (displayType == undefined) {
-        displayType = _scalarsAndEnumsDisplayTypes[dd_kindEl];
-
-    }
-    return displayType
+    return endpointInfo.get_typeExtraData(dd_rootName).displayType
 }
 export const get_displayStructure = (rootName) => {
 

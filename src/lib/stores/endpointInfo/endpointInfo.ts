@@ -32,7 +32,7 @@ export const endpointInfoDefaultValues = {
                 return QMS_info.dd_relatedRoot?.fields?.find((field) => { return possibleNames.includes(field.dd_displayName) || field.dd_rootName == 'ID' })
             }
         }
-    ], typesExtraData: [{
+    ], typesExtraDataPossibilities: [{
         get_Val: () => {
             return { displayType: 'text', get_convertedValue: string_transformer }
         },
@@ -123,6 +123,21 @@ export const endpointInfo = {
 
         return null
 
+    }, get_typeExtraData: (dd_rootName) => {
+        const storeVal = get(store)
+        if (!storeVal || !storeVal?.typesExtraDataPossibilities?.length > 0) {
+            return null
+        }
+        const typesExtraDataPossibility = storeVal.typesExtraDataPossibilities.find((typesExtraDataPossibility) => {
+            return typesExtraDataPossibility.check(dd_rootName);
+        })
+
+        if (typesExtraDataPossibility) {
+            return typesExtraDataPossibility.get_Val(dd_rootName);
+        }
+        console.warn('no typeExtraData found')
+
+        return null
     }
 }
 
