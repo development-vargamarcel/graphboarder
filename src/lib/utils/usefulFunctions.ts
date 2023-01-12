@@ -250,8 +250,11 @@ export const get_idFields_byProbability = (fields: Array<object>): Array<object>
 }
 
 
-export const get_displayType = (dd_rootName, dd_kindEl) => {
-    return endpointInfo.get_typeExtraData(dd_rootName).displayType
+export const get_displayType = (typeInfo) => {
+    if (endpointInfo.get_typeExtraData(typeInfo)) {
+        return endpointInfo.get_typeExtraData(typeInfo).displayType
+    }
+    return null
 }
 export const get_displayStructure = (rootName) => {
 
@@ -324,7 +327,7 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/fi
     });
 
 
-    let displayType = get_displayType(derivedData.dd_rootName, derivedData.dd_kindEl) //change displayType to displayInterface
+    let displayType = get_displayType(derivedData) //change displayType to displayInterface
     if (["text", undefined].includes(derivedData.dd_displayType)) {
         derivedData.dd_displayType = displayType
     }

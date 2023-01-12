@@ -123,17 +123,18 @@ export const endpointInfo = {
 
         return null
 
-    }, get_typeExtraData: (dd_rootName) => {
+    }, get_typeExtraData: (typeInfo) => {
         const storeVal = get(store)
         if (!storeVal || !storeVal?.typesExtraDataPossibilities?.length > 0) {
             return null
         }
-        const typesExtraDataPossibility = storeVal.typesExtraDataPossibilities.find((typesExtraDataPossibility) => {
-            return typesExtraDataPossibility.check(dd_rootName);
+        let typesExtraDataPossibility = storeVal.typesExtraDataPossibilities.find((typesExtraDataPossibility) => {
+            return typesExtraDataPossibility.check(typeInfo.dd_rootName) || typesExtraDataPossibility.check(typeInfo.dd_kindEl);
         })
 
+
         if (typesExtraDataPossibility) {
-            return typesExtraDataPossibility.get_Val(dd_rootName);
+            return typesExtraDataPossibility.get_Val(typeInfo);
         }
         console.warn('no typeExtraData found')
 
