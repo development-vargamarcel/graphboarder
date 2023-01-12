@@ -33,16 +33,16 @@ export const endpointInfoDefaultValues = {
             }
         }
     ], typesExtraData: [{
-        get_Val: (dd_displayName, value) => {
-            return { displayType: 'text', convertedValue: string_transformer(value) }
+        get_Val: (dd_displayName) => {
+            return { displayType: 'text', get_convertedValue: string_transformer }
         },
         check: function (dd_displayName) {
             const dd_displayNameLowerCase = dd_displayName.toLowerCase()
             return dd_displayNameLowerCase.includes('string') || dd_displayNameLowerCase.includes('text')
         }
     }, {
-        get_Val: (dd_displayName, value) => {
-            return { displayType: 'datetime-local', convertedValue: ISO8601_transformer(value) }
+        get_Val: (dd_displayName) => {
+            return { displayType: 'datetime-local', get_convertedValue: ISO8601_transformer }
         },
         check: function (dd_displayName) {
             const dd_displayNameLowerCase = dd_displayName.toLowerCase()
@@ -50,20 +50,28 @@ export const endpointInfoDefaultValues = {
         }
     },
     {
-        get_Val: (dd_displayName, value) => {
-            return { displayType: 'number', convertedValue: value }
+        get_Val: (dd_displayName) => {
+            return { displayType: 'number', get_convertedValue: (value) => { return value } }
         },
         check: function (dd_displayName) {
             const dd_displayNameLowerCase = dd_displayName.toLowerCase()
             return dd_displayNameLowerCase.includes('int') || dd_displayNameLowerCase.includes('float')
         }
     }, {
-        get_Val: (dd_displayName, value) => {
-            return { displayType: 'geo', convertedValue: geojson_transformer(value) }
+        get_Val: (dd_displayName) => {
+            return { displayType: 'geo', get_convertedValue: geojson_transformer }
         },
         check: function (dd_displayName) {
             const dd_displayNameLowerCase = dd_displayName.toLowerCase()
             return dd_displayNameLowerCase.includes('geo')
+        }
+    }, {
+        get_Val: (dd_displayName) => {
+            return { displayType: 'boolean', get_convertedValue: (value) => { return value } }
+        },
+        check: function (dd_displayName) {
+            const dd_displayNameLowerCase = dd_displayName.toLowerCase()
+            return dd_displayNameLowerCase.includes('bool')
         }
     }
     ]
