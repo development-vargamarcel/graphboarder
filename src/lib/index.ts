@@ -1,3 +1,3 @@
-import Input from "./components/fields/Input.svelte";
+import Input from './components/fields/Input.svelte';
 
-export { Input }
+export { Input };
