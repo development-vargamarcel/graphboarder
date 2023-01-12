@@ -11,7 +11,6 @@
 	export let chosenDefault;
 	export let chosen;
 	export let extraData;
-	export let dd_displayStructure;
 	let dispatch = createEventDispatcher();
 	let detail;
 	export let chosenInputField;
@@ -23,7 +22,6 @@
 
 <div class="w-full">
 	<FilterItem
-		dd_displayStructure
 		{extraData}
 		{id}
 		{choises}

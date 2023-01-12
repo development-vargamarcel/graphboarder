@@ -152,7 +152,6 @@
 				{#if activeArgumentData.dd_displayInterface == 'ENUM'}
 					<div class="flex flex-col">
 						<FilterGroup
-							dd_displayStructure={activeArgumentData.dd_displayStructure}
 							containerEl={labelEl}
 							extraData={activeArgumentData}
 							choises={activeArgumentData?.chd_choises
@@ -178,7 +177,6 @@
 							<List
 								typeInfo={activeArgumentData}
 								dd_displayInterface={activeArgumentData.dd_displayInterface}
-								dd_displayStructure={activeArgumentData.dd_displayStructure}
 								rawValue={activeArgumentData?.chd_rawValue}
 								dispatchValue={activeArgumentData?.chd_dispatchValue}
 								on:changed={(e) => {
@@ -189,7 +187,6 @@
 							<Interface
 								typeInfo={activeArgumentData}
 								dd_displayInterface={activeArgumentData.dd_displayInterface}
-								dd_displayStructure={activeArgumentData.dd_displayStructure}
 								rawValue={activeArgumentData?.chd_rawValue}
 								dispatchValue={activeArgumentData?.chd_dispatchValue}
 								on:changed={(e) => {

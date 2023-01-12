@@ -6,7 +6,6 @@
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 
-	export let dd_displayStructure;
 	export let rawValue;
 	export let typeInfo;
 	const { displayInterface, get_convertedValue } = endpointInfo.get_typeExtraData(typeInfo);
@@ -25,7 +24,6 @@
 <svelte:component
 	this={componentToRender}
 	{displayInterface}
-	{dd_displayStructure}
 	{rawValue}
 	on:changed={(e) => {
 		let { detail } = e;

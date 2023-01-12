@@ -4,7 +4,6 @@
 	export let displayInterface;
 	let inputEl;
 	export let rawValue = true;
-	export let dd_displayStructure;
 
 	const dispatch = createEventDispatcher();
 </script>

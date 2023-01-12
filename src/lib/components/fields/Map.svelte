@@ -6,7 +6,6 @@
 	export let rawValue;
 	//console.log('rawValue from outside', rawValue);
 	export let dispatchValue;
-	export let dd_displayStructure;
 	const generateUniqueId = () => {
 		return (
 			Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)

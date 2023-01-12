@@ -5,7 +5,6 @@ import _ from "lodash";
 import { get } from 'svelte/store';
 import { schemaData } from '$lib/stores/schemaData';
 import { page } from '$app/stores';
-import { displayStucture } from '$lib/stores/displayStructure';
 import { paginationArgsPossibleNames_Store } from "$lib/stores/pagination/paginationArgsPossibleNames_Store";
 import { paginationTypes } from "$lib/stores/pagination/paginationTypes";
 import { endpointInfo } from "$lib/stores/endpointInfo/endpointInfo";
@@ -255,12 +254,7 @@ export const get_displayInterface = (typeInfo) => {
     }
     return null
 }
-export const get_displayStructure = (rootName) => {
 
-    let _displayStructure = get(displayStucture);
-    let displayStructure = _displayStructure[rootName];
-    return displayStructure
-}
 
 
 
@@ -330,9 +324,7 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/fi
     if (["text", undefined].includes(derivedData.dd_displayInterface)) {
         derivedData.dd_displayInterface = displayInterface
     }
-    if (!derivedData.dd_displayStructure) {
-        derivedData.dd_displayStructure = get_displayStructure(derivedData.dd_rootName)
-    }
+
 
     derivedData.dd_isArg = !type?.args
     derivedData.dd_relatedRoot_inputFields_allScalar = derivedData.dd_relatedRoot?.inputFields?.every((field) => {
@@ -365,12 +357,9 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => { //type/fi
     if (derivedData?.dd_filterOperators) {
 
         let defaultdisplayInterface = get_displayInterface(derivedData.dd_rootName)
-        let defaultDisplayStructure = get_displayStructure(derivedData.dd_rootName)
         if (type?.inputFields !== undefined) {
-            derivedData.dd_filterOperatorsDefaultdisplayInterface = defaultdisplayInterface
-            derivedData.dd_filterOperatorsDefaultDisplayStructure = defaultDisplayStructure
             type.inputFields.forEach(inputField => {
-                Object.assign(inputField, { dd_displayInterface: defaultdisplayInterface, dd_displayStructure: defaultDisplayStructure })
+                Object.assign(inputField, { dd_displayInterface: defaultdisplayInterface })
 
             })
 
@@ -679,22 +668,6 @@ export const getQueryLinks = () => {
 
 
 
-export const convertTo_displayStructure = (displayStructure, value) => {
-    let converters = {
-        ISO8601: (date) => {
-            let date_ISO8601 = new Date(date).toISOString();
-
-            return `'${date_ISO8601}'`;
-        }
-    }
-    let convertingFunction = converters?.[displayStructure]
-    if (convertingFunction) {
-        return convertingFunction(value)
-    }
-    console.log('no converting function available for:', displayStructure, ',returning value as is.');
-    return value
-}
-//console.log(convertTo_displayStructure('ISO86012', '2020-08-02T00:00:00'))
 export const stepsOfFieldsToQueryFragmentObject = (stepsOfFields) => {
     let _stepsOfFields = [...stepsOfFields]
     _stepsOfFields.shift()

@@ -5,7 +5,6 @@
 	let inputEl;
 	export let rawValue = [];
 	export let dispatchValue = [];
-	export let dd_displayStructure;
 	export let typeInfo;
 
 	const dispatch = createEventDispatcher();
@@ -55,7 +54,6 @@
 				{typeInfo}
 				rawValue={element.chd_rawValue}
 				{dispatchValue}
-				{dd_displayStructure}
 				on:changed={(e) => {
 					Object.assign(element, e.detail);
 					changedElement(e);
