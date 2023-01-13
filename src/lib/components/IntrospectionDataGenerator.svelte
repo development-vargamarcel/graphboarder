@@ -4,7 +4,8 @@
 
 <script lang="ts">
 	////
-	export let graphqlEndpointURL = 'https://mdunpmb9.directus.app/graphql';
+	const endpointInfo = getContext('endpointInfo');
+	export let graphqlEndpointURL = $endpointInfo.url || 'https://mdunpmb9.directus.app/graphql';
 
 	//import { createClient, fetchExchange } from '@urql/svelte';
 	import { createClient, fetchExchange } from '@urql/core';
@@ -35,6 +36,7 @@
 	import { urqlClient } from '$lib/stores/urqlClient';
 	import { urqlCoreClient } from '$lib/stores/urqlCoreClient';
 	import { schemaData } from '$lib/stores/schemaData';
+	import { getContext } from 'svelte';
 	urqlClient.set(client);
 	urqlCoreClient.set(client);
 	setClient(client);
