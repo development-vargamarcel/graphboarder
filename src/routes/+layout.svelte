@@ -76,7 +76,6 @@
 	};
 
 	const storeAll = () => {
-		goto('/queries');
 		store_headers();
 		store_graphqlEndpointURL();
 		editButtonClick();
@@ -89,6 +88,9 @@
 	};
 	const editButtonClick = () => {
 		if (editText == 'edit') {
+			if (browser) {
+				goto('/queries');
+			}
 			editText = 'done';
 		} else {
 			editText = 'edit';
@@ -119,13 +121,13 @@
 		graphqlEndpointURL = endpoint?.url;
 	};
 	let forceVisibleSidebar = false;
-	import { clickOutside } from '$lib/actions/clickOutside';
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	import { endpointInfo } from '$lib/stores/endpointInfo/endpointInfo';
 	import { setContext } from 'svelte';
 	import { testEndpoints_Store } from '$lib/stores/testData/testEndpoints';
+	import MainWraper from '$lib/components/MainWraper.svelte';
 	setContext('endpointInfo', endpointInfo);
-	$: if (gotData || !gotData) {
+	$: if (graphqlEndpointURL) {
 		console.log('gotData');
 		if ($endpointInfo?.url != graphqlEndpointURL) {
 			let testEndpoint = testEndpoints.find((endpoint) => {
@@ -149,6 +151,9 @@
 	}
 </script>
 
+<MainWraper bind:currentEndpointInfo={graphqlEndpointURL}>
+	<div>ds</div>
+</MainWraper>
 <header />
 {#if graphqlEndpointURL && graphqlEndpointURL !== ''}
 	{#if show_IntrospectionDataGenerator}
