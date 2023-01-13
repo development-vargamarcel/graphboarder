@@ -3,11 +3,8 @@
 </script>
 
 <script lang="ts">
-	////
 	const endpointInfo = getContext('endpointInfo');
 	export let graphqlEndpointURL = $endpointInfo.url || 'https://mdunpmb9.directus.app/graphql';
-
-	//import { createClient, fetchExchange } from '@urql/svelte';
 	import { createClient, fetchExchange } from '@urql/core';
 	import { browser } from '$app/environment';
 	let client = createClient({
@@ -141,28 +138,12 @@
 	let sortingInputValue = '';
 	let sortingArray = [];
 	$: sortingArray = sortingInputValue.split(' ');
-
-	schemaData.subscribe((value) => {
-		//console.log('schemaData value', value);
-	});
-
 	const handleData = () => {
-		//handle schema --
 		schema = $queryStore?.data?.__schema;
-		$introspectionResult.schema = schema;
-		//-------
 		$schemaData.schema = schema;
-
-		// schemaData.set_rootTypes();
-		// schemaData.set_queryFields();
-		// schemaData.set_mutationFields();
-		// schemaData.set_subscriptionFields();
-
-		//--------------------------------------
 		schemaData.set_fields();
-		//--------------------------------------
-		$introspectionResult = $schemaData;
-		//output
+		$schemaData.isReady = true;
+		introspectionResult.set($schemaData);
 	};
 	$: if (!$queryStore.fetching) {
 		if (queryStore?.data) {
