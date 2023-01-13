@@ -233,6 +233,7 @@ export const get_idFields_byProbability = (fields: Array<object>): Array<object>
 };
 
 export const get_displayInterface = (typeInfo) => {
+
 	if (endpointInfo.get_typeExtraData(typeInfo)) {
 		return endpointInfo.get_typeExtraData(typeInfo).displayInterface;
 	}
@@ -300,7 +301,8 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => {
 		}
 	});
 
-	let displayInterface = get_displayInterface(derivedData); //change displayInterface to displayInterface
+	let displayInterface = get_displayInterface(derivedData);
+
 	if (['text', undefined].includes(derivedData.dd_displayInterface)) {
 		derivedData.dd_displayInterface = displayInterface;
 	}
@@ -346,7 +348,7 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => {
 	derivedData.dd_derivedTypeBorrowed = 'implement this? maybe not?';
 	////////// others
 	if (derivedData?.dd_filterOperators) {
-		let defaultdisplayInterface = get_displayInterface(derivedData.dd_rootName);
+		let defaultdisplayInterface = get_displayInterface(derivedData);
 		if (type?.inputFields !== undefined) {
 			type.inputFields.forEach((inputField) => {
 				Object.assign(inputField, { dd_displayInterface: defaultdisplayInterface });

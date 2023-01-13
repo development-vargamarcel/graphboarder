@@ -125,7 +125,7 @@
 	import { setContext } from 'svelte';
 	import { testEndpoints_Store } from '$lib/stores/testData/testEndpoints';
 	setContext('endpointInfo', endpointInfo);
-	$: if (gotData) {
+	$: if (gotData || !gotData) {
 		console.log('gotData');
 		if ($endpointInfo?.url != graphqlEndpointURL) {
 			let testEndpoint = testEndpoints.find((endpoint) => {

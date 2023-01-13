@@ -45,6 +45,9 @@ export const endpointInfoDefaultValues = {
 				return { displayInterface: 'text', get_convertedValue: string_transformer };
 			},
 			check: function (dd_rootName) {
+				if (!dd_rootName) {
+					return null
+				}
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
 				return dd_rootNameLowerCase.includes('string') || dd_rootNameLowerCase.includes('text');
 			}
@@ -54,6 +57,9 @@ export const endpointInfoDefaultValues = {
 				return { displayInterface: 'datetime-local', get_convertedValue: ISO8601_transformer };
 			},
 			check: function (dd_rootName) {
+				if (!dd_rootName) {
+					return null
+				}
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
 				return (
 					dd_rootNameLowerCase.includes('timestamp') ||
@@ -72,6 +78,9 @@ export const endpointInfoDefaultValues = {
 				};
 			},
 			check: function (dd_rootName) {
+				if (!dd_rootName) {
+					return null
+				}
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
 				return dd_rootNameLowerCase.includes('int') || dd_rootNameLowerCase.includes('float');
 			}
@@ -81,6 +90,9 @@ export const endpointInfoDefaultValues = {
 				return { displayInterface: 'geo', get_convertedValue: geojson_transformer };
 			},
 			check: function (dd_rootName) {
+				if (!dd_rootName) {
+					return null
+				}
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
 				return dd_rootNameLowerCase.includes('geo');
 			}
@@ -90,8 +102,22 @@ export const endpointInfoDefaultValues = {
 				return { displayInterface: 'boolean', get_convertedValue: boolean_transformer };
 			},
 			check: function (dd_rootName) {
+				if (!dd_rootName) {
+					return null
+				}
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
 				return dd_rootNameLowerCase.includes('bool');
+			}
+		}, {
+			get_Val: () => {
+				return { displayInterface: 'ENUM', get_convertedValue: (val) => { return val } };
+			},
+			check: function (dd_rootName) {
+				if (!dd_rootName) {
+					return null
+				}
+				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
+				return dd_rootNameLowerCase.includes('enum');
 			}
 		}
 	]
@@ -166,7 +192,6 @@ export const endpointInfo = {
 				);
 			}
 		);
-
 		if (typesExtraDataPossibility) {
 			return typesExtraDataPossibility.get_Val(typeInfo);
 		}
