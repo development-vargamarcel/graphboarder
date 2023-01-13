@@ -19,20 +19,12 @@
 		return null;
 	};
 	let testEndpoints = $testEndpoints_Store;
-	let gotData = false;
-	let introspectionResultUnsubscribe = introspectionResult.subscribe((data) => {
-		if (data?.rootTypes.length > 0) {
-			gotData = true;
-			//console.log('introspectionResult', data);
-		}
-	});
 
 	////////////////////
 
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	let showEdit = false;
-	let show_IntrospectionDataGenerator = true;
 	let graphqlEndpointURL = '';
 	let headersValue = '';
 	let editText = 'edit';
@@ -67,7 +59,6 @@
 	}
 
 	const store_graphqlEndpointURL = () => {
-		//console.log(graphqlEndpointURL);
 		if (graphqlEndpointURL == '') {
 			localStorage.removeItem('graphqlEndpointURL');
 		} else {
@@ -95,12 +86,8 @@
 		} else {
 			editText = 'edit';
 		}
-		if (!showEdit) {
-			gotData = false;
-		}
 
 		showEdit = !showEdit;
-		show_IntrospectionDataGenerator = !show_IntrospectionDataGenerator;
 	};
 	if (!graphqlEndpointURL) {
 		editButtonClick();
@@ -128,7 +115,6 @@
 	import MainWraper from '$lib/components/MainWraper.svelte';
 	setContext('endpointInfo', endpointInfo);
 	$: if (graphqlEndpointURL) {
-		console.log('gotData');
 		if ($endpointInfo?.url != graphqlEndpointURL) {
 			let testEndpoint = testEndpoints.find((endpoint) => {
 				return endpoint.url == graphqlEndpointURL;
