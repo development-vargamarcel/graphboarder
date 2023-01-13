@@ -195,7 +195,7 @@ export const endpointInfo = {
 		if (typesExtraDataPossibility) {
 			return typesExtraDataPossibility.get_Val(typeInfo);
 		}
-		console.warn('no typeExtraData found');
+		//console.warn('no typeExtraData found');
 		return null;
 	}
 };
