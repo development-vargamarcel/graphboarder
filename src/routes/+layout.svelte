@@ -7,6 +7,7 @@
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	setContext('endpointInfo', endpointInfo);
 	let forceVisibleSidebar = false;
+	import { testEndpoints_Store } from '$lib/stores/testData/testEndpoints';
 </script>
 
 <header />
@@ -51,7 +52,7 @@
 	{/if}
 {/key}
 
-<EndpointPicker />
+<EndpointPicker testEndpoints={$testEndpoints_Store} />
 <footer />
 
 <style>

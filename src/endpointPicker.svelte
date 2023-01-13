@@ -11,7 +11,7 @@
 		}
 		return null;
 	};
-	let testEndpoints = $testEndpoints_Store;
+	export let testEndpoints;
 
 	////////////////////
 

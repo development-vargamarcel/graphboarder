@@ -3,14 +3,21 @@
 </script>
 
 <script lang="ts">
-	const endpointInfo = getContext('endpointInfo');
-	export let graphqlEndpointURL = $endpointInfo.url || 'https://mdunpmb9.directus.app/graphql';
 	import { createClient, fetchExchange } from '@urql/core';
 	import { browser } from '$app/environment';
+	import { setClient, operationStore, query } from '@urql/svelte';
+	import { introspectionResult } from '$lib/stores/introspectionResult';
+	import { urqlClient } from '$lib/stores/urqlClient';
+	import { urqlCoreClient } from '$lib/stores/urqlCoreClient';
+	import { schemaData } from '$lib/stores/schemaData';
+	import { getContext } from 'svelte';
+
+	const endpointInfo = getContext('endpointInfo');
+	export let graphqlEndpointURL = $endpointInfo.url;
+
 	let client = createClient({
 		url: graphqlEndpointURL,
 		fetchOptions: () => {
-			//console.log('getHeaders() run', getHeaders());
 			return {
 				headers: getHeaders()
 			};
@@ -26,14 +33,6 @@
 		}
 	};
 
-	///
-	import { setClient, operationStore, query } from '@urql/svelte';
-	import { introspectionResult } from '$lib/stores/introspectionResult';
-
-	import { urqlClient } from '$lib/stores/urqlClient';
-	import { urqlCoreClient } from '$lib/stores/urqlCoreClient';
-	import { schemaData } from '$lib/stores/schemaData';
-	import { getContext } from 'svelte';
 	urqlClient.set(client);
 	urqlCoreClient.set(client);
 	setClient(client);
