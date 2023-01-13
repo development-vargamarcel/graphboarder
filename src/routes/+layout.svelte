@@ -5,8 +5,6 @@
 	import { setContext } from 'svelte';
 	import MainWraper from '$lib/components/MainWraper.svelte';
 	import Sidebar from '$lib/components/Sidebar.svelte';
-	import { fly } from 'svelte/transition';
-
 	setContext('endpointInfo', endpointInfo);
 	let forceVisibleSidebar = false;
 	let endpointUrl;
