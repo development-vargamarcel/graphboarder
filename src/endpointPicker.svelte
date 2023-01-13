@@ -74,15 +74,7 @@
 			let endpointInfoToSet = testEndpoint
 				? testEndpoint
 				: {
-						url: graphqlEndpointURL,
-						rowsLocationPossibilities: [
-							{
-								rowsLocation: [],
-								check: (QMS_info) => {
-									return true;
-								}
-							}
-						]
+						url: graphqlEndpointURL
 				  };
 			endpointInfo.smartSet(endpointInfoToSet);
 		}

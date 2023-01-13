@@ -8,6 +8,8 @@
 	setContext('endpointInfo', endpointInfo);
 	let forceVisibleSidebar = false;
 	import { testEndpoints_Store } from '$lib/stores/testData/testEndpoints';
+	endpointInfo.smartSet($testEndpoints_Store[1]);
+	console.log($endpointInfo);
 </script>
 
 <header />
@@ -52,7 +54,7 @@
 	{/if}
 {/key}
 
-<EndpointPicker testEndpoints={$testEndpoints_Store} />
+<!-- <EndpointPicker testEndpoints={$testEndpoints_Store} /> -->
 <footer />
 
 <style>
