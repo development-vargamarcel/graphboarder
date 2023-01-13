@@ -7,12 +7,10 @@
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	setContext('endpointInfo', endpointInfo);
 	let forceVisibleSidebar = false;
-	let endpointUrl;
-	$: endpointUrl = $endpointInfo?.url;
 </script>
 
 <header />
-{#key endpointUrl}
+{#key $endpointInfo?.url}
 	{#if $endpointInfo}
 		<MainWraper>
 			<main class="bg-base-300  flex w-[100vw] overflow-hidden">
