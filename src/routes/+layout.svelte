@@ -12,7 +12,7 @@
 
 <header />
 {#key $endpointInfo?.url}
-	{#if $endpointInfo}
+	{#if $endpointInfo?.url}
 		<MainWraper>
 			<main class="bg-base-300  flex w-[100vw] overflow-hidden">
 				<div class="  md:max-w-[300px]">

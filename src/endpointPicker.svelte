@@ -64,6 +64,9 @@
 		store_graphqlEndpointURL();
 		editButtonClick();
 		$introspectionResult.isReady = false;
+		changeEndpointInfo();
+	};
+	const changeEndpointInfo = () => {
 		if ($endpointInfo?.url != graphqlEndpointURL) {
 			let testEndpoint = testEndpoints.find((endpoint) => {
 				return endpoint.url == graphqlEndpointURL;
@@ -93,7 +96,7 @@
 	const editButtonClick = () => {
 		if (editText == 'edit') {
 			if (browser) {
-				//goto('/queries');
+				goto('/queries');
 			}
 			editText = 'done';
 		} else {
@@ -123,25 +126,7 @@
 	let forceVisibleSidebar = false;
 	import { endpointInfo } from '$lib/stores/endpointInfo/endpointInfo';
 	import { introspectionResult } from '$lib/stores/introspectionResult';
-	if ($endpointInfo?.url != graphqlEndpointURL) {
-		let testEndpoint = testEndpoints.find((endpoint) => {
-			return endpoint.url == graphqlEndpointURL;
-		});
-		let endpointInfoToSet = testEndpoint
-			? testEndpoint
-			: {
-					url: graphqlEndpointURL,
-					rowsLocationPossibilities: [
-						{
-							rowsLocation: [],
-							check: (QMS_info) => {
-								return true;
-							}
-						}
-					]
-			  };
-		endpointInfo.smartSet(endpointInfoToSet);
-	}
+	changeEndpointInfo();
 </script>
 
 {#if showEdit}
