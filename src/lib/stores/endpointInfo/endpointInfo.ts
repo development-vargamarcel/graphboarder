@@ -119,6 +119,14 @@ export const endpointInfoDefaultValues = {
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
 				return dd_rootNameLowerCase.includes('enum');
 			}
+		}, {
+			get_Val: () => {
+				return { displayInterface: 'interfacePicker', get_convertedValue: (val) => { return val } };
+			},
+			check: function (dd_rootName) {
+				console.warn('no typesExtraDataPossibility found,using the default one')
+				return true
+			}
 		}
 	]
 };
