@@ -153,52 +153,26 @@
 		{/if}
 		{#if expandedVersion}
 			<div class="px-2 mt-2">
-				{#if activeArgumentData.dd_displayInterface == 'ENUM'}
-					<div class="flex flex-col">
-						<FilterGroup
-							containerEl={labelEl}
-							extraData={activeArgumentData}
-							choises={activeArgumentData?.chd_choises
-								? activeArgumentData.chd_choises
-								: activeArgumentData.enumValues.map((enumValue) => {
-										return enumValue.name;
-								  })}
-							chosen={activeArgumentData?.chd_chosen}
-							chosenInputField={activeArgumentData?.chosenInputField}
-							isINPUT_OBJECT={activeArgumentData?.isINPUT_OBJECT}
-							rawValue={activeArgumentData?.chd_rawValue}
-							on:changed={(e) => {
-								handleChanged(e.detail);
-							}}
-							id={activeArgumentData.stepsOfFields}
-							title="choose"
-							type={activeArgumentData.dd_kindList ? 'checkbox' : 'radio'}
-						/>
-					</div>
+				{#if activeArgumentData.dd_kindList && activeArgumentData.dd_displayInterface != 'ENUM'}
+					<List
+						typeInfo={activeArgumentData}
+						dd_displayInterface={activeArgumentData.dd_displayInterface}
+						rawValue={activeArgumentData?.chd_rawValue}
+						dispatchValue={activeArgumentData?.chd_dispatchValue}
+						on:changed={(e) => {
+							handleChanged(e.detail);
+						}}
+					/>
 				{:else}
-					<div>
-						{#if activeArgumentData.dd_kindList}
-							<List
-								typeInfo={activeArgumentData}
-								dd_displayInterface={activeArgumentData.dd_displayInterface}
-								rawValue={activeArgumentData?.chd_rawValue}
-								dispatchValue={activeArgumentData?.chd_dispatchValue}
-								on:changed={(e) => {
-									handleChanged(e.detail);
-								}}
-							/>
-						{:else}
-							<Interface
-								typeInfo={activeArgumentData}
-								dd_displayInterface={activeArgumentData.dd_displayInterface}
-								rawValue={activeArgumentData?.chd_rawValue}
-								dispatchValue={activeArgumentData?.chd_dispatchValue}
-								on:changed={(e) => {
-									handleChanged(e.detail);
-								}}
-							/>
-						{/if}
-					</div>
+					<Interface
+						typeInfo={activeArgumentData}
+						dd_displayInterface={activeArgumentData.dd_displayInterface}
+						rawValue={activeArgumentData?.chd_rawValue}
+						dispatchValue={activeArgumentData?.chd_dispatchValue}
+						on:changed={(e) => {
+							handleChanged(e.detail);
+						}}
+					/>
 				{/if}
 			</div>
 		{/if}

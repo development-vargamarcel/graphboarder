@@ -1,4 +1,5 @@
 <script>
+	import ENUMInterface from './ENUMInterface.svelte';
 	//TODO: !!!
 	//When choosenDisplayInteface =="ENUM",nothing happens.Handle enum like all other interfaces to solve this.
 
@@ -35,6 +36,9 @@
 		if (['boolean'].includes(displayInterface)) {
 			componentToRender = Toggle;
 		}
+		if (['ENUM'].includes(displayInterface)) {
+			componentToRender = ENUMInterface;
+		}
 		if (!displayInterface) {
 			componentToRender = InterfacePicker;
 		}
@@ -43,6 +47,7 @@
 
 <svelte:component
 	this={componentToRender}
+	{typeInfo}
 	on:interfaceChosen={(e) => {
 		choosenDisplayInteface = e.detail.chosen;
 	}}
