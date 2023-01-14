@@ -49,7 +49,7 @@ export const endpointInfoDefaultValues = {
 					return null
 				}
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
-				return dd_rootNameLowerCase.includes('string') || dd_rootNameLowerCase.includes('text');
+				return dd_rootNameLowerCase.includes('stringQQQQQQ') || dd_rootNameLowerCase.includes('textQQQQQQ');
 			}
 		},
 		{
@@ -121,7 +121,7 @@ export const endpointInfoDefaultValues = {
 			}
 		}, {
 			get_Val: () => {
-				return { displayInterface: 'interfacePicker', get_convertedValue: (val) => { return val } };
+				return { displayInterface: null, get_convertedValue: (val) => { return val } };
 			},
 			check: function (dd_rootName) {
 				console.warn('no typesExtraDataPossibility found,using the default one')
