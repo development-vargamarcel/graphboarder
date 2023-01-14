@@ -42,7 +42,7 @@ export const endpointInfoDefaultValues = {
 	typesExtraDataPossibilities: [
 		{
 			get_Val: () => {
-				return { displayInterface: 'text', get_convertedValue: string_transformer };
+				return { displayInterface: 'text', defaultValue: '', get_convertedValue: string_transformer };
 			},
 			check: function (dd_rootName) {
 				if (!dd_rootName) {
@@ -71,7 +71,7 @@ export const endpointInfoDefaultValues = {
 		{
 			get_Val: () => {
 				return {
-					displayInterface: 'number',
+					displayInterface: 'number', defaultValue: null,
 					get_convertedValue: (value) => {
 						return value;
 					}
@@ -87,7 +87,7 @@ export const endpointInfoDefaultValues = {
 		},
 		{
 			get_Val: () => {
-				return { displayInterface: 'geo', get_convertedValue: geojson_transformer };
+				return { displayInterface: 'geo', defaultValue: null, get_convertedValue: geojson_transformer };
 			},
 			check: function (dd_rootName) {
 				if (!dd_rootName) {
@@ -99,7 +99,7 @@ export const endpointInfoDefaultValues = {
 		},
 		{
 			get_Val: () => {
-				return { displayInterface: 'boolean', get_convertedValue: boolean_transformer };
+				return { displayInterface: 'boolean', defaultValue: true, get_convertedValue: boolean_transformer };
 			},
 			check: function (dd_rootName) {
 				if (!dd_rootName) {
@@ -110,7 +110,7 @@ export const endpointInfoDefaultValues = {
 			}
 		}, {
 			get_Val: () => {
-				return { displayInterface: 'ENUM', get_convertedValue: (val) => { return val } };
+				return { displayInterface: 'ENUM', defaultValue: null, get_convertedValue: (val) => { return val } };
 			},
 			check: function (dd_rootName) {
 				if (!dd_rootName) {
@@ -121,7 +121,7 @@ export const endpointInfoDefaultValues = {
 			}
 		}, {
 			get_Val: () => {
-				return { displayInterface: null, get_convertedValue: (val) => { return val } };
+				return { displayInterface: null, defaultValue: null, get_convertedValue: (val) => { return val } };
 			},
 			check: function (dd_rootName) {
 				console.warn('no typesExtraDataPossibility found,using the default one')

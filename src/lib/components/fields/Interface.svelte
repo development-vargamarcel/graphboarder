@@ -9,11 +9,12 @@
 	const endpointInfo = getContext('endpointInfo');
 	import InterfacePicker from './InterfacePicker.svelte';
 	const dispatch = createEventDispatcher();
-	export let rawValue;
 	export let typeInfo;
-
 	let choosenDisplayInteface = typeInfo?.choosenDisplayInteface || null;
-	let { displayInterface, get_convertedValue } = endpointInfo.get_typeExtraData(typeInfo);
+	let { displayInterface, get_convertedValue, defaultValue } =
+		endpointInfo.get_typeExtraData(typeInfo);
+	export let rawValue = defaultValue;
+
 	$: if (choosenDisplayInteface) {
 		displayInterface = choosenDisplayInteface;
 		get_convertedValue = $endpointInfo.typesExtraDataPossibilities
