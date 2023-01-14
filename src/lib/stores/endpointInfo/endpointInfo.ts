@@ -49,7 +49,7 @@ export const endpointInfoDefaultValues = {
 					return null
 				}
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
-				return dd_rootNameLowerCase.includes('stringQQQQQQ') || dd_rootNameLowerCase.includes('textQQQQQQ');
+				return dd_rootNameLowerCase.includes('string') || dd_rootNameLowerCase.includes('text');
 			}
 		},
 		{
