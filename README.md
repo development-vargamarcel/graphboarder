@@ -19,7 +19,7 @@ Wrap everything in MainWraper component
 
 ```bash
 <MainWraper endpointInfoProvided={{url:'https://rickandmortyapi.com/graphql'}}>
-  # your code
+  #as many <QMSWraper> </QMSWraper> as you like
   </MainWraper>
 
   # or you can omit endpointInfoProvided and instead do the bellow (inside MainWraper or inside it's parent),this can be usefull for example when implementing an endpoint picker:
@@ -33,9 +33,8 @@ Every QMS must be wraped in QMSWraper component
 const queryName = 'articles'
 const columns=[{title:'id',stepsOfFields:['aticles','id']},{title:'author name',stepsOfFields:['aticles','author','name']}]
 <QMSWraper QMSName={queryName} tableColsData_StoreInitialValue={columns}>
-  # your code
+  # Do your magic here
   </QMSWraper>
-
 ```
 
 Now use the stores in the context
@@ -51,10 +50,47 @@ Now use the stores in the context
 
 ```bash
 # next page request example
-	const paginationState = getContext(`paginationState`);
+const paginationState = getContext(`paginationState`);
 
 let lastBatchOfDataFetched=queryData?.data
 const QMS_name = 'articles'
 const QMS_type='query'
 paginationState.nextPage(lastBatchOfDataFetched, queryName, QMS_type);
+```
+
+```bash
+# add column example
+const tableColsData_Store = getContext('tableColsData_Store');
+const new_tableColData={title:'summary',stepsOfFields:['articles','summary']}
+tableColsData_Store.addColumn(new_tableColData)
+```
+
+# A simple complete example
+
+```bash
+# MyArticles.svelte
+<script>
+const QMS_bodyPartsUnifier_StoreDerived = getContext('QMS_bodyPartsUnifier_StoreDerived');
+
+QMS_bodyPartsUnifier_StoreDerived.subscribe((QMS_body) => {
+  console.log({QMS_body})
+  ///runQuery(QMS_body);
+});
+</script>
+```
+
+```bash
+<script>
+import MyArticles from '$lib/MyArticles.svelte'
+const queryName = 'articles'
+const columns=[{title:'id',stepsOfFields:['aticles','id']},{title:'author name',stepsOfFields:['aticles','author','name']}]
+</script>
+
+
+<MainWraper endpointInfoProvided={{url:'https://rickandmortyapi.com/graphql'}}>
+<QMSWraper QMSName={queryName} tableColsData_StoreInitialValue={columns}>
+  <MyArticles/>
+  </QMSWraper>
+  </MainWraper>
+
 ```
