@@ -5,6 +5,7 @@ For now please take a look bellow
 ## terminology
 
 QMS means Query/Mutation/Subscription
+QMS_body is the payload
 
 ## install
 
@@ -31,8 +32,21 @@ Wrap everything in MainWraper component
 Every QMS must be wraped in QMSWraper component
 
 ```bash
-	<QMSWraper>
+const queryName = 'articles'
+
+	<QMSWraper QMSName={queryName}>
   # your code
   </QMSWraper>
+
+```
+
+Now use the stores in the context
+
+```bash
+	const QMS_bodyPartsUnifier_StoreDerived = getContext('QMS_bodyPartsUnifier_StoreDerived');
+
+	QMS_bodyPartsUnifier_StoreDerived.subscribe((QMS_body) => {
+  runQuery(QMS_body);
+	});
 
 ```
