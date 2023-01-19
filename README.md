@@ -22,7 +22,7 @@ Wrap everything in MainWraper component
   # your code
   </MainWraper>
 
-  # or you can omit endpointInfoProvided and instead to the bellow,this can be usefull for example when implementing an endpoint picker:
+  # or you can omit endpointInfoProvided and instead do the bellow (inside MainWraper or inside it's parent),this can be usefull for example when implementing an endpoint picker:
   endpointInfo.smartSet({url:'https://rickandmortyapi.com/graphql'})
   setContext('endpointInfo', endpointInfo);
 ```
