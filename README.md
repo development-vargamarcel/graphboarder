@@ -37,7 +37,7 @@ const columns=[{title:'id',stepsOfFields:['aticles','id']},{title:'author name',
   </QMSWraper>
 ```
 
-Now use the stores in the context
+Now use the stores present in the context
 
 ```bash
 	const QMS_bodyPartsUnifier_StoreDerived = getContext('QMS_bodyPartsUnifier_StoreDerived');
@@ -56,6 +56,13 @@ let lastBatchOfDataFetched=queryData?.data
 const QMS_name = 'articles'
 const QMS_type='query'
 paginationState.nextPage(lastBatchOfDataFetched, queryName, QMS_type);
+```
+
+**Also you can get the entire QMSWraperContext,containing everything you need.**
+
+```
+const QMSWraperContext= getContext('QMSWraperContext');
+
 ```
 
 ```bash

@@ -22,7 +22,7 @@
 	let paginationTypeInfo = paginationTypes.find((pagType) => {
 		return pagType.name == currentQMS_info.dd_paginationType;
 	});
-
+	let QMSWraperContext = {};
 	const activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store();
 	const offsetBasedPaginationOptions = Create_offsetBasedPaginationOptions();
 	const paginationState = Create_paginationState(
@@ -77,11 +77,13 @@
 		[QMS_bodyPart_StoreDerived],
 		QMSType
 	);
+
 	const rowCountLocation = endpointInfo.get_rowCountLocation(currentQMS_info);
 	if (rowCountLocation) {
 		const tableColsData_Store_rowsCount = writable([
 			{ stepsOfFields: rowCountLocation, title: 'count' }
 		]);
+
 		const QMS_bodyPart_StoreDerived_rowsCount = Create_QMS_bodyPart_StoreDerived(
 			final_gqlArgObj_Store,
 			tableColsData_Store_rowsCount,
@@ -92,8 +94,8 @@
 			null
 		);
 		setContext(`rowsCountQMS_bodyPart_StoreDerived`, QMS_bodyPart_StoreDerived_rowsCount);
+		QMSWraperContext = { ...QMSWraperContext, QMS_bodyPart_StoreDerived_rowsCount };
 	}
-
 	setContext(`${prefix}activeArgumentsDataGrouped_Store`, activeArgumentsDataGrouped_Store);
 	setContext(`${prefix}tableColsData_Store`, tableColsData_Store);
 	setContext(`${prefix}final_gqlArgObj_Store`, final_gqlArgObj_Store);
@@ -101,6 +103,16 @@
 	setContext(`${prefix}QMS_bodyPartsUnifier_StoreDerived`, QMS_bodyPartsUnifier_StoreDerived);
 	setContext(`${prefix}offsetBasedPaginationOptions`, offsetBasedPaginationOptions);
 	setContext(`${prefix}paginationState`, paginationState);
+	QMSWraperContext = {
+		...QMSWraperContext,
+		tableColsData_Store,
+		final_gqlArgObj_Store,
+		QMS_bodyPart_StoreDerived,
+		QMS_bodyPartsUnifier_StoreDerived,
+		offsetBasedPaginationOptions,
+		paginationState
+	};
+	setContext(`${prefix}QMSWraperContext`, QMSWraperContext);
 
 	//testing
 	console.log('get_idField', endpointInfo.get_idField(currentQMS_info));
