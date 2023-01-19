@@ -18,7 +18,7 @@ npm i auto-gql
 Wrap everything in MainWraper component
 
 ```bash
-	<MainWraper endpointInfoProvided={{url:'https://rickandmortyapi.com/graphql'}}>
+<MainWraper endpointInfoProvided={{url:'https://rickandmortyapi.com/graphql'}}>
   # your code
   </MainWraper>
 
@@ -32,7 +32,7 @@ Every QMS must be wraped in QMSWraper component
 ```bash
 const queryName = 'articles'
 
-	<QMSWraper QMSName={queryName}>
+<QMSWraper QMSName={queryName}>
   # your code
   </QMSWraper>
 
