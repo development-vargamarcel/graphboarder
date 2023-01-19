@@ -58,18 +58,18 @@ const QMS_type='query'
 paginationState.nextPage(lastBatchOfDataFetched, queryName, QMS_type);
 ```
 
-**Also you can get the entire QMSWraperContext,containing everything you need.**
-
-```
-const QMSWraperContext= getContext('QMSWraperContext');
-
-```
-
 ```bash
 # add column example
 const tableColsData_Store = getContext('tableColsData_Store');
 const new_tableColData={title:'summary',stepsOfFields:['articles','summary']}
 tableColsData_Store.addColumn(new_tableColData)
+```
+
+**Also you can get the entire QMSWraperContext,containing everything you need.**
+
+```
+const QMSWraperContext= getContext('QMSWraperContext');
+
 ```
 
 # A simple complete example
