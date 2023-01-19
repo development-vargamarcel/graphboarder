@@ -1,6 +1,4 @@
 <script>
-	import { testEndpoints_Store } from '$lib/stores/testData/testEndpoints';
-
 	//!!!important:  rowsLocationPossibilities is important for other things too in edgeBased pagination
 	const get_rowsLocation = (rowsLocationPossibilities) => {
 		let rowsLocationPossibilitiy = rowsLocationPossibilities.find((rowsLocationPossibilitiy) => {
@@ -120,6 +118,8 @@
 	import { introspectionResult } from '$lib/stores/introspectionResult';
 	changeEndpointInfo();
 </script>
+
+<slot />
 
 {#if showEdit}
 	<div
