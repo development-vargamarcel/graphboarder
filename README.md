@@ -15,14 +15,6 @@ npm i auto-gql
 
 ## How To Use
 
-First of all provide some information about your endpoint in the "endpointInfo" store using the 'smartSet method' and set it to the context
-
-```bash
-endpointInfo.smartSet({url:'https://rickandmortyapi.com/graphql'})
-# and set it to the context
-setContext('endpointInfo', endpointInfo);
-```
-
 Wrap everything in MainWraper component
 
 ```bash
