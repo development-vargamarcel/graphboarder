@@ -1,8 +1,8 @@
-## this is in beta,there will be mre info soon.
+# this is in beta,there will be mre info soon.
 
-# for now please take a look bellow
+for now please take a look bellow
 
-# terminology
+## terminology
 
 QMS means Query/Mutation/Subscription
 
@@ -14,13 +14,13 @@ npm i auto-gql
 
 ## How To Use
 
-# First of all provide some information about your endpoint in the "endpointInfo" store using the 'smartSet method'
+First of all provide some information about your endpoint in the "endpointInfo" store using the 'smartSet method'
 
 ```bash
 endpointInfo.smartSet({url:'https://rickandmortyapi.com/graphql'})
 ```
 
-# wrap everything in MainWraper component
+wrap everything in MainWraper component
 
 ```bash
 	<MainWraper>
@@ -28,7 +28,7 @@ endpointInfo.smartSet({url:'https://rickandmortyapi.com/graphql'})
   </MainWraper>
 ```
 
-# every QMS must be wraped in QMSWraper component
+every QMS must be wraped in QMSWraper component
 
 ```bash
 	<QMSWraper>
