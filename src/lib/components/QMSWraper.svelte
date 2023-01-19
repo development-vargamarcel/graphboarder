@@ -12,7 +12,7 @@
 	import { Create_paginationState_derived } from '$lib/stores/pagination/paginationState_derived';
 	import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
 	import { get_scalarColsData, get_nodeFieldsQMS_info } from '$lib/utils/usefulFunctions';
-	import { endpointInfo } from '$lib/stores/endpointInfo/endpointInfo';
+	import { endpointInfo } from '$lib/stores/endpointInfo';
 	import { get, writable } from 'svelte/store';
 	export let prefix = '';
 	export let QMSType = 'query';

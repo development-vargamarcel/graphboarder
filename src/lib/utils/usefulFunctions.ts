@@ -7,7 +7,7 @@ import { schemaData } from '$lib/stores/schemaData';
 import { page } from '$app/stores';
 import { paginationArgsPossibleNames_Store } from '$lib/stores/pagination/paginationArgsPossibleNames_Store';
 import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
-import { endpointInfo } from '$lib/stores/endpointInfo/endpointInfo';
+import { endpointInfo } from '$lib/stores/endpointInfo';
 export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query') => {
 	if (QMS_fields == '') {
 		console.error('no cols data,choose at least one field');

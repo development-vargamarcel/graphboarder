@@ -1,5 +1,5 @@
 <script>
-	import { endpointInfo } from '$lib/stores/endpointInfo/endpointInfo';
+	import { endpointInfo } from '$lib/stores/endpointInfo';
 	import { schemaData } from '$lib/stores/schemaData';
 	import {
 		getFields_Grouped,

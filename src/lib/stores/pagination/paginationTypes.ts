@@ -1,6 +1,6 @@
 import { getDataGivenStepsOfFields } from '$lib/utils/usefulFunctions';
 import { get } from 'svelte/store';
-import { endpointInfo } from '../endpointInfo/endpointInfo';
+import { endpointInfo } from '../endpointInfo';
 import { schemaData } from '../schemaData';
 
 //console.log('asdasdasda', endpointInfo)

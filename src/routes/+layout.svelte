@@ -1,7 +1,7 @@
 <script lang="ts">
 	import EndpointPicker from './../endpointPicker.svelte';
 	import '../app.postcss';
-	import { endpointInfo } from '$lib/stores/endpointInfo/endpointInfo';
+	import { endpointInfo } from '$lib/stores/endpointInfo';
 	import { setContext } from 'svelte';
 	import MainWraper from '$lib/components/MainWraper.svelte';
 	import Sidebar from '$lib/components/Sidebar.svelte';

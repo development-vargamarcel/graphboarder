@@ -1,5 +1,5 @@
 <script>
-	import { endpointInfo } from './../../../lib/stores/endpointInfo/endpointInfo';
+	import { endpointInfo } from '../../../lib/stores/endpointInfo';
 	import { page } from '$app/stores';
 	//import { setClient } from '@urql/svelte';
 	import Table from '$lib/components/Table.svelte';

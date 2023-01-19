@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { endpointInfo } from '$lib//stores/endpointInfo/endpointInfo';
+	import { endpointInfo } from '$lib/stores/endpointInfo';
 	import IntrospectionDataGenerator from '$lib/components/IntrospectionDataGenerator.svelte';
 	import { introspectionResult } from '$lib/stores/introspectionResult';
 	import { setContext } from 'svelte';

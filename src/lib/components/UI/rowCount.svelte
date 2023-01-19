@@ -1,5 +1,5 @@
 <script>
-	import { endpointInfo } from '$lib/stores/endpointInfo/endpointInfo';
+	import { endpointInfo } from '$lib/stores/endpointInfo';
 	import { urqlCoreClient } from '$lib/stores/urqlCoreClient';
 	import { getDataGivenStepsOfFields } from '$lib/utils/usefulFunctions';
 
