@@ -38,11 +38,6 @@ const columns=[{title:'id',stepsOfFields:['aticles','id']},{title:'author name',
 
 ```
 
-```bsh
-	const tableColsData_Store=getContext('tableColsData_Store', tableColsData_Store);
-
-```
-
 Now use the stores in the context
 
 ```bash
