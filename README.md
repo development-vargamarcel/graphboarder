@@ -1,13 +1,13 @@
-# this is in beta,there will be mre info soon.
+# This is in beta,there will be more info soon.
 
 For now please take a look bellow
 
-## terminology
+## Terminology
 
 QMS means Query/Mutation/Subscription
 QMS_body is the payload
 
-## install
+## Install
 
 ```bash
 npm i auto-gql
@@ -19,7 +19,6 @@ First of all provide some information about your endpoint in the "endpointInfo" 
 
 ```bash
 endpointInfo.smartSet({url:'https://rickandmortyapi.com/graphql'})
-
 # and set it to the context
 setContext('endpointInfo', endpointInfo);
 ```
@@ -27,9 +26,13 @@ setContext('endpointInfo', endpointInfo);
 Wrap everything in MainWraper component
 
 ```bash
-	<MainWraper>
+	<MainWraper endpointInfoProvided={{url:'https://rickandmortyapi.com/graphql'}}>
   # your code
   </MainWraper>
+
+  # or you can omit endpointInfoProvided and instead to the bellow,this can be usefull for example when implementing an endpoint picker:
+  endpointInfo.smartSet({url:'https://rickandmortyapi.com/graphql'})
+  setContext('endpointInfo', endpointInfo);
 ```
 
 Every QMS must be wraped in QMSWraper component
