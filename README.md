@@ -49,7 +49,17 @@ Now use the stores in the context
 	const QMS_bodyPartsUnifier_StoreDerived = getContext('QMS_bodyPartsUnifier_StoreDerived');
 
 	QMS_bodyPartsUnifier_StoreDerived.subscribe((QMS_body) => {
+    console.log({QMS_body})
   runQuery(QMS_body);
 	});
+```
 
+```bash
+# next page request example
+	const paginationState = getContext(`paginationState`);
+
+let lastBatchOfDataFetched=queryData?.data
+const QMS_name = 'articles'
+const QMS_type='query'
+paginationState.nextPage(lastBatchOfDataFetched, queryName, QMS_type);
 ```
