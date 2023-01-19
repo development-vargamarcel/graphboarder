@@ -1,6 +1,6 @@
 # this is in beta,there will be mre info soon.
 
-for now please take a look bellow
+For now please take a look bellow
 
 ## terminology
 
@@ -20,7 +20,7 @@ First of all provide some information about your endpoint in the "endpointInfo" 
 endpointInfo.smartSet({url:'https://rickandmortyapi.com/graphql'})
 ```
 
-wrap everything in MainWraper component
+Wrap everything in MainWraper component
 
 ```bash
 	<MainWraper>
@@ -28,7 +28,7 @@ wrap everything in MainWraper component
   </MainWraper>
 ```
 
-every QMS must be wraped in QMSWraper component
+Every QMS must be wraped in QMSWraper component
 
 ```bash
 	<QMSWraper>
