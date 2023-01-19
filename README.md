@@ -31,10 +31,15 @@ Every QMS must be wraped in QMSWraper component
 
 ```bash
 const queryName = 'articles'
-
-<QMSWraper QMSName={queryName}>
+const columns=[{title:'id',stepsOfFields:['aticles','id']},{title:'author name',stepsOfFields:['aticles','author','name']}]
+<QMSWraper QMSName={queryName} tableColsData_StoreInitialValue={columns}>
   # your code
   </QMSWraper>
+
+```
+
+```bsh
+	const tableColsData_Store=getContext('tableColsData_Store', tableColsData_Store);
 
 ```
 

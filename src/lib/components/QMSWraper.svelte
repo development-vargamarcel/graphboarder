@@ -36,7 +36,7 @@
 		currentQMS_info.dd_paginationType
 	);
 
-	let tableColsData_StoreInitialValue = [];
+	export let tableColsData_StoreInitialValue = [];
 
 	const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_info);
 	const nodeFieldsQMS_info = get_nodeFieldsQMS_info(currentQMS_info, rowsLocation);
@@ -44,8 +44,10 @@
 		currentQMS_info.dd_displayName,
 		...rowsLocation
 	]);
-	const dependencyColsData = paginationTypeInfo?.get_dependencyColsData(QMSName, 'query');
-	tableColsData_StoreInitialValue = [...scalarColsData, ...dependencyColsData];
+	if (tableColsData_StoreInitialValue?.length == 0) {
+		const dependencyColsData = paginationTypeInfo?.get_dependencyColsData(QMSName, 'query');
+		tableColsData_StoreInitialValue = [...scalarColsData, ...dependencyColsData];
+	}
 
 	const tableColsData_Store = Create_tableColsData_Store(
 		paginationState,
