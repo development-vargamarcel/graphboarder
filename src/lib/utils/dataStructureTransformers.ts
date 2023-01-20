@@ -7,14 +7,15 @@ export const ISO8601_transformer = (value) => {
 };
 export const geojson_transformer = (value) => {
 	const featuresLength = value.features.length;
-	return value.features.map((feature) => {
-		const geometry = feature.geometry;
+	const geojson = value.features.map((feature) => {
+		const geometry = JSON.parse(JSON.stringify(feature.geometry))
 		geometry.type = string_transformer(geometry.type);
-		if (featuresLength == 1) {
-			return geometry[0];
-		}
 		return geometry;
 	});
+	if (featuresLength == 1) {
+		return geojson[0];
+	}
+	return geojson;//this line (return geojson;) is useful in case the endpoint supports multi-polygon or multi-geometry in general...
 };
 export const boolean_transformer = (value) => {
 	if (value == undefined) {
