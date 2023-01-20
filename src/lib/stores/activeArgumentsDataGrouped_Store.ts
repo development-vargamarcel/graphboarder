@@ -47,7 +47,15 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 					activeArgumentsDataGrouped.push(newGroupData);
 				}
 			});
-
+			//filter out duplicate groups:
+			const seenGroupNames = []
+			activeArgumentsDataGrouped.forEach((group, index) => {
+				if (seenGroupNames.includes(group.group_name)) {
+					activeArgumentsDataGrouped.splice(index, 1)
+				}
+				seenGroupNames.push(group.group_name)
+			})
+			//
 			set(activeArgumentsDataGrouped);
 		},
 		update_groups: (groupNewData) => {
