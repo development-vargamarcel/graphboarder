@@ -5,7 +5,6 @@ import _ from 'lodash';
 import { get } from 'svelte/store';
 import { schemaData } from '$lib/stores/schemaData';
 import { page } from '$app/stores';
-import { paginationArgsPossibleNames_Store } from '$lib/stores/pagination/paginationArgsPossibleNames_Store';
 import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
 import { endpointInfo } from '$lib/stores/endpointInfo';
 export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query') => {
@@ -241,7 +240,7 @@ export const get_displayInterface = (typeInfo) => {
 };
 
 export const mark_paginationArgs = (args) => {
-	const paginationPossibleNames = get(paginationArgsPossibleNames_Store);
+	const paginationPossibleNames = get(endpointInfo).paginationArgsPossibleNames;
 	const paginationPossibleNamesKeys = Object.keys(paginationPossibleNames);
 	args.forEach((arg) => {
 		let matchingKey = paginationPossibleNamesKeys.find((key) => {

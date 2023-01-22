@@ -26,6 +26,16 @@ export const endpointInfoDefaultValues = {
 		endCursor: 'nextPage',
 		cursor: 'cursor'
 	},
+	paginationArgsPossibleNames: {
+		limit: ['limit'],
+		offset: ['offset', 'skip'],
+		first: ['first', '_size'],
+		last: ['last'],
+		after: ['after', '_cursor'],
+		before: ['before'],
+		from: ['from'],
+		page: ['page']
+	},
 	idFieldPossibilities: [
 		{
 			get_Val: function (QMS_info) {
