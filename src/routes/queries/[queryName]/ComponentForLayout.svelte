@@ -14,7 +14,7 @@
 	const QMS_bodyPart_StoreDerived = getContext('QMS_bodyPart_StoreDerived');
 	const QMS_bodyPartsUnifier_StoreDerived = getContext('QMS_bodyPartsUnifier_StoreDerived');
 
-	const offsetBasedPaginationOptions = getContext('offsetBasedPaginationOptions');
+	const paginationOptions = getContext('paginationOptions');
 	console.log('QMSWraperContext', getContext('QMSWraperContext'));
 	$: console.log('final_gqlArgObj_Store', $final_gqlArgObj_Store);
 	import {
@@ -107,7 +107,7 @@
 				if (rowsCurrent && !Array.isArray(rowsCurrent)) {
 					rowsCurrent = [rowsCurrent];
 				}
-				if ($offsetBasedPaginationOptions.infiniteScroll) {
+				if ($paginationOptions.infiniteScroll) {
 					if (
 						paginationTypeInfo?.isFirstPage(paginationState, currentQMS_info.dd_paginationArgs) &&
 						rowsCurrent?.length > 0

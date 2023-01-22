@@ -11,7 +11,7 @@ export const Create_QMS_bodyPart_StoreDerived = (
 	_tableColsData_Store,
 	QMS_type = 'query',
 	QMS_name: string,
-	offsetBasedPaginationOptions_Store,
+	paginationOptions_Store,
 	_pagination_state_derived_Store,
 	pagination_state_Store
 ) => {

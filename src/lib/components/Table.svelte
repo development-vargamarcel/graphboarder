@@ -27,7 +27,7 @@
 	export let infiniteHandler;
 	export let infiniteId;
 	const dispatch = createEventDispatcher();
-	const offsetBasedPaginationOptions = getContext(`${prefix}offsetBasedPaginationOptions`);
+	const paginationOptions = getContext(`${prefix}paginationOptions`);
 </script>
 
 <div class=" h-[80vh] overscroll-contain	 overflow-y-auto rounded-box pb-32 ">
@@ -109,7 +109,7 @@
 			{/each}
 		</tbody>
 	</table>
-	{#if $offsetBasedPaginationOptions?.infiniteScroll}
+	{#if $paginationOptions?.infiniteScroll}
 		<InfiniteLoading on:infinite={infiniteHandler} identifier={infiniteId} distance={100} />
 	{/if}
 	<slot name="itemDisplay" />

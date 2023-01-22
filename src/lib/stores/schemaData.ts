@@ -15,7 +15,7 @@ export const create_schemaData = () => {
 		subscribe,
 		set,
 		update,
-		set_schema: (schema) => {},
+		set_schema: (schema) => { },
 		set_rootTypes: (withDerivedData: false, set_storeVal = true) => {
 			let storeValue = get(store);
 			let { rootTypes, queryFields, mutationFields, schema } = storeValue;
@@ -38,9 +38,7 @@ export const create_schemaData = () => {
 					el?.enumValues?.forEach((enumValue) => {
 						Object.assign(enumValue, generate_derivedData(enumValue, new_rootTypes));
 					});
-					if (el?.fields) {
-						el.dd__idFields_byProbability = el.dd_get_idFields_byProbability();
-					}
+
 				});
 			}
 
@@ -51,7 +49,7 @@ export const create_schemaData = () => {
 
 			return new_rootTypes;
 		},
-		set_rootTypes_DerivedData: () => {},
+		set_rootTypes_DerivedData: () => { },
 		set_QMSFields: (
 			withDerivedData: false,
 			set_storeVal = true,
@@ -93,9 +91,7 @@ export const create_schemaData = () => {
 							Object.assign(enumValue, generate_derivedData(enumValue, rootTypes));
 						});
 
-						if (el?.fields) {
-							el.dd_idFields_byProbability = el.dd_get_idFields_byProbability();
-						}
+
 					});
 				}
 

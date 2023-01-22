@@ -1,6 +1,6 @@
 <script>
 	import { Create_paginationInfo } from '$lib/stores/pagination/paginationInfo';
-	import { Create_offsetBasedPaginationOptions } from '$lib/stores/pagination/offsetBasedPaginationOptions';
+	import { Create_paginationOptions } from '$lib/stores/pagination/paginationOptions';
 	import { Create_activeArgumentsDataGrouped_Store } from '$lib/stores/activeArgumentsDataGrouped_Store';
 	import { Create_final_gqlArgObj_Store } from '$lib/stores/final_gqlArgObj_Store';
 	import { Create_tableColsData_Store } from '$lib/stores/tableColsData_Store';
@@ -24,7 +24,7 @@
 	});
 	let QMSWraperContext = {};
 	const activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store();
-	const offsetBasedPaginationOptions = Create_offsetBasedPaginationOptions();
+	const paginationOptions = Create_paginationOptions();
 	const paginationState = Create_paginationState(
 		undefined,
 		currentQMS_info.dd_paginationArgs,
@@ -68,7 +68,7 @@
 		tableColsData_Store,
 		QMSType,
 		QMSName,
-		offsetBasedPaginationOptions,
+		paginationOptions,
 		paginationState_derived,
 		currentQMS_info.dd_paginationType !== 'notAvailable' ? paginationState : null
 	);
@@ -89,7 +89,7 @@
 			tableColsData_Store_rowsCount,
 			QMSType,
 			rowCountLocation[0],
-			offsetBasedPaginationOptions,
+			paginationOptions,
 			null,
 			null
 		);
@@ -101,7 +101,7 @@
 	setContext(`${prefix}final_gqlArgObj_Store`, final_gqlArgObj_Store);
 	setContext(`${prefix}QMS_bodyPart_StoreDerived`, QMS_bodyPart_StoreDerived);
 	setContext(`${prefix}QMS_bodyPartsUnifier_StoreDerived`, QMS_bodyPartsUnifier_StoreDerived);
-	setContext(`${prefix}offsetBasedPaginationOptions`, offsetBasedPaginationOptions);
+	setContext(`${prefix}paginationOptions`, paginationOptions);
 	setContext(`${prefix}paginationState`, paginationState);
 	QMSWraperContext = {
 		...QMSWraperContext,
@@ -109,7 +109,7 @@
 		final_gqlArgObj_Store,
 		QMS_bodyPart_StoreDerived,
 		QMS_bodyPartsUnifier_StoreDerived,
-		offsetBasedPaginationOptions,
+		paginationOptions,
 		paginationState
 	};
 	setContext(`${prefix}QMSWraperContext`, QMSWraperContext);

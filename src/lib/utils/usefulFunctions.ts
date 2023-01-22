@@ -216,20 +216,7 @@ export const sortByName = (array) => {
 	return array;
 };
 
-export const get_idFields_byProbability = (fields: Array<object>): Array<object> => {
-	let filteredFields = fields.filter((field) => {
-		//keep in mind that a field can be an id field even if "field.dd_NON_NULL" is false
-		return (
-			(field.dd_NON_NULL && !field.dd_kindList && field.dd_kindEl == 'SCALAR') ||
-			field?.dd_rootName == 'ID'
-		);
-	});
-	if (filteredFields.length > 0) {
-		return filteredFields;
-	} else {
-		return fields;
-	}
-};
+
 
 export const get_displayInterface = (typeInfo) => {
 
@@ -335,14 +322,7 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => {
 
 	derivedData.dd_shouldExpand = derivedData.dd_canExpand && !derivedData.dd_relatedRoot?.enumValues;
 	derivedData.dd_isQMSField = isQMSField ? true : false;
-	derivedData.dd_get_idFields_byProbability = function () {
-		if (this.fields) {
-			return get_idFields_byProbability(this.fields);
-		} else {
-			return [];
-		}
-	};
-	derivedData.dd_idFields_byProbability = derivedData.dd_get_idFields_byProbability();
+
 	derivedData.dd_castType = 'implement this.possible values:string,number,graphqlGeoJson...'; //example of why:date can be expected as timestamptz ("2016-07-20T17:30:15+05:30"),but must be casted as string
 	derivedData.dd_derivedTypeBorrowed = 'implement this? maybe not?';
 	////////// others
