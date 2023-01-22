@@ -1,5 +1,5 @@
 <script>
-	import { introspectionResult } from '$lib/stores/introspectionResult';
+	import { schemaData } from '$lib/stores/schemaData';
 	import { slide } from 'svelte/transition';
 
 	import { getRootType } from '$lib/utils/usefulFunctions';
@@ -39,7 +39,7 @@
 	}
 	const expand = () => {
 		//console.log('dd_rootName', dd_rootName);
-		expandData = getRootType($introspectionResult.rootTypes, dd_rootName);
+		expandData = getRootType($schemaData.rootTypes, dd_rootName);
 		if (expandData) {
 			// if (!showExpand) {
 			// 	stepsOfFields.push(dd_displayName);

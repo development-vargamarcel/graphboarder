@@ -3,14 +3,14 @@
 </script>
 
 <script lang="ts">
-	import { introspectionResult } from '$lib/stores/introspectionResult';
-	//console.log($introspectionResult);
+	import { schemaData } from '$lib/stores/schemaData';
+	//console.log($schemaData);
 	import Type from '$lib/components/Type.svelte';
 	import Page from '$lib/components/Page.svelte';
 
-	let rootTypes = $introspectionResult.rootTypes;
-	let queries = $introspectionResult.queryFields;
-	let mutations = $introspectionResult.mutationFields;
+	let rootTypes = $schemaData.rootTypes;
+	let queries = $schemaData.queryFields;
+	let mutations = $schemaData.mutationFields;
 	let whatToShow = [];
 	let sortingInputValue = '';
 	let sortingArray = [];
@@ -51,17 +51,17 @@
 	};
 
 	const rootTypeByName = (name) => {
-		return $introspectionResult.rootTypes.filter((item) => {
+		return $schemaData.rootTypes.filter((item) => {
 			return item.name == name;
 		})[0];
 	};
 	const queryFieldByName = (name) => {
-		return $introspectionResult.queryFields.filter((item) => {
+		return $schemaData.queryFields.filter((item) => {
 			return item.name == name;
 		})[0];
 	};
 	const mutationFieldByName = (name) => {
-		return $introspectionResult.mutationFields.filter((item) => {
+		return $schemaData.mutationFields.filter((item) => {
 			return item.name == name;
 		})[0];
 	};

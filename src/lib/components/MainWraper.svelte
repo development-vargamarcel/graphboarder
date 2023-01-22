@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { endpointInfo } from '$lib/stores/endpointInfo';
 	import IntrospectionDataGenerator from '$lib/components/IntrospectionDataGenerator.svelte';
-	import { introspectionResult } from '$lib/stores/introspectionResult';
+	import { schemaData } from '$lib/stores/schemaData';
 	import { setContext } from 'svelte';
 	export let endpointInfoProvided = null;
 	if (endpointInfoProvided) {
@@ -10,7 +10,7 @@
 	}
 
 	let gotIntrospectionData = false;
-	$: gotIntrospectionData = $introspectionResult?.isReady;
+	$: gotIntrospectionData = $schemaData?.isReady;
 </script>
 
 <IntrospectionDataGenerator />

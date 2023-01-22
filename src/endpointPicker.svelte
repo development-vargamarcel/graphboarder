@@ -61,7 +61,8 @@
 		store_headers();
 		store_graphqlEndpointURL();
 		editButtonClick();
-		$introspectionResult.isReady = false;
+
+		$schemaData.isReady = false;
 		changeEndpointInfo();
 	};
 	const changeEndpointInfo = () => {
@@ -115,7 +116,7 @@
 	};
 	let forceVisibleSidebar = false;
 	import { endpointInfo } from '$lib/stores/endpointInfo';
-	import { introspectionResult } from '$lib/stores/introspectionResult';
+	import { schemaData } from '$lib/stores/schemaData';
 	changeEndpointInfo();
 </script>
 

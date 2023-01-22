@@ -6,10 +6,9 @@
 	import { createClient, fetchExchange } from '@urql/core';
 	import { browser } from '$app/environment';
 	import { setClient, operationStore, query } from '@urql/svelte';
-	import { introspectionResult } from '$lib/stores/introspectionResult';
+	import { schemaData } from '$lib/stores/schemaData';
 	import { urqlClient } from '$lib/stores/urqlClient';
 	import { urqlCoreClient } from '$lib/stores/urqlCoreClient';
-	import { schemaData } from '$lib/stores/schemaData';
 	import { getContext } from 'svelte';
 
 	const endpointInfo = getContext('endpointInfo');
@@ -142,7 +141,6 @@
 		$schemaData.schema = schema;
 		schemaData.set_fields();
 		$schemaData.isReady = true;
-		introspectionResult.set($schemaData);
 	};
 	$: if (!$queryStore.fetching) {
 		if (queryStore?.data) {
