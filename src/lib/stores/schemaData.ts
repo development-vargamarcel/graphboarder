@@ -9,7 +9,7 @@ import {
 import { get, writable } from 'svelte/store';
 
 export const create_schemaData = () => {
-	const store = writable({ rootTypes: [], queryFields: [], mutationFields: [], schema: {} });
+	const store = writable({ rootTypes: [], queryFields: [], mutationFields: [], schema: {}, isReady: false });
 	const { subscribe, set, update } = store;
 	let returnObject = {
 		subscribe,
