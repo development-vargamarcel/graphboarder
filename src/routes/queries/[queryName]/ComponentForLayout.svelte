@@ -27,7 +27,6 @@
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	import { schemaData } from '$lib/stores/schemaData';
-	import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
 
 	//setClient($urqlClient);
 	$: console.log('$QMS_bodyPart_StoreDerived', $QMS_bodyPart_StoreDerived);
@@ -42,7 +41,7 @@
 	}
 	//
 	let activeArgumentsData = [];
-	const paginationTypeInfo = paginationTypes.find((pagType) => {
+	const paginationTypeInfo = $endpointInfo.paginationTypes.find((pagType) => {
 		return pagType.name == currentQMS_info.dd_paginationType;
 	});
 	let activeArgumentsDataGrouped_Store_IS_SET = false;

@@ -5,8 +5,10 @@ import {
 	string_transformer
 } from '$lib/utils/dataStructureTransformers';
 import { writable, get } from 'svelte/store';
+import { paginationTypes } from './endpointDefaultConfig/paginationTypes';
 
 export const endpointInfoDefaultValues = {
+	paginationTypes: [...paginationTypes],
 	description: 'no description',
 	rowsLocationPossibilities: [
 		{

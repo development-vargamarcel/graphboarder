@@ -3,7 +3,6 @@ import { get } from 'svelte/store';
 import { endpointInfo } from '../endpointInfo';
 import { schemaData } from '../schemaData';
 
-//console.log('asdasdasda', endpointInfo)
 export const paginationTypes = [
 	{
 		name: 'notAvailable',

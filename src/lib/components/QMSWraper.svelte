@@ -10,7 +10,6 @@
 	import { Create_paginationState } from '$lib/stores/pagination/paginationState';
 	import { schemaData } from '$lib/stores/schemaData';
 	import { Create_paginationState_derived } from '$lib/stores/pagination/paginationState_derived';
-	import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
 	import { get_scalarColsData, get_nodeFieldsQMS_info } from '$lib/utils/usefulFunctions';
 	import { endpointInfo } from '$lib/stores/endpointInfo';
 	import { get, writable } from 'svelte/store';
@@ -19,7 +18,7 @@
 	export let QMSName;
 	let currentQMS_info = schemaData.get_QMS_Field(QMSName, QMSType);
 	console.log({ currentQMS_info });
-	let paginationTypeInfo = paginationTypes.find((pagType) => {
+	let paginationTypeInfo = $endpointInfo.paginationTypes.find((pagType) => {
 		return pagType.name == currentQMS_info.dd_paginationType;
 	});
 	let QMSWraperContext = {};

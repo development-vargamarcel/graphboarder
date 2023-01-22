@@ -1,5 +1,5 @@
-import { derived } from 'svelte/store';
-import { paginationTypes } from './paginationTypes';
+import { derived, get } from 'svelte/store';
+import { endpointInfo } from '../endpointInfo';
 export const Create_paginationState_derived = (
 	_pagination_state_Store,
 	paginationArgs,
@@ -7,7 +7,7 @@ export const Create_paginationState_derived = (
 ) => {
 	return derived([_pagination_state_Store], ([$_pagination_state_Store], set) => {
 		if (
-			!paginationTypes
+			!get(endpointInfo).paginationTypes
 				.find((pagType) => {
 					return pagType.name == paginationType;
 				})
