@@ -12,10 +12,9 @@
 	import { getContext } from 'svelte';
 
 	const endpointInfo = getContext('endpointInfo');
-	export let graphqlEndpointURL = $endpointInfo.url;
 
 	let client = createClient({
-		url: graphqlEndpointURL,
+		url: $endpointInfo.url,
 		fetchOptions: () => {
 			return {
 				headers: getHeaders()
