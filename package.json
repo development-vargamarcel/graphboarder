@@ -12,7 +12,8 @@
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
 		"pushthis": "git add . && git commit -m 'generic' && git push",
-		"pushWM": "git add . && git commit -m 'generic' && git push && git checkout main && git merge working && git push && git checkout working"
+		"pushWM": "git add . && git commit -m 'generic' && git push && git checkout main && git merge working && git push && git checkout working",
+		"forcePullWM": "git pull --force && git checkout main && git pull --force && git checkout working"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.25.0",
