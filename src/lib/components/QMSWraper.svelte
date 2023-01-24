@@ -57,10 +57,10 @@
 		activeArgumentsDataGrouped_Store,
 		paginationState
 	);
-	const paginationInfo = Create_paginationInfo({
-		paginationType: currentQMS_info.dd_paginationType,
-		paginationData: {}
-	});
+	// const paginationInfo = Create_paginationInfo({
+	// 	paginationType: currentQMS_info.dd_paginationType,
+	// 	paginationData: {}
+	// });
 
 	const QMS_bodyPart_StoreDerived = Create_QMS_bodyPart_StoreDerived(
 		final_gqlArgObj_Store,
