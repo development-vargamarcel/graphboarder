@@ -412,11 +412,15 @@ export const generate_gqlArgObj = (group_argumentsData) => {
 	};
 };
 export const gqlArgObjToString = (gqlArgObj) => {
-	let gqlArgObj_string = JSON.stringify(gqlArgObj)
+	const gqlArgObj_string = JSON.stringify(gqlArgObj)
+	if (gqlArgObj_string == '{ }') {
+		return ''
+	}
+	const gqlArgObj_stringModified = gqlArgObj_string
 		.replace(/"/g, '')
 		.replace(/'/g, `"`)
 		.slice(1, -1);
-	return gqlArgObj_string;
+	return gqlArgObj_stringModified;
 };
 
 export const generate_group_gqlArgObj = (group) => {
@@ -555,9 +559,8 @@ export const generate_FINAL_gqlArgObj_fromGroups = (activeArgumentsDataGrouped: 
 	activeArgumentsDataGrouped.forEach((group) => {
 		Object.assign(final_gqlArgObj, group.group_gqlArgObj);
 	});
-	let final_gqlArgObj_string = gqlArgObjToString(final_gqlArgObj);
 
-	return { final_gqlArgObj, final_gqlArgObj_string, final_canRunQuery };
+	return { final_gqlArgObj, final_canRunQuery };
 };
 
 export const getQueryLinks = () => {

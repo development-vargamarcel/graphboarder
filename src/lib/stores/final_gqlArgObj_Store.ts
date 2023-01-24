@@ -31,11 +31,11 @@ export const Create_final_gqlArgObj_Store = (
 					return generate_group_gqlArgObj(group);
 				}
 			});
-			let { final_gqlArgObj, final_gqlArgObj_string, final_canRunQuery } =
+			let { final_gqlArgObj, final_canRunQuery } =
 				generate_FINAL_gqlArgObj_fromGroups(groups_gqlArgObj);
 
 			//better set an array?
-			set({ final_gqlArgObj, final_gqlArgObj_string, final_canRunQuery });
+			set({ final_gqlArgObj, final_canRunQuery });
 		}
 	};
 };
