@@ -33,14 +33,13 @@ export const Create_QMS_bodyPart_StoreDerived = (
 				}
 				return ''
 			}
-			const QMS_args = get_QMS_args()
-			console.log({ QMS_args })
+
 
 			set(
 				build_QMS_bodyPart(
 					QMS_name,
 					tableColsDataToQueryFields($_tableColsData_Store),
-					QMS_args,
+					get_QMS_args(),
 					QMS_type
 				)
 			);
