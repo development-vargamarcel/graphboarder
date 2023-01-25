@@ -136,7 +136,7 @@ export const endpointInfoDefaultValues = {
 				return { displayInterface: null, defaultValue: null, get_convertedValue: (val) => { return val } };
 			},
 			check: function (dd_rootName) {
-				console.warn('no typesExtraDataPossibility found,using the default one')
+				//	console.warn('no typesExtraDataPossibility found,using the default one')
 				return true
 			}
 		}
