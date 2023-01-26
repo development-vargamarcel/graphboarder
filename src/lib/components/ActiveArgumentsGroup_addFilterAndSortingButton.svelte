@@ -11,7 +11,7 @@
 	import Arg from '$lib/components/Arg.svelte';
 	let dragDisabled = true;
 	const hasGroup_argsNode = group.group_argsNode;
-	const activeArgumentsDataGrouped_Store = getContext(`${prefix}activeArgumentsDataGrouped_Store`);
+	const { activeArgumentsDataGrouped_Store } = getContext('QMSWraperContext');
 	let rootArgs = argsInfo.filter((arg) => {
 		return arg.dd_isRootArg;
 	});

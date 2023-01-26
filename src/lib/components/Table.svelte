@@ -27,7 +27,7 @@
 	export let infiniteHandler;
 	export let infiniteId;
 	const dispatch = createEventDispatcher();
-	const paginationOptions = getContext(`${prefix}paginationOptions`);
+	const { paginationOptions } = getContext('QMSWraperContext');
 </script>
 
 <div class=" h-[80vh] overscroll-contain	 overflow-y-auto rounded-box pb-32 ">

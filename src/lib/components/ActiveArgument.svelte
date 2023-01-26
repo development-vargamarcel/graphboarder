@@ -7,8 +7,8 @@
 
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Interface from '$lib/components/fields/Interface.svelte';
-	const activeArgumentsDataGrouped_Store = getContext('activeArgumentsDataGrouped_Store');
-	const final_gqlArgObj_Store = getContext('final_gqlArgObj_Store');
+	const { activeArgumentsDataGrouped_Store } = getContext('QMSWraperContext');
+	const { final_gqlArgObj_Store } = getContext('QMSWraperContext');
 
 	let dispatch = createEventDispatcher();
 	export let activeArgumentData;

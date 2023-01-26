@@ -2,7 +2,7 @@
 	import { createEventDispatcher, each, getContext, setContext } from 'svelte/internal';
 	import Modal from '$lib/components/Modal.svelte';
 	import ActiveArgumentsGroupWraper from '$lib/components/ActiveArgumentsGroupWraper.svelte';
-	let activeArgumentsDataGrouped_Store = getContext('activeArgumentsDataGrouped_Store');
+	const { activeArgumentsDataGrouped_Store } = getContext('QMSWraperContext');
 	let activeArgumentsDataGrouped = [];
 	$: console.log({ activeArgumentsDataGrouped });
 	const update_activeArgumentsDataGrouped = (groupNewData) => {

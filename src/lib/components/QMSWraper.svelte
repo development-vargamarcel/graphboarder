@@ -95,13 +95,7 @@
 		setContext(`rowsCountQMS_bodyPart_StoreDerived`, QMS_bodyPart_StoreDerived_rowsCount);
 		QMSWraperContext = { ...QMSWraperContext, QMS_bodyPart_StoreDerived_rowsCount };
 	}
-	setContext(`${prefix}activeArgumentsDataGrouped_Store`, activeArgumentsDataGrouped_Store);
-	setContext(`${prefix}tableColsData_Store`, tableColsData_Store);
-	setContext(`${prefix}final_gqlArgObj_Store`, final_gqlArgObj_Store);
-	setContext(`${prefix}QMS_bodyPart_StoreDerived`, QMS_bodyPart_StoreDerived);
-	setContext(`${prefix}QMS_bodyPartsUnifier_StoreDerived`, QMS_bodyPartsUnifier_StoreDerived);
-	setContext(`${prefix}paginationOptions`, paginationOptions);
-	setContext(`${prefix}paginationState`, paginationState);
+
 	QMSWraperContext = {
 		...QMSWraperContext,
 		activeArgumentsDataGrouped_Store,

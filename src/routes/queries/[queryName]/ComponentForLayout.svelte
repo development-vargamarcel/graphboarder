@@ -7,6 +7,7 @@
 
 	const QMSWraperContext = getContext('QMSWraperContext');
 	const {
+		QMS_bodyPart_StoreDerived_rowsCount = null,
 		activeArgumentsDataGrouped_Store,
 		tableColsData_Store,
 		final_gqlArgObj_Store,

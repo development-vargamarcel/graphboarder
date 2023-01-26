@@ -69,7 +69,7 @@
 
 	const hasGroup_argsNode = group.group_argsNode;
 	//
-	const final_gqlArgObj_Store = getContext('final_gqlArgObj_Store');
+	const { final_gqlArgObj_Store } = getContext('QMSWraperContext');
 </script>
 
 <ActiveArgumentsGroup_addFilterAndSortingButton

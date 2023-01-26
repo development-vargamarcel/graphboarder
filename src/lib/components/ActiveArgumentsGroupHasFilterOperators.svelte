@@ -85,7 +85,7 @@
 	};
 	//
 	const dragDisabledConstantTest = true;
-	let final_gqlArgObj_Store = getContext('final_gqlArgObj_Store');
+	const { final_gqlArgObj_Store } = getContext('QMSWraperContext');
 	const handleChanged = () => {
 		final_gqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
 	};

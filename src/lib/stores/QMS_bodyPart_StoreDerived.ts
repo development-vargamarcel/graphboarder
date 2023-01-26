@@ -17,8 +17,8 @@ export const Create_QMS_bodyPart_StoreDerived = (
 ) => {
 	return derived(
 		[_final_grqlArgObj_Store, _tableColsData_Store, _pagination_state_derived_Store],
-		([$_final_grqlArgObj_Store, $_tableColsData_Store], set) => {
-
+		([$_final_grqlArgObj_Store, $_tableColsData_Store, $_pagination_state_derived_Store], set) => {
+			console.log('test1', get(pagination_state_Store), $_pagination_state_derived_Store)
 			const get_QMS_args = () => {
 				if (pagination_state_Store) {
 					const merged = _.merge(
