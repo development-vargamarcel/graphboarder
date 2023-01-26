@@ -1,22 +1,21 @@
 <script>
 	import { endpointInfo } from '../../../lib/stores/endpointInfo';
 	import { page } from '$app/stores';
-	//import { setClient } from '@urql/svelte';
 	import Table from '$lib/components/Table.svelte';
-	//import { urqlClient } from '$lib/stores/urqlClient';
 	import { urqlCoreClient } from '$lib/stores/urqlCoreClient';
-
 	let queryName = $page.params.queryName;
 
-	const activeArgumentsDataGrouped_Store = getContext('activeArgumentsDataGrouped_Store');
-	const tableColsData_Store = getContext('tableColsData_Store');
-	const final_gqlArgObj_Store = getContext('final_gqlArgObj_Store');
-	const QMS_bodyPart_StoreDerived = getContext('QMS_bodyPart_StoreDerived');
-	const QMS_bodyPartsUnifier_StoreDerived = getContext('QMS_bodyPartsUnifier_StoreDerived');
+	const QMSWraperContext = getContext('QMSWraperContext');
+	const {
+		activeArgumentsDataGrouped_Store,
+		tableColsData_Store,
+		final_gqlArgObj_Store,
+		QMS_bodyPart_StoreDerived,
+		QMS_bodyPartsUnifier_StoreDerived,
+		paginationOptions,
+		paginationState
+	} = QMSWraperContext;
 
-	const paginationOptions = getContext('paginationOptions');
-	console.log('QMSWraperContext', getContext('QMSWraperContext'));
-	$: console.log('final_gqlArgObj_Store', $final_gqlArgObj_Store);
 	import {
 		generateTitleFromStepsOfFields,
 		getDataGivenStepsOfFields,
@@ -28,7 +27,6 @@
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	import { schemaData } from '$lib/stores/schemaData';
 
-	//setClient($urqlClient);
 	$: console.log('$QMS_bodyPart_StoreDerived', $QMS_bodyPart_StoreDerived);
 	onDestroy(() => {
 		document.getElementById('my-drawer-3')?.click();
@@ -57,7 +55,6 @@
 	let loadedF;
 	let completeF;
 	let infiniteId = 0;
-	const paginationState = getContext(`paginationState`);
 	function infiniteHandler({ detail: { loaded, complete } }) {
 		loadedF = loaded;
 		completeF = complete;

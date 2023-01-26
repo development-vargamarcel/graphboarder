@@ -104,6 +104,7 @@
 	setContext(`${prefix}paginationState`, paginationState);
 	QMSWraperContext = {
 		...QMSWraperContext,
+		activeArgumentsDataGrouped_Store,
 		tableColsData_Store,
 		final_gqlArgObj_Store,
 		QMS_bodyPart_StoreDerived,
