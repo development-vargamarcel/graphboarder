@@ -92,7 +92,6 @@
 			null,
 			null
 		);
-		setContext(`rowsCountQMS_bodyPart_StoreDerived`, QMS_bodyPart_StoreDerived_rowsCount);
 		QMSWraperContext = { ...QMSWraperContext, QMS_bodyPart_StoreDerived_rowsCount };
 	}
 
@@ -107,9 +106,6 @@
 		paginationState
 	};
 	setContext(`${prefix}QMSWraperContext`, QMSWraperContext);
-
-	//testing
-	console.log('get_idField', endpointInfo.get_idField(currentQMS_info));
 </script>
 
 <slot><!-- optional fallback --></slot>

@@ -268,11 +268,11 @@
 			showQMSBody = !showQMSBody;
 		}}>QMS body</button
 	>
-	{#if getContext('rowsCountQMS_bodyPart_StoreDerived')}
+	{#if QMS_bodyPart_StoreDerived_rowsCount}
 		<div class="badge badge-primary flex space-x-2">
 			{rows.length}/
 			<RowCount
-				QMS_bodyPart_StoreDerived={getContext('rowsCountQMS_bodyPart_StoreDerived')}
+				QMS_bodyPart_StoreDerived={QMS_bodyPart_StoreDerived_rowsCount}
 				QMS_info={currentQMS_info}
 			/>
 		</div>
