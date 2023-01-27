@@ -2,7 +2,7 @@
 	import { Create_paginationInfo } from '$lib/stores/pagination/paginationInfo';
 	import { Create_paginationOptions } from '$lib/stores/pagination/paginationOptions';
 	import { Create_activeArgumentsDataGrouped_Store } from '$lib/stores/activeArgumentsDataGrouped_Store';
-	import { Create_final_gqlArgObj_Store } from '$lib/stores/final_gqlArgObj_Store';
+	import { Create_finalGqlArgObj_Store } from '$lib/stores/finalGqlArgObj_Store';
 	import { Create_tableColsData_Store } from '$lib/stores/tableColsData_Store';
 	import { Create_QMS_bodyPart_StoreDerived } from '$lib/stores/QMS_bodyPart_StoreDerived';
 	import { setContext } from 'svelte';
@@ -53,7 +53,7 @@
 		tableColsData_StoreInitialValue
 	);
 
-	const final_gqlArgObj_Store = Create_final_gqlArgObj_Store(
+	const finalGqlArgObj_Store = Create_finalGqlArgObj_Store(
 		activeArgumentsDataGrouped_Store,
 		paginationState
 	);
@@ -63,7 +63,7 @@
 	// });
 
 	const QMS_bodyPart_StoreDerived = Create_QMS_bodyPart_StoreDerived(
-		final_gqlArgObj_Store,
+		finalGqlArgObj_Store,
 		tableColsData_Store,
 		QMSType,
 		QMSName,
@@ -84,7 +84,7 @@
 		]);
 
 		QMS_bodyPart_StoreDerived_rowsCount = Create_QMS_bodyPart_StoreDerived(
-			final_gqlArgObj_Store,
+			finalGqlArgObj_Store,
 			tableColsData_Store_rowsCount,
 			QMSType,
 			rowCountLocation[0],
@@ -96,7 +96,7 @@
 	QMSWraperContext = {
 		activeArgumentsDataGrouped_Store,
 		tableColsData_Store,
-		final_gqlArgObj_Store,
+		finalGqlArgObj_Store,
 		QMS_bodyPart_StoreDerived,
 		QMS_bodyPart_StoreDerived_rowsCount,
 		QMS_bodyPartsUnifier_StoreDerived,

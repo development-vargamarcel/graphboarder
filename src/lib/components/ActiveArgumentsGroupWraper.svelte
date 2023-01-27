@@ -69,7 +69,7 @@
 
 	const hasGroup_argsNode = group.group_argsNode;
 	//
-	const { final_gqlArgObj_Store } = getContext('QMSWraperContext');
+	const { finalGqlArgObj_Store } = getContext('QMSWraperContext');
 </script>
 
 <ActiveArgumentsGroup_addFilterAndSortingButton
@@ -92,7 +92,7 @@
 				});
 				update_activeArgumentsDataGrouped(group);
 
-				final_gqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
+				finalGqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
 			}}
 			type={group.group_name + 'ActiveArgumentsGroupHasFilterOperators'}
 			node={group.group_argsNode.mainContainer}
@@ -112,7 +112,7 @@
 	<ActiveArgumentsGroupNormal
 		on:updateQuery={() => {
 			update_activeArgumentsDataGrouped(group);
-			final_gqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
+			finalGqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
 		}}
 		bind:group
 		bind:argsInfo

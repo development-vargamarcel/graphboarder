@@ -7,7 +7,7 @@ import {
 } from '$lib/utils/usefulFunctions';
 import { writable, get } from 'svelte/store';
 
-export const Create_final_gqlArgObj_Store = (
+export const Create_finalGqlArgObj_Store = (
 	_activeArgumentsDataGrouped_Store,
 	_paginationState_Store
 ) => {

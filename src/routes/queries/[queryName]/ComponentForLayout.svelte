@@ -10,7 +10,7 @@
 		QMS_bodyPart_StoreDerived_rowsCount = null,
 		activeArgumentsDataGrouped_Store,
 		tableColsData_Store,
-		final_gqlArgObj_Store,
+		finalGqlArgObj_Store,
 		QMS_bodyPart_StoreDerived,
 		QMS_bodyPartsUnifier_StoreDerived,
 		paginationOptions,

@@ -8,7 +8,7 @@
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Interface from '$lib/components/fields/Interface.svelte';
 	const { activeArgumentsDataGrouped_Store } = getContext('QMSWraperContext');
-	const { final_gqlArgObj_Store } = getContext('QMSWraperContext');
+	const { finalGqlArgObj_Store } = getContext('QMSWraperContext');
 
 	let dispatch = createEventDispatcher();
 	export let activeArgumentData;
@@ -64,7 +64,7 @@
 		}
 		dispatch('changed', detail);
 		console.log('activeArgumentsDataGrouped_Store', $activeArgumentsDataGrouped_Store);
-		final_gqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
+		finalGqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
 	};
 	const handleClickOutside = () => {
 		//console.log('clicked outside');
@@ -74,7 +74,7 @@
 		activeArgumentData.inUse = !activeArgumentData.inUse;
 		activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
 		dispatch('inUseChanged');
-		final_gqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
+		finalGqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
 	};
 </script>
 
@@ -134,7 +134,7 @@
 							activeArgumentData,
 							group.group_name
 						);
-						final_gqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
+						finalGqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
 					}}><i class="bi bi-trash3-fill" /></button
 				>
 			{/if}
