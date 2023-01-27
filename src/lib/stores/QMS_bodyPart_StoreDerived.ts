@@ -7,28 +7,28 @@ import { derived, get } from 'svelte/store';
 import _ from 'lodash';
 
 export const Create_QMS_bodyPart_StoreDerived = (
-	_final_grqlArgObj_Store,
-	_tableColsData_Store,
+	finalGqlArgObj_Store,
+	tableColsData_Store,
 	QMS_type = 'query',
 	QMS_name: string,
 	paginationOptions_Store,
-	_paginationState_derived_Store,
+	paginationState_derived_Store,
 ) => {
 	return derived(
-		[_final_grqlArgObj_Store, _tableColsData_Store, _paginationState_derived_Store],
-		([$_final_grqlArgObj_Store, $_tableColsData_Store], set) => {
-			let paginationState = _paginationState_derived_Store?.get_value()
+		[finalGqlArgObj_Store, tableColsData_Store, paginationState_derived_Store],
+		([$finalGqlArgObj_Store, $tableColsData_Store], set) => {
+			let paginationState = paginationState_derived_Store?.get_value()
 			const get_QMS_args = () => {
-				if (_paginationState_derived_Store) {
+				if (paginationState_derived_Store) {
 					const merged = _.merge({},
-						$_final_grqlArgObj_Store?.final_gqlArgObj,
+						$finalGqlArgObj_Store?.final_gqlArgObj,
 						paginationState
 					);
 					return gqlArgObjToString(merged);
 
 				}
-				if ($_final_grqlArgObj_Store?.final_gqlArgObj) {
-					return gqlArgObjToString($_final_grqlArgObj_Store?.final_gqlArgObj)
+				if ($finalGqlArgObj_Store?.final_gqlArgObj) {
+					return gqlArgObjToString($finalGqlArgObj_Store?.final_gqlArgObj)
 				}
 				return ''
 			}
@@ -37,7 +37,7 @@ export const Create_QMS_bodyPart_StoreDerived = (
 			set(
 				build_QMS_bodyPart(
 					QMS_name,
-					tableColsDataToQueryFields($_tableColsData_Store),
+					tableColsDataToQueryFields($tableColsData_Store),
 					get_QMS_args(),
 					QMS_type
 				)
