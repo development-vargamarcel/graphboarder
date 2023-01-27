@@ -77,13 +77,14 @@
 		QMSType
 	);
 
+	let QMS_bodyPart_StoreDerived_rowsCount = null;
 	const rowCountLocation = endpointInfo.get_rowCountLocation(currentQMS_info);
 	if (rowCountLocation) {
 		const tableColsData_Store_rowsCount = writable([
 			{ stepsOfFields: rowCountLocation, title: 'count' }
 		]);
 
-		const QMS_bodyPart_StoreDerived_rowsCount = Create_QMS_bodyPart_StoreDerived(
+		QMS_bodyPart_StoreDerived_rowsCount = Create_QMS_bodyPart_StoreDerived(
 			final_gqlArgObj_Store,
 			tableColsData_Store_rowsCount,
 			QMSType,
@@ -92,11 +93,10 @@
 			null,
 			null
 		);
-		QMSWraperContext = { ...QMSWraperContext, QMS_bodyPart_StoreDerived_rowsCount };
 	}
-
+	//set to QMSWraperContext
 	QMSWraperContext = {
-		...QMSWraperContext,
+		QMS_bodyPart_StoreDerived_rowsCount,
 		activeArgumentsDataGrouped_Store,
 		tableColsData_Store,
 		final_gqlArgObj_Store,
