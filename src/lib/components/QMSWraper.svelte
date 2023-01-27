@@ -1,5 +1,4 @@
 <script>
-	import { Create_paginationInfo } from '$lib/stores/pagination/paginationInfo';
 	import { Create_paginationOptions } from '$lib/stores/pagination/paginationOptions';
 	import { Create_activeArgumentsDataGrouped_Store } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
 	import { Create_finalGqlArgObj_Store } from '$lib/stores/QMSHandling/finalGqlArgObj_Store';
@@ -57,10 +56,6 @@
 		activeArgumentsDataGrouped_Store,
 		paginationState
 	);
-	// const paginationInfo = Create_paginationInfo({
-	// 	paginationType: currentQMS_info.dd_paginationType,
-	// 	paginationData: {}
-	// });
 
 	const QMS_bodyPart_StoreDerived = Create_QMS_bodyPart_StoreDerived(
 		finalGqlArgObj_Store,
