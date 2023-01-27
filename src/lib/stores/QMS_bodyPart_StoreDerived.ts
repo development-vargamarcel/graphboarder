@@ -28,7 +28,6 @@ export const Create_QMS_bodyPart_StoreDerived = (
 
 				}
 				if ($_final_grqlArgObj_Store?.final_gqlArgObj) {
-					console.log('------------------------')
 					return gqlArgObjToString($_final_grqlArgObj_Store?.final_gqlArgObj)
 				}
 				return ''
