@@ -1,7 +1,7 @@
 //!!! do not rely on this store's value,it's purpose is only to provide a proper time to notify subscribers.Instead you should use _paginationState_Store as the value.
 
 import { derived, get } from 'svelte/store';
-import { endpointInfo } from '../endpointInfo';
+import { endpointInfo } from '../endpointHandling/endpointInfo';
 export const Create_paginationState_derived = (
 	_paginationState_Store,
 	paginationArgs,

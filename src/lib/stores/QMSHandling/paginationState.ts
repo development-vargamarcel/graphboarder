@@ -1,5 +1,5 @@
 import { get, writable } from 'svelte/store';
-import { endpointInfo } from '../endpointInfo';
+import { endpointInfo } from '../endpointHandling/endpointInfo';
 
 export const Create_paginationState = (initialValue, paginationArgs, paginationType) => {
 	const paginationTypeInfo = get(endpointInfo).paginationTypes.find((pagType) => {

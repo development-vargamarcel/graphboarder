@@ -1,6 +1,6 @@
 import { get_nodeFieldsQMS_info } from '$lib/utils/usefulFunctions';
 import { writable } from 'svelte/store';
-import { schemaData } from '../schemaData';
+import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 //TODO:
 //idFieldNamePossibilities (id naming convention)
 //countLocationPossibilities

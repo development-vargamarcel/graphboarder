@@ -6,7 +6,7 @@
 	import { getStores, navigating, page, session, updated } from '$app/stores';
 	import { setClient, getClient, operationStore, query } from '@urql/svelte';
 
-	import { urqlClient } from '$lib/stores/urqlClient';
+	import { urqlClient } from '$lib/utils/urqlClient';
 	import { onDestroy, onMount } from 'svelte';
 	import Page from '$lib/components/Page.svelte';
 

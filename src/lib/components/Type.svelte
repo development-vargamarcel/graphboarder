@@ -1,5 +1,5 @@
 <script>
-	import { schemaData } from '$lib/stores/schemaData';
+	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 	import { slide } from 'svelte/transition';
 
 	import { getRootType } from '$lib/utils/usefulFunctions';

@@ -6,9 +6,9 @@
 	import { createClient, fetchExchange } from '@urql/core';
 	import { browser } from '$app/environment';
 	import { setClient, operationStore, query } from '@urql/svelte';
-	import { schemaData } from '$lib/stores/schemaData';
-	import { urqlClient } from '$lib/stores/urqlClient';
-	import { urqlCoreClient } from '$lib/stores/urqlCoreClient';
+	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
+	import { urqlClient } from '$lib/utils/urqlClient';
+	import { urqlCoreClient } from '$lib/utils/urqlCoreClient';
 	import { getContext } from 'svelte';
 
 	const endpointInfo = getContext('endpointInfo');

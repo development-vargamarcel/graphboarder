@@ -3,9 +3,9 @@
 //create stepsOfFieldscheck,started,named "check_stepsOfFields"
 import _ from 'lodash';
 import { get } from 'svelte/store';
-import { schemaData } from '$lib/stores/schemaData';
+import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 import { page } from '$app/stores';
-import { endpointInfo } from '$lib/stores/endpointInfo';
+import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
 export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query') => {
 	if (QMS_fields == '') {
 		console.error('no cols data,choose at least one field');

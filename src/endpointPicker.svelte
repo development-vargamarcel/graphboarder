@@ -115,8 +115,8 @@
 		graphqlEndpointURL = endpoint?.url;
 	};
 	let forceVisibleSidebar = false;
-	import { endpointInfo } from '$lib/stores/endpointInfo';
-	import { schemaData } from '$lib/stores/schemaData';
+	import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
+	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 	changeEndpointInfo();
 </script>
 

@@ -1,7 +1,7 @@
 import { getDataGivenStepsOfFields } from '$lib/utils/usefulFunctions';
 import { get } from 'svelte/store';
-import { endpointInfo } from '../endpointInfo';
-import { schemaData } from '../schemaData';
+import { endpointInfo } from '../endpointHandling/endpointInfo';
+import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 
 export const paginationTypes = [
 	{

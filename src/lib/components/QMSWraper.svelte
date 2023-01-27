@@ -1,17 +1,17 @@
 <script>
 	import { Create_paginationInfo } from '$lib/stores/pagination/paginationInfo';
 	import { Create_paginationOptions } from '$lib/stores/pagination/paginationOptions';
-	import { Create_activeArgumentsDataGrouped_Store } from '$lib/stores/activeArgumentsDataGrouped_Store';
-	import { Create_finalGqlArgObj_Store } from '$lib/stores/finalGqlArgObj_Store';
-	import { Create_tableColsData_Store } from '$lib/stores/tableColsData_Store';
-	import { Create_QMS_bodyPart_StoreDerived } from '$lib/stores/QMS_bodyPart_StoreDerived';
+	import { Create_activeArgumentsDataGrouped_Store } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
+	import { Create_finalGqlArgObj_Store } from '$lib/stores/QMSHandling/finalGqlArgObj_Store';
+	import { Create_tableColsData_Store } from '$lib/stores/QMSHandling/tableColsData_Store';
+	import { Create_QMS_bodyPart_StoreDerived } from '$lib/stores/QMSHandling/QMS_bodyPart_StoreDerived';
 	import { setContext } from 'svelte';
-	import { Create_QMS_bodyPartsUnifier_StoreDerived } from '$lib/stores/QMS_bodyPartsUnifier_StoreDerived';
-	import { Create_paginationState } from '$lib/stores/pagination/paginationState';
-	import { schemaData } from '$lib/stores/schemaData';
-	import { Create_paginationState_derived } from '$lib/stores/pagination/paginationState_derived';
+	import { Create_QMS_bodyPartsUnifier_StoreDerived } from '$lib/stores/QMSHandling/QMS_bodyPartsUnifier_StoreDerived';
+	import { Create_paginationState } from '$lib/stores/QMSHandling/paginationState';
+	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
+	import { Create_paginationState_derived } from '$lib/stores/QMSHandling/paginationState_derived';
 	import { get_scalarColsData, get_nodeFieldsQMS_info } from '$lib/utils/usefulFunctions';
-	import { endpointInfo } from '$lib/stores/endpointInfo';
+	import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
 	import { get, writable } from 'svelte/store';
 	export let prefix = '';
 	export let QMSType = 'query';

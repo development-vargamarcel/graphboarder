@@ -1,8 +1,8 @@
 <script>
-	import { endpointInfo } from '../../../lib/stores/endpointInfo';
+	import { endpointInfo } from '../../../lib/stores/endpointHandling/endpointInfo';
 	import { page } from '$app/stores';
 	import Table from '$lib/components/Table.svelte';
-	import { urqlCoreClient } from '$lib/stores/urqlCoreClient';
+	import { urqlCoreClient } from '$lib/utils/urqlCoreClient';
 	let queryName = $page.params.queryName;
 
 	const QMSWraperContext = getContext('QMSWraperContext');
@@ -26,7 +26,7 @@
 	import { goto } from '$app/navigation';
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
-	import { schemaData } from '$lib/stores/schemaData';
+	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 
 	$: console.log('$QMS_bodyPart_StoreDerived', $QMS_bodyPart_StoreDerived);
 	onDestroy(() => {

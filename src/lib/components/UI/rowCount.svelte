@@ -1,6 +1,6 @@
 <script>
-	import { endpointInfo } from '$lib/stores/endpointInfo';
-	import { urqlCoreClient } from '$lib/stores/urqlCoreClient';
+	import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
+	import { urqlCoreClient } from '$lib/utils/urqlCoreClient';
 	import { getDataGivenStepsOfFields } from '$lib/utils/usefulFunctions';
 
 	export let QMS_bodyPart_StoreDerived;

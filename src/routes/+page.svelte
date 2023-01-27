@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-	import { schemaData } from '$lib/stores/schemaData';
+	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 	//console.log($schemaData);
 	import Type from '$lib/components/Type.svelte';
 	import Page from '$lib/components/Page.svelte';

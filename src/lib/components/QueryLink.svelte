@@ -1,6 +1,6 @@
 <script>
-	import { endpointInfo } from '$lib/stores/endpointInfo';
-	import { schemaData } from '$lib/stores/schemaData';
+	import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
+	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 	import {
 		getFields_Grouped,
 		get_scalarColsData,
