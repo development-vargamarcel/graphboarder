@@ -24,7 +24,7 @@ export const paginationTypes = [
 		get_prevPageState: (state, paginationArgs) => {
 			console.log('notAvailable');
 		},
-		isFirstPage: (_pagination_state_Store, paginationArgs) => {
+		isFirstPage: (_paginationState_Store, paginationArgs) => {
 			return true;
 		},
 		check: (standsForArray) => {
@@ -84,11 +84,11 @@ export const paginationTypes = [
 			_state[offsetName] -= _state[limitName];
 			return _state;
 		},
-		isFirstPage: (_pagination_state_Store, paginationArgs) => {
+		isFirstPage: (_paginationState_Store, paginationArgs) => {
 			const offsetName = paginationArgs.find((arg) => {
 				return arg.dd_standsFor == 'offset';
 			})?.dd_displayName;
-			return !get(_pagination_state_Store)?.[offsetName] > 0;
+			return !get(_paginationState_Store)?.[offsetName] > 0;
 		},
 		check: (standsForArray) => {
 			return standsForArray.includes('limit') && standsForArray.includes('offset');
@@ -219,7 +219,7 @@ export const paginationTypes = [
 			const _state = JSON.parse(JSON.stringify(state));
 			return _state;
 		},
-		isFirstPage: (_pagination_state_Store, paginationArgs) => {
+		isFirstPage: (_paginationState_Store, paginationArgs) => {
 			const afterName = paginationArgs.find((arg) => {
 				return arg.dd_standsFor == 'after';
 			})?.dd_displayName;
@@ -227,7 +227,7 @@ export const paginationTypes = [
 				return arg.dd_standsFor == 'before';
 			})?.dd_displayName;
 			return (
-				!get(_pagination_state_Store)?.[afterName] && !get(_pagination_state_Store)?.[beforeName]
+				!get(_paginationState_Store)?.[afterName] && !get(_paginationState_Store)?.[beforeName]
 			);
 		},
 		check: (standsForArray) => {
@@ -281,11 +281,11 @@ export const paginationTypes = [
 			_state[pageName]--;
 			return _state;
 		},
-		isFirstPage: (_pagination_state_Store, paginationArgs) => {
+		isFirstPage: (_paginationState_Store, paginationArgs) => {
 			let pageName = paginationArgs.find((arg) => {
 				return arg.dd_standsFor == 'page';
 			})?.dd_displayName;
-			return get(_pagination_state_Store)?.[pageName] == 1;
+			return get(_paginationState_Store)?.[pageName] == 1;
 		},
 		check: (standsForArray) => {
 			return standsForArray.includes('page');
@@ -311,7 +311,7 @@ export const paginationTypes = [
 		get_prevPageState: (state, paginationArgs) => {
 			console.log('unknown');
 		},
-		isFirstPage: (_pagination_state_Store, paginationArgs) => {
+		isFirstPage: (_paginationState_Store, paginationArgs) => {
 			return true;
 		},
 		check: (standsForArray) => {

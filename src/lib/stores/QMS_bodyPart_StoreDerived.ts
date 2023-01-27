@@ -12,17 +12,17 @@ export const Create_QMS_bodyPart_StoreDerived = (
 	QMS_type = 'query',
 	QMS_name: string,
 	paginationOptions_Store,
-	_pagination_state_derived_Store,
+	_paginationState_derived_Store,
 ) => {
 	return derived(
-		[_final_grqlArgObj_Store, _tableColsData_Store, _pagination_state_derived_Store],
+		[_final_grqlArgObj_Store, _tableColsData_Store, _paginationState_derived_Store],
 		([$_final_grqlArgObj_Store, $_tableColsData_Store], set) => {
-			let pagination_state = _pagination_state_derived_Store?.get_value()
+			let paginationState = _paginationState_derived_Store?.get_value()
 			const get_QMS_args = () => {
-				if (_pagination_state_derived_Store) {
+				if (_paginationState_derived_Store) {
 					const merged = _.merge({},
 						$_final_grqlArgObj_Store?.final_gqlArgObj,
-						pagination_state
+						paginationState
 					);
 					return gqlArgObjToString(merged);
 

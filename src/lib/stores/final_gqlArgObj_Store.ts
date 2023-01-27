@@ -9,7 +9,7 @@ import { writable, get } from 'svelte/store';
 
 export const Create_final_gqlArgObj_Store = (
 	_activeArgumentsDataGrouped_Store,
-	_pagination_state_Store
+	_paginationState_Store
 ) => {
 	//rewrite,make it so that it always regenerates al groups when running without needing 'group'.
 	const store = writable({});
@@ -21,7 +21,7 @@ export const Create_final_gqlArgObj_Store = (
 		update,
 		regenerate_groupsAndfinal_gqlArgObj: () => {
 			//reset pagination state too !!!THIS MIGHT TRIGGER 1 EXTRA SERVER REQUEST,seems not from what i saw
-			_pagination_state_Store.resetToDefault();
+			_paginationState_Store.resetToDefault();
 			//
 			console.log('regenerate_groupsAndfinal_gqlArgObj RUN');
 			let groups_gqlArgObj = get(_activeArgumentsDataGrouped_Store).map((group) => {
