@@ -68,15 +68,14 @@
 		QMSType,
 		QMSName,
 		paginationOptions,
-		paginationState_derived,
-		currentQMS_info.dd_paginationType !== 'notAvailable' ? paginationState : null
+		paginationState_derived
 	);
 
 	const QMS_bodyPartsUnifier_StoreDerived = Create_QMS_bodyPartsUnifier_StoreDerived(
 		[QMS_bodyPart_StoreDerived],
 		QMSType
 	);
-
+	console.log('QMS_bodyPartsUnifier_StoreDerived', QMS_bodyPartsUnifier_StoreDerived);
 	let QMS_bodyPart_StoreDerived_rowsCount = null;
 	const rowCountLocation = endpointInfo.get_rowCountLocation(currentQMS_info);
 	if (rowCountLocation) {
@@ -90,17 +89,16 @@
 			QMSType,
 			rowCountLocation[0],
 			paginationOptions,
-			null,
 			null
 		);
 	}
 	//set to QMSWraperContext
 	QMSWraperContext = {
-		QMS_bodyPart_StoreDerived_rowsCount,
 		activeArgumentsDataGrouped_Store,
 		tableColsData_Store,
 		final_gqlArgObj_Store,
 		QMS_bodyPart_StoreDerived,
+		QMS_bodyPart_StoreDerived_rowsCount,
 		QMS_bodyPartsUnifier_StoreDerived,
 		paginationOptions,
 		paginationState

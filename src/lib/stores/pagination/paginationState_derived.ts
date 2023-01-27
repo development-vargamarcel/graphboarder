@@ -7,15 +7,17 @@ export const Create_paginationState_derived = (
 	paginationArgs,
 	paginationType
 ) => {
-	return derived([_pagination_state_Store], ([$_pagination_state_Store], set) => {
-		if (
-			!get(endpointInfo).paginationTypes
-				.find((pagType) => {
-					return pagType.name == paginationType;
-				})
-				.isFirstPage(_pagination_state_Store, paginationArgs)
-		) {
-			set($_pagination_state_Store);
-		}
-	});
+	return {
+		...derived([_pagination_state_Store], ([$_pagination_state_Store], set) => {
+			if (
+				!get(endpointInfo).paginationTypes
+					.find((pagType) => {
+						return pagType.name == paginationType;
+					})
+					.isFirstPage(_pagination_state_Store, paginationArgs)
+			) {
+				set($_pagination_state_Store);
+			}
+		}), get_value: () => { return get(_pagination_state_Store) }
+	}
 };

@@ -13,17 +13,16 @@ export const Create_QMS_bodyPart_StoreDerived = (
 	QMS_name: string,
 	paginationOptions_Store,
 	_pagination_state_derived_Store,
-	pagination_state_Store
 ) => {
 	return derived(
 		[_final_grqlArgObj_Store, _tableColsData_Store, _pagination_state_derived_Store],
 		([$_final_grqlArgObj_Store, $_tableColsData_Store, $_pagination_state_derived_Store], set) => {
-			console.log('test1', get(pagination_state_Store), $_pagination_state_derived_Store)
+			let pagination_state = _pagination_state_derived_Store?.get_value()
 			const get_QMS_args = () => {
-				if (pagination_state_Store) {
+				if (pagination_state) {
 					const merged = _.merge(
 						$_final_grqlArgObj_Store?.final_gqlArgObj,
-						get(pagination_state_Store)
+						pagination_state
 					);
 					return gqlArgObjToString(merged);
 
