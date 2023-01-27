@@ -1,9 +1,7 @@
 import {
 	generate_FINAL_gqlArgObj_fromGroups,
-	generate_gqlArgObj,
 	generate_gqlArgObj_forHasOperators,
 	generate_group_gqlArgObj,
-	tableColsDataToQueryFields
 } from '$lib/utils/usefulFunctions';
 import { writable, get } from 'svelte/store';
 
