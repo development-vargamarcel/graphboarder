@@ -86,13 +86,13 @@
 		<ActiveArgumentsGroupHasFilterOperators
 			on:updateQuery={() => {
 				dispatch('updateQuery');
-				//console.log({ FINAL_gqlArgObj_fromGroups });
+				//console.log({ finalGqlArgObj_fromGroups });
 				group.group_args = Object.values(group.group_argsNode)?.filter((node) => {
 					return !node?.operator;
 				});
 				update_activeArgumentsDataGrouped(group);
 
-				finalGqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
+				finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 			}}
 			type={group.group_name + 'ActiveArgumentsGroupHasFilterOperators'}
 			node={group.group_argsNode.mainContainer}
@@ -112,7 +112,7 @@
 	<ActiveArgumentsGroupNormal
 		on:updateQuery={() => {
 			update_activeArgumentsDataGrouped(group);
-			finalGqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
+			finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 		}}
 		bind:group
 		bind:argsInfo

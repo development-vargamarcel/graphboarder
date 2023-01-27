@@ -21,14 +21,14 @@ export const Create_QMS_bodyPart_StoreDerived = (
 			const get_QMS_args = () => {
 				if (paginationState_derived_Store) {
 					const merged = _.merge({},
-						$finalGqlArgObj_Store?.final_gqlArgObj,
+						$finalGqlArgObj_Store?.finalGqlArgObj,
 						paginationState
 					);
 					return gqlArgObjToString(merged);
 
 				}
-				if ($finalGqlArgObj_Store?.final_gqlArgObj) {
-					return gqlArgObjToString($finalGqlArgObj_Store?.final_gqlArgObj)
+				if ($finalGqlArgObj_Store?.finalGqlArgObj) {
+					return gqlArgObjToString($finalGqlArgObj_Store?.finalGqlArgObj)
 				}
 				return ''
 			}

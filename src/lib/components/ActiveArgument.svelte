@@ -64,7 +64,7 @@
 		}
 		dispatch('changed', detail);
 		console.log('activeArgumentsDataGrouped_Store', $activeArgumentsDataGrouped_Store);
-		finalGqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
+		finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 	};
 	const handleClickOutside = () => {
 		//console.log('clicked outside');
@@ -74,7 +74,7 @@
 		activeArgumentData.inUse = !activeArgumentData.inUse;
 		activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
 		dispatch('inUseChanged');
-		finalGqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
+		finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 	};
 </script>
 
@@ -134,7 +134,7 @@
 							activeArgumentData,
 							group.group_name
 						);
-						finalGqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
+						finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 					}}><i class="bi bi-trash3-fill" /></button
 				>
 			{/if}

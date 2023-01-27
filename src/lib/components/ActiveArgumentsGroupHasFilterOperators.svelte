@@ -87,7 +87,7 @@
 	const dragDisabledConstantTest = true;
 	const { finalGqlArgObj_Store } = getContext('QMSWraperContext');
 	const handleChanged = () => {
-		finalGqlArgObj_Store.regenerate_groupsAndfinal_gqlArgObj();
+		finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 	};
 </script>
 

@@ -1,5 +1,5 @@
 import {
-	generate_FINAL_gqlArgObj_fromGroups,
+	generate_finalGqlArgObj_fromGroups,
 	generate_gqlArgObj_forHasOperators,
 	generate_group_gqlArgObj,
 } from '$lib/utils/usefulFunctions';
@@ -17,11 +17,11 @@ export const Create_finalGqlArgObj_Store = (
 		subscribe,
 		set,
 		update,
-		regenerate_groupsAndfinal_gqlArgObj: () => {
+		regenerate_groupsAndfinalGqlArgObj: () => {
 			//reset pagination state too !!!THIS MIGHT TRIGGER 1 EXTRA SERVER REQUEST,seems not from what i saw
 			_paginationState_Store.resetToDefault();
 			//
-			console.log('regenerate_groupsAndfinal_gqlArgObj RUN');
+			console.log('regenerate_groupsAndfinalGqlArgObj RUN');
 			let groups_gqlArgObj = get(_activeArgumentsDataGrouped_Store).map((group) => {
 				if (group.group_argsNode) {
 					return generate_gqlArgObj_forHasOperators(group);
@@ -29,11 +29,11 @@ export const Create_finalGqlArgObj_Store = (
 					return generate_group_gqlArgObj(group);
 				}
 			});
-			let { final_gqlArgObj, final_canRunQuery } =
-				generate_FINAL_gqlArgObj_fromGroups(groups_gqlArgObj);
+			let { finalGqlArgObj, final_canRunQuery } =
+				generate_finalGqlArgObj_fromGroups(groups_gqlArgObj);
 
 			//better set an array?
-			set({ final_gqlArgObj, final_canRunQuery });
+			set({ finalGqlArgObj, final_canRunQuery });
 		}
 	};
 };

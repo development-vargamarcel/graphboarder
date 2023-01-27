@@ -553,14 +553,14 @@ export const generate_gqlArgObj_forHasOperators = (group) => {
 };
 ////
 
-export const generate_FINAL_gqlArgObj_fromGroups = (activeArgumentsDataGrouped: []) => {
-	let final_gqlArgObj = {};
+export const generate_finalGqlArgObj_fromGroups = (activeArgumentsDataGrouped: []) => {
+	let finalGqlArgObj = {};
 	let final_canRunQuery = true;
 	activeArgumentsDataGrouped.forEach((group) => {
-		Object.assign(final_gqlArgObj, group.group_gqlArgObj);
+		Object.assign(finalGqlArgObj, group.group_gqlArgObj);
 	});
 
-	return { final_gqlArgObj, final_canRunQuery };
+	return { finalGqlArgObj, final_canRunQuery };
 };
 
 export const getQueryLinks = () => {
