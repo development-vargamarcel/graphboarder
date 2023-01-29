@@ -5,7 +5,8 @@ import _ from 'lodash';
 import { get } from 'svelte/store';
 import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 import { page } from '$app/stores';
-import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
+import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
+import { endpointInfo } from '$lib/stores/endpointInfo';
 export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query') => {
 	if (QMS_fields == '') {
 		console.error('no cols data,choose at least one field');
@@ -245,7 +246,7 @@ export const get_paginationType = (paginationArgs) => {
 	const standsForArray = paginationArgs.map((arg) => {
 		return arg.dd_standsFor;
 	});
-	const paginationType = get(endpointInfo).paginationTypes.find((paginationType) => {
+	const paginationType = paginationTypes.find((paginationType) => {
 		return paginationType.check(standsForArray);
 	})?.name;
 	if (paginationType) {

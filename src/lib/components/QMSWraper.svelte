@@ -5,10 +5,11 @@
 	import { Create_tableColsData_Store } from '$lib/stores/QMSHandling/tableColsData_Store';
 	import { Create_QMS_bodyPart_StoreDerived } from '$lib/stores/QMSHandling/QMS_bodyPart_StoreDerived';
 	import { setContext } from 'svelte';
-	import { Create_QMS_bodyPartsUnifier_StoreDerived } from '$lib/stores/QMSHandling/QMS_bodyPartsUnifier_StoreDerived';
-	import { Create_paginationState } from '$lib/stores/QMSHandling/paginationState';
-	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
-	import { Create_paginationState_derived } from '$lib/stores/QMSHandling/paginationState_derived';
+	import { Create_QMS_bodyPartsUnifier_StoreDerived } from '$lib/stores/QMS_bodyPartsUnifier_StoreDerived';
+	import { Create_paginationState } from '$lib/stores/pagination/paginationState';
+	import { schemaData } from '$lib/stores/schemaData';
+	import { Create_paginationState_derived } from '$lib/stores/pagination/paginationState_derived';
+	import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
 	import { get_scalarColsData, get_nodeFieldsQMS_info } from '$lib/utils/usefulFunctions';
 	import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
 	import { get, writable } from 'svelte/store';
@@ -17,7 +18,7 @@
 	export let QMSName;
 	let currentQMS_info = schemaData.get_QMS_Field(QMSName, QMSType);
 	console.log({ currentQMS_info });
-	let paginationTypeInfo = $endpointInfo?.paginationTypes.find((pagType) => {
+	let paginationTypeInfo = paginationTypes.find((pagType) => {
 		return pagType.name == currentQMS_info.dd_paginationType;
 	});
 	let QMSWraperContext = {};
