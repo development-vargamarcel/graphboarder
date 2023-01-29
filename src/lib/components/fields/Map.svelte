@@ -12,7 +12,7 @@
 		);
 	};
 	const mapContainerId = generateUniqueId();
-
+	//s
 	let map;
 	let mapContainer;
 	let dispatch = createEventDispatcher();
