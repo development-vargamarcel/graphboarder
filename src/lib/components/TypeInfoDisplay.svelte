@@ -1,6 +1,6 @@
 <script>
 	import { generateTitleFromStepsOfFields } from '$lib/utils/usefulFunctions';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 	const dispatch = createEventDispatcher();
 	export let canExpand;
 	export let expand;
@@ -10,6 +10,17 @@
 	export let template = 'default';
 	export let stepsOfFields;
 	let { dd_kindsArray, dd_namesArray, dd_displayName } = type;
+	const QMSWraperContext = getContext('QMSWraperContext');
+	const {
+		QMS_bodyPart_StoreDerived_rowsCount = null,
+		activeArgumentsDataGrouped_Store,
+		tableColsData_Store,
+		finalGqlArgObj_Store,
+		QMS_bodyPart_StoreDerived,
+		QMS_bodyPartsUnifier_StoreDerived,
+		paginationOptions,
+		paginationState
+	} = QMSWraperContext;
 </script>
 
 {#if template == 'default'}
@@ -73,14 +84,13 @@
 				if (canExpand) {
 					expand();
 				} else {
-					dispatch('colAddRequest', {
+					let tableColData = {
 						title: `col-${Math.floor(Math.random() * 200)},${generateTitleFromStepsOfFields(
 							stepsOfFields
 						)} `,
 						stepsOfFields: stepsOfFields
-					});
-
-					//stepsOfFields = [];
+					};
+					tableColsData_Store.addColumn(tableColData);
 				}
 			}}
 		>

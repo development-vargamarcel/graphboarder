@@ -242,13 +242,6 @@
 								template="columnAddDisplay"
 								stepsOfFields={[queryName]}
 								depth={0}
-								on:colAddRequest={(e) => {
-									let tableColData = e.detail;
-
-									//tableColData.stepsOfFields = [queryName, ...tableColData.stepsOfFields];
-
-									tableColsData_Store.addColumn(tableColData);
-								}}
 							/>
 						{/each}
 					{/if}

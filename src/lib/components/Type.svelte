@@ -77,16 +77,7 @@
 		? ''
 		: ''}"
 >
-	<TypeInfoDisplay
-		on:colAddRequest
-		{canExpand}
-		{expand}
-		{type}
-		{index}
-		{showExpand}
-		{template}
-		{stepsOfFields}
-	/>
+	<TypeInfoDisplay {canExpand} {expand} {type} {index} {showExpand} {template} {stepsOfFields} />
 
 	{#if showExpand}
 		<div
@@ -108,7 +99,7 @@
 			<div class="border-l-2 bg-accent/5">
 				<div class="w-min-max w-full">
 					{#each expandData.fields || expandData.inputFields || expandData.enumValues as type, index (index)}
-						<svelte:self {index} {type} {template} {stepsOfFields} {depth} on:colAddRequest />
+						<svelte:self {index} {type} {template} {stepsOfFields} {depth} />
 					{/each}
 				</div>
 			</div>
