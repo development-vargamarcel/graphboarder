@@ -5,7 +5,7 @@
 
 	import { onDestroy, onMount, beforeUpdate, afterUpdate } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { showTabs } from '$lib/stores/showTabs.js';
+	import { showTabs } from '$lib/stores/showTabs';
 	export let backPath;
 	export let CustomId;
 	export let MenuItem;
