@@ -257,11 +257,7 @@
 		</div>
 	</div>
 	<div class="grow">
-		<ActiveArguments
-			argsInfo={currentQMS_info?.args}
-			{activeArgumentsData}
-			on:argsChanged={(e) => {}}
-		/>
+		<ActiveArguments argsInfo={currentQMS_info?.args} on:argsChanged={(e) => {}} />
 	</div>
 	<button
 		class=" btn btn-xs grow normal-case "
