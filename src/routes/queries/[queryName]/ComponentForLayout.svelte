@@ -26,7 +26,7 @@
 	import { goto } from '$app/navigation';
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
-	import { schemaData } from '$lib/stores/schemaData';
+	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 	import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
 
 	$: console.log('$QMS_bodyPart_StoreDerived', $QMS_bodyPart_StoreDerived);

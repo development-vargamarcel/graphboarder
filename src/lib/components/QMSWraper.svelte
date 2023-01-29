@@ -5,9 +5,9 @@
 	import { Create_tableColsData_Store } from '$lib/stores/QMSHandling/tableColsData_Store';
 	import { Create_QMS_bodyPart_StoreDerived } from '$lib/stores/QMSHandling/QMS_bodyPart_StoreDerived';
 	import { setContext } from 'svelte';
-	import { Create_QMS_bodyPartsUnifier_StoreDerived } from '$lib/stores/QMS_bodyPartsUnifier_StoreDerived';
-	import { Create_paginationState } from '$lib/stores/pagination/paginationState';
-	import { schemaData } from '$lib/stores/schemaData';
+	import { Create_QMS_bodyPartsUnifier_StoreDerived } from '$lib/stores/QMSHandling/QMS_bodyPartsUnifier_StoreDerived';
+	import { Create_paginationState } from '$lib/stores/QMSHandling/paginationState';
+	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 	import { Create_paginationState_derived } from '$lib/stores/pagination/paginationState_derived';
 	import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
 	import { get_scalarColsData, get_nodeFieldsQMS_info } from '$lib/utils/usefulFunctions';

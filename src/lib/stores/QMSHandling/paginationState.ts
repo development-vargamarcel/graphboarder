@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import { paginationTypes } from './paginationTypes';
+import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
 
 export const Create_paginationState = (initialValue, paginationArgs, paginationType) => {
 	const paginationTypeInfo = paginationTypes.find((pagType) => {
