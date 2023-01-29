@@ -5,9 +5,11 @@ import {
 	string_transformer
 } from '$lib/utils/dataStructureTransformers';
 import { writable, get } from 'svelte/store';
+import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
 
 export const endpointInfoDefaultValues = {
 	description: 'no description',
+	paginationTypes,
 	rowsLocationPossibilities: [
 		{
 			get_Val: (QMS_info) => {

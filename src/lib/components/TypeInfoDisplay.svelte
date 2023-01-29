@@ -11,16 +11,7 @@
 	export let stepsOfFields;
 	let { dd_kindsArray, dd_namesArray, dd_displayName } = type;
 	const QMSWraperContext = getContext('QMSWraperContext');
-	const {
-		QMS_bodyPart_StoreDerived_rowsCount = null,
-		activeArgumentsDataGrouped_Store,
-		tableColsData_Store,
-		finalGqlArgObj_Store,
-		QMS_bodyPart_StoreDerived,
-		QMS_bodyPartsUnifier_StoreDerived,
-		paginationOptions,
-		paginationState
-	} = QMSWraperContext;
+	const tableColsData_Store = QMSWraperContext?.tableColsData_Store;
 </script>
 
 {#if template == 'default'}

@@ -8,7 +8,7 @@
 	import { Create_QMS_bodyPartsUnifier_StoreDerived } from '$lib/stores/QMSHandling/QMS_bodyPartsUnifier_StoreDerived';
 	import { Create_paginationState } from '$lib/stores/QMSHandling/paginationState';
 	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
-	import { Create_paginationState_derived } from '$lib/stores/pagination/paginationState_derived';
+	import { Create_paginationState_derived } from '$lib/stores/QMSHandling/paginationState_derived';
 	import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
 	import { get_scalarColsData, get_nodeFieldsQMS_info } from '$lib/utils/usefulFunctions';
 	import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
