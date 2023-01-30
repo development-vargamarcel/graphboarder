@@ -2,7 +2,7 @@
 	import { createEventDispatcher, each, getContext, setContext } from 'svelte/internal';
 	import Modal from '$lib/components/Modal.svelte';
 	import ActiveArgumentsGroupWraper from '$lib/components/ActiveArgumentsGroupWraper.svelte';
-	const { activeArgumentsDataGrouped_Store } = getContext('QMSWraperContext');
+	const { activeArgumentsDataGrouped_Store, QMS_info } = getContext('QMSWraperContext');
 	let activeArgumentsDataGrouped = [];
 	$: console.log({ activeArgumentsDataGrouped });
 	const update_activeArgumentsDataGrouped = (groupNewData) => {
@@ -11,7 +11,6 @@
 	let showActiveFilters;
 	const dispatch = createEventDispatcher();
 	let showModal = false;
-	export let QMS_info;
 
 	const handleArgsChanged = () => {};
 

@@ -250,7 +250,7 @@
 		</div>
 	</div>
 	<div class="grow">
-		<ActiveArguments QMS_info={currentQMS_info} />
+		<ActiveArguments />
 	</div>
 	<button
 		class=" btn btn-xs grow normal-case "
