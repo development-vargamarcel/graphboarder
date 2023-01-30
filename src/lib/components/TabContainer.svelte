@@ -23,6 +23,15 @@
 			isSelected: false,
 			hasFill: false,
 			items: getQueryLinks()
+		},
+		{
+			title: 'Explorer',
+			url: '/explorer',
+			urlIsRoute: false,
+			icon: 'bi bi-compass',
+			isSelected: false,
+			hasFill: true,
+			items: []
 		}
 	];
 
