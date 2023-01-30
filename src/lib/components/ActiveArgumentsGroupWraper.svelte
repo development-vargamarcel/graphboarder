@@ -3,7 +3,6 @@
 	import ActiveArgumentsGroupNormal from '$lib/components/ActiveArgumentsGroupNormal.svelte';
 	export let group;
 	export let argsInfo;
-	export let activeArgumentsData;
 	export let update_activeArgumentsDataGrouped;
 	export let activeArgumentsDataGrouped;
 	import { createEventDispatcher, getContext, setContext } from 'svelte';
@@ -24,7 +23,6 @@
 	on:updateQuery
 	bind:group
 	bind:argsInfo
-	bind:activeArgumentsData
 	bind:update_activeArgumentsDataGrouped
 	bind:activeArgumentsDataGrouped
 />
@@ -64,7 +62,6 @@
 		}}
 		bind:group
 		bind:argsInfo
-		bind:activeArgumentsData
 		bind:update_activeArgumentsDataGrouped
 		bind:activeArgumentsDataGrouped
 	/>

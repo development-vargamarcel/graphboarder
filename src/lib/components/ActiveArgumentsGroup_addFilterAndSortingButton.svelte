@@ -1,7 +1,6 @@
 <script>
 	export let group;
 	export let argsInfo;
-	export let activeArgumentsData;
 	export let update_activeArgumentsDataGrouped;
 	export let activeArgumentsDataGrouped;
 	let showDescription;

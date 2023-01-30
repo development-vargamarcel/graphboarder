@@ -90,6 +90,7 @@
 	}
 	//set to QMSWraperContext
 	QMSWraperContext = {
+		QMS_info: currentQMS_info,
 		activeArgumentsDataGrouped_Store,
 		tableColsData_Store,
 		finalGqlArgObj_Store,
