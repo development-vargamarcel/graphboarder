@@ -11,11 +11,11 @@
 	let showActiveFilters;
 	const dispatch = createEventDispatcher();
 	let showModal = false;
-	export let argsInfo;
+	export let QMS_info;
 
 	const handleArgsChanged = () => {};
 
-	activeArgumentsDataGrouped_Store.set_groups(argsInfo);
+	activeArgumentsDataGrouped_Store.set_groups(QMS_info?.args);
 	activeArgumentsDataGrouped_Store.subscribe((activeArgumentsDataGrouped_Store) => {
 		console.log({ activeArgumentsDataGrouped_Store });
 	});
@@ -45,7 +45,7 @@
 						on:updateQuery={() => {}}
 						{update_activeArgumentsDataGrouped}
 						{group}
-						{argsInfo}
+						argsInfo={QMS_info?.args}
 						{showDescription}
 						{activeArgumentsDataGrouped}
 					/>
