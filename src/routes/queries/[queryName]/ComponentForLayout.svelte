@@ -195,11 +195,14 @@
 	import graphql from 'highlight.js/lib/languages/graphql';
 	import 'highlight.js/styles/base16/solarized-dark.css';
 	import RowCount from '$lib/components/UI/rowCount.svelte';
+	import Modal from '$lib/components/Modal.svelte';
 
 	onMount(() => {
 		hljs.registerLanguage('graphql', graphql);
 		hljs.highlightAll();
 	});
+	let showModal = false;
+	let showActiveFilters;
 </script>
 
 <!-- <button
@@ -250,7 +253,37 @@
 		</div>
 	</div>
 	<div class="grow">
-		<ActiveArguments />
+		{#if showModal}
+			<Modal
+				modalIdetifier={'activeArgumentsDataModal'}
+				showApplyBtn={false}
+				on:cancel={(e) => {
+					let { detail } = e;
+					if (detail.modalIdetifier == 'activeArgumentsDataModal') {
+						showModal = false;
+					}
+				}}
+				><div class="  w-full  ">
+					<div class="mx-auto mt-2  w-full   space-y-2   pb-2  ">
+						<div class="w-2" />
+						<ActiveArguments />
+						<div class="w-2" />
+					</div>
+				</div>
+			</Modal>
+		{/if}
+
+		<div class="flex space-x-2 mb-2 px-2">
+			<button
+				class="btn btn-xs btn-block  "
+				on:click={() => {
+					showModal = !showModal;
+					//showActiveFilters = !showActiveFilters;
+					showActiveFilters = true;
+				}}
+				><i class="bi bi-funnel-fill" />
+			</button>
+		</div>
 	</div>
 	<button
 		class=" btn btn-xs grow normal-case "
