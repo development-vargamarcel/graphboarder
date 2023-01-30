@@ -29,7 +29,7 @@
 	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 	import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
 
-	$: console.log('$QMS_bodyPart_StoreDerived', $QMS_bodyPart_StoreDerived);
+	$: console.log('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
 	onDestroy(() => {
 		document.getElementById('my-drawer-3')?.click();
 	});
@@ -79,7 +79,6 @@
 		// }
 	}
 	const runQuery = (queryBody) => {
-		console.log('queryBody', queryBody);
 		let fetching = true;
 		let error = false;
 		let data = false;
@@ -147,13 +146,9 @@
 				rowsCurrent = [];
 			});
 	};
-	QMS_bodyPart_StoreDerived.subscribe((QMS_body) => {
+	QMS_bodyPartsUnifier_StoreDerived.subscribe((QMS_body) => {
 		if (QMS_body && QMS_body !== '') {
-			runQuery(
-				`query {
-				${QMS_body}
-		}`
-			);
+			runQuery(QMS_body);
 		}
 	});
 

@@ -5,7 +5,6 @@ export const Create_paginationState = (initialValue, paginationArgs, paginationT
 	const paginationTypeInfo = paginationTypes.find((pagType) => {
 		return pagType.name == paginationType;
 	});
-	console.log(paginationTypeInfo);
 	const store = writable(
 		initialValue ? initialValue : paginationTypeInfo?.get_initialState(paginationArgs)
 	);
