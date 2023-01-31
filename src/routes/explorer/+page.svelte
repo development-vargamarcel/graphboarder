@@ -36,11 +36,37 @@
 			whatToShow = [];
 		}
 	};
+	const sortingFunctionMutipleColumnsGivenArray = (array) => {
+		let maxIndex = array.length - 1;
+		const check = (currentIndex) => {
+			const column = array[currentIndex];
+			if (column[0] < column[1]) {
+				return -1;
+			}
+			if (column[0] > column[1]) {
+				return 1;
+			}
+			if (currentIndex + 1 <= maxIndex) {
+				return check(currentIndex + 1);
+			}
+			return 0;
+		};
+		return check(0);
+	};
 
 	const showMutations = () => {
 		if (mutations) {
-			//console.log(mutations);
-			whatToShow = mutations;
+			whatToShow = mutations?.sort((a, b) => {
+				let fa = a.dd_displayName.substring(6);
+				let fb = b.dd_displayName.substring(6);
+				let ga = a.dd_displayName;
+				let gb = b.dd_displayName;
+				return sortingFunctionMutipleColumnsGivenArray([
+					[fa, fb],
+					[ga, gb]
+				]);
+			});
+			console.log({ whatToShow });
 		} else {
 			whatToShow = [];
 		}
