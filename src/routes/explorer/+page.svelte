@@ -74,11 +74,6 @@
 		}
 	};
 
-	const rootTypeByName = (name) => {
-		return $schemaData.rootTypes.filter((item) => {
-			return item.name == name;
-		})[0];
-	};
 	const queryFieldByName = (name) => {
 		return $schemaData.queryFields.filter((item) => {
 			return item.name == name;
@@ -92,20 +87,15 @@
 </script>
 
 <Page MenuItem={true}>
-	<section class="  h-screen pb-20 w-screen  overflow-auto ">
+	<section class="  h-screen pb-20 w-screen  overflow-auto ml-2">
 		<br />
 		<br />
-		<button
-			class="btn btn-primary btn-sm"
-			on:click={() => {
-				//console.log(rootTypeByName('articles'));
-			}}>rootTypes_by_name</button
-		>
-		<input type="text" class="input input-sm" bind:value={sortingInputValue} />
-		<button class="btn bg-primary btn-sm" on:click={filterByWord}>filter</button>
+
+		<input type="text" class="input input-xs" bind:value={sortingInputValue} />
+		<button class="btn bg-primary btn-xs" on:click={filterByWord}>filter</button>
 		<br />
 		<br />
-		<button class="btn btn-xs" on:click={showRootTypes}>show all</button>
+		<button class="btn btn-xs " on:click={showRootTypes}>show all</button>
 		<button class="btn btn-xs" on:click={showQueries}>show queries</button>
 		<button class="btn btn-xs" on:click={showMutations}>show mutations</button>
 		<div class="">
