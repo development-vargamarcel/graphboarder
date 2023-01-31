@@ -12,6 +12,9 @@
 	let showDescription = null;
 </script>
 
+{#if $activeArgumentsDataGrouped_Store.length == 0}
+	<div>No arguments</div>
+{/if}
 {#each $activeArgumentsDataGrouped_Store as group}
 	<ActiveArgumentsGroupWraper
 		on:updateQuery={() => {}}
