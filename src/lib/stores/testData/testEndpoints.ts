@@ -6,58 +6,23 @@ import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 //countLocationPossibilities
 let test = [
 	{
-		url: 'https://vgqkcskomrpikolllkix.nhost.run/v1/graphql',
-		isMantained: true,
-		description: 'offsetBased pagination,rowCount set',
-		headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
-		rowsLocationPossibilities: [
-			{
-				get_Val: (QMS_info) => {
-					return [];
-				},
-				check: (QMS_info) => {
-					return QMS_info.dd_displayName.toLowerCase().endsWith('aggregate');
-				}
-			},
-			{
-				get_Val: (QMS_info) => {
-					return [];
-				},
-				check: (QMS_info) => {
-					return !QMS_info.dd_displayName.toLowerCase().endsWith('aggregate');
-				}
-			}
-		],
-		rowCountLocationPossibilities: [
-			{
-				get_Val: (QMS_info) => {
-					return [QMS_info.dd_displayName, 'aggregate', 'count'];
-				},
-				check: (QMS_info) => {
-					return QMS_info.dd_displayName.toLowerCase().endsWith('aggregate');
-				}
-			},
-			{
-				get_Val: (QMS_info) => {
-					if (schemaData.get_QMS_Field(`${QMS_info.dd_displayName}Aggregate`, 'query')) {
-						return [`${QMS_info.dd_displayName}Aggregate`, 'aggregate', 'count'];
-					}
-					return [`${QMS_info.dd_displayName}_aggregate`, 'aggregate', 'count'];
-				},
-				check: (QMS_info) => {
-					return !QMS_info.dd_displayName.toLowerCase().endsWith('aggregate');
-				}
-			}
-		]
-	},
-
-	{
 		url: 'https://7rsm0d0d.directus.app/graphql',
 		isMantained: true,
 		description: 'offsetBased pagination,rowCount set',
 		headers: {
 			authorization: 'Bearer aKUvsqBR4-rfnL2z6nqEQmLPRIur4c1m'
 		},
+		displayNamePossibilitiesForCreateItem: [
+			{
+				get_Val: (QMS_info) => {
+					return `create_${QMS_info.dd_rootName}_item`
+				},
+				check: (QMS_info) => {
+					return true
+				}
+			},
+		]
+		,
 		rowsLocationPossibilities: [
 			{
 				get_Val: (QMS_info) => {
@@ -108,6 +73,53 @@ let test = [
 			}
 		]
 	},
+	{
+		url: 'https://vgqkcskomrpikolllkix.nhost.run/v1/graphql',
+		isMantained: true,
+		description: 'offsetBased pagination,rowCount set',
+		headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
+		rowsLocationPossibilities: [
+			{
+				get_Val: (QMS_info) => {
+					return [];
+				},
+				check: (QMS_info) => {
+					return QMS_info.dd_displayName.toLowerCase().endsWith('aggregate');
+				}
+			},
+			{
+				get_Val: (QMS_info) => {
+					return [];
+				},
+				check: (QMS_info) => {
+					return !QMS_info.dd_displayName.toLowerCase().endsWith('aggregate');
+				}
+			}
+		],
+		rowCountLocationPossibilities: [
+			{
+				get_Val: (QMS_info) => {
+					return [QMS_info.dd_displayName, 'aggregate', 'count'];
+				},
+				check: (QMS_info) => {
+					return QMS_info.dd_displayName.toLowerCase().endsWith('aggregate');
+				}
+			},
+			{
+				get_Val: (QMS_info) => {
+					if (schemaData.get_QMS_Field(`${QMS_info.dd_displayName}Aggregate`, 'query')) {
+						return [`${QMS_info.dd_displayName}Aggregate`, 'aggregate', 'count'];
+					}
+					return [`${QMS_info.dd_displayName}_aggregate`, 'aggregate', 'count'];
+				},
+				check: (QMS_info) => {
+					return !QMS_info.dd_displayName.toLowerCase().endsWith('aggregate');
+				}
+			}
+		]
+	},
+
+
 	{
 		url: 'https://api.spacex.land/graphql/',
 		isMantained: true,
