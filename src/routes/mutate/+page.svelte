@@ -15,8 +15,10 @@
 		console.log(input.value);
 	}}
 />
-{#if QMSName}
-	<QMSWraper {QMSName} QMSType="mutation">
-		<MutationExample />
-	</QMSWraper>
-{/if}
+{#key QMSName}
+	{#if QMSName}
+		<QMSWraper {QMSName} QMSType="mutation">
+			<MutationExample />
+		</QMSWraper>
+	{/if}
+{/key}
