@@ -25,6 +25,15 @@
 			items: getQueryLinks()
 		},
 		{
+			title: 'Mutate',
+			url: '/mutate',
+			urlIsRoute: false,
+			icon: 'bi bi-pen',
+			isSelected: false,
+			hasFill: false,
+			items: []
+		},
+		{
 			title: 'Explorer',
 			url: '/explorer',
 			urlIsRoute: false,
