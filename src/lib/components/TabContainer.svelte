@@ -30,7 +30,7 @@
 			urlIsRoute: false,
 			icon: 'bi bi-pen',
 			isSelected: false,
-			hasFill: false,
+			hasFill: true,
 			items: []
 		},
 		{
