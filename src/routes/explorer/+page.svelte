@@ -11,6 +11,7 @@
 	let whatToShowLastUsed;
 	let sortingInputValue = '';
 	let sortingArray = [];
+	let caseSensitive = false;
 	$: sortingArray = sortingInputValue.split(' ');
 	const sortingFunctionMutipleColumnsGivenArray = (array) => {
 		let maxIndex = array.length - 1;
@@ -31,12 +32,16 @@
 	};
 	const filterByWord = () => {
 		whatToShowLastUsed?.();
+
 		whatToShow = whatToShow.filter((type) => {
 			if (sortingArray.length == 1 && sortingArray[0] == '') {
 				return true;
 			} else {
 				return sortingArray.find((word) => {
-					return type.dd_displayName.includes(word);
+					if (caseSensitive) {
+						return type.dd_displayName.includes(word);
+					}
+					return type.dd_displayName.toLowerCase().includes(word.toLowerCase());
 				});
 			}
 		});
@@ -51,11 +56,14 @@
 		if (queries) {
 			//console.log(queries);
 			whatToShow = queries?.sort((a, b) => {
-								let ea = a.dd_rootName;
+				let ea = a.dd_rootName;
 				let eb = b.dd_rootName;
 				let ga = a.dd_displayName;
 				let gb = b.dd_displayName;
-				return sortingFunctionMutipleColumnsGivenArray([[ea, eb],[ga, gb]]);
+				return sortingFunctionMutipleColumnsGivenArray([
+					[ea, eb],
+					[ga, gb]
+				]);
 			});
 		} else {
 			whatToShow = [];
@@ -97,17 +105,26 @@
 </script>
 
 <Page MenuItem={true}>
-	<section class="  h-screen pb-20 w-screen  overflow-auto ml-2">
+	<section class="  h-screen pb-20 w-screen  overflow-auto ml-4">
 		<br />
 		<br />
+		<div class="flex space-x-2">
+			<button
+				class="p-1 rounded-sm leading-none bg-base-100 text-xs max-w-min"
+				on:click={() => {
+					caseSensitive = !caseSensitive;
+				}}>{caseSensitive ? 'case sensitive' : 'case not sesitive'}</button
+			>
+			<input
+				type="text"
+				class="input input-xs mt-2"
+				bind:value={sortingInputValue}
+				on:change={filterByWord}
+			/>
 
-		<input
-			type="text"
-			class="input input-xs"
-			bind:value={sortingInputValue}
-			on:change={filterByWord}
-		/>
-		<button class="btn bg-primary btn-xs" on:click={filterByWord}>filter</button>
+			<button class="mt-2 btn bg-primary btn-xs normal-case" on:click={filterByWord}>Filter</button>
+		</div>
+
 		<br />
 		<br />
 		<button class="btn btn-xs " on:click={showRootTypes}>show all</button>
