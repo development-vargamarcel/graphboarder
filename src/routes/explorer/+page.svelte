@@ -8,6 +8,7 @@
 	let queries = $schemaData.queryFields;
 	let mutations = $schemaData.mutationFields;
 	let whatToShow = [];
+	let whatToShowLastUsed;
 	let sortingInputValue = '';
 	let sortingArray = [];
 	$: sortingArray = sortingInputValue.split(' ');
@@ -29,6 +30,7 @@
 		return check(0);
 	};
 	const filterByWord = () => {
+		whatToShowLastUsed?.();
 		whatToShow = whatToShow.filter((type) => {
 			if (sortingArray.length == 1 && sortingArray[0] == '') {
 				return true;
@@ -42,6 +44,7 @@
 	const showRootTypes = () => {
 		//console.log(rootTypes);
 		whatToShow = rootTypes;
+		whatToShowLastUsed = showRootTypes;
 	};
 	showRootTypes();
 	const showQueries = () => {
@@ -55,6 +58,7 @@
 		} else {
 			whatToShow = [];
 		}
+		whatToShowLastUsed = showQueries;
 	};
 
 	const showMutations = () => {
@@ -72,6 +76,7 @@
 		} else {
 			whatToShow = [];
 		}
+		whatToShowLastUsed = showMutations;
 	};
 
 	const queryFieldByName = (name) => {
@@ -91,7 +96,12 @@
 		<br />
 		<br />
 
-		<input type="text" class="input input-xs" bind:value={sortingInputValue} />
+		<input
+			type="text"
+			class="input input-xs"
+			bind:value={sortingInputValue}
+			on:change={filterByWord}
+		/>
 		<button class="btn bg-primary btn-xs" on:click={filterByWord}>filter</button>
 		<br />
 		<br />
