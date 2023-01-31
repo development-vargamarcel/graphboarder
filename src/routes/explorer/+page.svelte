@@ -11,7 +11,23 @@
 	let sortingInputValue = '';
 	let sortingArray = [];
 	$: sortingArray = sortingInputValue.split(' ');
-
+	const sortingFunctionMutipleColumnsGivenArray = (array) => {
+		let maxIndex = array.length - 1;
+		const check = (currentIndex) => {
+			const column = array[currentIndex];
+			if (column[0] < column[1]) {
+				return -1;
+			}
+			if (column[0] > column[1]) {
+				return 1;
+			}
+			if (currentIndex + 1 <= maxIndex) {
+				return check(currentIndex + 1);
+			}
+			return 0;
+		};
+		return check(0);
+	};
 	const filterByWord = () => {
 		rootTypes = rootTypes.filter((type) => {
 			if (sortingArray.length == 1 && sortingArray[0] == '') {
@@ -31,27 +47,14 @@
 	const showQueries = () => {
 		if (queries) {
 			//console.log(queries);
-			whatToShow = queries;
+			whatToShow = queries?.sort((a, b) => {
+				let ga = a.dd_displayName;
+				let gb = b.dd_displayName;
+				return sortingFunctionMutipleColumnsGivenArray([[ga, gb]]);
+			});
 		} else {
 			whatToShow = [];
 		}
-	};
-	const sortingFunctionMutipleColumnsGivenArray = (array) => {
-		let maxIndex = array.length - 1;
-		const check = (currentIndex) => {
-			const column = array[currentIndex];
-			if (column[0] < column[1]) {
-				return -1;
-			}
-			if (column[0] > column[1]) {
-				return 1;
-			}
-			if (currentIndex + 1 <= maxIndex) {
-				return check(currentIndex + 1);
-			}
-			return 0;
-		};
-		return check(0);
 	};
 
 	const showMutations = () => {
@@ -66,7 +69,6 @@
 					[ga, gb]
 				]);
 			});
-			console.log({ whatToShow });
 		} else {
 			whatToShow = [];
 		}
