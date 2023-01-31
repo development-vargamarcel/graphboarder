@@ -12,13 +12,22 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 		update,
 		set_groups: (argsInfo) => {
 			//handle generating activeArgumentsDataGrouped
-			const rootGroup = {
-				group_name: 'root',
-				group_isRoot: true,
-				dd_kindList: false,
-				group_args: []
-			};
-			let activeArgumentsDataGrouped = [rootGroup];
+			const activeArgumentsDataGrouped = []
+			const hasRootArgs = argsInfo?.find((el) => {
+				return el.dd_isRootArg
+			})
+
+
+			if (hasRootArgs) {
+				const rootGroup = {
+					group_name: 'root',
+					group_isRoot: true,
+					dd_kindList: false,
+					group_args: []
+				};
+				activeArgumentsDataGrouped.push(rootGroup)
+			}
+
 
 			argsInfo?.forEach((el) => {
 				if (!el.dd_isRootArg) {
