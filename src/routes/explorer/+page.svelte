@@ -29,15 +29,15 @@
 		return check(0);
 	};
 	const filterByWord = () => {
-		rootTypes = rootTypes.filter((type) => {
+		whatToShow = whatToShow.filter((type) => {
 			if (sortingArray.length == 1 && sortingArray[0] == '') {
 				return true;
 			} else {
-				return sortingArray.includes(type.kind);
+				return sortingArray.find((word) => {
+					return type.dd_displayName.includes(word);
+				});
 			}
 		});
-
-		showRootTypes();
 	};
 	const showRootTypes = () => {
 		//console.log(rootTypes);
