@@ -64,11 +64,14 @@
 	const showMutations = () => {
 		if (mutations) {
 			whatToShow = mutations?.sort((a, b) => {
+				let ea = a.dd_rootName;
+				let eb = b.dd_rootName;
 				let fa = a.dd_displayName.substring(6);
 				let fb = b.dd_displayName.substring(6);
 				let ga = a.dd_displayName;
 				let gb = b.dd_displayName;
 				return sortingFunctionMutipleColumnsGivenArray([
+					[ea, eb],
 					[fa, fb],
 					[ga, gb]
 				]);
