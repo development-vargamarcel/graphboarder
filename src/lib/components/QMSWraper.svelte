@@ -16,31 +16,31 @@
 	export let prefix = '';
 	export let QMSType = 'query';
 	export let QMSName;
-	let currentQMS_info = schemaData.get_QMS_Field(QMSName, QMSType);
-	console.log({ currentQMS_info });
+	let QMS_info = schemaData.get_QMS_Field(QMSName, QMSType);
+	console.log({ QMS_info });
 	let paginationTypeInfo = paginationTypes.find((pagType) => {
-		return pagType.name == currentQMS_info.dd_paginationType;
+		return pagType.name == QMS_info.dd_paginationType;
 	});
 	let QMSWraperContext = {};
 	const activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store();
 	const paginationOptions = Create_paginationOptions();
 	const paginationState = Create_paginationState(
 		undefined,
-		currentQMS_info.dd_paginationArgs,
-		currentQMS_info.dd_paginationType
+		QMS_info.dd_paginationArgs,
+		QMS_info.dd_paginationType
 	);
 	const paginationState_derived = Create_paginationState_derived(
 		paginationState,
-		currentQMS_info.dd_paginationArgs,
-		currentQMS_info.dd_paginationType
+		QMS_info.dd_paginationArgs,
+		QMS_info.dd_paginationType
 	);
 
 	export let tableColsData_StoreInitialValue = [];
 
-	const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_info);
-	const nodeFieldsQMS_info = get_nodeFieldsQMS_info(currentQMS_info, rowsLocation);
+	const rowsLocation = endpointInfo.get_rowsLocation(QMS_info);
+	const nodeFieldsQMS_info = get_nodeFieldsQMS_info(QMS_info, rowsLocation);
 	let scalarColsData = get_scalarColsData(nodeFieldsQMS_info, [
-		currentQMS_info.dd_displayName,
+		QMS_info.dd_displayName,
 		...rowsLocation
 	]);
 	if (tableColsData_StoreInitialValue?.length == 0) {
@@ -73,7 +73,7 @@
 	);
 	console.log('QMS_bodyPartsUnifier_StoreDerived', QMS_bodyPartsUnifier_StoreDerived);
 	let QMS_bodyPart_StoreDerived_rowsCount = null;
-	const rowCountLocation = endpointInfo.get_rowCountLocation(currentQMS_info);
+	const rowCountLocation = endpointInfo.get_rowCountLocation(QMS_info);
 	if (rowCountLocation) {
 		const tableColsData_Store_rowsCount = writable([
 			{ stepsOfFields: rowCountLocation, title: 'count' }
@@ -90,7 +90,9 @@
 	}
 	//set to QMSWraperContext
 	QMSWraperContext = {
-		QMS_info: currentQMS_info,
+		QMS_info,
+		QMSType,
+		QMSName,
 		activeArgumentsDataGrouped_Store,
 		tableColsData_Store,
 		finalGqlArgObj_Store,
