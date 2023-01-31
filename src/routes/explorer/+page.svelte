@@ -51,9 +51,11 @@
 		if (queries) {
 			//console.log(queries);
 			whatToShow = queries?.sort((a, b) => {
+								let ea = a.dd_rootName;
+				let eb = b.dd_rootName;
 				let ga = a.dd_displayName;
 				let gb = b.dd_displayName;
-				return sortingFunctionMutipleColumnsGivenArray([[ga, gb]]);
+				return sortingFunctionMutipleColumnsGivenArray([[ea, eb],[ga, gb]]);
 			});
 		} else {
 			whatToShow = [];
