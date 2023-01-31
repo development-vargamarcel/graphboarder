@@ -208,6 +208,25 @@
 	next page
 </button> -->
 <!-- main -->
+<div class="  w-full   px-6 mb-10 ">
+	<div class=" mt-2     space-y-2   pb-2  bg-base-100 rounded-box ">
+		<div class="w-2" />
+		<ActiveArguments />
+		<div class="w-2" />
+
+		<div class=" w-full p-2">
+			<button
+				class="btn btn-sm btn-primary  w-full"
+				on:click={() => {
+					let mutationBody = $QMS_bodyPartsUnifier_StoreDerived;
+					if (mutationBody && mutationBody !== '') {
+						runQuery(mutationBody);
+					}
+				}}>submit</button
+			>
+		</div>
+	</div>
+</div>
 <div class="flex space-x-2 mx-2">
 	<div class="dropdown grow ">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
@@ -248,32 +267,6 @@
 		</div>
 	</div>
 	<div class="grow">
-		{#if showModal}
-			<Modal
-				modalIdetifier={'activeArgumentsDataModal'}
-				showApplyBtn={true}
-				on:cancel={(e) => {
-					let { detail } = e;
-					if (detail.modalIdetifier == 'activeArgumentsDataModal') {
-						showModal = false;
-					}
-				}}
-				on:apply={() => {
-					let mutationBody = $QMS_bodyPartsUnifier_StoreDerived;
-					if (mutationBody && mutationBody !== '') {
-						runQuery(mutationBody);
-					}
-				}}
-				><div class="  w-full  ">
-					<div class="mx-auto mt-2  w-full   space-y-2   pb-2  ">
-						<div class="w-2" />
-						<ActiveArguments />
-						<div class="w-2" />
-					</div>
-				</div>
-			</Modal>
-		{/if}
-
 		<div class="flex space-x-2 mb-2 px-2">
 			<button
 				class="btn btn-xs btn-block  "
