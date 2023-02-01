@@ -31,27 +31,34 @@
 		return check(0);
 	};
 	const filterByWord = () => {
-		whatToShowLastUsed?.();
-
+		if (sortingArray.length == 1 && sortingArray[0] == '') {
+			return;
+		}
 		whatToShow = whatToShow.filter((type) => {
-			if (sortingArray.length == 1 && sortingArray[0] == '') {
-				return true;
-			} else {
-				return sortingArray.find((word) => {
-					if (caseSensitive) {
-						return type.dd_displayName.includes(word);
-					}
-					return type.dd_displayName.toLowerCase().includes(word.toLowerCase());
-				});
-			}
+			return sortingArray.find((word) => {
+				if (caseSensitive) {
+					return type.dd_displayName.includes(word);
+				}
+				return type.dd_displayName.toLowerCase().includes(word.toLowerCase());
+			});
 		});
 	};
 	const showRootTypes = () => {
 		//console.log(rootTypes);
-		whatToShow = rootTypes;
+		whatToShow = rootTypes?.sort((a, b) => {
+			let ea = a.dd_rootName;
+			let eb = b.dd_rootName;
+			// let ga = a.dd_displayName;
+			// let gb = b.dd_displayName;
+			return sortingFunctionMutipleColumnsGivenArray([
+				[ea, eb]
+				// [ga, gb]
+			]);
+		});
 		whatToShowLastUsed = showRootTypes;
+		filterByWord();
 	};
-	showRootTypes();
+
 	const showQueries = () => {
 		if (queries) {
 			//console.log(queries);
@@ -69,6 +76,7 @@
 			whatToShow = [];
 		}
 		whatToShowLastUsed = showQueries;
+		filterByWord();
 	};
 
 	const showMutations = () => {
@@ -90,6 +98,7 @@
 			whatToShow = [];
 		}
 		whatToShowLastUsed = showMutations;
+		filterByWord();
 	};
 
 	const queryFieldByName = (name) => {
@@ -122,12 +131,18 @@
 				on:change={filterByWord}
 			/>
 
-			<button class="mt-2 btn bg-primary btn-xs normal-case" on:click={filterByWord}>Filter</button>
+			<button
+				class="mt-2 btn bg-primary btn-xs normal-case"
+				on:click={() => {
+					whatToShowLastUsed?.();
+					filterByWord();
+				}}>Filter</button
+			>
 		</div>
 
 		<br />
 		<br />
-		<button class="btn btn-xs " on:click={showRootTypes}>show all</button>
+		<button class="btn btn-xs " on:click={showRootTypes}>show root types</button>
 		<button class="btn btn-xs" on:click={showQueries}>show queries</button>
 		<button class="btn btn-xs" on:click={showMutations}>show mutations</button>
 		<div class="">
