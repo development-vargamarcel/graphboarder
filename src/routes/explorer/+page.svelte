@@ -189,7 +189,7 @@
 		<button class="btn btn-xs" on:click={showMutations}> mutations</button>
 		<button class="btn btn-xs" on:click={showQueriesAndMutations}> Q&M</button>
 
-		<button class="btn btn-xs" on:click={showAll}>show all</button>
+		<button class="btn btn-xs" on:click={showAll}> all</button>
 
 		<div class="">
 			{#key whatToShow}
