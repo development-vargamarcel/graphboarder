@@ -122,7 +122,7 @@
 				class="p-1 rounded-sm leading-none bg-base-100 text-xs max-w-min"
 				on:click={() => {
 					caseSensitive = !caseSensitive;
-				}}>{caseSensitive ? 'case sensitive' : 'case not sesitive'}</button
+				}}>{caseSensitive ? 'case sensitive' : 'case insesitive'}</button
 			>
 			<input
 				type="text"
