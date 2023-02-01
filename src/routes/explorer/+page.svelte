@@ -101,6 +101,48 @@
 		filterByWord();
 	};
 
+	const showAll = () => {
+		if (mutations) {
+			whatToShow = [...rootTypes, ...queries, ...mutations]?.sort((a, b) => {
+				let ea = a.dd_rootName;
+				let eb = b.dd_rootName;
+				let fa = a.dd_displayName.substring(6);
+				let fb = b.dd_displayName.substring(6);
+				let ga = a.dd_displayName;
+				let gb = b.dd_displayName;
+				return sortingFunctionMutipleColumnsGivenArray([
+					[ea, eb],
+					[fa, fb],
+					[ga, gb]
+				]);
+			});
+		} else {
+			whatToShow = [];
+		}
+		whatToShowLastUsed = showAll;
+		filterByWord();
+	};
+	const showQueriesAndMutations = () => {
+		if (mutations) {
+			whatToShow = [...queries, ...mutations]?.sort((a, b) => {
+				let ea = a.dd_rootName;
+				let eb = b.dd_rootName;
+				let fa = a.dd_displayName.substring(6);
+				let fb = b.dd_displayName.substring(6);
+				let ga = a.dd_displayName;
+				let gb = b.dd_displayName;
+				return sortingFunctionMutipleColumnsGivenArray([
+					[ea, eb],
+					[fa, fb],
+					[ga, gb]
+				]);
+			});
+		} else {
+			whatToShow = [];
+		}
+		whatToShowLastUsed = showQueriesAndMutations;
+		filterByWord();
+	};
 	const queryFieldByName = (name) => {
 		return $schemaData.queryFields.filter((item) => {
 			return item.name == name;
@@ -145,6 +187,10 @@
 		<button class="btn btn-xs " on:click={showRootTypes}>show root types</button>
 		<button class="btn btn-xs" on:click={showQueries}>show queries</button>
 		<button class="btn btn-xs" on:click={showMutations}>show mutations</button>
+		<button class="btn btn-xs" on:click={showQueriesAndMutations}>show Q&M</button>
+
+		<button class="btn btn-xs" on:click={showAll}>show all</button>
+
 		<div class="">
 			{#key whatToShow}
 				{#each whatToShow as type, index (index)}
