@@ -184,7 +184,7 @@
 
 		<br />
 		<br />
-		<button class="btn btn-xs " on:click={showRootTypes}>show root types</button>
+		<button class="btn btn-xs " on:click={showRootTypes}>show root</button>
 		<button class="btn btn-xs" on:click={showQueries}>show queries</button>
 		<button class="btn btn-xs" on:click={showMutations}>show mutations</button>
 		<button class="btn btn-xs" on:click={showQueriesAndMutations}>show Q&M</button>
