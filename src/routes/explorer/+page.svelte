@@ -126,13 +126,13 @@
 			>
 			<input
 				type="text"
-				class="input input-xs mt-2"
+				class="input input-xs mt-1"
 				bind:value={sortingInputValue}
 				on:change={filterByWord}
 			/>
 
 			<button
-				class="mt-2 btn bg-primary btn-xs normal-case"
+				class="mt-1 btn bg-primary btn-xs normal-case"
 				on:click={() => {
 					whatToShowLastUsed?.();
 					filterByWord();
