@@ -11,13 +11,11 @@
 	export let type;
 	export let originalNodes;
 	let dragDisabled = true;
-	let isDraggingStore = getContext('isDraggingStore');
 	const flipDurationMs = 100;
 	function handleDndConsider(e) {
 		//console.log('considering', e, nodes);
 		node.items = e.detail.items;
 		dragDisabled = true;
-		isDraggingStore.set(true);
 	}
 	function handleDndFinalize(e) {
 		node.items = e.detail.items;
@@ -26,7 +24,6 @@
 		handleChanged();
 		dispatch('changed');
 		dragDisabled = true;
-		isDraggingStore.set(false);
 	}
 
 	const deleteItem = (e) => {
