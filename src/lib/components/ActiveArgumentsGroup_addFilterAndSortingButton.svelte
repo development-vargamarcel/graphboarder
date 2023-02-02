@@ -10,6 +10,7 @@
 	import Arg from '$lib/components/Arg.svelte';
 	let dragDisabled = true;
 	const hasGroup_argsNode = group.group_argsNode;
+	const mainContainerOperator = group.group_argsNode?.mainContainer?.operator;
 	const { activeArgumentsDataGrouped_Store } = getContext('QMSWraperContext');
 	let rootArgs = argsInfo.filter((arg) => {
 		return arg.dd_isRootArg;
@@ -38,22 +39,42 @@
 						class="flex flex-col overflow-x-auto overscroll-contain text-sm font-normal normal-case min-w-max w-full "
 					>
 						{#if hasGroup_argsNode}
-							<button
-								class="btn btn-primary btn-xs mt-4 normal-case font-thin text-base sticky top-0"
-								on:click={() => {
-									let randomNr = Math.random();
-									group.group_argsNode[`${randomNr}`] = {
-										id: randomNr,
-										operator: '_or',
-										not: false,
-										isMain: false,
-										items: []
-									};
-									group.group_argsNode['mainContainer'].items.push({ id: randomNr });
-								}}
-							>
-								or / and / bonded
-							</button>
+							{#if mainContainerOperator == '_and'}
+								<button
+									class="btn btn-primary btn-xs mt-4 normal-case font-thin text-base sticky top-0"
+									on:click={() => {
+										let randomNr = Math.random();
+										group.group_argsNode[`${randomNr}`] = {
+											id: randomNr,
+											operator: '_or',
+											not: false,
+											isMain: false,
+											items: []
+										};
+										group.group_argsNode['mainContainer'].items.push({ id: randomNr });
+									}}
+								>
+									or / and / bonded
+								</button>
+							{:else}
+								<button
+									class="btn btn-primary btn-xs mt-4 normal-case font-thin text-base sticky top-0"
+									on:click={() => {
+										let randomNr = Math.random();
+										group.group_argsNode[`${randomNr}`] = {
+											id: randomNr,
+											operator: 'bonded',
+											not: false,
+											isMain: false,
+											isBond: true,
+											items: []
+										};
+										group.group_argsNode['mainContainer'].items.push({ id: randomNr });
+									}}
+								>
+									bonded
+								</button>
+							{/if}
 						{/if}
 						{#each groupArgsPossibilities as arg, index}
 							<Arg

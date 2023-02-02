@@ -53,6 +53,19 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 						};
 					}
 
+					const expectsList = el.dd_kindList
+					console.log({ expectsList })
+					if (expectsList) {
+						newGroupData.group_argsNode = {
+							mainContainer: {
+								operator: 'list',
+								isMain: true,
+								not: false,
+								items: [],
+								id: 'mainContainer'
+							}
+						};
+					}
 					activeArgumentsDataGrouped.push(newGroupData);
 				}
 			});
