@@ -184,6 +184,18 @@
 			>
 				{!node.isBond ? node.operator : 'bonded'}
 			</p>
+			<p class="ml-2">
+				<button
+					class="btn btn-xs btn-ghost"
+					on:click={() => {
+						alert(
+							'implement: when clicked the drawer with the choises of the group will open here,and on argument click,it will appear already in this container,instead of appearing in the main container as it is now.Maybe on large screen,make this button visible only  on mouseover the container.'
+						);
+					}}
+				>
+					<i class="bi bi-plus-circle-fill" /></button
+				>
+			</p>
 			<p class="grow" />
 			{#if !node?.isMain}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
