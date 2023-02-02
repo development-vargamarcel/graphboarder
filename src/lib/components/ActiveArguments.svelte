@@ -3,12 +3,14 @@
 	import ActiveArgumentsGroupWraper from '$lib/components/ActiveArgumentsGroupWraper.svelte';
 	const { activeArgumentsDataGrouped_Store, QMS_info } = getContext('QMSWraperContext');
 	let activeArgumentsDataGrouped = [];
-	$: console.log({ activeArgumentsDataGrouped });
+
+	$: console.log('$activeArgumentsDataGrouped_Store', $activeArgumentsDataGrouped_Store);
 	const update_activeArgumentsDataGrouped = (groupNewData) => {
 		activeArgumentsDataGrouped_Store.update_groups(groupNewData);
 	};
-
-	activeArgumentsDataGrouped_Store.set_groups(QMS_info?.args);
+	if ($activeArgumentsDataGrouped_Store.length == 0) {
+		activeArgumentsDataGrouped_Store.set_groups(QMS_info?.args);
+	}
 	let showDescription = null;
 </script>
 
