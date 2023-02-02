@@ -193,7 +193,7 @@
 						);
 					}}
 				>
-					<i class="bi bi-plus-circle-fill" /></button
+					<i class="bi bi-plus-circle" /></button
 				>
 			</p>
 			<p class="grow" />

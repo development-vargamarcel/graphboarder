@@ -26,14 +26,11 @@
 			<div class="dropdown dropdown-start ">
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-				<label
-					tabindex="0"
-					class="btn btn-sm bi bi-plus-circle text-lg p-1 mr-2 overscroll-contain"
-				/>
+				<label tabindex="0" class="btn btn-sm  bi bi-plus-circle p-1  mr-2 overscroll-contain" />
 				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 				<div
 					tabindex="0"
-					class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl overflow-y-auto overscroll-contain  max-h-52 sm:max-h-72 md:max-h-90    max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
+					class="dropdown-content menu p-2  bg-base-100 rounded-box w-max text-sm shadow-2xl overflow-y-auto overscroll-contain  max-h-52 sm:max-h-72 md:max-h-90    max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
 				>
 					<div
 						class="flex flex-col overflow-x-auto overscroll-contain text-sm font-normal normal-case min-w-max w-full "
