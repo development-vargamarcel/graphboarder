@@ -524,26 +524,47 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 //
 export const generate_gqlArgObj_forHasOperators = (group) => {
 	let { group_argsNode, group_name } = group;
-	let group_gqlArgObj = { [group_name]: { _and: [] } };
+	let mainContainerOperator = group_argsNode.mainContainer.operator
+
+
 	let group_canRunQuery = true;
 	let nodes = JSON.parse(JSON.stringify(group_argsNode));
 	let nodesArray = Object.values(nodes);
 	let mainContainer = nodesArray.filter((node) => {
 		return node.isMain;
 	})[0];
-	//
+	let group_gqlArgObj
+	if (mainContainerOperator == '_and') {
+		//
+		group_gqlArgObj = { [group_name]: { _and: [] } };
+		group_gqlArgObj[group_name]['_and'] = generate_gqlArgObjForItems(
+			validItems(mainContainer?.items, nodes),
+			group_name,
+			nodes
+		);
+		if (group_gqlArgObj[group_name]['_and']?.length == 0) {
+			group_canRunQuery = false;
+			group_gqlArgObj = {};
+		}
 
-	group_gqlArgObj[group_name]['_and'] = generate_gqlArgObjForItems(
-		validItems(mainContainer?.items, nodes),
-		group_name,
-		nodes
-	);
-	if (group_gqlArgObj[group_name]['_and']?.length == 0) {
-		group_canRunQuery = false;
-		group_gqlArgObj = {};
+		//
+	} else {
+		//
+		group_gqlArgObj = { [group_name]: [] };
+		group_gqlArgObj[group_name] = generate_gqlArgObjForItems(
+			validItems(mainContainer?.items, nodes),
+			group_name,
+			nodes
+		);
+		if (group_gqlArgObj[group_name]?.length == 0) {
+			group_canRunQuery = false;
+			group_gqlArgObj = {};
+		}
+
+		//
 	}
 
-	//
+
 
 	let group_gqlArgObj_string = gqlArgObjToString(group_gqlArgObj);
 	return {
