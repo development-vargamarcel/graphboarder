@@ -95,7 +95,7 @@
 							activeArgumentsDataGrouped_Store.add_activeArgument(
 								newArgData,
 								group.group_name,
-								node.id
+								node?.id
 							);
 						}}
 					/>
