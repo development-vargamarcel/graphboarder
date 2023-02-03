@@ -3,6 +3,8 @@
 	import { dndzone, SHADOW_PLACEHOLDER_ITEM_ID } from 'svelte-dnd-action';
 	import { createEventDispatcher, getContext } from 'svelte';
 	import ActiveArgument from '$lib/components/ActiveArgument.svelte';
+	import ActiveArgumentsGroup_addFilterAndSortingButton from '$lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte';
+
 	const dispatch = createEventDispatcher();
 	export let nodes;
 	export let node;
@@ -10,6 +12,7 @@
 	export let group;
 	export let type;
 	export let originalNodes;
+
 	let dragDisabled = true;
 	const flipDurationMs = 100;
 	function handleDndConsider(e) {
@@ -82,10 +85,11 @@
 	};
 	//
 	const dragDisabledConstantTest = true;
-	const { finalGqlArgObj_Store } = getContext('QMSWraperContext');
+	const { finalGqlArgObj_Store, QMS_info } = getContext('QMSWraperContext');
 	const handleChanged = () => {
 		finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 	};
+	let argsInfo = QMS_info?.args;
 </script>
 
 {#if !node?.isMain}
@@ -162,7 +166,7 @@
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<p
 				style=""
-				class="btn btn-xs btn-ghost px-2 pb-1 text-xs font-light transition-all duration-500  rounded-full  normal-case   {node.isBond
+				class="btn btn-xs btn-ghost px-2  text-xs font-light transition-all duration-500  rounded-full  normal-case   {node.isBond
 					? 'text-base-content'
 					: node?.operator == '_and'
 					? 'text-primary'
@@ -173,8 +177,10 @@
 							node.operator = '_and';
 						} else if (node?.operator == '_and' && !node?.isBond) {
 							node.isBond = true;
-						} else {
+						} else if (node.isBond) {
 							node.isBond = false;
+							node.operator = 'list';
+						} else {
 							node.operator = '_or';
 						}
 					}
@@ -184,17 +190,14 @@
 			>
 				{!node.isBond ? node.operator : 'bonded'}
 			</p>
-			<p class="ml-2">
-				<button
-					class="btn btn-xs btn-ghost"
-					on:click={() => {
-						alert(
-							'implement: when clicked the drawer with the choises of the group will open here,and on argument click,it will appear already in this container,instead of appearing in the main container as it is now.Maybe on large screen,make this button visible only  on mouseover the container.'
-						);
-					}}
-				>
-					<i class="bi bi-plus-circle" /></button
-				>
+
+			<p>
+				<ActiveArgumentsGroup_addFilterAndSortingButton
+					on:updateQuery
+					bind:group
+					bind:argsInfo
+					{node}
+				/>
 			</p>
 			<p class="grow" />
 			{#if !node?.isMain}

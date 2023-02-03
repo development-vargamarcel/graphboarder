@@ -1,5 +1,7 @@
 <script>
 	import ActiveArgumentsGroup_addFilterAndSortingButton from '$lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte';
+	import ActiveArgumentsGroup_info from '$lib/components/ActiveArgumentsGroup_info.svelte';
+
 	import ActiveArgumentsGroupNormal from '$lib/components/ActiveArgumentsGroupNormal.svelte';
 	export let group;
 	export let argsInfo;
@@ -19,13 +21,19 @@
 	const { finalGqlArgObj_Store } = getContext('QMSWraperContext');
 </script>
 
-<ActiveArgumentsGroup_addFilterAndSortingButton
-	on:updateQuery
-	bind:group
-	bind:argsInfo
-	bind:update_activeArgumentsDataGrouped
-	bind:activeArgumentsDataGrouped
-/>
+<div class="flex pl-2">
+	<ActiveArgumentsGroup_info {group} />
+	{#if !hasGroup_argsNode}
+		<ActiveArgumentsGroup_addFilterAndSortingButton
+			on:updateQuery
+			bind:group
+			bind:argsInfo
+			bind:update_activeArgumentsDataGrouped
+			bind:activeArgumentsDataGrouped
+			node={group.group_argsNode?.mainContainer}
+		/>
+	{/if}
+</div>
 
 {#if hasGroup_argsNode}
 	<div class=" ">
