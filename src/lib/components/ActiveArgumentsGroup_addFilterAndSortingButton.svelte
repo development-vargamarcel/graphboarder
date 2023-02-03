@@ -4,7 +4,6 @@
 	export let update_activeArgumentsDataGrouped;
 	export let activeArgumentsDataGrouped;
 	export let node;
-	console.log({ node });
 	export let prefix = '';
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
 	import { getContext, setContext } from 'svelte';
