@@ -191,7 +191,6 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 							};
 
 							if (containerId) {
-								console.log({ containerId })
 								group.group_argsNode[containerId].items.push({ id: randomNr });
 							} else {
 								group.group_argsNode['mainContainer'].items.push({ id: randomNr });
@@ -207,7 +206,6 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 							group.group_argsNode[newArgData.id] = newArgData;
 
 							if (containerId) {
-								console.log({ containerId })
 								group.group_argsNode[containerId].items.push({ id: newArgData.id });
 							} else {
 								group.group_argsNode.mainContainer.items.push({ id: newArgData.id });
