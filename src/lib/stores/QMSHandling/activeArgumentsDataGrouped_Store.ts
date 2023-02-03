@@ -162,7 +162,7 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 					return arg.stepsOfFieldsStringified == JSON.stringify(stepsOfFields);
 				});
 		},
-		add_activeArgument: (newArgData, groupName) => {
+		add_activeArgument: (newArgData, groupName, containerId) => {
 			update((activeArgumentsDataGrouped) => {
 				let group = activeArgumentsDataGrouped?.filter((group) => {
 					return group.group_name == groupName;
@@ -189,7 +189,15 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 								isBond: true,
 								items: []
 							};
-							group.group_argsNode['mainContainer'].items.push({ id: randomNr });
+
+							if (containerId) {
+								console.log({ containerId })
+								group.group_argsNode[containerId].items.push({ id: randomNr });
+							} else {
+								group.group_argsNode['mainContainer'].items.push({ id: randomNr });
+							}
+
+
 							group.group_argsNode[`${randomNr}`].items.push({ id: newArgData.id });
 						} else {
 							//to prevent --> Uncaught TypeError: Converting circular structure to JSON
@@ -197,7 +205,14 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 								'overwritten to evade error: Uncaught TypeError: Converting circular structure to JSON';
 							newArgData.not = false;
 							group.group_argsNode[newArgData.id] = newArgData;
-							group.group_argsNode.mainContainer.items.push({ id: newArgData.id });
+
+							if (containerId) {
+								console.log({ containerId })
+								group.group_argsNode[containerId].items.push({ id: newArgData.id });
+							} else {
+								group.group_argsNode.mainContainer.items.push({ id: newArgData.id });
+							}
+
 						}
 					} else {
 						if (

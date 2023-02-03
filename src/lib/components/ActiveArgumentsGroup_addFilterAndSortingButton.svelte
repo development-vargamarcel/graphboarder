@@ -93,7 +93,11 @@
 						groupName={group.group_name}
 						on:argAddRequest={(e) => {
 							let newArgData = e.detail;
-							activeArgumentsDataGrouped_Store.add_activeArgument(newArgData, group.group_name);
+							activeArgumentsDataGrouped_Store.add_activeArgument(
+								newArgData,
+								group.group_name,
+								node.id
+							);
 						}}
 					/>
 				{/each}
