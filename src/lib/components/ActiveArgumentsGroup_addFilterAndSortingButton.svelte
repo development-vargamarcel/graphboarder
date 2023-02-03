@@ -35,7 +35,7 @@
 			class="dropdown-content menu p-2  bg-base-100 rounded-box w-max text-sm shadow-2xl overflow-y-auto overscroll-contain  max-h-52 sm:max-h-72 md:max-h-90    max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
 		>
 			<div
-				class="flex flex-col overflow-x-auto overscroll-contain text-sm font-normal normal-case min-w-max w-full "
+				class="flex flex-col overflow-x-auto overscroll-contain text-sm text-base-content font-normal normal-case min-w-max w-full "
 			>
 				{#if hasGroup_argsNode}
 					{#if node?.isBond || node?.operator == 'list'}
