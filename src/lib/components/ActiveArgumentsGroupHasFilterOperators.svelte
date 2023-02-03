@@ -135,7 +135,7 @@
 	{node?.operator ? 'rounded-l-md bg-gradient-to-rxxx   border-l-[1px] my-1 shadow-sm' : ''} 
 	
 {node?.operator && node?.not ? 'border-dashed  ' : ''} 
-{node.isBond
+{node.isBond || node?.operator == 'list'
 		? 'border-base-content'
 		: node?.operator == '_and'
 		? 'border-primary'
@@ -166,7 +166,8 @@
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<p
 				style=""
-				class="btn btn-xs btn-ghost px-2  text-xs font-light transition-all duration-500  rounded-full  normal-case   {node.isBond
+				class="btn btn-xs btn-ghost px-2  text-xs font-light transition-all duration-500  rounded-full  normal-case   {node.isBond ||
+				node?.operator == 'list'
 					? 'text-base-content'
 					: node?.operator == '_and'
 					? 'text-primary'
@@ -203,7 +204,7 @@
 			{#if !node?.isMain}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<p
-					class="btn btn-xs btn-ghost {node.isBond
+					class="btn btn-xs btn-ghost {node.isBond || node?.operator == 'list'
 						? 'text-base-content'
 						: node?.operator == '_and'
 						? 'text-primary'
