@@ -40,6 +40,16 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 					};
 
 					const hasFilterOperators = getRootType(null, el.dd_rootName)?.dd_filterOperators?.length > 0;
+					newGroupData.group_argsNode = {
+						mainContainer: {
+							operator: 'bonded',
+							isMain: true,
+							isBond: true,
+							not: false,
+							items: [],
+							id: 'mainContainer'
+						}
+					};
 
 					if (hasFilterOperators) {
 						newGroupData.group_argsNode = {
@@ -54,7 +64,6 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 					}
 
 					const expectsList = el.dd_kindList
-					console.log({ expectsList })
 					if (expectsList) {
 						newGroupData.group_argsNode = {
 							mainContainer: {
@@ -66,6 +75,8 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 							}
 						};
 					}
+
+
 					activeArgumentsDataGrouped.push(newGroupData);
 				}
 			});
