@@ -17,10 +17,14 @@
 		return arg.dd_isRootArg;
 	});
 
-	let groupArgsPossibilities = group.group_isRoot
-		? rootArgs
-		: getRootType(null, group.dd_rootName).inputFields;
-
+	let groupArgsPossibilities;
+	if (group.group_isRoot) {
+		groupArgsPossibilities = rootArgs;
+	} else if (node?.inputFields) {
+		groupArgsPossibilities = node?.inputFields;
+	} else {
+		groupArgsPossibilities = getRootType(null, group.dd_rootName).inputFields;
+	}
 	console.log({ groupArgsPossibilities });
 	let predefinedFirstSteps = group.group_isRoot ? [] : [group.group_name];
 </script>
@@ -107,6 +111,7 @@
 							let newContainerData = e.detail;
 							console.log({ newContainerData });
 							let randomNr = Math.random();
+							console.log('group', group);
 							group.group_argsNode[`${randomNr}`] = {
 								inputFields: getRootType(null, newContainerData.dd_rootName)?.inputFields,
 								stepsOfFields: newContainerData?.stepsOfFields,

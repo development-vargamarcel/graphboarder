@@ -343,7 +343,7 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => {
 		});
 		derivedData.dd_paginationType = get_paginationType(derivedData.dd_paginationArgs);
 	}
-	//derivedData.dd_relatedRoot = 'overwritten to evade error: Uncaught TypeError: Converting circular structure to JSON'
+	derivedData.dd_relatedRoot = 'overwritten to evade error: Uncaught TypeError: Converting circular structure to JSON'
 	return derivedData;
 };
 
@@ -480,7 +480,6 @@ const validItems = (items, nodes) => {
 
 //
 const generate_gqlArgObjForItems = (items, group_name, nodes) => {
-	//!!! this must be modified: example bug: _st_d_within has distance and from as dd_NON_NULL,you must combine the result in one object not two objects in an array,even if in _or.
 	let itemsObj = items.map((item) => {
 		let itemData = nodes[item.id];
 
