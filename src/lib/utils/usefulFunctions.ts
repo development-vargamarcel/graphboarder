@@ -508,9 +508,20 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 				console.log({ mergeResult });
 				console.log({ itemData });
 			} else {
-				Object.assign(itemObjCurr, {
-					[itemData.operator]: generate_gqlArgObjForItems(validItemsResult, group_name, nodes)
-				});
+				if (itemData?.stepsOfFields) {
+					console.log('itemData?.stepsOfFields', itemData.stepsOfFields, stepsOfFieldsToQueryFragmentObject(itemData?.stepsOfFields))
+					const theNewObject = stepsOfFieldsToQueryFragmentObject(itemData?.stepsOfFields)
+					const stepsOfFieldsLength = itemData?.stepsOfFields.length
+					console.log('last step', itemData?.stepsOfFields[stepsOfFieldsLength - 1])
+					theNewObject[itemData?.stepsOfFields[stepsOfFieldsLength - 1]] = generate_gqlArgObjForItems(validItemsResult, group_name, nodes)
+					Object.assign(itemObjCurr, theNewObject);
+
+				} else {
+					Object.assign(itemObjCurr, {
+						[itemData.operator]: generate_gqlArgObjForItems(validItemsResult, group_name, nodes)
+					});
+				}
+
 			}
 		} else {
 			//console.log('arg');
