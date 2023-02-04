@@ -498,8 +498,12 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 			let validItemsResult = validItems(itemData.items, nodes);
 			console.log({ validItemsResult });
 			if (itemData?.isBond) {
-				let arrayOfObjects = validItemsResult.map((item) => {
-					return nodes[item.id].arg_gqlArgObj;
+
+				let arrayOfObjects = validItemsResult.map((currItem) => {
+					const inner_itemData = nodes[currItem.id];
+					if (inner_itemData.arg_gqlArgObj) {
+						return inner_itemData.arg_gqlArgObj;
+					}
 				});
 				console.log({ arrayOfObjects });
 				let mergeResult = {};
