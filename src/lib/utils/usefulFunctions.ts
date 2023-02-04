@@ -513,8 +513,6 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 				});
 			}
 		} else {
-			//console.log('arg');
-			//console.log('group_name', group_name);
 			Object.assign(itemObjCurr, nodes[item.id]?.gqlArgObj?.[group_name]);
 		}
 		//
@@ -525,7 +523,6 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 //
 export const generate_gqlArgObj_forHasOperators = (group) => {
 	let { group_argsNode, group_name } = group;
-	let mainContainerOperator = group_argsNode.mainContainer.operator
 
 
 	let group_canRunQuery = true;
@@ -534,37 +531,28 @@ export const generate_gqlArgObj_forHasOperators = (group) => {
 	let mainContainer = nodesArray.filter((node) => {
 		return node.isMain;
 	})[0];
+	let mainContainerOperator = mainContainer.operator
 	let group_gqlArgObj
+
+
+	const gqlArgObjForItems = generate_gqlArgObjForItems(
+		validItems(mainContainer?.items, nodes),
+		group_name,
+		nodes
+	);
 	if (mainContainerOperator == '_and') {
-		//
 		group_gqlArgObj = { [group_name]: { _and: [] } };
-		group_gqlArgObj[group_name]['_and'] = generate_gqlArgObjForItems(
-			validItems(mainContainer?.items, nodes),
-			group_name,
-			nodes
-		);
-		if (group_gqlArgObj[group_name]['_and']?.length == 0) {
-			group_canRunQuery = false;
-			group_gqlArgObj = {};
-		}
-
-		//
-	} else {
-		//
+		group_gqlArgObj[group_name]['_and'] = gqlArgObjForItems
+	} else if (mainContainerOperator == 'list') {
 		group_gqlArgObj = { [group_name]: [] };
-		group_gqlArgObj[group_name] = generate_gqlArgObjForItems(
-			validItems(mainContainer?.items, nodes),
-			group_name,
-			nodes
-		);
-		if (group_gqlArgObj[group_name]?.length == 0) {
-			group_canRunQuery = false;
-			group_gqlArgObj = {};
-		}
-
-		//
+		group_gqlArgObj[group_name] = gqlArgObjForItems
 	}
 
+
+	if (gqlArgObjForItems?.length == 0) {
+		group_canRunQuery = false;
+		group_gqlArgObj = {};
+	}
 
 
 	let group_gqlArgObj_string = gqlArgObjToString(group_gqlArgObj);
