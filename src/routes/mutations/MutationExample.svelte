@@ -58,6 +58,7 @@
 	let loadedF;
 	let completeF;
 	let infiniteId = 0;
+	console.log({ infiniteId });
 	function infiniteHandler({ detail: { loaded, complete } }) {
 		loadedF = loaded;
 		completeF = complete;
@@ -331,20 +332,23 @@
 		</div>
 	{/if}
 
-	<div class="md:px-2">
-		<Table
-			{infiniteId}
-			{infiniteHandler}
-			colsData={$tableColsData_Store}
-			{rows}
-			on:addColumnDropdown={() => {
-				//console.log('add column dropdown');
-			}}
-			on:hideColumn={(e) => {
-				hideColumn(e);
-			}}
-			on:clickedOnRow={(e) => {}}
-		/>
-	</div>
+	{#if queryData.data}
+		<div class="md:px-2">
+			<Table
+				{infiniteId}
+				{infiniteHandler}
+				colsData={$tableColsData_Store}
+				{rows}
+				on:addColumnDropdown={() => {
+					//console.log('add column dropdown');
+				}}
+				on:hideColumn={(e) => {
+					hideColumn(e);
+				}}
+				on:clickedOnRow={(e) => {}}
+			/>
+		</div>
+	{/if}
+
 	<div />
 </div>
