@@ -330,21 +330,21 @@
 			>
 		</div>
 	{/if}
-	<!-- 
-<div class="md:px-2">
-	<Table
-		{infiniteId}
-		{infiniteHandler}
-		colsData={$tableColsData_Store}
-		{rows}
-		on:addColumnDropdown={() => {
-			//console.log('add column dropdown');
-		}}
-		on:hideColumn={(e) => {
-			hideColumn(e);
-		}}
-		on:clickedOnRow={(e) => {}}
-	/>
-</div> -->
+
+	<div class="md:px-2">
+		<Table
+			{infiniteId}
+			{infiniteHandler}
+			colsData={$tableColsData_Store}
+			{rows}
+			on:addColumnDropdown={() => {
+				//console.log('add column dropdown');
+			}}
+			on:hideColumn={(e) => {
+				hideColumn(e);
+			}}
+			on:clickedOnRow={(e) => {}}
+		/>
+	</div>
 	<div />
 </div>
