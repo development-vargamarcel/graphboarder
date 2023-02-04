@@ -107,6 +107,8 @@
 				<span class="  text-lg font-bold"> {title} </span>
 			</div>
 		</div>
-		<slot />
+		<div class="w-full md:w-[70vw]  p-2">
+			<slot />
+		</div>
 	</main>
 {/if}
