@@ -1,7 +1,7 @@
 <script>
 	import { page } from '$app/stores';
 	import TabItem from '$lib/components/TabItem.svelte';
-	import { getQueryLinks } from '$lib/utils/usefulFunctions';
+	import { getQMSLinks } from '$lib/utils/usefulFunctions';
 	import { createEventDispatcher, onMount } from 'svelte';
 	const dispatch = createEventDispatcher();
 	console.log($page);
@@ -22,16 +22,16 @@
 			icon: 'bi bi-asterisk',
 			isSelected: false,
 			hasFill: false,
-			items: getQueryLinks()
+			items: getQMSLinks('query', '/queries')
 		},
 		{
-			title: 'Mutate',
-			url: '/mutate',
+			title: 'Mutations',
+			url: '/mutations',
 			urlIsRoute: false,
 			icon: 'bi bi-pen',
 			isSelected: false,
 			hasFill: true,
-			items: []
+			items: getQMSLinks('mutation', '/mutations')
 		},
 		{
 			title: 'Explorer',
@@ -44,7 +44,7 @@
 		}
 	];
 
-	let QueryLinks = getQueryLinks();
+	let QueryLinks = getQMSLinks();
 	console.log({ QueryLinks });
 	const get_itemsToShow = () => {
 		return (itemsToShow =

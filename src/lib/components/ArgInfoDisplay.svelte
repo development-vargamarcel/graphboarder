@@ -17,7 +17,7 @@
 		dd_namesArray,
 		dd_rootName,
 		dd_displayName,
-
+		dd_kindList,
 		dd_NON_NULL,
 		dd_relatedRoot,
 		dd_canExpand,
@@ -131,6 +131,10 @@
 
 		<!-- {#if dd_canExpand && !allInputFieldsAreScalar && !enumValues} -->
 		{#if dd_shouldExpand}
+			{#if dd_kindList}
+				<div>expects list</div>
+			{/if}
+
 			<div class="w-10  ">
 				{#if showExpand}
 					<div class="bi bi-chevron-down mx-auto w-min" />

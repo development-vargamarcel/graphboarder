@@ -200,144 +200,137 @@
 	let showActiveFilters;
 </script>
 
-<!-- <button
-	on:click={() => {
-		paginationState.nextPage(rows[rows.length - 1], queryData?.data);
-	}}
->
-	next page
-</button> -->
-<!-- main -->
-<div class="  w-full   px-6 mb-10 ">
-	<div class=" mt-2     space-y-2   pb-2  bg-base-100 rounded-box ">
-		<div class="w-2" />
-		<ActiveArguments />
-		<div class="w-2" />
+<div class="w-[70vw]">
+	<div class="  w-full   px-6 mb-10 ">
+		<div class=" mt-2     space-y-2   pb-2  bg-base-100 rounded-box ">
+			<div class="w-2" />
+			<ActiveArguments />
+			<div class="w-2" />
 
-		<div class=" w-full p-2">
-			<button
-				class="btn btn-sm btn-primary  w-full"
-				on:click={() => {
-					let mutationBody = $QMS_bodyPartsUnifier_StoreDerived;
-					if (mutationBody && mutationBody !== '') {
-						runQuery(mutationBody);
-					}
-				}}>submit</button
-			>
+			<div class=" w-full p-2">
+				<button
+					class="btn btn-sm btn-primary  w-full"
+					on:click={() => {
+						let mutationBody = $QMS_bodyPartsUnifier_StoreDerived;
+						if (mutationBody && mutationBody !== '') {
+							runQuery(mutationBody);
+						}
+					}}>submit</button
+				>
+			</div>
 		</div>
 	</div>
-</div>
-<div class="flex space-x-2 mx-2">
-	<div class="dropdown grow ">
-		<!-- svelte-ignore a11y-label-has-associated-control -->
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
-		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-		<label tabindex="0" class="btn btn-xs bi bi-node-plus-fill text-lg p-1  w-full" />
-		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-		<div
-			tabindex="0"
-			class="dropdown-content menu p-2  bg-base-100 rounded-box ==w-max max-w-screen text-sm shadow-2xl"
-		>
+	<div class="flex space-x-2 mx-2">
+		<div class="dropdown grow ">
+			<!-- svelte-ignore a11y-label-has-associated-control -->
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+			<label tabindex="0" class="btn btn-xs bi bi-node-plus-fill text-lg p-1  w-full" />
+			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 			<div
-				class="max-h-[70vh] sm:max-h-[80vh] md:max-h-[80vh] overflow-auto overscroll-contain max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
+				tabindex="0"
+				class="dropdown-content menu p-2  bg-base-100 rounded-box ==w-max max-w-screen text-sm shadow-2xl"
 			>
 				<div
-					class="flex flex-col overflow-x-auto text-sm font-normal normal-case min-w-max  w-full  space-y-2"
+					class="max-h-[70vh] sm:max-h-[80vh] md:max-h-[80vh] overflow-auto overscroll-contain max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
 				>
-					<input
-						type="text"
-						class="input input-sm input-bordered input-accent m-2"
-						placeholder="(> or .) producer>films>title "
-						bind:value={column_stepsOfFields}
-						on:keypress={addColumnFromInput}
-					/>
-					{#if dd_relatedRoot?.fields}
-						{#each dd_relatedRoot.fields as type, index (index)}
-							<Type
-								{index}
-								{type}
-								template="columnAddDisplay"
-								stepsOfFields={[QMSName]}
-								depth={0}
-							/>
-						{/each}
-					{/if}
+					<div
+						class="flex flex-col overflow-x-auto text-sm font-normal normal-case min-w-max  w-full  space-y-2"
+					>
+						<input
+							type="text"
+							class="input input-sm input-bordered input-accent m-2"
+							placeholder="(> or .) producer>films>title "
+							bind:value={column_stepsOfFields}
+							on:keypress={addColumnFromInput}
+						/>
+						{#if dd_relatedRoot?.fields}
+							{#each dd_relatedRoot.fields as type, index (index)}
+								<Type
+									{index}
+									{type}
+									template="columnAddDisplay"
+									stepsOfFields={[QMSName]}
+									depth={0}
+								/>
+							{/each}
+						{/if}
+					</div>
 				</div>
 			</div>
 		</div>
+
+		<button
+			class=" btn btn-xs grow normal-case "
+			on:click={() => {
+				showQMSBody = !showQMSBody;
+			}}>QMS body</button
+		>
+		{#if QMS_bodyPart_StoreDerived_rowsCount}
+			<div class="badge badge-primary flex space-x-2">
+				{rows.length}/
+				<RowCount QMS_bodyPart_StoreDerived={QMS_bodyPart_StoreDerived_rowsCount} {QMS_info} />
+			</div>
+		{/if}
 	</div>
 
-	<button
-		class=" btn btn-xs grow normal-case "
-		on:click={() => {
-			showQMSBody = !showQMSBody;
-		}}>QMS body</button
-	>
-	{#if QMS_bodyPart_StoreDerived_rowsCount}
-		<div class="badge badge-primary flex space-x-2">
-			{rows.length}/
-			<RowCount QMS_bodyPart_StoreDerived={QMS_bodyPart_StoreDerived_rowsCount} {QMS_info} />
-		</div>
-	{/if}
-</div>
+	<slot />
+	{#if queryData.error}
+		<div class="px-4 mx-auto  mb-2">
+			<div class="alert alert-error shadow-lg ">
+				<div>
+					<button class="btn btn-ghost btn-sm p-0">
+						<!-- svelte-ignore a11y-click-events-have-key-events -->
+						<svg
+							on:click={() => {
+								queryData.error = null;
+							}}
+							xmlns="http://www.w3.org/2000/svg"
+							class="stroke-current flex-shrink-0 h-6 w-6"
+							fill="none"
+							viewBox="0 0 24 24"
+							><path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+							/></svg
+						>
+					</button>
 
-<slot />
-{#if queryData.error}
-	<div class="px-4 mx-auto  mb-2">
-		<div class="alert alert-error shadow-lg ">
-			<div>
-				<button class="btn btn-ghost btn-sm p-0">
-					<!-- svelte-ignore a11y-click-events-have-key-events -->
-					<svg
-						on:click={() => {
-							queryData.error = null;
-						}}
-						xmlns="http://www.w3.org/2000/svg"
-						class="stroke-current flex-shrink-0 h-6 w-6"
-						fill="none"
-						viewBox="0 0 24 24"
-						><path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-						/></svg
-					>
-				</button>
-
-				<span class="max-h-20 overflow-auto">{queryData.error}</span>
+					<span class="max-h-20 overflow-auto">{queryData.error}</span>
+				</div>
 			</div>
 		</div>
-	</div>
-{/if}
-{#if queryData.fetching}
-	<p>Loading...</p>
-{/if}
+	{/if}
+	{#if queryData.fetching}
+		<p>Loading...</p>
+	{/if}
 
-{#if showQMSBody}
-	<div class="mockup-code== bg-base text-content my-1 mx-2 px-2 relative">
-		<div class="max-h-32 overflow-y-auto">
-			{#if showNonPrettifiedQMSBody}
-				<code class="px-10">{$QMS_bodyPartsUnifier_StoreDerived}</code>
-			{:else}
-				<code class="language-graphql "
-					>{@html hljs
-						.highlight(format($QMS_bodyPartsUnifier_StoreDerived), { language: 'graphql' })
-						.value.trim()}</code
-				>
-			{/if}
+	{#if showQMSBody}
+		<div class="mockup-code== bg-base text-content my-1 mx-2 px-2 relative">
+			<div class="max-h-32 overflow-y-auto">
+				{#if showNonPrettifiedQMSBody}
+					<code class="px-10">{$QMS_bodyPartsUnifier_StoreDerived}</code>
+				{:else}
+					<code class="language-graphql "
+						>{@html hljs
+							.highlight(format($QMS_bodyPartsUnifier_StoreDerived), { language: 'graphql' })
+							.value.trim()}</code
+					>
+				{/if}
+			</div>
+			<button
+				class="btn btn-xs btn-accent mx-atuo absolute top-3 right-4 normal-case"
+				on:click={() => {
+					showNonPrettifiedQMSBody = !showNonPrettifiedQMSBody;
+				}}
+			>
+				{showNonPrettifiedQMSBody ? ' show prettified ' : ' show non-prettified '}</button
+			>
 		</div>
-		<button
-			class="btn btn-xs btn-accent mx-atuo absolute top-3 right-4 normal-case"
-			on:click={() => {
-				showNonPrettifiedQMSBody = !showNonPrettifiedQMSBody;
-			}}
-		>
-			{showNonPrettifiedQMSBody ? ' show prettified ' : ' show non-prettified '}</button
-		>
-	</div>
-{/if}
-
+	{/if}
+	<!-- 
 <div class="md:px-2">
 	<Table
 		{infiniteId}
@@ -352,5 +345,6 @@
 		}}
 		on:clickedOnRow={(e) => {}}
 	/>
+</div> -->
+	<div />
 </div>
-<div />

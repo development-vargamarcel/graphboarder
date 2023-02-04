@@ -585,17 +585,17 @@ export const generate_finalGqlArgObj_fromGroups = (activeArgumentsDataGrouped: [
 	return { finalGqlArgObj, final_canRunQuery };
 };
 
-export const getQueryLinks = () => {
+export const getQMSLinks = (QMSName = 'query', parentURL) => {
 	let $page = get(page);
 	let origin = $page.url.origin;
 	let queryLinks = [];
 	let $schemaData = get(schemaData);
-	queryLinks = $schemaData.queryFields.map((query) => {
+	queryLinks = $schemaData?.[`${QMSName}Fields`].map((query) => {
 		let queryName = query.name;
 		let queryNameDisplay = queryName;
 		let queryTitleDisplay = '';
 		let currentQueryFromRootTypes = query.dd_relatedRoot;
-		let currentQMS_info = schemaData.get_QMS_Field(queryName, 'query');
+		let currentQMS_info = schemaData.get_QMS_Field(queryName, QMSName);
 		let endpointInfoVal = get(endpointInfo);
 		const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_info);
 		const nodeFieldsQMS_info = get_nodeFieldsQMS_info(currentQMS_info, rowsLocation);
@@ -623,7 +623,7 @@ export const getQueryLinks = () => {
 		if (scalarFields.length == 0) {
 			queryNameDisplay = queryNameDisplay + ' (no scalar)';
 		}
-		let queryLink = { url: `/queries/${queryName}`, title: queryNameDisplay };
+		let queryLink = { url: `${parentURL}/${queryName}`, title: queryNameDisplay };
 		return queryLink;
 	});
 	return queryLinks;
