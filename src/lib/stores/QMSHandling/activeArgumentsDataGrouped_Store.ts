@@ -1,4 +1,4 @@
-import { argumentCanRunQuery, generate_gqlArgObj } from '$lib/utils/usefulFunctions';
+import { argumentCanRunQuery, generate_gqlArgObj, getRootType } from '$lib/utils/usefulFunctions';
 import { json } from '@sveltejs/kit';
 import { get, writable } from 'svelte/store';
 

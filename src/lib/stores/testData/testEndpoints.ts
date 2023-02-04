@@ -49,7 +49,11 @@ let test = [
 						`${QMS_info.dd_displayName}_aggregated`,
 						'query'
 					);
-					const nodeFieldsQMS_info = getRootType(null, get_nodeFieldsQMS_info(aggregatedQMS_info, ['count']).dd_rootName).fields[0].dd_displayName;
+					const rootType = getRootType(null, QMS_info.dd_rootName)
+					if (!rootType) {
+						return null
+					}
+					const nodeFieldsQMS_info = rootType.fields[0].dd_displayName;
 					if (nodeFieldsQMS_info) {
 						return [`${QMS_info.dd_displayName}_aggregated`, 'count', nodeFieldsQMS_info];
 					}

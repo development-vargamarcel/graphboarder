@@ -765,7 +765,7 @@ export const get_nodeFieldsQMS_info = (QMS_info, rowsLocation) => {
 	}
 
 	let nodeFieldsQMS_info = QMS_info;
-	if (!getRootType(null, nodeFieldsQMS_info.dd_rootName)?.fields) {
+	if (!getRootType(null, nodeFieldsQMS_info?.dd_rootName)?.fields) {
 		return nodeFieldsQMS_info;
 	}
 	rowsLocation.forEach((curr_rowsLocation) => {

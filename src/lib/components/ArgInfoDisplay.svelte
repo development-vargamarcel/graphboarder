@@ -1,4 +1,5 @@
 <script>
+	import { getRootType } from '$lib/utils/usefulFunctions';
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 	export let expand;
