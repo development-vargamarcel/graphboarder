@@ -48,15 +48,23 @@
 			id: `${JSON.stringify(stepsOfFields)}${Math.random()}`,
 			...type
 		};
-		//console.log('infoToCast', infoToCast);
-		//add it
-		console.log({ groupName });
-		dispatch('argAddRequest', infoToCast);
 
-		//infos about enums:
-		//https://blog.logrocket.com/what-you-need-to-know-about-graphql-enums/
-		//!!!  But the enum value as String is not valid. The field using an enum type requires an enum reference, so passing the enum value isn’t considered valid.
-		//other important info https://dgraph.io/docs/graphql/queries/and-or-not/
+		dispatch('argAddRequest', infoToCast);
+	};
+	const addContainer = () => {
+		if (stepsOfFields[stepsOfFields.length - 1] !== dd_displayName) {
+			stepsOfFields.push(dd_displayName); //take care might caus eproblems
+		}
+
+		let infoToCast = {
+			///inputFields,
+			///enumValues,
+			stepsOfFields,
+			stepsOfFieldsStringified: JSON.stringify(stepsOfFields),
+			id: `${JSON.stringify(stepsOfFields)}${Math.random()}`,
+			...type
+		};
+		dispatch('containerAddRequest', infoToCast);
 	};
 </script>
 
@@ -119,7 +127,11 @@
 		on:click={() => {
 			// if (dd_canExpand && !allInputFieldsAreScalar && !enumValues) {
 			if (dd_shouldExpand) {
-				expand();
+				if (dd_kindList) {
+					addContainer();
+				} else {
+					expand();
+				}
 			} else {
 				addFilter();
 			}

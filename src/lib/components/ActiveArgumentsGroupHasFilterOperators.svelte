@@ -200,6 +200,7 @@
 					{node}
 				/>
 			</p>
+			<p class="text-xs pt-1 w-full overflow-scroll">{node?.stepsOfFields?.join(' > ')}</p>
 			<p class="grow" />
 			{#if !node?.isMain}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->

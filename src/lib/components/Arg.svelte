@@ -66,6 +66,7 @@
 		{stepsOfFields}
 		{groupName}
 		on:argAddRequest
+		on:containerAddRequest
 	/>
 
 	{#if showExpand}

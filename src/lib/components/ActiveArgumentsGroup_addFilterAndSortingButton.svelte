@@ -98,6 +98,25 @@
 								node?.id
 							);
 						}}
+						on:containerAddRequest={(e) => {
+							let newContainerData = e.detail;
+							console.log({ newContainerData });
+							let randomNr = Math.random();
+							group.group_argsNode[`${randomNr}`] = {
+								stepsOfFields: newContainerData.stepsOfFields,
+								id: randomNr,
+								operator: 'list',
+								not: false,
+								isMain: false,
+								isBond: true,
+								items: []
+							};
+							if (node?.items) {
+								node.items.push({ id: randomNr });
+							} else {
+								group.group_argsNode['mainContainer'].items.push({ id: randomNr });
+							}
+						}}
 					/>
 				{/each}
 			</div>
