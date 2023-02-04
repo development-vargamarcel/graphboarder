@@ -113,8 +113,8 @@
 							let randomNr = Math.random();
 							console.log('group', group);
 							group.group_argsNode[`${randomNr}`] = {
+								...newContainerData,
 								inputFields: getRootType(null, newContainerData.dd_rootName)?.inputFields,
-								stepsOfFields: newContainerData?.stepsOfFields,
 								id: randomNr,
 								operator: 'list',
 								not: false,

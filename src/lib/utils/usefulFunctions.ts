@@ -510,11 +510,11 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 			} else {
 				if (itemData?.stepsOfFields) {
 					console.log('itemData?.stepsOfFields', itemData.stepsOfFields, stepsOfFieldsToQueryFragmentObject(itemData?.stepsOfFields))
-					const theNewObject = stepsOfFieldsToQueryFragmentObject(itemData?.stepsOfFields)
+					const preObject = stepsOfFieldsToQueryFragmentObject(itemData?.stepsOfFields)
 					const stepsOfFieldsLength = itemData?.stepsOfFields.length
 					console.log('last step', itemData?.stepsOfFields[stepsOfFieldsLength - 1])
-					theNewObject[itemData?.stepsOfFields[stepsOfFieldsLength - 1]] = generate_gqlArgObjForItems(validItemsResult, group_name, nodes)
-					Object.assign(itemObjCurr, theNewObject);
+					preObject[itemData?.stepsOfFields[stepsOfFieldsLength - 1]] = generate_gqlArgObjForItems(validItemsResult, group_name, nodes)
+					Object.assign(itemObjCurr, preObject);
 
 				} else {
 					Object.assign(itemObjCurr, {
