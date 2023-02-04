@@ -27,10 +27,6 @@
 	}
 	console.log({ groupArgsPossibilities });
 	let predefinedFirstSteps = group.group_isRoot ? [] : [group.group_name];
-
-	if (node?.stepsOfFields) {
-		predefinedFirstSteps = node?.stepsOfFields;
-	}
 </script>
 
 <div class=" ">

@@ -497,24 +497,47 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 		if (itemData.operator) {
 			let validItemsResult = validItems(itemData.items, nodes);
 			console.log({ validItemsResult });
-			if (itemData?.isBond) {
 
-				let arrayOfObjects = validItemsResult.map((currItem) => {
-					const inner_itemData = nodes[currItem.id];
-					if (inner_itemData.arg_gqlArgObj) {
-						return inner_itemData.arg_gqlArgObj;
-					}
-				});
-				console.log({ arrayOfObjects });
-				let mergeResult = {};
-				_.merge(mergeResult, ...arrayOfObjects);
-				Object.assign(itemObjCurr, mergeResult[group_name]);
-				console.log({ mergeResult });
-				console.log({ itemData });
+
+
+
+			if (itemData?.isBond) {
+				// let arrayOfObjects = validItemsResult.map((currItem) => {
+				// 	const inner_itemData = nodes[currItem.id];
+				// 	if (inner_itemData.arg_gqlArgObj) {
+				// 		return inner_itemData.arg_gqlArgObj;
+				// 	}
+				// 	return { [group_name]: { abc: 'abc' } }
+				// });
+				// console.log({ arrayOfObjects });
+				// let mergeResult = {};
+				// _.merge({}, ...arrayOfObjects);
+				// Object.assign(itemObjCurr, mergeResult[group_name]);
+				// console.log({ mergeResult });
+				// console.log({ itemData });
+				// //
+				const gqlArgObjForItems = generate_gqlArgObjForItems(validItemsResult, group_name, nodes)
+				const merged_gqlArgObjForItems = _.merge({}, ...gqlArgObjForItems)
+				Object.assign(itemObjCurr, merged_gqlArgObjForItems);
+				console.log('gqlArgObjForItems inside bonded', gqlArgObjForItems, merged_gqlArgObjForItems)
+				//
 			} else {
+				let keyName
+				const stepsOfFields = itemData?.stepsOfFields
+				if (stepsOfFields) {
+					const stepsOfFieldsLength = stepsOfFields.length
+					const stepsOfFieldsLastEl = stepsOfFields[stepsOfFieldsLength - 1]
+					keyName = stepsOfFieldsLastEl
+				} else {
+					keyName = itemData.operator
+				}
 				Object.assign(itemObjCurr, {
-					[itemData.operator]: generate_gqlArgObjForItems(validItemsResult, group_name, nodes)
+					[keyName]: generate_gqlArgObjForItems(validItemsResult, group_name, nodes)
 				});
+
+
+
+
 			}
 		} else {
 			Object.assign(itemObjCurr, nodes[item.id]?.gqlArgObj?.[group_name]);
@@ -544,6 +567,7 @@ export const generate_gqlArgObj_forHasOperators = (group) => {
 		group_name,
 		nodes
 	);
+	console.log({ gqlArgObjForItems })
 	if (mainContainerOperator == '_and') {
 		group_gqlArgObj = { [group_name]: { _and: [] } };
 		group_gqlArgObj[group_name]['_and'] = gqlArgObjForItems
