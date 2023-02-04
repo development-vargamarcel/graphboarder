@@ -12,7 +12,8 @@
 	export let group;
 	export let type;
 	export let originalNodes;
-
+	export let parent_inputFields;
+	export let parent_stepsOfFields;
 	let dragDisabled = true;
 	const flipDurationMs = 100;
 	function handleDndConsider(e) {
@@ -195,13 +196,17 @@
 
 			<p>
 				<ActiveArgumentsGroup_addFilterAndSortingButton
+					{parent_inputFields}
+					{parent_stepsOfFields}
 					on:updateQuery
 					bind:group
 					bind:argsInfo
 					{node}
 				/>
 			</p>
-			<p class="text-xs pt-1 w-full overflow-scroll">{node?.stepsOfFields?.join(' > ')}</p>
+			{#if node?.stepsOfFields}
+				<p class="text-xs pt-1 w-full overflow-scroll">{node?.stepsOfFields?.join(' > ')}</p>
+			{/if}
 			<p class="grow" />
 			{#if !node?.isMain}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -273,6 +278,8 @@
 							deleteItem(e);
 							//console.log(e.detail.id, node);
 						}}
+						parent_inputFields={node?.inputFields}
+						parent_stepsOfFields={node?.stepsOfFields}
 						{originalNodes}
 						on:updateQuery
 						{type}

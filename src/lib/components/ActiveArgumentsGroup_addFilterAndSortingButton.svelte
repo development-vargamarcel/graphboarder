@@ -5,6 +5,8 @@
 	export let activeArgumentsDataGrouped;
 	export let node;
 	export let prefix = '';
+	export let parent_inputFields;
+	export let parent_stepsOfFields;
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
 	import { getContext, setContext } from 'svelte';
 	import Arg from '$lib/components/Arg.svelte';
@@ -22,6 +24,8 @@
 		groupArgsPossibilities = rootArgs;
 	} else if (node?.inputFields) {
 		groupArgsPossibilities = node?.inputFields;
+	} else if (parent_inputFields) {
+		groupArgsPossibilities = parent_inputFields;
 	} else {
 		groupArgsPossibilities = getRootType(null, group.dd_rootName).inputFields;
 	}
@@ -52,6 +56,8 @@
 							on:click={() => {
 								let randomNr = Math.random();
 								group.group_argsNode[`${randomNr}`] = {
+									inputFields: parent_inputFields,
+									stepsOfFields: parent_stepsOfFields,
 									id: randomNr,
 									operator: 'bonded',
 									not: false,
