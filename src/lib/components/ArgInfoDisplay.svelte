@@ -129,14 +129,11 @@
 			{dd_displayName}
 		</div>
 
-		<!-- {#if dd_canExpand && !allInputFieldsAreScalar && !enumValues} -->
 		{#if dd_shouldExpand}
-			{#if dd_kindList}
-				<div>expects list</div>
-			{/if}
-
 			<div class="w-10  ">
-				{#if showExpand}
+				{#if dd_kindList}
+					<div class="bi bi-card-list mx-auto w-min" />
+				{:else if showExpand}
 					<div class="bi bi-chevron-down mx-auto w-min" />
 				{:else}
 					<div class="bi bi-chevron-right mx-auto   w-min" />

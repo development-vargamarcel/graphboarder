@@ -41,7 +41,6 @@
 		{update_activeArgumentsDataGrouped}
 		{group}
 		argsInfo={QMS_info?.args}
-		{showDescription}
 		{activeArgumentsDataGrouped}
 	/>
 {/each}
