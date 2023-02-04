@@ -473,8 +473,8 @@ export const generate_group_gqlArgObj = (group) => {
 const validItems = (items, nodes) => {
 	return items.filter((item) => {
 		let itemData = nodes[item.id];
-
-		return itemData.inUse || (itemData.operator && validItems(itemData.items, nodes).length > 0);
+		const isValid = itemData.inUse || (itemData.operator && validItems(itemData.items, nodes).length > 0)
+		return isValid
 	});
 };
 
@@ -509,10 +509,8 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 				console.log({ itemData });
 			} else {
 				if (itemData?.stepsOfFields) {
-					console.log('itemData?.stepsOfFields', itemData.stepsOfFields, stepsOfFieldsToQueryFragmentObject(itemData?.stepsOfFields))
 					const preObject = stepsOfFieldsToQueryFragmentObject(itemData?.stepsOfFields)
 					const stepsOfFieldsLength = itemData?.stepsOfFields.length
-					console.log('last step', itemData?.stepsOfFields[stepsOfFieldsLength - 1])
 					preObject[itemData?.stepsOfFields[stepsOfFieldsLength - 1]] = generate_gqlArgObjForItems(validItemsResult, group_name, nodes)
 					Object.assign(itemObjCurr, preObject);
 
