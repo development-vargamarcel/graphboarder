@@ -10,6 +10,7 @@
 	export let CustomId;
 	export let MenuItem;
 	export let RememberScroll = false;
+	export let title;
 	//showTabs.set(true); // must change this line !!!!!!!!!!!!!!
 
 	let hasPreviousPage = false;
@@ -103,7 +104,7 @@
 				</button>
 			</div>
 			<div class="flex-1 px-2 mx-2 ">
-				<span class="  text-lg font-bold"> With one icon </span>
+				<span class="  text-lg font-bold"> {title} </span>
 			</div>
 		</div>
 		<slot />

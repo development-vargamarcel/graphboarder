@@ -3,6 +3,7 @@
 	//console.log($schemaData);
 	import Type from '$lib/components/Type.svelte';
 	import Page from '$lib/components/Page.svelte';
+	import { sortingFunctionMutipleColumnsGivenArray } from '$lib/utils/usefulFunctions';
 
 	let rootTypes = $schemaData.rootTypes;
 	let queries = $schemaData.queryFields;
@@ -13,23 +14,7 @@
 	let sortingArray = [];
 	let caseSensitive = false;
 	$: sortingArray = sortingInputValue.split(' ');
-	const sortingFunctionMutipleColumnsGivenArray = (array) => {
-		let maxIndex = array.length - 1;
-		const check = (currentIndex) => {
-			const column = array[currentIndex];
-			if (column[0] < column[1]) {
-				return -1;
-			}
-			if (column[0] > column[1]) {
-				return 1;
-			}
-			if (currentIndex + 1 <= maxIndex) {
-				return check(currentIndex + 1);
-			}
-			return 0;
-		};
-		return check(0);
-	};
+
 	const filterByWord = () => {
 		if (sortingArray.length == 1 && sortingArray[0] == '') {
 			return;

@@ -6,12 +6,10 @@
 	import QMSWraper from '$lib/components/QMSWraper.svelte';
 </script>
 
-<Page MenuItem={false} CustomId="fdsfds" backPath={`/`}>
+<Page MenuItem={false} CustomId="fdsfdsee" backPath={`/`} title={$page.params.item}>
 	<div class="overflow-auto h-full">
-		{$page.params.item}
 		{#key $page.params.item}
 			{#if $page.params.item}
-				{$page.params.item}
 				<QMSWraper QMSName={$page.params.item} QMSType="mutation">
 					<MutationExample />
 				</QMSWraper>
