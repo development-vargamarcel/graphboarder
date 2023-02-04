@@ -19,8 +19,7 @@
 		dd_kindEl_NON_NULL,
 		dd_kindList,
 		dd_kindList_NON_NULL,
-		dd_NON_NULL,
-		dd_relatedRoot
+		dd_NON_NULL
 	} = type;
 	if (!stepsOfFields) {
 		stepsOfFields = [dd_displayName];

@@ -89,6 +89,7 @@
 	const handleChanged = () => {
 		finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 	};
+
 	let argsInfo = QMS_info?.args;
 </script>
 

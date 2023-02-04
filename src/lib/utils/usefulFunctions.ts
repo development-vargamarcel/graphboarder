@@ -79,6 +79,10 @@ export let get_displayName = (namesArray) => {
 	return namesArray[0];
 };
 export const getRootType = (rootTypes, RootType_Name) => {
+	if (!rootTypes) {
+		rootTypes = get(schemaData).rootTypes
+	}
+
 	return rootTypes.filter((type) => {
 		return type.name == RootType_Name;
 	})[0];
@@ -262,9 +266,7 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => {
 	derivedData.dd_rootName = get_rootName(derivedData.dd_namesArray);
 	derivedData.dd_displayName = get_displayName(derivedData.dd_namesArray);
 	derivedData.dd_relatedRoot = getRootType(rootTypes, derivedData.dd_rootName);
-	//start set derivedData for dd_relatedRoot  ---
 
-	//end set derivedData for dd_relatedRoot    ---
 
 	derivedData.dd_kindEl = undefined;
 	derivedData.dd_kindEl_NON_NULL = false;
@@ -341,7 +343,7 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => {
 		});
 		derivedData.dd_paginationType = get_paginationType(derivedData.dd_paginationArgs);
 	}
-
+	//derivedData.dd_relatedRoot = 'overwritten to evade error: Uncaught TypeError: Converting circular structure to JSON'
 	return derivedData;
 };
 
@@ -610,7 +612,7 @@ export const getQMSLinks = (QMSName = 'query', parentURL) => {
 		let queryName = query.name;
 		let queryNameDisplay = queryName;
 		let queryTitleDisplay = '';
-		let currentQueryFromRootTypes = query.dd_relatedRoot;
+		let currentQueryFromRootTypes = getRootType(null, query.dd_rootName);
 		let currentQMS_info = schemaData.get_QMS_Field(queryName, QMSName);
 		let endpointInfoVal = get(endpointInfo);
 		const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_info);
@@ -735,7 +737,7 @@ export const get_scalarColsData = (currentQMS_info, prefixStepsOfFields = []) =>
 	if (prefixStepsOfFields.length > 0) {
 		keep_currentQMS_info_dd_displayName = false;
 	}
-	let dd_relatedRoot = currentQMS_info?.dd_relatedRoot;
+	let dd_relatedRoot = getRootType(null, currentQMS_info.dd_rootName);
 	let { scalarFields } = getFields_Grouped(dd_relatedRoot);
 	let currentQuery_fields_SCALAR_names = scalarFields.map((field) => {
 		return field.name;
@@ -763,14 +765,14 @@ export const get_nodeFieldsQMS_info = (QMS_info, rowsLocation) => {
 	}
 
 	let nodeFieldsQMS_info = QMS_info;
-	if (!nodeFieldsQMS_info?.dd_relatedRoot?.fields) {
+	if (!getRootType(null, nodeFieldsQMS_info.dd_rootName)?.fields) {
 		return nodeFieldsQMS_info;
 	}
 	rowsLocation.forEach((curr_rowsLocation) => {
-		if (!nodeFieldsQMS_info?.dd_relatedRoot?.fields) {
+		if (!getRootType(null, nodeFieldsQMS_info.dd_rootName)?.fields) {
 			return nodeFieldsQMS_info;
 		}
-		nodeFieldsQMS_info = nodeFieldsQMS_info?.dd_relatedRoot.fields.find((field) => {
+		nodeFieldsQMS_info = getRootType(null, nodeFieldsQMS_info.dd_rootName).fields.find((field) => {
 			return field.dd_displayName == curr_rowsLocation;
 		});
 	});

@@ -20,7 +20,8 @@
 	import {
 		generateTitleFromStepsOfFields,
 		getDataGivenStepsOfFields,
-		getFields_Grouped
+		getFields_Grouped,
+		getRootType
 	} from '$lib/utils/usefulFunctions';
 	import { onDestroy, onMount, getContext } from 'svelte';
 	import { goto } from '$app/navigation';
@@ -35,7 +36,7 @@
 	});
 
 	let currentQMS_info = schemaData.get_QMS_Field(queryName, 'query');
-	let dd_relatedRoot = currentQMS_info?.dd_relatedRoot;
+	let dd_relatedRoot = getRootType(null, currentQMS_info.dd_rootName);
 	if (!currentQMS_info) {
 		goto('/queries');
 	}

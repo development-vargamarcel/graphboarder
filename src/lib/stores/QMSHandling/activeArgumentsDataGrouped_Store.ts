@@ -39,7 +39,7 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 						group_args: []
 					};
 
-					const hasFilterOperators = el.dd_relatedRoot?.dd_filterOperators?.length > 0;
+					const hasFilterOperators = getRootType(null, el.dd_rootName)?.dd_filterOperators?.length > 0;
 
 					if (hasFilterOperators) {
 						newGroupData.group_argsNode = {

@@ -19,7 +19,6 @@
 		dd_displayName,
 		dd_kindList,
 		dd_NON_NULL,
-		dd_relatedRoot,
 		dd_canExpand,
 		dd_shouldExpand
 	} = type;
@@ -29,7 +28,7 @@
 	let inUse;
 
 	// testing
-	let RootType = dd_relatedRoot;
+	let RootType = getRootType(null, type.dd_rootName);
 	let inputFields = RootType?.inputFields;
 	let enumValues = RootType?.enumValues;
 

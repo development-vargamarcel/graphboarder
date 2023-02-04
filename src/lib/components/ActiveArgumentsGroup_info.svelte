@@ -1,4 +1,6 @@
 <script>
+	import { getRootType } from '$lib/utils/usefulFunctions';
+
 	export let group;
 	let showDescription;
 </script>
@@ -10,8 +12,8 @@
 	{#if group.dd_kindList}
 		( list )
 	{/if}
-	{#if group?.dd_relatedRoot?.dd_filterOperators}
-		{`( ${group?.dd_relatedRoot?.dd_filterOperators?.join(',')} )`}
+	{#if getRootType(null, group.dd_rootName)?.dd_filterOperators}
+		{`( ${getRootType(null, group.dd_rootName)?.dd_filterOperators?.join(',')} )`}
 	{/if}
 </div>
 

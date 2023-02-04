@@ -8,6 +8,7 @@
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
 	import { getContext, setContext } from 'svelte';
 	import Arg from '$lib/components/Arg.svelte';
+	import { getRootType } from '$lib/utils/usefulFunctions';
 	let dragDisabled = true;
 	const hasGroup_argsNode = group.group_argsNode;
 	const mainContainerOperator = group.group_argsNode?.mainContainer?.operator;
@@ -16,7 +17,11 @@
 		return arg.dd_isRootArg;
 	});
 
-	let groupArgsPossibilities = group.group_isRoot ? rootArgs : group.dd_relatedRoot.inputFields;
+	let groupArgsPossibilities = group.group_isRoot
+		? rootArgs
+		: getRootType(null, group.dd_rootName).inputFields;
+
+	console.log({ groupArgsPossibilities });
 	let predefinedFirstSteps = group.group_isRoot ? [] : [group.group_name];
 </script>
 
@@ -103,14 +108,16 @@
 							console.log({ newContainerData });
 							let randomNr = Math.random();
 							group.group_argsNode[`${randomNr}`] = {
-								stepsOfFields: newContainerData.stepsOfFields,
+								inputFields: getRootType(null, newContainerData.dd_rootName)?.inputFields,
+								stepsOfFields: newContainerData?.stepsOfFields,
 								id: randomNr,
 								operator: 'list',
 								not: false,
 								isMain: false,
-								isBond: true,
+								isBond: false,
 								items: []
 							};
+							console.log({ newContainerData });
 							if (node?.items) {
 								node.items.push({ id: randomNr });
 							} else {

@@ -6,6 +6,7 @@ import {
 } from '$lib/utils/dataStructureTransformers';
 import { writable, get } from 'svelte/store';
 import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
+import { getRootType } from '$lib/utils/usefulFunctions';
 
 export const endpointInfoDefaultValues = {
 	description: 'no description',
@@ -45,7 +46,7 @@ export const endpointInfoDefaultValues = {
 			},
 			check: (QMS_info) => {
 				let possibleNames = ['id', `${QMS_info.dd_displayName}_id`, `${QMS_info.dd_displayName}Id`];
-				return QMS_info.dd_relatedRoot?.fields?.find((field) => {
+				return getRootType(null, QMS_info.dd_rootName)?.fields?.find((field) => {
 					return possibleNames.includes(field.dd_displayName) || field.dd_rootName == 'ID';
 				});
 			}

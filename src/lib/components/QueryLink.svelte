@@ -12,7 +12,6 @@
 	let queryName = query.name;
 	let queryNameDisplay = queryName;
 	let queryTitleDisplay = '';
-	let currentQueryFromRootTypes = query.dd_relatedRoot;
 	//let { scalarFields, non_scalarFields } = getFields_Grouped(currentQueryFromRootTypes);
 	let currentQMS_info = schemaData.get_QMS_Field(queryName, 'query');
 	const rowsLocation = $endpointInfo.rowsLocation;

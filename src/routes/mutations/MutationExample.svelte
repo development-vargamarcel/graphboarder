@@ -22,7 +22,8 @@
 	import {
 		generateTitleFromStepsOfFields,
 		getDataGivenStepsOfFields,
-		getFields_Grouped
+		getFields_Grouped,
+		getRootType
 	} from '$lib/utils/usefulFunctions';
 	import { onDestroy, onMount, getContext } from 'svelte';
 	import { goto } from '$app/navigation';
@@ -36,7 +37,7 @@
 		document.getElementById('my-drawer-3')?.click();
 	});
 
-	let dd_relatedRoot = QMS_info?.dd_relatedRoot;
+	let dd_relatedRoot = getRootType(null, QMS_info.dd_rootName);
 	if (!QMS_info) {
 		//	goto('/queries');
 	}
