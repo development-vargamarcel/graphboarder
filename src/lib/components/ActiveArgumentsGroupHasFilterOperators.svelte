@@ -204,9 +204,15 @@
 					{node}
 				/>
 			</p>
-			{#if node?.stepsOfFields}
-				<p class="text-xs pt-1 w-full overflow-scroll">{node?.stepsOfFields?.join(' > ')}</p>
-			{/if}
+
+			<p class="text-xs pt-1 w-full overflow-scroll ">
+				{#if node?.stepsOfFields}
+					{node.stepsOfFields.join(' > ')}
+				{/if}
+				{#if parent_stepsOfFields}
+					({parent_stepsOfFields.join(' > ')})
+				{/if}
+			</p>
 			<p class="grow" />
 			{#if !node?.isMain}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->

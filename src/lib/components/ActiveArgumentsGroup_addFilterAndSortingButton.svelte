@@ -56,8 +56,8 @@
 							on:click={() => {
 								let randomNr = Math.random();
 								group.group_argsNode[`${randomNr}`] = {
-									inputFields: parent_inputFields,
-									stepsOfFields: parent_stepsOfFields,
+									// inputFields: parent_inputFields,
+									// stepsOfFields: parent_stepsOfFields,
 									id: randomNr,
 									operator: 'bonded',
 									not: false,
