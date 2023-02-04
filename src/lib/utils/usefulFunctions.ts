@@ -468,8 +468,7 @@ export const generate_group_gqlArgObj = (group) => {
 	};
 };
 
-//sss
-/////
+
 const validItems = (items, nodes) => {
 	return items.filter((item) => {
 		let itemData = nodes[item.id];
@@ -574,6 +573,10 @@ export const generate_gqlArgObj_forHasOperators = (group) => {
 	} else if (mainContainerOperator == 'list') {
 		group_gqlArgObj = { [group_name]: [] };
 		group_gqlArgObj[group_name] = gqlArgObjForItems
+	} else {
+		group_gqlArgObj = { [group_name]: {} };
+		const merged_gqlArgObjForItems = _.merge({}, ...gqlArgObjForItems)
+		group_gqlArgObj[group_name] = merged_gqlArgObjForItems
 	}
 
 
