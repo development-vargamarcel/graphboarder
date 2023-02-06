@@ -129,6 +129,8 @@
 			if (dd_shouldExpand) {
 				if (dd_kindList) {
 					addContainer();
+				} else if (getRootType(null, dd_rootName)?.dd_filterOperators) {
+					addContainer();
 				} else {
 					expand();
 				}
