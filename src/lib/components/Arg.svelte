@@ -88,6 +88,7 @@
 							predefinedFirstSteps={[]}
 							{groupName}
 							on:argAddRequest
+							on:containerAddRequest
 						/>
 					</div>
 				{/each}
