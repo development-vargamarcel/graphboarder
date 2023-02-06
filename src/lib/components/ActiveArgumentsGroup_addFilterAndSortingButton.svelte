@@ -134,6 +134,7 @@
 							let isBond = operator == 'bonded';
 							group.group_argsNode[`${randomNr}`] = {
 								...newContainerData,
+								stepsOfFields: [...newContainerData.stepsOfFields, '_and'],
 								inputFields: newContainerDataRootType?.inputFields,
 								id: randomNr,
 								operator,
@@ -143,7 +144,7 @@
 								items: []
 							};
 							console.log({ newContainerDataRootType });
-							console.log({ newContainerData });
+							console.log({ newContainerData }, [...newContainerData.stepsOfFields, '_and']);
 							if (node?.items) {
 								node.items.push({ id: randomNr });
 							} else {
