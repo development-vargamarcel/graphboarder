@@ -23,7 +23,7 @@
 		dd_kindList,
 		dd_NON_NULL,
 		dd_canExpand,
-		dd_shouldExpand
+		dd_shouldExpand, dd_filterOperators 
 	} = type;
 
 	//console.log('====', dd_namesArray, dd_namesArray);
