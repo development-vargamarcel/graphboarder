@@ -520,30 +520,38 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 				//
 			} else {
 				let keyName
+
+
+
 				const stepsOfFields = itemData?.stepsOfFields
-				const stepsOfFieldsLength = stepsOfFields.length
-				const stepsOfFieldsLastEl = stepsOfFields[stepsOfFieldsLength - 1]
+
 				const operator = itemData.operator
-				if (stepsOfFields && operator) {
 
-					Object.assign(itemObjCurr, {
-						[stepsOfFieldsLastEl]: {
-							[operator]: generate_gqlArgObjForItems(validItemsResult, group_name, nodes)
-						}
-					});
-				} else {
-					if (stepsOfFields) {
+				if (stepsOfFields) {
+					const stepsOfFieldsLength = stepsOfFields.length
+					const stepsOfFieldsLastEl = stepsOfFields[stepsOfFieldsLength - 1]
 
-						keyName = stepsOfFieldsLastEl
+					if (operator) {
+						Object.assign(itemObjCurr, {
+							[stepsOfFieldsLastEl]: {
+								[operator]: generate_gqlArgObjForItems(validItemsResult, group_name, nodes)
+							}
+						});
 					} else {
-						keyName = operator
+						keyName = stepsOfFieldsLastEl
+						Object.assign(itemObjCurr, {
+							[keyName]: generate_gqlArgObjForItems(validItemsResult, group_name, nodes)
+						});
 					}
 
+				} else {
+					keyName = operator
 					Object.assign(itemObjCurr, {
 						[keyName]: generate_gqlArgObjForItems(validItemsResult, group_name, nodes)
 					});
-
 				}
+
+
 
 			}
 		} else {
