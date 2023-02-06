@@ -12,8 +12,8 @@
 	{#if group.dd_kindList}
 		( list )
 	{/if}
-	{#if getRootType(null, group.dd_rootName)?.dd_filterOperators}
-		{`( ${getRootType(null, group.dd_rootName)?.dd_filterOperators?.join(',')} )`}
+	{#if getRootType(null, group.dd_rootName)?.dd_baseFilterOperators}
+		{`( ${getRootType(null, group.dd_rootName)?.dd_baseFilterOperators?.join(',')} )`}
 	{/if}
 </div>
 

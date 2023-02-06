@@ -118,16 +118,31 @@
 							console.log({ newContainerData });
 							let randomNr = Math.random();
 							console.log('group', group);
+							let newContainerDataRootType = getRootType(null, newContainerData.dd_rootName);
+							let hasBaseFilterOperators = newContainerDataRootType?.dd_baseFilterOperators;
+							let hasNonBaseFilterOperators = newContainerDataRootType?.dd_nonBaseFilterOperators;
+
+							let isListContainer = newContainerData?.dd_kindList;
+							let operator = isListContainer ? 'list' : 'bonded';
+							if (hasBaseFilterOperators) {
+								operator = '_and';
+							}
+							if (hasNonBaseFilterOperators) {
+								operator = 'bonded';
+							}
+
+							let isBond = operator == 'bonded';
 							group.group_argsNode[`${randomNr}`] = {
 								...newContainerData,
-								inputFields: getRootType(null, newContainerData.dd_rootName)?.inputFields,
+								inputFields: newContainerDataRootType?.inputFields,
 								id: randomNr,
-								operator: 'list',
+								operator,
 								not: false,
 								isMain: false,
-								isBond: false,
+								isBond,
 								items: []
 							};
+							console.log({ newContainerDataRootType });
 							console.log({ newContainerData });
 							if (node?.items) {
 								node.items.push({ id: randomNr });

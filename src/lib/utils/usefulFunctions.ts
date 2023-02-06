@@ -304,17 +304,32 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => {
 	derivedData.dd_canExpand =
 		!derivedData.dd_kindsArray?.includes('SCALAR') && derivedData.dd_kindsArray.length > 0;
 	if (derivedData.dd_isArg) {
-		derivedData.dd_filterOperators = type?.inputFields
-			?.filter((inputField) => {
-				//_and/_or/_not
-				return inputField.name[0] == '_';
-			})
-			?.map((inputField) => {
-				return inputField.name;
-			});
-		if (!derivedData?.dd_filterOperators?.length > 0) {
-			derivedData.dd_filterOperators = undefined;
+		const baseFilterOperatorNames = ['_and', '_or', '_not']
+		let dd_baseFilterOperators = []
+		let dd_nonBaseFilterOperators = []
+		if (type?.inputFields) {
+			type.inputFields
+				.forEach(inputField => {
+					if (baseFilterOperatorNames.includes(inputField.name)) {
+						dd_baseFilterOperators.push(inputField.name)
+						return inputField.name
+					}
+					if (inputField.name.startsWith('_')) {
+						dd_nonBaseFilterOperators.push(inputField.name)
+					}
+				});
+
+			if (!dd_baseFilterOperators?.length > 0) {
+				dd_baseFilterOperators = undefined;
+			}
+			if (!dd_nonBaseFilterOperators?.length > 0) {
+				dd_nonBaseFilterOperators = undefined;
+			}
+			derivedData.dd_baseFilterOperators = dd_baseFilterOperators
+			derivedData.dd_nonBaseFilterOperators = dd_nonBaseFilterOperators
+
 		}
+
 		derivedData.dd_isRootArg = !(
 			derivedData.dd_canExpand &&
 			!derivedData.dd_relatedRoot_inputFields_allScalar &&
@@ -328,7 +343,7 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => {
 	derivedData.dd_castType = 'implement this.possible values:string,number,graphqlGeoJson...'; //example of why:date can be expected as timestamptz ("2016-07-20T17:30:15+05:30"),but must be casted as string
 	derivedData.dd_derivedTypeBorrowed = 'implement this? maybe not?';
 	////////// others
-	if (derivedData?.dd_filterOperators) {
+	if (derivedData?.dd_baseFilterOperators) {
 		let defaultdisplayInterface = get_displayInterface(derivedData);
 		if (type?.inputFields !== undefined) {
 			type.inputFields.forEach((inputField) => {

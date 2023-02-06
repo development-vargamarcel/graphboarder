@@ -12,6 +12,8 @@
 	export let predefinedFirstSteps; //is actually group_name
 	export let stepsOfFields = [];
 	export let groupName;
+	export let parentType;
+
 	if (stepsOfFields.length == 0 && predefinedFirstSteps) {
 		stepsOfFields = [...predefinedFirstSteps];
 	}
@@ -63,6 +65,7 @@
 		{showExpand}
 		{index}
 		{type}
+		{parentType}
 		{stepsOfFields}
 		{groupName}
 		on:argAddRequest
@@ -83,6 +86,7 @@
 						<svelte:self
 							{index}
 							type={arg}
+							parentType={type}
 							{template}
 							{stepsOfFields}
 							predefinedFirstSteps={[]}

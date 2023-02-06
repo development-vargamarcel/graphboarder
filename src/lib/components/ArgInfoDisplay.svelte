@@ -6,6 +6,8 @@
 	export let showExpand;
 	export let index;
 	export let type;
+	export let parentType;
+
 	export let template;
 	export let stepsOfFields;
 	export let predefinedFirstSteps;
@@ -129,7 +131,12 @@
 			if (dd_shouldExpand) {
 				if (dd_kindList) {
 					addContainer();
-				} else if (getRootType(null, dd_rootName)?.dd_filterOperators && !dd_filterOperators) {
+				} else if (
+					(getRootType(null, dd_rootName)?.dd_baseFilterOperators ||
+						getRootType(null, dd_rootName)?.dd_nonBaseFilterOperators) &&
+					dd_rootName != parentType?.dd_rootName
+					//!getRootType(null, parentType?.dd_rootName)?.dd_baseFilterOperators
+				) {
 					addContainer();
 				} else {
 					expand();
