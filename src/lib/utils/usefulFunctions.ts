@@ -506,30 +506,13 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 		} else {
 			itemObjCurr = itemObj;
 		}
-		//
-		//console.log({ itemObj });
+
 		if (itemData.operator) {
 			let validItemsResult = validItems(itemData.items, nodes);
 			console.log({ validItemsResult });
 
 
-
-
 			if (itemData?.isBond) {
-				// let arrayOfObjects = validItemsResult.map((currItem) => {
-				// 	const inner_itemData = nodes[currItem.id];
-				// 	if (inner_itemData.arg_gqlArgObj) {
-				// 		return inner_itemData.arg_gqlArgObj;
-				// 	}
-				// 	return { [group_name]: { abc: 'abc' } }
-				// });
-				// console.log({ arrayOfObjects });
-				// let mergeResult = {};
-				// _.merge({}, ...arrayOfObjects);
-				// Object.assign(itemObjCurr, mergeResult[group_name]);
-				// console.log({ mergeResult });
-				// console.log({ itemData });
-				// //
 				const gqlArgObjForItems = generate_gqlArgObjForItems(validItemsResult, group_name, nodes)
 				const merged_gqlArgObjForItems = _.merge({}, ...gqlArgObjForItems)
 				Object.assign(itemObjCurr, merged_gqlArgObjForItems);
@@ -561,11 +544,6 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 					});
 
 				}
-
-
-
-
-
 
 			}
 		} else {
