@@ -528,7 +528,7 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 				itemObjCurr = itemObjCurr[operator]
 			}
 		}
-
+		console.log({ itemObj })
 
 		let dataToAssign
 
