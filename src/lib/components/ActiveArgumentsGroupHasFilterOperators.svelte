@@ -178,7 +178,7 @@
 					if (node?.operator && !node?.isMain) {
 						if (node?.operator == '_or') {
 							node.operator = '_and';
-						} else if (node?.operator == '_and' && !node?.operator == 'bonded') {
+						} else if (node?.operator == '_and') {
 							node.operator = 'bonded';
 						} else if (node?.operator == 'bonded') {
 							node.operator = 'list';
