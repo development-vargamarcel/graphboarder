@@ -516,39 +516,37 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 			if (stepsOfFields) {
 				let stepsOfFieldsLength = stepsOfFields.length
 				let stepsOfFieldsLastEl = stepsOfFields[stepsOfFieldsLength - 1]
-				itemObjCurr[stepsOfFieldsLastEl] = {}
+				if (operator == 'list') {
+					itemObjCurr[stepsOfFieldsLastEl] = []
+				} else {
+					itemObjCurr[stepsOfFieldsLastEl] = {}
+				}
 				itemObjCurr = itemObjCurr[stepsOfFieldsLastEl]
 			}
 			if (operator.startsWith('_')) {
-				itemObjCurr[operator] = {}
+				itemObjCurr[operator] = []
 				itemObjCurr = itemObjCurr[operator]
 			}
-			console.log({ itemObjCurr })
 		}
 
 
-
+		let dataToAssign
 
 		if (itemData.operator) {
 			const validItemsResult = validItems(itemData.items, nodes);
-
-			console.log({ validItemsResult });
-
-
 			if (itemData?.isBond) {
 				const gqlArgObjForItems = generate_gqlArgObjForItems(validItemsResult, group_name, nodes)
 				const merged_gqlArgObjForItems = _.merge({}, ...gqlArgObjForItems)
-				Object.assign(itemObjCurr, merged_gqlArgObjForItems);
-				console.log('gqlArgObjForItems inside bonded', gqlArgObjForItems, merged_gqlArgObjForItems)
-
+				dataToAssign = merged_gqlArgObjForItems
 			} else {
-				Object.assign(itemObjCurr, generate_gqlArgObjForItems(validItemsResult, group_name, nodes)
-				);
+				dataToAssign = generate_gqlArgObjForItems(validItemsResult, group_name, nodes)
 			}
 		} else {
-			Object.assign(itemObjCurr, nodes[item.id]?.gqlArgObj?.[group_name]);
+			dataToAssign = nodes[item.id]?.gqlArgObj?.[group_name]
 		}
-		//
+
+
+		Object.assign(itemObjCurr, dataToAssign);
 		return itemObj;
 	});
 	return itemsObj;
