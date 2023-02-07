@@ -514,14 +514,19 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 		}
 		if (operator) {
 			if (stepsOfFields) {
-				let stepsOfFieldsLength = stepsOfFields.length
-				let stepsOfFieldsLastEl = stepsOfFields[stepsOfFieldsLength - 1]
-				if (operator == 'list') {
-					itemObjCurr[stepsOfFieldsLastEl] = []
-				} else {
-					itemObjCurr[stepsOfFieldsLastEl] = {}
-				}
-				itemObjCurr = itemObjCurr[stepsOfFieldsLastEl]
+				const stepsOfFieldsLength = stepsOfFields.length
+				const stepsOfFieldsLastEl = stepsOfFields[stepsOfFieldsLength - 1]
+				const stepsOfFieldsAllButFirstEl = [...stepsOfFields].slice(1)
+				stepsOfFieldsAllButFirstEl.forEach(step => {
+					const isLastStep = step == stepsOfFieldsLastEl
+					if (isLastStep && operator == 'list') {
+						itemObjCurr[step] = []
+					} else {
+						itemObjCurr[step] = {}
+					}
+					itemObjCurr = itemObjCurr[step]
+				});
+
 			}
 			if (operator.startsWith('_')) {
 				itemObjCurr[operator] = []
