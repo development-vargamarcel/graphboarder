@@ -44,7 +44,6 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 						mainContainer: {
 							operator: 'bonded',
 							isMain: true,
-							isBond: true,
 							not: false,
 							items: [],
 							id: 'mainContainer'
@@ -197,7 +196,6 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 								operator: '_and',
 								not: false,
 								isMain: false,
-								isBond: false,
 								items: []
 							};
 

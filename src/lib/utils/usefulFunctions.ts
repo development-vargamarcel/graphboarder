@@ -528,13 +528,13 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 				itemObjCurr = itemObjCurr[operator]
 			}
 		}
-		console.log({ itemObj })
+		console.log({ itemObj }, stepsOfFields, operator, itemData)
 
 		let dataToAssign
 
 		if (itemData.operator) {
 			const validItemsResult = validItems(itemData.items, nodes);
-			if (itemData?.isBond) {
+			if (operator == 'bonded') {
 				const gqlArgObjForItems = generate_gqlArgObjForItems(validItemsResult, group_name, nodes)
 				const merged_gqlArgObjForItems = _.merge({}, ...gqlArgObjForItems)
 				dataToAssign = merged_gqlArgObjForItems

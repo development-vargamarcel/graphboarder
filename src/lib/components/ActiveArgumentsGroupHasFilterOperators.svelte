@@ -101,7 +101,7 @@
 			tabindex={dragDisabled ? 0 : -1}
 			aria-label="drag-handle"
 			class="  transition:all duration-500 bi bi-grip-vertical ml-2  -mr-1 text-lg rounded-l-md {node?.operator ==
-				undefined || node?.isBond
+				undefined || node?.operator == 'bonded'
 				? 'text-base-content'
 				: node?.operator == '_and'
 				? 'text-primary'
@@ -137,7 +137,7 @@
 	{node?.operator ? 'rounded-l-md bg-gradient-to-rxxx   border-l-[1px] my-1 shadow-sm' : ''} 
 	
 {node?.operator && node?.not ? 'border-dashed  ' : ''} 
-{node.isBond || node?.operator == 'list'
+{node?.operator == 'bonded' || node?.operator == 'list'
 		? 'border-base-content'
 		: node?.operator == '_and'
 		? 'border-primary'
@@ -168,8 +168,8 @@
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<p
 				style=""
-				class="btn btn-xs btn-ghost px-2  text-xs font-light transition-all duration-500  rounded-full  normal-case   {node.isBond ||
-				node?.operator == 'list'
+				class="btn btn-xs btn-ghost px-2  text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
+					'bonded' || node?.operator == 'list'
 					? 'text-base-content'
 					: node?.operator == '_and'
 					? 'text-primary'
@@ -178,10 +178,9 @@
 					if (node?.operator && !node?.isMain) {
 						if (node?.operator == '_or') {
 							node.operator = '_and';
-						} else if (node?.operator == '_and' && !node?.isBond) {
-							node.isBond = true;
-						} else if (node.isBond) {
-							node.isBond = false;
+						} else if (node?.operator == '_and' && !node?.operator == 'bonded') {
+							node.operator = 'bonded';
+						} else if (node?.operator == 'bonded') {
 							node.operator = 'list';
 						} else {
 							node.operator = '_or';
@@ -191,7 +190,7 @@
 					dispatch('changed');
 				}}
 			>
-				{!node.isBond ? node.operator : 'bonded'}
+				{node.operator}
 			</p>
 
 			<p>
@@ -217,7 +216,7 @@
 			{#if !node?.isMain}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<p
-					class="btn btn-xs btn-ghost {node.isBond || node?.operator == 'list'
+					class="btn btn-xs btn-ghost {node?.operator == 'bonded' || node?.operator == 'list'
 						? 'text-base-content'
 						: node?.operator == '_and'
 						? 'text-primary'

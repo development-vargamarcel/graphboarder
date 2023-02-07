@@ -50,7 +50,7 @@
 				class="flex flex-col overflow-x-auto overscroll-contain text-sm text-base-content font-normal normal-case min-w-max w-full "
 			>
 				{#if hasGroup_argsNode}
-					{#if node?.isBond || node?.operator == 'list'}
+					{#if node?.operator == 'bonded' || node?.operator == 'list'}
 						<button
 							class="btn btn-primary btn-xs mt-4 normal-case font-thin text-base sticky top-0"
 							on:click={() => {
@@ -62,7 +62,6 @@
 									operator: 'bonded',
 									not: false,
 									isMain: false,
-									isBond: true,
 									items: []
 								};
 								if (node?.items) {
@@ -131,7 +130,6 @@
 								operator = 'bonded';
 							}
 
-							let isBond = operator == 'bonded';
 							group.group_argsNode[`${randomNr}`] = {
 								...newContainerData,
 								inputFields: newContainerDataRootType?.inputFields,
@@ -139,7 +137,6 @@
 								operator,
 								not: false,
 								isMain: false,
-								isBond,
 								items: []
 							};
 							console.log({ newContainerDataRootType });
