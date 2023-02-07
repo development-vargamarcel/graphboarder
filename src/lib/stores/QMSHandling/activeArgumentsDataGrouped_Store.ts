@@ -197,7 +197,7 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 								operator: '_and',
 								not: false,
 								isMain: false,
-								isBond: true,
+								isBond: false,
 								items: []
 							};
 

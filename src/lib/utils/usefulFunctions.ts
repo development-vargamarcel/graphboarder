@@ -507,6 +507,14 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 			itemObjCurr = itemObj;
 		}
 
+		const stepsOfFields = itemData?.stepsOfFields
+		let stepsOfFieldsLength
+		let stepsOfFieldsLastEl
+		if (stepsOfFields) {
+			stepsOfFieldsLength = stepsOfFields.length
+			stepsOfFieldsLastEl = stepsOfFields[stepsOfFieldsLength - 1]
+		}
+		const operator = itemData.operator
 		if (itemData.operator) {
 			let validItemsResult = validItems(itemData.items, nodes);
 			console.log({ validItemsResult });
@@ -520,17 +528,7 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 				//
 			} else {
 				let keyName
-
-
-
-				const stepsOfFields = itemData?.stepsOfFields
-
-				const operator = itemData.operator
-
 				if (stepsOfFields) {
-					const stepsOfFieldsLength = stepsOfFields.length
-					const stepsOfFieldsLastEl = stepsOfFields[stepsOfFieldsLength - 1]
-
 					if (operator) {
 						Object.assign(itemObjCurr, {
 							[stepsOfFieldsLastEl]: {
