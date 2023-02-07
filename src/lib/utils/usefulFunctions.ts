@@ -528,7 +528,6 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 				itemObjCurr = itemObjCurr[operator]
 			}
 		}
-		console.log({ itemObj }, stepsOfFields, operator, itemData)
 
 		let dataToAssign
 
