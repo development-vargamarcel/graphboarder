@@ -23,7 +23,8 @@
 		dd_kindList,
 		dd_NON_NULL,
 		dd_canExpand,
-		dd_shouldExpand, dd_filterOperators 
+		dd_shouldExpand,
+		dd_filterOperators
 	} = type;
 
 	//console.log('====', dd_namesArray, dd_namesArray);
@@ -135,7 +136,6 @@
 					(getRootType(null, dd_rootName)?.dd_baseFilterOperators ||
 						getRootType(null, dd_rootName)?.dd_nonBaseFilterOperators) &&
 					dd_rootName != parentType?.dd_rootName
-					//!getRootType(null, parentType?.dd_rootName)?.dd_baseFilterOperators
 				) {
 					addContainer();
 				} else {
@@ -152,8 +152,10 @@
 
 		{#if dd_shouldExpand}
 			<div class="w-10  ">
-				{#if dd_kindList}
+				{#if dd_kindList || (getRootType(null, dd_rootName)?.dd_baseFilterOperators && dd_rootName != parentType?.dd_rootName)}
 					<div class="bi bi-card-list mx-auto w-min" />
+				{:else if getRootType(null, dd_rootName)?.dd_nonBaseFilterOperators}
+					<div class="bi bi-box mx-auto w-min" />
 				{:else if showExpand}
 					<div class="bi bi-chevron-down mx-auto w-min" />
 				{:else}
