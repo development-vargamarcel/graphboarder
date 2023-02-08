@@ -183,49 +183,16 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 
 				{
 					if (group.group_argsNode) {
-						if (newArgData?.dd_NON_NULL) {
-							console.log(newArgData?.dd_NON_NULL);
-							//to prevent --> Uncaught TypeError: Converting circular structure to JSON
-							newArgData.dd_relatedRoot =
-								'overwritten to evade error: Uncaught TypeError: Converting circular structure to JSON';
-							newArgData.not = false;
-							group.group_argsNode[newArgData.id] = newArgData;
-							let randomNr = Math.random();
-							let operator
-							if (containerId) {
-								operator = 'bonded'
-							} else {
-								operator = "_and"
-							}
-							group.group_argsNode[`${randomNr}`] = {
-								id: randomNr,
-								operator,
-								not: false,
-								isMain: false,
-								items: []
-							};
+						//to prevent --> Uncaught TypeError: Converting circular structure to JSON
+						newArgData.dd_relatedRoot =
+							'overwritten to evade error: Uncaught TypeError: Converting circular structure to JSON';
+						newArgData.not = false;
+						group.group_argsNode[newArgData.id] = newArgData;
 
-							if (containerId) {
-								group.group_argsNode[containerId].items.push({ id: randomNr });
-							} else {
-								group.group_argsNode['mainContainer'].items.push({ id: randomNr });
-							}
-
-
-							group.group_argsNode[`${randomNr}`].items.push({ id: newArgData.id });
+						if (containerId) {
+							group.group_argsNode[containerId].items.push({ id: newArgData.id });
 						} else {
-							//to prevent --> Uncaught TypeError: Converting circular structure to JSON
-							newArgData.dd_relatedRoot =
-								'overwritten to evade error: Uncaught TypeError: Converting circular structure to JSON';
-							newArgData.not = false;
-							group.group_argsNode[newArgData.id] = newArgData;
-
-							if (containerId) {
-								group.group_argsNode[containerId].items.push({ id: newArgData.id });
-							} else {
-								group.group_argsNode.mainContainer.items.push({ id: newArgData.id });
-							}
-
+							group.group_argsNode.mainContainer.items.push({ id: newArgData.id });
 						}
 					} else {
 						if (
@@ -234,11 +201,9 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 							})
 						) {
 							group.group_args.push(newArgData);
-							//console.log('aa group', group);
-							//  update_activeArgumentsDataGrouped(group);
+
 						} else {
 							console.log('already added');
-							//console.log('already added');
 						}
 					}
 				}
