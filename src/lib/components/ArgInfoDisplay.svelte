@@ -21,6 +21,7 @@
 		dd_rootName,
 		dd_displayName,
 		dd_kindList,
+		dd_kindEl,
 		dd_NON_NULL,
 		dd_canExpand,
 		dd_shouldExpand,
@@ -145,6 +146,8 @@
 			if (dd_shouldExpand) {
 				if (dd_kindList) {
 					addContainer();
+				} else if (dd_kindEl == 'INPUT_OBJECT') {
+					addContainer();
 				} else if (
 					(getRootType(null, dd_rootName)?.dd_baseFilterOperators ||
 						getRootType(null, dd_rootName)?.dd_nonBaseFilterOperators) &&
@@ -167,7 +170,7 @@
 			<div class="w-10  ">
 				{#if dd_kindList || (getRootType(null, dd_rootName)?.dd_baseFilterOperators && dd_rootName != parentType?.dd_rootName)}
 					<div class="bi bi-card-list mx-auto w-min" />
-				{:else if getRootType(null, dd_rootName)?.dd_nonBaseFilterOperators}
+				{:else if getRootType(null, dd_rootName)?.dd_nonBaseFilterOperators || dd_kindEl}
 					<div class="bi bi-box mx-auto w-min" />
 				{:else if showExpand}
 					<div class="bi bi-chevron-down mx-auto w-min" />
