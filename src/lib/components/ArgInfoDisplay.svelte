@@ -101,16 +101,26 @@
 				<div class="bg-secondary p-1 rounded ">{dd_kindsArray.join(' of ')}</div>
 
 				{#if !dd_canExpand}
-					{#if dd_displayName == dd_namesArray[dd_namesArray.length - 1]}
-						{''}
-					{:else}
-						<div class="bg-base-200 p-1 rounded">
+					<div
+						class="btn btn-xs  bg-base-200 p-1 rounded"
+						on:click={() => {
+							console.log(getRootType(null, dd_rootName));
+						}}
+					>
+						{#if dd_displayName == dd_namesArray[dd_namesArray.length - 1]}
+							{''}
+						{:else}
 							{dd_namesArray[dd_namesArray.length - 1]}
-						</div>
-					{/if}
+						{/if}
+					</div>
 				{/if}
 				{#if dd_canExpand}
-					<div class="bg-base-200  rounded px-2 py-1">
+					<div
+						class="btn btn-xs  bg-base-200  rounded px-2 py-1"
+						on:click={() => {
+							console.log(getRootType(null, dd_rootName));
+						}}
+					>
 						{#if dd_namesArray[0] !== dd_displayName}
 							({dd_namesArray[0]})
 						{:else if dd_namesArray[1] && dd_namesArray[1] !== dd_displayName}

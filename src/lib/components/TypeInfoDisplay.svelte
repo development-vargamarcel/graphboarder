@@ -1,5 +1,5 @@
 <script>
-	import { generateTitleFromStepsOfFields } from '$lib/utils/usefulFunctions';
+	import { generateTitleFromStepsOfFields, getRootType } from '$lib/utils/usefulFunctions';
 	import { createEventDispatcher, getContext } from 'svelte';
 	const dispatch = createEventDispatcher();
 	export let canExpand;
@@ -9,7 +9,7 @@
 	export let showExpand;
 	export let template = 'default';
 	export let stepsOfFields;
-	let { dd_kindsArray, dd_namesArray, dd_displayName } = type;
+	let { dd_kindsArray, dd_namesArray, dd_displayName, dd_rootName } = type;
 	const QMSWraperContext = getContext('QMSWraperContext');
 	const tableColsData_Store = QMSWraperContext?.tableColsData_Store;
 </script>
@@ -41,16 +41,26 @@
 				<div class="bg-secondary p-1 rounded ">{dd_kindsArray?.join(' of ')}</div>
 
 				{#if !canExpand}
-					{#if dd_displayName == dd_namesArray[dd_namesArray.length - 1]}
-						{''}
-					{:else}
-						<div class="bg-base-200 p-1 rounded">
+					<div
+						class="btn btn-xs bg-base-200 p-1 rounded"
+						on:click={() => {
+							console.log(getRootType(null, dd_rootName));
+						}}
+					>
+						{#if dd_displayName == dd_namesArray[dd_namesArray.length - 1]}
+							{''}
+						{:else}
 							{dd_namesArray[dd_namesArray.length - 1]}
-						</div>
-					{/if}
+						{/if}
+					</div>
 				{/if}
 				{#if canExpand}
-					<div class="bg-base-200  rounded px-2 py-1">
+					<div
+						class="btn btn-xs  bg-base-200  rounded px-2 py-1"
+						on:click={() => {
+							console.log(getRootType(null, dd_rootName));
+						}}
+					>
 						{#if dd_namesArray?.[0] !== dd_displayName}
 							({dd_namesArray?.[0]})
 						{:else if dd_namesArray?.[1] && dd_namesArray?.[1] !== dd_displayName}
