@@ -33,12 +33,15 @@
 
 	// testing
 	let RootType = getRootType(null, type.dd_rootName);
+	let RootType_parent = getRootType(null, parentType?.dd_rootName);
+
 	let inputFields = RootType?.inputFields;
 	let enumValues = RootType?.enumValues;
 
 	/// do the above for enums
 
 	const addFilter = () => {
+		//console.log({ type }, { RootType_parent });
 		if (stepsOfFields[stepsOfFields.length - 1] !== dd_displayName) {
 			stepsOfFields.push(dd_displayName); //take care might caus eproblems
 		}
