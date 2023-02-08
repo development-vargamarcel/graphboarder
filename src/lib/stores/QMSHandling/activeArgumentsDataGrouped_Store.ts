@@ -191,9 +191,15 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 							newArgData.not = false;
 							group.group_argsNode[newArgData.id] = newArgData;
 							let randomNr = Math.random();
+							let operator
+							if (containerId) {
+								operator = 'bonded'
+							} else {
+								operator = "_and"
+							}
 							group.group_argsNode[`${randomNr}`] = {
 								id: randomNr,
-								operator: '_and',
+								operator,
 								not: false,
 								isMain: false,
 								items: []
