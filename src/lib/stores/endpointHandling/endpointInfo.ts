@@ -76,7 +76,7 @@ export const endpointInfoDefaultValues = {
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
 				return (
 					dd_rootNameLowerCase.includes('timestamp') ||
-					dd_rootNameLowerCase.includes('date') ||
+					dd_rootNameLowerCase.replace("update", "").includes('date') ||
 					dd_rootNameLowerCase.includes('time')
 				);
 			}
