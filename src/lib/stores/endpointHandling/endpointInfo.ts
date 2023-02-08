@@ -201,6 +201,7 @@ export const endpointInfo = {
 		return null;
 	},
 	get_typeExtraData: (typeInfo) => {
+		//maybe is a good approach to make available  entire typeInfo (QMS_info) to 'check' and 'get_Val'
 		const storeVal = get(store);
 		if (!storeVal || !storeVal?.typesExtraDataPossibilities?.length > 0) {
 			return null;
@@ -208,8 +209,9 @@ export const endpointInfo = {
 		let typesExtraDataPossibility = storeVal.typesExtraDataPossibilities.find(
 			(typesExtraDataPossibility) => {
 				return (
-					typesExtraDataPossibility.check(typeInfo.dd_rootName) ||
-					typesExtraDataPossibility.check(typeInfo.dd_kindEl)
+					typesExtraDataPossibility.check(typeInfo.dd_kindEl) ||
+					typesExtraDataPossibility.check(typeInfo.dd_rootName)
+
 				);
 			}
 		);
