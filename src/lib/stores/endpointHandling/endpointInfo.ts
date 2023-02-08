@@ -95,7 +95,7 @@ export const endpointInfoDefaultValues = {
 					return null
 				}
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
-				return dd_rootNameLowerCase.includes('int') || dd_rootNameLowerCase.includes('float');
+				return dd_rootNameLowerCase.replace('constraint', '').includes('int') || dd_rootNameLowerCase.includes('float');
 			}
 		},
 		{
@@ -130,7 +130,7 @@ export const endpointInfoDefaultValues = {
 					return null
 				}
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
-				return dd_rootNameLowerCase.includes('enum');
+				return dd_rootNameLowerCase.includes('enum') || dd_rootNameLowerCase.includes('constraint');
 			}
 		}, {
 			get_Val: () => {
