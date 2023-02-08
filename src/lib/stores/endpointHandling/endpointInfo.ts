@@ -201,7 +201,7 @@ export const endpointInfo = {
 		return null;
 	},
 	get_typeExtraData: (typeInfo) => {
-		//maybe is a good approach to make available  entire typeInfo (QMS_info) to 'check' and 'get_Val'
+		//!!!maybe is a good approach to make available  entire typeInfo (QMS_info) to 'check' and 'get_Val'
 		const storeVal = get(store);
 		if (!storeVal || !storeVal?.typesExtraDataPossibilities?.length > 0) {
 			return null;
