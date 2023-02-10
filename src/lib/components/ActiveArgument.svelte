@@ -94,7 +94,7 @@
 		dispatch('contextmenuUsed');
 	}}
 >
-	<div class="grow ">
+	<div class="grow w-min-[20vw] ">
 		<div class="  flex  space-x-2 ">
 			<input
 				type="checkbox"
