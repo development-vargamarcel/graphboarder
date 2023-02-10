@@ -192,7 +192,13 @@
 			>
 				{node.operator}
 			</p>
-
+			<p class="text-xs  ">
+				{#if node?.stepsOfFields}
+					{node.stepsOfFields.slice(1).join(' > ')}
+				{:else if parent_stepsOfFields}
+					({parent_stepsOfFields.slice(1).join(' > ')})
+				{/if}
+			</p>
 			<p>
 				<ActiveArgumentsGroup_addFilterAndSortingButton
 					{parent_inputFields}
@@ -204,15 +210,6 @@
 				/>
 			</p>
 
-			<p class="text-xs pt-1 w-full overflow-scroll ">
-				{#if node?.stepsOfFields}
-					{node.stepsOfFields.join(' > ')}
-				{/if}
-				{#if parent_stepsOfFields}
-					({parent_stepsOfFields.join(' > ')})
-				{/if}
-			</p>
-			<p class="grow" />
 			{#if !node?.isMain}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<p
@@ -229,7 +226,36 @@
 					}}
 				>
 					<i class="bi bi-trash-fill" />
-				</p>{/if}
+				</p>
+			{/if}
+			{#if node.items.length == 1}
+				<div class=" text-xs  w-full ">
+					<div class="  flex   ">
+						<svelte:self
+							on:deleteSubNode={(e) => {
+								deleteItem(e);
+								//console.log(e.detail.id, node);
+							}}
+							parent_inputFields={node?.inputFields}
+							parent_stepsOfFields={node?.stepsOfFields}
+							{originalNodes}
+							on:updateQuery
+							{type}
+							bind:nodes
+							node={nodes[
+								node.items.filter((item) => {
+									return item.id !== SHADOW_PLACEHOLDER_ITEM_ID;
+								})[0].id
+							]}
+							on:changed
+							{availableOperators}
+							on:childrenStartDrag={startDrag}
+							{group}
+						/>
+					</div>
+				</div>
+			{/if}
+			<p class="grow" />
 		</div>
 	{:else}
 		<div class="pr-2 rounded-box  w-full">
@@ -257,11 +283,10 @@
 
 	{#if node.hasOwnProperty('items')}
 		<section
-			class=" rounded-l-none {node?.items?.length == 0 ? 'pt-6' : ''} {node?.isMain
-				? 'pb-10 border-l-2 border-l-transparent'
-				: ' pb-2'} {node?.isMain
-				? 'overflow-scroll overscroll-contain md:overscroll-auto h-[60vh] md:h-[80vh]'
-				: 'min'} w-full"
+			class=" rounded-l-none {node?.items?.length <= 1 ? 'pt-0' : 'pb-4'} {node?.isMain
+				? ' border-l-2 border-l-transparent'
+				: ' '}
+				 w-full"
 			use:dndzone={{
 				items: node.items,
 				dragDisabled,
@@ -274,29 +299,31 @@
 			on:finalize={handleDndFinalize}
 		>
 			<!-- WE FILTER THE SHADOW PLACEHOLDER THAT WAS ADDED IN VERSION 0.7.4, filtering this way rather than checking whether 'nodes' have the id became possible in version 0.9.1 -->
-			{#each node.items.filter((item) => {
-				return item.id !== SHADOW_PLACEHOLDER_ITEM_ID;
-			}) as item (item.id)}
-				<div animate:flip={{ duration: flipDurationMs }} class="  flex   ">
-					<svelte:self
-						on:deleteSubNode={(e) => {
-							deleteItem(e);
-							//console.log(e.detail.id, node);
-						}}
-						parent_inputFields={node?.inputFields}
-						parent_stepsOfFields={node?.stepsOfFields}
-						{originalNodes}
-						on:updateQuery
-						{type}
-						bind:nodes
-						node={nodes[item.id]}
-						on:changed
-						{availableOperators}
-						on:childrenStartDrag={startDrag}
-						{group}
-					/>
-				</div>
-			{/each}
+			{#if node.items.length > 1}
+				{#each node.items.filter((item) => {
+					return item.id !== SHADOW_PLACEHOLDER_ITEM_ID;
+				}) as item (item.id)}
+					<div animate:flip={{ duration: flipDurationMs }} class="  flex   ">
+						<svelte:self
+							on:deleteSubNode={(e) => {
+								deleteItem(e);
+								//console.log(e.detail.id, node);
+							}}
+							parent_inputFields={node?.inputFields}
+							parent_stepsOfFields={node?.stepsOfFields}
+							{originalNodes}
+							on:updateQuery
+							{type}
+							bind:nodes
+							node={nodes[item.id]}
+							on:changed
+							{availableOperators}
+							on:childrenStartDrag={startDrag}
+							{group}
+						/>
+					</div>
+				{/each}
+			{/if}
 		</section>
 	{/if}
 </div>
