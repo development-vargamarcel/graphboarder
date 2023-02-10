@@ -82,7 +82,7 @@
 <label
 	use:clickOutside
 	on:click_outside={handleClickOutside}
-	class="   rounded-box {expandedVersion
+	class=" w-min-[30vw]  rounded-box {expandedVersion
 		? 'p-2'
 		: ''}  my-1 flex   dnd-item {activeArgumentData?.inUse
 		? activeArgumentData.canRunQuery
@@ -94,7 +94,7 @@
 		dispatch('contextmenuUsed');
 	}}
 >
-	<div class="grow w-min-[20vw] ">
+	<div class="grow  ">
 		<div class="  flex  space-x-2 ">
 			<input
 				type="checkbox"
