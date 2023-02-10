@@ -332,7 +332,6 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => {
 
 		derivedData.dd_isRootArg = !(
 			derivedData.dd_canExpand &&
-			!derivedData.dd_relatedRoot_inputFields_allScalar &&
 			!derivedData?.dd_relatedRoot?.enumValues
 		);
 	}
