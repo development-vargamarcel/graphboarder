@@ -82,7 +82,7 @@
 <label
 	use:clickOutside
 	on:click_outside={handleClickOutside}
-	class=" w-[40vw]  rounded-box {expandedVersion
+	class=" min-w-[50vw]  rounded-box {expandedVersion
 		? 'p-2'
 		: ''}  my-1 flex   dnd-item {activeArgumentData?.inUse
 		? activeArgumentData.canRunQuery
