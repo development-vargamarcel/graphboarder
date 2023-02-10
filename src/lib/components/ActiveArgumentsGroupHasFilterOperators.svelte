@@ -131,7 +131,7 @@
 	</div>{/if}
 
 <div
-	class=" w-full transition-all duration-500
+	class="  w-min-max w-max transition-all duration-500
 	
 	
 	{node?.operator ? 'rounded-l-md bg-gradient-to-rxxx   border-l-[1px] my-1 shadow-sm' : ''} 
