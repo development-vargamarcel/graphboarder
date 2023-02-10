@@ -95,7 +95,7 @@
 </script>
 
 {#if !node?.isMain}
-	<div class=" grid   content-center  rounded-full ">
+	<div class=" grid   content-center  rounded-full w-full">
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 		<div
 			tabindex={dragDisabled ? 0 : -1}
