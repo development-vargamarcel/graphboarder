@@ -137,7 +137,9 @@
 	class="  w-min-max w-max transition-all duration-500
 	
 	
-	{node?.operator ? 'rounded-l-md bg-gradient-to-rxxx   border-l-[1px] my-1== shadow-sm' : ''} 
+	{node?.operator && node.items.length > 1
+		? 'rounded-l-md bg-gradient-to-rxxx   border-l-[1px] my-1== shadow-sm'
+		: ''} 
 	
 {node?.operator && node?.not ? 'border-dashed  ' : ''} 
 {node?.operator == 'bonded' || node?.operator == 'list'
@@ -173,19 +175,20 @@
 			<div class="dropdown">
 				<div
 					tabindex="0"
-					class="btn btn-xs btn-ghost px-2  text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
+					class="btn btn-xs btn-ghost pl-0 pr-2  text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
 						'bonded' || node?.operator == 'list'
 						? 'text-base-content'
 						: node?.operator == '_and'
 						? 'text-primary'
-						: 'text-accent-focus'}"
+						: 'text-accent-focus'} break-all h-max  w-max"
 				>
-					{#if node?.operator == 'bonded' && node?.stepsOfFields}
+					{#if node?.operator != 'bonded'}
+						{node?.operator} ,
+					{/if}
+					{#if node?.stepsOfFields}
 						{node.stepsOfFields.slice(1).join(' > ')}
-					{:else if node?.operator == 'bonded' && parent_stepsOfFields}
+					{:else if parent_stepsOfFields}
 						({parent_stepsOfFields.slice(1).join(' > ')})
-					{:else}
-						{node.operator}
 					{/if}
 				</div>
 				<div
@@ -239,13 +242,6 @@
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="text-xs  pt-1">
-				{#if node?.operator != 'bonded' && node?.stepsOfFields}
-					{node.stepsOfFields.slice(1).join(' > ')}
-				{:else if node?.operator != 'bonded' && parent_stepsOfFields}
-					({parent_stepsOfFields.slice(1).join(' > ')})
-				{/if}
 			</div>
 
 			{#if node.items.length == 1 && !node?.isMain}
