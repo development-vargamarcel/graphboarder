@@ -111,8 +111,15 @@
 					console.log('group', group);
 					let newContainerDataRootType = getRootType(null, newContainerData.dd_rootName);
 					let hasBaseFilterOperators = newContainerDataRootType?.dd_baseFilterOperators;
-					let PARENT_newContainerDataRootType = getRootType(null, newContainerData?.parentType.dd_rootName);
-					let PARENT_hasBaseFilterOperators = newContainerDataRootType?.dd_baseFilterOperators;
+let PARENT_newContainerDataRootType 
+let PARENT_newContainerDataRootType
+if (
+						newContainerData?.parentType 
+					) {
+PARENT_newContainerDataRootType = getRootType(null, newContainerData?.parentType.dd_rootName);
+PARENT_hasBaseFilterOperators = newContainerDataRootType?.dd_baseFilterOperators;
+
+					} 
 					
 let hasNonBaseFilterOperators = newContainerDataRootType?.dd_nonBaseFilterOperators;
 
