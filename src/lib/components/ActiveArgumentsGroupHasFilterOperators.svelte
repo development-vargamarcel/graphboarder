@@ -128,7 +128,8 @@
 				}
 			}}
 		/>
-	</div>{/if}
+	</div>
+{/if}
 
 <div
 	class="  w-min-max w-max transition-all duration-500
@@ -192,13 +193,13 @@
 			>
 				{node.operator}
 			</p>
-			<p class="text-xs  ">
+			<div class="text-xs  pt-1">
 				{#if node?.stepsOfFields}
 					{node.stepsOfFields.slice(1).join(' > ')}
 				{:else if parent_stepsOfFields}
 					({parent_stepsOfFields.slice(1).join(' > ')})
 				{/if}
-			</p>
+			</div>
 			<p>
 				<ActiveArgumentsGroup_addFilterAndSortingButton
 					{parent_inputFields}
@@ -228,7 +229,7 @@
 					<i class="bi bi-trash-fill" />
 				</p>
 			{/if}
-			{#if node.items.length == 1 && !node?.isMain }
+			{#if node.items.length == 1 && !node?.isMain}
 				<div class=" text-xs  w-full ">
 					<div class="  flex   ">
 						<svelte:self
