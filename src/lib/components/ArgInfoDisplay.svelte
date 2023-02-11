@@ -169,7 +169,7 @@
 
 		{#if dd_shouldExpand}
 			<div class="w-10  ">
-				{#if dd_kindList}
+				{#if dd_kindList ||( getRootType(null, dd_rootName)?.dd_baseFilterOperators && parentType && !getRootType(null, parentType. dd_rootName)?.dd_baseFilterOperators) }
 					<div class="bi bi-card-list mx-auto w-min" />
 				{:else if getRootType(null, dd_rootName)?.dd_nonBaseFilterOperators || dd_kindEl}
 					<div class="bi bi-box mx-auto w-min" />
