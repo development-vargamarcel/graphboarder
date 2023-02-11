@@ -167,32 +167,70 @@
 	{#if node?.operator}
 		<div class="flex ">
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<p
-				style=""
-				class="btn btn-xs btn-ghost px-2  text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
-					'bonded' || node?.operator == 'list'
-					? 'text-base-content'
-					: node?.operator == '_and'
-					? 'text-primary'
-					: 'text-accent-focus'}"
-				on:click={() => {
-					if (node?.operator && !node?.isMain) {
-						if (node?.operator == '_or') {
-							node.operator = '_and';
-						} else if (node?.operator == '_and') {
-							node.operator = 'bonded';
-						} else if (node?.operator == 'bonded') {
-							node.operator = 'list';
-						} else {
-							node.operator = '_or';
-						}
-					}
-					handleChanged();
-					dispatch('changed');
-				}}
-			>
-				{node.operator}
-			</p>
+
+			<div class="dropdown">
+				<div
+					tabindex="0"
+					class="btn btn-xs btn-ghost px-2  text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
+						'bonded' || node?.operator == 'list'
+						? 'text-base-content'
+						: node?.operator == '_and'
+						? 'text-primary'
+						: 'text-accent-focus'}"
+				>
+					{node.operator}
+				</div>
+				<ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+					{#if !node?.isMain}
+						<div
+							class="btn btn-xs"
+							on:click={() => {
+								if (node?.operator && !node?.isMain) {
+									if (node?.operator == '_or') {
+										node.operator = '_and';
+									} else if (node?.operator == '_and') {
+										node.operator = 'bonded';
+									} else if (node?.operator == 'bonded') {
+										node.operator = 'list';
+									} else {
+										node.operator = '_or';
+									}
+								}
+								handleChanged();
+								dispatch('changed');
+							}}
+						>
+							change
+						</div>
+						<!-- svelte-ignore a11y-click-events-have-key-events -->
+						<p
+							class="btn btn-xs btn-ghost {node?.operator == 'bonded' || node?.operator == 'list'
+								? 'text-base-content'
+								: node?.operator == '_and'
+								? 'text-primary'
+								: 'text-accent-focus'}"
+							on:click={() => {
+								alert('not yet implemented');
+								console.log(
+									'not yet implemented,implement here.Delete node and his items and items of his items recursively until the very end of the tree.'
+								);
+							}}
+						>
+							<i class="bi bi-trash-fill" />
+						</p>
+					{/if}
+					<div>
+						<ActiveArgumentsGroup_addFilterAndSortingButton
+							{parent_inputFields}
+							{parent_stepsOfFields}
+							on:updateQuery
+							bind:group
+							bind:argsInfo
+							{node}
+						/>
+					</div>
+				</ul>
+			</div>
 			<div class="text-xs  pt-1">
 				{#if node?.stepsOfFields}
 					{node.stepsOfFields.slice(1).join(' > ')}
@@ -200,35 +238,7 @@
 					({parent_stepsOfFields.slice(1).join(' > ')})
 				{/if}
 			</div>
-			<div>
-				<ActiveArgumentsGroup_addFilterAndSortingButton
-					{parent_inputFields}
-					{parent_stepsOfFields}
-					on:updateQuery
-					bind:group
-					bind:argsInfo
-					{node}
-				/>
-			</div>
 
-			{#if !node?.isMain}
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<p
-					class="btn btn-xs btn-ghost {node?.operator == 'bonded' || node?.operator == 'list'
-						? 'text-base-content'
-						: node?.operator == '_and'
-						? 'text-primary'
-						: 'text-accent-focus'}"
-					on:click={() => {
-						alert('not yet implemented');
-						console.log(
-							'not yet implemented,implement here.Delete node and his items and items of his items recursively until the very end of the tree.'
-						);
-					}}
-				>
-					<i class="bi bi-trash-fill" />
-				</p>
-			{/if}
 			{#if node.items.length == 1 && !node?.isMain}
 				<div class=" text-xs  w-full ">
 					<div class="  flex   ">
