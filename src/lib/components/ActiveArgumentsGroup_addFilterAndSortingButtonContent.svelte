@@ -111,13 +111,15 @@
 					console.log('group', group);
 					let newContainerDataRootType = getRootType(null, newContainerData.dd_rootName);
 					let hasBaseFilterOperators = newContainerDataRootType?.dd_baseFilterOperators;
-					let hasNonBaseFilterOperators = newContainerDataRootType?.dd_nonBaseFilterOperators;
+					let PARENT_newContainerDataRootType = getRootType(null, newContainerData?.parentType.dd_rootName);
+					let PARENT_hasBaseFilterOperators = newContainerDataRootType?.dd_baseFilterOperators;
+					
+let hasNonBaseFilterOperators = newContainerDataRootType?.dd_nonBaseFilterOperators;
 
 					let isListContainer = newContainerData?.dd_kindList;
 					let operator = isListContainer && !hasNonBaseFilterOperators ? 'list' : 'bonded';
 					if (
-						hasBaseFilterOperators &&
-						newContainerData?.parentType?.dd_rootName != newContainerData.dd_rootName
+						hasBaseFilterOperators && !PARENT_hasBaseFilterOperators
 					) {
 						operator = '_and';
 					}
