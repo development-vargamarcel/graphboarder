@@ -135,7 +135,7 @@
 	class="  w-min-max w-max transition-all duration-500
 	
 	
-	{node?.operator ? 'rounded-l-md bg-gradient-to-rxxx   border-l-[1px] my-1 shadow-sm' : ''} 
+	{node?.operator ? 'rounded-l-md bg-gradient-to-rxxx   border-l-[1px] my-1== shadow-sm' : ''} 
 	
 {node?.operator && node?.not ? 'border-dashed  ' : ''} 
 {node?.operator == 'bonded' || node?.operator == 'list'
@@ -182,8 +182,7 @@
 						{node.stepsOfFields.slice(1).join(' > ')}
 					{:else if node?.operator == 'bonded' && parent_stepsOfFields}
 						({parent_stepsOfFields.slice(1).join(' > ')})
-					{/if}
-					{#if node?.operator != 'bonded'}
+					{:else}
 						{node.operator}
 					{/if}
 				</div>
@@ -302,7 +301,7 @@
 
 	{#if node.hasOwnProperty('items')}
 		<section
-			class=" rounded-l-none {node?.items?.length <= 1 ? 'pt-0' : 'pb-4'} {node?.isMain
+			class=" rounded-l-none {node?.items?.length <= 1 ? 'pt-0' : 'pb-0'} {node?.isMain
 				? ' border-l-2 border-l-transparent'
 				: ' '}
 				 w-full"
