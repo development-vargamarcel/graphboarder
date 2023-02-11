@@ -157,7 +157,7 @@ if (!operator) {
 					}
 				}}
 			/>
-PARENT_hasBaseFilterOperators:{PARENT_hasBaseFilterOperators} 
+
 		{/each}
 	</div>
 
