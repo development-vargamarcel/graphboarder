@@ -178,7 +178,14 @@
 						? 'text-primary'
 						: 'text-accent-focus'}"
 				>
-					{node.operator}
+					{#if node?.operator == 'bonded' && node?.stepsOfFields}
+						{node.stepsOfFields.slice(1).join(' > ')}
+					{:else if node?.operator == 'bonded' && parent_stepsOfFields}
+						({parent_stepsOfFields.slice(1).join(' > ')})
+					{/if}
+					{#if node?.operator != 'bonded'}
+						{node.operator}
+					{/if}
 				</div>
 				<div
 					tabindex="0"
@@ -233,9 +240,9 @@
 				</div>
 			</div>
 			<div class="text-xs  pt-1">
-				{#if node?.stepsOfFields}
+				{#if node?.operator != 'bonded' && node?.stepsOfFields}
 					{node.stepsOfFields.slice(1).join(' > ')}
-				{:else if parent_stepsOfFields}
+				{:else if node?.operator != 'bonded' && parent_stepsOfFields}
 					({parent_stepsOfFields.slice(1).join(' > ')})
 				{/if}
 			</div>
