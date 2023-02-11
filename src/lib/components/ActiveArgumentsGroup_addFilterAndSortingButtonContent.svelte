@@ -124,13 +124,15 @@ PARENT_hasBaseFilterOperators = PARENT_newContainerDataRootType?.dd_baseFilterOp
 let hasNonBaseFilterOperators = newContainerDataRootType?.dd_nonBaseFilterOperators;
 
 					let isListContainer = newContainerData?.dd_kindList;
-					let operator = isListContainer && !hasNonBaseFilterOperators ? 'list' : 'bonded';
+let operator
+
 					if (
 						newContainerDataRootType?.dd_shouldExpand && hasBaseFilterOperators && !PARENT_hasBaseFilterOperators
 					) {
 						operator = '_and';
 					}
-
+operator = isListContainer && !hasNonBaseFilterOperators ? 'list' : 'bonded';
+					
 					group.group_argsNode[`${randomNr}`] = {
 						...newContainerData,
 						inputFields: newContainerDataRootType?.inputFields,
