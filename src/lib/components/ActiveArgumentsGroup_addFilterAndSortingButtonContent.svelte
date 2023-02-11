@@ -105,12 +105,9 @@
 				let hasNonBaseFilterOperators = newContainerDataRootType?.dd_nonBaseFilterOperators;
 
 				let isListContainer = newContainerData?.dd_kindList;
-				let operator = isListContainer ? 'list' : 'bonded';
-				if (hasBaseFilterOperators) {
+				let operator = isListContainer && !hasNonBaseFilterOperators ? 'list' : 'bonded';
+				if (hasBaseFilterOperators && newContainerData?.dd_kindEl != 'INPUT_OBJECT') {
 					operator = '_and';
-				}
-				if (hasNonBaseFilterOperators) {
-					operator = 'bonded';
 				}
 
 				group.group_argsNode[`${randomNr}`] = {
