@@ -3,7 +3,7 @@
 	import { dndzone, SHADOW_PLACEHOLDER_ITEM_ID } from 'svelte-dnd-action';
 	import { createEventDispatcher, getContext } from 'svelte';
 	import ActiveArgument from '$lib/components/ActiveArgument.svelte';
-	import ActiveArgumentsGroup_addFilterAndSortingButton from '$lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte';
+	import ActiveArgumentsGroup_addFilterAndSortingButtonContent from '$lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte';
 
 	const dispatch = createEventDispatcher();
 	export let nodes;
@@ -220,7 +220,7 @@
 						</p>
 					{/if}
 					<div>
-						<ActiveArgumentsGroup_addFilterAndSortingButton
+						<ActiveArgumentsGroup_addFilterAndSortingButtonContent
 							{parent_inputFields}
 							{parent_stepsOfFields}
 							on:updateQuery
