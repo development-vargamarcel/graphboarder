@@ -133,7 +133,81 @@
 						}
 					}}
 				/>
-				<div>ss</div>
+				{#if node?.items?.length <= 1}
+					<div>
+						<div class="dropdown">
+							<div
+								tabindex="0"
+								class="btn btn-xs btn-ghost pl-0 pr-2  text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
+									'bonded' || node?.operator == 'list'
+									? 'text-base-content'
+									: node?.operator == '_and'
+									? 'text-primary'
+									: 'text-accent-focus'} break-all h-max  w-max"
+							>
+								{#if node?.operator != 'bonded'}
+									{node?.operator} ,
+								{/if}
+								{#if node?.stepsOfFields}
+									{node.stepsOfFields.slice(1).join(' > ')}
+								{:else if parent_stepsOfFields}
+									({parent_stepsOfFields.slice(1).join(' > ')})
+								{/if}
+							</div>
+							<div
+								tabindex="0"
+								class="dropdown-content menu p-2   bg-base-100 rounded-box w-max text-sm shadow-2xl overflow-y-auto overscroll-contain  max-h-52 sm:max-h-72 md:max-h-90    max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
+							>
+								<div class="flex flex-col">
+									{#if !node?.isMain}
+										<btn
+											class="btn btn-xs text-sm mb-1 normal-case"
+											on:click={() => {
+												if (node?.operator && !node?.isMain) {
+													if (node?.operator == '_or') {
+														node.operator = '_and';
+													} else if (node?.operator == '_and') {
+														node.operator = 'bonded';
+													} else if (node?.operator == 'bonded') {
+														node.operator = 'list';
+													} else {
+														node.operator = '_or';
+													}
+												}
+												handleChanged();
+												dispatch('changed');
+											}}
+										>
+											change
+										</btn>
+										<!-- svelte-ignore a11y-click-events-have-key-events -->
+										<btn
+											class="btn btn-xs btn-warning  mb-1"
+											on:click={() => {
+												alert('not yet implemented');
+												console.log(
+													'not yet implemented,implement here.Delete node and his items and items of his items recursively until the very end of the tree.'
+												);
+											}}
+										>
+											<i class="bi bi-trash-fill" />
+										</btn>
+									{/if}
+									<div>
+										<ActiveArgumentsGroup_addFilterAndSortingButtonContent
+											{parent_inputFields}
+											{parent_stepsOfFields}
+											on:updateQuery
+											bind:group
+											bind:argsInfo
+											{node}
+										/>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				{/if}
 			</div>
 		</div>
 	{/if}{/if}
@@ -177,77 +251,78 @@
 		<div class="flex ">
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 
-			<div class="dropdown">
-				<div
-					tabindex="0"
-					class="btn btn-xs btn-ghost pl-0 pr-2  text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
-						'bonded' || node?.operator == 'list'
-						? 'text-base-content'
-						: node?.operator == '_and'
-						? 'text-primary'
-						: 'text-accent-focus'} break-all h-max  w-max"
-				>
-					{#if node?.operator != 'bonded'}
-						{node?.operator} ,
-					{/if}
-					{#if node?.stepsOfFields}
-						{node.stepsOfFields.slice(1).join(' > ')}
-					{:else if parent_stepsOfFields}
-						({parent_stepsOfFields.slice(1).join(' > ')})
-					{/if}
-				</div>
-				<div
-					tabindex="0"
-					class="dropdown-content menu p-2   bg-base-100 rounded-box w-max text-sm shadow-2xl overflow-y-auto overscroll-contain  max-h-52 sm:max-h-72 md:max-h-90    max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
-				>
-					<div class="flex flex-col">
-						{#if !node?.isMain}
-							<btn
-								class="btn btn-xs text-sm mb-1 normal-case"
-								on:click={() => {
-									if (node?.operator && !node?.isMain) {
-										if (node?.operator == '_or') {
-											node.operator = '_and';
-										} else if (node?.operator == '_and') {
-											node.operator = 'bonded';
-										} else if (node?.operator == 'bonded') {
-											node.operator = 'list';
-										} else {
-											node.operator = '_or';
-										}
-									}
-									handleChanged();
-									dispatch('changed');
-								}}
-							>
-								change
-							</btn>
-							<!-- svelte-ignore a11y-click-events-have-key-events -->
-							<btn
-								class="btn btn-xs btn-warning  mb-1"
-								on:click={() => {
-									alert('not yet implemented');
-									console.log(
-										'not yet implemented,implement here.Delete node and his items and items of his items recursively until the very end of the tree.'
-									);
-								}}
-							>
-								<i class="bi bi-trash-fill" />
-							</btn>
+			{#if node?.items?.length > 1}
+				<div class="dropdown">
+					<div
+						tabindex="0"
+						class="btn btn-xs btn-ghost pl-0 pr-2  text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
+							'bonded' || node?.operator == 'list'
+							? 'text-base-content'
+							: node?.operator == '_and'
+							? 'text-primary'
+							: 'text-accent-focus'} break-all h-max  w-max"
+					>
+						{#if node?.operator != 'bonded'}
+							{node?.operator} ,
 						{/if}
-						<div>
-							<ActiveArgumentsGroup_addFilterAndSortingButtonContent
-								{parent_inputFields}
-								{parent_stepsOfFields}
-								on:updateQuery
-								bind:group
-								bind:argsInfo
-								{node}
-							/>
+						{#if node?.stepsOfFields}
+							{node.stepsOfFields.slice(1).join(' > ')}
+						{:else if parent_stepsOfFields}
+							({parent_stepsOfFields.slice(1).join(' > ')})
+						{/if}
+					</div>
+					<div
+						tabindex="0"
+						class="dropdown-content menu p-2   bg-base-100 rounded-box w-max text-sm shadow-2xl overflow-y-auto overscroll-contain  max-h-52 sm:max-h-72 md:max-h-90    max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
+					>
+						<div class="flex flex-col">
+							{#if !node?.isMain}
+								<btn
+									class="btn btn-xs text-sm mb-1 normal-case"
+									on:click={() => {
+										if (node?.operator && !node?.isMain) {
+											if (node?.operator == '_or') {
+												node.operator = '_and';
+											} else if (node?.operator == '_and') {
+												node.operator = 'bonded';
+											} else if (node?.operator == 'bonded') {
+												node.operator = 'list';
+											} else {
+												node.operator = '_or';
+											}
+										}
+										handleChanged();
+										dispatch('changed');
+									}}
+								>
+									change
+								</btn>
+								<!-- svelte-ignore a11y-click-events-have-key-events -->
+								<btn
+									class="btn btn-xs btn-warning  mb-1"
+									on:click={() => {
+										alert('not yet implemented');
+										console.log(
+											'not yet implemented,implement here.Delete node and his items and items of his items recursively until the very end of the tree.'
+										);
+									}}
+								>
+									<i class="bi bi-trash-fill" />
+								</btn>
+							{/if}
+							<div>
+								<ActiveArgumentsGroup_addFilterAndSortingButtonContent
+									{parent_inputFields}
+									{parent_stepsOfFields}
+									on:updateQuery
+									bind:group
+									bind:argsInfo
+									{node}
+								/>
+							</div>
 						</div>
 					</div>
-				</div>
-			</div>
+				</div>{/if}
 
 			{#if node.items.length == 1 && !node?.isMain}
 				<!-- <section
