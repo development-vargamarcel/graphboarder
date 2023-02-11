@@ -99,37 +99,42 @@
 	{#if !node?.isMain}
 		<div class=" grid   content-center  rounded-full w-min-max w-max">
 			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-			<div
-				tabindex={dragDisabled ? 0 : -1}
-				aria-label="drag-handle"
-				class="  transition:all duration-500 bi bi-grip-vertical ml-2  -mr-1 text-lg rounded-l-md {node?.operator ==
-					undefined || node?.operator == 'bonded'
-					? 'text-base-content'
-					: node?.operator == '_and'
-					? 'text-primary'
-					: 'text-accent-focus'} {node?.not ? ' bg-gradient-to-r from-base-300/100' : 'bg-error/0'}"
-				style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
-				on:mousedown={(e) => {
-					// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
-					e.preventDefault();
+			<div class="flex">
+				<div
+					tabindex={dragDisabled ? 0 : -1}
+					aria-label="drag-handle"
+					class="  transition:all duration-500 bi bi-grip-vertical ml-2  -mr-1 text-lg rounded-l-md {node?.operator ==
+						undefined || node?.operator == 'bonded'
+						? 'text-base-content'
+						: node?.operator == '_and'
+						? 'text-primary'
+						: 'text-accent-focus'} {node?.not
+						? ' bg-gradient-to-r from-base-300/100'
+						: 'bg-error/0'}"
+					style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
+					on:mousedown={(e) => {
+						// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
+						e.preventDefault();
 
-					dispatch('childrenStartDrag');
-				}}
-				on:touchstart={(e) => {
-					// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
-					e.preventDefault();
+						dispatch('childrenStartDrag');
+					}}
+					on:touchstart={(e) => {
+						// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
+						e.preventDefault();
 
-					dispatch('childrenStartDrag');
-				}}
-				on:keydown={handleKeyDown}
-				on:contextmenu|preventDefault|stopPropagation={() => {
-					if (!node?.isMain) {
-						node.not = !node.not;
-						handleChanged();
-						dispatch('changed');
-					}
-				}}
-			/>
+						dispatch('childrenStartDrag');
+					}}
+					on:keydown={handleKeyDown}
+					on:contextmenu|preventDefault|stopPropagation={() => {
+						if (!node?.isMain) {
+							node.not = !node.not;
+							handleChanged();
+							dispatch('changed');
+						}
+					}}
+				/>
+				<div>ss</div>
+			</div>
 		</div>
 	{/if}{/if}
 
