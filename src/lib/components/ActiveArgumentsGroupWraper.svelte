@@ -36,9 +36,11 @@
 </div>
 
 {#if hasGroup_argsNode}
-	<div class=" {group.group_argsNode.mainContainer?.items?.length >= 5
+	<div
+		class=" {group.group_argsNode.mainContainer?.items?.length >= 5
 			? 'overflow-x-auto  md:overscroll-x-auto h-min-max h-[60vh] md:h-[80vh]'
-			: ' h-80  overflow-y-clip overflow-x-auto  md:overscroll-x-auto'}">
+			: ' h-96  overflow-y-clip overflow-x-auto  md:overscroll-x-auto'}"
+	>
 		<ActiveArgumentsGroupHasFilterOperators
 			on:updateQuery={() => {
 				dispatch('updateQuery');
