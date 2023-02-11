@@ -6,7 +6,7 @@
 	export let showExpand;
 	export let index;
 	export let type;
-	export let parentType;
+	console.log({ type });
 
 	export let template;
 	export let stepsOfFields;
@@ -34,7 +34,6 @@
 
 	// testing
 	let RootType = getRootType(null, type.dd_rootName);
-	let RootType_parent = getRootType(null, parentType?.dd_rootName);
 
 	let inputFields = RootType?.inputFields;
 	let enumValues = RootType?.enumValues;
@@ -68,7 +67,6 @@
 			///enumValues,
 			stepsOfFields,
 			stepsOfFieldsStringified: JSON.stringify(stepsOfFields),
-			parentType,
 			id: `${JSON.stringify(stepsOfFields)}${Math.random()}`,
 			...type
 		};
@@ -150,9 +148,8 @@
 				} else if (dd_kindEl == 'INPUT_OBJECT') {
 					addContainer();
 				} else if (
-					(getRootType(null, dd_rootName)?.dd_baseFilterOperators ||
-						getRootType(null, dd_rootName)?.dd_nonBaseFilterOperators) &&
-					dd_rootName != parentType?.dd_rootName
+					getRootType(null, dd_rootName)?.dd_baseFilterOperators ||
+					getRootType(null, dd_rootName)?.dd_nonBaseFilterOperators
 				) {
 					addContainer();
 				} else {
@@ -169,7 +166,7 @@
 
 		{#if dd_shouldExpand}
 			<div class="w-10  ">
-				{#if dd_kindList ||( getRootType(null, dd_rootName)?.dd_baseFilterOperators && parentType && !getRootType(null, parentType.dd_rootName)?.dd_baseFilterOperators) }
+				{#if dd_kindList || getRootType(null, dd_rootName)?.dd_baseFilterOperators}
 					<div class="bi bi-card-list mx-auto w-min" />
 				{:else if getRootType(null, dd_rootName)?.dd_nonBaseFilterOperators || dd_kindEl}
 					<div class="bi bi-box mx-auto w-min" />

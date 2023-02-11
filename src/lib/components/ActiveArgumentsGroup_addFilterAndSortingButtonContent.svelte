@@ -111,34 +111,27 @@
 					console.log('group', group);
 					let newContainerDataRootType = getRootType(null, newContainerData.dd_rootName);
 					let hasBaseFilterOperators = newContainerDataRootType?.dd_baseFilterOperators;
-let PARENT_newContainerDataRootType 
-let PARENT_hasBaseFilterOperators
-if (
-						newContainerData?.parentType 
-					) {
-PARENT_newContainerDataRootType = getRootType(null, newContainerData?.parentType.dd_rootName);
-PARENT_hasBaseFilterOperators = PARENT_newContainerDataRootType?.dd_baseFilterOperators;
 
-					} 
-					
-let hasNonBaseFilterOperators = newContainerDataRootType?.dd_nonBaseFilterOperators;
+					let hasNonBaseFilterOperators = newContainerDataRootType?.dd_nonBaseFilterOperators;
 
 					let isListContainer = newContainerData?.dd_kindList;
-let operator
-if (!operator && isListContainer ) {
+					let operator;
+					if (!operator && isListContainer) {
 						operator = 'list';
 					}
 
 					if (
-						!operator && hasBaseFilterOperators && !PARENT_hasBaseFilterOperators
+						!operator &&
+						hasBaseFilterOperators &&
+						!getRootType(null, node.dd_rootName)?.dd_baseFilterOperators
 					) {
 						operator = '_and';
 					}
 
-if (!operator) {
+					if (!operator) {
 						operator = 'bonded';
 					}
-					
+
 					group.group_argsNode[`${randomNr}`] = {
 						...newContainerData,
 						inputFields: newContainerDataRootType?.inputFields,
@@ -157,7 +150,6 @@ if (!operator) {
 					}
 				}}
 			/>
-
 		{/each}
 	</div>
 
