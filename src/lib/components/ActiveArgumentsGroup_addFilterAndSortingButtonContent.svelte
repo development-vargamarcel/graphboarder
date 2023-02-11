@@ -125,15 +125,16 @@ let hasNonBaseFilterOperators = newContainerDataRootType?.dd_nonBaseFilterOperat
 
 					let isListContainer = newContainerData?.dd_kindList;
 let operator
+if (!operator && isListContainer ) {
+						operator = 'list';
+					}
 
 					if (
-						 hasBaseFilterOperators && !PARENT_hasBaseFilterOperators
+						!operator && hasBaseFilterOperators && !PARENT_hasBaseFilterOperators
 					) {
 						operator = '_and';
 					}
-if (isListContainer ) {
-						operator = 'list';
-					}
+
 if (!operator) {
 						operator = 'bonded';
 					}
