@@ -200,7 +200,7 @@
 					({parent_stepsOfFields.slice(1).join(' > ')})
 				{/if}
 			</div>
-			<p>
+			<div>
 				<ActiveArgumentsGroup_addFilterAndSortingButton
 					{parent_inputFields}
 					{parent_stepsOfFields}
@@ -209,7 +209,7 @@
 					bind:argsInfo
 					{node}
 				/>
-			</p>
+			</div>
 
 			{#if !node?.isMain}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
