@@ -14,6 +14,7 @@
 	export let originalNodes;
 	export let parent_inputFields;
 	export let parent_stepsOfFields;
+	export let isDraggable = false;
 	let dragDisabled = true;
 	const flipDurationMs = 100;
 	function handleDndConsider(e) {
@@ -94,42 +95,43 @@
 	let argsInfo = QMS_info?.args;
 </script>
 
-{#if !node?.isMain}
-	<div class=" grid   content-center  rounded-full w-min-max w-max">
-		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-		<div
-			tabindex={dragDisabled ? 0 : -1}
-			aria-label="drag-handle"
-			class="  transition:all duration-500 bi bi-grip-vertical ml-2  -mr-1 text-lg rounded-l-md {node?.operator ==
-				undefined || node?.operator == 'bonded'
-				? 'text-base-content'
-				: node?.operator == '_and'
-				? 'text-primary'
-				: 'text-accent-focus'} {node?.not ? ' bg-gradient-to-r from-base-300/100' : 'bg-error/0'}"
-			style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
-			on:mousedown={(e) => {
-				// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
-				e.preventDefault();
+{#if isDraggable}
+	{#if !node?.isMain}
+		<div class=" grid   content-center  rounded-full w-min-max w-max">
+			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+			<div
+				tabindex={dragDisabled ? 0 : -1}
+				aria-label="drag-handle"
+				class="  transition:all duration-500 bi bi-grip-vertical ml-2  -mr-1 text-lg rounded-l-md {node?.operator ==
+					undefined || node?.operator == 'bonded'
+					? 'text-base-content'
+					: node?.operator == '_and'
+					? 'text-primary'
+					: 'text-accent-focus'} {node?.not ? ' bg-gradient-to-r from-base-300/100' : 'bg-error/0'}"
+				style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
+				on:mousedown={(e) => {
+					// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
+					e.preventDefault();
 
-				dispatch('childrenStartDrag');
-			}}
-			on:touchstart={(e) => {
-				// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
-				e.preventDefault();
+					dispatch('childrenStartDrag');
+				}}
+				on:touchstart={(e) => {
+					// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
+					e.preventDefault();
 
-				dispatch('childrenStartDrag');
-			}}
-			on:keydown={handleKeyDown}
-			on:contextmenu|preventDefault|stopPropagation={() => {
-				if (!node?.isMain) {
-					node.not = !node.not;
-					handleChanged();
-					dispatch('changed');
-				}
-			}}
-		/>
-	</div>
-{/if}
+					dispatch('childrenStartDrag');
+				}}
+				on:keydown={handleKeyDown}
+				on:contextmenu|preventDefault|stopPropagation={() => {
+					if (!node?.isMain) {
+						node.not = !node.not;
+						handleChanged();
+						dispatch('changed');
+					}
+				}}
+			/>
+		</div>
+	{/if}{/if}
 
 <div
 	class="  w-min-max w-max transition-all duration-500
@@ -247,6 +249,24 @@
 			</div>
 
 			{#if node.items.length == 1 && !node?.isMain}
+				<!-- <section
+			class=" rounded-l-none {node?.items?.length <= 1 ? 'pt-0' : 'pb-0'} {node?.isMain
+				? ' border-l-2 border-l-transparent'
+				: ' '}
+				 w-full"
+			use:dndzone={{
+				items: node.items,
+				dragDisabled,
+				flipDurationMs,
+				transformDraggedElement,
+				centreDraggedOnCursor: false,
+				type
+			}}
+			on:consider={handleDndConsider}
+			on:finalize={handleDndFinalize}
+		> 
+	put the bellow here,but you must make some changes in order for it to work
+	</section> -->
 				<div class=" text-xs  w-full ">
 					<div class="  flex   ">
 						<svelte:self
@@ -259,6 +279,7 @@
 							{originalNodes}
 							on:updateQuery
 							{type}
+							isDraggable={false}
 							bind:nodes
 							node={nodes[
 								node.items.filter((item) => {
@@ -332,6 +353,7 @@
 							{originalNodes}
 							on:updateQuery
 							{type}
+							isDraggable={true}
 							bind:nodes
 							node={nodes[item.id]}
 							on:changed
