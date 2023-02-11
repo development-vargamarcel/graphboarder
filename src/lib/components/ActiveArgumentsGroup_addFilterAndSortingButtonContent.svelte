@@ -88,52 +88,75 @@
 			</button>
 		{/if}
 	{/if}
-	{#each groupArgsPossibilities as arg, index}
-		<Arg
-			{index}
-			type={arg}
-			template="changeArguments"
-			{predefinedFirstSteps}
-			groupName={group.group_name}
-			on:argAddRequest={(e) => {
-				let newArgData = e.detail;
-				activeArgumentsDataGrouped_Store.add_activeArgument(newArgData, group.group_name, node?.id);
-			}}
-			on:containerAddRequest={(e) => {
-				let newContainerData = e.detail;
-				console.log({ newContainerData });
-				let randomNr = Math.random();
-				console.log('group', group);
-				let newContainerDataRootType = getRootType(null, newContainerData.dd_rootName);
-				let hasBaseFilterOperators = newContainerDataRootType?.dd_baseFilterOperators;
-				let hasNonBaseFilterOperators = newContainerDataRootType?.dd_nonBaseFilterOperators;
+	<div class="my-2 border-2 rounded-box ">
+		{#each groupArgsPossibilities as arg, index}
+			<Arg
+				{index}
+				type={arg}
+				template="changeArguments"
+				{predefinedFirstSteps}
+				groupName={group.group_name}
+				on:argAddRequest={(e) => {
+					let newArgData = e.detail;
+					activeArgumentsDataGrouped_Store.add_activeArgument(
+						newArgData,
+						group.group_name,
+						node?.id
+					);
+				}}
+				on:containerAddRequest={(e) => {
+					let newContainerData = e.detail;
+					console.log({ newContainerData });
+					let randomNr = Math.random();
+					console.log('group', group);
+					let newContainerDataRootType = getRootType(null, newContainerData.dd_rootName);
+					let hasBaseFilterOperators = newContainerDataRootType?.dd_baseFilterOperators;
+					let hasNonBaseFilterOperators = newContainerDataRootType?.dd_nonBaseFilterOperators;
 
-				let isListContainer = newContainerData?.dd_kindList;
-				let operator = isListContainer && !hasNonBaseFilterOperators ? 'list' : 'bonded';
-				if (
-					hasBaseFilterOperators &&
-					newContainerData?.parentType?.dd_rootName != newContainerData.dd_rootName
-				) {
-					operator = '_and';
-				}
+					let isListContainer = newContainerData?.dd_kindList;
+					let operator = isListContainer && !hasNonBaseFilterOperators ? 'list' : 'bonded';
+					if (
+						hasBaseFilterOperators &&
+						newContainerData?.parentType?.dd_rootName != newContainerData.dd_rootName
+					) {
+						operator = '_and';
+					}
 
-				group.group_argsNode[`${randomNr}`] = {
-					...newContainerData,
-					inputFields: newContainerDataRootType?.inputFields,
-					id: randomNr,
-					operator,
-					not: false,
-					isMain: false,
-					items: []
-				};
-				console.log({ newContainerDataRootType });
-				console.log({ newContainerData });
-				if (node?.items) {
-					node.items.push({ id: randomNr });
-				} else {
-					group.group_argsNode['mainContainer'].items.push({ id: randomNr });
-				}
-			}}
-		/>
-	{/each}
+					group.group_argsNode[`${randomNr}`] = {
+						...newContainerData,
+						inputFields: newContainerDataRootType?.inputFields,
+						id: randomNr,
+						operator,
+						not: false,
+						isMain: false,
+						items: []
+					};
+					console.log({ newContainerDataRootType });
+					console.log({ newContainerData });
+					if (node?.items) {
+						node.items.push({ id: randomNr });
+					} else {
+						group.group_argsNode['mainContainer'].items.push({ id: randomNr });
+					}
+				}}
+			/>
+		{/each}
+	</div>
+	<div class="alert alert-info shadow-lg py-2">
+		<div>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				fill="none"
+				viewBox="0 0 24 24"
+				class="stroke-current flex-shrink-0 w-6 h-6"
+				><path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+				/></svg
+			>
+			<span>'_and', '_or', '_not' are hidden.</span>
+		</div>
+	</div>
 </div>
