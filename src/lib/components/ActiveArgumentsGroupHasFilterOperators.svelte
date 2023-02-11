@@ -264,8 +264,8 @@
 							? 'text-primary'
 							: 'text-accent-focus'} break-all h-max  w-max"
 					>
-						{#if node?.operator != 'bonded'}
-							{node?.operator} ,
+						{#if node?.operator != 'bonded' || node?.isMain}
+							{node?.operator} {!node?.isMain ? ' , ' : ''}
 						{/if}
 						{#if node?.stepsOfFields}
 							{node.stepsOfFields.slice(1).join(' > ')}
