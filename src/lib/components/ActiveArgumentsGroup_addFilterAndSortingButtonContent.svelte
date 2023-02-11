@@ -106,7 +106,10 @@
 
 				let isListContainer = newContainerData?.dd_kindList;
 				let operator = isListContainer && !hasNonBaseFilterOperators ? 'list' : 'bonded';
-				if (hasBaseFilterOperators) {
+				if (
+					hasBaseFilterOperators &&
+					newContainerData?.parentType?.dd_rootName != newContainerData.dd_rootName
+				) {
 					operator = '_and';
 				}
 

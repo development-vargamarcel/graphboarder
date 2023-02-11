@@ -68,6 +68,7 @@
 			///enumValues,
 			stepsOfFields,
 			stepsOfFieldsStringified: JSON.stringify(stepsOfFields),
+			parentType,
 			id: `${JSON.stringify(stepsOfFields)}${Math.random()}`,
 			...type
 		};
@@ -168,7 +169,7 @@
 
 		{#if dd_shouldExpand}
 			<div class="w-10  ">
-				{#if dd_kindList}
+				{#if dd_kindList || (getRootType(null, dd_rootName)?.dd_baseFilterOperators && parentType?.dd_rootName != dd_rootName)}
 					<div class="bi bi-card-list mx-auto w-min" />
 				{:else if getRootType(null, dd_rootName)?.dd_nonBaseFilterOperators || dd_kindEl}
 					<div class="bi bi-box mx-auto w-min" />
