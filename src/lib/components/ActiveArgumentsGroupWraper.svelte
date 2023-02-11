@@ -37,7 +37,7 @@
 
 {#if hasGroup_argsNode}
 	<div
-		class="overflow-x-auto  md:overscroll-x-auto h-min-max h-[60vh] md:h-[80vh]"
+		class="overflow-x-auto  md:overscroll-x-auto h-min-max h-[60vh] md:h-[80vh] pb-80"
 	>
 		<ActiveArgumentsGroupHasFilterOperators
 			on:updateQuery={() => {
