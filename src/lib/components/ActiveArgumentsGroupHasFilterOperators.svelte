@@ -228,7 +228,7 @@
 					<i class="bi bi-trash-fill" />
 				</p>
 			{/if}
-			{#if node.items.length == 1}
+			{#if node.items.length == 1 && !node?.isMain }
 				<div class=" text-xs  w-full ">
 					<div class="  flex   ">
 						<svelte:self
@@ -299,7 +299,7 @@
 			on:finalize={handleDndFinalize}
 		>
 			<!-- WE FILTER THE SHADOW PLACEHOLDER THAT WAS ADDED IN VERSION 0.7.4, filtering this way rather than checking whether 'nodes' have the id became possible in version 0.9.1 -->
-			{#if node.items.length > 1}
+			{#if node.items.length > 1 || node?.isMain}
 				{#each node.items.filter((item) => {
 					return item.id !== SHADOW_PLACEHOLDER_ITEM_ID;
 				}) as item (item.id)}
