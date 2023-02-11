@@ -134,7 +134,7 @@ let operator
 if (isListContainer && !hasNonBaseFilterOperators ) {
 						operator = 'list';
 					}
-if (!isListContainer && newContainerData?.dd_kindEl=='INPUT_OBJECT' && !(hasBaseFilterOperators && !PARENT_hasBaseFilterOperators ) ) {
+if (!operator) {
 						operator = 'bonded';
 					}
 					
