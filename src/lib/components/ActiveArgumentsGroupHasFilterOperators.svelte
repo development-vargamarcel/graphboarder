@@ -158,7 +158,7 @@
 						</div>
 						<div
 							tabindex="0"
-							class="dropdown-content menu px-2 py-2  bg-base-100 rounded-box w-max text-sm shadow-2xl overflow-y-auto overscroll-contain  max-h-52 sm:max-h-72 md:max-h-90    max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
+							class="dropdown-content menu px-2 py-2  bg-base-100 rounded-box w-max text-sm shadow-2xl overflow-y-auto overscroll-contain  max-h-60 sm:max-h-72 md:max-h-90    max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
 						>
 							<div class="flex flex-col">
 								{#if !node?.isMain}
