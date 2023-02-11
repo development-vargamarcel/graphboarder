@@ -140,7 +140,7 @@
 					<div class="dropdown">
 						<div
 							tabindex="0"
-							class="btn btn-xs btn-ghost pl-0 pr-2  text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
+							class="btn btn-xs btn-ghost  text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
 								'bonded' || node?.operator == 'list'
 								? 'text-base-content'
 								: node?.operator == '_and'
@@ -257,7 +257,7 @@
 				<div class="dropdown">
 					<div
 						tabindex="0"
-						class="btn btn-xs btn-ghost pl-0 pr-2  text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
+						class="btn btn-xs btn-ghost   text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
 							'bonded' || node?.operator == 'list'
 							? 'text-base-content'
 							: node?.operator == '_and'
