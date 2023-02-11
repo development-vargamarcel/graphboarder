@@ -157,8 +157,10 @@ if (!operator) {
 					}
 				}}
 			/>
+PARENT_hasBaseFilterOperators:{PARENT_hasBaseFilterOperators} 
 		{/each}
 	</div>
+
 	<div class="alert alert-info shadow-lg py-2">
 		<div>
 			<svg
