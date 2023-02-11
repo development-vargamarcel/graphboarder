@@ -131,7 +131,7 @@ let operator
 					) {
 						operator = '_and';
 					}
-if (isListContainer && !hasNonBaseFilterOperators ) {
+if (isListContainer ) {
 						operator = 'list';
 					}
 if (!operator) {
