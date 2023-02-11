@@ -117,7 +117,7 @@ if (
 						newContainerData?.parentType 
 					) {
 PARENT_newContainerDataRootType = getRootType(null, newContainerData?.parentType.dd_rootName);
-PARENT_hasBaseFilterOperators = newContainerDataRootType?.dd_baseFilterOperators;
+PARENT_hasBaseFilterOperators = PARENT_newContainerDataRootType?.dd_baseFilterOperators;
 
 					} 
 					
