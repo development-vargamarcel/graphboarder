@@ -39,7 +39,7 @@
 	{#if hasGroup_argsNode}
 		{#if node?.operator == 'bonded' || node?.operator == 'list'}
 			<button
-				class="btn btn-primary btn-xs mt-4 normal-case font-thin text-base sticky top-0"
+				class="btn btn-primary btn-xs  normal-case font-thin text-base sticky top-0"
 				on:click={() => {
 					let randomNr = Math.random();
 					group.group_argsNode[`${randomNr}`] = {
@@ -62,7 +62,7 @@
 			</button>
 		{:else}
 			<button
-				class="btn btn-primary btn-xs mt-4 normal-case font-thin text-base sticky top-0"
+				class="btn btn-primary btn-xs  normal-case font-thin text-base sticky top-0"
 				on:click={() => {
 					let randomNr = Math.random();
 					group.group_argsNode[`${randomNr}`] = {
