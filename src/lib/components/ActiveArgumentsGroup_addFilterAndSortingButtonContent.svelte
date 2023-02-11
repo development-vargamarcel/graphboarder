@@ -112,7 +112,7 @@
 					let newContainerDataRootType = getRootType(null, newContainerData.dd_rootName);
 					let hasBaseFilterOperators = newContainerDataRootType?.dd_baseFilterOperators;
 let PARENT_newContainerDataRootType 
-let PARENT_newContainerDataRootType
+let PARENT_hasBaseFilterOperators
 if (
 						newContainerData?.parentType 
 					) {
