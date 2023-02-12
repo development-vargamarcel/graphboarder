@@ -355,7 +355,7 @@
 	{#if node.hasOwnProperty('items')}
 		<section
 			class=" rounded-l-none {node?.items?.length <= 1 ? 'pt-0' : 'pb-0'} {node?.isMain
-				? ' border-l-2 border-l-transparent  min-h-[30vh] md:min-h-[50vh]'
+				? ' border-l-2 border-l-transparent  min-h-[10vh] md:min-h-[20vh]'
 				: ' '}
 				 w-full"
 			use:dndzone={{
