@@ -19,7 +19,7 @@
 	let predefinedFirstSteps = group.group_isRoot ? [] : [group.group_name];
 </script>
 
-<div class="bg-base-100 p-2 rounded-box">
+<div class="bg-base-100  rounded-box">
 	<div class="font-bold flex">
 		<div class=" ">
 			<div class="dropdown dropdown-start ">
@@ -27,7 +27,7 @@
 				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 				<label
 					tabindex="0"
-					class="btn btn-sm bi bi-plus-circle text-lg p-1 mr-2 overscroll-contain"
+					class="btn btn-sm btn-ghost bi bi-plus-circle text-lg p-1 mr-2 overscroll-contain"
 				/>
 				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 				<div

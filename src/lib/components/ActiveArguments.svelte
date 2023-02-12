@@ -35,12 +35,15 @@
 		</div>
 	</div>
 {/if}
-{#each $activeArgumentsDataGrouped_Store as group}
-	<ActiveArgumentsGroupWraper
-		on:updateQuery={() => {}}
-		{update_activeArgumentsDataGrouped}
-		{group}
-		argsInfo={QMS_info?.args}
-		{activeArgumentsDataGrouped}
-	/>
-{/each}
+
+<div class="overflow-x-auto  md:overscroll-x-auto h-[100vh]">
+	{#each $activeArgumentsDataGrouped_Store as group}
+		<ActiveArgumentsGroupWraper
+			on:updateQuery={() => {}}
+			{update_activeArgumentsDataGrouped}
+			{group}
+			argsInfo={QMS_info?.args}
+			{activeArgumentsDataGrouped}
+		/>
+	{/each}
+</div>

@@ -21,7 +21,7 @@
 	const { finalGqlArgObj_Store } = getContext('QMSWraperContext');
 </script>
 
-<div class="flex pl-2">
+<div class="flex pl-2 mt-4">
 	<ActiveArgumentsGroup_info {group} />
 	{#if !hasGroup_argsNode}
 		<ActiveArgumentsGroup_addFilterAndSortingButton
