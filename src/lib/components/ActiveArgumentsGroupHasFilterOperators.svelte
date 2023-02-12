@@ -140,7 +140,7 @@
 					<div class="dropdown">
 						<div
 							tabindex="0"
-							class="btn btn-xs btn-ghost  text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
+							class="btn btn-xs btn-ghost px-[1px] text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
 								'bonded' || node?.operator == 'list'
 								? 'text-base-content'
 								: node?.operator == '_and'
@@ -326,53 +326,6 @@
 					</div>
 				</div>
 			{/if}
-
-			{#if node.items.length == 1 && !node?.isMain}
-				<!-- <section
-			class=" rounded-l-none {node?.items?.length <= 1 ? 'pt-0' : 'pb-0'} {node?.isMain
-				? ' border-l-2 border-l-transparent'
-				: ' '}
-				 w-full"
-			use:dndzone={{
-				items: node.items,
-				dragDisabled,
-				flipDurationMs,
-				transformDraggedElement,
-				centreDraggedOnCursor: false,
-				type
-			}}
-			on:consider={handleDndConsider}
-			on:finalize={handleDndFinalize}
-		> 
-	put the bellow here,but you must make some changes in order for it to work
-	</section> -->
-				<div class=" text-xs  w-full ">
-					<div class="  flex   ">
-						<svelte:self
-							on:deleteSubNode={(e) => {
-								deleteItem(e);
-								//console.log(e.detail.id, node);
-							}}
-							parent_inputFields={node?.inputFields}
-							parent_stepsOfFields={node?.stepsOfFields}
-							{originalNodes}
-							on:updateQuery
-							{type}
-							isDraggable={false}
-							bind:nodes
-							node={nodes[
-								node.items.filter((item) => {
-									return item.id !== SHADOW_PLACEHOLDER_ITEM_ID;
-								})[0].id
-							]}
-							on:changed
-							{availableOperators}
-							on:childrenStartDrag={startDrag}
-							{group}
-						/>
-					</div>
-				</div>
-			{/if}
 			<p class="grow" />
 		</div>
 	{:else}
@@ -417,7 +370,7 @@
 			on:finalize={handleDndFinalize}
 		>
 			<!-- WE FILTER THE SHADOW PLACEHOLDER THAT WAS ADDED IN VERSION 0.7.4, filtering this way rather than checking whether 'nodes' have the id became possible in version 0.9.1 -->
-			{#if node.items.length > 1 || node?.isMain}
+			{#if node.items.length > 1 || node?.isMain || true}
 				{#each node.items.filter((item) => {
 					return item.id !== SHADOW_PLACEHOLDER_ITEM_ID;
 				}) as item (item.id)}
