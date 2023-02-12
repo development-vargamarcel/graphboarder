@@ -275,7 +275,7 @@
 					</div>
 					<div
 						tabindex="0"
-						class="dropdown-content menu p-2   bg-base-100 rounded-box w-max text-sm shadow-2xl overflow-y-auto overscroll-contain  max-h-72 sm:max-h-72 md:max-h-90    max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
+						class="dropdown-content  menu p-2   bg-base-100 rounded-box w-max text-sm shadow-2xl overflow-y-auto overscroll-contain  max-h-72 sm:max-h-72 md:max-h-90    max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
 					>
 						<div class="flex flex-col">
 							{#if !node?.isMain}
