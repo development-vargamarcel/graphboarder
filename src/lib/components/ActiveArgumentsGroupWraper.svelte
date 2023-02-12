@@ -36,7 +36,7 @@
 </div>
 
 {#if hasGroup_argsNode}
-	<div class="overflow-x-auto  md:overscroll-x-auto  ">
+	<div class=" ">
 		<ActiveArgumentsGroupHasFilterOperators
 			on:updateQuery={() => {
 				dispatch('updateQuery');
