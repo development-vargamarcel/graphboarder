@@ -111,7 +111,10 @@
 					console.log('group', group);
 					let newContainerDataRootType = getRootType(null, newContainerData.dd_rootName);
 					let hasBaseFilterOperators = newContainerDataRootType?.dd_baseFilterOperators;
-
+					let NODEhasBaseFilterOperators = getRootType(
+						null,
+						node.dd_rootName
+					)?.dd_baseFilterOperators;
 					let hasNonBaseFilterOperators = newContainerDataRootType?.dd_nonBaseFilterOperators;
 
 					let isListContainer = newContainerData?.dd_kindList;
@@ -120,11 +123,7 @@
 						operator = 'list';
 					}
 
-					if (
-						!operator &&
-						hasBaseFilterOperators &&
-						!getRootType(null, node.dd_rootName)?.dd_baseFilterOperators
-					) {
+					if (!operator && hasBaseFilterOperators && !NODEhasBaseFilterOperators) {
 						operator = '_and';
 					}
 

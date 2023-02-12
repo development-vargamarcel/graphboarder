@@ -42,6 +42,7 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 					const hasFilterOperators = getRootType(null, el.dd_rootName)?.dd_baseFilterOperators?.length > 0;
 					newGroupData.group_argsNode = {
 						mainContainer: {
+							...el,
 							operator: 'bonded',
 							isMain: true,
 							not: false,
@@ -53,6 +54,7 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 					if (hasFilterOperators) {
 						newGroupData.group_argsNode = {
 							mainContainer: {
+								...el,
 								operator: '_and',
 								isMain: true,
 								not: false,
@@ -66,6 +68,7 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 					if (expectsList) {
 						newGroupData.group_argsNode = {
 							mainContainer: {
+								...el,
 								operator: 'list',
 								isMain: true,
 								not: false,
