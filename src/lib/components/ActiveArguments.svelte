@@ -36,7 +36,7 @@
 	</div>
 {/if}
 
-<div class="overflow-x-auto  md:overscroll-x-auto h-[100vh]">
+<div class="">
 	{#each $activeArgumentsDataGrouped_Store as group}
 		<ActiveArgumentsGroupWraper
 			on:updateQuery={() => {}}
