@@ -221,9 +221,7 @@
 	{node?.operator && node.items.length > 1
 		? 'rounded-l-md bg-gradient-to-rxxx   border-l-[1px] my-1== shadow-sm'
 		: ''} 
-	{node?.isMain
-		? '  h-min-max rounded-l-md bg-gradient-to-rxxx   border-l-[2px] my-1== shadow-sm'
-		: ''}
+	{node?.isMain ? '  rounded-l-md bg-gradient-to-rxxx   border-l-[2px] my-1== shadow-sm' : ''}
 {node?.operator && node?.not ? 'border-dashed  ' : ''} 
 {node?.operator == 'bonded' || node?.operator == 'list'
 		? 'border-base-content'
@@ -357,7 +355,7 @@
 	{#if node.hasOwnProperty('items')}
 		<section
 			class=" rounded-l-none {node?.items?.length <= 1 ? 'pt-0' : 'pb-0'} {node?.isMain
-				? ' border-l-2 border-l-transparent'
+				? ' border-l-2 border-l-transparent  min-h-[50vh] md:min-h-[70vh]'
 				: ' '}
 				 w-full"
 			use:dndzone={{
