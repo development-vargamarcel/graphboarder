@@ -324,7 +324,8 @@
 
 	{#if node.hasOwnProperty('items')}
 		<section
-			class="{$dndIsOn ? 'pt-4 pb-4 min-w-[200px]' : ''} rounded-l-none {node?.items?.length <= 1
+			class="{$dndIsOn ? ' pt-4 pb-4 min-w-[200px]' : 'pl-1'} rounded-l-none {node?.items?.length <=
+			1
 				? 'pt-0'
 				: 'pb-0'} {node?.isMain
 				? ' border-l-2 border-l-transparent  min-h-[40vh] md:min-h-[60vh] '
