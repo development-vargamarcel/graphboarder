@@ -634,7 +634,7 @@ export const getQMSLinks = (QMSName = 'query', parentURL) => {
 		});
 	}
 
-	queryLinks = sortIt($schemaData?.[`${QMSName}Fields`]).map((query) => {
+	queryLinks = sortIt($schemaData?.[`${QMSName}Fields`])?.map((query) => {
 		let queryName = query.name;
 		let queryNameDisplay = queryName;
 		let queryTitleDisplay = '';

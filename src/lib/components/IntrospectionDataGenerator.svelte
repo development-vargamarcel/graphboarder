@@ -140,6 +140,7 @@
 		$schemaData.schema = schema;
 		schemaData.set_fields();
 		$schemaData.isReady = true;
+		console.log('schemaData', $schemaData);
 	};
 	$: if (!$queryStore.fetching) {
 		if (queryStore?.data) {
