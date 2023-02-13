@@ -95,6 +95,7 @@
 
 	let argsInfo = QMS_info?.args;
 	let showModal = false;
+	let isDNDMode = true;
 </script>
 
 {#if showModal}
@@ -324,7 +325,9 @@
 
 	{#if node.hasOwnProperty('items')}
 		<section
-			class=" rounded-l-none {node?.items?.length <= 1 ? 'pt-0' : 'pb-0'} {node?.isMain
+			class="{isDNDMode ? 'pt-6 pb-6' : ''} rounded-l-none {node?.items?.length <= 1
+				? 'pt-0'
+				: 'pb-0'} {node?.isMain
 				? ' border-l-2 border-l-transparent  min-h-[40vh] md:min-h-[60vh] '
 				: ' '}
 				 w-full"
