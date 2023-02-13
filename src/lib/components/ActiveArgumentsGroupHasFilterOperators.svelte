@@ -103,8 +103,8 @@
 		if (node?.stepsOfFields) {
 			groupDisplayTitle = groupDisplayTitle + node?.stepsOfFields.slice(1);
 		} else if (parent_stepsOfFields) {
-			//groupDisplayTitle = groupDisplayTitle + `(${parent_stepsOfFields.slice(1)})`;
-			groupDisplayTitle = groupDisplayTitle + `[item]`; //bonded
+			// groupDisplayTitle = groupDisplayTitle + `(${parent_stepsOfFields.slice(1)})`;
+			// //groupDisplayTitle = groupDisplayTitle + `[item]`; //bonded
 		}
 
 		if (node?.operator != 'bonded' || node?.isMain) {
