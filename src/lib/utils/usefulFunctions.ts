@@ -365,60 +365,43 @@ export const generate_gqlArgObj = (group_argumentsData) => {
 	// check for group if expects list and treat it accordingly like here --->https://stackoverflow.com/questions/69040911/hasura-order-by-date-with-distinct
 	let gqlArgObj = {};
 	let canRunQuery = true;
-	group_argumentsData.forEach((argData) => {
-		if (argData.inUse) {
-			let { chd_chosen, chd_dispatchValue, chd_needsValue, chd_needsChosen, stepsOfFields } =
-				argData;
+	group_argumentsData.every((argData) => {
+		let _argumentCanRunQuery = argumentCanRunQuery(argData)
+		if (!(argData.inUse && _argumentCanRunQuery)) {
+			canRunQuery = false
+			return false
+		}
+		let { chd_chosen, chd_dispatchValue, chd_needsValue, chd_needsChosen, stepsOfFields } =
+			argData;
 
-			let curr_gqlArgObj = gqlArgObj;
-			stepsOfFields.forEach((step, index) => {
-				let isLast = index == stepsOfFields.length - 1;
-				if (isLast) {
-					if (!chd_needsChosen) {
-						if (!curr_gqlArgObj?.[step]) {
-							curr_gqlArgObj[step] = chd_dispatchValue;
-						}
-						curr_gqlArgObj = curr_gqlArgObj[step];
-					} else {
-						if (chd_needsValue == undefined) {
-							canRunQuery = false;
-						} else if (!chd_needsValue) {
-							curr_gqlArgObj[step] = chd_chosen;
-							if (!(Array.isArray(chd_chosen) || typeof chd_chosen == 'string')) {
-								canRunQuery = false;
-							}
-						} else {
-							if (!curr_gqlArgObj?.[step]) {
-								curr_gqlArgObj[step] = {};
-							}
-							curr_gqlArgObj = curr_gqlArgObj[step];
-
-							curr_gqlArgObj[chd_chosen] = chd_dispatchValue !== undefined ? chd_dispatchValue : '';
-							curr_gqlArgObj = curr_gqlArgObj[chd_chosen];
-
-							if (chd_dispatchValue == undefined) {
-								canRunQuery = false;
-							}
-						}
-					}
-				} else {
+		let curr_gqlArgObj = gqlArgObj;
+		stepsOfFields.forEach((step, index) => {
+			let isLast = index == stepsOfFields.length - 1;
+			if (isLast) {
+				if (!chd_needsChosen) {
 					if (!curr_gqlArgObj?.[step]) {
-						curr_gqlArgObj[step] = {};
+						curr_gqlArgObj[step] = chd_dispatchValue;
 					}
 					curr_gqlArgObj = curr_gqlArgObj[step];
+				} else {
+					if (!chd_needsValue) {
+						curr_gqlArgObj[step] = chd_chosen;
+					} else {
+						if (!curr_gqlArgObj?.[step]) {
+							curr_gqlArgObj[step] = {};
+						}
+						curr_gqlArgObj = curr_gqlArgObj[step];
+						curr_gqlArgObj[chd_chosen] = chd_dispatchValue !== undefined ? chd_dispatchValue : '';
+						curr_gqlArgObj = curr_gqlArgObj[chd_chosen];
+					}
 				}
-			});
-
-			if (
-				chd_chosen == undefined &&
-				chd_dispatchValue == undefined &&
-				chd_needsValue == undefined &&
-				chd_needsChosen == undefined
-			) {
-				canRunQuery = false;
+			} else {
+				if (!curr_gqlArgObj?.[step]) {
+					curr_gqlArgObj[step] = {};
+				}
+				curr_gqlArgObj = curr_gqlArgObj[step];
 			}
-
-		}
+		});
 	});
 
 	return {
