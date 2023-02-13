@@ -105,39 +105,54 @@
 		}}
 	>
 		<div class="flex flex-col">
+			<div class="w-full text-lg text-center  mb-2 ">
+				<p class="badge badge-info font-bold">
+					{#if node?.operator != 'bonded'}
+						{node?.operator} ,
+					{/if}
+					{#if node?.stepsOfFields}
+						{node.stepsOfFields.slice(1).join(' > ')}
+					{:else if parent_stepsOfFields}
+						({parent_stepsOfFields.slice(1).join(' > ')})
+					{/if}
+				</p>
+			</div>
+
 			{#if !node?.isMain}
-				<btn
-					class="btn btn-xs text-sm mb-1 normal-case"
-					on:click={() => {
-						if (node?.operator && !node?.isMain) {
-							if (node?.operator == '_or') {
-								node.operator = '_and';
-							} else if (node?.operator == '_and') {
-								node.operator = 'bonded';
-							} else if (node?.operator == 'bonded') {
-								node.operator = 'list';
-							} else {
-								node.operator = '_or';
+				<div class="flex space-x-4">
+					<btn
+						class="btn btn-xs text-sm mb-1 normal-case flex-1"
+						on:click={() => {
+							if (node?.operator && !node?.isMain) {
+								if (node?.operator == '_or') {
+									node.operator = '_and';
+								} else if (node?.operator == '_and') {
+									node.operator = 'bonded';
+								} else if (node?.operator == 'bonded') {
+									node.operator = 'list';
+								} else {
+									node.operator = '_or';
+								}
 							}
-						}
-						handleChanged();
-						dispatch('changed');
-					}}
-				>
-					change
-				</btn>
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<btn
-					class="btn btn-xs btn-warning  mb-1"
-					on:click={() => {
-						alert('not yet implemented');
-						console.log(
-							'not yet implemented,implement here.Delete node and his items and items of his items recursively until the very end of the tree.'
-						);
-					}}
-				>
-					<i class="bi bi-trash-fill" />
-				</btn>
+							handleChanged();
+							dispatch('changed');
+						}}
+					>
+						change
+					</btn>
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<btn
+						class="btn btn-xs btn-warning  mb-6 flex-1"
+						on:click={() => {
+							alert('not yet implemented');
+							console.log(
+								'not yet implemented,implement here.Delete node and his items and items of his items recursively until the very end of the tree.'
+							);
+						}}
+					>
+						<i class="bi bi-trash-fill" />
+					</btn>
+				</div>
 			{/if}
 			<div>
 				<ActiveArgumentsGroup_addFilterAndSortingButtonContent
