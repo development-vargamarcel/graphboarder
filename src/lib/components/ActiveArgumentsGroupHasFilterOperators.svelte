@@ -95,6 +95,23 @@
 	let argsInfo = QMS_info?.args;
 	let showModal = false;
 	const dndIsOn = getContext('dndIsOn');
+
+	let groupDisplayTitle = '';
+	$: {
+		groupDisplayTitle = '';
+		if (node?.operator != 'bonded' || node?.isMain) {
+			groupDisplayTitle = `${node?.operator},`;
+		}
+
+		if (node?.stepsOfFields) {
+			groupDisplayTitle = groupDisplayTitle + node?.stepsOfFields.slice(1);
+		} else if (parent_stepsOfFields) {
+			groupDisplayTitle = groupDisplayTitle + parent_stepsOfFields.slice(1);
+		}
+		if (groupDisplayTitle.trim() == '') {
+			groupDisplayTitle = '[bonded]';
+		}
+	}
 </script>
 
 {#if showModal}
@@ -107,8 +124,8 @@
 		<div class="flex flex-col">
 			<div class="w-full text-lg text-center  mb-2 ">
 				<p class="badge badge-info font-bold">
-					{#if node?.operator != 'bonded'}
-						{node?.operator} ,
+					{#if node?.operator != 'bonded' || node?.isMain}
+						{node?.operator} {!node?.isMain ? ' , ' : ''}
 					{/if}
 					{#if node?.stepsOfFields}
 						{node.stepsOfFields.slice(1).join(' > ')}
@@ -220,14 +237,7 @@
 						showModal = true;
 					}}
 				>
-					{#if node?.operator != 'bonded'}
-						{node?.operator} ,
-					{/if}
-					{#if node?.stepsOfFields}
-						{node.stepsOfFields.slice(1).join(' > ')}
-					{:else if parent_stepsOfFields}
-						({parent_stepsOfFields.slice(1).join(' > ')})
-					{/if}
+					{groupDisplayTitle}
 				</div>
 			{/if}
 		</div>
@@ -286,14 +296,7 @@
 						showModal = true;
 					}}
 				>
-					{#if node?.operator != 'bonded' || node?.isMain}
-						{node?.operator} {!node?.isMain ? ' , ' : ''}
-					{/if}
-					{#if node?.stepsOfFields}
-						{node.stepsOfFields.slice(1).join(' > ')}
-					{:else if parent_stepsOfFields}
-						({parent_stepsOfFields.slice(1).join(' > ')})
-					{/if}
+					{groupDisplayTitle}
 				</div>
 			{/if}
 			<p class="grow" />
