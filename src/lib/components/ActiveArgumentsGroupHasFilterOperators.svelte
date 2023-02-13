@@ -106,10 +106,11 @@
 		if (node?.stepsOfFields) {
 			groupDisplayTitle = groupDisplayTitle + node?.stepsOfFields.slice(1);
 		} else if (parent_stepsOfFields) {
-			groupDisplayTitle = groupDisplayTitle + `(${parent_stepsOfFields.slice(1)})`;
+			//groupDisplayTitle = groupDisplayTitle + `(${parent_stepsOfFields.slice(1)})`;
+			groupDisplayTitle = groupDisplayTitle + `[item]`; //bonded
 		}
 		if (groupDisplayTitle.trim() == '') {
-			groupDisplayTitle = '[bonded]';
+			groupDisplayTitle = '[item]'; //bonded
 		}
 	}
 </script>
