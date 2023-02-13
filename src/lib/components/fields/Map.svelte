@@ -34,16 +34,16 @@
 
 		if (containerEl) {
 			//console.log('containerEl', containerEl);
-			mapContainer.style.width = `${containerEl.clientWidth - 60}px`;
-			mapContainer.style.height = `${containerEl.clientHeight - 60}px`;
+			// mapContainer.style.width = `${containerEl.clientWidth - 60}px`;
+			// mapContainer.style.height = `${containerEl.clientHeight - 60}px`;
 		} else {
 			mapContainer.classList.add(
 				'w-60',
 				'h-60',
-				'md:w-[700px]',
-				'md:h-80',
-				'lg:w-[900]',
-				'lg:h-96'
+				'md:w-[300px]',
+				'md:h-60',
+				'lg:w-[300]',
+				'lg:h-60'
 			);
 		}
 		mapboxgl.accessToken =
