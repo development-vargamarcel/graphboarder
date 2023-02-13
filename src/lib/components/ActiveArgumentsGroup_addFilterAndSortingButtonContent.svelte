@@ -123,7 +123,12 @@
 						operator = 'list';
 					}
 
-					if (!operator && hasBaseFilterOperators && !NODEhasBaseFilterOperators) {
+					if (
+						!operator &&
+						hasBaseFilterOperators &&
+						node.dd_rootName &&
+						!NODEhasBaseFilterOperators
+					) {
 						operator = '_and';
 					}
 
