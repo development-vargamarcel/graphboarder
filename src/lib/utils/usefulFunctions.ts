@@ -759,6 +759,9 @@ export const generateNewArgData = (stepsOfFields, type, extraData = {}) => {
 };
 
 export const get_scalarColsData = (currentQMS_info, prefixStepsOfFields = []) => {
+	if (!currentQMS_info) {
+		return []
+	}
 	let keep_currentQMS_info_dd_displayName = true;
 	if (prefixStepsOfFields.length > 0) {
 		keep_currentQMS_info_dd_displayName = false;
