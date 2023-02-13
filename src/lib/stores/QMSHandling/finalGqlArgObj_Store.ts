@@ -33,7 +33,9 @@ export const Create_finalGqlArgObj_Store = (
 				generate_finalGqlArgObj_fromGroups(groups_gqlArgObj);
 
 			//better set an array?
-			set({ finalGqlArgObj, final_canRunQuery });
+			if (final_canRunQuery) {
+				set({ finalGqlArgObj, final_canRunQuery });
+			}
 		}
 	};
 };

@@ -197,6 +197,7 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 						} else {
 							group.group_argsNode.mainContainer.items.push({ id: newArgData.id });
 						}
+						group.group_args.push(newArgData);
 					} else {
 						if (
 							!group.group_args.some((el) => {

@@ -444,13 +444,13 @@ export const gqlArgObjToString = (gqlArgObj) => {
 export const generate_group_gqlArgObj = (group) => {
 	//if is where/filter (its related_root has filter_operators  ,like __or,__and,_not) handle differently after implementing the new ui
 	let group_gqlArgObj = {};
-	let group_canRunQuery = group.group_args.every((arg) => {
-		return arg.canRunQuery;
-	});
+
 	let group_argumentsData = group.group_args.filter((arg) => {
 		return arg.inUse;
 	});
-
+	let group_canRunQuery = group_argumentsData.every((arg) => {
+		return arg.canRunQuery;
+	});
 	if (group_argumentsData?.length > 0) {
 		if (group.group_isRoot) {
 			//console.log('root group handled');
@@ -593,7 +593,12 @@ export const generate_gqlArgObj_forHasOperators = (group) => {
 		group_canRunQuery = false;
 		group_gqlArgObj = {};
 	}
-
+	let group_argumentsData = group.group_args.filter((arg) => {
+		return arg.inUse;
+	});
+	group_canRunQuery = group_argumentsData.every((arg) => {
+		return arg.canRunQuery;
+	});
 
 	let group_gqlArgObj_string = gqlArgObjToString(group_gqlArgObj);
 	return {
@@ -606,8 +611,10 @@ export const generate_gqlArgObj_forHasOperators = (group) => {
 
 export const generate_finalGqlArgObj_fromGroups = (activeArgumentsDataGrouped: []) => {
 	let finalGqlArgObj = {};
-	let final_canRunQuery = true;
+	let final_canRunQuery = activeArgumentsDataGrouped.every((group) => { return group.group_canRunQuery })
+
 	activeArgumentsDataGrouped.forEach((group) => {
+		console.log({ group })
 		Object.assign(finalGqlArgObj, group.group_gqlArgObj);
 	});
 
