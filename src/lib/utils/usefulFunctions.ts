@@ -417,6 +417,7 @@ export const generate_gqlArgObj = (group_argumentsData) => {
 			) {
 				canRunQuery = false;
 			}
+
 		}
 	});
 
@@ -733,7 +734,7 @@ export const argumentCanRunQuery = (arg) => {
 	if (dd_kindList_NON_NULL && argFinalValue == null) {
 		return false;
 	}
-	if (dd_kindEl && (!argFinalValue || argFinalValue.length == 0)) {
+	if (dd_kindEl && (argFinalValue == undefined || argFinalValue.length == 0)) {
 		return false;
 	}
 	if (chd_needsChosen && chd_chosen.length == 0) {
