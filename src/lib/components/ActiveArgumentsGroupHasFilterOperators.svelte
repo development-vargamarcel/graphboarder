@@ -206,8 +206,8 @@
 					}}
 				/>
 			{/if}
-
-			{#if node?.items?.length <= 1}
+			<!-- node?.items?.length <= 1 -->
+			{#if node?.operator}
 				<div
 					tabindex="0"
 					class="btn btn-xs btn-ghost px-[1px] text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
@@ -272,8 +272,8 @@
 	{#if node?.operator}
 		<div class="flex ">
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
-
-			{#if node?.items?.length > 1 || node?.isMain}
+			<!-- node?.items?.length > 1 || node?.isMain -->
+			{#if node?.isMain}
 				<div
 					tabindex="0"
 					class="btn btn-xs btn-ghost   text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
