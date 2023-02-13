@@ -286,7 +286,7 @@
 			{#if node?.isMain}
 				<div
 					tabindex="0"
-					class="btn btn-xs btn-ghost   text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
+					class="btn btn-xs btn-ghost px-[1px] text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
 						'bonded' || node?.operator == 'list'
 						? 'text-base-content'
 						: node?.operator == '_and'
