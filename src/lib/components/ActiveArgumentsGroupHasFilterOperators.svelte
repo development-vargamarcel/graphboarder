@@ -106,7 +106,7 @@
 		if (node?.stepsOfFields) {
 			groupDisplayTitle = groupDisplayTitle + node?.stepsOfFields.slice(1);
 		} else if (parent_stepsOfFields) {
-			groupDisplayTitle = groupDisplayTitle + parent_stepsOfFields.slice(1);
+			groupDisplayTitle = groupDisplayTitle + `(${parent_stepsOfFields.slice(1)})`;
 		}
 		if (groupDisplayTitle.trim() == '') {
 			groupDisplayTitle = '[bonded]';
@@ -124,14 +124,7 @@
 		<div class="flex flex-col">
 			<div class="w-full text-lg text-center  mb-2 ">
 				<p class="badge badge-info font-bold">
-					{#if node?.operator != 'bonded' || node?.isMain}
-						{node?.operator} {!node?.isMain ? ' , ' : ''}
-					{/if}
-					{#if node?.stepsOfFields}
-						{node.stepsOfFields.slice(1).join(' > ')}
-					{:else if parent_stepsOfFields}
-						({parent_stepsOfFields.slice(1).join(' > ')})
-					{/if}
+					{groupDisplayTitle}
 				</p>
 			</div>
 
