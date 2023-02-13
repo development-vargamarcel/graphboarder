@@ -108,12 +108,12 @@
 			// //groupDisplayTitle = groupDisplayTitle + `[item]`; //bonded
 		}
 
-		if (node?.operator != 'bonded' || node?.isMain) {
+		if (node?.operator != 'bonded') {
 			if (groupDisplayTitle.trim() != '') {
 				groupDisplayTitle = `${groupDisplayTitle},`;
 			}
 			groupDisplayTitle = `${groupDisplayTitle}${node?.operator}`;
-			if (node?.operator != 'list') {
+			if (['_and', '_or'].includes(node?.operator)) {
 				groupDisplayTitle = `${groupDisplayTitle},list`;
 			}
 		}
