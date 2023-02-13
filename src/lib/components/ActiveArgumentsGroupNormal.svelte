@@ -11,7 +11,7 @@
 	import { dndzone, SOURCES, TRIGGERS } from 'svelte-dnd-action';
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
 	import { flip } from 'svelte/animate';
-	import { createEventDispatcher, setContext } from 'svelte';
+	import { createEventDispatcher, getContext, setContext } from 'svelte';
 
 	const flipDurationMs = 200;
 	let dragDisabled = true;
@@ -62,6 +62,7 @@
 
 	const hasGroup_argsNode = group.group_argsNode;
 	//
+	const dndIsOn = getContext('dndIsOn');
 </script>
 
 <ul
@@ -78,18 +79,21 @@
 >
 	{#each group.group_args as activeArgumentData (activeArgumentData.id)}
 		<div animate:flip={{ duration: flipDurationMs }} class="relative flex">
-			<div class="grid   content-center  rounded-full ">
-				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-				<div
-					tabindex={dragDisabled ? 0 : -1}
-					aria-label="drag-handle"
-					class="bi bi-grip-vertical ml-2  -mr-1"
-					style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
-					on:mousedown={startDrag}
-					on:touchstart={startDrag}
-					on:keydown={handleKeyDown}
-				/>
-			</div>
+			{#if $dndIsOn}
+				<div class="grid   content-center  rounded-full ">
+					<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+					<div
+						tabindex={dragDisabled ? 0 : -1}
+						aria-label="drag-handle"
+						class="bi bi-grip-vertical ml-2  -mr-1"
+						style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
+						on:mousedown={startDrag}
+						on:touchstart={startDrag}
+						on:keydown={handleKeyDown}
+					/>
+				</div>
+			{/if}
+
 			<div
 				class="w-full "
 				on:mousedown={() => {

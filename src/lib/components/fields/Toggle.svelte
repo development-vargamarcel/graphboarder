@@ -4,14 +4,15 @@
 	export let displayInterface;
 	let inputEl;
 	export let rawValue = true;
-
+	export let showValue = true;
+	export let otherClases = '';
 	const dispatch = createEventDispatcher();
 </script>
 
 <label class="flex w-full ">
 	<input
 		type="checkbox"
-		class="toggle toggle-primary"
+		class="toggle {otherClases} toggle-primary"
 		bind:this={inputEl}
 		bind:checked={rawValue}
 		on:change={() => {
@@ -24,6 +25,7 @@
 		}}
 	/>
 	<p class="flex grow" />
-
-	<p class={rawValue ? 'text-primary' : ''}>{rawValue}</p>
+	{#if showValue}
+		<p class={rawValue ? 'text-primary' : ''}>{rawValue}</p>
+	{/if}
 </label>

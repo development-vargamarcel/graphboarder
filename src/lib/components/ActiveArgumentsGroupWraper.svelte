@@ -9,6 +9,8 @@
 	export let activeArgumentsDataGrouped;
 	import { createEventDispatcher, getContext, setContext } from 'svelte';
 	import ActiveArgumentsGroupHasFilterOperators from '$lib/components/ActiveArgumentsGroupHasFilterOperators.svelte';
+	import Toggle from './fields/Toggle.svelte';
+	import { writable } from 'svelte/store';
 
 	let dragDisabled = true;
 	const dispatch = createEventDispatcher();
@@ -19,9 +21,11 @@
 	}
 	const hasGroup_argsNode = group.group_argsNode;
 	const { finalGqlArgObj_Store } = getContext('QMSWraperContext');
+	const dndIsOn = writable(false);
+	setContext('dndIsOn', dndIsOn);
 </script>
 
-<div class="flex pl-2 mt-4">
+<div class="flex  ">
 	<ActiveArgumentsGroup_info {group} />
 	{#if !hasGroup_argsNode}
 		<ActiveArgumentsGroup_addFilterAndSortingButton
@@ -33,44 +37,56 @@
 			node={group.group_argsNode?.mainContainer}
 		/>
 	{/if}
-</div>
-
-{#if hasGroup_argsNode}
-	<div class=" overflow-x-auto overflow-y-visible ">
-		<ActiveArgumentsGroupHasFilterOperators
-			on:updateQuery={() => {
-				dispatch('updateQuery');
-				//console.log({ finalGqlArgObj_fromGroups });
-				group.group_args = Object.values(group.group_argsNode)?.filter((node) => {
-					return !node?.operator;
-				});
-				update_activeArgumentsDataGrouped(group);
-
-				finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
-			}}
-			type={group.group_name + 'ActiveArgumentsGroupHasFilterOperators'}
-			node={group.group_argsNode.mainContainer}
-			originalNodes={group.group_argsNode}
-			{group}
-			bind:nodes={group.group_argsNode}
+	<div class="w-min flex space-x-2 ml-4 {hasGroup_argsNode ? '' : 'pt-1'}">
+		<div>dnd:</div>
+		<Toggle
+			showValue={false}
+			otherClases="toggle-sm"
+			rawValue={$dndIsOn}
 			on:changed={() => {
-				group.group_args = Object.values(group.group_argsNode)?.filter((node) => {
-					return !node?.operator;
-				});
-				update_activeArgumentsDataGrouped(group);
-				dispatch('updateQuery');
+				$dndIsOn = !$dndIsOn;
 			}}
 		/>
 	</div>
-{:else}
-	<ActiveArgumentsGroupNormal
-		on:updateQuery={() => {
-			update_activeArgumentsDataGrouped(group);
-			finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
-		}}
-		bind:group
-		bind:argsInfo
-		bind:update_activeArgumentsDataGrouped
-		bind:activeArgumentsDataGrouped
-	/>
-{/if}
+</div>
+<div class="pb-10">
+	{#if hasGroup_argsNode}
+		<div class=" overflow-x-auto overflow-y-visible ">
+			<ActiveArgumentsGroupHasFilterOperators
+				on:updateQuery={() => {
+					dispatch('updateQuery');
+					//console.log({ finalGqlArgObj_fromGroups });
+					group.group_args = Object.values(group.group_argsNode)?.filter((node) => {
+						return !node?.operator;
+					});
+					update_activeArgumentsDataGrouped(group);
+
+					finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
+				}}
+				type={group.group_name + 'ActiveArgumentsGroupHasFilterOperators'}
+				node={group.group_argsNode.mainContainer}
+				originalNodes={group.group_argsNode}
+				{group}
+				bind:nodes={group.group_argsNode}
+				on:changed={() => {
+					group.group_args = Object.values(group.group_argsNode)?.filter((node) => {
+						return !node?.operator;
+					});
+					update_activeArgumentsDataGrouped(group);
+					dispatch('updateQuery');
+				}}
+			/>
+		</div>
+	{:else}
+		<ActiveArgumentsGroupNormal
+			on:updateQuery={() => {
+				update_activeArgumentsDataGrouped(group);
+				finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
+			}}
+			bind:group
+			bind:argsInfo
+			bind:update_activeArgumentsDataGrouped
+			bind:activeArgumentsDataGrouped
+		/>
+	{/if}
+</div>

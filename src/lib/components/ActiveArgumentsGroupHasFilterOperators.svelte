@@ -15,7 +15,6 @@
 	export let originalNodes;
 	export let parent_inputFields;
 	export let parent_stepsOfFields;
-	export let isDraggable = false;
 	let dragDisabled = true;
 	const flipDurationMs = 100;
 	function handleDndConsider(e) {
@@ -95,7 +94,7 @@
 
 	let argsInfo = QMS_info?.args;
 	let showModal = false;
-	let isDNDMode = true;
+	const dndIsOn = getContext('dndIsOn');
 </script>
 
 {#if showModal}
@@ -172,7 +171,7 @@
 	<div class=" grid   content-center  rounded-full w-min-max w-max">
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 		<div class="flex">
-			{#if isDraggable}
+			{#if $dndIsOn}
 				<div
 					tabindex={dragDisabled ? 0 : -1}
 					aria-label="drag-handle"
@@ -325,7 +324,7 @@
 
 	{#if node.hasOwnProperty('items')}
 		<section
-			class="{isDNDMode ? 'pt-6 pb-6' : ''} rounded-l-none {node?.items?.length <= 1
+			class="{$dndIsOn ? 'pt-4 pb-4 min-w-[200px]' : ''} rounded-l-none {node?.items?.length <= 1
 				? 'pt-0'
 				: 'pb-0'} {node?.isMain
 				? ' border-l-2 border-l-transparent  min-h-[40vh] md:min-h-[60vh] '
@@ -358,7 +357,6 @@
 							{originalNodes}
 							on:updateQuery
 							{type}
-							isDraggable={true}
 							bind:nodes
 							node={nodes[item.id]}
 							on:changed
