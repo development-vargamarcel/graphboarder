@@ -562,8 +562,10 @@ const parseAll = (json) => {
 	});
 }
 
-if (typeof document != undefined) {
-	console.log('TEST ENDPOINTS', parseAll(stigifyAll(test)), typeof document)
-
-}
+// test.forEach(element => {
+// 	console.log(stigifyAll(element))
+// });
+// if (typeof document != undefined) {
+// 	console.log('TEST ENDPOINTS', parseAll(stigifyAll(test)), typeof document)
+// }
 export const testEndpoints_Store = writable(test);
