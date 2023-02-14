@@ -536,4 +536,34 @@ let test = [
 	}
 ];
 
+
+
+
+const stigifyAll = (data) => {
+	return JSON.stringify(data, function (key, value) {
+		if (typeof value === "function") {
+			return "/Function(" + value.toString() + ")/";
+		}
+		return value;
+	});
+}
+
+
+
+const parseAll = (json) => {
+	return JSON.parse(json, function (key, value) {
+		if (typeof value === "string" &&
+			value.startsWith("/Function(") &&
+			value.endsWith(")/")) {
+			value = value.substring(10, value.length - 2);
+			return (0, eval)("(" + value + ")");
+		}
+		return value;
+	});
+}
+
+if (typeof document != undefined) {
+	console.log('TEST ENDPOINTS', parseAll(stigifyAll(test)), typeof document)
+
+}
 export const testEndpoints_Store = writable(test);
