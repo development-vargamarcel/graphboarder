@@ -369,7 +369,9 @@
 		on:hideColumn={(e) => {
 			hideColumn(e);
 		}}
-		on:clickedOnRow={(e) => {}}
+		on:rowClicked={(e) => {
+			goto(`${$page.url.origin}/endpoints/${e.detail.id}`);
+		}}
 	/>
 </div>
 <div />
