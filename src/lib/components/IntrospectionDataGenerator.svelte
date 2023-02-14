@@ -24,6 +24,9 @@
 	});
 
 	let getHeaders = () => {
+		if ($endpointInfo?.headers) {
+			return $endpointInfo?.headers;
+		}
 		if (browser) {
 			return JSON.parse(localStorage.getItem('headers'));
 		} else {
