@@ -1,10 +1,8 @@
 <script lang="ts">
-	import MainWraper from './../../lib/components/MainWraper.svelte';
+	import MainWraper from '$lib/components/MainWraper.svelte';
 	import type { LayoutData } from './$types';
-	import QmsWraper from '$lib/components/QMSWraper.svelte';
 	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 	import { getRootType } from '$lib/utils/usefulFunctions';
-	import EndpointsList from '$lib/components/EndpointsList.svelte';
 
 	export let data: LayoutData;
 	const endpointInfoProvided = {
@@ -71,11 +69,5 @@
 </script>
 
 <MainWraper {endpointInfoProvided}>
-	<QmsWraper prefix="endpointsList" QMSName="endpoints">
-		<div class="pt-2">
-			<EndpointsList QMSName="endpoints" />
-		</div>
-	</QmsWraper>
-
 	<slot><!-- optional fallback --></slot>
 </MainWraper>
