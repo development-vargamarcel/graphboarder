@@ -28,7 +28,7 @@
 		getFields_Grouped,
 		getRootType
 	} from '$lib/utils/usefulFunctions';
-	import { onDestroy, onMount, getContext } from 'svelte';
+	import { onDestroy, onMount, getContext, setContext } from 'svelte';
 	import { goto } from '$app/navigation';
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
@@ -196,6 +196,7 @@
 	import 'highlight.js/styles/base16/solarized-dark.css';
 	import RowCount from '$lib/components/UI/rowCount.svelte';
 	import Modal from '$lib/components/Modal.svelte';
+	import { parseAll, stigifyAll } from '$lib/stores/testData/testEndpoints';
 
 	onMount(() => {
 		hljs.registerLanguage('graphql', graphql);
@@ -207,16 +208,25 @@
 	$: {
 		console.log(
 			{ queryData },
-			getDataGivenStepsOfFields(null, queryData, ['data', 'endpoints_by_id', 'configuration'])
+			parseAll(
+				stigifyAll(
+					getDataGivenStepsOfFields(null, queryData, ['data', 'endpoints_by_id', 'configuration'])
+				)
+			),
+			'parseAll()'
 		);
 	}
+	setContext(
+		'endpointInfo',
+		parseAll(
+			stigifyAll(
+				getDataGivenStepsOfFields(null, queryData, ['data', 'endpoints_by_id', 'configuration'])
+			)
+		)
+	);
 </script>
 
 {#if queryData.data}
-	<p>is data</p>
-	<p>
-		{queryData.data}
-	</p>
 	<slot><!-- optional fallback --></slot>
 
 	<slot />

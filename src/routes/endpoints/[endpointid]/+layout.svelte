@@ -11,8 +11,7 @@
 </script>
 
 <QMSWraper QMSName="endpoints_by_id" initialGqlArgObj={{ id: string_transformer(endpointid) }}>
-	<div class="pt-2">
-		<SetEndpointConfigurationToContext QMSName="endpoints_by_id" />
-	</div>
+	<SetEndpointConfigurationToContext QMSName="endpoints_by_id">
+		<slot><!-- optional fallback --></slot>
+	</SetEndpointConfigurationToContext>
 </QMSWraper>
-<slot><!-- optional fallback --></slot>

@@ -600,7 +600,7 @@ let test = [
 
 
 
-const stigifyAll = (data) => {
+export const stigifyAll = (data) => {
 	return JSON.stringify(data, function (key, value) {
 		if (typeof value === "function") {
 			return "/Function(" + value.toString() + ")/";
@@ -611,7 +611,7 @@ const stigifyAll = (data) => {
 
 
 
-const parseAll = (json) => {
+export const parseAll = (json) => {
 	return JSON.parse(json, function (key, value) {
 		if (typeof value === "string" &&
 			value.startsWith("/Function(") &&
