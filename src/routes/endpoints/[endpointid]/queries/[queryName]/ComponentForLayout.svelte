@@ -9,7 +9,7 @@
 
 	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 	const {
-		QMS_bodyPart_StoreDerived_rowsCount = null,
+		QMS_bodyPart_StoreDerived_rowsCount,
 		activeArgumentsDataGrouped_Store,
 		tableColsData_Store,
 		finalGqlArgObj_Store,
@@ -18,7 +18,7 @@
 		paginationOptions,
 		paginationState
 	} = QMSWraperContext;
-
+	console.log({ QMS_bodyPart_StoreDerived_rowsCount }, { QMSWraperContext });
 	import {
 		generateTitleFromStepsOfFields,
 		getDataGivenStepsOfFields,
@@ -291,7 +291,7 @@
 	>
 	{#if QMS_bodyPart_StoreDerived_rowsCount}
 		<div class="badge badge-primary flex space-x-2">
-			{rows.length}/
+			{rows.length}
 			<RowCount
 				QMS_bodyPart_StoreDerived={QMS_bodyPart_StoreDerived_rowsCount}
 				QMS_info={currentQMS_info}

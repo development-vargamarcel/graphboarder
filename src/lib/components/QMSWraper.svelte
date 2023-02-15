@@ -11,7 +11,6 @@
 	import { Create_paginationState_derived } from '$lib/stores/QMSHandling/paginationState_derived';
 	import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
 	import { get_scalarColsData, get_nodeFieldsQMS_info } from '$lib/utils/usefulFunctions';
-	//!!import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
 	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
@@ -81,6 +80,7 @@
 	console.log('QMS_bodyPartsUnifier_StoreDerived', QMS_bodyPartsUnifier_StoreDerived);
 	let QMS_bodyPart_StoreDerived_rowsCount = null;
 	const rowCountLocation = endpointInfo.get_rowCountLocation(QMS_info);
+	console.log({ rowCountLocation }, $endpointInfo);
 	if (rowCountLocation) {
 		const tableColsData_Store_rowsCount = writable([
 			{ stepsOfFields: rowCountLocation, title: 'count' }

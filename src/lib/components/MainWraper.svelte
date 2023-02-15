@@ -1,8 +1,5 @@
 <script lang="ts">
-	import {
-		create_endpointInfo_Store,
-		endpointInfo
-	} from '$lib/stores/endpointHandling/endpointInfo';
+	import { create_endpointInfo_Store } from '$lib/stores/endpointHandling/endpointInfo';
 	import IntrospectionDataGenerator from '$lib/components/IntrospectionDataGenerator.svelte';
 	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 	import { setContext } from 'svelte';

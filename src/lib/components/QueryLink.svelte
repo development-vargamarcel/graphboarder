@@ -1,6 +1,5 @@
 <script>
 	export let prefix = '';
-	//!!import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 

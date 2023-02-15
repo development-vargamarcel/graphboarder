@@ -144,86 +144,178 @@ export const endpointInfoDefaultValues = {
 	]
 };
 
-const store = writable(null);
-export const endpointInfo = {
-	...store,
-	smartSet: (newEndpoint) => {
-		store.set({ ...endpointInfoDefaultValues, ...newEndpoint });
-	},
-	get_rowsLocation: function (QMS_info) {
-		const storeVal = get(store);
-		if (!storeVal?.rowsLocationPossibilities?.length > 0) {
-			return [];
-		}
+// const store = writable(null);
+// export const endpointInfo = {
+// 	...store,
+// 	smartSet: (newEndpoint) => {
+// 		store.set({ ...endpointInfoDefaultValues, ...newEndpoint });
+// 	},
+// 	get_rowsLocation: function (QMS_info) {
+// 		const storeVal = get(store);
+// 		if (!storeVal?.rowsLocationPossibilities?.length > 0) {
+// 			return [];
+// 		}
 
-		let rowsLocationPossibilitiy = storeVal.rowsLocationPossibilities.find(
-			(rowsLocationPossibilitiy) => {
-				return rowsLocationPossibilitiy.check(QMS_info);
-			}
-		);
-		if (rowsLocationPossibilitiy) {
-			return rowsLocationPossibilitiy.get_Val(QMS_info);
-		}
-		return [];
-	},
-	get_rowCountLocation: function (QMS_info) {
-		const storeVal = get(store);
-		if (!storeVal || !storeVal?.rowCountLocationPossibilities?.length > 0) {
-			return null;
-		}
+// 		let rowsLocationPossibilitiy = storeVal.rowsLocationPossibilities.find(
+// 			(rowsLocationPossibilitiy) => {
+// 				return rowsLocationPossibilitiy.check(QMS_info);
+// 			}
+// 		);
+// 		if (rowsLocationPossibilitiy) {
+// 			return rowsLocationPossibilitiy.get_Val(QMS_info);
+// 		}
+// 		return [];
+// 	},
+// 	get_rowCountLocation: function (QMS_info) {
+// 		console.log('ff', { QMS_info })
+// 		const storeVal = get(store);
+// 		console.log('ff', storeVal)
+// 		if (!storeVal || !storeVal?.rowCountLocationPossibilities?.length > 0) {
+// 			return null;
+// 		}
 
-		const rowCountLocationPossibility = storeVal.rowCountLocationPossibilities.find(
-			(rowCountLocationPossibility) => {
-				return rowCountLocationPossibility.check(QMS_info);
-			}
-		);
 
-		if (rowCountLocationPossibility) {
-			return rowCountLocationPossibility.get_Val(QMS_info);
-		}
-		console.warn('no rowCountLocation found');
-		return null;
-	},
-	get_idField: (QMS_info) => {
-		const storeVal = get(store);
-		if (!storeVal || !storeVal?.idFieldPossibilities?.length > 0) {
-			return null;
-		}
-		const idFieldPossibility = storeVal.idFieldPossibilities.find((idFieldPossibility) => {
-			return idFieldPossibility.check(QMS_info);
-		});
+// 		const rowCountLocationPossibility = storeVal.rowCountLocationPossibilities.find(
+// 			(rowCountLocationPossibility) => {
+// 				return rowCountLocationPossibility.check(QMS_info);
+// 			}
+// 		);
+// 		console.log('ff', { rowCountLocationPossibility })
 
-		if (idFieldPossibility) {
-			return idFieldPossibility.get_Val(QMS_info);
-		}
-		console.warn('no idField found');
 
-		return null;
-	},
-	get_typeExtraData: (typeInfo) => {
-		//!!!maybe is a good approach to make available  entire typeInfo (QMS_info) to 'check' and 'get_Val'
-		const storeVal = get(store);
-		if (!storeVal || !storeVal?.typesExtraDataPossibilities?.length > 0) {
-			return null;
-		}
-		let typesExtraDataPossibility = storeVal.typesExtraDataPossibilities.find(
-			(typesExtraDataPossibility) => {
-				return (
-					typesExtraDataPossibility.check(typeInfo.dd_kindEl) ||
-					typesExtraDataPossibility.check(typeInfo.dd_rootName)
+// 		if (rowCountLocationPossibility) {
+// 			return rowCountLocationPossibility.get_Val(QMS_info);
+// 		}
+// 		console.warn('no rowCountLocation found');
+// 		return null;
+// 	},
+// 	get_idField: (QMS_info) => {
+// 		const storeVal = get(store);
+// 		if (!storeVal || !storeVal?.idFieldPossibilities?.length > 0) {
+// 			return null;
+// 		}
+// 		const idFieldPossibility = storeVal.idFieldPossibilities.find((idFieldPossibility) => {
+// 			return idFieldPossibility.check(QMS_info);
+// 		});
 
-				);
-			}
-		);
-		if (typesExtraDataPossibility) {
-			return typesExtraDataPossibility.get_Val(typeInfo);
-		}
-		//console.warn('no typeExtraData found');
-		return null;
-	}
-};
+// 		if (idFieldPossibility) {
+// 			return idFieldPossibility.get_Val(QMS_info);
+// 		}
+// 		console.warn('no idField found');
+
+// 		return null;
+// 	},
+// 	get_typeExtraData: (typeInfo) => {
+// 		//!!!maybe is a good approach to make available  entire typeInfo (QMS_info) to 'check' and 'get_Val'
+// 		const storeVal = get(store);
+// 		if (!storeVal || !storeVal?.typesExtraDataPossibilities?.length > 0) {
+// 			return null;
+// 		}
+// 		let typesExtraDataPossibility = storeVal.typesExtraDataPossibilities.find(
+// 			(typesExtraDataPossibility) => {
+// 				return (
+// 					typesExtraDataPossibility.check(typeInfo.dd_kindEl) ||
+// 					typesExtraDataPossibility.check(typeInfo.dd_rootName)
+
+// 				);
+// 			}
+// 		);
+// 		if (typesExtraDataPossibility) {
+// 			return typesExtraDataPossibility.get_Val(typeInfo);
+// 		}
+// 		//console.warn('no typeExtraData found');
+// 		return null;
+// 	}
+// };
 
 
 export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
-	return { ...endpointInfo, ...writable({ ...endpointInfoDefaultValues, ...endpointConfiguration }) }
+
+
+	const store = writable({ ...endpointInfoDefaultValues, ...endpointConfiguration });
+
+
+
+	return {
+		...store,
+		smartSet: (newEndpoint) => {
+			store.set({ ...endpointInfoDefaultValues, ...newEndpoint });
+		},
+		get_rowsLocation: function (QMS_info) {
+			const storeVal = get(store);
+			if (!storeVal?.rowsLocationPossibilities?.length > 0) {
+				return [];
+			}
+
+			let rowsLocationPossibilitiy = storeVal.rowsLocationPossibilities.find(
+				(rowsLocationPossibilitiy) => {
+					return rowsLocationPossibilitiy.check(QMS_info);
+				}
+			);
+			if (rowsLocationPossibilitiy) {
+				return rowsLocationPossibilitiy.get_Val(QMS_info);
+			}
+			return [];
+		},
+		get_rowCountLocation: function (QMS_info) {
+			console.log('ff', { QMS_info })
+			const storeVal = get(store);
+			console.log('ff', storeVal)
+			if (!storeVal || !storeVal?.rowCountLocationPossibilities?.length > 0) {
+				return null;
+			}
+
+
+			const rowCountLocationPossibility = storeVal.rowCountLocationPossibilities.find(
+				(rowCountLocationPossibility) => {
+					return rowCountLocationPossibility.check(QMS_info);
+				}
+			);
+			console.log('ff', { rowCountLocationPossibility })
+
+
+			if (rowCountLocationPossibility) {
+				return rowCountLocationPossibility.get_Val(QMS_info);
+			}
+			console.warn('no rowCountLocation found');
+			return null;
+		},
+		get_idField: (QMS_info) => {
+			const storeVal = get(store);
+			if (!storeVal || !storeVal?.idFieldPossibilities?.length > 0) {
+				return null;
+			}
+			const idFieldPossibility = storeVal.idFieldPossibilities.find((idFieldPossibility) => {
+				return idFieldPossibility.check(QMS_info);
+			});
+
+			if (idFieldPossibility) {
+				return idFieldPossibility.get_Val(QMS_info);
+			}
+			console.warn('no idField found');
+
+			return null;
+		},
+		get_typeExtraData: (typeInfo) => {
+			//!!!maybe is a good approach to make available  entire typeInfo (QMS_info) to 'check' and 'get_Val'
+			const storeVal = get(store);
+			if (!storeVal || !storeVal?.typesExtraDataPossibilities?.length > 0) {
+				return null;
+			}
+			let typesExtraDataPossibility = storeVal.typesExtraDataPossibilities.find(
+				(typesExtraDataPossibility) => {
+					return (
+						typesExtraDataPossibility.check(typeInfo.dd_kindEl) ||
+						typesExtraDataPossibility.check(typeInfo.dd_rootName)
+
+					);
+				}
+			);
+			if (typesExtraDataPossibility) {
+				return typesExtraDataPossibility.get_Val(typeInfo);
+			}
+			//console.warn('no typeExtraData found');
+			return null;
+		}
+	}
 }

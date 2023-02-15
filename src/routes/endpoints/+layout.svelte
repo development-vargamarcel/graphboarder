@@ -43,11 +43,13 @@
 		rowCountLocationPossibilities: [
 			{
 				get_Val: (QMS_info) => {
+					console.log('ee');
 					const aggregatedQMS_info = schemaData.get_QMS_Field(
 						`${QMS_info.dd_displayName}_aggregated`,
 						'query'
 					);
 					const rootType = getRootType(null, QMS_info.dd_rootName);
+					console.log('ee', rootType);
 					if (!rootType) {
 						return null;
 					}
