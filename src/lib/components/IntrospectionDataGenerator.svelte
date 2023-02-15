@@ -157,12 +157,6 @@
 	}
 </script>
 
-{#key $schemaData?.isReady}
-	{#if $schemaData?.isReady}
-		<slot />
-	{/if}
-{/key}
-
 {#if $queryStore?.error}
 	<!-- The button to open modal -->
 	<!-- <label for="my-modal" class="btn">open modal</label> -->
