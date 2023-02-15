@@ -1,6 +1,6 @@
 <script>
 	import { createEventDispatcher, getContext } from 'svelte';
-	import FilterItem from '../FilterItem.svelte';
+	import FilterItem from '$lib/components/FilterItem.svelte';
 	const dispatch = createEventDispatcher();
 	const endpointInfo = getContext('endpointInfo');
 	const possible_displayInterfaces = $endpointInfo.typesExtraDataPossibilities.map(

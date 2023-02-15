@@ -1,6 +1,6 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
-	import FilterGroup from '../FilterGroup.svelte';
+	import FilterGroup from '$lib/components/FilterGroup.svelte';
 	export let typeInfo;
 	const dispatch = createEventDispatcher();
 </script>
