@@ -1,5 +1,5 @@
 <script lang="ts">
-	import EndpointPicker from './../endpointPicker.svelte';
+	import EndpointPicker from '$lib/components/endpointPicker.svelte';
 	import '../app.postcss';
 	import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
 	const prefix = '';
