@@ -5,6 +5,7 @@
 	import { createEventDispatcher, onMount } from 'svelte';
 	const dispatch = createEventDispatcher();
 	console.log($page);
+	export let endpointInfo;
 	let links = [
 		{
 			title: 'Home',
@@ -22,7 +23,7 @@
 			icon: 'bi bi-asterisk',
 			isSelected: false,
 			hasFill: false,
-			items: getQMSLinks('query', '/queries')
+			items: getQMSLinks('query', '/queries', endpointInfo)
 		},
 		{
 			title: 'Mutations',
@@ -31,7 +32,7 @@
 			icon: 'bi bi-pen',
 			isSelected: false,
 			hasFill: true,
-			items: getQMSLinks('mutation', '/mutations')
+			items: getQMSLinks('mutation', '/mutations', endpointInfo)
 		},
 		{
 			title: 'Explorer',

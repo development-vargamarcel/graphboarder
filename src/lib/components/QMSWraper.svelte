@@ -36,7 +36,8 @@
 	const paginationState_derived = Create_paginationState_derived(
 		paginationState,
 		QMS_info.dd_paginationArgs,
-		QMS_info.dd_paginationType
+		QMS_info.dd_paginationType,
+		endpointInfo
 	);
 
 	export let tableColsData_StoreInitialValue = [];

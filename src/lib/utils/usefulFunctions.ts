@@ -6,7 +6,7 @@ import { get } from 'svelte/store';
 import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 import { page } from '$app/stores';
 import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
-import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
+//import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
 export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query') => {
 	if (QMS_fields == '') {
 		console.error('no cols data,choose at least one field');
@@ -222,7 +222,7 @@ export const sortByName = (array) => {
 
 
 
-export const get_displayInterface = (typeInfo) => {
+export const get_displayInterface = (typeInfo, endpointInfo) => {
 
 	if (endpointInfo.get_typeExtraData(typeInfo)) {
 		return endpointInfo.get_typeExtraData(typeInfo).displayInterface;
@@ -230,7 +230,7 @@ export const get_displayInterface = (typeInfo) => {
 	return null;
 };
 
-export const mark_paginationArgs = (args) => {
+export const mark_paginationArgs = (args, endpointInfo) => {
 	const paginationPossibleNames = get(endpointInfo).paginationArgsPossibleNames;
 	const paginationPossibleNamesKeys = Object.keys(paginationPossibleNames);
 	args.forEach((arg) => {
@@ -258,7 +258,8 @@ export const get_paginationType = (paginationArgs) => {
 	}
 	return 'unknown';
 };
-export const generate_derivedData = (type, rootTypes, isQMSField) => {
+export const generate_derivedData = (type, rootTypes, isQMSField, endpointInfo) => {
+	console.log('dd', endpointInfo)
 	//type/field
 	let derivedData = { ...type };
 	derivedData.dd_kindsArray = get_KindsArray(type);
@@ -289,7 +290,7 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => {
 		}
 	});
 
-	let displayInterface = get_displayInterface(derivedData);
+	let displayInterface = get_displayInterface(derivedData, endpointInfo);
 
 	if (['text', undefined].includes(derivedData.dd_displayInterface)) {
 		derivedData.dd_displayInterface = displayInterface;
@@ -343,7 +344,7 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => {
 	derivedData.dd_derivedTypeBorrowed = 'implement this? maybe not?';
 	////////// others
 	if (derivedData?.dd_baseFilterOperators) {
-		let defaultdisplayInterface = get_displayInterface(derivedData);
+		let defaultdisplayInterface = get_displayInterface(derivedData, endpointInfo);
 		if (type?.inputFields !== undefined) {
 			type.inputFields.forEach((inputField) => {
 				Object.assign(inputField, { dd_displayInterface: defaultdisplayInterface });
@@ -351,7 +352,7 @@ export const generate_derivedData = (type, rootTypes, isQMSField) => {
 		}
 	}
 	if (derivedData.args) {
-		mark_paginationArgs(derivedData.args);
+		mark_paginationArgs(derivedData.args, endpointInfo);
 		derivedData.dd_paginationArgs = derivedData.args.filter((arg) => {
 			return arg.dd_isPaginationArg;
 		});
@@ -604,7 +605,7 @@ export const generate_finalGqlArgObj_fromGroups = (activeArgumentsDataGrouped: [
 	return { finalGqlArgObj, final_canRunQuery };
 };
 
-export const getQMSLinks = (QMSName = 'query', parentURL) => {
+export const getQMSLinks = (QMSName = 'query', parentURL, endpointInfo) => {
 	let $page = get(page);
 	let origin = $page.url.origin;
 	let queryLinks = [];

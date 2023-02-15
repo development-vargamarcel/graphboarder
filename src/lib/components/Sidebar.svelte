@@ -2,10 +2,14 @@
 	import { clickOutside } from '$lib/actions/clickOutside';
 
 	import TabContainer from '$lib/components/TabContainer.svelte';
+	import { getContext } from 'svelte';
 	export let forceVisibleSidebar = false;
 	export let portalSelector;
 	export let links;
 	import { fade, fly } from 'svelte/transition';
+	export let prefix = '';
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 
 	$: console.log({ forceVisibleSidebar });
 </script>
@@ -43,6 +47,7 @@
 		out:fly={{ x: -350, duration: 300, opacity: 1 }}
 	>
 		<TabContainer
+			{endpointInfo}
 			on:hideSidebar={() => {
 				if (forceVisibleSidebar) {
 					forceVisibleSidebar = false;

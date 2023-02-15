@@ -16,27 +16,27 @@ export const create_schemaData = () => {
 		set,
 		update,
 		set_schema: (schema) => { },
-		set_rootTypes: (withDerivedData: false, set_storeVal = true) => {
+		set_rootTypes: (withDerivedData: false, set_storeVal = true, endpointInfo) => {
 			let storeValue = get(store);
 			let { rootTypes, queryFields, mutationFields, schema } = storeValue;
 			let new_rootTypes = sortByName([...schema.types]);
 			if (withDerivedData) {
 				new_rootTypes.forEach((el) => {
-					Object.assign(el, generate_derivedData(el, new_rootTypes));
+					Object.assign(el, generate_derivedData(el, new_rootTypes, false, endpointInfo));
 					el?.args?.forEach((arg) => {
-						Object.assign(arg, generate_derivedData(arg, new_rootTypes));
+						Object.assign(arg, generate_derivedData(arg, new_rootTypes, false, endpointInfo));
 					});
 					el?.fields?.forEach((field) => {
-						Object.assign(field, generate_derivedData(field, new_rootTypes));
+						Object.assign(field, generate_derivedData(field, new_rootTypes, false, endpointInfo));
 						field?.args?.forEach((arg) => {
-							Object.assign(arg, generate_derivedData(arg, new_rootTypes));
+							Object.assign(arg, generate_derivedData(arg, new_rootTypes, false, endpointInfo));
 						});
 					});
 					el?.inputFields?.forEach((inputField) => {
-						Object.assign(inputField, generate_derivedData(inputField, new_rootTypes));
+						Object.assign(inputField, generate_derivedData(inputField, new_rootTypes, false, endpointInfo));
 					});
 					el?.enumValues?.forEach((enumValue) => {
-						Object.assign(enumValue, generate_derivedData(enumValue, new_rootTypes));
+						Object.assign(enumValue, generate_derivedData(enumValue, new_rootTypes, false, endpointInfo));
 					});
 
 				});
@@ -53,7 +53,7 @@ export const create_schemaData = () => {
 		set_QMSFields: (
 			withDerivedData: false,
 			set_storeVal = true,
-			QMS = ['query', 'mutation', 'subscription']
+			QMS = ['query', 'mutation', 'subscription'], endpointInfo
 		) => {
 			//QMS -> Query,Mutation,Subscription
 			let storeValue = get(store);
@@ -74,21 +74,21 @@ export const create_schemaData = () => {
 
 				if (withDerivedData) {
 					new_QMS_Fields?.forEach((el) => {
-						Object.assign(el, generate_derivedData(el, rootTypes, isQMSField));
+						Object.assign(el, generate_derivedData(el, rootTypes, isQMSField, endpointInfo));
 						el?.args?.forEach((arg) => {
-							Object.assign(arg, generate_derivedData(arg, rootTypes));
+							Object.assign(arg, generate_derivedData(arg, rootTypes, 'is QMS sub-field', endpointInfo));
 						});
 						el?.fields?.forEach((field) => {
-							Object.assign(field, generate_derivedData(field, rootTypes));
+							Object.assign(field, generate_derivedData(field, rootTypes, 'is QMS sub-field', endpointInfo));
 							field?.args?.forEach((arg) => {
-								Object.assign(arg, generate_derivedData(arg, rootTypes));
+								Object.assign(arg, generate_derivedData(arg, rootTypes, 'is QMS sub-field', endpointInfo));
 							});
 						});
 						el?.inputFields?.forEach((inputField) => {
-							Object.assign(inputField, generate_derivedData(inputField, rootTypes));
+							Object.assign(inputField, generate_derivedData(inputField, 'is QMS sub-field', rootTypes, endpointInfo));
 						});
 						el?.enumValues?.forEach((enumValue) => {
-							Object.assign(enumValue, generate_derivedData(enumValue, rootTypes));
+							Object.assign(enumValue, generate_derivedData(enumValue, 'is QMS sub-field', rootTypes, endpointInfo));
 						});
 
 
@@ -103,15 +103,16 @@ export const create_schemaData = () => {
 			});
 			return result;
 		},
-		set_fields: (withDerivedData: false) => {
+		set_fields: (endpointInfo) => {
 			//set rootTypes,queryFields,mutationFields,subscriptionFields //fields or types?
-			let rootTypes = returnObject.set_rootTypes(true, true);
+			console.log('sssss', endpointInfo)
+			let rootTypes = returnObject.set_rootTypes(true, true, endpointInfo);
 			let storeValue = get(store);
 			let QMSFields = returnObject.set_QMSFields(true, false, [
 				'query',
 				'mutation',
 				'subscription'
-			]);
+			], endpointInfo);
 			set({
 				...storeValue,
 				rootTypes,

@@ -10,9 +10,10 @@
 	import { urqlClient } from '$lib/utils/urqlClient';
 	import { urqlCoreClient } from '$lib/utils/urqlCoreClient';
 	import { getContext } from 'svelte';
-
-	const endpointInfo = getContext('endpointInfo');
-
+	export let prefix = '';
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+	console.log('aaaa', { endpointInfo }, $endpointInfo);
 	let client = createClient({
 		url: $endpointInfo.url,
 		fetchOptions: () => {
@@ -141,7 +142,7 @@
 	const handleData = () => {
 		schema = $queryStore?.data?.__schema;
 		$schemaData.schema = schema;
-		schemaData.set_fields();
+		schemaData.set_fields(endpointInfo);
 		$schemaData.isReady = true;
 		console.log('schemaData', $schemaData);
 	};
