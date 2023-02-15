@@ -15,14 +15,12 @@
 		endpointInfo_Store = create_endpointInfo_Store(null);
 	}
 	setContext(`${prefix}QMSMainWraperContext`, { endpointInfo: endpointInfo_Store });
-
-	let gotIntrospectionData = false;
-	$: gotIntrospectionData = $schemaData?.isReady;
+	$: console.log('schemaData', $schemaData?.isReady);
 </script>
 
 <IntrospectionDataGenerator />
-{#key gotIntrospectionData}
-	{#if gotIntrospectionData && $endpointInfo_Store?.url == endpointInfoProvided?.url}
+{#key endpointInfoProvided.url}
+	{#if $schemaData?.isReady}
 		<slot />
 	{/if}
 {/key}
