@@ -1,11 +1,17 @@
 <script>
-	import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
+	export let prefix = '';
+	//!!import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+
+	console.log('qqq', QMSMainWraperContext);
 	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 	import {
 		getFields_Grouped,
 		get_scalarColsData,
 		get_nodeFieldsQMS_info
 	} from '$lib/utils/usefulFunctions';
+	import { getContext } from 'svelte';
 
 	export let origin;
 	export let query;

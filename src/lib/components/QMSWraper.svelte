@@ -4,16 +4,20 @@
 	import { Create_finalGqlArgObj_Store } from '$lib/stores/QMSHandling/finalGqlArgObj_Store';
 	import { Create_tableColsData_Store } from '$lib/stores/QMSHandling/tableColsData_Store';
 	import { Create_QMS_bodyPart_StoreDerived } from '$lib/stores/QMSHandling/QMS_bodyPart_StoreDerived';
-	import { setContext } from 'svelte';
+	import { getContext, setContext } from 'svelte';
 	import { Create_QMS_bodyPartsUnifier_StoreDerived } from '$lib/stores/QMSHandling/QMS_bodyPartsUnifier_StoreDerived';
 	import { Create_paginationState } from '$lib/stores/QMSHandling/paginationState';
 	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 	import { Create_paginationState_derived } from '$lib/stores/QMSHandling/paginationState_derived';
 	import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
 	import { get_scalarColsData, get_nodeFieldsQMS_info } from '$lib/utils/usefulFunctions';
-	import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
-	import { get, writable } from 'svelte/store';
+	//!!import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
 	export let prefix = '';
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+
+	console.log('qqq', QMSMainWraperContext);
+	import { get, writable } from 'svelte/store';
 	export let QMSType = 'query';
 	export let QMSName;
 	let QMS_info = schemaData.get_QMS_Field(QMSName, QMSType);

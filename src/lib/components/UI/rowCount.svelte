@@ -1,7 +1,13 @@
 <script>
-	import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
+	//!!import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
+	export let prefix = '';
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+
+	console.log('qqq', QMSMainWraperContext);
 	import { urqlCoreClient } from '$lib/utils/urqlCoreClient';
 	import { getDataGivenStepsOfFields } from '$lib/utils/usefulFunctions';
+	import { getContext } from 'svelte';
 
 	export let QMS_bodyPart_StoreDerived;
 	export let QMS_info;

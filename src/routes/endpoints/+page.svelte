@@ -1,10 +1,10 @@
 <script>
 	import EndpointsList from '$lib/components/EndpointsList.svelte';
-	import QmsWraper from '$lib/components/QMSWraper.svelte';
+	import QMSWraper from '$lib/components/QMSWraper.svelte';
 </script>
 
-<QmsWraper QMSName="endpoints">
+<QMSWraper QMSName="endpoints">
 	<div class="pt-2">
 		<EndpointsList QMSName="endpoints" />
 	</div>
-</QmsWraper>
+</QMSWraper>

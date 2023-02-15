@@ -66,7 +66,10 @@
 		changeEndpointInfo();
 	};
 	import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
-
+	export let prefix = '';
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	console.log('qqq', QMSMainWraperContext);
+	//const { endpointInfo } = getContext(`${prefix}QMSMainWraperContext`);
 	const changeEndpointInfo = () => {
 		if ($endpointInfo?.url != graphqlEndpointURL) {
 			let testEndpoint = testEndpoints.find((endpoint) => {
@@ -118,6 +121,7 @@
 	};
 	let forceVisibleSidebar = false;
 	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
+	import { getContext } from 'svelte';
 	changeEndpointInfo();
 </script>
 
