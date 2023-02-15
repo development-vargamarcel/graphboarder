@@ -259,7 +259,6 @@ export const get_paginationType = (paginationArgs) => {
 	return 'unknown';
 };
 export const generate_derivedData = (type, rootTypes, isQMSField, endpointInfo) => {
-	console.log('dd', endpointInfo)
 	//type/field
 	let derivedData = { ...type };
 	derivedData.dd_kindsArray = get_KindsArray(type);
