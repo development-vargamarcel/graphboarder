@@ -2,7 +2,6 @@
 	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-	console.log('qqq', QMSMainWraperContext);
 	import { page } from '$app/stores';
 	import Table from '$lib/components/Table.svelte';
 	import { urqlCoreClient } from '$lib/utils/urqlCoreClient';

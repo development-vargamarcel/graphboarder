@@ -15,8 +15,9 @@
 	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+	console.log({ endpointInfo }, $endpointInfo);
+
 	export let initialGqlArgObj = {};
-	console.log('qqq', QMSMainWraperContext);
 	import { get, writable } from 'svelte/store';
 	export let QMSType = 'query';
 	export let QMSName;

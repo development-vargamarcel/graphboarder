@@ -68,7 +68,6 @@
 	import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
 	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	console.log('qqq', QMSMainWraperContext);
 	//const { endpointInfo } = getContext(`${prefix}QMSMainWraperContext`);
 	const changeEndpointInfo = () => {
 		if ($endpointInfo?.url != graphqlEndpointURL) {

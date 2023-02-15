@@ -4,7 +4,6 @@
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 
-	console.log('qqq', QMSMainWraperContext);
 	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 	import {
 		getFields_Grouped,
