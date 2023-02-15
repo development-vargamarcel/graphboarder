@@ -15,7 +15,7 @@
 	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-
+	export let initialGqlArgObj = {};
 	console.log('qqq', QMSMainWraperContext);
 	import { get, writable } from 'svelte/store';
 	export let QMSType = 'query';
@@ -68,7 +68,8 @@
 		QMSType,
 		QMSName,
 		paginationOptions,
-		paginationState_derived
+		paginationState_derived,
+		initialGqlArgObj
 	);
 
 	const QMS_bodyPartsUnifier_StoreDerived = Create_QMS_bodyPartsUnifier_StoreDerived(

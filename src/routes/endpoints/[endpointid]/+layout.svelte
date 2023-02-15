@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { string_transformer } from '$lib/utils/dataStructureTransformers.js';
 	import type { LayoutData } from './$types';
 
 	export let data: LayoutData;
@@ -8,11 +9,7 @@
 	import QMSWraper from '$lib/components/QMSWraper.svelte';
 </script>
 
-<div>
-	{endpointid}
-</div>
-
-<QMSWraper QMSName="endpoints_by_id">
+<QMSWraper QMSName="endpoints_by_id" initialGqlArgObj={{ id: string_transformer(endpointid) }}>
 	<div class="pt-2">
 		<EndpointsList QMSName="endpoints_by_id" />
 	</div>
