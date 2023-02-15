@@ -5,6 +5,7 @@
 	import { createEventDispatcher, onMount } from 'svelte';
 	const dispatch = createEventDispatcher();
 	console.log($page);
+	let endpointId = $page.params.endpointId;
 	export let endpointInfo;
 	let links = [
 		{
@@ -18,7 +19,7 @@
 		},
 		{
 			title: 'Queries',
-			url: '/queries',
+			url: `/endpoints/${endpointId}/queries`,
 			urlIsRoute: false,
 			icon: 'bi bi-asterisk',
 			isSelected: false,
@@ -27,7 +28,7 @@
 		},
 		{
 			title: 'Mutations',
-			url: '/mutations',
+			url: `/endpoints/${endpointId}/mutations`,
 			urlIsRoute: false,
 			icon: 'bi bi-pen',
 			isSelected: false,
@@ -36,7 +37,7 @@
 		},
 		{
 			title: 'Explorer',
-			url: '/explorer',
+			url: `/endpoints/${endpointId}/explorer`,
 			urlIsRoute: false,
 			icon: 'bi bi-compass',
 			isSelected: false,
