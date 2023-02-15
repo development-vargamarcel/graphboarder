@@ -32,7 +32,7 @@
 	}}
 >
 	<div class="invisible md:visible">
-		<TabContainer />
+		<TabContainer {endpointInfo} />
 	</div>
 </div>
 {#if forceVisibleSidebar}

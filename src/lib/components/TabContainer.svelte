@@ -7,6 +7,7 @@
 	console.log($page);
 	let endpointId = $page.params.endpointId;
 	export let endpointInfo;
+	console.log('zzz', endpointInfo);
 	let links = [
 		{
 			title: 'Home',
@@ -46,8 +47,6 @@
 		}
 	];
 
-	let QueryLinks = getQMSLinks();
-	console.log({ QueryLinks });
 	const get_itemsToShow = () => {
 		return (itemsToShow =
 			links.filter((link) => {
