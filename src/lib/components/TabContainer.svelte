@@ -5,7 +5,8 @@
 	import { createEventDispatcher, onMount } from 'svelte';
 	const dispatch = createEventDispatcher();
 	console.log($page);
-	let endpointId = $page.params.endpointId;
+	let endpointid = $page.params.endpointid;
+	console.log({ endpointid });
 	export let endpointInfo;
 	console.log('zzz', endpointInfo);
 	let links = [
@@ -20,25 +21,25 @@
 		},
 		{
 			title: 'Queries',
-			url: `/endpoints/${endpointId}/queries`,
+			url: `/endpoints/${endpointid}/queries`,
 			urlIsRoute: false,
 			icon: 'bi bi-asterisk',
 			isSelected: false,
 			hasFill: false,
-			items: getQMSLinks('query', '/queries', endpointInfo)
+			items: getQMSLinks('query', `/endpoints/${endpointid}/queries`, endpointInfo)
 		},
 		{
 			title: 'Mutations',
-			url: `/endpoints/${endpointId}/mutations`,
+			url: `/endpoints/${endpointid}/mutations`,
 			urlIsRoute: false,
 			icon: 'bi bi-pen',
 			isSelected: false,
 			hasFill: true,
-			items: getQMSLinks('mutation', '/mutations', endpointInfo)
+			items: getQMSLinks('mutation', `/endpoints/${endpointid}/mutations`, endpointInfo)
 		},
 		{
 			title: 'Explorer',
-			url: `/endpoints/${endpointId}/explorer`,
+			url: `/endpoints/${endpointid}/explorer`,
 			urlIsRoute: false,
 			icon: 'bi bi-compass',
 			isSelected: false,

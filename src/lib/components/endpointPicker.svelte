@@ -146,7 +146,6 @@
 					>
 						<div class="rounded p-[1px] mr-1 {endpoint.isMantained ? 'bg-success' : 'bg-error'}" />
 						<div>
-							{endpoint.url}
 							<div class="text-xs">{endpoint.description ? endpoint.description : ''}</div>
 						</div>
 					</li>

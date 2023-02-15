@@ -23,7 +23,6 @@
 <IntrospectionDataGenerator />
 {#key gotIntrospectionData}
 	{#if gotIntrospectionData && $endpointInfo_Store}
-		{$endpointInfo_Store?.url}
 		<slot />
 	{/if}
 {/key}

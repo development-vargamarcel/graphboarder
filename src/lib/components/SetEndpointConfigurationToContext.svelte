@@ -233,8 +233,6 @@
 </script>
 
 {#if endpointConfiguration}
-	<div>is endpointConfiguration</div>
-
 	<MainWraper endpointInfoProvided={endpointConfiguration}>
 		<main class="bg-base-300  flex w-[100vw] overflow-hidden">
 			<div class="  md:max-w-[300px]">
@@ -263,7 +261,6 @@
 					</label>
 					<div />
 				</div>
-				aa
 				<slot />
 			</div>
 		</main>
