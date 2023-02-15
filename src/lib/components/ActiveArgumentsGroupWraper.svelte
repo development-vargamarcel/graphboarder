@@ -20,7 +20,9 @@
 		dragDisabled = true;
 	}
 	const hasGroup_argsNode = group.group_argsNode;
-	const { finalGqlArgObj_Store } = getContext('QMSWraperContext');
+	export let prefix = '';
+
+	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
 	const dndIsOn = writable(false);
 	setContext('dndIsOn', dndIsOn);
 </script>

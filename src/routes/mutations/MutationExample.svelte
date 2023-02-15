@@ -3,8 +3,9 @@
 	import { page } from '$app/stores';
 	import Table from '$lib/components/Table.svelte';
 	import { urqlCoreClient } from '$lib/utils/urqlCoreClient';
+	export let prefix = '';
 
-	const QMSWraperContext = getContext('QMSWraperContext');
+	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 	const {
 		QMS_bodyPart_StoreDerived_rowsCount = null,
 		activeArgumentsDataGrouped_Store,

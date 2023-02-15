@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { createEventDispatcher, each, getContext, setContext } from 'svelte/internal';
 	import ActiveArgumentsGroupWraper from '$lib/components/ActiveArgumentsGroupWraper.svelte';
-	const { activeArgumentsDataGrouped_Store, QMS_info } = getContext('QMSWraperContext');
+	export let prefix = '';
+
+	const { activeArgumentsDataGrouped_Store, QMS_info } = getContext(`${prefix}QMSWraperContext`);
 	let activeArgumentsDataGrouped = [];
 
 	$: console.log('$activeArgumentsDataGrouped_Store', $activeArgumentsDataGrouped_Store);

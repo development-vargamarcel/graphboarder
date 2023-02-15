@@ -4,11 +4,11 @@
 
 	import List from '$lib/components/fields/List.svelte';
 	import FilterGroup from '$lib/components/FilterGroup.svelte';
-
+	export let prefix = '';
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Interface from '$lib/components/fields/Interface.svelte';
-	const { activeArgumentsDataGrouped_Store } = getContext('QMSWraperContext');
-	const { finalGqlArgObj_Store } = getContext('QMSWraperContext');
+	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
+	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
 
 	let dispatch = createEventDispatcher();
 	export let activeArgumentData;

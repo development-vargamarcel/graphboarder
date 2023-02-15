@@ -4,8 +4,9 @@
 	import Table from '$lib/components/Table.svelte';
 	import { urqlCoreClient } from '$lib/utils/urqlCoreClient';
 	let queryName = $page.params.queryName;
+	export let prefix = '';
 
-	const QMSWraperContext = getContext('QMSWraperContext');
+	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 	const {
 		QMS_bodyPart_StoreDerived_rowsCount = null,
 		activeArgumentsDataGrouped_Store,

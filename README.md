@@ -68,7 +68,7 @@ tableColsData_Store.addColumn(new_tableColData)
 **Also you can get the entire QMSWraperContext,containing everything you need.**
 
 ```
-const QMSWraperContext= getContext('QMSWraperContext');
+const QMSWraperContext= getContext(`${prefix}QMSWraperContext`);
 
 ```
 

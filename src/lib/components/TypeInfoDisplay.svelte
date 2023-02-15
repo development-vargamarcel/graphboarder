@@ -10,7 +10,9 @@
 	export let template = 'default';
 	export let stepsOfFields;
 	let { dd_kindsArray, dd_namesArray, dd_displayName, dd_rootName } = type;
-	const QMSWraperContext = getContext('QMSWraperContext');
+	export let prefix = '';
+
+	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 	const tableColsData_Store = QMSWraperContext?.tableColsData_Store;
 </script>
 
