@@ -31,7 +31,7 @@
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
-	import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
+	import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 
 	$: console.log('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
 	onDestroy(() => {
@@ -45,7 +45,7 @@
 	}
 	//
 	let activeArgumentsData = [];
-	const paginationTypeInfo = paginationTypes.find((pagType) => {
+	const paginationTypeInfo = get_paginationTypes(endpointInfo).find((pagType) => {
 		return pagType.name == currentQMS_info.dd_paginationType;
 	});
 	let activeArgumentsDataGrouped_Store_IS_SET = false;

@@ -9,7 +9,7 @@
 	import { Create_paginationState } from '$lib/stores/QMSHandling/paginationState';
 	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 	import { Create_paginationState_derived } from '$lib/stores/QMSHandling/paginationState_derived';
-	import { paginationTypes } from '$lib/stores/pagination/paginationTypes';
+	import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 	import { get_scalarColsData, get_nodeFieldsQMS_info } from '$lib/utils/usefulFunctions';
 	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
@@ -22,7 +22,7 @@
 	export let QMSName;
 	let QMS_info = schemaData.get_QMS_Field(QMSName, QMSType);
 	console.log({ QMS_info });
-	let paginationTypeInfo = paginationTypes.find((pagType) => {
+	let paginationTypeInfo = get_paginationTypes(endpointInfo).find((pagType) => {
 		return pagType.name == QMS_info.dd_paginationType;
 	});
 	let QMSWraperContext = {};
