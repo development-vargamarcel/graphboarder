@@ -8,13 +8,21 @@
 	let endpointid = $page.params.endpointid;
 	console.log({ endpointid });
 	export let endpointInfo;
-	console.log('zzz', endpointInfo);
 	let links = [
 		{
 			title: 'Home',
 			url: '/',
 			urlIsRoute: true,
 			icon: 'bi-house',
+			isSelected: false,
+			hasFill: true,
+			items: []
+		},
+		{
+			title: 'Endpoints',
+			url: `/endpoints/`,
+			urlIsRoute: false,
+			icon: 'bi bi-database',
 			isSelected: false,
 			hasFill: true,
 			items: []

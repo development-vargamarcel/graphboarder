@@ -605,7 +605,6 @@ export const generate_finalGqlArgObj_fromGroups = (activeArgumentsDataGrouped: [
 };
 
 export const getQMSLinks = (QMSName = 'query', parentURL, endpointInfo) => {
-	console.log('zzzq', endpointInfo)
 	let $page = get(page);
 	let origin = $page.url.origin;
 	let queryLinks = [];
