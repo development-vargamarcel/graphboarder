@@ -5,7 +5,7 @@
 	import { urqlCoreClient } from '$lib/utils/urqlCoreClient';
 	export let QMSName;
 	let queryName = QMSName;
-	const QMSWraperContext = getContext('endpointsListQMSWraperContext');
+	const QMSWraperContext = getContext('QMSWraperContext');
 	const {
 		QMS_bodyPart_StoreDerived_rowsCount = null,
 		activeArgumentsDataGrouped_Store,
@@ -358,7 +358,6 @@
 
 <div class="md:px-2">
 	<Table
-		prefix="endpointsList"
 		{infiniteId}
 		{infiniteHandler}
 		colsData={$tableColsData_Store}
