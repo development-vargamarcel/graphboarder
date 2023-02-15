@@ -9,6 +9,7 @@
 	export let prefix = '';
 	export let endpointInfoProvided = null;
 	let endpointInfo_Store;
+
 	if (endpointInfoProvided) {
 		endpointInfo_Store = create_endpointInfo_Store(endpointInfoProvided);
 	} else {
@@ -19,7 +20,7 @@
 </script>
 
 <IntrospectionDataGenerator />
-{#key endpointInfoProvided.url}
+{#key $schemaData?.isReady}
 	{#if $schemaData?.isReady}
 		<slot />
 	{/if}

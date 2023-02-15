@@ -140,6 +140,7 @@
 	let sortingArray = [];
 	$: sortingArray = sortingInputValue.split(' ');
 	const handleData = () => {
+		console.log('handledata run');
 		schema = $queryStore?.data?.__schema;
 		$schemaData.schema = schema;
 		schemaData.set_fields(endpointInfo);
