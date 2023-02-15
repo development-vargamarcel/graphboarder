@@ -13,7 +13,7 @@
 	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-	console.log('aaaa', { endpointInfo }, $endpointInfo);
+	console.log({ endpointInfo }, $endpointInfo);
 	let client = createClient({
 		url: $endpointInfo.url,
 		fetchOptions: () => {
