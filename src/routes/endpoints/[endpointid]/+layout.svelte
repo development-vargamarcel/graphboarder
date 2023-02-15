@@ -7,11 +7,12 @@
 	$: endpointid = $page.params.endpointid;
 	import EndpointsList from '$lib/components/EndpointsList.svelte';
 	import QMSWraper from '$lib/components/QMSWraper.svelte';
+	import SetEndpointConfigurationToContext from '$lib/components/SetEndpointConfigurationToContext.svelte';
 </script>
 
 <QMSWraper QMSName="endpoints_by_id" initialGqlArgObj={{ id: string_transformer(endpointid) }}>
 	<div class="pt-2">
-		<EndpointsList QMSName="endpoints_by_id" />
+		<SetEndpointConfigurationToContext QMSName="endpoints_by_id" />
 	</div>
 </QMSWraper>
 <slot><!-- optional fallback --></slot>
