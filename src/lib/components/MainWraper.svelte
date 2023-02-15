@@ -19,9 +19,7 @@
 	$: console.log('schemaData', $schemaData?.isReady);
 </script>
 
-<IntrospectionDataGenerator />
-{#key $schemaData?.isReady}
-	{#if $schemaData?.isReady}
-		<slot />
-	{/if}
-{/key}
+<IntrospectionDataGenerator>
+	<slot />
+	<div>qq</div>
+</IntrospectionDataGenerator>

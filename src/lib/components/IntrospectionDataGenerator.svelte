@@ -159,6 +159,10 @@
 	}
 </script>
 
+{#if $queryStore?.data}
+	<!-- content here -->
+	<slot><!-- optional fallback --></slot>
+{/if}
 {#if $queryStore?.error}
 	<!-- The button to open modal -->
 	<!-- <label for="my-modal" class="btn">open modal</label> -->
