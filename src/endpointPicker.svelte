@@ -65,6 +65,8 @@
 		$schemaData.isReady = false;
 		changeEndpointInfo();
 	};
+	import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
+
 	const changeEndpointInfo = () => {
 		if ($endpointInfo?.url != graphqlEndpointURL) {
 			let testEndpoint = testEndpoints.find((endpoint) => {
@@ -115,7 +117,6 @@
 		graphqlEndpointURL = endpoint?.url;
 	};
 	let forceVisibleSidebar = false;
-	import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
 	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 	changeEndpointInfo();
 </script>

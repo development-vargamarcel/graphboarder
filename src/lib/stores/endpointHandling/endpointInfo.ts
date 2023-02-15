@@ -222,3 +222,8 @@ export const endpointInfo = {
 		return null;
 	}
 };
+
+
+export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
+	return { ...endpointInfo, ...writable({ ...endpointInfoDefaultValues, ...endpointConfiguration }) }
+}

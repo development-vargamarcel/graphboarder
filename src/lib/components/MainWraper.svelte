@@ -1,16 +1,26 @@
 <script lang="ts">
-	import { endpointInfo } from '$lib/stores/endpointHandling/endpointInfo';
+	import {
+		create_endpointInfo_Store,
+		endpointInfo
+	} from '$lib/stores/endpointHandling/endpointInfo';
 	import IntrospectionDataGenerator from '$lib/components/IntrospectionDataGenerator.svelte';
 	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 	import { setContext } from 'svelte';
+	export let prefix = '';
 	export let endpointInfoProvided = null;
+	let endpointInfo_Store;
 	if (endpointInfoProvided) {
+		endpointInfo_Store = create_endpointInfo_Store(endpointInfoProvided);
 		endpointInfo.smartSet(endpointInfoProvided);
 		setContext('endpointInfo', endpointInfo);
+	} else {
+		endpointInfo_Store = create_endpointInfo_Store(null);
 	}
 
 	let gotIntrospectionData = false;
 	$: gotIntrospectionData = $schemaData?.isReady;
+	setContext(`${prefix}QMSMainWraperContext`, { endpointInfo: endpointInfo_Store });
+	console.log({ endpointInfo_Store }, $endpointInfo_Store?.url);
 </script>
 
 <IntrospectionDataGenerator />
