@@ -126,7 +126,7 @@ export const get_paginationTypes = (endpointInfo, schemaData) => {
 				delete _state[beforeName];
 				return _state;
 			},
-			get_dependencyColsData: (QMS_name, QMS_type) => {
+			get_dependencyColsData: (QMS_name, QMS_type, schemaData) => {
 				//using 'pageInfo' for getting next page cursor,'nextPage' is not a standard,some use another name like 'endCursor' { title: 'nextPageCursor', stepsOfFields: [QMS_name, 'pageInfo', 'nextPage'] }
 				const dependencyColsData = [];
 				const endpointInfoVal = get(endpointInfo);

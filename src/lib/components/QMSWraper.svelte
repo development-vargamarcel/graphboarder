@@ -49,7 +49,11 @@
 		schemaData
 	);
 	if (tableColsData_StoreInitialValue?.length == 0) {
-		const dependencyColsData = paginationTypeInfo?.get_dependencyColsData(QMSName, 'query');
+		const dependencyColsData = paginationTypeInfo?.get_dependencyColsData(
+			QMSName,
+			'query',
+			schemaData
+		);
 		tableColsData_StoreInitialValue = [...scalarColsData, ...dependencyColsData];
 	}
 
