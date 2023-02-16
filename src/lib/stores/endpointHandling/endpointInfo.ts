@@ -255,8 +255,8 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			}
 			return [];
 		},
-		get_rowCountLocation: function (QMS_info) {
-			console.log('ff', { QMS_info })
+		get_rowCountLocation: function (QMS_info, schemaData) {
+			console.log('ff', { QMS_info }, { schemaData })
 			const storeVal = get(store);
 			console.log('ff', storeVal)
 			if (!storeVal || !storeVal?.rowCountLocationPossibilities?.length > 0) {
@@ -266,14 +266,14 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 
 			const rowCountLocationPossibility = storeVal.rowCountLocationPossibilities.find(
 				(rowCountLocationPossibility) => {
-					return rowCountLocationPossibility.check(QMS_info);
+					return rowCountLocationPossibility.check(QMS_info, schemaData);
 				}
 			);
 			console.log('ff', { rowCountLocationPossibility })
 
 
 			if (rowCountLocationPossibility) {
-				return rowCountLocationPossibility.get_Val(QMS_info);
+				return rowCountLocationPossibility.get_Val(QMS_info, schemaData);
 			}
 			console.warn('no rowCountLocation found');
 			return null;

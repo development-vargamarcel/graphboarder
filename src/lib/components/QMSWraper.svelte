@@ -79,7 +79,8 @@
 	);
 	console.log('QMS_bodyPartsUnifier_StoreDerived', QMS_bodyPartsUnifier_StoreDerived);
 	let QMS_bodyPart_StoreDerived_rowsCount = null;
-	const rowCountLocation = endpointInfo.get_rowCountLocation(QMS_info);
+	console.log(schemaData);
+	const rowCountLocation = endpointInfo.get_rowCountLocation(QMS_info, schemaData);
 	console.log({ rowCountLocation }, $endpointInfo);
 	if (rowCountLocation) {
 		const tableColsData_Store_rowsCount = writable([
