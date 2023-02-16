@@ -7,8 +7,7 @@
 	export let prefix = '';
 	export let endpointInfoProvided = null;
 
-	let endpointInfo = create_endpointInfo_Store(endpointInfoProvided);
-
+	const endpointInfo = create_endpointInfo_Store(endpointInfoProvided);
 	const schemaData = create_schemaData();
 	setContext(`${prefix}QMSMainWraperContext`, {
 		endpointInfo: endpointInfo,
