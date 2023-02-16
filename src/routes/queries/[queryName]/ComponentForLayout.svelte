@@ -3,10 +3,10 @@
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 
+	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
 	const schemaData = QMSMainWraperContext?.schemaData;
 	import { page } from '$app/stores';
 	import Table from '$lib/components/Table.svelte';
-	import { urqlCoreClient } from '$lib/utils/urqlCoreClient';
 	let queryName = $page.params.queryName;
 
 	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);

@@ -6,7 +6,6 @@
 	import { createClient, fetchExchange } from '@urql/core';
 	import { browser } from '$app/environment';
 	import { setClient, operationStore, query } from '@urql/svelte';
-	import { urqlCoreClient } from '$lib/utils/urqlCoreClient';
 	import { getContext } from 'svelte';
 	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
@@ -16,7 +15,7 @@
 
 	console.log({ endpointInfo }, $endpointInfo);
 
-	setClient(urqlCoreClient);
+	//setClient(urqlCoreClient);
 	const queryStore = operationStore(`
     query IntrospectionQuery {
       __schema {
@@ -138,7 +137,7 @@
 	}
 </script>
 
-{#if $queryStore?.data}
+{#if $queryStore?.data && $schemaData.isReady}
 	<!-- content here -->
 	<slot><!-- optional fallback --></slot>
 {/if}

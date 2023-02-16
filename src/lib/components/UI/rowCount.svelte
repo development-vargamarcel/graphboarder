@@ -3,8 +3,8 @@
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 
+	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
 	const schemaData = QMSMainWraperContext?.schemaData;
-	import { urqlCoreClient } from '$lib/utils/urqlCoreClient';
 	import { getDataGivenStepsOfFields } from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
 

@@ -4,9 +4,9 @@
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
 
+	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
 	import { page } from '$app/stores';
 	import Table from '$lib/components/Table.svelte';
-	import { urqlCoreClient } from '$lib/utils/urqlCoreClient';
 
 	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 	const {

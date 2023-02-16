@@ -5,7 +5,8 @@
 	const schemaData = QMSMainWraperContext?.schemaData;
 	import { page } from '$app/stores';
 	import Table from '$lib/components/Table.svelte';
-	import { urqlCoreClient } from '$lib/utils/urqlCoreClient';
+
+	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
 	let queryName = $page.params.queryName;
 
 	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
