@@ -6,16 +6,12 @@
 	import { setContext } from 'svelte';
 	export let prefix = '';
 	export let endpointInfoProvided = null;
-	let endpointInfo_Store;
 
-	if (endpointInfoProvided) {
-		endpointInfo_Store = create_endpointInfo_Store(endpointInfoProvided);
-	} else {
-		endpointInfo_Store = create_endpointInfo_Store(null);
-	}
+	let endpointInfo = create_endpointInfo_Store(endpointInfoProvided);
+
 	const schemaData = create_schemaData();
 	setContext(`${prefix}QMSMainWraperContext`, {
-		endpointInfo: endpointInfo_Store,
+		endpointInfo: endpointInfo,
 		schemaData: schemaData
 	});
 	$: console.log('schemaData', $schemaData?.isReady);
