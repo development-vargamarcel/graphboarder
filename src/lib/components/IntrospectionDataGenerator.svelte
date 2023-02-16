@@ -10,33 +10,13 @@
 	import { getContext } from 'svelte';
 	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-
 	const schemaData = QMSMainWraperContext?.schemaData;
+
 	console.log({ endpointInfo }, $endpointInfo);
-	let client = createClient({
-		url: $endpointInfo.url,
-		fetchOptions: () => {
-			return {
-				headers: getHeaders()
-			};
-		},
-		exchanges: [fetchExchange]
-	});
 
-	let getHeaders = () => {
-		if ($endpointInfo?.headers) {
-			return $endpointInfo?.headers;
-		}
-		if (browser) {
-			return JSON.parse(localStorage.getItem('headers'));
-		} else {
-			return {};
-		}
-	};
-
-	urqlCoreClient.set(client);
-	setClient(client);
+	setClient(urqlCoreClient);
 	const queryStore = operationStore(`
     query IntrospectionQuery {
       __schema {

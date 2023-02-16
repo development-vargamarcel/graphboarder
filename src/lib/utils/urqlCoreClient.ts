@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-export const Create_urqlClient = () => {
+export const Create_urqlCoreClient = () => {
 	const store = writable(null);
 	const { subscribe, set, update } = store;
 
@@ -10,4 +10,4 @@ export const Create_urqlClient = () => {
 		update
 	};
 };
-export const urqlCoreClient = Create_urqlClient();
+export const urqlCoreClient = Create_urqlCoreClient();
