@@ -631,7 +631,7 @@ export const getQMSLinks = (QMSName = 'query', parentURL, endpointInfo, schemaDa
 		let currentQMS_info = schemaData.get_QMS_Field(queryName, QMSName);
 		let endpointInfoVal = get(endpointInfo);
 		const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_info);
-		const nodeFieldsQMS_info = get_nodeFieldsQMS_info(currentQMS_info, rowsLocation);
+		const nodeFieldsQMS_info = get_nodeFieldsQMS_info(currentQMS_info, rowsLocation, schemaData);
 		let scalarFields = get_scalarColsData(nodeFieldsQMS_info, [
 			currentQMS_info.dd_displayName,
 			...rowsLocation

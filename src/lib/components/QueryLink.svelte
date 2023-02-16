@@ -19,7 +19,7 @@
 	//let { scalarFields, non_scalarFields } = getFields_Grouped(currentQueryFromRootTypes);
 	let currentQMS_info = schemaData.get_QMS_Field(queryName, 'query');
 	const rowsLocation = $endpointInfo.rowsLocation;
-	const nodeFieldsQMS_info = get_nodeFieldsQMS_info(currentQMS_info, rowsLocation);
+	const nodeFieldsQMS_info = get_nodeFieldsQMS_info(currentQMS_info, rowsLocation, schemaData);
 	let scalarFields = get_scalarColsData(
 		nodeFieldsQMS_info,
 		[currentQMS_info.dd_displayName, ...rowsLocation],

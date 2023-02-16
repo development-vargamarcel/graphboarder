@@ -42,7 +42,7 @@
 	export let tableColsData_StoreInitialValue = [];
 
 	const rowsLocation = endpointInfo.get_rowsLocation(QMS_info);
-	const nodeFieldsQMS_info = get_nodeFieldsQMS_info(QMS_info, rowsLocation);
+	const nodeFieldsQMS_info = get_nodeFieldsQMS_info(QMS_info, rowsLocation, schemaData);
 	let scalarColsData = get_scalarColsData(
 		nodeFieldsQMS_info,
 		[QMS_info.dd_displayName, ...rowsLocation],
