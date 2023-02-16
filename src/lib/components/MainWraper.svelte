@@ -14,7 +14,6 @@
 	const endpointInfo = create_endpointInfo_Store(endpointInfoProvided);
 	const schemaData = create_schemaData();
 
-	$: console.log('schemaData', $schemaData?.isReady);
 	let client = createClient({
 		url: $endpointInfo.url,
 		fetchOptions: () => {
@@ -48,5 +47,4 @@
 
 <IntrospectionDataGenerator>
 	<slot />
-	<div>qq</div>
 </IntrospectionDataGenerator>
