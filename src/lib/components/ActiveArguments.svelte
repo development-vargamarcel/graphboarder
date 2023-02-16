@@ -2,7 +2,9 @@
 	import { createEventDispatcher, each, getContext, setContext } from 'svelte/internal';
 	import ActiveArgumentsGroupWraper from '$lib/components/ActiveArgumentsGroupWraper.svelte';
 	export let prefix = '';
-
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+	const schemaData = QMSMainWraperContext?.schemaData;
 	const { activeArgumentsDataGrouped_Store, QMS_info } = getContext(`${prefix}QMSWraperContext`);
 	let activeArgumentsDataGrouped = [];
 
@@ -11,7 +13,7 @@
 		activeArgumentsDataGrouped_Store.update_groups(groupNewData);
 	};
 	if ($activeArgumentsDataGrouped_Store.length == 0) {
-		activeArgumentsDataGrouped_Store.set_groups(QMS_info?.args);
+		activeArgumentsDataGrouped_Store.set_groups(QMS_info?.args, schemaData);
 	}
 	let showDescription = null;
 </script>
