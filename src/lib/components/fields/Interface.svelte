@@ -7,7 +7,9 @@
 	import Map from '$lib/components/fields/Map.svelte';
 	import Toggle from '$lib/components/fields/Toggle.svelte';
 	import { createEventDispatcher, getContext } from 'svelte';
-	const endpointInfo = getContext('endpointInfo');
+	export let prefix = '';
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	import InterfacePicker from './InterfacePicker.svelte';
 	const dispatch = createEventDispatcher();
 	export let typeInfo;
