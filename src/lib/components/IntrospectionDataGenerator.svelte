@@ -6,7 +6,6 @@
 	import { createClient, fetchExchange } from '@urql/core';
 	import { browser } from '$app/environment';
 	import { setClient, operationStore, query } from '@urql/svelte';
-	import { urqlClient } from '$lib/utils/urqlClient';
 	import { urqlCoreClient } from '$lib/utils/urqlCoreClient';
 	import { getContext } from 'svelte';
 	export let prefix = '';
@@ -36,7 +35,6 @@
 		}
 	};
 
-	urqlClient.set(client);
 	urqlCoreClient.set(client);
 	setClient(client);
 	const queryStore = operationStore(`
