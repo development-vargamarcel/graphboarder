@@ -13,16 +13,13 @@
 	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-
 	const schemaData = QMSMainWraperContext?.schemaData;
-	console.log({ endpointInfo }, $endpointInfo);
-
 	export let initialGqlArgObj = {};
 	import { get, writable } from 'svelte/store';
 	export let QMSType = 'query';
 	export let QMSName;
 	let QMS_info = schemaData.get_QMS_Field(QMSName, QMSType);
-	console.log({ QMS_info }, QMSName, $schemaData.isReady);
+	$: console.log({ QMS_info }, QMSName, $schemaData.isReady);
 	let paginationTypeInfo = get_paginationTypes(endpointInfo).find((pagType) => {
 		return pagType.name == QMS_info.dd_paginationType;
 	});
@@ -32,7 +29,8 @@
 	const paginationState = Create_paginationState(
 		undefined,
 		QMS_info.dd_paginationArgs,
-		QMS_info.dd_paginationType
+		QMS_info.dd_paginationType,
+		endpointInfo
 	);
 	const paginationState_derived = Create_paginationState_derived(
 		paginationState,
