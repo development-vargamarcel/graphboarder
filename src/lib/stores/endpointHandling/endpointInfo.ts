@@ -6,7 +6,6 @@ import {
 } from '$lib/utils/dataStructureTransformers';
 import { writable, get } from 'svelte/store';
 import { getRootType } from '$lib/utils/usefulFunctions';
-
 export const endpointInfoDefaultValues = {
 	description: 'no description',
 	rowsLocationPossibilities: [
