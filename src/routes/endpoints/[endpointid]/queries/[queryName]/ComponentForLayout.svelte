@@ -2,6 +2,7 @@
 	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+	const schemaData = QMSMainWraperContext?.schemaData;
 	import { page } from '$app/stores';
 	import Table from '$lib/components/Table.svelte';
 	import { urqlCoreClient } from '$lib/utils/urqlCoreClient';
@@ -29,7 +30,6 @@
 	import { goto } from '$app/navigation';
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
-	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 	import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 
 	$: console.log('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
@@ -38,7 +38,7 @@
 	});
 
 	let currentQMS_info = schemaData.get_QMS_Field(queryName, 'query');
-	let dd_relatedRoot = getRootType(null, currentQMS_info.dd_rootName);
+	let dd_relatedRoot = getRootType(null, currentQMS_info.dd_rootName, schemaData);
 	if (!currentQMS_info) {
 		goto('/queries');
 	}

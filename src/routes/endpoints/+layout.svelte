@@ -1,8 +1,12 @@
 <script lang="ts">
 	import MainWraper from '$lib/components/MainWraper.svelte';
 	import type { LayoutData } from './$types';
-	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
+	//!!Q
+	export const prefix = '';
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const schemaData = QMSMainWraperContext?.schemaData;
 	import { getRootType } from '$lib/utils/usefulFunctions';
+	import { getContext } from 'svelte';
 
 	export let data: LayoutData;
 	const endpointInfoProvided = {
@@ -42,13 +46,13 @@
 		],
 		rowCountLocationPossibilities: [
 			{
-				get_Val: (QMS_info) => {
+				get_Val: (QMS_info, schemaData) => {
 					console.log('ee');
 					const aggregatedQMS_info = schemaData.get_QMS_Field(
 						`${QMS_info.dd_displayName}_aggregated`,
 						'query'
 					);
-					const rootType = getRootType(null, QMS_info.dd_rootName);
+					const rootType = getRootType(null, QMS_info.dd_rootName, schemaData);
 					console.log('ee', rootType);
 					if (!rootType) {
 						return null;

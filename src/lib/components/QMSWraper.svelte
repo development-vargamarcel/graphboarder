@@ -7,13 +7,14 @@
 	import { getContext, setContext } from 'svelte';
 	import { Create_QMS_bodyPartsUnifier_StoreDerived } from '$lib/stores/QMSHandling/QMS_bodyPartsUnifier_StoreDerived';
 	import { Create_paginationState } from '$lib/stores/QMSHandling/paginationState';
-	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 	import { Create_paginationState_derived } from '$lib/stores/QMSHandling/paginationState_derived';
 	import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 	import { get_scalarColsData, get_nodeFieldsQMS_info } from '$lib/utils/usefulFunctions';
 	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+
+	const schemaData = QMSMainWraperContext?.schemaData;
 	console.log({ endpointInfo }, $endpointInfo);
 
 	export let initialGqlArgObj = {};
@@ -44,10 +45,11 @@
 
 	const rowsLocation = endpointInfo.get_rowsLocation(QMS_info);
 	const nodeFieldsQMS_info = get_nodeFieldsQMS_info(QMS_info, rowsLocation);
-	let scalarColsData = get_scalarColsData(nodeFieldsQMS_info, [
-		QMS_info.dd_displayName,
-		...rowsLocation
-	]);
+	let scalarColsData = get_scalarColsData(
+		nodeFieldsQMS_info,
+		[QMS_info.dd_displayName, ...rowsLocation],
+		schemaData
+	);
 	if (tableColsData_StoreInitialValue?.length == 0) {
 		const dependencyColsData = paginationTypeInfo?.get_dependencyColsData(QMSName, 'query');
 		tableColsData_StoreInitialValue = [...scalarColsData, ...dependencyColsData];

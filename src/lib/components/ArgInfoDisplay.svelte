@@ -1,6 +1,6 @@
 <script>
 	import { getRootType } from '$lib/utils/usefulFunctions';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 	const dispatch = createEventDispatcher();
 	export let expand;
 	export let showExpand;
@@ -27,13 +27,15 @@
 		dd_shouldExpand,
 		dd_filterOperators
 	} = type;
-
+	export const prefix = '';
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const schemaData = QMSMainWraperContext?.schemaData;
 	//console.log('====', dd_namesArray, dd_namesArray);
 	//only for  changeArguments
 	let inUse;
 
 	// testing
-	let RootType = getRootType(null, type.dd_rootName);
+	let RootType = getRootType(null, type.dd_rootName, schemaData);
 
 	let inputFields = RootType?.inputFields;
 	let enumValues = RootType?.enumValues;
@@ -104,7 +106,7 @@
 					<div
 						class="btn btn-xs  bg-base-200 p-1 rounded"
 						on:click={() => {
-							console.log(getRootType(null, dd_rootName));
+							console.log(getRootType(null, dd_rootName, schemaData));
 						}}
 					>
 						{#if dd_displayName == dd_namesArray[dd_namesArray.length - 1]}
@@ -118,7 +120,7 @@
 					<div
 						class="btn btn-xs  bg-base-200  rounded px-2 py-1"
 						on:click={() => {
-							console.log(getRootType(null, dd_rootName));
+							console.log(getRootType(null, dd_rootName, schemaData));
 						}}
 					>
 						{#if dd_namesArray[0] !== dd_displayName}
@@ -148,8 +150,8 @@
 				} else if (dd_kindEl == 'INPUT_OBJECT') {
 					addContainer();
 				} else if (
-					getRootType(null, dd_rootName)?.dd_baseFilterOperators ||
-					getRootType(null, dd_rootName)?.dd_nonBaseFilterOperators
+					getRootType(null, dd_rootName, schemaData)?.dd_baseFilterOperators ||
+					getRootType(null, dd_rootName, schemaData)?.dd_nonBaseFilterOperators
 				) {
 					addContainer();
 				} else {
@@ -168,7 +170,7 @@
 			<div class="w-10  ">
 				{#if dd_kindList}
 					<div class="bi bi-card-list mx-auto w-min" />
-				{:else if getRootType(null, dd_rootName)?.dd_nonBaseFilterOperators || dd_kindEl}
+				{:else if getRootType(null, dd_rootName, schemaData)?.dd_nonBaseFilterOperators || dd_kindEl}
 					<div class="bi bi-box mx-auto w-min" />
 				{:else if showExpand}
 					<div class="bi bi-chevron-down mx-auto w-min" />

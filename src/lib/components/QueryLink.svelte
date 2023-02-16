@@ -3,7 +3,7 @@
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 
-	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
+	const schemaData = QMSMainWraperContext?.schemaData;
 	import {
 		getFields_Grouped,
 		get_scalarColsData,
@@ -20,10 +20,11 @@
 	let currentQMS_info = schemaData.get_QMS_Field(queryName, 'query');
 	const rowsLocation = $endpointInfo.rowsLocation;
 	const nodeFieldsQMS_info = get_nodeFieldsQMS_info(currentQMS_info, rowsLocation);
-	let scalarFields = get_scalarColsData(nodeFieldsQMS_info, [
-		currentQMS_info.dd_displayName,
-		...rowsLocation
-	]);
+	let scalarFields = get_scalarColsData(
+		nodeFieldsQMS_info,
+		[currentQMS_info.dd_displayName, ...rowsLocation],
+		schemaData
+	);
 
 	let mandatoryArgs = query?.args?.filter((arg) => {
 		return arg.dd_NON_NULL;

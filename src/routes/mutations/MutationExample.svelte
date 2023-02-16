@@ -32,7 +32,7 @@
 	import { goto } from '$app/navigation';
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
-	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
+	const schemaData = QMSMainWraperContext?.schemaData;
 	import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 
 	$: console.log('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
@@ -40,7 +40,7 @@
 		document.getElementById('my-drawer-3')?.click();
 	});
 
-	let dd_relatedRoot = getRootType(null, QMS_info.dd_rootName);
+	let dd_relatedRoot = getRootType(null, QMS_info.dd_rootName, schemaData);
 	if (!QMS_info) {
 		//	goto('/queries');
 	}

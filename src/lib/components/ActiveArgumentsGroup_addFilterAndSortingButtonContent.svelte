@@ -19,6 +19,8 @@
 		return arg.dd_isRootArg;
 	});
 
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const schemaData = QMSMainWraperContext?.schemaData;
 	let groupArgsPossibilities;
 	if (group.group_isRoot) {
 		groupArgsPossibilities = rootArgs;
@@ -27,7 +29,7 @@
 	} else if (parent_inputFields) {
 		groupArgsPossibilities = parent_inputFields;
 	} else {
-		groupArgsPossibilities = getRootType(null, group.dd_rootName).inputFields;
+		groupArgsPossibilities = getRootType(null, group.dd_rootName, schemaData).inputFields;
 	}
 	let baseFilterOperators = ['_and', '_or', '_not']; //!!!this might create problem if there is some nonBase operator with the same name as one of these
 	groupArgsPossibilities = groupArgsPossibilities.filter((arg) => {
@@ -109,11 +111,16 @@
 					console.log({ newContainerData });
 					let randomNr = Math.random();
 					console.log('group', group);
-					let newContainerDataRootType = getRootType(null, newContainerData.dd_rootName);
+					let newContainerDataRootType = getRootType(
+						null,
+						newContainerData.dd_rootName,
+						schemaData
+					);
 					let hasBaseFilterOperators = newContainerDataRootType?.dd_baseFilterOperators;
 					let NODEhasBaseFilterOperators = getRootType(
 						null,
-						node.dd_rootName
+						node.dd_rootName,
+						schemaData
 					)?.dd_baseFilterOperators;
 					let hasNonBaseFilterOperators = newContainerDataRootType?.dd_nonBaseFilterOperators;
 

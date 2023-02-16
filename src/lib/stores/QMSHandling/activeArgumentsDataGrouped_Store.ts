@@ -10,7 +10,7 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 		subscribe,
 		set,
 		update,
-		set_groups: (argsInfo) => {
+		set_groups: (argsInfo, schemaData) => {
 			//handle generating activeArgumentsDataGrouped
 			const activeArgumentsDataGrouped = []
 			const hasRootArgs = argsInfo?.find((el) => {
@@ -39,7 +39,7 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 						group_args: []
 					};
 
-					const hasFilterOperators = getRootType(null, el.dd_rootName)?.dd_baseFilterOperators?.length > 0;
+					const hasFilterOperators = getRootType(null, el.dd_rootName, schemaData)?.dd_baseFilterOperators?.length > 0;
 					newGroupData.group_argsNode = {
 						mainContainer: {
 							...el,

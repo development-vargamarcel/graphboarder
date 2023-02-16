@@ -38,12 +38,12 @@ export const endpointInfoDefaultValues = {
 	},
 	idFieldPossibilities: [
 		{
-			get_Val: function (QMS_info) {
+			get_Val: function (QMS_info, schemaData) {
 				return this.check(QMS_info);
 			},
-			check: (QMS_info) => {
+			check: (QMS_info, schemaData) => {
 				let possibleNames = ['id', `${QMS_info.dd_displayName}_id`, `${QMS_info.dd_displayName}Id`];
-				return getRootType(null, QMS_info.dd_rootName)?.fields?.find((field) => {
+				return getRootType(null, QMS_info.dd_rootName, schemaData)?.fields?.find((field) => {
 					return possibleNames.includes(field.dd_displayName) || field.dd_rootName == 'ID';
 				});
 			}
@@ -277,17 +277,17 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			console.warn('no rowCountLocation found');
 			return null;
 		},
-		get_idField: (QMS_info) => {
+		get_idField: (QMS_info, schemaData) => {
 			const storeVal = get(store);
 			if (!storeVal || !storeVal?.idFieldPossibilities?.length > 0) {
 				return null;
 			}
 			const idFieldPossibility = storeVal.idFieldPossibilities.find((idFieldPossibility) => {
-				return idFieldPossibility.check(QMS_info);
+				return idFieldPossibility.check(QMS_info, schemaData);
 			});
 
 			if (idFieldPossibility) {
-				return idFieldPossibility.get_Val(QMS_info);
+				return idFieldPossibility.get_Val(QMS_info, schemaData);
 			}
 			console.warn('no idField found');
 

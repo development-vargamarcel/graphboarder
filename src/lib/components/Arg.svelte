@@ -1,10 +1,13 @@
 <script>
 	//!!! ENUM TYPES WILL CREATE SOM PROBLEMS AS OF 5/6/2022
 	import { fade, fly, slide } from 'svelte/transition';
-	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
+	export const prefix = '';
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const schemaData = QMSMainWraperContext?.schemaData;
 	import { getRootType } from '$lib/utils/usefulFunctions';
 	import ArgInfoDisplay from '$lib/components/ArgInfoDisplay.svelte';
 	import { circIn, expoIn, expoOut } from 'svelte/easing';
+	import { getContext } from 'svelte';
 
 	export let index;
 	export let type;
@@ -32,7 +35,7 @@
 	let inDuration = 300;
 	const expand = () => {
 		//console.log('dd_rootName', dd_rootName);
-		expandData = getRootType($schemaData.rootTypes, dd_rootName);
+		expandData = getRootType($schemaData.rootTypes, dd_rootName, schemaData);
 		if (expandData) {
 			if (!showExpand) {
 				stepsOfFields.push(dd_displayName);

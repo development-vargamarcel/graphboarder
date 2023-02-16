@@ -1,10 +1,9 @@
 import { getDataGivenStepsOfFields } from '$lib/utils/usefulFunctions';
 import { get } from 'svelte/store';
-import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 
 
 
-export const get_paginationTypes = (endpointInfo) => {
+export const get_paginationTypes = (endpointInfo, schemaData) => {
 	return [
 		{
 			name: 'notAvailable',

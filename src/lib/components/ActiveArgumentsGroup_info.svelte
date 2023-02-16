@@ -1,6 +1,9 @@
 <script>
 	import { getRootType } from '$lib/utils/usefulFunctions';
-
+	import { getContext } from 'svelte';
+	export const prefix = '';
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const schemaData = QMSMainWraperContext?.schemaData;
 	export let group;
 	let showDescription;
 </script>
@@ -12,8 +15,8 @@
 	{#if group.dd_kindList}
 		( list )
 	{/if}
-	{#if getRootType(null, group.dd_rootName)?.dd_baseFilterOperators}
-		{`( ${getRootType(null, group.dd_rootName)?.dd_baseFilterOperators?.join(',')} )`}
+	{#if getRootType(null, group.dd_rootName, schemaData)?.dd_baseFilterOperators}
+		{`( ${getRootType(null, group.dd_rootName, schemaData)?.dd_baseFilterOperators?.join(',')} )`}
 	{/if}
 </div>
 

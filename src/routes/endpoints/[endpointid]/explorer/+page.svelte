@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
-	//console.log($schemaData);
+	export const prefix = '';
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const schemaData = QMSMainWraperContext?.schemaData; //console.log($schemaData);
 	import Type from '$lib/components/Type.svelte';
 	import Page from '$lib/components/Page.svelte';
 	import { sortingFunctionMutipleColumnsGivenArray } from '$lib/utils/usefulFunctions';
+	import { getContext } from 'svelte';
 
 	let rootTypes = $schemaData.rootTypes;
 	let queries = $schemaData.queryFields;

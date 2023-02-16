@@ -6,13 +6,14 @@
 	import { createClient, fetchExchange } from '@urql/core';
 	import { browser } from '$app/environment';
 	import { setClient, operationStore, query } from '@urql/svelte';
-	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
 	import { urqlClient } from '$lib/utils/urqlClient';
 	import { urqlCoreClient } from '$lib/utils/urqlCoreClient';
 	import { getContext } from 'svelte';
 	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+
+	const schemaData = QMSMainWraperContext?.schemaData;
 	console.log({ endpointInfo }, $endpointInfo);
 	let client = createClient({
 		url: $endpointInfo.url,

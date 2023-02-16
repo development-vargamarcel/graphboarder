@@ -13,6 +13,8 @@
 	export let prefix = '';
 
 	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const schemaData = QMSMainWraperContext?.schemaData;
 	const tableColsData_Store = QMSWraperContext?.tableColsData_Store;
 </script>
 
@@ -46,7 +48,7 @@
 					<div
 						class="btn btn-xs bg-base-200 p-1 rounded"
 						on:click={() => {
-							console.log(getRootType(null, dd_rootName));
+							console.log(getRootType(null, dd_rootName, schemaData));
 						}}
 					>
 						{#if dd_displayName == dd_namesArray[dd_namesArray.length - 1]}
@@ -60,7 +62,7 @@
 					<div
 						class="btn btn-xs  bg-base-200  rounded px-2 py-1"
 						on:click={() => {
-							console.log(getRootType(null, dd_rootName));
+							console.log(getRootType(null, dd_rootName, schemaData));
 						}}
 					>
 						{#if dd_namesArray?.[0] !== dd_displayName}

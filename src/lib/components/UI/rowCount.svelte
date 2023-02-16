@@ -1,10 +1,9 @@
 <script>
-	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
-
 	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 
+	const schemaData = QMSMainWraperContext?.schemaData;
 	import { urqlCoreClient } from '$lib/utils/urqlCoreClient';
 	import { getDataGivenStepsOfFields } from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';

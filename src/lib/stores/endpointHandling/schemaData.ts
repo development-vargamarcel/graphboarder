@@ -137,4 +137,3 @@ export const create_schemaData = () => {
 	};
 	return returnObject;
 };
-export const schemaData = create_schemaData();

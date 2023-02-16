@@ -30,7 +30,7 @@
 	import { goto } from '$app/navigation';
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
-	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
+	const schemaData = QMSMainWraperContext?.schemaData;
 	import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 
 	$: console.log('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
@@ -39,7 +39,7 @@
 	});
 
 	let currentQMS_info = schemaData.get_QMS_Field(queryName, 'query');
-	let dd_relatedRoot = getRootType(null, currentQMS_info.dd_rootName);
+	let dd_relatedRoot = getRootType(null, currentQMS_info.dd_rootName, schemaData);
 	if (!currentQMS_info) {
 		goto('/queries');
 	}
