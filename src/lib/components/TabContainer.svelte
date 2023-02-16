@@ -2,7 +2,10 @@
 	import { page } from '$app/stores';
 	import TabItem from '$lib/components/TabItem.svelte';
 	import { getQMSLinks } from '$lib/utils/usefulFunctions';
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { createEventDispatcher, getContext, onMount } from 'svelte';
+	export const prefix = '';
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const schemaData = QMSMainWraperContext?.schemaData;
 	const dispatch = createEventDispatcher();
 	console.log($page);
 	let endpointid = $page.params.endpointid;
@@ -34,7 +37,7 @@
 			icon: 'bi bi-asterisk',
 			isSelected: false,
 			hasFill: false,
-			items: getQMSLinks('query', `/endpoints/${endpointid}/queries`, endpointInfo)
+			items: getQMSLinks('query', `/endpoints/${endpointid}/queries`, endpointInfo, schemaData)
 		},
 		{
 			title: 'Mutations',
@@ -43,7 +46,7 @@
 			icon: 'bi bi-pen',
 			isSelected: false,
 			hasFill: true,
-			items: getQMSLinks('mutation', `/endpoints/${endpointid}/mutations`, endpointInfo)
+			items: getQMSLinks('mutation', `/endpoints/${endpointid}/mutations`, endpointInfo, schemaData)
 		},
 		{
 			title: 'Explorer',
