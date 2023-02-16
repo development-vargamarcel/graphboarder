@@ -22,9 +22,9 @@
 			title: 'Endpoints',
 			url: `/endpoints/`,
 			urlIsRoute: false,
-			icon: 'bi bi-database',
+			icon: 'bi bi-list',
 			isSelected: false,
-			hasFill: true,
+			hasFill: false,
 			items: []
 		},
 		{
