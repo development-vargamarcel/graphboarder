@@ -260,7 +260,6 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 				return null;
 			}
 
-
 			const rowCountLocationPossibility = storeVal.rowCountLocationPossibilities.find(
 				(rowCountLocationPossibility) => {
 					return rowCountLocationPossibility.check(QMS_info, schemaData);
@@ -271,7 +270,7 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			if (rowCountLocationPossibility) {
 				return rowCountLocationPossibility.get_Val(QMS_info, schemaData);
 			}
-			console.warn('no rowCountLocation found');
+			console.warn('no rowCountLocation found', QMS_info);
 			return null;
 		},
 		get_idField: (QMS_info, schemaData) => {
