@@ -7,7 +7,7 @@
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
 	const dispatch = createEventDispatcher();
-	console.log($page);
+	console.log('page', $page);
 	let endpointid = $page.params.endpointid;
 	console.log({ endpointid });
 	export let endpointInfo;
