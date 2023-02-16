@@ -1,4 +1,6 @@
 <script>
+	import { schemaData } from '$lib/stores/endpointHandling/schemaData';
+
 	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
@@ -36,7 +38,7 @@
 			countValue = getDataGivenStepsOfFields(
 				null,
 				queryData.data,
-				endpointInfo.get_rowCountLocation(QMS_info)
+				endpointInfo.get_rowCountLocation(QMS_info, schemaData)
 			);
 		} else {
 			countValue = '?';
