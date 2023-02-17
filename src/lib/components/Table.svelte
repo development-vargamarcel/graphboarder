@@ -111,7 +111,7 @@
 			{/each}
 		</tbody>
 	</table>
-	{#if !loadMore}
+	{#if !loadMore && rows?.length > 0}
 		<!-- content here -->
 		<button
 			class="btn btn-primary w-full mt-4 "
@@ -122,7 +122,7 @@
 			Load more
 		</button>
 	{/if}
-	{#if $paginationOptions?.infiniteScroll && rows?.length > 1 && loadMore}
+	{#if $paginationOptions?.infiniteScroll && rows?.length > 0 && loadMore}
 		<InfiniteLoading on:infinite={infiniteHandler} identifier={infiniteId} distance={100} />
 	{/if}
 	<slot name="itemDisplay" />
