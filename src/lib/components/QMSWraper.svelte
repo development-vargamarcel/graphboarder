@@ -18,7 +18,7 @@
 	import { get, writable } from 'svelte/store';
 	export let QMSType = 'query';
 	export let QMSName;
-	let QMS_info = schemaData.get_QMS_Field(QMSName, QMSType);
+	let QMS_info = schemaData.get_QMS_Field(QMSName, QMSType, schemaData);
 	console.log({ QMS_info });
 	const dd_paginationType = QMS_info?.dd_paginationType;
 	let paginationTypeInfo;

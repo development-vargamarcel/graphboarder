@@ -38,7 +38,7 @@
 		document.getElementById('my-drawer-3')?.click();
 	});
 
-	let currentQMS_info = schemaData.get_QMS_Field(queryName, 'query');
+	let currentQMS_info = schemaData.get_QMS_Field(queryName, 'query', schemaData);
 	let dd_relatedRoot = getRootType(null, currentQMS_info.dd_rootName, schemaData);
 	if (!currentQMS_info) {
 		goto('/queries');

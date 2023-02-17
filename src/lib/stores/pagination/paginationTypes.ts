@@ -132,7 +132,7 @@ export const get_paginationTypes = (endpointInfo, schemaData) => {
 				const endpointInfoVal = get(endpointInfo);
 				const namings = endpointInfoVal?.namings;
 				const pageInfoFieldsLocation = endpointInfoVal.pageInfoFieldsLocation;
-				let currentQMS_info = schemaData.get_QMS_Field(QMS_name, QMS_type);
+				let currentQMS_info = schemaData.get_QMS_Field(QMS_name, QMS_type, schemaData);
 				const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_info);
 
 				if (namings?.endCursor || namings?.startCursor) {
@@ -178,7 +178,7 @@ export const get_paginationTypes = (endpointInfo, schemaData) => {
 			get_nextPageState: (state, paginationArgs, returnedDataBatch_last, QMS_name, QMS_type) => {
 				const endpointInfoVal = get(endpointInfo);
 				const namings = endpointInfoVal?.namings;
-				let currentQMS_info = schemaData.get_QMS_Field(QMS_name, QMS_type);
+				let currentQMS_info = schemaData.get_QMS_Field(QMS_name, QMS_type, schemaData);
 				const pageInfoFieldsLocation = endpointInfoVal.pageInfoFieldsLocation;
 				const rowsLocation = endpointInfoVal.rowsLocationPossibilities.find((rowsLocation) => {
 					return rowsLocation.check(currentQMS_info);

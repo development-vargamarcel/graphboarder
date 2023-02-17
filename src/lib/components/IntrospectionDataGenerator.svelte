@@ -122,6 +122,7 @@
 	const handleData = () => {
 		console.log('handledata run');
 		schema = $queryStore?.data?.__schema;
+		console.log('ppppp', endpointInfo, schema);
 		$schemaData.schema = schema;
 		schemaData.set_fields(endpointInfo);
 		console.log('schemaData', $schemaData);

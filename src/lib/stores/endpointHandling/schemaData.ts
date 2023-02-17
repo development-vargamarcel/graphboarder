@@ -113,7 +113,6 @@ export const create_schemaData = () => {
 				'subscription'
 			], endpointInfo);
 			set({
-				...storeValue,
 				rootTypes,
 				...QMSFields, isReady: true
 			});
@@ -127,9 +126,9 @@ export const create_schemaData = () => {
 				type.name == name;
 			})[0];
 		},
-		get_QMS_Field: (name, _QMS_) => {
+		get_QMS_Field: (name, _QMS_, schemaData) => {
 			//_QMS_ -> choosen QMS (one of: Query,Mutation,Subscription)
-			let storeValue = get(store);
+			let storeValue = get(schemaData);
 
 			const QMSField = storeValue?.[`${_QMS_}Fields`]?.filter((field) => {
 				return field.name == name;

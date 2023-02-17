@@ -49,7 +49,8 @@
 				get_Val: (QMS_info, schemaData) => {
 					const aggregatedQMS_info = schemaData.get_QMS_Field(
 						`${QMS_info.dd_displayName}_aggregated`,
-						'query'
+						'query',
+						schemaData
 					);
 					const rootType = getRootType(null, QMS_info.dd_rootName, schemaData);
 					if (!rootType) {

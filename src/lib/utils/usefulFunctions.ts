@@ -628,7 +628,7 @@ export const getQMSLinks = (QMSName = 'query', parentURL, endpointInfo, schemaDa
 		let queryNameDisplay = queryName;
 		let queryTitleDisplay = '';
 		let currentQueryFromRootTypes = getRootType(null, query.dd_rootName, schemaData);
-		let currentQMS_info = schemaData.get_QMS_Field(queryName, QMSName);
+		let currentQMS_info = schemaData.get_QMS_Field(queryName, QMSName, schemaData);
 		let endpointInfoVal = get(endpointInfo);
 		const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_info);
 		const nodeFieldsQMS_info = get_nodeFieldsQMS_info(currentQMS_info, rowsLocation, schemaData);
@@ -798,7 +798,7 @@ export const get_nodeFieldsQMS_info = (QMS_info, rowsLocation, schemaData) => {
 };
 
 export const check_stepsOfFields = (stepsOfFields, schemaData) => {
-	const currentQMS_info = schemaData.get_QMS_Field(stepsOfFields[0], 'query');
+	const currentQMS_info = schemaData.get_QMS_Field(stepsOfFields[0], 'query', schemaData);
 };
 
 export const generateTitleFromStepsOfFields = (stepsOfFields) => {
