@@ -60,7 +60,7 @@
 	let rowsCurrent = [];
 	let loadedF;
 	let completeF;
-	let infiniteId = 0;
+	let infiniteId = Math.random();
 	function infiniteHandler({ detail: { loaded, complete } }) {
 		loadedF = loaded;
 		completeF = complete;
