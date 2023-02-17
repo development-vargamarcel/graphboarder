@@ -45,7 +45,7 @@
 	}
 	//
 	let activeArgumentsData = [];
-	const paginationTypeInfo = get_paginationTypes(endpointInfo).find((pagType) => {
+	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData).find((pagType) => {
 		return pagType.name == currentQMS_info.dd_paginationType;
 	});
 	let activeArgumentsDataGrouped_Store_IS_SET = false;

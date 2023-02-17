@@ -20,7 +20,7 @@
 	export let QMSName;
 	let QMS_info = schemaData.get_QMS_Field(QMSName, QMSType);
 	$: console.log({ QMS_info }, QMSName, $schemaData.isReady);
-	let paginationTypeInfo = get_paginationTypes(endpointInfo).find((pagType) => {
+	let paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData).find((pagType) => {
 		return pagType.name == QMS_info.dd_paginationType;
 	});
 	let QMSWraperContext = {};
@@ -30,13 +30,15 @@
 		undefined,
 		QMS_info.dd_paginationArgs,
 		QMS_info.dd_paginationType,
-		endpointInfo
+		endpointInfo,
+		schemaData
 	);
 	const paginationState_derived = Create_paginationState_derived(
 		paginationState,
 		QMS_info.dd_paginationArgs,
 		QMS_info.dd_paginationType,
-		endpointInfo
+		endpointInfo,
+		schemaData
 	);
 
 	export let tableColsData_StoreInitialValue = [];

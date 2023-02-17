@@ -244,11 +244,11 @@ export const mark_paginationArgs = (args, endpointInfo) => {
 	});
 };
 
-export const get_paginationType = (paginationArgs, endpointInfo) => {
+export const get_paginationType = (paginationArgs, endpointInfo, schemaData) => {
 	const standsForArray = paginationArgs.map((arg) => {
 		return arg.dd_standsFor;
 	});
-	const paginationType = get_paginationTypes(endpointInfo).find((paginationType) => {
+	const paginationType = get_paginationTypes(endpointInfo, schemaData).find((paginationType) => {
 		return paginationType.check(standsForArray);
 	})?.name;
 	if (paginationType) {
@@ -353,7 +353,7 @@ export const generate_derivedData = (type, rootTypes, isQMSField, endpointInfo, 
 		derivedData.dd_paginationArgs = derivedData.args.filter((arg) => {
 			return arg.dd_isPaginationArg;
 		});
-		derivedData.dd_paginationType = get_paginationType(derivedData.dd_paginationArgs);
+		derivedData.dd_paginationType = get_paginationType(derivedData.dd_paginationArgs, endpointInfo, schemaData);
 	}
 	derivedData.dd_relatedRoot = 'overwritten to evade error: Uncaught TypeError: Converting circular structure to JSON'
 	return derivedData;

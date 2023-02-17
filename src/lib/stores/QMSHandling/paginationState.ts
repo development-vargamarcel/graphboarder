@@ -1,8 +1,8 @@
 import { writable } from 'svelte/store';
 import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 
-export const Create_paginationState = (initialValue, paginationArgs, paginationType, endpointInfo) => {
-	const paginationTypeInfo = get_paginationTypes(endpointInfo).find((pagType) => {
+export const Create_paginationState = (initialValue, paginationArgs, paginationType, endpointInfo, schemaData) => {
+	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData).find((pagType) => {
 		return pagType.name == paginationType;
 	});
 	const store = writable(
