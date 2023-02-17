@@ -24,6 +24,7 @@
 		{
 			title: 'Endpoints',
 			url: `/endpoints/`,
+			target: '_blank',
 			urlIsRoute: false,
 			icon: 'bi bi-list',
 			isSelected: false,
@@ -97,6 +98,7 @@
 					icon={link.icon}
 					hasFill={link.hasFill}
 					urlIsRoute={link.urlIsRoute}
+					target={link.target}
 				/>
 			{/each}
 		</ul>
