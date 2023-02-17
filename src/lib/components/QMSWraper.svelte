@@ -19,6 +19,7 @@
 	export let QMSType = 'query';
 	export let QMSName;
 	let QMS_info = schemaData.get_QMS_Field(QMSName, QMSType);
+	console.log({ QMS_info });
 	const dd_paginationType = QMS_info?.dd_paginationType;
 	let paginationTypeInfo;
 	if (dd_paginationType) {

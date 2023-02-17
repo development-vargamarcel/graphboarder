@@ -117,12 +117,13 @@
 	let sortingInputValue = '';
 	let sortingArray = [];
 	$: sortingArray = sortingInputValue.split(' ');
+	$schemaData = {};
+	$schemaData.isReady = false;
 	const handleData = () => {
 		console.log('handledata run');
 		schema = $queryStore?.data?.__schema;
 		$schemaData.schema = schema;
 		schemaData.set_fields(endpointInfo);
-		$schemaData.isReady = true;
 		console.log('schemaData', $schemaData);
 	};
 	$: if (!$queryStore.fetching) {

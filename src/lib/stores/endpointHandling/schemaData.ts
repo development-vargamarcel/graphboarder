@@ -115,9 +115,9 @@ export const create_schemaData = () => {
 			set({
 				...storeValue,
 				rootTypes,
-				...QMSFields
+				...QMSFields, isReady: true
 			});
-			storeValue = get(store);
+			console.log('updated schemaData')
 		},
 		get_rootType: (name) => {
 			let storeValue = get(store);
@@ -129,10 +129,15 @@ export const create_schemaData = () => {
 		get_QMS_Field: (name, _QMS_) => {
 			//_QMS_ -> choosen QMS (one of: Query,Mutation,Subscription)
 			let storeValue = get(store);
-			let { rootTypes, queryFields, mutationFields, schema } = storeValue;
-			return storeValue?.[`${_QMS_}Fields`]?.filter((field) => {
+
+			const QMSField = storeValue?.[`${_QMS_}Fields`]?.filter((field) => {
 				return field.name == name;
 			})[0];
+			if (!QMSField) {
+
+				console.log({ QMSField }, name, { storeValue }, storeValue?.[`${_QMS_}Fields`])
+			}
+			return QMSField
 		}
 	};
 	return returnObject;
