@@ -135,7 +135,7 @@ export const create_schemaData = () => {
 			})[0];
 			if (!QMSField) {
 
-				console.log({ QMSField }, name, { storeValue }, storeValue?.[`${_QMS_}Fields`])
+				console.log({ QMSField }, name, { storeValue }, get(store), storeValue?.[`${_QMS_}Fields`])
 			}
 			return QMSField
 		}
