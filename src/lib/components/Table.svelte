@@ -111,7 +111,7 @@
 			{/each}
 		</tbody>
 	</table>
-	{#if !loadMore && rows?.length > 0}
+	{#if $paginationOptions?.infiniteScroll && !loadMore && rows?.length > 0}
 		<!-- content here -->
 		<button
 			class="btn btn-primary w-full mt-4 "
