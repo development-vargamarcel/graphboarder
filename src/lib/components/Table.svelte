@@ -28,10 +28,7 @@
 	export let infiniteId;
 	const dispatch = createEventDispatcher();
 	const { paginationOptions } = getContext(`${prefix}QMSWraperContext`);
-	let mounted = false;
-	onMount(() => {
-		mounted = true;
-	});
+	let loadMore = false;
 </script>
 
 <div class=" h-[80vh] overscroll-contain	 overflow-y-auto rounded-box pb-32 ">
@@ -114,7 +111,18 @@
 			{/each}
 		</tbody>
 	</table>
-	{#if $paginationOptions?.infiniteScroll && rows?.length > 1 && mounted}
+	{#if !loadMore}
+		<!-- content here -->
+		<button
+			class="btn btn-primary w-full mt-4 "
+			on:click={() => {
+				loadMore = true;
+			}}
+		>
+			Load more
+		</button>
+	{/if}
+	{#if $paginationOptions?.infiniteScroll && rows?.length > 1 && loadMore}
 		<InfiniteLoading on:infinite={infiniteHandler} identifier={infiniteId} distance={100} />
 	{/if}
 	<slot name="itemDisplay" />
