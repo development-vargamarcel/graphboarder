@@ -116,7 +116,7 @@ export const create_schemaData = () => {
 				rootTypes,
 				...QMSFields, isReady: true
 			});
-			console.log('updated schemaData')
+			console.log('updated schemaData', { QMSFields })
 
 		},
 		get_rootType: (name) => {
