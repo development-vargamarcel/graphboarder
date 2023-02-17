@@ -22,7 +22,7 @@
 	$: console.log({ QMS_info }, QMSName, $schemaData.isReady);
 	let paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData).find((pagType) => {
 		console.log({ QMS_info });
-		return pagType.name == QMS_info.dd_paginationType;
+		return pagType.name == QMS_info?.dd_paginationType;
 	});
 	let QMSWraperContext = {};
 	const activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store();
