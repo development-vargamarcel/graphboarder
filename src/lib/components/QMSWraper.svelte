@@ -21,6 +21,7 @@
 	let QMS_info = schemaData.get_QMS_Field(QMSName, QMSType);
 	$: console.log({ QMS_info }, QMSName, $schemaData.isReady);
 	let paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData).find((pagType) => {
+		console.log({ QMS_info });
 		return pagType.name == QMS_info.dd_paginationType;
 	});
 	let QMSWraperContext = {};
