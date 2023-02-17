@@ -9,7 +9,7 @@
 		getTableCellData
 	} from '$lib/utils/usefulFunctions';
 	import InfiniteLoading from 'svelte-infinite-loading';
-	import { createEventDispatcher, getContext } from 'svelte';
+	import { createEventDispatcher, getContext, onMount } from 'svelte';
 	import ColumnInfo from '$lib/components/ColumnInfo.svelte';
 	export let colsData = [];
 	let visibleColsData = [];
@@ -28,6 +28,10 @@
 	export let infiniteId;
 	const dispatch = createEventDispatcher();
 	const { paginationOptions } = getContext(`${prefix}QMSWraperContext`);
+	let mounted = false;
+	onMount(() => {
+		mounted = true;
+	});
 </script>
 
 <div class=" h-[80vh] overscroll-contain	 overflow-y-auto rounded-box pb-32 ">
@@ -110,7 +114,7 @@
 			{/each}
 		</tbody>
 	</table>
-	{#if $paginationOptions?.infiniteScroll && rows?.length > 1}
+	{#if $paginationOptions?.infiniteScroll && rows?.length > 1 && mounted}
 		<InfiniteLoading on:infinite={infiniteHandler} identifier={infiniteId} distance={100} />
 	{/if}
 	<slot name="itemDisplay" />

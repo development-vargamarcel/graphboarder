@@ -124,4 +124,7 @@
 	setContext(`${prefix}QMSWraperContext`, QMSWraperContext);
 </script>
 
-<slot><!-- optional fallback --></slot>
+{#if QMS_info}
+	<!-- content here -->
+	<slot><!-- optional fallback --></slot>
+{/if}
