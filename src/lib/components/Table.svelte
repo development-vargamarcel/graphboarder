@@ -110,7 +110,7 @@
 			{/each}
 		</tbody>
 	</table>
-	{#if $paginationOptions?.infiniteScroll}
+	{#if $paginationOptions?.infiniteScroll && rows?.length > 0}
 		<InfiniteLoading on:infinite={infiniteHandler} identifier={infiniteId} distance={100} />
 	{/if}
 	<slot name="itemDisplay" />
