@@ -195,6 +195,7 @@
 	import 'highlight.js/styles/base16/solarized-dark.css';
 	import RowCount from '$lib/components/UI/rowCount.svelte';
 	import Modal from '$lib/components/Modal.svelte';
+	import { browser } from '$app/environment';
 
 	onMount(() => {
 		hljs.registerLanguage('graphql', graphql);
@@ -372,7 +373,10 @@
 			hideColumn(e);
 		}}
 		on:rowClicked={(e) => {
-			goto(`${$page.url.origin}/endpoints/${e.detail.id}`);
+			if (browser) {
+				window.location = `${$page.url.origin}/endpoints/${e.detail.id}`;
+			}
+			//goto(`${$page.url.origin}/endpoints/${e.detail.id}`);
 		}}
 	/>
 </div>
