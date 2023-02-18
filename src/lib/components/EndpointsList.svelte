@@ -374,7 +374,11 @@
 		}}
 		on:rowClicked={(e) => {
 			if (browser) {
-				window.location = `${$page.url.origin}/endpoints/${e.detail.id}`;
+				window.open(
+					`${$page.url.origin}/endpoints/${e.detail.id}`,
+					'_blank' // <- This is what makes it open in a new window.
+				);
+				//	window.location = `${$page.url.origin}/endpoints/${e.detail.id}`;
 			}
 			//goto(`${$page.url.origin}/endpoints/${e.detail.id}`);
 		}}

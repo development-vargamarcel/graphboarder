@@ -21,16 +21,16 @@
 			hasFill: true,
 			items: []
 		},
-		{
-			title: 'Endpoints',
-			url: `/endpoints/`,
-			//target: '_blank',
-			urlIsRoute: false,
-			icon: 'bi bi-list',
-			isSelected: false,
-			hasFill: false,
-			items: []
-		},
+		// {
+		// 	title: 'Endpoints',
+		// 	url: `/endpoints/`,
+		// 	//target: '_blank',
+		// 	urlIsRoute: false,
+		// 	icon: 'bi bi-list',
+		// 	isSelected: false,
+		// 	hasFill: false,
+		// 	items: []
+		// },
 		{
 			title: 'Queries',
 			url: `/endpoints/${endpointid}/queries`,
