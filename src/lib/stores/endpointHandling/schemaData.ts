@@ -119,11 +119,13 @@ export const create_schemaData = () => {
 			console.log('updated schemaData', { QMSFields })
 
 		},
-		get_rootType: (name) => {
-			let storeValue = get(store);
-			let { rootTypes, queryFields, mutationFields, schema } = storeValue;
+		get_rootType: (rootTypes, RootType_Name, schemaData) => {
+			if (!rootTypes) {
+				rootTypes = get(schemaData).rootTypes
+			}
+
 			return rootTypes.filter((type) => {
-				type.name == name;
+				return type.name == RootType_Name;
 			})[0];
 		},
 		get_QMS_Field: (name, _QMS_, schemaData) => {

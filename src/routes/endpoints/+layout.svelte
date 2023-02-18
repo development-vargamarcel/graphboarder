@@ -7,6 +7,7 @@
 	const schemaData = QMSMainWraperContext?.schemaData;
 	import { getRootType } from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
+	import { stigifyAll } from '$lib/stores/testData/testEndpoints';
 
 	export let data: LayoutData;
 	const endpointInfoProvided = {
@@ -47,7 +48,7 @@
 		rowCountLocationPossibilities: [
 			{
 				get_Val: (QMS_info, schemaData) => {
-					const rootType = getRootType(null, QMS_info.dd_rootName, schemaData);
+					const rootType = schemaData.get_rootType(null, QMS_info.dd_rootName, schemaData);
 					if (!rootType) {
 						return null;
 					}
@@ -66,6 +67,7 @@
 			}
 		]
 	};
+	//console.log('endpointInfoProvided json', stigifyAll(endpointInfoProvided));
 </script>
 
 <MainWraper {endpointInfoProvided}>
