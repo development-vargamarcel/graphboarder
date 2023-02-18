@@ -24,7 +24,7 @@
 		{
 			title: 'Endpoints',
 			url: `/endpoints/`,
-			target: '_blank',
+			//target: '_blank',
 			urlIsRoute: false,
 			icon: 'bi bi-list',
 			isSelected: false,
