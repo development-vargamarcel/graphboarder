@@ -240,6 +240,13 @@
 					on:click={() => {
 						showModal = true;
 					}}
+					on:contextmenu|preventDefault|stopPropagation={() => {
+						if (!node?.isMain) {
+							node.not = !node.not;
+							handleChanged();
+							dispatch('changed');
+						}
+					}}
 				>
 					{groupDisplayTitle}
 				</div>
