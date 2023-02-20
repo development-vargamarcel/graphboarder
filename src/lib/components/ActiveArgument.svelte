@@ -78,7 +78,6 @@
 	};
 </script>
 
-{isNot}
 <!-- svelte-ignore a11y-label-has-associated-control -->
 <label
 	use:clickOutside
@@ -96,7 +95,7 @@
 	}}
 >
 	<div class="grow  ">
-		<div class="  flex  space-x-2 ">
+		<div class="  flex  space-x-0 ">
 			<input
 				type="checkbox"
 				class="checkbox input-primary hidden"
@@ -104,17 +103,17 @@
 				on:change={inUse_toggle}
 			/>
 			<div
-				class="   text-xs  select-none flex grow flex-nowrap pt-1
-								{isNot ? ' bg-gradient-to-r from-base-300/100' : 'bg-error/0'}
-
-			"
+				class="   text-xs  select-none flex grow flex-nowrap 
+											"
 			>
 				<div
 					class="flex flex-nowrap  overflow-x-auto  max-w-[65vw] 
-				
-				"
+								"
 				>
-					<p class="  pr-1 font-semibold shrink-0  text-base-content ">
+					<p
+						class=" rounded-box pr-1 font-semibold shrink-0  text-base-content 
+						{isNot ? ' bg-gradient-to-r from-accent/100' : 'bg-error/0'}"
+					>
 						{#if group.group_name == 'root'}
 							{activeArgumentData.stepsOfFields?.join(' > ') + ':'}
 						{:else}
