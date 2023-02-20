@@ -9,7 +9,7 @@
 	import Interface from '$lib/components/fields/Interface.svelte';
 	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
 	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
-
+	export let isNot;
 	let dispatch = createEventDispatcher();
 	export let activeArgumentData;
 	export let group;
@@ -78,6 +78,7 @@
 	};
 </script>
 
+{isNot}
 <!-- svelte-ignore a11y-label-has-associated-control -->
 <label
 	use:clickOutside
@@ -102,9 +103,18 @@
 				checked={activeArgumentData?.inUse}
 				on:change={inUse_toggle}
 			/>
-			<div class="   text-xs  select-none flex grow flex-nowrap pt-1">
-				<div class="flex flex-nowrap  overflow-x-auto  max-w-[65vw] ">
-					<p class="  pr-1 font-semibold shrink-0  text-base-content">
+			<div
+				class="   text-xs  select-none flex grow flex-nowrap pt-1
+								{isNot ? ' bg-gradient-to-r from-base-300/100' : 'bg-error/0'}
+
+			"
+			>
+				<div
+					class="flex flex-nowrap  overflow-x-auto  max-w-[65vw] 
+				
+				"
+				>
+					<p class="  pr-1 font-semibold shrink-0  text-base-content ">
 						{#if group.group_name == 'root'}
 							{activeArgumentData.stepsOfFields?.join(' > ') + ':'}
 						{:else}
