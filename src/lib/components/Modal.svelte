@@ -56,7 +56,7 @@
 			bind:this={bodyDiv}
 			id={modalIdetifier}
 			class=" shadowTop card-bordered card rounded-box z-[99]
-			my-0 min-h-[80vh] max-h-min space-y-0 rounded-b-none border-transparent bg-base-100  mx-auto md:w-2/3 pb-8"
+			my-0 min-h-[80vh] max-h-min space-y-0 rounded-b-none border-transparent bg-base-100  mx-auto md:w-2/3 pb-8 "
 			in:fly={{
 				delay: 20,
 				duration: 200,
@@ -69,7 +69,7 @@
 			out:fly={{ delay: 0, duration: 100, x: 0, y: 20, opacity: 0, start: 0, easing: sineIn }}
 			on:introend={() => (bodyDivIntroEnd = true)}
 		>
-			<div class="sticky top-0  bg-base-100">
+			<div class="sticky top-0  bg-base-100 rounded-xl z-50 ">
 				<div class="my-4 h-2 bg-base-300    rounded-box mx-auto w-12  " />
 			</div>
 
