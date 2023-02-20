@@ -38,12 +38,12 @@
 			// mapContainer.style.height = `${containerEl.clientHeight - 60}px`;
 		} else {
 			mapContainer.classList.add(
-				'w-60',
-				'h-60',
-				'md:w-[300px]',
-				'md:h-60',
-				'lg:w-[300]',
-				'lg:h-60'
+				'w-[100px]',
+				'h-[100px]',
+				'md:w-[200px]',
+				'md:h-[200px]',
+				'lg:w-[200px]',
+				'lg:h-[200px]'
 			);
 		}
 		mapboxgl.accessToken =
@@ -52,7 +52,8 @@
 			container: mapContainerId, // container ID
 			style: 'mapbox://styles/mapbox/streets-v11', // style URL
 			center: [-74.5, 40], // starting position [lng, lat]
-			zoom: 9 // starting zoom
+			zoom: 9, // starting zoom
+			attributionControl: false
 			//cooperativeGestures: true
 		});
 		map.resize();

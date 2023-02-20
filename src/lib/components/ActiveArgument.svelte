@@ -7,6 +7,7 @@
 	export let prefix = '';
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Interface from '$lib/components/fields/Interface.svelte';
+	import Modal from './Modal.svelte';
 	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
 	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
 	export let isNot;
@@ -76,7 +77,59 @@
 		dispatch('inUseChanged');
 		finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 	};
+	let showModal = false;
 </script>
+
+{#if showModal}
+	<Modal
+		showApplyBtn={false}
+		on:cancel={() => {
+			showModal = false;
+		}}
+	>
+		<div class="flex flex-col">
+			<div class="w-full text-lg text-center  mb-2 ">
+				<p class="badge badge-info font-bold">
+					{#if group.group_name == 'root'}
+						{activeArgumentData.stepsOfFields?.join(' > ')}
+					{:else}
+						{activeArgumentData.stepsOfFields?.slice(1)?.join(' > ')}
+					{/if}
+				</p>
+			</div>
+			<btn
+				class="btn btn-xs btn-warning  mb-6 flex-1"
+				on:click={() => {
+					activeArgumentsDataGrouped_Store.delete_activeArgument(
+						activeArgumentData,
+						group.group_name
+					);
+					finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
+				}}
+			>
+				<i class="bi bi-trash-fill" />
+			</btn>
+			{#if activeArgumentData?.description}
+				<div class="alert alert-info shadow-lg py-2">
+					<div>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							class="stroke-current flex-shrink-0 w-6 h-6"
+							><path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+							/></svg
+						>
+						<span>{activeArgumentData.description}</span>
+					</div>
+				</div>
+			{/if}
+		</div>
+	</Modal>{/if}
 
 <!-- svelte-ignore a11y-label-has-associated-control -->
 <label
@@ -111,8 +164,11 @@
 								"
 				>
 					<p
-						class=" rounded-box pr-1 font-semibold shrink-0  text-base-content 
+						class=" btn btn-ghost btn-xs text-xs normal-case  rounded-box px-0 font-semibold shrink-0  text-base-content 
 						{isNot ? ' bg-gradient-to-r from-accent/100' : 'bg-error/0'}"
+						on:click={() => {
+							showModal = true;
+						}}
 					>
 						{#if group.group_name == 'root'}
 							{activeArgumentData.stepsOfFields?.join(' > ') + ':'}
@@ -122,32 +178,35 @@
 					</p>
 
 					{#if !expandedVersion}
-						<p class="shrink-0 text-base-content font-light">{valueToDisplay()}</p>
+						<p class="shrink-0 text-base-content font-light pt-1">{valueToDisplay()}</p>
 					{/if}
 				</div>
 			</div>
 			{#if expandedVersion}
-				{#if activeArgumentData.description}
-					<button
-						class="btn btn-xs bi bi-info-circle mx-2"
-						title={activeArgumentData.description}
-						on:click={() => {
-							showDescription = !showDescription;
-						}}
-					/>
-				{/if}
-				<button
-					class="btn btn-xs"
-					on:click={() => {
-						activeArgumentsDataGrouped_Store.delete_activeArgument(
-							activeArgumentData,
-							group.group_name
-						);
-						finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
-					}}><i class="bi bi-trash3-fill" /></button
-				>
+				<div class="px-2 ">
+					{#if activeArgumentData.dd_kindList && activeArgumentData.dd_displayInterface != 'ENUM'}
+						<List
+							typeInfo={activeArgumentData}
+							dd_displayInterface={activeArgumentData.dd_displayInterface}
+							rawValue={activeArgumentData?.chd_rawValue}
+							dispatchValue={activeArgumentData?.chd_dispatchValue}
+							on:changed={(e) => {
+								handleChanged(e.detail);
+							}}
+						/>
+					{:else}
+						<Interface
+							typeInfo={activeArgumentData}
+							dd_displayInterface={activeArgumentData.dd_displayInterface}
+							rawValue={activeArgumentData?.chd_rawValue}
+							dispatchValue={activeArgumentData?.chd_dispatchValue}
+							on:changed={(e) => {
+								handleChanged(e.detail);
+							}}
+						/>
+					{/if}
+				</div>
 			{/if}
-
 			<button
 				class="btn btn-xs {expandedVersion ? 'btn-primary ' : '  '}"
 				on:click={() => {
@@ -155,36 +214,6 @@
 				}}><i class="bi bi-chevron-expand" /></button
 			>
 		</div>
-		{#if showDescription && expandedVersion}
-			<p class="text-secondary text-xs select-none">
-				({activeArgumentData.description})
-			</p>
-		{/if}
-		{#if expandedVersion}
-			<div class="px-2 mt-2">
-				{#if activeArgumentData.dd_kindList && activeArgumentData.dd_displayInterface != 'ENUM'}
-					<List
-						typeInfo={activeArgumentData}
-						dd_displayInterface={activeArgumentData.dd_displayInterface}
-						rawValue={activeArgumentData?.chd_rawValue}
-						dispatchValue={activeArgumentData?.chd_dispatchValue}
-						on:changed={(e) => {
-							handleChanged(e.detail);
-						}}
-					/>
-				{:else}
-					<Interface
-						typeInfo={activeArgumentData}
-						dd_displayInterface={activeArgumentData.dd_displayInterface}
-						rawValue={activeArgumentData?.chd_rawValue}
-						dispatchValue={activeArgumentData?.chd_dispatchValue}
-						on:changed={(e) => {
-							handleChanged(e.detail);
-						}}
-					/>
-				{/if}
-			</div>
-		{/if}
 	</div>
 </label>
 
