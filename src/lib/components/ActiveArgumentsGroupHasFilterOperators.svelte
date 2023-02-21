@@ -252,7 +252,7 @@
 						: node?.operator == '_and'
 						? 'text-primary'
 						: 'text-accent-focus'} break-all h-max  w-max
-						{node?.not ? ' bg-gradient-to-r from-base-300/100' : 'bg-error/0'}
+						{node?.not ? ' bg-gradient-to-r from-secondary/100' : 'bg-error/0'}
 						"
 					on:click={() => {
 						showModal = true;
