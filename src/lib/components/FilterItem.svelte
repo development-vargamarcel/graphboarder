@@ -176,7 +176,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <btn
-	class="btn btn-sm btn-{size} {btnExtraClass}  flex  w-full normal-case"
+	class="btn  btn-{size} {btnExtraClass}  flex  w-full normal-case"
 	on:click|stopPropagation|preventDefault|capture={showModalOrToggle}
 >
 	{title}
