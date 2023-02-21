@@ -141,6 +141,25 @@
 
 			{#if !node?.isMain}
 				<div class="flex space-x-4">
+					<div class="form-control mr-1">
+						<label class="label cursor-pointer w-min py-0">
+							<span class="label-text pr-1">Not</span>
+							<input
+								type="checkbox"
+								class="toggle toggle-sm"
+								checked={node.not}
+								on:change|preventDefault|stopPropagation={() => {
+									if (!node?.isMain) {
+										node.not = !node.not;
+										console.log('not', node.not);
+										handleChanged();
+										dispatch('changed');
+									}
+								}}
+							/>
+						</label>
+					</div>
+
 					<btn
 						class="btn btn-xs text-sm mb-1 normal-case flex-1"
 						on:click={() => {
@@ -219,11 +238,7 @@
 					}}
 					on:keydown={handleKeyDown}
 					on:contextmenu|preventDefault|stopPropagation={() => {
-						if (!node?.isMain) {
-							node.not = !node.not;
-							handleChanged();
-							dispatch('changed');
-						}
+						//
 					}}
 				/>
 			{/if}
@@ -243,11 +258,7 @@
 						showModal = true;
 					}}
 					on:contextmenu|preventDefault|stopPropagation={() => {
-						if (!node?.isMain) {
-							node.not = !node.not;
-							handleChanged();
-							dispatch('changed');
-						}
+						//
 					}}
 				>
 					{groupDisplayTitle}
@@ -275,11 +286,7 @@
 
 "
 	on:contextmenu|preventDefault|stopPropagation={() => {
-		if (!node?.isMain) {
-			node.not = !node.not;
-			handleChanged();
-			dispatch('changed');
-		}
+		//
 	}}
 	bind:this={labelEl}
 	on:mousedown={() => {
