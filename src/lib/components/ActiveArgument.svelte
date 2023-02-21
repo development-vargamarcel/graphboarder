@@ -128,6 +128,29 @@
 					</div>
 				</div>
 			{/if}
+			<div class="px-2 ">
+				{#if activeArgumentData.dd_kindList && activeArgumentData.dd_displayInterface != 'ENUM'}
+					<List
+						typeInfo={activeArgumentData}
+						dd_displayInterface={activeArgumentData.dd_displayInterface}
+						rawValue={activeArgumentData?.chd_rawValue}
+						dispatchValue={activeArgumentData?.chd_dispatchValue}
+						on:changed={(e) => {
+							handleChanged(e.detail);
+						}}
+					/>
+				{:else}
+					<Interface
+						typeInfo={activeArgumentData}
+						dd_displayInterface={activeArgumentData.dd_displayInterface}
+						rawValue={activeArgumentData?.chd_rawValue}
+						dispatchValue={activeArgumentData?.chd_dispatchValue}
+						on:changed={(e) => {
+							handleChanged(e.detail);
+						}}
+					/>
+				{/if}
+			</div>
 		</div>
 	</Modal>{/if}
 
@@ -136,7 +159,7 @@
 	use:clickOutside
 	on:click_outside={handleClickOutside}
 	class=" min-w-[70vw] md:min-w-[20vw] md:md:max-w-[20vw]   rounded-box {expandedVersion
-		? 'p-2'
+		? 'p-2=='
 		: ''}  my-1 flex   dnd-item {activeArgumentData?.inUse
 		? activeArgumentData.canRunQuery
 			? 'ring ring-[1px]  bg-base-300 ring-primary/50'
@@ -153,7 +176,7 @@
 				type="checkbox"
 				class="checkbox input-primary hidden"
 				checked={activeArgumentData?.inUse}
-				on:change={inUse_toggle}
+				on:change|self={inUse_toggle}
 			/>
 			<div
 				class="   text-xs  select-none flex grow flex-nowrap 
@@ -163,8 +186,8 @@
 					class="flex flex-nowrap  overflow-x-auto  max-w-[65vw] 
 								"
 				>
-					<p
-						class=" btn btn-ghost btn-xs text-xs normal-case  rounded-box px-0 font-semibold shrink-0  text-base-content 
+					<button
+						class=" btn btn-ghost btn-xs text-xs normal-case  rounded-box pl-1 pr-0 font-semibold shrink-0  text-base-content 
 						{isNot ? ' bg-gradient-to-r from-accent/100' : 'bg-error/0'}"
 						on:click={() => {
 							showModal = true;
@@ -175,7 +198,7 @@
 						{:else}
 							{activeArgumentData.stepsOfFields?.slice(1)?.join(' > ') + ':'}
 						{/if}
-					</p>
+					</button>
 
 					{#if !expandedVersion}
 						<p class="shrink-0 text-base-content font-light pt-1">{valueToDisplay()}</p>
