@@ -225,29 +225,28 @@
 				class="   text-xs  select-none flex grow flex-nowrap 
 											"
 			>
+				<button
+					class=" btn btn-ghost btn-xs text-xs normal-case  rounded-box  pl-1 font-semibold shrink-0  text-base-content 
+						{isNot ? ' bg-gradient-to-r from-secondary' : 'bg-error/0'}"
+					on:click={() => {
+						showModal = true;
+					}}
+					on:contextmenu|preventDefault|stopPropagation|self={() => {
+						expandedVersion = !expandedVersion;
+					}}
+				>
+					{#if group.group_name == 'root'}
+						{activeArgumentData.stepsOfFields?.join(' > ') + ':'}
+					{:else}
+						{activeArgumentData.stepsOfFields?.slice(1)?.join(' > ') + ':'}
+					{/if}
+				</button>
 				<div
 					class="flex flex-nowrap  overflow-x-auto  max-w-[65vw] 
 								"
 				>
-					<button
-						class=" btn btn-ghost btn-xs text-xs normal-case  rounded-box pl-1 pr-0 font-semibold shrink-0  text-base-content 
-						{isNot ? ' bg-gradient-to-r from-base-300' : 'bg-error/0'}"
-						on:click={() => {
-							showModal = true;
-						}}
-						on:contextmenu|preventDefault|stopPropagation|self={() => {
-							expandedVersion = !expandedVersion;
-						}}
-					>
-						{#if group.group_name == 'root'}
-							{activeArgumentData.stepsOfFields?.join(' > ') + ':'}
-						{:else}
-							{activeArgumentData.stepsOfFields?.slice(1)?.join(' > ') + ':'}
-						{/if}
-					</button>
-
 					{#if !expandedVersion}
-						<p class="shrink-0 text-base-content font-light text-sm">{valueToDisplay}</p>
+						<p class="shrink-0 text-base-content font-light text-sm ml-1">{valueToDisplay}</p>
 					{/if}
 				</div>
 			</div>
