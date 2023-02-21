@@ -2,7 +2,9 @@
 	import { createEventDispatcher, getContext } from 'svelte';
 	import FilterItem from '$lib/components/FilterItem.svelte';
 	const dispatch = createEventDispatcher();
-	const endpointInfo = getContext('endpointInfo');
+	export let prefix = '';
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const possible_displayInterfaces = $endpointInfo.typesExtraDataPossibilities.map(
 		(possibility) => {
 			return possibility.get_Val()?.displayInterface;
