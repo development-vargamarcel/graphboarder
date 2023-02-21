@@ -110,7 +110,7 @@
 				<i class="bi bi-trash-fill" />
 			</btn>
 			{#if activeArgumentData?.description}
-				<div class="alert alert-info shadow-lg py-2">
+				<div class="alert alert-info shadow-lg py-2 mb-2">
 					<div>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
