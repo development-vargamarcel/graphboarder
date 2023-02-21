@@ -97,18 +97,36 @@
 					{/if}
 				</p>
 			</div>
-			<btn
-				class="btn btn-xs btn-warning  mb-6 flex-1"
-				on:click={() => {
-					activeArgumentsDataGrouped_Store.delete_activeArgument(
-						activeArgumentData,
-						group.group_name
-					);
-					finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
-				}}
-			>
-				<i class="bi bi-trash-fill" />
-			</btn>
+
+			<div class="mb-6 flex">
+				<div class="form-control mr-1">
+					<label class="label cursor-pointer w-min py-0">
+						<span class="label-text pr-1">Not</span>
+						<input
+							type="checkbox"
+							class="toggle toggle-sm"
+							bind:checked={isNot}
+							on:change={() => {
+								dispatch('contextmenuUsed');
+							}}
+						/>
+					</label>
+				</div>
+
+				<btn
+					class="btn btn-xs btn-warning    flex-1"
+					on:click={() => {
+						activeArgumentsDataGrouped_Store.delete_activeArgument(
+							activeArgumentData,
+							group.group_name
+						);
+						finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
+					}}
+				>
+					<i class="bi bi-trash-fill" />
+				</btn>
+			</div>
+
 			{#if activeArgumentData?.description}
 				<div class="alert alert-info shadow-lg py-2 mb-2">
 					<div>
@@ -162,13 +180,10 @@
 		? 'p-2=='
 		: ''}  my-1 flex   dnd-item {activeArgumentData?.inUse
 		? activeArgumentData.canRunQuery
-			? 'ring ring-[1px]  bg-base-300 ring-primary/50'
+			? 'ring ring-[1px]  bg-base-200 ring-primary/50'
 			: 'ring ring-[1px]  ring-primary/50 bg-error/50'
 		: 'bg-base-200/50'} "
 	bind:this={labelEl}
-	on:contextmenu|preventDefault|stopPropagation={() => {
-		dispatch('contextmenuUsed');
-	}}
 >
 	<div class="grow  ">
 		<div class="  flex  space-x-0 ">
@@ -188,9 +203,12 @@
 				>
 					<button
 						class=" btn btn-ghost btn-xs text-xs normal-case  rounded-box pl-1 pr-0 font-semibold shrink-0  text-base-content 
-						{isNot ? ' bg-gradient-to-r from-accent/100' : 'bg-error/0'}"
+						{isNot ? ' bg-gradient-to-r from-base-300' : 'bg-error/0'}"
 						on:click={() => {
 							showModal = true;
+						}}
+						on:contextmenu|preventDefault|stopPropagation|self={() => {
+							expandedVersion = !expandedVersion;
 						}}
 					>
 						{#if group.group_name == 'root'}
@@ -230,12 +248,6 @@
 					{/if}
 				</div>
 			{/if}
-			<button
-				class="btn btn-xs {expandedVersion ? 'btn-primary ' : '  '}"
-				on:click={() => {
-					expandedVersion = !expandedVersion;
-				}}><i class="bi bi-chevron-expand" /></button
-			>
 		</div>
 	</div>
 </label>
