@@ -41,12 +41,17 @@
 			shadowEl.appendChild(labelElClone);
 		}
 	}
-	let valueToDisplay = () => {
+	console.log({ activeArgumentData });
+	let get_valueToDisplay = () => {
 		let value;
 		if (activeArgumentData.dd_displayInterface == 'ENUM') {
 			value = activeArgumentData.chd_chosen;
 		} else {
-			value = activeArgumentData.chd_dispatchValue;
+			if (Array.isArray(activeArgumentData.chd_dispatchValue)) {
+				value = activeArgumentData.chd_dispatchValue.join(', ');
+			} else {
+				value = activeArgumentData.chd_dispatchValue;
+			}
 		}
 
 		if (value && activeArgumentData.dd_displayInterface == 'geo') {
@@ -55,12 +60,24 @@
 
 		return value;
 	};
-	let expandedVersion = !valueToDisplay();
+	let expandedVersion;
+	let valueToDisplay = undefined;
+	$: {
+		if (true || activeArgumentData?.inUse) {
+			valueToDisplay = get_valueToDisplay();
+		}
+		if (valueToDisplay !== undefined) {
+			expandedVersion = false;
+		} else {
+			expandedVersion = true;
+		}
+	}
+
 	const handleChanged = (detail) => {
 		console.log('detail', detail);
 		Object.assign(activeArgumentData, detail);
 		activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
-		if (!activeArgumentData.inUse && valueToDisplay() !== undefined) {
+		if (!activeArgumentData.inUse && get_valueToDisplay() !== undefined) {
 			inUse_toggle();
 		}
 		dispatch('changed', detail);
@@ -112,7 +129,17 @@
 						/>
 					</label>
 				</div>
-
+				<div class="form-control mr-1">
+					<label class="label cursor-pointer w-min py-0">
+						<span class="label-text pr-1">active</span>
+						<input
+							type="checkbox"
+							class="toggle toggle-sm"
+							checked={activeArgumentData?.inUse}
+							on:change|self|stopPropagation|capture={inUse_toggle}
+						/>
+					</label>
+				</div>
 				<btn
 					class="btn btn-xs btn-warning    flex-1"
 					on:click={() => {
@@ -176,7 +203,7 @@
 <label
 	use:clickOutside
 	on:click_outside={handleClickOutside}
-	class=" min-w-[70vw] md:min-w-[20vw] md:md:max-w-[20vw]   rounded-box {expandedVersion
+	class=" w-min-min  pr-1 md:md:max-w-[20vw]   rounded-box {expandedVersion
 		? 'p-2=='
 		: ''}  my-1 flex   dnd-item {activeArgumentData?.inUse
 		? activeArgumentData.canRunQuery
@@ -190,8 +217,9 @@
 			<input
 				type="checkbox"
 				class="checkbox input-primary hidden"
-				checked={activeArgumentData?.inUse}
-				on:change|self={inUse_toggle}
+				on:change|self={() => {
+					//leave this here,will prevent the click to go trough
+				}}
 			/>
 			<div
 				class="   text-xs  select-none flex grow flex-nowrap 
@@ -219,12 +247,12 @@
 					</button>
 
 					{#if !expandedVersion}
-						<p class="shrink-0 text-base-content font-light pt-1">{valueToDisplay()}</p>
+						<p class="shrink-0 text-base-content font-light text-sm">{valueToDisplay}</p>
 					{/if}
 				</div>
 			</div>
 			{#if expandedVersion}
-				<div class="px-2 ">
+				<div class="pl-1 ">
 					{#if activeArgumentData.dd_kindList && activeArgumentData.dd_displayInterface != 'ENUM'}
 						<List
 							typeInfo={activeArgumentData}

@@ -47,7 +47,7 @@
 	};
 </script>
 
-<div class="flex flex-col w-full space-y-2">
+<div class="flex flex-col w-full space-y-2 pr-1">
 	{#each elements as element}
 		<div class="flex">
 			<Interface
