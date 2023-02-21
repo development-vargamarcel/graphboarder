@@ -246,7 +246,10 @@
 								"
 				>
 					{#if !expandedVersion}
-						<p class="shrink-0 text-base-content font-light text-sm ml-1">{valueToDisplay}</p>
+						<p class="shrink-0 text-base-content font-light text-sm ml-1"
+						on:click|preventDefault|stopPropagation|self={() => {
+						expandedVersion = true
+					}}>{valueToDisplay}</p>
 					{/if}
 				</div>
 			</div>
