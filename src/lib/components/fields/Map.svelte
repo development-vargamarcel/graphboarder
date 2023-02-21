@@ -38,12 +38,14 @@
 			// mapContainer.style.height = `${containerEl.clientHeight - 60}px`;
 		} else {
 			mapContainer.classList.add(
-				'w-[100px]',
-				'h-[100px]',
-				'md:w-[200px]',
-				'md:h-[200px]',
-				'lg:w-[200px]',
-				'lg:h-[200px]'
+				'w-full',
+				'h-full'
+				// 'w-[100px]',
+				// 'h-[100px]',
+				// 'md:w-[200px]',
+				// 'md:h-[200px]',
+				// 'lg:w-[200px]',
+				// 'lg:h-[200px]'
 			);
 		}
 		mapboxgl.accessToken =
