@@ -164,7 +164,7 @@
 		? activeArgumentData.canRunQuery
 			? 'ring ring-[1px]  bg-base-300 ring-primary/50'
 			: 'ring ring-[1px]  ring-primary/50 bg-error/50'
-		: 'bg-base-200'} "
+		: 'bg-base-200/50'} "
 	bind:this={labelEl}
 	on:contextmenu|preventDefault|stopPropagation={() => {
 		dispatch('contextmenuUsed');

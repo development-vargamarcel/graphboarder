@@ -68,5 +68,5 @@
 			>
 		</div>
 	{/each}
-	<button class="btn btn-sm btn-primary w-full" on:click={add}>add</button>
+	<button class="btn btn-xs btn-primary w-full" on:click={add}>add</button>
 </div>
