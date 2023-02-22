@@ -56,6 +56,7 @@
 		[QMS_info.dd_displayName, ...rowsLocation],
 		schemaData
 	);
+	console.log({ nodeFieldsQMS_info });
 	if (tableColsData_StoreInitialValue?.length == 0) {
 		const dependencyColsData = paginationTypeInfo?.get_dependencyColsData(
 			QMSName,

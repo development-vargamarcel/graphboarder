@@ -6,6 +6,8 @@
 	import ActiveArgument from '$lib/components/ActiveArgument.svelte';
 	import ActiveArgumentsGroup_addFilterAndSortingButtonContent from '$lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte';
 	import Modal from './Modal.svelte';
+	import { getFields_Grouped } from '$lib/utils/usefulFunctions';
+	import NodeAddDefaultFields from './NodeAddDefaultFields.svelte';
 
 	const dispatch = createEventDispatcher();
 	export let nodes;
@@ -16,6 +18,9 @@
 	export let originalNodes;
 	export let parent_inputFields;
 	export let parent_stepsOfFields;
+	export let addScalarFields;
+	export let prefix = '';
+
 	let dragDisabled = true;
 	const flipDurationMs = 100;
 	function handleDndConsider(e) {
@@ -88,7 +93,6 @@
 	};
 	//
 	const dragDisabledConstantTest = true;
-	export let prefix = '';
 
 	const { finalGqlArgObj_Store, QMS_info } = getContext(`${prefix}QMSWraperContext`);
 	const handleChanged = () => {
@@ -125,6 +129,7 @@
 	}
 </script>
 
+<NodeAddDefaultFields {node} {prefix} {group} />
 {#if showModal}
 	<Modal
 		showApplyBtn={false}

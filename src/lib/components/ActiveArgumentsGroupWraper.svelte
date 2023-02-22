@@ -55,6 +55,7 @@
 	{#if hasGroup_argsNode}
 		<div class=" overflow-x-auto overflow-y-visible ">
 			<ActiveArgumentsGroupHasFilterOperators
+				addScalarFields={true}
 				on:updateQuery={() => {
 					dispatch('updateQuery');
 					//console.log({ finalGqlArgObj_fromGroups });
