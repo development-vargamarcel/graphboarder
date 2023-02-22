@@ -129,7 +129,10 @@
 	}
 </script>
 
-<NodeAddDefaultFields {node} {prefix} {group} />
+{#if node?.isMain || node?.addDefaultFields}
+	<!-- content here -->
+	<NodeAddDefaultFields {node} {prefix} {group} />
+{/if}
 {#if showModal}
 	<Modal
 		showApplyBtn={false}
@@ -160,6 +163,19 @@
 										handleChanged();
 										dispatch('changed');
 									}
+								}}
+							/>
+						</label>
+					</div>
+					<div class="form-control mr-1">
+						<label class="label cursor-pointer w-min py-0">
+							<span class="label-text pr-1">addDefaultFields</span>
+							<input
+								type="checkbox"
+								class="toggle toggle-sm"
+								checked={node.not}
+								on:change|preventDefault|stopPropagation={() => {
+									node.addDefaultFields = true;
 								}}
 							/>
 						</label>
