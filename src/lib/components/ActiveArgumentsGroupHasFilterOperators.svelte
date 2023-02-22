@@ -6,8 +6,7 @@
 	import ActiveArgument from '$lib/components/ActiveArgument.svelte';
 	import ActiveArgumentsGroup_addFilterAndSortingButtonContent from '$lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte';
 	import Modal from './Modal.svelte';
-	import { getFields_Grouped } from '$lib/utils/usefulFunctions';
-	import NodeAddDefaultFields from './NodeAddDefaultFields.svelte';
+	import { getFields_Grouped, nodeAddDefaultFields } from '$lib/utils/usefulFunctions';
 
 	const dispatch = createEventDispatcher();
 	export let nodes;
@@ -20,7 +19,9 @@
 	export let parent_stepsOfFields;
 	export let addScalarFields;
 	export let prefix = '';
-
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+	const schemaData = QMSMainWraperContext?.schemaData;
 	let dragDisabled = true;
 	const flipDurationMs = 100;
 	function handleDndConsider(e) {
@@ -94,7 +95,9 @@
 	//
 	const dragDisabledConstantTest = true;
 
-	const { finalGqlArgObj_Store, QMS_info } = getContext(`${prefix}QMSWraperContext`);
+	const { finalGqlArgObj_Store, QMS_info, activeArgumentsDataGrouped_Store } = getContext(
+		`${prefix}QMSWraperContext`
+	);
 	const handleChanged = () => {
 		finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 	};
@@ -127,12 +130,12 @@
 			groupDisplayTitle = '[item]'; //bonded
 		}
 	}
+
+	if (node?.addDefaultFields) {
+		nodeAddDefaultFields(node, prefix, group, activeArgumentsDataGrouped_Store, schemaData);
+	}
 </script>
 
-{#if node?.addDefaultFields}
-	<!-- content here -->
-	<NodeAddDefaultFields {node} {prefix} {group} />
-{/if}
 {#if showModal}
 	<Modal
 		showApplyBtn={false}
@@ -151,7 +154,8 @@
 				<btn
 					class="btn btn-xs btn-info normal-case  mb-6 flex-1"
 					on:click={() => {
-						node.addDefaultFields = true;
+						nodeAddDefaultFields(node, prefix, group, activeArgumentsDataGrouped_Store, schemaData);
+						//node.addDefaultFields = true;
 					}}
 				>
 					addDefaultFields
