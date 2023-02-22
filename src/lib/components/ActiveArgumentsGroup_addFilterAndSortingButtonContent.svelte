@@ -64,8 +64,27 @@
 						group.group_argsNode['mainContainer'].items.push({ id: randomNr });
 					}
 				}}
+				on:contextmenu|preventDefault={() => {
+					let randomNr = Math.random();
+					group.group_argsNode[`${randomNr}`] = {
+						addDefaultFields: true,
+						parent_node: node,
+						// inputFields: parent_inputFields,
+						// stepsOfFields: parent_stepsOfFields,
+						id: randomNr,
+						operator: 'bonded',
+						not: false,
+						isMain: false,
+						items: []
+					};
+					if (node?.items) {
+						node.items.push({ id: randomNr });
+					} else {
+						group.group_argsNode['mainContainer'].items.push({ id: randomNr });
+					}
+				}}
 			>
-				bonded
+				[item] (bonded)
 			</button>
 		{:else}
 			<button
