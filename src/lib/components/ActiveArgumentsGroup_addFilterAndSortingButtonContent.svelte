@@ -105,6 +105,24 @@
 						group.group_argsNode['mainContainer'].items.push({ id: randomNr });
 					}
 				}}
+				on:contextmenu|preventDefault={() => {
+					let randomNr = Math.random();
+					group.group_argsNode[`${randomNr}`] = {
+						addDefaultFields: true,
+
+						id: randomNr,
+						operator: '_or',
+						not: false,
+						isMain: false,
+						items: []
+					};
+
+					if (node?.items) {
+						node.items.push({ id: randomNr });
+					} else {
+						group.group_argsNode['mainContainer'].items.push({ id: randomNr });
+					}
+				}}
 			>
 				or / and / bonded
 			</button>
