@@ -17,7 +17,7 @@
 	export let originalNodes;
 	export let parent_inputFields;
 	export let parent_stepsOfFields;
-	export let addScalarFields;
+	export let addDefaultFields;
 	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
@@ -131,7 +131,7 @@
 		}
 	}
 
-	if (node?.addDefaultFields) {
+	if (node?.addDefaultFields || (node.isMain && addDefaultFields)) {
 		nodeAddDefaultFields(node, prefix, group, activeArgumentsDataGrouped_Store, schemaData);
 	}
 </script>
@@ -155,7 +155,6 @@
 					class="btn btn-xs btn-info normal-case  mb-6 flex-1"
 					on:click={() => {
 						nodeAddDefaultFields(node, prefix, group, activeArgumentsDataGrouped_Store, schemaData);
-						//node.addDefaultFields = true;
 					}}
 				>
 					addDefaultFields
@@ -186,7 +185,13 @@
 					<btn
 						class="btn btn-xs btn-info  normal-case mb-6 flex-1"
 						on:click={() => {
-							node.addDefaultFields = true;
+							nodeAddDefaultFields(
+								node,
+								prefix,
+								group,
+								activeArgumentsDataGrouped_Store,
+								schemaData
+							);
 						}}
 					>
 						addDefaultFields
