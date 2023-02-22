@@ -89,14 +89,23 @@ export const getRootType = (rootTypes, RootType_Name, schemaData) => {
 export const getFields_Grouped = (rootField) => {
 	let scalarFields = [];
 	let non_scalarFields = [];
+	let fieldsArray
+	if (rootField?.fields) {
+		fieldsArray = rootField?.fields
+	} else {
+		fieldsArray = rootField?.inputFields
+	}
 
-	rootField?.fields?.forEach((field) => {
+
+
+	fieldsArray?.forEach((field) => {
 		if (get_KindsArray(field).includes('SCALAR')) {
 			scalarFields.push(field);
 		} else {
 			non_scalarFields.push(field);
 		}
 	});
+
 
 	return {
 		scalarFields: scalarFields,
