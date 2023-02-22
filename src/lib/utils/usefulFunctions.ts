@@ -850,7 +850,7 @@ export const nodeAddDefaultFields = (node,
 	console.log({ node });
 	const node_rootType = schemaData.get_rootType(
 		null,
-		node.dd_rootName || node.parent_node.dd_rootName,
+		node?.dd_rootName || node.parent_node.dd_rootName,
 		schemaData
 	);
 	console.log({ node_rootType });
