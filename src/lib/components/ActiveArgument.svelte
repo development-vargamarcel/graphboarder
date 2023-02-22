@@ -207,8 +207,8 @@
 		? 'p-2=='
 		: ''}  my-1 flex   dnd-item {activeArgumentData?.inUse
 		? activeArgumentData.canRunQuery
-			? 'ring ring-[1px]  bg-base-200 ring-primary/50'
-			: 'ring ring-[1px]  ring-primary/50 bg-error/50'
+			? 'ring ring-[2px]  bg-base-200 ring-primary/50'
+			: 'ring ring-[2px]  ring-primary/50 bg-error/50'
 		: 'bg-base-200/50'} "
 	bind:this={labelEl}
 >
@@ -246,10 +246,14 @@
 								"
 				>
 					{#if !expandedVersion}
-						<p class="shrink-0 text-base-content font-light text-sm ml-1"
-						on:click|preventDefault|stopPropagation|self={() => {
-						expandedVersion = true
-					}}>{valueToDisplay}</p>
+						<p
+							class="shrink-0 text-base-content font-light text-sm ml-1"
+							on:click|preventDefault|stopPropagation|self={() => {
+								expandedVersion = true;
+							}}
+						>
+							{valueToDisplay}
+						</p>
 					{/if}
 				</div>
 			</div>
