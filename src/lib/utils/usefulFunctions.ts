@@ -86,7 +86,7 @@ export const getRootType = (rootTypes, RootType_Name, schemaData) => {
 	})[0];
 };
 
-export const getFields_Grouped = (rootField) => {
+export const getFields_Grouped = (rootField, dd_displayNameToExclude = []) => {
 	let scalarFields = [];
 	let non_scalarFields = [];
 	let fieldsArray
@@ -98,7 +98,9 @@ export const getFields_Grouped = (rootField) => {
 
 
 
-	fieldsArray?.forEach((field) => {
+	fieldsArray?.filter((field) => {
+		return !dd_displayNameToExclude.includes(field.dd_displayName)
+	}).forEach((field) => {
 		if (get_KindsArray(field).includes('SCALAR')) {
 			scalarFields.push(field);
 		} else {
