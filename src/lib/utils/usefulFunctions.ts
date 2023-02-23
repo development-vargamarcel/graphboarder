@@ -87,32 +87,41 @@ export const getRootType = (rootTypes, RootType_Name, schemaData) => {
 	})[0];
 };
 
-export const getFields_Grouped = (rootField, dd_displayNameToExclude = []) => {
+export const getFields_Grouped = (rootField, dd_displayNameToExclude = [], schemaData) => {
 	let scalarFields = [];
 	let non_scalarFields = [];
+	let enumFields = [];
+
 	let fieldsArray
-	if (rootField?.fields) {
-		fieldsArray = rootField?.fields
-	} else {
-		fieldsArray = rootField?.inputFields
-	}
+	if (rootField?.enumValues) {
+		fieldsArray = rootField?.enumValues
+	} else
+		if (rootField?.fields) {
+			fieldsArray = rootField?.fields
+		} else {
+			fieldsArray = rootField?.inputFields
+		}
 
 
 
 	fieldsArray?.filter((field) => {
 		return !dd_displayNameToExclude.includes(field.dd_displayName)
 	}).forEach((field) => {
-		if (get_KindsArray(field).includes('SCALAR')) {
-			scalarFields.push(field);
-		} else {
-			non_scalarFields.push(field);
-		}
+		if (get_KindsArray(field).includes('ENUM')) {
+			enumFields.push({ ...schemaData.get_rootType(null, field.dd_rootName, schemaData), ...field });
+		} else
+			if (get_KindsArray(field).includes('SCALAR')) {
+				scalarFields.push(field);
+			} else {
+				non_scalarFields.push(field);
+			}
 	});
 
 
 	return {
-		scalarFields: scalarFields,
-		non_scalarFields: non_scalarFields
+		scalarFields,
+		non_scalarFields,
+		enumFields
 	};
 };
 
@@ -865,12 +874,20 @@ export const nodeAddDefaultFields = (node,
 		'_not'
 	];
 	console.log({ dd_displayNameToExclude });
-	let { scalarFields, non_scalarFields } = getFields_Grouped(
+
+	let fields_Grouped = getFields_Grouped(
 		node_rootType,
-		dd_displayNameToExclude
+		dd_displayNameToExclude, schemaData
 	);
+	let scalarFields = fields_Grouped.scalarFields
+	let non_scalarFields = fields_Grouped.non_scalarFields
+	let enumFields = fields_Grouped.enumFields
+
+
 	console.log({ scalarFields });
-	scalarFields.forEach((element) => {
+	console.log({ enumFields });
+
+	[...scalarFields, ...enumFields].forEach((element) => {
 		let stepsOfFields = [
 			node.dd_displayName || group.group_name || node.parent_node.dd_displayName,
 			element.dd_displayName
