@@ -207,8 +207,8 @@
 		? ' '
 		: 'pr-1 md:md:max-w-[20vw] '}  my-1 flex   dnd-item {activeArgumentData?.inUse
 		? activeArgumentData.canRunQuery
-			? 'ring ring-[2px]  bg-base-200 ring-primary/50'
-			: 'ring ring-[2px]  ring-primary/50 bg-error/50'
+			? 'ring ring-[1px]  bg-base-200 ring-primary/50'
+			: 'ring ring-[1px]  ring-primary/50 bg-error/50'
 		: 'bg-base-200/50'} "
 	bind:this={labelEl}
 >
