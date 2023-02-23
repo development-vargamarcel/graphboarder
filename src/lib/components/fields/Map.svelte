@@ -121,12 +121,8 @@
 	let showMap = true;
 </script>
 
-<div class="flex justify-center container" on:click|preventDefault={() => {}}>
-	<div
-		id={mapContainerId}
-		bind:this={mapContainer}
-		class=" w-full min-w-[40vw] sm:min-w-[30vw] md:min-w-[20vw]  min-h-[40vw] sm:min-h-[30vw] md:min-h-[20vw] "
-	/>
+<div class="flex justify-center container " on:click|preventDefault={() => {}}>
+	<div id={mapContainerId} bind:this={mapContainer} class=" w-full min-w-[240px]  min-h-[240px] " />
 </div>
 
 <style>
