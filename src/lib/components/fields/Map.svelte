@@ -41,8 +41,8 @@
 				'w-full',
 				'h-full',
 				'rounded-box',
-				'my-1',
-				'mr-1'
+				'my-1'
+
 				// 'w-[100px]',
 				// 'h-[100px]',
 				// 'md:w-[200px]',
