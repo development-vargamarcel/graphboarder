@@ -205,7 +205,7 @@
 	on:click_outside={handleClickOutside}
 	class=" w-min-fit pr-[1px]   rounded-box {expandedVersion
 		? ' '
-		: 'pr-1 md:md:max-w-[20vw] '}  my-1 flex   dnd-item {activeArgumentData?.inUse
+		: 'pr-2 md:md:max-w-[20vw] '}  my-1 flex   dnd-item {activeArgumentData?.inUse
 		? activeArgumentData.canRunQuery
 			? 'ring ring-[1px]  bg-base-200 ring-primary/75'
 			: 'ring ring-[1px]  ring-primary/100 bg-error/50'
