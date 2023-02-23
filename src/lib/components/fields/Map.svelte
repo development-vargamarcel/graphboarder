@@ -123,7 +123,11 @@
 </script>
 
 <div class="flex justify-center container " on:click|preventDefault={() => {}}>
-	<div id={mapContainerId} bind:this={mapContainer} class=" w-full min-w-[240px]  min-h-[240px] " />
+	<div
+		id={mapContainerId}
+		bind:this={mapContainer}
+		class=" w-full min-w-[240px]  min-h-[185px] aspect-video "
+	/>
 </div>
 
 <style>
