@@ -952,6 +952,7 @@ export const nodeAddDefaultFields = (node,
 				group.group_argsNode['mainContainer'].items.push({ id: randomNr });
 			}
 		});
+	activeArgumentsDataGrouped_Store.update((data) => { return data })//force update
 
 	node.addDefaultFields = false;
 }
