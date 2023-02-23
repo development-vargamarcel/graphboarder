@@ -11,7 +11,7 @@
 
 <input
 	type={displayInterface}
-	class="input input-primary input-xs  w-full  mr-2 "
+	class="input input-primary input-xs mb-[1px] w-full  mr-2 "
 	bind:this={inputEl}
 	value={rawValue}
 	on:change={() => {
