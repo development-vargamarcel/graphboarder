@@ -203,9 +203,9 @@
 <label
 	use:clickOutside
 	on:click_outside={handleClickOutside}
-	class=" w-min-min  pr-1   rounded-box {expandedVersion
-		? 'p-2=='
-		: 'md:md:max-w-[20vw] '}  my-1 flex   dnd-item {activeArgumentData?.inUse
+	class=" w-min-fit pr-[1px]   rounded-box {expandedVersion
+		? ' '
+		: 'pr-1 md:md:max-w-[20vw] '}  my-1 flex   dnd-item {activeArgumentData?.inUse
 		? activeArgumentData.canRunQuery
 			? 'ring ring-[2px]  bg-base-200 ring-primary/50'
 			: 'ring ring-[2px]  ring-primary/50 bg-error/50'
