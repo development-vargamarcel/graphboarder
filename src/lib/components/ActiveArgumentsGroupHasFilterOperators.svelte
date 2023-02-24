@@ -23,7 +23,7 @@
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
 	let dragDisabled = true;
-	const flipDurationMs = 100;
+	const flipDurationMs = 500;
 	function handleDndConsider(e) {
 		//console.log('considering', e, nodes);
 		node.items = e.detail.items;
@@ -245,7 +245,7 @@
 	</Modal>{/if}
 
 {#if !node?.isMain}
-	<div class=" grid   content-center  rounded-full w-min-max w-max">
+	<div class="  grid   content-center  rounded-full w-min-max w-max">
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 		<div class="flex">
 			{#if $dndIsOn}
@@ -381,7 +381,9 @@
 
 	{#if node.hasOwnProperty('items')}
 		<section
-			class="{$dndIsOn ? ' pt-4 pb-4  min-w-[200px]' : 'pl-1'} rounded-l-none  {node?.isMain
+			class="duration-500 {$dndIsOn
+				? ' py-2  my-2  min-w-[200px]'
+				: 'pl-1'} rounded-l-none  {node?.isMain
 				? ' border-l-2 border-l-transparent  min-h-[40vh] md:min-h-[60vh] '
 				: ' '}
 				 w-full"
