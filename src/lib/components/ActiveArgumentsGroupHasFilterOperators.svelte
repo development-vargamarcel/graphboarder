@@ -88,7 +88,6 @@
 		if ((e.key === 'Enter' || e.key === ' ') && dragDisabled) dragDisabled = false;
 	}
 	const transformDraggedElement = (draggedEl, data, index) => {
-		console.log({ draggedEl });
 		draggedEl?.classList.add('bg-accent/25', 'border-2', 'border-accent');
 		draggedEl
 			.querySelector('.dnd-item')
@@ -175,7 +174,6 @@
 								on:change|preventDefault|stopPropagation={() => {
 									if (!node?.isMain) {
 										node.not = !node.not;
-										console.log('not', node.not);
 										handleChanged();
 										dispatch('changed');
 									}
