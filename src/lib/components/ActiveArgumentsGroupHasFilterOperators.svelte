@@ -88,6 +88,8 @@
 		if ((e.key === 'Enter' || e.key === ' ') && dragDisabled) dragDisabled = false;
 	}
 	const transformDraggedElement = (draggedEl, data, index) => {
+		console.log({ draggedEl });
+		draggedEl?.classList.add('bg-accent/25', 'border-2', 'border-accent');
 		draggedEl
 			.querySelector('.dnd-item')
 			?.classList.add('bg-accent/25', 'border-2', 'border-accent');
@@ -403,27 +405,26 @@
 				{#each node.items.filter((item) => {
 					return item.id !== SHADOW_PLACEHOLDER_ITEM_ID;
 				}) as item (item.id)}
-					<div
-						animate:flip={{ duration: flipDurationMs }}
-						class="  flex  border-2== max-w-min my-1 "
-					>
-						<svelte:self
-							on:deleteSubNode={(e) => {
-								deleteItem(e);
-								//console.log(e.detail.id, node);
-							}}
-							parent_inputFields={node?.inputFields}
-							parent_stepsOfFields={node?.stepsOfFields}
-							{originalNodes}
-							on:updateQuery
-							{type}
-							bind:nodes
-							node={nodes[item.id]}
-							on:changed
-							{availableOperators}
-							on:childrenStartDrag={startDrag}
-							{group}
-						/>
+					<div animate:flip={{ duration: flipDurationMs }} class="    border-2== max-w-min my-1 ">
+						<div class="flex dnd-item">
+							<svelte:self
+								on:deleteSubNode={(e) => {
+									deleteItem(e);
+									//console.log(e.detail.id, node);
+								}}
+								parent_inputFields={node?.inputFields}
+								parent_stepsOfFields={node?.stepsOfFields}
+								{originalNodes}
+								on:updateQuery
+								{type}
+								bind:nodes
+								node={nodes[item.id]}
+								on:changed
+								{availableOperators}
+								on:childrenStartDrag={startDrag}
+								{group}
+							/>
+						</div>
 					</div>
 				{/each}
 			{/if}
