@@ -381,7 +381,7 @@
 
 	{#if node.hasOwnProperty('items')}
 		<section
-			class="duration-500 {$dndIsOn
+			class=" duration-500 {$dndIsOn
 				? ' py-2  my-2  min-w-[200px]'
 				: 'pl-1'} rounded-l-none  {node?.isMain
 				? ' border-l-2 border-l-transparent  min-h-[40vh] md:min-h-[60vh] '
@@ -392,7 +392,7 @@
 				dragDisabled,
 				flipDurationMs,
 				transformDraggedElement,
-				centreDraggedOnCursor: false,
+				centreDraggedOnCursor: true,
 				type
 			}}
 			on:consider={handleDndConsider}
