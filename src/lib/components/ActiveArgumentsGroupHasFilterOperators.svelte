@@ -143,7 +143,7 @@
 			showModal = false;
 		}}
 	>
-		<div class="flex flex-col">
+		<div class="flex flex-col ">
 			<div class="w-full text-lg text-center  mb-2 ">
 				<p class="badge badge-info font-bold">
 					{groupDisplayTitle}
@@ -162,7 +162,7 @@
 			{/if}
 
 			{#if !node?.isMain}
-				<div class="flex space-x-4">
+				<div class="flex space-x-4 ">
 					<div class="form-control mr-1">
 						<label class="label cursor-pointer w-min py-0">
 							<span class="label-text pr-1">Not</span>
@@ -245,9 +245,9 @@
 	</Modal>{/if}
 
 {#if !node?.isMain}
-	<div class="  grid   content-center  rounded-full w-min-max w-max">
+	<div class="   grid   content-center  rounded-full w-min-max w-max">
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-		<div class="flex">
+		<div class="flex ">
 			{#if $dndIsOn}
 				<div
 					tabindex={dragDisabled ? 0 : -1}
@@ -382,7 +382,7 @@
 	{#if node.hasOwnProperty('items')}
 		<section
 			class=" duration-500 {$dndIsOn
-				? ' py-2  my-2  min-w-[200px]'
+				? '  min-h-[30px] min-w-[200px]'
 				: 'pl-1'} rounded-l-none  {node?.isMain
 				? ' border-l-2 border-l-transparent  min-h-[40vh] md:min-h-[60vh] '
 				: ' '}
@@ -403,7 +403,10 @@
 				{#each node.items.filter((item) => {
 					return item.id !== SHADOW_PLACEHOLDER_ITEM_ID;
 				}) as item (item.id)}
-					<div animate:flip={{ duration: flipDurationMs }} class="  flex   ">
+					<div
+						animate:flip={{ duration: flipDurationMs }}
+						class="  flex  border-2== max-w-min my-1 "
+					>
 						<svelte:self
 							on:deleteSubNode={(e) => {
 								deleteItem(e);
