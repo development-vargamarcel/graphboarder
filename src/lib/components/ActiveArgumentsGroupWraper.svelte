@@ -25,6 +25,8 @@
 	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
 	const dndIsOn = writable(false);
 	setContext('dndIsOn', dndIsOn);
+	const mutationVersion = writable(false);
+	setContext('mutationVersion', mutationVersion);
 </script>
 
 <div class="flex  ">
@@ -47,6 +49,17 @@
 			rawValue={$dndIsOn}
 			on:changed={() => {
 				$dndIsOn = !$dndIsOn;
+			}}
+		/>
+	</div>
+	<div class="w-min flex space-x-2 ml-4 {hasGroup_argsNode ? '' : 'pt-1'}">
+		<div>mutVer:</div>
+		<Toggle
+			showValue={false}
+			otherClases="toggle-sm"
+			rawValue={$mutationVersion}
+			on:changed={() => {
+				$mutationVersion = !$mutationVersion;
 			}}
 		/>
 	</div>

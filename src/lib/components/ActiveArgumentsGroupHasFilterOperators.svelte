@@ -106,6 +106,7 @@
 	let argsInfo = QMS_info?.args;
 	let showModal = false;
 	const dndIsOn = getContext('dndIsOn');
+	const mutationVersion = getContext('mutationVersion');
 
 	let groupDisplayTitle = '';
 	$: {
