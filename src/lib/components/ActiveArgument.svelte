@@ -204,14 +204,13 @@
 <label
 	use:clickOutside
 	on:click_outside={handleClickOutside}
-	class=" w-min-fit    rounded-box {!expandedVersion || $mutationVersion
-		? ' pr-2 md:md:max-w-[20vw]'
-		: ' '} 
+	class=" w-min-fit    rounded-box {!expandedVersion || $mutationVersion ? ' pr-2 ' : ' '} 
+		{!expandedVersion && !$mutationVersion ? ' md:md:max-w-[25vw]' : ' '} 
 		 my-1 flex   dnd-item {activeArgumentData?.inUse
 		? activeArgumentData.canRunQuery
-			? 'ring ring-[1px]  bg-base-200 ring-primary/75 '
+			? 'ring ring-[1px]  bg-base-200/50 ring-primary/75 '
 			: 'ring ring-[1px]  ring-primary/100 bg-error/50'
-		: 'bg-base-200/50'} 
+		: 'bg-base-200/25'} 
 		{$mutationVersion ? 'p-1' : 'pr-[1px]'}
 		"
 	bind:this={labelEl}
