@@ -232,13 +232,14 @@
 				<button
 					class=" {activeArgumentData.inUse
 						? activeArgumentData.canRunQuery
-							? 'outline outline-1  outline-success/50 '
+							? 'outline outline-1  outline-success/30 '
 							: 'outline outline-2 outline-error'
 						: ' '} 
+						{activeArgumentData.inUse ? 'font-semibold' : 'font-normal outline-0'}
 						{$mutationVersion ? 'mb-1 ml-1' : ''}
 						
-						btn-ghost text-base-content  btn   btn-xs text-xs normal-case  rounded-box  pl-1  py-0 h-full min-h-min font-semibold    
-						{isNot ? ' bg-gradient-to-r from-secondary/30 ' : 'bg-error/0'}"
+						btn-ghost text-base-content  btn   btn-xs text-xs normal-case  rounded-box  pl-1  py-0 h-full min-h-min     
+						{isNot ? ' bg-gradient-to-r from-secondary/30 outline-dashed' : 'bg-error/0'}"
 					on:click={() => {
 						showModal = true;
 					}}
