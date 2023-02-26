@@ -95,6 +95,7 @@
 		finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 	};
 	let showModal = false;
+	const mutationVersion = getContext('mutationVersion');
 </script>
 
 {#if showModal}
@@ -209,11 +210,13 @@
 		? activeArgumentData.canRunQuery
 			? 'ring ring-[1px]  bg-base-200 ring-primary/75'
 			: 'ring ring-[1px]  ring-primary/100 bg-error/50'
-		: 'bg-base-200/50'} "
+		: 'bg-base-200/50'} 
+		{$mutationVersion ? 'bg-black/0' : ''}
+		"
 	bind:this={labelEl}
 >
 	<div class="grow  ">
-		<div class="  flex  space-x-0 ">
+		<div class="  flex {$mutationVersion ? 'flex-col' : ''}  space-x-0 ">
 			<input
 				type="checkbox"
 				class="checkbox input-primary hidden"
