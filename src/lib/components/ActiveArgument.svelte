@@ -208,7 +208,8 @@
 		? ' pr-2 '
 		: ' '} 
 		{!expandedVersion && !$mutationVersion ? ' md:max-w-[25vw]' : ' '} 
-		 my-1 flex   dnd-item {activeArgumentData?.inUse
+		 my-1 flex   dnd-item 
+		 {activeArgumentData?.inUse && !$mutationVersion
 		? activeArgumentData.canRunQuery
 			? 'ring ring-[1px]  bg-base-200/50 ring-primary/25 '
 			: 'ring ring-[1px]  ring-primary/100 bg-error/50'
@@ -231,7 +232,9 @@
 											"
 			>
 				<button
-					class="  btn btn-ghost btn-xs text-xs normal-case  rounded-box  pl-1  py-0 h-full min-h-min font-semibold   text-base-content 
+					class=" {activeArgumentData.inUse
+						? 'bg-info/10'
+						: ''}   btn btn-ghost btn-xs text-xs normal-case  rounded-box  pl-1  py-0 h-full min-h-min font-semibold   text-base-content 
 						{isNot ? ' bg-gradient-to-r from-secondary/50' : 'bg-error/0'}"
 					on:click={() => {
 						showModal = true;
