@@ -233,8 +233,10 @@
 			>
 				<button
 					class=" {activeArgumentData.inUse
-						? 'bg-info/10'
-						: ''}   btn btn-ghost btn-xs text-xs normal-case  rounded-box  pl-1  py-0 h-full min-h-min font-semibold   text-base-content 
+						? activeArgumentData.canRunQuery
+							? ' btn-outline btn-success'
+							: 'btn-outline btn-error'
+						: 'text-base-content btn-ghost'}   btn   btn-xs text-xs normal-case  rounded-box  pl-1  py-0 h-full min-h-min font-semibold    
 						{isNot ? ' bg-gradient-to-r from-secondary/50' : 'bg-error/0'}"
 					on:click={() => {
 						showModal = true;
