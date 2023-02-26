@@ -210,7 +210,7 @@
 		{!expandedVersion && !$mutationVersion ? ' md:max-w-[25vw]' : ' '} 
 		 my-1 flex   dnd-item {activeArgumentData?.inUse
 		? activeArgumentData.canRunQuery
-			? 'ring ring-[1px]  bg-base-200/75 ring-primary/25 '
+			? 'ring ring-[1px]  bg-base-200/50 ring-primary/25 '
 			: 'ring ring-[1px]  ring-primary/100 bg-error/50'
 		: 'bg-base-200/25'} 
 		{$mutationVersion ? 'p-1 min-w-[60vw]' : 'pr-[1px]'}
