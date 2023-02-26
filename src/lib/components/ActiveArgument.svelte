@@ -234,9 +234,12 @@
 				<button
 					class=" {activeArgumentData.inUse
 						? activeArgumentData.canRunQuery
-							? ' btn-outline btn-success'
-							: 'btn-outline btn-error'
-						: 'text-base-content btn-ghost'}   btn   btn-xs text-xs normal-case  rounded-box  pl-1  py-0 h-full min-h-min font-semibold    
+							? 'outline outline-1  outline-success '
+							: 'outline outline-2 outline-error'
+						: ' '} 
+						{$mutationVersion ? 'mb-1' : ''}
+						
+						btn-ghost text-base-content  btn   btn-xs text-xs normal-case  rounded-box  pl-1  py-0 h-full min-h-min font-semibold    
 						{isNot ? ' bg-gradient-to-r from-secondary/50' : 'bg-error/0'}"
 					on:click={() => {
 						showModal = true;
