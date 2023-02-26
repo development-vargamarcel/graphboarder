@@ -281,7 +281,7 @@
 				/>
 			{/if}
 			<!-- node?.items?.length <= 1 -->
-			{#if node?.operator}
+			{#if node?.operator && !$mutationVersion}
 				<div
 					tabindex="0"
 					class="btn btn-xs btn-ghost px-[1px] text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
@@ -338,6 +338,27 @@
 	}}
 >
 	{#if node?.operator}
+		{#if $mutationVersion && !node?.isMain}
+			<div
+				tabindex="0"
+				class="btn btn-xs btn-ghost px-[1px] text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
+					'bonded' || node?.operator == 'list'
+					? 'text-base-content'
+					: node?.operator == '_and'
+					? 'text-primary'
+					: 'text-accent-focus'} break-all h-max  w-max
+						{node?.not ? ' bg-gradient-to-r from-secondary/50' : 'bg-error/0'}
+						"
+				on:click={() => {
+					showModal = true;
+				}}
+				on:contextmenu|preventDefault|stopPropagation={() => {
+					//
+				}}
+			>
+				{groupDisplayTitle}
+			</div>
+		{/if}
 		<div class="flex ">
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<!-- node?.items?.length > 1 || node?.isMain -->
