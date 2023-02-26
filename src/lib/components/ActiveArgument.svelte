@@ -204,9 +204,7 @@
 <label
 	use:clickOutside
 	on:click_outside={handleClickOutside}
-	class=" w-min-fit overflow-clip   rounded-box {!expandedVersion || $mutationVersion
-		? ' pr-2 '
-		: ' '} 
+	class=" w-min-fit   rounded-box {!expandedVersion || $mutationVersion ? ' pr-2 ' : ' '} 
 		{!expandedVersion && !$mutationVersion ? ' md:max-w-[25vw]' : ' '} 
 		 my-1 flex   dnd-item 
 		 {activeArgumentData?.inUse && !$mutationVersion
@@ -234,13 +232,13 @@
 				<button
 					class=" {activeArgumentData.inUse
 						? activeArgumentData.canRunQuery
-							? 'outline outline-1  outline-success/20 '
+							? 'outline outline-1  outline-success/50 '
 							: 'outline outline-2 outline-error'
 						: ' '} 
 						{$mutationVersion ? 'mb-1 ml-1' : ''}
 						
 						btn-ghost text-base-content  btn   btn-xs text-xs normal-case  rounded-box  pl-1  py-0 h-full min-h-min font-semibold    
-						{isNot ? ' bg-gradient-to-r from-secondary/50' : 'bg-error/0'}"
+						{isNot ? ' bg-gradient-to-r from-secondary/30' : 'bg-error/0'}"
 					on:click={() => {
 						showModal = true;
 					}}
