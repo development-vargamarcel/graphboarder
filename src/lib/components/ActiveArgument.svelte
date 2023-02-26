@@ -204,14 +204,15 @@
 <label
 	use:clickOutside
 	on:click_outside={handleClickOutside}
-	class=" w-min-fit pr-[1px]   rounded-box {expandedVersion
-		? ' '
-		: 'pr-2 md:md:max-w-[20vw] '}  my-1 flex   dnd-item {activeArgumentData?.inUse
+	class=" w-min-fit    rounded-box {!expandedVersion || $mutationVersion
+		? ' pr-2 md:md:max-w-[20vw]'
+		: ' '} 
+		 my-1 flex   dnd-item {activeArgumentData?.inUse
 		? activeArgumentData.canRunQuery
-			? 'ring ring-[1px]  bg-base-200 ring-primary/75'
+			? 'ring ring-[1px]  bg-base-200 ring-primary/75 '
 			: 'ring ring-[1px]  ring-primary/100 bg-error/50'
 		: 'bg-base-200/50'} 
-		{$mutationVersion ? 'bg-black/0' : ''}
+		{$mutationVersion ? 'p-1' : 'pr-[1px]'}
 		"
 	bind:this={labelEl}
 >
@@ -229,7 +230,7 @@
 											"
 			>
 				<button
-					class=" btn btn-ghost btn-xs text-xs normal-case  rounded-box  pl-1  py-0 h-full min-h-min font-semibold   text-base-content 
+					class="  btn btn-ghost btn-xs text-xs normal-case  rounded-box  pl-1  py-0 h-full min-h-min font-semibold   text-base-content 
 						{isNot ? ' bg-gradient-to-r from-secondary/50' : 'bg-error/0'}"
 					on:click={() => {
 						showModal = true;
@@ -244,11 +245,12 @@
 						{activeArgumentData.stepsOfFields?.slice(1)?.join(' > ') + ':'}
 					{/if}
 				</button>
+
 				<div
 					class="flex flex-nowrap  overflow-x-auto  max-w-[65vw] 
 								"
 				>
-					{#if !expandedVersion}
+					{#if !expandedVersion && !$mutationVersion}
 						<p
 							class="shrink-0 text-base-content text-xs font-light pt-[1px] ml-1"
 							on:click|preventDefault|stopPropagation|self={() => {
@@ -260,7 +262,7 @@
 					{/if}
 				</div>
 			</div>
-			{#if expandedVersion}
+			{#if expandedVersion || $mutationVersion}
 				<div class="pl-1 ">
 					{#if activeArgumentData.dd_kindList && activeArgumentData.dd_displayInterface != 'ENUM'}
 						<List
