@@ -310,7 +310,7 @@
 	class="  w-min-max w-max transition-all duration-500
 	
 	
-	{node?.operator && node.items.length > 1
+	{node?.operator && (node.items.length > 1 || ($mutationVersion && node.items.length >= 1))
 		? 'rounded-l-md bg-gradient-to-rxxx   border-l-[1px] my-1== shadow-sm'
 		: ''} 
 	{node?.isMain ? '  rounded-l-md bg-gradient-to-rxxx   border-l-[2px] my-1== shadow-sm' : ''}
