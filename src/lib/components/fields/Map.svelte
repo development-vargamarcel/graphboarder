@@ -37,20 +37,7 @@
 			// mapContainer.style.width = `${containerEl.clientWidth - 60}px`;
 			// mapContainer.style.height = `${containerEl.clientHeight - 60}px`;
 		} else {
-			mapContainer.classList.add(
-				'w-full',
-				'h-full',
-				'rounded-box',
-				'my-1',
-				'mr-1'
-
-				// 'w-[100px]',
-				// 'h-[100px]',
-				// 'md:w-[200px]',
-				// 'md:h-[200px]',
-				// 'lg:w-[200px]',
-				// 'lg:h-[200px]'
-			);
+			mapContainer.classList.add();
 		}
 		mapboxgl.accessToken =
 			'pk.eyJ1IjoiZGV2ZWxvcG1lbnQtdmFyZ2FtYXJjZWwiLCJhIjoiY2wwZTQ1bno0MDEzZjNvb2I3MHZydTR4dyJ9.EyYgnR9m4Efkd3T-NyrFjA';
@@ -122,13 +109,11 @@
 	let showMap = true;
 </script>
 
-<div class="flex justify-center container " on:click|preventDefault={() => {}}>
-	<div
-		id={mapContainerId}
-		bind:this={mapContainer}
-		class=" w-full min-w-[240px]  min-h-[185px] aspect-video "
-	/>
-</div>
+<div
+	id={mapContainerId}
+	bind:this={mapContainer}
+	class="h-max min-h-[180px]   aspect-video rounded-box"
+/>
 
 <style>
 </style>
