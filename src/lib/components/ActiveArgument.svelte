@@ -234,10 +234,10 @@
 				<button
 					class=" {activeArgumentData.inUse
 						? activeArgumentData.canRunQuery
-							? 'outline outline-1  outline-success '
+							? 'outline outline-1  outline-success/20 '
 							: 'outline outline-2 outline-error'
 						: ' '} 
-						{$mutationVersion ? 'mb-1' : ''}
+						{$mutationVersion ? 'mb-1 ml-1' : ''}
 						
 						btn-ghost text-base-content  btn   btn-xs text-xs normal-case  rounded-box  pl-1  py-0 h-full min-h-min font-semibold    
 						{isNot ? ' bg-gradient-to-r from-secondary/50' : 'bg-error/0'}"
