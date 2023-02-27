@@ -1,5 +1,5 @@
 <script>
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 
 	export let displayInterface;
 	let inputEl;
@@ -7,11 +7,12 @@
 	const dispatch = createEventDispatcher();
 
 	//let castAs //most of the times as string
+	const mutationVersion = getContext('mutationVersion');
 </script>
 
 <input
 	type={displayInterface}
-	class="input input-primary input-xs mb-[1px] w-full  mr-2 "
+	class="input input-primary  {$mutationVersion ? 'input-md' : 'input-xs'} mb-[1px] w-full  mr-2 "
 	bind:this={inputEl}
 	value={rawValue}
 	on:change={() => {
