@@ -300,6 +300,11 @@
 					}}
 				>
 					{groupDisplayTitle}
+					{#if node.dd_NON_NULL}
+						<sup>
+							<i class="text-primary bi bi-asterisk" />
+						</sup>
+					{/if}
 				</div>
 			{/if}
 		</div>
@@ -357,6 +362,11 @@
 				}}
 			>
 				{groupDisplayTitle}
+				{#if node.dd_NON_NULL}
+					<sup>
+						<i class="text-primary bi bi-asterisk" />
+					</sup>
+				{/if}
 			</div>
 		{/if}
 		<div class="flex ">
@@ -376,6 +386,11 @@
 					}}
 				>
 					{groupDisplayTitle}
+					{#if node.dd_NON_NULL}
+						<sup>
+							<i class="text-primary bi bi-asterisk" />
+						</sup>
+					{/if}
 				</div>
 			{/if}
 			<p class="grow" />

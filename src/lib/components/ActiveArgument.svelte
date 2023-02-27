@@ -252,6 +252,11 @@
 					{:else}
 						{activeArgumentData.stepsOfFields?.slice(1)?.join(' > ') + ':'}
 					{/if}
+					{#if activeArgumentData.dd_NON_NULL}
+						<sup>
+							<i class="text-primary bi bi-asterisk" />
+						</sup>
+					{/if}
 				</button>
 
 				<div
