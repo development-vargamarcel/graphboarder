@@ -889,7 +889,7 @@ export const nodeAddDefaultFields = (node,
 
 	[...scalarFields, ...enumFields].forEach((element) => {
 		let stepsOfFields = [
-			node.dd_displayName || group.group_name || node.parent_node.dd_displayName,
+			group.group_name || node.dd_displayName || node.parent_node.dd_displayName,
 			element.dd_displayName
 		];
 		let newArgData = {
@@ -909,7 +909,7 @@ export const nodeAddDefaultFields = (node,
 		})
 		?.forEach((element) => {
 			let stepsOfFields = [
-				node.dd_displayName || group.group_name || node.parent_node.dd_displayName,
+				group.group_name || node.dd_displayName || node.parent_node.dd_displayName,
 				element.dd_displayName
 			];
 			// if (stepsOfFields[stepsOfFields.length - 1] !== element.dd_displayName) {
