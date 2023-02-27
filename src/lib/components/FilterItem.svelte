@@ -188,7 +188,7 @@
 				{extraInfo}
 			</p>
 			<p />
-			<i class="bi bi-chevron-down  mx-auto my-0 p-0 text-xs leading-3" />
+			<i class="bi bi-chevron-down  mx-auto pt-[1px] my-0 p-0 text-xs leading-3" />
 		</div>
 	{/if}
 
