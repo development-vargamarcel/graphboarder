@@ -212,7 +212,7 @@
 			? 'ring ring-[1px]  bg-base-200/50 ring-primary/25 '
 			: 'ring ring-[1px]  ring-primary/100 bg-error/50'
 		: 'bg-base-200/25'} 
-		{$mutationVersion ? 'p-1 min-w-[63vw] ' : 'pr-[1px]'}
+		{$mutationVersion ? 'p-1 min-w-[80vw] md:min-w-[50vw]' : 'pr-[1px]'}
 		"
 	bind:this={labelEl}
 >
