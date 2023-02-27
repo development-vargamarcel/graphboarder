@@ -206,7 +206,7 @@
 </script>
 
 <div class=" h-full">
-	<div class="  w-full   px-6 mb-10 ">
+	<div class="  w-full   px-0 mb-10 ">
 		<div class=" mt-2     space-y-2   pb-2  bg-base-100 rounded-box ">
 			<div class="w-2" />
 			<ActiveArguments />
