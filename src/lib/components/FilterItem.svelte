@@ -184,7 +184,7 @@
 		<div
 			class="ml-2 space-y-0 border  leading-3 {extraInfoExtraClass} rounded-box  flex space-x-1 px-1"
 		>
-			<p class=" mx-auto my-0 p-0 text-xs leading-3">
+			<p class=" mx-auto my-0 p-0 text-xs leading-3 text-primary-content">
 				{extraInfo}
 			</p>
 			<p />
