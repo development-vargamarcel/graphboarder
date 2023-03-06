@@ -11,6 +11,13 @@
 	import InfiniteLoading from 'svelte-infinite-loading';
 	import { createEventDispatcher, getContext, onMount } from 'svelte';
 	import ColumnInfo from '$lib/components/ColumnInfo.svelte';
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	let QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
+
+	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+	const schemaData = QMSMainWraperContext?.schemaData;
+	const QMS_info = QMSWraperContext?.QMS_info;
+	let idColName = endpointInfo.get_idField(QMS_info, schemaData)?.dd_displayName;
 	export let colsData = [];
 	let visibleColsData = [];
 	let visibleColumns = [];
@@ -43,13 +50,15 @@
 				<!-- <th>edit</th> -->
 				<th>#</th>
 				{#each visibleColumns as column, index}
-					<th class="normal-case">
+					<th class="normal-case ">
 						<div class="dropdown dropdown-end  ">
 							<!-- svelte-ignore a11y-label-has-associated-control -->
 							<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 							<label tabindex="0" class="cursor-pointer ">
-								<div class="flex space-x-2 hover:text-primary rounded-box">
-									<div>{column}</div>
+								<div class="flex space-x-2 hover:text-primary rounded-box ">
+									<div class={idColName == column ? ' underline decoration-dotted' : ''}>
+										{column}
+									</div>
 									<div class="bi bi-chevron-down " />
 								</div>
 							</label>
