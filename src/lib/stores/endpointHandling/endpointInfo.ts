@@ -5,7 +5,7 @@ import {
 	string_transformer
 } from '$lib/utils/dataStructureTransformers';
 import { writable, get } from 'svelte/store';
-import { getRootType } from '$lib/utils/usefulFunctions';
+import { getFields_Grouped, getRootType } from '$lib/utils/usefulFunctions';
 export const endpointInfoDefaultValues = {
 	description: 'no description',
 	rowsLocationPossibilities: [
@@ -42,9 +42,19 @@ export const endpointInfoDefaultValues = {
 				return this.check(QMS_info, schemaData);
 			},
 			check: (QMS_info, schemaData) => {
+				const rootType = getRootType(null, QMS_info.dd_rootName, schemaData)
+				const fields = rootType?.fields
+				const {
+					scalarFields,
+					non_scalarFields,
+					enumFields
+				} = getFields_Grouped(rootType, [], schemaData)
+				if (scalarFields.length == 1) {
+					return scalarFields[0]
+				}
 				const tableNameLowercase = QMS_info.dd_displayName.toLowerCase()
 				let possibleNames = ['id', `${tableNameLowercase}_id`, `${tableNameLowercase}id`];
-				return getRootType(null, QMS_info.dd_rootName, schemaData)?.fields?.find((field) => {
+				return scalarFields?.find((field) => {
 					return possibleNames.includes(field.dd_displayName.toLowerCase()) || field.dd_rootName == 'ID';
 				});
 			}
