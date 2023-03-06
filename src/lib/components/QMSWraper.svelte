@@ -111,7 +111,7 @@
 	}
 
 	//
-	console.log('get_idField', endpointInfo.get_idField(QMS_info, schemaData));
+	// console.log('get_idField', endpointInfo.get_idField(QMS_info, schemaData));
 	//
 	//set to QMSWraperContext
 	QMSWraperContext = {
