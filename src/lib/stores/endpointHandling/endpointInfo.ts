@@ -42,7 +42,8 @@ export const endpointInfoDefaultValues = {
 				return this.check(QMS_info, schemaData);
 			},
 			check: (QMS_info, schemaData) => {
-				let possibleNames = ['id', `${QMS_info.dd_displayName}_id`, `${QMS_info.dd_displayName}Id`];
+				const tableName = QMS_info.dd_displayName
+				let possibleNames = ['id', `${tableName}_id`, `${tableName}Id`];
 				return getRootType(null, QMS_info.dd_rootName, schemaData)?.fields?.find((field) => {
 					return possibleNames.includes(field.dd_displayName) || field.dd_rootName == 'ID';
 				});
