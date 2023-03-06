@@ -54,9 +54,18 @@ export const endpointInfoDefaultValues = {
 				}
 				const tableNameLowercase = QMS_info.dd_displayName.toLowerCase()
 				let possibleNames = ['id', `${tableNameLowercase}_id`, `${tableNameLowercase}id`];
-				return scalarFields?.find((field) => {
+				let idFieldFirstAttempt = scalarFields?.find((field) => {
 					return possibleNames.includes(field.dd_displayName.toLowerCase()) || field.dd_rootName == 'ID';
 				});
+				if (idFieldFirstAttempt) {
+					return idFieldFirstAttempt
+				}
+				const nonNullScalarFields = scalarFields.filter((field) => {
+					return field.dd_NON_NULL
+				})
+				if (nonNullScalarFields.length == 1) {
+					return nonNullScalarFields[0]
+				}
 			}
 		}
 	],
