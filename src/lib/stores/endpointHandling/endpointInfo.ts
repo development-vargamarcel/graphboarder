@@ -39,7 +39,7 @@ export const endpointInfoDefaultValues = {
 	idFieldPossibilities: [
 		{
 			get_Val: function (QMS_info, schemaData) {
-				return this.check(QMS_info);
+				return this.check(QMS_info, schemaData);
 			},
 			check: (QMS_info, schemaData) => {
 				let possibleNames = ['id', `${QMS_info.dd_displayName}_id`, `${QMS_info.dd_displayName}Id`];
