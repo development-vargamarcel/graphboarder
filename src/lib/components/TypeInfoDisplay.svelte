@@ -39,41 +39,37 @@
 				{dd_displayName}
 			</div>
 		</div>
-
+		{#if !canExpand}
+			<div
+				class="btn btn-xs bg-base-200 p-1 rounded"
+				on:click={() => {
+					console.log(getRootType(null, dd_rootName, schemaData));
+				}}
+			>
+				{#if dd_displayName == dd_namesArray[dd_namesArray.length - 1]}
+					{''}
+				{:else}
+					{dd_namesArray[dd_namesArray.length - 1]}
+				{/if}
+			</div>
+		{/if}
+		{#if canExpand}
+			<div
+				class="btn btn-xs  bg-base-200 normal-case  rounded px-2 py-1"
+				on:click={() => {
+					console.log(getRootType(null, dd_rootName, schemaData));
+				}}
+			>
+				{#if dd_namesArray?.[1] && dd_namesArray?.[1] !== dd_displayName}
+					({dd_namesArray?.[1]})
+				{:else}
+					({dd_namesArray?.[0]})
+				{/if}
+			</div>
+		{/if}
 		<div class="w-1/2 ">
 			<div class="flex">
 				<div class="bg-secondary p-1 rounded ">{dd_kindsArray?.join(' of ')}</div>
-
-				{#if !canExpand}
-					<div
-						class="btn btn-xs bg-base-200 p-1 rounded"
-						on:click={() => {
-							console.log(getRootType(null, dd_rootName, schemaData));
-						}}
-					>
-						{#if dd_displayName == dd_namesArray[dd_namesArray.length - 1]}
-							{''}
-						{:else}
-							{dd_namesArray[dd_namesArray.length - 1]}
-						{/if}
-					</div>
-				{/if}
-				{#if canExpand}
-					<div
-						class="btn btn-xs  bg-base-200  rounded px-2 py-1"
-						on:click={() => {
-							console.log(getRootType(null, dd_rootName, schemaData));
-						}}
-					>
-						{#if dd_namesArray?.[0] !== dd_displayName}
-							({dd_namesArray?.[0]})
-						{:else if dd_namesArray?.[1] && dd_namesArray?.[1] !== dd_displayName}
-							({dd_namesArray?.[1]})
-						{:else}
-							{'same'}
-						{/if}
-					</div>
-				{/if}
 			</div>
 
 			<div class="flex" />
