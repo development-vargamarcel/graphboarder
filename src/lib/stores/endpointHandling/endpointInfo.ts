@@ -49,23 +49,23 @@ export const endpointInfoDefaultValues = {
 					non_scalarFields,
 					enumFields
 				} = getFields_Grouped(rootType, [], schemaData)
-				if (scalarFields.length == 1) {
-					return scalarFields[0]
-				}
-				const tableNameLowercase = QMS_info.dd_displayName.toLowerCase()
-				let possibleNames = ['id', `${tableNameLowercase}_id`, `${tableNameLowercase}id`];
-				let idFieldFirstAttempt = scalarFields?.find((field) => {
-					return possibleNames.includes(field.dd_displayName.toLowerCase()) || field.dd_rootName == 'ID';
-				});
-				if (idFieldFirstAttempt) {
-					return idFieldFirstAttempt
-				}
 				const nonNullScalarFields = scalarFields.filter((field) => {
 					return field.dd_NON_NULL
 				})
 				if (nonNullScalarFields.length == 1) {
 					return nonNullScalarFields[0]
 				}
+
+				const tableNameLowercase = QMS_info.dd_displayName.toLowerCase()
+				let possibleNames = ['id', `${tableNameLowercase}_id`, `${tableNameLowercase}id`];
+				let idFieldFirstAttempt = nonNullScalarFields?.find((field) => {
+					return possibleNames.includes(field.dd_displayName.toLowerCase()) || field.dd_rootName == 'ID';
+				});
+				if (idFieldFirstAttempt) {
+					return idFieldFirstAttempt
+				}
+
+
 			}
 		}
 	],
