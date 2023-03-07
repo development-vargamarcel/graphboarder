@@ -44,6 +44,7 @@ export const endpointInfoDefaultValues = {
 			check: (QMS_info, schemaData) => {
 				const rootType = getRootType(null, QMS_info.dd_rootName, schemaData)
 				const fields = rootType?.fields
+				let idField
 				const {
 					scalarFields,
 					non_scalarFields,
@@ -58,12 +59,20 @@ export const endpointInfoDefaultValues = {
 
 				const tableNameLowercase = QMS_info.dd_displayName.toLowerCase()
 				let possibleNames = ['id', `${tableNameLowercase}_id`, `${tableNameLowercase}id`];
-				let idFieldFirstAttempt = nonNullScalarFields?.find((field) => {
+				idField = nonNullScalarFields?.find((field) => {
 					const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase()
-					return possibleNames.includes(fieldDisplayNameLowercase) || field.dd_rootName == 'ID' || tableNameLowercase.includes(fieldDisplayNameLowercase);
+					return possibleNames.includes(fieldDisplayNameLowercase) || field.dd_rootName == 'ID'
 				});
-				if (idFieldFirstAttempt) {
-					return idFieldFirstAttempt
+				if (idField) {
+					return idField
+				}
+
+				idField = nonNullScalarFields?.find((field) => {
+					const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase()
+					return tableNameLowercase.includes(fieldDisplayNameLowercase);
+				});
+				if (idField) {
+					return idField
 				}
 				console.warn('id field is one of these', { nonNullScalarFields })
 
