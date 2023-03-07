@@ -55,7 +55,7 @@
 		{/if}
 		{#if canExpand}
 			<div
-				class="btn btn-xs  bg-base-200 normal-case  rounded px-2 py-1"
+				class="btn btn-xs  btn-accent normal-case  rounded px-2 py-1"
 				on:click={() => {
 					console.log(getRootType(null, dd_rootName, schemaData));
 				}}
