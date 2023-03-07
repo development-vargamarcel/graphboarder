@@ -59,12 +59,13 @@ export const endpointInfoDefaultValues = {
 				const tableNameLowercase = QMS_info.dd_displayName.toLowerCase()
 				let possibleNames = ['id', `${tableNameLowercase}_id`, `${tableNameLowercase}id`];
 				let idFieldFirstAttempt = nonNullScalarFields?.find((field) => {
-					return possibleNames.includes(field.dd_displayName.toLowerCase()) || field.dd_rootName == 'ID';
+					const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase()
+					return possibleNames.includes(fieldDisplayNameLowercase) || field.dd_rootName == 'ID' || tableNameLowercase.includes(fieldDisplayNameLowercase);
 				});
 				if (idFieldFirstAttempt) {
 					return idFieldFirstAttempt
 				}
-
+				console.warn('id field is one of these', { nonNullScalarFields })
 
 			}
 		}
