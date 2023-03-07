@@ -74,6 +74,13 @@ export const endpointInfoDefaultValues = {
 				if (idField) {
 					return idField
 				}
+				idField = nonNullScalarFields?.find((field) => {
+					const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase()
+					return fieldDisplayNameLowercase.includes(tableNameLowercase);
+				});
+				if (idField) {
+					return idField
+				}
 				console.warn('id field is one of these', { nonNullScalarFields })
 
 			}
