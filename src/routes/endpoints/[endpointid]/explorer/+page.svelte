@@ -25,10 +25,17 @@
 		const positiveWords = [];
 		const negativeWords = [];
 		sortingArray.forEach((word) => {
-			if (word.startsWith('-')) {
-				negativeWords.push(word);
+			if (word.startsWith('-') || word.startsWith('!')) {
+				const processedWord = word.slice(1);
+				negativeWords.push(processedWord);
 			} else {
-				positiveWords.push(word);
+				let processedWord;
+				if (word.startsWith('+')) {
+					processedWord = word.slice(1);
+				} else {
+					processedWord = word;
+				}
+				positiveWords.push(processedWord);
 			}
 		});
 
@@ -41,11 +48,10 @@
 					return type.dd_displayName.toLowerCase().includes(word.toLowerCase());
 				}) &&
 				!negativeWords.find((word) => {
-					const processedWord = word.slice(1);
 					if (caseSensitive) {
-						return type.dd_displayName.includes(processedWord);
+						return type.dd_displayName.includes(word);
 					}
-					return type.dd_displayName.toLowerCase().includes(processedWord.toLowerCase());
+					return type.dd_displayName.toLowerCase().includes(word.toLowerCase());
 				})
 			);
 		});
@@ -187,7 +193,7 @@
 					filterByWord();
 				}}>Filter</button
 			>
-			<code>include <b>-</b>exclude</code>
+			<code><b>+</b>include <b>-</b>exclude</code>
 		</div>
 
 		<br />
