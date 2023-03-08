@@ -61,9 +61,9 @@
 				}}
 			>
 				{#if dd_namesArray?.[1] && dd_namesArray?.[1] !== dd_displayName}
-					({dd_namesArray?.[1]})
+					{dd_namesArray?.[1]}
 				{:else}
-					({dd_namesArray?.[0]})
+					{dd_namesArray?.[0]}
 				{/if}
 			</div>
 		{/if}
