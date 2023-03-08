@@ -21,13 +21,33 @@
 		if (sortingArray.length == 1 && sortingArray[0] == '') {
 			return;
 		}
+
+		const positiveWords = [];
+		const negativeWords = [];
+		sortingArray.forEach((word) => {
+			if (word.startsWith('-')) {
+				negativeWords.push(word);
+			} else {
+				positiveWords.push(word);
+			}
+		});
+
 		whatToShow = whatToShow.filter((type) => {
-			return sortingArray.find((word) => {
-				if (caseSensitive) {
-					return type.dd_displayName.includes(word);
-				}
-				return type.dd_displayName.toLowerCase().includes(word.toLowerCase());
-			});
+			return (
+				positiveWords.find((word) => {
+					if (caseSensitive) {
+						return type.dd_displayName.includes(word);
+					}
+					return type.dd_displayName.toLowerCase().includes(word.toLowerCase());
+				}) &&
+				!negativeWords.find((word) => {
+					const processedWord = word.slice(1);
+					if (caseSensitive) {
+						return type.dd_displayName.includes(processedWord);
+					}
+					return type.dd_displayName.toLowerCase().includes(processedWord.toLowerCase());
+				})
+			);
 		});
 	};
 	const showRootTypes = () => {
@@ -167,6 +187,7 @@
 					filterByWord();
 				}}>Filter</button
 			>
+			<code>include <b>-</b>exclude</code>
 		</div>
 
 		<br />
