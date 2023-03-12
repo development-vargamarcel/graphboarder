@@ -377,6 +377,11 @@ export const generate_derivedData = (type, rootTypes, isQMSField, endpointInfo, 
 		derivedData.dd_paginationType = get_paginationType(derivedData.dd_paginationArgs, endpointInfo, schemaData);
 	}
 	derivedData.dd_relatedRoot = 'overwritten to evade error: Uncaught TypeError: Converting circular structure to JSON'
+
+	if (isQMSField) {
+		derivedData.dd_tableName = 'to be implemented'
+	}
+
 	return derivedData;
 };
 
