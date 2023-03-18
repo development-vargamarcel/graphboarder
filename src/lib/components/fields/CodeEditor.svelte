@@ -73,5 +73,5 @@
 </script>
 
 <div class="overflow-hidden rounded-box">
-	<div bind:this={divEl} class="h-60 aspect-video" />
+	<div bind:this={divEl} class="h-max min-h-[180px]   aspect-video rounded-box" />
 </div>
