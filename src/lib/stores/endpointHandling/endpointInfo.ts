@@ -174,7 +174,19 @@ export const endpointInfoDefaultValues = {
 				//	console.warn('no typesExtraDataPossibility found,using the default one')
 				return true
 			}
-		}
+		},
+		{
+			get_Val: () => {
+				return { displayInterface: 'codeeditor', defaultValue: '', get_convertedValue: string_transformer };
+			},
+			check: function (dd_rootName) {
+				if (!dd_rootName) {
+					return null
+				}
+				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
+				return dd_rootNameLowerCase.includes('configuration')
+			}
+		},
 	]
 };
 
