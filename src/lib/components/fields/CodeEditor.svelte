@@ -1,66 +1,39 @@
-<script>
-	// Through the options literal, the behaviour of the editor can be easily customized.
-	// Here are a few examples of config options that can be passed to the editor.
-	// You can also call editor.updateOptions at any time to change the options.
-	import * as monaco from 'monaco-editor';
+<script lang="ts">
+	import type monaco from 'monaco-editor';
 	import { onMount } from 'svelte';
-	self.MonacoEnvironment = {
-		getWorker: function (workerId, label) {
-			const getWorkerModule = (moduleUrl, label) => {
-				return new Worker(self.MonacoEnvironment.getWorkerUrl(moduleUrl), {
-					name: label,
-					type: 'module'
-				});
-			};
+	import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
+	import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
+	import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
+	import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
+	import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
 
-			switch (label) {
-				case 'json':
-					return getWorkerModule('/monaco-editor/esm/vs/language/json/json.worker?worker', label);
-				case 'css':
-				case 'scss':
-				case 'less':
-					return getWorkerModule('/monaco-editor/esm/vs/language/css/css.worker?worker', label);
-				case 'html':
-				case 'handlebars':
-				case 'razor':
-					return getWorkerModule('/monaco-editor/esm/vs/language/html/html.worker?worker', label);
-				case 'typescript':
-				case 'javascript':
-					return getWorkerModule(
-						'/monaco-editor/esm/vs/language/typescript/ts.worker?worker',
-						label
-					);
-				default:
-					return getWorkerModule('/monaco-editor/esm/vs/editor/editor.worker?worker', label);
+	let divEl: HTMLDivElement = null;
+	let editor: monaco.editor.IStandaloneCodeEditor;
+	let Monaco;
+
+	onMount(async () => {
+		// @ts-ignore
+		self.MonacoEnvironment = {
+			getWorker: function (_moduleId: any, label: string) {
+				if (label === 'json') {
+					return new jsonWorker();
+				}
+				if (label === 'css' || label === 'scss' || label === 'less') {
+					return new cssWorker();
+				}
+				if (label === 'html' || label === 'handlebars' || label === 'razor') {
+					return new htmlWorker();
+				}
+				if (label === 'typescript' || label === 'javascript') {
+					return new tsWorker();
+				}
+				return new editorWorker();
 			}
-		}
-	};
-	onMount(() => {
-		var editor = monaco.editor.create(document.getElementById('container'), {
-			value: `{
-    "url": "https://vgqkcskomrpikolllkix.nhost.run/v1beta1/relay",
-    "isMantained": true,
-    "description": "edgeBased pagination,no rowCount avalable",
-    "headers": {
-        "x-hasura-admin-secret": "3f3e46f190464c7a8dfe19e6c94ced84"
-    },
-    "pageInfoFieldsLocation": [
-        "pageInfo"
-    ],
-    "rowsLocationPossibilities": [
-        {
-            "get_Val": "/Function((QMS_info) => {\n          return [\"edges\",\"results\"];\n        })/",
-            "check": "/Function((QMS_info) => {\n          return true;\n        })/"
-        }
-    ],
-    "namings": {
-        "hasNextPage": "hasNextPage",
-        "hasPreviousPage": "hasPreviousPage",
-        "startCursor": "startCursor",
-        "endCursor": "endCursor",
-        "cursor": "cursor"
-    }
-}`,
+		};
+
+		Monaco = await import('monaco-editor');
+		editor = Monaco.editor.create(divEl, {
+			value: ['function x() {', '\tconsole.log("Hello world!");', '}'].join('\n'),
 			language: 'javascript',
 
 			lineNumbers: 'off',
@@ -69,14 +42,13 @@
 			readOnly: false,
 			theme: 'vs-dark'
 		});
-		setTimeout(function () {
-			editor.updateOptions({
-				lineNumbers: 'on'
-			});
-		}, 2000);
+
+		return () => {
+			editor.dispose();
+		};
 	});
 </script>
 
 <div class="overflow-hidden rounded-box">
-	<div id="container" class="h-60 aspect-video" />
+	<div bind:this={divEl} class="h-60 aspect-video" />
 </div>
