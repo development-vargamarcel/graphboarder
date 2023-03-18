@@ -33,7 +33,30 @@
 
 		Monaco = await import('monaco-editor');
 		editor = Monaco.editor.create(divEl, {
-			value: ['function x() {', '\tconsole.log("Hello world!");', '}'].join('\n'),
+			value: `{
+    "url": "https://vgqkcskomrpikolllkix.nhost.run/v1beta1/relay",
+    "isMantained": true,
+    "description": "edgeBased pagination,no rowCount avalable",
+    "headers": {
+        "x-hasura-admin-secret": "3f3e46f190464c7a8dfe19e6c94ced84"
+    },
+    "pageInfoFieldsLocation": [
+        "pageInfo"
+    ],
+    "rowsLocationPossibilities": [
+        {
+            "get_Val": "/Function((QMS_info) => {\n          return [\"edges\",\"results\"];\n        })/",
+            "check": "/Function((QMS_info) => {\n          return true;\n        })/"
+        }
+    ],
+    "namings": {
+        "hasNextPage": "hasNextPage",
+        "hasPreviousPage": "hasPreviousPage",
+        "startCursor": "startCursor",
+        "endCursor": "endCursor",
+        "cursor": "cursor"
+    }
+}`,
 			language: 'javascript',
 
 			lineNumbers: 'off',
