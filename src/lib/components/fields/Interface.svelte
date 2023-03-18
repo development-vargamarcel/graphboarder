@@ -6,6 +6,7 @@
 	import Input from '$lib/components/fields/Input.svelte';
 	import Map from '$lib/components/fields/Map.svelte';
 	import Toggle from '$lib/components/fields/Toggle.svelte';
+	import CodeEditor from '$lib/components/fields/CodeEditor.svelte';
 	import { createEventDispatcher, getContext } from 'svelte';
 	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
@@ -43,6 +44,9 @@
 		}
 		if (!displayInterface) {
 			componentToRender = InterfacePicker;
+		}
+		if (['codeeditor'].includes(displayInterface)) {
+			componentToRender = CodeEditor;
 		}
 	}
 </script>

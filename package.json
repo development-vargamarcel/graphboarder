@@ -56,6 +56,7 @@
 		"highlight.js": "^11.7.0",
 		"lodash": "^4.17.21",
 		"mapbox-gl": "^2.12.0",
+		"monaco-editor": "^0.36.1",
 		"object-deep-compare": "^1.2.0",
 		"requirejs": "^2.3.6",
 		"svelte-dnd-action": "^0.9.21",
