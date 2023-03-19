@@ -245,7 +245,7 @@
 		editor = Monaco.editor.create(divEl, {
 			value: editorDefaultValue,
 			language: 'javascript',
-			lineNumbers: 'off',
+			lineNumbers: 'on',
 			roundedSelection: false,
 			scrollBeyondLastLine: false,
 			readOnly: false,
