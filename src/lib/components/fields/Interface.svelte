@@ -42,11 +42,11 @@
 		if (['ENUM'].includes(displayInterface)) {
 			componentToRender = ENUMInterface;
 		}
-		if (!displayInterface) {
-			componentToRender = InterfacePicker;
-		}
 		if (['codeeditor'].includes(displayInterface)) {
 			componentToRender = CodeEditor;
+		}
+		if (!displayInterface) {
+			componentToRender = InterfacePicker;
 		}
 	}
 </script>
