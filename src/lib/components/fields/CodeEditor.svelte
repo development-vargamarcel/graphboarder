@@ -11,7 +11,7 @@
 	let divEl: HTMLDivElement = null;
 	let editor: monaco.editor.IStandaloneCodeEditor;
 	let Monaco;
-	const editorDefaultValue = `{
+	const editorDefaultValue = `const configuration={
 	description: 'no description',
 	rowsLocationPossibilities: [
 		{
@@ -225,7 +225,8 @@
 			roundedSelection: false,
 			scrollBeyondLastLine: false,
 			readOnly: false,
-			theme: 'vs-dark'
+			theme: 'vs-dark',
+			tabSize: 2
 		});
 		editor.onDidChangeModelContent(function (e) {
 			//	console.log('changed');
