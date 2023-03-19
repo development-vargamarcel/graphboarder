@@ -11,6 +11,30 @@
 	let divEl: HTMLDivElement = null;
 	let editor: monaco.editor.IStandaloneCodeEditor;
 	let Monaco;
+	const editorDefaultValue2 = `{
+    "url": "https://vgqkcskomrpikolllkix.nhost.run/v1beta1/relay",
+    "isMantained": true,
+    "description": "edgeBased pagination,no rowCount avalable",
+    "headers": {
+        "x-hasura-admin-secret": "3f3e46f190464c7a8dfe19e6c94ced84"
+    },
+    "pageInfoFieldsLocation": [
+        "pageInfo"
+    ],
+    "rowsLocationPossibilities": [
+        {
+            "get_Val": "/Function((QMS_info) => {\n          return [\"edges\",\"results\"];\n        })/",
+            "check": "/Function((QMS_info) => {\n          return true;\n        })/"
+        }
+    ],
+    "namings": {
+        "hasNextPage": "hasNextPage",
+        "hasPreviousPage": "hasPreviousPage",
+        "startCursor": "startCursor",
+        "endCursor": "endCursor",
+        "cursor": "cursor"
+    }
+}`;
 	const editorDefaultValue = `const configuration={
 	description: 'no description',
 	rowsLocationPossibilities: [
@@ -237,6 +261,9 @@
 		};
 	});
 	const stringToJs = (string) => {
+		if (string.includes('/Function')) {
+			return parseAll(string);
+		}
 		return new Function(`return ${string}`)();
 	};
 </script>
@@ -247,6 +274,23 @@
 	</div>
 	<div class="flex flex-row-reverse mt-2">
 		<button
+			class="btn btn-primary btn-xs normal-case ml-2"
+			on:click={() => {
+				const editorValue = editor.getValue();
+				//console.log(editorValue);
+				const firstCurlyBraces = editorValue.indexOf('{');
+				const lastCurlyBraces = editorValue.lastIndexOf('}');
+				const editorValueCleaned = editorValue.substring(firstCurlyBraces, lastCurlyBraces + 1);
+				console.log({ editorValueCleaned });
+				const editorValueAsJs = stringToJs(editorValueCleaned);
+				const editorValueSuperStringified = stigifyAll(editorValueAsJs);
+				const editorValueAsJsCovertedBackTEST = stringToJs(editorValueSuperStringified);
+				console.log({ editorValueAsJs });
+				console.log({ editorValueSuperStringified });
+				console.log({ editorValueAsJsCovertedBackTEST });
+			}}>done</button
+		>
+		<button
 			class="btn btn-primary btn-xs normal-case"
 			on:click={() => {
 				const editorValue = editor.getValue();
@@ -255,12 +299,17 @@
 				const lastCurlyBraces = editorValue.lastIndexOf('}');
 				const editorValueCleaned = editorValue.substring(firstCurlyBraces, lastCurlyBraces + 1);
 				const editorValueAsJs = stringToJs(editorValueCleaned);
-				const editorValueSuperStringified = stigifyAll(editorValueAsJs);
-				const editorValueAsJsCovertedBackTEST = parseAll(editorValueSuperStringified);
-				console.log({ editorValueAsJs });
-				console.log({ editorValueSuperStringified });
-				console.log({ editorValueAsJsCovertedBackTEST });
-			}}>done</button
+				const stigifyAllAsIs = (data) => {
+					return JSON.stringify(data, function (key, value) {
+						if (typeof value === 'function') {
+							return '/FunctionQQQ(' + value.toString() + ')/';
+						}
+						return value;
+					});
+				};
+				editor.setValue(stigifyAllAsIs(editorValueAsJs));
+				console.log({ editorValueAsJs }, 'dsd' + editorValueAsJs);
+			}}>convert to js</button
 		>
 	</div>
 </div>
