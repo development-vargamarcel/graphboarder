@@ -14,6 +14,7 @@
 	import InterfacePicker from './InterfacePicker.svelte';
 	const dispatch = createEventDispatcher();
 	export let typeInfo;
+	export let alwaysOn_interfacePicker = false;
 	let choosenDisplayInteface = typeInfo?.choosenDisplayInteface || null;
 	let { displayInterface, get_convertedValue, defaultValue } =
 		endpointInfo.get_typeExtraData(typeInfo);
@@ -51,6 +52,22 @@
 	}
 </script>
 
+{#if alwaysOn_interfacePicker}
+	<svelte:component
+		this={InterfacePicker}
+		{typeInfo}
+		on:interfaceChosen={(e) => {
+			choosenDisplayInteface = e.detail.chosen;
+		}}
+		{displayInterface}
+		{rawValue}
+		on:changed={(e) => {
+			let { detail } = e;
+			detail.chd_dispatchValue = get_convertedValue(detail.chd_rawValue);
+			detail.choosenDisplayInteface = choosenDisplayInteface;
+			dispatch('changed', detail);
+		}}
+	/>{/if}
 <svelte:component
 	this={componentToRender}
 	{typeInfo}
