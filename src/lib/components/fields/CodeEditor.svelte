@@ -58,12 +58,14 @@
     }
 }`,
 			language: 'javascript',
-
 			lineNumbers: 'off',
 			roundedSelection: false,
 			scrollBeyondLastLine: false,
 			readOnly: false,
 			theme: 'vs-dark'
+		});
+		editor.onDidChangeModelContent(function (e) {
+			console.log('changed');
 		});
 
 		return () => {
@@ -72,6 +74,11 @@
 	});
 </script>
 
-<div class="overflow-hidden rounded-box">
-	<div bind:this={divEl} class="h-max min-h-[180px]   aspect-video rounded-box" />
+<div class="flex flex-col">
+	<div class="overflow-hidden rounded-box">
+		<div bind:this={divEl} class="h-max min-h-[180px]   aspect-video rounded-box" />
+	</div>
+	<div class="flex flex-row-reverse mt-2">
+		<button class="btn btn-primary btn-xs normal-case">done</button>
+	</div>
 </div>
