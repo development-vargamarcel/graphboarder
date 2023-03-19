@@ -6,6 +6,7 @@
 	import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
 	import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
 	import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
+	import { parseAll, stigifyAll } from '$lib/stores/testData/testEndpoints';
 
 	let divEl: HTMLDivElement = null;
 	let editor: monaco.editor.IStandaloneCodeEditor;
@@ -234,6 +235,9 @@
 			editor.dispose();
 		};
 	});
+	const stringToJs = (string) => {
+		return new Function(`return ${string}`)();
+	};
 </script>
 
 <div class="flex flex-col">
@@ -247,12 +251,15 @@
 				const editorValue = editor.getValue();
 				//console.log(editorValue);
 				const editorValueCleaned = editorValue.startsWith('return')
-					? editorValue.substring('return'.length)
-					: editorValue;
-				const editorValueAsJavascript = eval(
-					`(function (){return ${editorValueCleaned.trimStart()}})`
-				)();
-				console.log(editorValueAsJavascript);
+					? editorValue.substring('return'.length).trimStart()
+					: editorValue.trimStart();
+				const editorValueAsJs = stringToJs(editorValueCleaned);
+				const editorValueSuperStringified = stigifyAll(editorValueAsJs);
+				const editorValueAsJsTEST = parseAll(editorValueSuperStringified);
+				console.log({ editorValueAsJs });
+				console.log({ editorValueSuperStringified });
+				console.log({ editorValueSuperStringified });
+				console.log({ editorValueAsJsTEST });
 			}}>done</button
 		>
 	</div>
