@@ -187,6 +187,7 @@
 					/>
 				{:else}
 					<Interface
+						alwaysOn_interfacePicker={true}
 						typeInfo={activeArgumentData}
 						dd_displayInterface={activeArgumentData.dd_displayInterface}
 						rawValue={activeArgumentData?.chd_rawValue}
