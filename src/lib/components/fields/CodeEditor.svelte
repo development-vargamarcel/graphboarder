@@ -230,7 +230,7 @@
 		]
 	};
 
-	const configurationAsString = `{
+	const configurationAsString = `const configuration = {
 		description: 'no description',
 		rowsLocationPossibilities: [
 			{
