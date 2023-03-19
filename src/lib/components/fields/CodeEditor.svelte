@@ -250,16 +250,15 @@
 			on:click={() => {
 				const editorValue = editor.getValue();
 				//console.log(editorValue);
-				const editorValueCleaned = editorValue.startsWith('return')
-					? editorValue.substring('return'.length).trimStart()
-					: editorValue.trimStart();
+				const firstCurlyBraces = editorValue.indexOf('{');
+				const lastCurlyBraces = editorValue.lastIndexOf('}');
+				const editorValueCleaned = editorValue.substring(firstCurlyBraces, lastCurlyBraces + 1);
 				const editorValueAsJs = stringToJs(editorValueCleaned);
 				const editorValueSuperStringified = stigifyAll(editorValueAsJs);
-				const editorValueAsJsTEST = parseAll(editorValueSuperStringified);
+				const editorValueAsJsCovertedBackTEST = parseAll(editorValueSuperStringified);
 				console.log({ editorValueAsJs });
 				console.log({ editorValueSuperStringified });
-				console.log({ editorValueSuperStringified });
-				console.log({ editorValueAsJsTEST });
+				console.log({ editorValueAsJsCovertedBackTEST });
 			}}>done</button
 		>
 	</div>
