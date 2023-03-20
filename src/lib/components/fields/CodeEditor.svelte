@@ -7,7 +7,14 @@
 	import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
 	import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
 	import { parseAll, stigifyAll } from '$lib/stores/testData/testEndpoints';
+	import { createEventDispatcher, getContext } from 'svelte';
 
+	export let displayInterface;
+	export let rawValue;
+	const dispatch = createEventDispatcher();
+
+	//let castAs //most of the times as string
+	const mutationVersion = getContext('mutationVersion');
 	let divEl: HTMLDivElement = null;
 	let editor: monaco.editor.IStandaloneCodeEditor;
 	let Monaco;
@@ -506,13 +513,22 @@
 			class="btn btn-primary btn-xs normal-case ml-2"
 			on:click={() => {
 				const editorValue = editor.getValue();
-				console.log(editorValue);
+				console.log({ editorValue });
 				const firstCurlyBraces = editorValue.indexOf('{');
 				const lastCurlyBraces = editorValue.lastIndexOf('}');
 				const editorValueCleaned = editorValue.substring(firstCurlyBraces, lastCurlyBraces + 1);
 				console.log({ editorValueCleaned });
-				const editorValueAsJs = stringToJs(editorValueCleaned);
-				console.log({ editorValueAsJs });
+				const valueToUse = editorValueCleaned.replaceAll(`'`, `"`);
+				console.log({ valueToUse });
+
+				// const editorValueAsJs = stringToJs(editorValueCleaned);
+				// console.log({ editorValueAsJs });
+				dispatch('changed', {
+					chd_chosen: undefined,
+					chd_needsValue: true,
+					chd_needsChosen: false,
+					chd_rawValue: valueToUse
+				}); //chd_ == chosen data sdasd ss
 			}}>save</button
 		>
 	</div>
