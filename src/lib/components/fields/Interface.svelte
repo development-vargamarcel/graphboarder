@@ -52,7 +52,7 @@
 	}
 </script>
 
-{#if alwaysOn_interfacePicker}
+{#if alwaysOn_interfacePicker && displayInterface}
 	<svelte:component
 		this={InterfacePicker}
 		{typeInfo}
