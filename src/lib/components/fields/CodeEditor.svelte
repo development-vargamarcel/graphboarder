@@ -525,7 +525,7 @@
 					chd_chosen: undefined,
 					chd_needsValue: true,
 					chd_needsChosen: false,
-					chd_rawValue: editorValueCleaned
+					chd_rawValue: btoa(editorValueCleaned)
 				}); //chd_ == chosen data sdasd ss
 			}}>save</button
 		>
