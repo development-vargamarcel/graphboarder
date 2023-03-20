@@ -512,33 +512,8 @@
 				const editorValueCleaned = editorValue.substring(firstCurlyBraces, lastCurlyBraces + 1);
 				console.log({ editorValueCleaned });
 				const editorValueAsJs = stringToJs(editorValueCleaned);
-				const editorValueSuperStringified = stigifyAll(editorValueAsJs);
-				const editorValueAsJsCovertedBackTEST = stringToJs(editorValueSuperStringified);
 				console.log({ editorValueAsJs });
-				console.log({ editorValueSuperStringified });
-				console.log({ editorValueAsJsCovertedBackTEST });
-			}}>done</button
-		>
-		<button
-			class="btn btn-primary btn-xs normal-case"
-			on:click={() => {
-				const editorValue = editor.getValue();
-				//console.log(editorValue);
-				const firstCurlyBraces = editorValue.indexOf('{');
-				const lastCurlyBraces = editorValue.lastIndexOf('}');
-				const editorValueCleaned = editorValue.substring(firstCurlyBraces, lastCurlyBraces + 1);
-				const editorValueAsJs = stringToJs(editorValueCleaned);
-				const stigifyAllAsIs = (data) => {
-					return JSON.stringify(data, function (key, value) {
-						if (typeof value === 'function') {
-							return '/FunctionQQQ(' + value.toString() + ')/';
-						}
-						return value;
-					});
-				};
-				editor.setValue(stigifyAllAsIs(editorValueAsJs));
-				console.log({ editorValueAsJs }, 'dsd' + editorValueAsJs);
-			}}>convert to js</button
+			}}>save</button
 		>
 	</div>
 </div>
