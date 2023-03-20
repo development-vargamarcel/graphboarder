@@ -506,7 +506,7 @@
 			class="btn btn-primary btn-xs normal-case ml-2"
 			on:click={() => {
 				const editorValue = editor.getValue();
-				//console.log(editorValue);
+				console.log(editorValue);
 				const firstCurlyBraces = editorValue.indexOf('{');
 				const lastCurlyBraces = editorValue.lastIndexOf('}');
 				const editorValueCleaned = editorValue.substring(firstCurlyBraces, lastCurlyBraces + 1);
