@@ -518,8 +518,6 @@
 				const lastCurlyBraces = editorValue.lastIndexOf('}');
 				const editorValueCleaned = editorValue.substring(firstCurlyBraces, lastCurlyBraces + 1);
 				console.log({ editorValueCleaned });
-				const valueToUse = editorValueCleaned.replaceAll(`'`, `"`);
-				console.log({ valueToUse });
 
 				// const editorValueAsJs = stringToJs(editorValueCleaned);
 				// console.log({ editorValueAsJs });
@@ -527,7 +525,7 @@
 					chd_chosen: undefined,
 					chd_needsValue: true,
 					chd_needsChosen: false,
-					chd_rawValue: valueToUse
+					chd_rawValue: editorValueCleaned
 				}); //chd_ == chosen data sdasd ss
 			}}>save</button
 		>
