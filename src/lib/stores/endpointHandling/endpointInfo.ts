@@ -2,6 +2,7 @@ import {
 	boolean_transformer,
 	geojson_transformer,
 	ISO8601_transformer,
+	stringContainingQuotes_transformer,
 	string_transformer
 } from '$lib/utils/dataStructureTransformers';
 import { writable, get } from 'svelte/store';
@@ -177,7 +178,7 @@ export const endpointInfoDefaultValues = {
 		},
 		{
 			get_Val: () => {
-				return { displayInterface: 'codeeditor', defaultValue: '', get_convertedValue: string_transformer };
+				return { displayInterface: 'codeeditor', defaultValue: '', get_convertedValue: stringContainingQuotes_transformer };
 			},
 			check: function (dd_rootName) {
 				if (!dd_rootName) {

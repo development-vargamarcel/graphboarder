@@ -8,16 +8,6 @@
 	import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
 	import { parseAll, stigifyAll } from '$lib/stores/testData/testEndpoints';
 	import { createEventDispatcher, getContext } from 'svelte';
-
-	export let displayInterface;
-	export let rawValue;
-	const dispatch = createEventDispatcher();
-
-	//let castAs //most of the times as string
-	const mutationVersion = getContext('mutationVersion');
-	let divEl: HTMLDivElement = null;
-	let editor: monaco.editor.IStandaloneCodeEditor;
-	let Monaco;
 	const configuration = {
 		description: 'no description',
 		rowsLocationPossibilities: [
@@ -455,6 +445,16 @@
 			}
 		]
 	}`;
+	export let displayInterface;
+	export let rawValue = configurationAsString;
+	const dispatch = createEventDispatcher();
+
+	//let castAs //most of the times as string
+	const mutationVersion = getContext('mutationVersion');
+	let divEl: HTMLDivElement = null;
+	let editor: monaco.editor.IStandaloneCodeEditor;
+	let Monaco;
+
 	console.log({ configurationAsString });
 	onMount(async () => {
 		// @ts-ignore
@@ -478,7 +478,9 @@
 
 		Monaco = await import('monaco-editor');
 		editor = Monaco.editor.create(divEl, {
-			value: configurationAsString,
+			value: rawValue.includes('~')
+				? 'const data = '.concat(rawValue.replace(`~`, `'`))
+				: 'const data = '.concat(rawValue),
 			language: 'javascript',
 			lineNumbers: 'on',
 			roundedSelection: false,
@@ -517,15 +519,13 @@
 				const firstCurlyBraces = editorValue.indexOf('{');
 				const lastCurlyBraces = editorValue.lastIndexOf('}');
 				const editorValueCleaned = editorValue.substring(firstCurlyBraces, lastCurlyBraces + 1);
-				console.log({ editorValueCleaned });
-
 				// const editorValueAsJs = stringToJs(editorValueCleaned);
 				// console.log({ editorValueAsJs });
 				dispatch('changed', {
 					chd_chosen: undefined,
 					chd_needsValue: true,
 					chd_needsChosen: false,
-					chd_rawValue: btoa(editorValueCleaned)
+					chd_rawValue: editorValueCleaned
 				}); //chd_ == chosen data sdasd ss
 			}}>save</button
 		>

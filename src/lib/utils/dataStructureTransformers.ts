@@ -23,3 +23,8 @@ export const boolean_transformer = (value) => {
 	}
 	return value;
 };
+export const stringContainingQuotes_transformer = (value) => {
+	//const base64 = btoa(value)
+	const modified = value.replaceAll(`'`, `~`).replaceAll(`"`, `~`)
+	return `'${modified}'`;
+};
