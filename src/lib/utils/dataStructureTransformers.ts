@@ -23,8 +23,15 @@ export const boolean_transformer = (value) => {
 	}
 	return value;
 };
+const escapeAllSigngleAndDoubleQuotes = (str) => {
+	return str.replace(/["']/g, (match) => {
+		return `\\${match}`;
+	});
+}
 export const stringContainingQuotes_transformer = (value) => {
+
 	//const base64 = btoa(value)
+	//const escaped = escapeAllSigngleAndDoubleQuotes(value)
 	const modified = value.replaceAll(`'`, `~`).replaceAll(`"`, `~`)
 	return `'${modified}'`;
 };
