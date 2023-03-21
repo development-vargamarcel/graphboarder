@@ -32,6 +32,6 @@ export const stringContainingQuotes_transformer = (value) => {
 
 	//const base64 = btoa(value)
 	//const escaped = escapeAllSigngleAndDoubleQuotes(value)
-	const modified = value.replaceAll(`'`, `~`).replaceAll(`"`, `~`)
+	const modified = value.replaceAll(`'`, `~%`).replaceAll(`"`, `%~`)
 	return `'${modified}'`;
 };

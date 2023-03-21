@@ -227,7 +227,7 @@
 		]
 	};
 
-	const configurationAsString = `const configuration = {
+	const configurationAsString = `{
 		description: 'no description',
 		rowsLocationPossibilities: [
 			{
@@ -478,9 +478,10 @@
 
 		Monaco = await import('monaco-editor');
 		editor = Monaco.editor.create(divEl, {
-			value: rawValue.includes('~')
-				? 'const data = '.concat(rawValue.replace(`~`, `'`))
-				: 'const data = '.concat(rawValue),
+			value:
+				rawValue.includes('~%') || rawValue.includes('%~')
+					? 'const data = '.concat(rawValue.replaceAll(`~%`, `'`).replaceAll(`%~`, `"`))
+					: 'const data = '.concat(rawValue),
 			language: 'javascript',
 			lineNumbers: 'on',
 			roundedSelection: false,
