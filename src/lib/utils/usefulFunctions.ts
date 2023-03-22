@@ -812,7 +812,11 @@ export const get_nodeFieldsQMS_info = (QMS_info, rowsLocation, schemaData) => {
 	if (!getRootType(null, nodeFieldsQMS_info?.dd_rootName, schemaData)?.fields) {
 		return nodeFieldsQMS_info;
 	}
+
 	rowsLocation.forEach((curr_rowsLocation) => {
+		if (!nodeFieldsQMS_info?.dd_rootName) {
+			return nodeFieldsQMS_info;
+		}
 		if (!getRootType(null, nodeFieldsQMS_info.dd_rootName, schemaData)?.fields) {
 			return nodeFieldsQMS_info;
 		}
