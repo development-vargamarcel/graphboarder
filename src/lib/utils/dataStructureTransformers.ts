@@ -2,7 +2,7 @@ export const string_transformer = (value) => {
 	return `'${value.replaceAll(`"`, `&quot;`).replaceAll(`'`, `&quot;`)}'`;
 };
 export const string_transformerREVERSE = (value) => {
-	return `${value.replaceAll(`&quot;`, `'`)}`;
+	return value.replaceAll(`&quot;`, `'`);
 };
 export const ISO8601_transformer = (value) => {
 	let date_ISO8601 = new Date(value).toISOString();
