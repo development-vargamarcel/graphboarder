@@ -8,6 +8,7 @@
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Interface from '$lib/components/fields/Interface.svelte';
 	import Modal from './Modal.svelte';
+	import { string_transformerREVERSE } from '$lib/utils/dataStructureTransformers';
 	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
 	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
 	export let isNot;
@@ -50,7 +51,9 @@
 			if (Array.isArray(activeArgumentData.chd_dispatchValue)) {
 				value = activeArgumentData.chd_dispatchValue.join(', ');
 			} else {
-				value = activeArgumentData.chd_dispatchValue;
+				value = string_transformerREVERSE(
+					activeArgumentData.chd_dispatchValue || activeArgumentData.defaultValue
+				);
 			}
 		}
 

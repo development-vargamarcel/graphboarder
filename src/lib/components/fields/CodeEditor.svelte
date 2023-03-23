@@ -229,8 +229,7 @@
 		]
 	}`;
 	export let displayInterface;
-	//export let rawValue = configurationAsString;
-	export let rawValue = configurationAsString;
+	export let rawValue = '{}';
 
 	const dispatch = createEventDispatcher();
 
@@ -263,7 +262,7 @@
 
 		Monaco = await import('monaco-editor');
 		editor = Monaco.editor.create(divEl, {
-			value: 'const data = '.concat(string_transformerREVERSE(rawValue)),
+			value: 'const data = '.concat(rawValue || '{}'),
 			language: 'javascript',
 			lineNumbers: 'on',
 			roundedSelection: false,
@@ -311,6 +310,12 @@
 					chd_rawValue: editorValueCleaned
 				}); //chd_ == chosen data sdasd ss
 			}}>save</button
+		>
+		<button
+			class="btn btn-primary btn-xs normal-case ml-2"
+			on:click={() => {
+				editor.setValue('const data = '.concat(configurationAsString));
+			}}>load demo data</button
 		>
 	</div>
 </div>

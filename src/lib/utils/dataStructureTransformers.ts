@@ -2,6 +2,9 @@ export const string_transformer = (value) => {
 	return `'${value.replaceAll(`"`, `&quot;`).replaceAll(`'`, `&quot;`)}'`;
 };
 export const string_transformerREVERSE = (value) => {
+	if (value == undefined || value == null) {
+		return undefined
+	}
 	return value.replaceAll(`&quot;`, `'`);
 };
 export const ISO8601_transformer = (value) => {
