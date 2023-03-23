@@ -16,9 +16,11 @@ export const Create_QMS_bodyPartsUnifier_StoreDerived = (
 		if (!storesReduced) {
 			return '';
 		}
+		console.log({ storesReduced })
 		const QMS_body = `${QMS_type}-${QMS_name}{
             ${storesReduced}
         }`;
-		return QMS_body.replaceAll(/\s/g, '').replace('-', ' ');
+		//return QMS_body.replaceAll(/\s/g, '').replace('-', ' ');
+		return QMS_body.replace('-', ' ')
 	});
 };
