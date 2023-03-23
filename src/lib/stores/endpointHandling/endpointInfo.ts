@@ -178,7 +178,7 @@ export const endpointInfoDefaultValues = {
 		},
 		{
 			get_Val: () => {
-				return { displayInterface: 'codeeditor', defaultValue: '', get_convertedValue: stringContainingQuotes_transformer };
+				return { displayInterface: 'codeeditor', defaultValue: '', get_convertedValue: string_transformer };
 			},
 			check: function (dd_rootName) {
 				if (!dd_rootName) {

@@ -444,6 +444,7 @@ export const gqlArgObjToString = (gqlArgObj) => {
 	const gqlArgObj_stringModified = gqlArgObj_string
 		.replace(/"/g, '')
 		.replace(/'/g, `"`)
+		.replace(/&quot;/g, `'`)
 		.slice(1, -1);
 	return gqlArgObj_stringModified;
 };

@@ -8,6 +8,7 @@
 	import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
 	import { parseAll, stigifyAll } from '$lib/stores/testData/testEndpoints';
 	import { createEventDispatcher, getContext } from 'svelte';
+	import { string_transformerREVERSE } from '$lib/utils/dataStructureTransformers';
 	const configuration = {
 		description: 'no description',
 		rowsLocationPossibilities: [
@@ -446,7 +447,9 @@
 		]
 	}`;
 	export let displayInterface;
+	//export let rawValue = configurationAsString;
 	export let rawValue = configurationAsString;
+
 	const dispatch = createEventDispatcher();
 
 	//let castAs //most of the times as string
@@ -478,10 +481,7 @@
 
 		Monaco = await import('monaco-editor');
 		editor = Monaco.editor.create(divEl, {
-			value:
-				rawValue.includes('~%') || rawValue.includes('%~')
-					? 'const data = '.concat(rawValue.replaceAll(`~%`, `'`).replaceAll(`%~`, `"`))
-					: 'const data = '.concat(rawValue),
+			value: 'const data = '.concat(string_transformerREVERSE(rawValue)),
 			language: 'javascript',
 			lineNumbers: 'on',
 			roundedSelection: false,
