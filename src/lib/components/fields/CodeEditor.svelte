@@ -11,7 +11,7 @@
 	import { string_transformerREVERSE } from '$lib/utils/dataStructureTransformers';
 
 	const configurationAsString = `{
-		description: 'no description',
+		description: "no description",
 		rowsLocationPossibilities: [
 			{
 				get_Val: (QMS_info) => {
