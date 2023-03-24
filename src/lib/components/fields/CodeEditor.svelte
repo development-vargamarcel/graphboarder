@@ -270,7 +270,8 @@
 			readOnly: false,
 			theme: 'vs-dark',
 			tabSize: 2,
-			formatOnType: true
+			formatOnType: true,
+			formatOnPaste: true
 		});
 		editor.onDidChangeModelContent(function (e) {
 			//	console.log('changed');
@@ -280,6 +281,9 @@
 			editor.dispose();
 		};
 	});
+	$: {
+		editor?.setValue('const data = '.concat(rawValue || '{}'));
+	}
 	const stringToJs = (string) => {
 		if (string.includes('/Function')) {
 			return parseAll(string);
