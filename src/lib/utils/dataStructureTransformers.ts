@@ -1,9 +1,14 @@
 export const string_transformer = (value) => {
+	if (typeof value !== 'string') {
+		console.warn('string_transformer: value is not a string', value)
+		return value
+	}
 	return `'${value.replaceAll(`"`, `&Prime;`).replaceAll(`'`, `&prime;`)}'`;
 };
 export const string_transformerREVERSE = (value) => {
-	if (value == undefined || value == null) {
-		return undefined
+	if (typeof value !== 'string') {
+		console.warn('string_transformer: value is not a string', value)
+		return value
 	}
 	return value.replaceAll(`&Prime;`, `"`).replaceAll(`&prime;`, `'`)
 };

@@ -50,14 +50,14 @@
 		} else {
 			if (Array.isArray(activeArgumentData.chd_dispatchValue)) {
 				value = activeArgumentData.chd_dispatchValue.join(', ');
-			} else {
+			} else if (typeof activeArgumentData.chd_dispatchValue == 'string') {
 				value = string_transformerREVERSE(
 					activeArgumentData.chd_dispatchValue || activeArgumentData.defaultValue
 				);
 			}
 		}
 
-		if (value && activeArgumentData.dd_displayInterface == 'geo') {
+		if (activeArgumentData.chd_dispatchValue && activeArgumentData.dd_displayInterface == 'geo') {
 			value = '[map]';
 		}
 
