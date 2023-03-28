@@ -39,7 +39,7 @@
 				return (
 					'{' +
 					Object.entries(obj)
-						.map(([key, value]) => `${key}: ${convertObjectToSourceCode(value)}`)
+						.map(([key, value]) => `'${key}': ${convertObjectToSourceCode(value)}`)
 						.join(', ') +
 					'}'
 				);
