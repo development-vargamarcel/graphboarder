@@ -151,7 +151,7 @@ export const getDataGivenStepsOfFields = (colInfo, row_resultData, stepsOfFields
 	// };
 
 	const handleStep = (step, colResultData) => {
-		//is undefined
+		//colResultData is undefined
 
 		if (colResultData == undefined && row_resultData?.[step] !== undefined) {
 			return row_resultData[step];
@@ -166,9 +166,7 @@ export const getDataGivenStepsOfFields = (colInfo, row_resultData, stepsOfFields
 			return row_resultData;
 		}
 
-		//is defined
-		console.log({ colResultData, step }, colResultData?.[step])
-
+		//colResultData is defined
 		if (Array.isArray(colResultData)) {
 			//!!!colResultData?.[0] in most cases is fine,but if needs be make a map,as to handle all elements of the array not only one.for count for example is perfect this way of handling,count is present only once.
 			if (colResultData && colResultData?.length == 0 && colResultData?.[0]?.[step] !== undefined) {
