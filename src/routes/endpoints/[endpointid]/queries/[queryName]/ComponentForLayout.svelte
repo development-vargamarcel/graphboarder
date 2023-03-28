@@ -299,6 +299,9 @@
 			/>
 		</div>
 	{/if}
+	<button class="btn btn-xs btn-primary ">
+		<i class="bi bi-plus-circle-fill " />
+	</button>
 </div>
 
 <slot />
