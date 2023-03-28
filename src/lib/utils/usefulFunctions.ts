@@ -178,8 +178,8 @@ export const getDataGivenStepsOfFields = (colInfo, row_resultData, stepsOfFields
 		if (colResultData && colResultData?.[step] !== undefined) {
 			return colResultData[step];
 		}
-
-		return colResultData;
+		//return colResultData;
+		return null;
 	};
 	let colResultData;
 	stepsOfFields.forEach((step) => {
