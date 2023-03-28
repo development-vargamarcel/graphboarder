@@ -9,7 +9,7 @@
 	initialGqlArgObj={{ sort: [string_transformer('configTemplate.provider.name')] }}
 	tableColsData_StoreInitialValue={[
 		{ title: 'provider name', stepsOfFields: ['endpoints', 'configTemplate', 'provider', 'name'] },
-		{ title: 'provider id', stepsOfFields: ['endpoints', 'configTemplate', 'provider', 'id'] }
+		{ title: 'provider id', stepsOfFields: ['endpoints', 'configTemplate', 'configuration'] }
 	]}
 >
 	<div class="pt-2">
