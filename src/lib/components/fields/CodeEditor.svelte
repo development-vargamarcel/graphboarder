@@ -284,12 +284,6 @@
 	$: {
 		editor?.setValue('const data = '.concat(rawValue || '{}'));
 	}
-	const stringToJs = (string) => {
-		if (string.includes('/Function')) {
-			return parseAll(string);
-		}
-		return new Function(`return ${string}`)();
-	};
 </script>
 
 <div class="flex flex-col">

@@ -24,7 +24,8 @@
 		generateTitleFromStepsOfFields,
 		getDataGivenStepsOfFields,
 		getFields_Grouped,
-		getRootType
+		getRootType,
+		stringToJs
 	} from '$lib/utils/usefulFunctions';
 	import { onDestroy, onMount, getContext, setContext } from 'svelte';
 	import { goto } from '$app/navigation';
@@ -214,6 +215,7 @@
 					getDataGivenStepsOfFields(null, queryData, ['data', 'endpoints_by_id', 'configuration'])
 				)
 			),
+			getDataGivenStepsOfFields(null, queryData, ['data', 'endpoints_by_id', 'configuration']),
 			'parseAll()'
 		);
 	}
@@ -221,11 +223,22 @@
 	let endpointConfiguration;
 
 	$: if (queryData?.data) {
-		endpointConfiguration = parseAll(
-			stigifyAll(
-				getDataGivenStepsOfFields(null, queryData, ['data', 'endpoints_by_id', 'configuration'])
-			)
-		);
+		const configurationText = getDataGivenStepsOfFields(null, queryData, [
+			'data',
+			'endpoints_by_id',
+			'configurationText'
+		]);
+		if (configurationText) {
+			console.log({ configurationText });
+			endpointConfiguration = stringToJs(configurationText);
+		} else {
+			endpointConfiguration = stringToJs(
+				stigifyAll(
+					getDataGivenStepsOfFields(null, queryData, ['data', 'endpoints_by_id', 'configuration'])
+				)
+			);
+		}
+		console.log({ endpointConfiguration });
 	}
 
 	let forceVisibleSidebar = false;

@@ -986,6 +986,33 @@ export const nodeAddDefaultFields = (node,
 }
 
 
+export const stigifyAll = (data) => {
+	return JSON.stringify(data, function (key, value) {
+		if (typeof value === "function") {
+			return "/Function(" + value.toString() + ")/";
+		}
+		return value;
+	});
+}
 
 
 
+export const parseAll = (json) => {
+	return JSON.parse(json, function (key, value) {
+		if (typeof value === "string" &&
+			value.startsWith("/Function(") &&
+			value.endsWith(")/")) {
+			value = value.substring(10, value.length - 2);
+			return (0, eval)("(" + value + ")");
+		}
+		return value;
+	});
+}
+
+
+export const stringToJs = (string) => {
+	if (string.includes('/Function') && string.includes(')/')) {
+		return parseAll(string);
+	}
+	return new Function(`return ${string}`)();
+};
