@@ -228,15 +228,18 @@
 			'endpoints_by_id',
 			'configurationText'
 		]);
-		if (configurationText) {
-			console.log({ configurationText });
-			endpointConfiguration = stringToJs(configurationText);
-		} else {
-			endpointConfiguration = stringToJs(
-				stigifyAll(
-					getDataGivenStepsOfFields(null, queryData, ['data', 'endpoints_by_id', 'configuration'])
-				)
-			);
+		const configTemplate = getDataGivenStepsOfFields(null, queryData, [
+			'data',
+			'endpoints_by_id',
+			'configTemplate',
+			'configuration'
+		]);
+
+		console.log({ configurationText });
+		endpointConfiguration = stringToJs(configurationText);
+
+		if (configTemplate) {
+			endpointConfiguration = { ...stringToJs(configTemplate), ...endpointConfiguration };
 		}
 		console.log({ endpointConfiguration });
 	}
