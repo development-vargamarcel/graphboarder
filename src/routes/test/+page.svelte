@@ -1,6 +1,7 @@
 <script>
 	import CodeEditor from './../../lib/components/fields/CodeEditor.svelte';
 	import { parseAll } from '$lib/stores/testData/testEndpoints';
+	import { objectToSourceCode } from '$lib/utils/usefulFunctions';
 
 	let text = '{ "a": 1, "b": 2 }';
 
@@ -12,44 +13,6 @@
 		console.log(testObject);
 		console.log(objectToSourceCode(testObject));
 		sourceCode = objectToSourceCode(testObject);
-	}
-
-	function objectToSourceCode(obj) {
-		// Check if the input is an object
-		if (typeof obj !== 'object' || obj === null) {
-			throw new Error('Input must be an object');
-		}
-
-		// Helper function to convert functions to strings
-		function functionToString(fn) {
-			return fn.toString();
-		}
-
-		// Recursively convert the object to source code
-		function convertObjectToSourceCode(obj) {
-			if (typeof obj === 'function') {
-				return functionToString(obj);
-			}
-
-			if (Array.isArray(obj)) {
-				return '[' + obj.map(convertObjectToSourceCode).join(', ') + ']';
-			}
-
-			if (typeof obj === 'object') {
-				return (
-					'{' +
-					Object.entries(obj)
-						.map(([key, value]) => `'${key}': ${convertObjectToSourceCode(value)}`)
-						.join(', ') +
-					'}'
-				);
-			}
-
-			// All other types are converted to string literals
-			return JSON.stringify(obj);
-		}
-
-		return convertObjectToSourceCode(obj);
 	}
 </script>
 
