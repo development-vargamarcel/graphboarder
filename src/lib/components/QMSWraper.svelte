@@ -115,6 +115,8 @@
 	// console.log('get_idField', endpointInfo.get_idField(QMS_info, schemaData));
 	//
 	//set to QMSWraperContext
+	const tableName = endpointInfo.get_tableName(QMS_info, schemaData);
+	console.log({ tableName });
 	QMSWraperContext = {
 		QMS_info,
 		QMSType,

@@ -277,6 +277,23 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			}
 			//console.warn('no typeExtraData found');
 			return null;
+		},
+		get_tableName: (QMS_info, schemaData) => {
+			const storeVal = get(store);
+			if (!storeVal || !storeVal?.tableNamePossibilities?.length > 0) {
+				return null;
+			}
+			const tableNamePossibility = storeVal.tableNamePossibilities.find((tableNamePossibility) => {
+				return tableNamePossibility.check(QMS_info, schemaData);
+			});
+
+			if (tableNamePossibility) {
+				return tableNamePossibility.get_Val(QMS_info, schemaData);
+			}
+			console.warn('no tableName found');
+
+			return null;
 		}
+
 	}
 }
