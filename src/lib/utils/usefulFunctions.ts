@@ -151,22 +151,32 @@ export const getDataGivenStepsOfFields = (colInfo, row_resultData, stepsOfFields
 	// };
 
 	const handleStep = (step, colResultData) => {
+		console.log('ssss', step, colResultData)
 		//colResultData is undefined
-
-		if (colResultData == undefined && row_resultData?.[step] !== undefined) {
-			return row_resultData[step];
+		if (colResultData == undefined && row_resultData == null) {
+			return null
 		}
 		if (colResultData == undefined && Array.isArray(row_resultData)) {
 			return row_resultData[0];
 		}
-		if (colResultData == undefined && !Array.isArray(row_resultData) && row_resultData[step] == null) {
+		if (colResultData !== undefined && colResultData == null) {
 			return null
 		}
+		if (colResultData == undefined && row_resultData?.[step] !== undefined) {
+			console.log('rrr', colResultData, typeof colResultData == undefined)
+			return row_resultData[step];
+		}
 		if (colResultData == undefined) {
-			return row_resultData;
+			return row_resultData
 		}
 
 		//colResultData is defined
+
+		if (colResultData == null) {
+			return null
+		}
+
+		console.log({ colResultData, step }, colResultData?.[step])
 		if (Array.isArray(colResultData)) {
 			//!!!colResultData?.[0] in most cases is fine,but if needs be make a map,as to handle all elements of the array not only one.for count for example is perfect this way of handling,count is present only once.
 			if (colResultData && colResultData?.length == 0 && colResultData?.[0]?.[step] !== undefined) {
@@ -184,13 +194,18 @@ export const getDataGivenStepsOfFields = (colInfo, row_resultData, stepsOfFields
 		if (colResultData && colResultData?.[step] !== undefined) {
 			return colResultData[step];
 		}
-
 		return colResultData;
 	};
 	let colResultData;
-	stepsOfFields.forEach((step) => {
+	console.log('---stepsOfFields---', stepsOfFields, colResultData)
+	stepsOfFields.every((step) => {
+		//console.log('before', step, colResultData)
 		colResultData = handleStep(step, colResultData);
+		//console.log('after', step, colResultData)
+		return true
 	});
+	console.log('final', colResultData)
+
 	return colResultData;
 };
 
