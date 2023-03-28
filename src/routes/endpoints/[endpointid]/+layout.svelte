@@ -10,7 +10,13 @@
 	import SetEndpointConfigurationToContext from '$lib/components/SetEndpointConfigurationToContext.svelte';
 </script>
 
-<QMSWraper QMSName="endpoints_by_id" initialGqlArgObj={{ id: string_transformer(endpointid) }}>
+<QMSWraper
+	QMSName="endpoints_by_id"
+	initialGqlArgObj={{ id: string_transformer(endpointid) }}
+	tableColsData_StoreInitialValue={[
+		{ title: 'configTemplate', stepsOfFields: ['endpoints', 'configTemplate', 'configuration'] }
+	]}
+>
 	<SetEndpointConfigurationToContext QMSName="endpoints_by_id">
 		<slot><!-- optional fallback --></slot>
 	</SetEndpointConfigurationToContext>
