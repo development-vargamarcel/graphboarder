@@ -296,7 +296,9 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			console.warn('no tableName found');
 
 			return null;
-		}
+		},
+
+
 
 	}
 }
