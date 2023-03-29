@@ -300,6 +300,10 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 		get_qmsNameForObjective: function (QMS_info, schemaData, qmsObjective) {
 			const thisContext = this
 			const tableName = this.get_tableName(QMS_info, schemaData);
+			if (!tableName) {
+				console.warn('no qmsNameForObjective found because tableName is null');
+				return null
+			}
 			const storeVal = get(store);
 			if (!storeVal || !storeVal?.qmsNameForObjectivePossibilities?.length > 0) {
 				return null;
