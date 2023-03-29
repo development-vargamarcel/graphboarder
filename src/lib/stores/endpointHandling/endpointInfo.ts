@@ -297,7 +297,25 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 
 			return null;
 		},
+		get_qmsNameForObjective: function (QMS_info, schemaData, qmsObjective) {
+			const thisContext = this
+			const tableName = this.get_tableName(QMS_info, schemaData);
+			const storeVal = get(store);
+			if (!storeVal || !storeVal?.qmsNameForObjectivePossibilities?.length > 0) {
+				return null;
+			}
+			const qmsNameForObjectivePossibility = storeVal.qmsNameForObjectivePossibilities.find((qmsNameForObjectivePossibility) => {
+				return qmsNameForObjectivePossibility.check({ QMS_info, schemaData, thisContext, tableName, qmsObjective });
+			});
 
+			if (qmsNameForObjectivePossibility) {
+				return qmsNameForObjectivePossibility.get_Val({ QMS_info, schemaData, thisContext, tableName, qmsObjective });
+			}
+			console.warn('no qmsNameForObjective found');
+
+			return null;
+
+		}
 
 
 	}

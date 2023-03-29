@@ -119,6 +119,9 @@
 	console.log({ tableName });
 	const thisContext = endpointInfo.get_thisContext();
 	console.log({ thisContext });
+	const objective = 'getOne';
+	const qmsNameForObjective = endpointInfo.get_qmsNameForObjective(QMS_info, schemaData, objective);
+	console.log({ qmsNameForObjective }, objective);
 
 	QMSWraperContext = {
 		QMS_info,
