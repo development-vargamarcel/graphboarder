@@ -203,6 +203,9 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 
 	return {
 		...store,
+		get_thisContext: function () {
+			return this
+		},
 		smartSet: (newEndpoint) => {
 			store.set({ ...endpointInfoDefaultValues, ...newEndpoint });
 		},

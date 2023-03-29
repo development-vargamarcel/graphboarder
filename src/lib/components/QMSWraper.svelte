@@ -117,6 +117,9 @@
 	//set to QMSWraperContext
 	const tableName = endpointInfo.get_tableName(QMS_info, schemaData);
 	console.log({ tableName });
+	const thisContext = endpointInfo.get_thisContext();
+	console.log({ thisContext });
+
 	QMSWraperContext = {
 		QMS_info,
 		QMSType,
