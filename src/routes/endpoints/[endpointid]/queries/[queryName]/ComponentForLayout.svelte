@@ -7,7 +7,6 @@
 	import Table from '$lib/components/Table.svelte';
 
 	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
-	let queryName = $page.params.queryName;
 
 	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 	const {
@@ -18,7 +17,8 @@
 		QMS_bodyPart_StoreDerived,
 		QMS_bodyPartsUnifier_StoreDerived,
 		paginationOptions,
-		paginationState
+		paginationState,
+		QMSName
 	} = QMSWraperContext;
 	console.log({ QMS_bodyPart_StoreDerived_rowsCount }, { QMSWraperContext });
 	import {
@@ -38,7 +38,7 @@
 		document.getElementById('my-drawer-3')?.click();
 	});
 
-	let currentQMS_info = schemaData.get_QMS_Field(queryName, 'query', schemaData);
+	export let currentQMS_info = schemaData.get_QMS_Field(QMSName, 'query', schemaData);
 	let dd_relatedRoot = getRootType(null, currentQMS_info.dd_rootName, schemaData);
 	if (!currentQMS_info) {
 		goto('/queries');
@@ -73,13 +73,13 @@
 			}) ||
 			paginationTypeInfo?.name == 'pageBased'
 		) {
-			paginationState.nextPage(queryData?.data, queryName, 'query');
+			paginationState.nextPage(queryData?.data, QMSName, 'query');
 		} else {
 			loaded();
 			complete();
 		}
 		// if (rows.length > 0) {
-		// 	paginationState.nextPage(queryData?.data, queryName, 'query');
+		// 	paginationState.nextPage(queryData?.data, QMSName, 'query');
 		// }
 	}
 	const runQuery = (queryBody) => {
@@ -178,7 +178,7 @@
 				title: `col-${Math.floor(Math.random() * 200)},${generateTitleFromStepsOfFields(
 					stepsOfFields
 				)}`,
-				stepsOfFields: [queryName, ...stepsOfFields]
+				stepsOfFields: [QMSName, ...stepsOfFields]
 			};
 
 			tableColsData_Store.addColumn(tableColData);
@@ -242,7 +242,7 @@
 								{index}
 								{type}
 								template="columnAddDisplay"
-								stepsOfFields={[queryName]}
+								stepsOfFields={[QMSName]}
 								depth={0}
 							/>
 						{/each}

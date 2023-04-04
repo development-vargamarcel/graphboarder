@@ -7,6 +7,8 @@
 	import ActiveArgumentsGroup_addFilterAndSortingButtonContent from '$lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte';
 	import Modal from './Modal.svelte';
 	import { getFields_Grouped, nodeAddDefaultFields } from '$lib/utils/usefulFunctions';
+	import ComponentForLayout from '../../routes/endpoints/[endpointid]/queries/[queryName]/ComponentForLayout.svelte';
+	import QmsWraper from './QMSWraper.svelte';
 
 	const dispatch = createEventDispatcher();
 	export let nodes;
@@ -259,16 +261,9 @@
 				</p>
 			</div>
 
-			{#if node?.isMain}
-				<btn
-					class="btn btn-xs btn-info normal-case  mb-6 flex-1"
-					on:click={() => {
-						nodeAddDefaultFields(node, prefix, group, activeArgumentsDataGrouped_Store, schemaData);
-					}}
-				>
-					addDefaultFields
-				</btn>
-			{/if}
+			<div>
+				{QMS_info.dd_displayName}
+			</div>
 		</div>
 	</Modal>{/if}
 
