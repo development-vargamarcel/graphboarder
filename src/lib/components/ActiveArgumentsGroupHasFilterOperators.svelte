@@ -10,6 +10,7 @@
 	import { getFields_Grouped, nodeAddDefaultFields } from '$lib/utils/usefulFunctions';
 	import ComponentForLayout from '../../routes/endpoints/[endpointid]/queries/[queryName]/ComponentForLayout.svelte';
 	import QmsWraper from './QMSWraper.svelte';
+	import SelectItem from './SelectItem.svelte';
 
 	const dispatch = createEventDispatcher();
 	export let nodes;
@@ -143,16 +144,64 @@
 	$: {
 		if (showSelectModal) {
 			let fieldName = node?.stepsOfFields.slice(1)[0];
+			let argName = node?.stepsOfFields[0];
 			console.log(node?.stepsOfFields, fieldName);
 			console.log(argsInfo);
 			console.log(
 				schemaData
 					.get_rootType(
 						null,
-						argsInfo.find((arg) => arg.dd_displayName == node?.stepsOfFields[0]).dd_rootName,
+						argsInfo.find((arg) => arg.dd_displayName == argName).dd_rootName,
 						schemaData
 					)
 					.inputFields.find((field) => field.dd_displayName == fieldName)
+			);
+			console.log(
+				schemaData.get_rootType(
+					null,
+					schemaData
+						.get_rootType(
+							null,
+							argsInfo.find((arg) => arg.dd_displayName == argName).dd_rootName,
+							schemaData
+						)
+						.inputFields.find((field) => field.dd_displayName == fieldName).dd_rootName,
+					schemaData
+				)
+			);
+			console.log(
+				endpointInfo.get_tableName(
+					schemaData.get_rootType(
+						null,
+						schemaData
+							.get_rootType(
+								null,
+								argsInfo.find((arg) => arg.dd_displayName == argName).dd_rootName,
+								schemaData
+							)
+							.inputFields.find((field) => field.dd_displayName == fieldName).dd_rootName,
+						schemaData
+					),
+					schemaData
+				)
+			);
+
+			console.log(
+				endpointInfo.get_qmsNameForObjective(
+					schemaData.get_rootType(
+						null,
+						schemaData
+							.get_rootType(
+								null,
+								argsInfo.find((arg) => arg.dd_displayName == argName).dd_rootName,
+								schemaData
+							)
+							.inputFields.find((field) => field.dd_displayName == fieldName).dd_rootName,
+						schemaData
+					),
+					schemaData,
+					'getMany'
+				)
 			);
 		}
 	}
@@ -279,7 +328,29 @@
 			</div>
 
 			<div>
-				{node?.stepsOfFields.slice(1)}
+				<SelectItem
+					QMS_info={schemaData.get_rootType(
+						null,
+						endpointInfo.get_tableName(
+							schemaData.get_rootType(
+								null,
+								schemaData
+									.get_rootType(
+										null,
+										argsInfo.find((arg) => arg.dd_displayName == node?.stepsOfFields[0])
+											.dd_rootName,
+										schemaData
+									)
+									.inputFields.find(
+										(field) => field.dd_displayName == node?.stepsOfFields.slice(1)[0]
+									).dd_rootName,
+								schemaData
+							),
+							schemaData
+						),
+						schemaData
+					)}
+				/>
 			</div>
 		</div>
 	</Modal>{/if}
