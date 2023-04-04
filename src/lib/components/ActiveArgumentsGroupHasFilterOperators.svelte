@@ -1,4 +1,5 @@
 <script>
+	import { getRootType } from './../utils/usefulFunctions.ts';
 	//!!! chnage bonded to item
 	import { flip } from 'svelte/animate';
 	import { dndzone, SHADOW_PLACEHOLDER_ITEM_ID } from 'svelte-dnd-action';
@@ -139,6 +140,22 @@
 		nodeAddDefaultFields(node, prefix, group, activeArgumentsDataGrouped_Store, schemaData);
 	}
 	let showSelectModal = false;
+	$: {
+		if (showSelectModal) {
+			let fieldName = node?.stepsOfFields.slice(1)[0];
+			console.log(node?.stepsOfFields, fieldName);
+			console.log(argsInfo);
+			console.log(
+				schemaData
+					.get_rootType(
+						null,
+						argsInfo.find((arg) => arg.dd_displayName == node?.stepsOfFields[0]).dd_rootName,
+						schemaData
+					)
+					.inputFields.find((field) => field.dd_displayName == fieldName)
+			);
+		}
+	}
 </script>
 
 {#if showModal}
@@ -262,7 +279,7 @@
 			</div>
 
 			<div>
-				{QMS_info.dd_displayName}
+				{node?.stepsOfFields.slice(1)}
 			</div>
 		</div>
 	</Modal>{/if}
