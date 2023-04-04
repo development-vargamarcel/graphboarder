@@ -136,6 +136,7 @@
 	if (node?.addDefaultFields || (node.isMain && addDefaultFields)) {
 		nodeAddDefaultFields(node, prefix, group, activeArgumentsDataGrouped_Store, schemaData);
 	}
+	let showSelectModal = false;
 </script>
 
 {#if showModal}
@@ -242,6 +243,32 @@
 					{node}
 				/>
 			</div>
+		</div>
+	</Modal>{/if}
+{#if showSelectModal}
+	<Modal
+		showApplyBtn={false}
+		on:cancel={() => {
+			showSelectModal = false;
+		}}
+	>
+		<div class="flex flex-col ">
+			<div class="w-full text-lg text-center  mb-2 ">
+				<p class="badge badge-info font-bold">
+					{groupDisplayTitle}
+				</p>
+			</div>
+
+			{#if node?.isMain}
+				<btn
+					class="btn btn-xs btn-info normal-case  mb-6 flex-1"
+					on:click={() => {
+						nodeAddDefaultFields(node, prefix, group, activeArgumentsDataGrouped_Store, schemaData);
+					}}
+				>
+					addDefaultFields
+				</btn>
+			{/if}
 		</div>
 	</Modal>{/if}
 
@@ -368,6 +395,12 @@
 					</sup>
 				{/if}
 			</div>
+			<button
+				class="btn btn-xs normal-case"
+				on:click={() => {
+					showSelectModal = true;
+				}}>select</button
+			>
 		{/if}
 		<div class="flex ">
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
