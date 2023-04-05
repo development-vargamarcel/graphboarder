@@ -141,77 +141,16 @@
 		nodeAddDefaultFields(node, prefix, group, activeArgumentsDataGrouped_Store, schemaData);
 	}
 	let showSelectModal = false;
-	let fieldName = node?.stepsOfFields
-		? node?.stepsOfFields.slice(1)[0]
-		: parent_stepsOfFields?.slice(1)?.[0];
-	let argName = node?.stepsOfFields ? node?.stepsOfFields[0] : parent_stepsOfFields?.[0];
-
-	$: {
-		if (showSelectModal) {
-			fieldName = node?.stepsOfFields
-				? node?.stepsOfFields.slice(1)[0]
-				: parent_stepsOfFields?.slice(1)?.[0];
-			argName = node?.stepsOfFields ? node?.stepsOfFields[0] : parent_stepsOfFields?.[0];
-			console.log(node?.stepsOfFields, fieldName);
-			console.log(argsInfo);
-			console.log(
-				schemaData
-					.get_rootType(
-						null,
-						argsInfo.find((arg) => arg.dd_displayName == argName).dd_rootName,
-						schemaData
-					)
-					.inputFields.find((field) => field.dd_displayName == fieldName)
-			);
-			console.log(
-				schemaData.get_rootType(
-					null,
-					schemaData
-						.get_rootType(
-							null,
-							argsInfo.find((arg) => arg.dd_displayName == argName).dd_rootName,
-							schemaData
-						)
-						.inputFields.find((field) => field.dd_displayName == fieldName).dd_rootName,
-					schemaData
-				)
-			);
-			console.log(
-				endpointInfo.get_tableName(
-					schemaData.get_rootType(
-						null,
-						schemaData
-							.get_rootType(
-								null,
-								argsInfo.find((arg) => arg.dd_displayName == argName).dd_rootName,
-								schemaData
-							)
-							.inputFields.find((field) => field.dd_displayName == fieldName).dd_rootName,
-						schemaData
-					),
-					schemaData
-				)
-			);
-
-			console.log(
-				endpointInfo.get_qmsNameForObjective(
-					schemaData.get_rootType(
-						null,
-						schemaData
-							.get_rootType(
-								null,
-								argsInfo.find((arg) => arg.dd_displayName == argName).dd_rootName,
-								schemaData
-							)
-							.inputFields.find((field) => field.dd_displayName == fieldName).dd_rootName,
-						schemaData
-					),
-					schemaData,
-					'getMany'
-				)
-			);
-		}
-	}
+	const getFieldName = () => {
+		return node?.stepsOfFields
+			? node?.stepsOfFields.slice(1)[0]
+			: parent_stepsOfFields?.slice(1)?.[0];
+	};
+	const getArgName = () => {
+		return node?.stepsOfFields ? node?.stepsOfFields[0] : parent_stepsOfFields?.[0];
+	};
+	let fieldName = getFieldName();
+	let argName = getArgName();
 </script>
 
 {#if showModal}
