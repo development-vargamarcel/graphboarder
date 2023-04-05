@@ -15,7 +15,7 @@
 	QMSType="query"
 	tableColsData_StoreInitialValue={[]}
 >
-	<ComponentForLayout />
+	<ComponentForLayout on:rowClicked />
 </QmsWraper>;
 
 <!-- currentQMS_info={endpointInfo.get_qmsNameForObjective(QMS_info, schemaData, 'getMany')} -->

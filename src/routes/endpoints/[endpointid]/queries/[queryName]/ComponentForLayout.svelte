@@ -5,7 +5,7 @@
 	const schemaData = QMSMainWraperContext?.schemaData;
 	import { page } from '$app/stores';
 	import Table from '$lib/components/Table.svelte';
-
+	const dispatch = createEventDispatcher();
 	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
 
 	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
@@ -27,7 +27,7 @@
 		getFields_Grouped,
 		getRootType
 	} from '$lib/utils/usefulFunctions';
-	import { onDestroy, onMount, getContext } from 'svelte';
+	import { onDestroy, onMount, getContext, createEventDispatcher } from 'svelte';
 	import { goto } from '$app/navigation';
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
@@ -372,7 +372,7 @@
 		on:hideColumn={(e) => {
 			hideColumn(e);
 		}}
-		on:clickedOnRow={(e) => {}}
+		on:rowClicked
 	/>
 </div>
 <div />

@@ -349,7 +349,7 @@
 				on:hideColumn={(e) => {
 					hideColumn(e);
 				}}
-				on:clickedOnRow={(e) => {}}
+				on:rowClicked={(e) => {}}
 			/>
 		</div>
 	{/if}

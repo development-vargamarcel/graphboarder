@@ -322,7 +322,10 @@
 	</Modal>{/if}
 {#if showSelectModal}
 	<Modal
-		showApplyBtn={false}
+		showApplyBtn={true}
+		on:apply={() => {
+			showSelectModal = false;
+		}}
 		on:cancel={() => {
 			showSelectModal = false;
 		}}
@@ -336,6 +339,9 @@
 
 			<div>
 				<SelectItem
+					on:rowClicked={(e) => {
+						console.log(e.detail);
+					}}
 					QMS_info={schemaData.get_rootType(
 						null,
 						endpointInfo.get_tableName(

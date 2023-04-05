@@ -19,6 +19,7 @@
 	const QMS_info = QMSWraperContext?.QMS_info;
 	let idColName = endpointInfo.get_idField(QMS_info, schemaData)?.dd_displayName;
 	export let colsData = [];
+	export let showCheckBox = false;
 	let visibleColsData = [];
 	let visibleColumns = [];
 	$: {
