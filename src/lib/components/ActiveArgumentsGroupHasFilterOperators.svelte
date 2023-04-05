@@ -141,10 +141,17 @@
 		nodeAddDefaultFields(node, prefix, group, activeArgumentsDataGrouped_Store, schemaData);
 	}
 	let showSelectModal = false;
+	let fieldName = node?.stepsOfFields
+		? node?.stepsOfFields.slice(1)[0]
+		: parent_stepsOfFields?.slice(1)?.[0];
+	let argName = node?.stepsOfFields ? node?.stepsOfFields[0] : parent_stepsOfFields?.[0];
+
 	$: {
 		if (showSelectModal) {
-			let fieldName = node?.stepsOfFields.slice(1)[0];
-			let argName = node?.stepsOfFields[0];
+			fieldName = node?.stepsOfFields
+				? node?.stepsOfFields.slice(1)[0]
+				: parent_stepsOfFields?.slice(1)?.[0];
+			argName = node?.stepsOfFields ? node?.stepsOfFields[0] : parent_stepsOfFields?.[0];
 			console.log(node?.stepsOfFields, fieldName);
 			console.log(argsInfo);
 			console.log(
@@ -337,13 +344,10 @@
 								schemaData
 									.get_rootType(
 										null,
-										argsInfo.find((arg) => arg.dd_displayName == node?.stepsOfFields[0])
-											.dd_rootName,
+										argsInfo.find((arg) => arg.dd_displayName == argName).dd_rootName,
 										schemaData
 									)
-									.inputFields.find(
-										(field) => field.dd_displayName == node?.stepsOfFields.slice(1)[0]
-									).dd_rootName,
+									.inputFields.find((field) => field.dd_displayName == fieldName).dd_rootName,
 								schemaData
 							),
 							schemaData
