@@ -11,6 +11,7 @@
 	import InfiniteLoading from 'svelte-infinite-loading';
 	import { createEventDispatcher, getContext, onMount } from 'svelte';
 	import ColumnInfo from '$lib/components/ColumnInfo.svelte';
+	import TanTable from './TanTable.svelte';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	let QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 
@@ -137,3 +138,8 @@
 	{/if}
 	<slot name="itemDisplay" />
 </div>
+{#key colsData}
+	{#if rows.length > 0}
+		<TanTable bind:data={rows} cols={colsData} {idColName} on:hideColumn />
+	{/if}
+{/key}

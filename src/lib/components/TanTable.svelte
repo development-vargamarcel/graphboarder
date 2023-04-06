@@ -2,6 +2,10 @@
 	import { writable } from 'svelte/store';
 	import { createSvelteTable, flexRender, getCoreRowModel } from '@tanstack/svelte-table';
 	import type { ColumnDef, TableOptions } from '@tanstack/table-core/src/types';
+	import { formatData, getTableCellData } from '$lib/utils/usefulFunctions';
+	import ColumnInfo from './ColumnInfo.svelte';
+	import { createEventDispatcher } from 'svelte';
+	export let idColName;
 	type Person = {
 		firstName: string;
 		lastName: string;
@@ -10,92 +14,96 @@
 		status: string;
 		progress: number;
 	};
-	const defaultData: Person[] = [
-		{
-			firstName: 'tanner',
-			lastName: 'linsley',
-			age: 24,
-			visits: 100,
-			status: 'In Relationship',
-			progress: 50
-		},
-		{
-			firstName: 'tandy',
-			lastName: 'miller',
-			age: 40,
-			visits: 40,
-			status: 'Single',
-			progress: 80
-		},
-		{
-			firstName: 'joe',
-			lastName: 'dirte',
-			age: 45,
-			visits: 20,
-			status: 'Complicated',
-			progress: 10
-		}
-	];
-	const defaultColumns: ColumnDef<Person>[] = [
-		{
-			accessorKey: 'firstName',
-			cell: (info) => info.getValue(),
-			footer: (info) => info.column.id
-		},
-		{
-			accessorFn: (row) => row.lastName,
-			id: 'lastName',
-			cell: (info) => info.getValue(),
-			header: () => 'Last Name',
-			footer: (info) => info.column.id
-		},
-		{
-			accessorKey: 'age',
-			header: () => 'Age',
-			footer: (info) => info.column.id
-		},
-		{
-			accessorKey: 'visits',
-			header: () => 'Visits',
-			footer: (info) => info.column.id
-		},
-		{
-			accessorKey: 'status',
-			header: 'Status',
-			footer: (info) => info.column.id
-		},
-		{
-			accessorKey: 'progress',
-			header: 'Profile Progress',
-			footer: (info) => info.column.id
-		}
-	];
+	export let data;
+	export let cols = [];
+	let columns: ColumnDef<Person>[] = cols.map((col) => {
+		return {
+			...col,
+			accessorFn: (row) => formatData(getTableCellData(row, col), 40, true),
+			header: col.title,
+			footer: col.title
+		};
+	});
+	$: {
+		columns = cols.map((col) => {
+			return {
+				accessorFn: (row) => formatData(getTableCellData(row, col), 40, true),
+				header: col.title,
+				footer: col.title
+			};
+		});
+	}
+
 	const options = writable<TableOptions<Person>>({
-		data: defaultData,
-		columns: defaultColumns,
+		data: data,
+		columns: columns,
 		getCoreRowModel: getCoreRowModel()
 	});
 	const rerender = () => {
 		options.update((options) => ({
 			...options,
-			data: defaultData
+			data: data
 		}));
 	};
 	const table = createSvelteTable(options);
+	const dispatch = createEventDispatcher();
 </script>
 
-<div class="p-2">
-	<table>
-		<thead>
+<div class=" h-[80vh] overscroll-contain	 overflow-y-auto rounded-box pb-32 ">
+	<table class="table table-compact w-full rounded-none">
+		<thead class="sticky top-0 z-20">
 			{#each $table.getHeaderGroups() as headerGroup}
-				<tr>
+				<tr class="sticky top-0 z-20 ">
+					<th>#</th>
 					{#each headerGroup.headers as header}
-						<th>
-							{#if !header.isPlaceholder}
-								<svelte:component
-									this={flexRender(header.column.columnDef.header, header.getContext())}
-								/>
-							{/if}
+						<th class="normal-case ">
+							<div class="dropdown dropdown-end  ">
+								<!-- svelte-ignore a11y-label-has-associated-control -->
+								<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+								<label tabindex="0" class="cursor-pointer ">
+									<div class="flex space-x-2 hover:text-primary rounded-box ">
+										<div
+											class={idColName == header.column.columnDef.header
+												? ' underline decoration-dotted'
+												: ''}
+										>
+											{#if !header.isPlaceholder}
+												<svelte:component
+													this={flexRender(header.column.columnDef.header, header.getContext())}
+												/>
+											{/if}
+										</div>
+										<div class="bi bi-chevron-down " />
+									</div>
+								</label>
+								<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+								<div
+									tabindex="0"
+									class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl"
+								>
+									<div
+										class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2"
+									>
+										<div class="w-full   p-2 rounded-box flex flex-col space-y-2">
+											<div
+												class="w-full pr-2 hover:text-primary cursor-pointer max-w-xs  md:max-w-sm overflow-x-auto"
+											>
+												<ColumnInfo stepsOfFields={header.column.columnDef.stepsOfFields} />
+												<!-- {colsData[index].stepsOfFields.join(' > ')} -->
+											</div>
+											<!-- svelte-ignore a11y-click-events-have-key-events -->
+											<div
+												class="w-full pr-2 hover:text-primary cursor-pointer "
+												on:click={() => {
+													dispatch('hideColumn', { column: header.column.columnDef.header });
+												}}
+											>
+												hide field
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</th>
 					{/each}
 				</tr>
@@ -104,6 +112,7 @@
 		<tbody>
 			{#each $table.getRowModel().rows as row}
 				<tr>
+					<td>{parseInt(row.id) + 1}</td>
 					{#each row.getVisibleCells() as cell}
 						<td>
 							<svelte:component this={flexRender(cell.column.columnDef.cell, cell.getContext())} />
@@ -112,7 +121,7 @@
 				</tr>
 			{/each}
 		</tbody>
-		<tfoot>
+		<!-- <tfoot>
 			{#each $table.getFooterGroups() as footerGroup}
 				<tr>
 					{#each footerGroup.headers as header}
@@ -126,7 +135,7 @@
 					{/each}
 				</tr>
 			{/each}
-		</tfoot>
+		</tfoot> -->
 	</table>
 	<div class="h-4" />
 	<button on:click={() => rerender()} class="border p-2"> Rerender </button>

@@ -164,6 +164,7 @@
 	}
 
 	const hideColumn = (e) => {
+		console.log('hideColumn', e.detail.column);
 		tableColsData_Store.removeColumn(e.detail.column);
 	};
 	tableColsData_Store.subscribe((data) => {
