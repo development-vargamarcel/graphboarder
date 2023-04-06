@@ -47,6 +47,14 @@
 	};
 	const table = createSvelteTable(options);
 	const dispatch = createEventDispatcher();
+	$: {
+		options.update((options) => ({
+			...options,
+			data: data
+		}));
+		console.log({ data });
+	}
+	$: console.log(table, '$table', $table);
 </script>
 
 <div class=" h-[80vh] overscroll-contain	 overflow-y-auto rounded-box pb-32 ">
