@@ -138,8 +138,7 @@
 	{/if}
 	<slot name="itemDisplay" />
 </div>
-{#key colsData}
-	{#if rows.length > 0}
-		<TanTable bind:data={rows} cols={colsData} {idColName} on:hideColumn />
-	{/if}
-{/key}
+
+{#if rows.length > 0}
+	<TanTable bind:data={rows} cols={colsData} {idColName} on:hideColumn />
+{/if}

@@ -54,7 +54,7 @@
 		}));
 		console.log({ data });
 	}
-	$: console.log(table, '$table', $table);
+	$: console.log({ table }, '$table', $table);
 </script>
 
 <div class=" h-[80vh] overscroll-contain	 overflow-y-auto rounded-box pb-32 ">
@@ -118,12 +118,14 @@
 			{/each}
 		</thead>
 		<tbody>
-			{#each $table.getRowModel().rows as row}
+			{#each $table.getRowModel().rows as row, i (row.id)}
 				<tr>
 					<td>{parseInt(row.id) + 1}</td>
+
 					{#each row.getVisibleCells() as cell}
 						<td>
-							<svelte:component this={flexRender(cell.column.columnDef.cell, cell.getContext())} />
+							{cell.renderValue()}
+							<!-- <svelte:component this={flexRender(cell.column.columnDef.cell, cell.getContext())} /> -->
 						</td>
 					{/each}
 				</tr>
