@@ -16,22 +16,20 @@
 	};
 	export let data;
 	export let cols = [];
-	let columns: ColumnDef<Person>[] = cols.map((col) => {
-		return {
-			...col,
-			accessorFn: (row) => formatData(getTableCellData(row, col), 40, true),
-			header: col.title,
-			footer: col.title
-		};
-	});
-	$: {
-		columns = cols.map((col) => {
+	const getColumns = (cols) => {
+		let columns: ColumnDef<Person>[] = cols.map((col) => {
 			return {
+				...col,
 				accessorFn: (row) => formatData(getTableCellData(row, col), 40, true),
 				header: col.title,
 				footer: col.title
 			};
 		});
+		return columns;
+	};
+	let columns: ColumnDef<Person>[] = getColumns(cols);
+	$: {
+		columns = getColumns(cols);
 	}
 
 	const options = writable<TableOptions<Person>>({
@@ -47,12 +45,16 @@
 	};
 	const table = createSvelteTable(options);
 	const dispatch = createEventDispatcher();
+
 	$: {
+		columns = getColumns(cols);
+
 		options.update((options) => ({
 			...options,
-			data: data
+			data: data,
+			columns: columns
 		}));
-		console.log({ data });
+		console.log({ data, cols });
 	}
 	$: console.log({ table }, '$table', $table);
 </script>
@@ -62,6 +64,11 @@
 		<thead class="sticky top-0 z-20">
 			{#each $table.getHeaderGroups() as headerGroup}
 				<tr class="sticky top-0 z-20 ">
+					<th>
+						<label>
+							<input type="checkbox" class="checkbox" />
+						</label>
+					</th>
 					<th>#</th>
 					{#each headerGroup.headers as header}
 						<th class="normal-case ">
@@ -120,6 +127,11 @@
 		<tbody>
 			{#each $table.getRowModel().rows as row, i (row.id)}
 				<tr class="bg-base-100 hover:bg-base-300 cursor-pointer hover z-0">
+					<th class="z-0" on:click|stopPropagation={() => {}}>
+						<label>
+							<input type="checkbox" class="checkbox" />
+						</label>
+					</th>
 					<td>{parseInt(row.id) + 1}</td>
 
 					{#each row.getVisibleCells() as cell}
