@@ -119,7 +119,7 @@
 		</thead>
 		<tbody>
 			{#each $table.getRowModel().rows as row, i (row.id)}
-				<tr>
+				<tr class="bg-base-100 hover:bg-base-300 cursor-pointer hover z-0">
 					<td>{parseInt(row.id) + 1}</td>
 
 					{#each row.getVisibleCells() as cell}
