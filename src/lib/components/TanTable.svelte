@@ -5,10 +5,11 @@
 	import { formatData, getTableCellData } from '$lib/utils/usefulFunctions';
 	import ColumnInfo from './ColumnInfo.svelte';
 	import { createEventDispatcher } from 'svelte';
-	export let idColName;
+	const dispatch = createEventDispatcher();
 
-	export let enableMultiRowSelectionState = false;
-	export let enableRowSelectionState = false;
+	export let idColName;
+	export let enableMultiRowSelectionState = true;
+	export let enableRowSelectionState = true;
 	type Person = {
 		firstName: string;
 		lastName: string;
@@ -50,6 +51,7 @@
 		}));
 		console.log({ rowSelection, updater });
 		console.log($table.getSelectedRowModel());
+		dispatch('rowSelectionChange', { ...$table.getSelectedRowModel() });
 	};
 
 	const options = writable<TableOptions<Person>>({
@@ -67,7 +69,6 @@
 		}));
 	};
 	const table = createSvelteTable(options);
-	const dispatch = createEventDispatcher();
 
 	$: {
 		columns = getColumns(cols);
@@ -153,21 +154,22 @@
 			{#each $table.getRowModel().rows as row, i (row.id)}
 				<tr class="bg-base-100 hover:bg-base-300 cursor-pointer hover z-0">
 					{#if enableRowSelectionState}
-					<th class="z-0" on:click|stopPropagation={() => {}}>
-						<label>
-							<input
-								name="rows"
-								type={row.getCanMultiSelect() ? 'checkbox' : 'radio'}
-								class={row.getCanMultiSelect() ? 'checkbox' : 'radio'}
-								on:change={(e) => {
-									const toggleSelectedHandler = row.getToggleSelectedHandler();
-									toggleSelectedHandler(e);
+						<th class="z-0" on:click|stopPropagation={() => {}}>
+							<label>
+								<input
+									name="rows"
+									type={row.getCanMultiSelect() ? 'checkbox' : 'radio'}
+									class={row.getCanMultiSelect() ? 'checkbox' : 'radio'}
+									on:change={(e) => {
+										const toggleSelectedHandler = row.getToggleSelectedHandler();
+										toggleSelectedHandler(e);
 
-									//console.log($table.getSelectedRowModel());
-								}}
-							/>
-						</label>
-					</th>					{/if}
+										//console.log($table.getSelectedRowModel());
+									}}
+								/>
+							</label>
+						</th>
+					{/if}
 
 					<td>{parseInt(row.id) + 1}</td>
 
