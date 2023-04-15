@@ -49,7 +49,7 @@
 				rowSelection
 			}
 		}));
-		console.log({ rowSelection, updater });
+
 		console.log($table.getSelectedRowModel());
 		dispatch('rowSelectionChange', { ...$table.getSelectedRowModel() });
 	};
