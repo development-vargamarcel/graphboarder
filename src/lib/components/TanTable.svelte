@@ -6,6 +6,9 @@
 	import ColumnInfo from './ColumnInfo.svelte';
 	import { createEventDispatcher } from 'svelte';
 	export let idColName;
+
+	export let enableMultiRowSelectionState = false;
+	export let enableRowSelectionState = false;
 	type Person = {
 		firstName: string;
 		lastName: string;
@@ -31,11 +34,31 @@
 	$: {
 		columns = getColumns(cols);
 	}
+	let rowSelection = {};
+	const setRowSelection = (updater) => {
+		if (updater instanceof Function) {
+			rowSelection = updater(rowSelection);
+		} else {
+			rowSelection = updater;
+		}
+		options.update((old) => ({
+			...old,
+			state: {
+				...old.state,
+				rowSelection
+			}
+		}));
+		console.log({ rowSelection, updater });
+		console.log($table.getSelectedRowModel());
+	};
 
 	const options = writable<TableOptions<Person>>({
 		data: data,
 		columns: columns,
-		getCoreRowModel: getCoreRowModel()
+		getCoreRowModel: getCoreRowModel(),
+		enableMultiRowSelection: enableMultiRowSelectionState,
+		enableRowSelection: enableRowSelectionState,
+		onRowSelectionChange: setRowSelection
 	});
 	const rerender = () => {
 		options.update((options) => ({
@@ -64,11 +87,13 @@
 		<thead class="sticky top-0 z-20">
 			{#each $table.getHeaderGroups() as headerGroup}
 				<tr class="sticky top-0 z-20 ">
-					<th>
-						<label>
-							<input type="checkbox" class="checkbox" />
-						</label>
-					</th>
+					{#if enableRowSelectionState}
+						<th>
+							<label>
+								<input type="checkbox" class="checkbox" />
+							</label>
+						</th>
+					{/if}
 					<th>#</th>
 					{#each headerGroup.headers as header}
 						<th class="normal-case ">
@@ -127,11 +152,23 @@
 		<tbody>
 			{#each $table.getRowModel().rows as row, i (row.id)}
 				<tr class="bg-base-100 hover:bg-base-300 cursor-pointer hover z-0">
+					{#if enableRowSelectionState}
 					<th class="z-0" on:click|stopPropagation={() => {}}>
 						<label>
-							<input type="checkbox" class="checkbox" />
+							<input
+								name="rows"
+								type={row.getCanMultiSelect() ? 'checkbox' : 'radio'}
+								class={row.getCanMultiSelect() ? 'checkbox' : 'radio'}
+								on:change={(e) => {
+									const toggleSelectedHandler = row.getToggleSelectedHandler();
+									toggleSelectedHandler(e);
+
+									//console.log($table.getSelectedRowModel());
+								}}
+							/>
 						</label>
-					</th>
+					</th>					{/if}
+
 					<td>{parseInt(row.id) + 1}</td>
 
 					{#each row.getVisibleCells() as cell}
