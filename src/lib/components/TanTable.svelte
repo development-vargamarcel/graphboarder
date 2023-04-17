@@ -26,7 +26,8 @@
 				...col,
 				accessorFn: (row) => formatData(getTableCellData(row, col), 40, true),
 				header: col.title,
-				footer: col.title
+				footer: col.title,
+				enableHiding: true
 			};
 		});
 		return columns;
@@ -60,7 +61,8 @@
 		getCoreRowModel: getCoreRowModel(),
 		enableMultiRowSelection: enableMultiRowSelectionState,
 		enableRowSelection: enableRowSelectionState,
-		onRowSelectionChange: setRowSelection
+		onRowSelectionChange: setRowSelection,
+		enableHiding: true
 	});
 	const rerender = () => {
 		options.update((options) => ({
