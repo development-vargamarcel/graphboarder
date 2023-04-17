@@ -140,5 +140,5 @@
 </div>
 
 {#if rows.length > 0}
-	<TanTable bind:data={rows} bind:cols={colsData} {idColName} on:hideColumn />
+	<TanTable bind:data={rows} bind:cols={colsData} {idColName} on:hideColumn {infiniteHandler} />
 {/if}

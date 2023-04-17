@@ -4,12 +4,26 @@
 	import type { ColumnDef, TableOptions } from '@tanstack/table-core/src/types';
 	import { formatData, getTableCellData } from '$lib/utils/usefulFunctions';
 	import ColumnInfo from './ColumnInfo.svelte';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
+	import InfiniteLoading from 'svelte-infinite-loading';
 	const dispatch = createEventDispatcher();
+	export let prefix = '';
 
-	export let idColName;
+	let loadMore = false;
+
 	export let enableMultiRowSelectionState = true;
 	export let enableRowSelectionState = true;
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	let QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
+
+	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+	const schemaData = QMSMainWraperContext?.schemaData;
+	const QMS_info = QMSWraperContext?.QMS_info;
+	let idColName = endpointInfo.get_idField(QMS_info, schemaData)?.dd_displayName;
+	const { paginationOptions } = getContext(`${prefix}QMSWraperContext`);
+
+	export let infiniteHandler;
+	export let infiniteId;
 	type Person = {
 		firstName: string;
 		lastName: string;
@@ -200,6 +214,20 @@
 			{/each}
 		</tfoot> -->
 	</table>
+	{#if $paginationOptions?.infiniteScroll && !loadMore && data?.length > 0}
+		<!-- content here -->
+		<button
+			class="btn btn-primary w-full mt-4 "
+			on:click={() => {
+				loadMore = true;
+			}}
+		>
+			Load more
+		</button>
+	{/if}
+	{#if $paginationOptions?.infiniteScroll && data?.length > 0 && loadMore}
+		<InfiniteLoading on:infinite={infiniteHandler} identifier={infiniteId} distance={100} />
+	{/if}
 	<div class="h-4" />
 	<button on:click={() => rerender()} class="border p-2"> Rerender </button>
 </div>
