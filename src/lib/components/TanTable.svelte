@@ -171,7 +171,6 @@
 				<tr
 					class="bg-base-100 hover:bg-base-300 cursor-pointer hover z-0"
 					on:click={() => {
-						console.log(row.original, idColName, row.original?.[idColName]);
 						dispatch('rowClicked', row.original);
 						//goto(`${$page.url.origin}/queries/${$page.params.queryName}/${row.id}`);
 					}}
