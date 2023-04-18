@@ -1,6 +1,10 @@
 <script lang="ts">
 	export let prefix = '';
+	import { getContext, onMount } from 'svelte';
 	import TanTable from './TanTable.svelte';
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	let QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
+
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
 	const QMS_info = QMSWraperContext?.QMS_info;
