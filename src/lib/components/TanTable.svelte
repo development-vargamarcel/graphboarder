@@ -34,6 +34,15 @@
 	};
 	export let data;
 	export let cols = [];
+	const getColumnVisibility = (cols) => {
+		let columnVisibility = {};
+		cols.forEach((col) => {
+			col.hidden ? (columnVisibility[col.title] = false) : (columnVisibility[col.title] = true);
+		});
+		return columnVisibility;
+	};
+	let columnVisibility = getColumnVisibility(cols);
+	console.log({ columnVisibility });
 	const getColumns = (cols) => {
 		let columns: ColumnDef<Person>[] = cols.map((col) => {
 			return {
@@ -76,7 +85,8 @@
 		enableMultiRowSelection: enableMultiRowSelectionState,
 		enableRowSelection: enableRowSelectionState,
 		onRowSelectionChange: setRowSelection,
-		enableHiding: true
+		enableHiding: true,
+		state: { columnVisibility }
 	});
 	const rerender = () => {
 		options.update((options) => ({
