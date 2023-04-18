@@ -245,5 +245,4 @@
 		<InfiniteLoading on:infinite={infiniteHandler} identifier={infiniteId} distance={100} />
 	{/if}
 	<div class="h-4" />
-	<button on:click={() => rerender()} class="border p-2"> Rerender </button>
 </div>

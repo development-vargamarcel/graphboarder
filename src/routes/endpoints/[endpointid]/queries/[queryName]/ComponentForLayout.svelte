@@ -7,6 +7,7 @@
 	import Table from '$lib/components/Table.svelte';
 	const dispatch = createEventDispatcher();
 	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
+	export let enableMultiRowSelectionState = true;
 
 	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 	const {
@@ -363,6 +364,7 @@
 
 <div class="md:px-2">
 	<Table
+		{enableMultiRowSelectionState}
 		{infiniteId}
 		{infiniteHandler}
 		colsData={$tableColsData_Store}
@@ -373,7 +375,7 @@
 		on:hideColumn={(e) => {
 			hideColumn(e);
 		}}
+		on:rowSelectionChange
 		on:rowClicked
 	/>
 </div>
-<div />

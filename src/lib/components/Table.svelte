@@ -9,6 +9,7 @@
 	const schemaData = QMSMainWraperContext?.schemaData;
 	const QMS_info = QMSWraperContext?.QMS_info;
 	let idColName = endpointInfo.get_idField(QMS_info, schemaData)?.dd_displayName;
+	export let enableMultiRowSelectionState = true;
 	export let colsData = [];
 	export let showCheckBox = false;
 	export let rows = [];
@@ -18,6 +19,7 @@
 
 {#if rows.length > 0}
 	<TanTable
+		{enableMultiRowSelectionState}
 		{prefix}
 		bind:data={rows}
 		bind:cols={colsData}

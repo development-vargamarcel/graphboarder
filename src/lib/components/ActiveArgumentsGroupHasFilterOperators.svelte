@@ -278,6 +278,10 @@
 
 			<div>
 				<SelectItem
+					enableMultiRowSelectionState={node.dd_kindList}
+					on:rowSelectionChange={(e) => {
+						console.log(e.detail);
+					}}
 					on:rowClicked={(e) => {
 						console.log(e.detail);
 					}}
