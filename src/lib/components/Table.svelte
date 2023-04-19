@@ -15,10 +15,12 @@
 	export let rows = [];
 	export let infiniteHandler;
 	export let infiniteId;
+	export let rowSelectionState;
 </script>
 
 {#if rows.length > 0}
 	<TanTable
+		{rowSelectionState}
 		{enableMultiRowSelectionState}
 		{prefix}
 		bind:data={rows}

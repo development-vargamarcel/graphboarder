@@ -59,18 +59,18 @@
 	$: {
 		columns = getColumns(cols);
 	}
-	let rowSelection = {};
+	export let rowSelectionState = {};
 	const setRowSelection = (updater) => {
 		if (updater instanceof Function) {
-			rowSelection = updater(rowSelection);
+			rowSelectionState = updater(rowSelectionState);
 		} else {
-			rowSelection = updater;
+			rowSelectionState = updater;
 		}
 		options.update((old) => ({
 			...old,
 			state: {
 				...old.state,
-				rowSelection
+				rowSelection: rowSelectionState
 			}
 		}));
 
@@ -78,6 +78,7 @@
 		dispatch('rowSelectionChange', { ...$table.getSelectedRowModel() });
 	};
 
+	console.log({ rowSelectionState });
 	const options = writable<TableOptions<Person>>({
 		data: data,
 		columns: columns,
@@ -86,7 +87,8 @@
 		enableRowSelection: enableRowSelectionState,
 		onRowSelectionChange: setRowSelection,
 		enableHiding: true,
-		state: { columnVisibility }
+		initialState: { rowSelection: rowSelectionState },
+		state: { columnVisibility, rowSelection: rowSelectionState }
 	});
 	const rerender = () => {
 		options.update((options) => ({

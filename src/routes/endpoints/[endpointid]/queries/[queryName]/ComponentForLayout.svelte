@@ -197,6 +197,7 @@
 	import 'highlight.js/styles/base16/solarized-dark.css';
 	import RowCount from '$lib/components/UI/rowCount.svelte';
 	import Modal from '$lib/components/Modal.svelte';
+	export let rowSelectionState;
 
 	onMount(() => {
 		hljs.registerLanguage('graphql', graphql);
@@ -364,6 +365,7 @@
 
 <div class="md:px-2">
 	<Table
+		{rowSelectionState}
 		{enableMultiRowSelectionState}
 		{infiniteId}
 		{infiniteHandler}

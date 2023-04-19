@@ -151,7 +151,33 @@
 	};
 	let fieldName = getFieldName();
 	let argName = getArgName();
+	let showAddModal = false;
+	let rowSelectionState = {};
+	const getRowSelectionState = (selectedRowsModel) => {
+		let rowSelectionState = {};
+		console.log({ selectedRowsModel });
+		if (!selectedRowsModel?.rows) {
+			return rowSelectionState;
+		}
+		selectedRowsModel.rows.forEach((row) => {
+			rowSelectionState[row.id] = true;
+		});
+		return rowSelectionState;
+	};
+	let selectedRowsModel = {};
+
+	$: rowSelectionState = getRowSelectionState(selectedRowsModel);
+	$: console.log({ rowSelectionState });
 </script>
+
+{#if showAddModal}
+	<Modal
+		showApplyBtn={false}
+		on:cancel={() => {
+			showAddModal = false;
+		}}
+	/>
+{/if}
 
 {#if showModal}
 	<Modal
@@ -278,8 +304,10 @@
 
 			<div>
 				<SelectItem
+					{rowSelectionState}
 					enableMultiRowSelectionState={node.dd_kindList}
 					on:rowSelectionChange={(e) => {
+						selectedRowsModel = e.detail;
 						console.log(e.detail);
 					}}
 					on:rowClicked={(e) => {
@@ -436,6 +464,12 @@
 				on:click={() => {
 					showSelectModal = true;
 				}}>select</button
+			>
+			<button
+				class="btn btn-xs normal-case"
+				on:click={() => {
+					showAddModal = true;
+				}}>add</button
 			>
 		{/if}
 		<div class="flex ">

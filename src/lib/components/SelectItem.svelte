@@ -8,6 +8,7 @@
 	const schemaData = QMSMainWraperContext?.schemaData;
 	export let QMS_info;
 	export let enableMultiRowSelectionState = true;
+	export let rowSelectionState;
 </script>
 
 <QmsWraper
@@ -16,7 +17,12 @@
 	QMSType="query"
 	tableColsData_StoreInitialValue={[]}
 >
-	<ComponentForLayout on:rowClicked on:rowSelectionChange {enableMultiRowSelectionState} />
+	<ComponentForLayout
+		on:rowClicked
+		on:rowSelectionChange
+		{rowSelectionState}
+		{enableMultiRowSelectionState}
+	/>
 </QmsWraper>
 
 <!-- currentQMS_info={endpointInfo.get_qmsNameForObjective(QMS_info, schemaData, 'getMany')} -->
