@@ -191,6 +191,7 @@
 						<th class="z-0" on:click|stopPropagation={() => {}}>
 							<label>
 								<input
+									checked={row.getIsSelected()}
 									name="rows"
 									type={row.getCanMultiSelect() ? 'checkbox' : 'radio'}
 									class={row.getCanMultiSelect() ? 'checkbox' : 'radio'}
