@@ -165,9 +165,6 @@
 		return rowSelectionState;
 	};
 	let selectedRowsModel = {};
-
-	$: rowSelectionState = getRowSelectionState(selectedRowsModel);
-	$: console.log({ rowSelectionState });
 </script>
 
 {#if showAddModal}
@@ -289,6 +286,7 @@
 	<Modal
 		showApplyBtn={true}
 		on:apply={() => {
+			rowSelectionState = getRowSelectionState(selectedRowsModel)
 			showSelectModal = false;
 		}}
 		on:cancel={() => {
