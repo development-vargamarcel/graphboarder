@@ -88,7 +88,8 @@
 		onRowSelectionChange: setRowSelection,
 		enableHiding: true,
 		initialState: { rowSelection: rowSelectionState },
-		state: { columnVisibility, rowSelection: rowSelectionState }
+		state: { columnVisibility, rowSelection: rowSelectionState },
+		getRowId: (row) => row?.[idColName]
 	});
 	const rerender = () => {
 		options.update((options) => ({
@@ -206,7 +207,7 @@
 						</th>
 					{/if}
 
-					<td>{parseInt(row.id) + 1}</td>
+					<td>{parseInt(row.index) + 1}</td>
 
 					{#each row.getVisibleCells() as cell}
 						<td>
