@@ -1,6 +1,5 @@
 <script lang="ts">
 	export let prefix = '';
-	import { getContext, onMount } from 'svelte';
 	import TanTable from './TanTable.svelte';
 
 	export let enableMultiRowSelectionState = true;
