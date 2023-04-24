@@ -11,58 +11,46 @@
 
 	export let data: LayoutData;
 	const endpointInfoProvided = {
-		url: 'https://hdfgzkxs.directus.app/graphql',
+		url: 'https://vgqkcskomrpikolllkix.nhost.run/v1/graphql',
 		isMantained: true,
 		description: 'offsetBased pagination,rowCount set',
-		headers: {
-			authorization: 'Bearer mKZiTQr8DCKMlT3teTi1Xf-3Ml9EKGXh'
-		},
-		displayNamePossibilitiesForCreateItem: [
-			{
-				get_Val: (QMS_info) => {
-					return `create_${QMS_info.dd_rootName}_item`;
-				},
-				check: (QMS_info) => {
-					return true;
-				}
-			}
-		],
+		headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
 		rowsLocationPossibilities: [
 			{
-				get_Val: (QMS_info) => {
+				get_Val: (QMS_info, schemaData) => {
 					return [];
-				}, //'countDistinct'
-				check: (QMS_info) => {
-					return QMS_info.dd_displayName.toLowerCase().endsWith('aggregated');
+				},
+				check: (QMS_info, schemaData) => {
+					return QMS_info.dd_displayName.toLowerCase().endsWith('aggregate');
 				}
 			},
 			{
-				get_Val: (QMS_info) => {
+				get_Val: (QMS_info, schemaData) => {
 					return [];
 				},
-				check: (QMS_info) => {
-					return !QMS_info.dd_displayName.toLowerCase().endsWith('aggregated');
+				check: (QMS_info, schemaData) => {
+					return !QMS_info.dd_displayName.toLowerCase().endsWith('aggregate');
 				}
 			}
 		],
 		rowCountLocationPossibilities: [
 			{
 				get_Val: (QMS_info, schemaData) => {
-					const rootType = schemaData.get_rootType(null, QMS_info.dd_rootName, schemaData);
-					if (!rootType) {
-						return null;
-					}
-					const nodeFieldsQMS_info = rootType.fields[0].dd_displayName;
-					if (nodeFieldsQMS_info) {
-						return [`${QMS_info.dd_displayName}_aggregated`, 'count', nodeFieldsQMS_info];
-					}
-					return null;
+					return [QMS_info.dd_displayName, 'aggregate', 'count'];
 				},
-				check: (QMS_info) => {
-					return (
-						!QMS_info.dd_displayName.toLowerCase().endsWith('aggregated') &&
-						!QMS_info.dd_displayName.toLowerCase().endsWith('by_id')
-					);
+				check: (QMS_info, schemaData) => {
+					return QMS_info.dd_displayName.toLowerCase().endsWith('aggregate');
+				}
+			},
+			{
+				get_Val: (QMS_info, schemaData) => {
+					if (schemaData.get_QMS_Field(`${QMS_info.dd_displayName}Aggregate`, 'query')) {
+						return [`${QMS_info.dd_displayName}Aggregate`, 'aggregate', 'count'];
+					}
+					return [`${QMS_info.dd_displayName}_aggregate`, 'aggregate', 'count'];
+				},
+				check: (QMS_info, schemaData) => {
+					return !QMS_info.dd_displayName.toLowerCase().endsWith('aggregate');
 				}
 			}
 		]

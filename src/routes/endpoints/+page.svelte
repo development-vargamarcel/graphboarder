@@ -6,10 +6,10 @@
 
 <QMSWraper
 	QMSName="endpoints"
-	initialGqlArgObj={{ sort: [string_transformer('configTemplate.provider.name')] }}
 	tableColsData_StoreInitialValue={[
-		{ title: 'provider name', stepsOfFields: ['endpoints', 'configTemplate', 'provider', 'name'] },
-		{ title: 'provider id', stepsOfFields: ['endpoints', 'configTemplate', 'configuration'] }
+		{ title: 'provider name', stepsOfFields: ['endpoints', 'configuration', 'id'] },
+		{ title: 'provider id', stepsOfFields: ['endpoints', 'configuration', 'id'] },
+		{ title: 'configuration', stepsOfFields: ['endpoints', 'configuration', 'configuration'] }
 	]}
 >
 	<div class="pt-2">

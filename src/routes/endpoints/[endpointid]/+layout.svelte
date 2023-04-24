@@ -11,13 +11,13 @@
 </script>
 
 <QMSWraper
-	QMSName="endpoints_by_id"
+	QMSName="endpoints_by_pk"
 	initialGqlArgObj={{ id: string_transformer(endpointid) }}
 	tableColsData_StoreInitialValue={[
-		{ title: 'configTemplate', stepsOfFields: ['endpoints', 'configTemplate', 'configuration'] }
+		{ title: 'configTemplate', stepsOfFields: ['endpoints', 'configuration', 'configuration'] }
 	]}
 >
-	<SetEndpointConfigurationToContext QMSName="endpoints_by_id">
+	<SetEndpointConfigurationToContext QMSName="endpoints_by_pk">
 		<slot><!-- optional fallback --></slot>
 	</SetEndpointConfigurationToContext>
 </QMSWraper>
