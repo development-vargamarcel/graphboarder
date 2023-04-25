@@ -173,38 +173,43 @@
 	<section class="  h-screen pb-20 w-screen  overflow-auto ml-4">
 		<br />
 		<br />
-		<div class="flex space-x-2">
-			<button
-				class="p-1 rounded-sm leading-none bg-base-100 text-xs max-w-min"
-				on:click={() => {
-					caseSensitive = !caseSensitive;
-				}}>{caseSensitive ? 'case sensitive' : 'case insesitive'}</button
-			>
-			<input
-				type="text"
-				class="input input-xs mt-1"
-				bind:value={sortingInputValue}
-				on:change={filterByWord}
-			/>
 
-			<button
-				class="mt-1 btn bg-primary btn-xs normal-case"
-				on:click={() => {
-					whatToShowLastUsed?.();
-					filterByWord();
-				}}>Filter</button
-			>
-			<code><b>+</b>include <b>-</b>exclude</code>
+		<div class="sticky top-0 bg-base-300">
+			<div class="flex space-x-2 ">
+				<button
+					class="p-1 rounded-sm leading-none bg-accent text-xs max-w-min"
+					on:click={() => {
+						caseSensitive = !caseSensitive;
+					}}>{caseSensitive ? 'case sensitive' : 'case insesitive'}</button
+				>
+				<input
+					type="text"
+					class="input input-xs mt-1"
+					bind:value={sortingInputValue}
+					on:change={filterByWord}
+				/>
+
+				<button
+					class="mt-1 btn bg-primary btn-xs normal-case"
+					on:click={() => {
+						whatToShowLastUsed?.();
+						filterByWord();
+					}}>Filter</button
+				>
+				<code><b>+</b>include <b>-</b>exclude</code>
+				<br />
+			</div>
+			<div>
+				<button class="btn btn-xs " on:click={showRootTypes}> root</button>
+				<button class="btn btn-xs" on:click={showQueries}> queries</button>
+				<button class="btn btn-xs" on:click={showMutations}> mutations</button>
+				<button class="btn btn-xs" on:click={showQueriesAndMutations}> Q&M</button>
+				<button class="btn btn-xs" on:click={showAll}> all</button>
+			</div>
 		</div>
 
 		<br />
 		<br />
-		<button class="btn btn-xs " on:click={showRootTypes}> root</button>
-		<button class="btn btn-xs" on:click={showQueries}> queries</button>
-		<button class="btn btn-xs" on:click={showMutations}> mutations</button>
-		<button class="btn btn-xs" on:click={showQueriesAndMutations}> Q&M</button>
-
-		<button class="btn btn-xs" on:click={showAll}> all</button>
 
 		<div class="">
 			{#key whatToShow}
