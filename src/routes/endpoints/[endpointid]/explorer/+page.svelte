@@ -1,4 +1,5 @@
 <script lang="ts">
+	import EndpointinfoGeneratorAssistant from './../../../../lib/components/EndpointinfoGeneratorAssistant.svelte';
 	export const prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData; //console.log($schemaData);
@@ -220,6 +221,7 @@
 				{/each}
 			{/key}
 		</div>
+		<EndpointinfoGeneratorAssistant types={whatToShow} />
 	</section>
 </Page>
 
