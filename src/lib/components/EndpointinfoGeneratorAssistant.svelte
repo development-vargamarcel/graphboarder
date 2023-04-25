@@ -4,9 +4,9 @@
 	export let types = [];
 </script>
 
-<div class="overflow-x-auto w-[90vw]">
+<div class="overflow-auto overscroll-contain h-[80vh] w-[90vw]">
 	<table class="table table-compact">
-		<tHead class="">
+		<tHead class=" sticky top-0">
 			<th />
 			<th class="normal-case">displayName</th>
 			<th class="normal-case">rootName</th>
