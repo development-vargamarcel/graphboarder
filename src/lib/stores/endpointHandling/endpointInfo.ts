@@ -226,6 +226,7 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			return [];
 		},
 		get_rowCountLocation: function (QMS_info, schemaData) {
+			console.log({ schemaData })
 			const storeVal = get(store);
 			if (!storeVal || !storeVal?.rowCountLocationPossibilities?.length > 0) {
 				return null;

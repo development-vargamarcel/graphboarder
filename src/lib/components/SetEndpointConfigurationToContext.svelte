@@ -207,35 +207,24 @@
 	let showModal = false;
 	let showActiveFilters;
 
-	$: {
-		console.log(
-			{ queryData },
-			parseAll(
-				stigifyAll(
-					getDataGivenStepsOfFields(null, queryData, ['data', 'endpoints_by_id', 'configuration'])
-				)
-			),
-			getDataGivenStepsOfFields(null, queryData, ['data', 'endpoints_by_id', 'configuration']),
-			'parseAll()'
-		);
-	}
-
 	let endpointConfiguration;
 
 	$: if (queryData?.data) {
 		const configurationText = getDataGivenStepsOfFields(null, queryData, [
 			'data',
-			'endpoints_by_id',
-			'configurationText'
+			'endpoints_by_pk',
+			'extraConfig'
 		]);
 		const configTemplate = getDataGivenStepsOfFields(null, queryData, [
 			'data',
-			'endpoints_by_id',
-			'configTemplate',
+			'endpoints_by_pk',
+			'configuration',
 			'configuration'
 		]);
 
 		console.log({ configurationText });
+		console.log({ configTemplate });
+
 		endpointConfiguration = stringToJs(configurationText);
 
 		if (configTemplate) {

@@ -44,7 +44,9 @@
 			},
 			{
 				get_Val: (QMS_info, schemaData) => {
-					if (schemaData.get_QMS_Field(`${QMS_info.dd_displayName}Aggregate`, 'query')) {
+					if (
+						schemaData.get_QMS_Field(`${QMS_info.dd_displayName}Aggregate`, 'query', schemaData)
+					) {
 						return [`${QMS_info.dd_displayName}Aggregate`, 'aggregate', 'count'];
 					}
 					return [`${QMS_info.dd_displayName}_aggregate`, 'aggregate', 'count'];
