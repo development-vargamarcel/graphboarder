@@ -207,6 +207,25 @@
 				header: 'EE',
 				footer: 'EE',
 				enableHiding: true
+			},
+
+			{
+				accessorFn: (row) =>
+					row.args
+						?.map(
+							(arg) =>
+								`${arg.dd_displayName} (${arg.dd_kindList ? 'list of ' : ''}${arg.dd_kindEl})`
+						)
+						.join(', '),
+				header: 'Arguments',
+				footer: 'Arguments',
+				enableHiding: true
+			},
+			{
+				accessorFn: (row) => row.description,
+				header: 'description',
+				footer: 'description',
+				enableHiding: true
 			}
 		];
 	}
@@ -222,9 +241,6 @@
 
 <Page MenuItem={true}>
 	<section class="  h-screen pb-20 w-screen  overflow-auto ml-4">
-		<br />
-		<br />
-
 		<div class="sticky top-0 bg-base-300">
 			<div class="flex space-x-2 ">
 				<button
@@ -258,13 +274,13 @@
 				<button class="btn btn-xs" on:click={showAll}> all</button>
 			</div>
 			<div>
-				<button on:click={toggleExplorer}>toggle explorer</button>
-				<button on:click={toggleTable}>toggle table</button>
+				<button class="btn btn-xs btn-accent" on:click={toggleExplorer}>toggle explorer</button>
+				<button class="btn btn-xs btn-accent" on:click={toggleTable}>toggle table</button>
 			</div>
 		</div>
 
 		<br />
-		<br />
+
 		{#if showTable && whatToShow.length > 0}
 			<!-- content here -->
 			<ExplorerTable bind:data={whatToShow} {columns} />
