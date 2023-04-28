@@ -7,6 +7,7 @@
 	import Page from '$lib/components/Page.svelte';
 	import { sortingFunctionMutipleColumnsGivenArray } from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
+	import ExplorerTable from '$lib/components/ExplorerTable.svelte';
 
 	let rootTypes = $schemaData.rootTypes;
 	let queries = $schemaData.queryFields;
@@ -167,6 +168,56 @@
 			return item.name == name;
 		})[0];
 	};
+	let columns = [];
+
+	$: if (whatToShow.length > 0) {
+		columns = [
+			{
+				accessorFn: (row) => row.dd_displayName,
+				header: 'dd_displayName',
+				footer: 'dd_displayName',
+				enableHiding: true
+			},
+			{
+				accessorFn: (row) => row.dd_rootName,
+				header: 'dd_rootName',
+				footer: 'dd_rootName',
+				enableHiding: true
+			},
+			{
+				accessorFn: (row) => (row.dd_kindList_NON_NULL ? '!' : ''),
+				header: 'L',
+				footer: 'L',
+				enableHiding: true
+			},
+			{
+				accessorFn: (row) => (row.dd_kindList ? 'list' : ''),
+				header: 'LL',
+				footer: 'LL',
+				enableHiding: true
+			},
+			{
+				accessorFn: (row) => (row.dd_kindEl_NON_NULL ? '!' : ''),
+				header: 'E',
+				footer: 'E',
+				enableHiding: true
+			},
+			{
+				accessorFn: (row) => row.dd_kindEl,
+				header: 'EE',
+				footer: 'EE',
+				enableHiding: true
+			}
+		];
+	}
+	let showExplorer = false;
+	let showTable = false;
+	const toggleExplorer = () => {
+		showExplorer = !showExplorer;
+	};
+	const toggleTable = () => {
+		showTable = !showTable;
+	};
 </script>
 
 <Page MenuItem={true}>
@@ -206,27 +257,34 @@
 				<button class="btn btn-xs" on:click={showQueriesAndMutations}> Q&M</button>
 				<button class="btn btn-xs" on:click={showAll}> all</button>
 			</div>
+			<div>
+				<button on:click={toggleExplorer}>toggle explorer</button>
+				<button on:click={toggleTable}>toggle table</button>
+			</div>
 		</div>
 
 		<br />
 		<br />
-
-		<div class="">
-			{#key whatToShow}
-				{#each whatToShow as type, index (index)}
-					<Type
-						{index}
-						{type}
-						template="default"
-						depth={0}
-						on:colAddRequest={(e) => {
-							//console.log(e);
-						}}
-					/>
-				{/each}
-			{/key}
-		</div>
-		<EndpointinfoGeneratorAssistant types={whatToShow} />
+		{#if showTable && whatToShow.length > 0}
+			<!-- content here -->
+			<ExplorerTable bind:data={whatToShow} {columns} />
+		{/if}
+		{#if showExplorer}
+			<div class="">
+				{#key whatToShow}
+					{#each whatToShow as type, index (index)}
+						<Type
+							{index}
+							{type}
+							template="default"
+							depth={0}
+							on:colAddRequest={(e) => {
+								//console.log(e);
+							}}
+						/>
+					{/each}
+				{/key}
+			</div>{/if}
 	</section>
 </Page>
 
