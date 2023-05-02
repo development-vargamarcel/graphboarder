@@ -226,6 +226,12 @@
 				header: 'description',
 				footer: 'description',
 				enableHiding: true
+			},
+			{
+				accessorFn: (row) => row?.tableBaseName,
+				header: 'tableBaseName',
+				footer: 'tableBaseName',
+				enableHiding: true
 			}
 		];
 	}
@@ -237,6 +243,8 @@
 	const toggleTable = () => {
 		showTable = !showTable;
 	};
+	let csvData;
+	let selectedRowsOriginal;
 </script>
 
 <Page MenuItem={true}>
@@ -276,6 +284,33 @@
 			<div>
 				<button class="btn btn-xs btn-accent" on:click={toggleExplorer}>toggle explorer</button>
 				<button class="btn btn-xs btn-accent" on:click={toggleTable}>toggle table</button>
+				<button
+					class="btn btn-xs btn-primary"
+					on:click={() => {
+						navigator.clipboard.writeText(csvData);
+					}}>copy csv</button
+				>
+				<button
+					class="btn btn-xs btn-primary"
+					on:click={() => {
+						console.log(selectedRowsOriginal);
+						selectedRowsOriginal.forEach((row) => {
+							row.tableBaseName = 'qqq';
+						});
+						whatToShow = whatToShow;
+					}}>edit</button
+				>
+				<button
+					class="btn btn-xs btn-primary"
+					on:click={() => {
+						whatToShow = whatToShow;
+						showTable = false;
+						setTimeout(() => {
+							showTable = true;
+						}, 1000);
+						//columns = columns;
+					}}>rerender table</button
+				>
 			</div>
 		</div>
 
@@ -283,7 +318,27 @@
 
 		{#if showTable && whatToShow.length > 0}
 			<!-- content here -->
-			<ExplorerTable bind:data={whatToShow} {columns} />
+			<ExplorerTable
+				bind:data={whatToShow}
+				{columns}
+				on:rowSelectionChange={(e) => {
+					selectedRowsOriginal = e.detail.rows.map((row) => row.original);
+					let columnNames = [];
+					let rowsData;
+					rowsData = e.detail.rows.map((row, i) => {
+						return row
+							.getVisibleCells()
+							.map((cell) => {
+								if (i == 0) {
+									columnNames.push(cell.column.id);
+								}
+								return cell.getValue();
+							})
+							.join(`,`);
+					});
+					csvData = `${columnNames.join(`,`)}\n${rowsData.join(`\n`)}`;
+				}}
+			/>
 		{/if}
 		{#if showExplorer}
 			<div class="">

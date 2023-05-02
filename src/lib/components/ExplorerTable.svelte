@@ -92,6 +92,7 @@
 	};
 	const table = createSvelteTable(options);
 	$: if (data) {
+		console.log({ data }, 'data changed');
 		rerender();
 	}
 	$: console.log({ table }, '$table', $table);
