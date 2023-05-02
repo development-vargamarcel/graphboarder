@@ -216,13 +216,13 @@
 							(arg) =>
 								`${arg.dd_displayName} (${arg.dd_kindList ? 'list of ' : ''}${arg.dd_kindEl})`
 						)
-						.join(', '),
+						.join('; '),
 				header: 'Arguments',
 				footer: 'Arguments',
 				enableHiding: true
 			},
 			{
-				accessorFn: (row) => row.description,
+				accessorFn: (row) => row.description?.replaceAll(',', ';'),
 				header: 'description',
 				footer: 'description',
 				enableHiding: true
@@ -294,9 +294,19 @@
 					class="btn btn-xs btn-primary"
 					on:click={() => {
 						console.log(selectedRowsOriginal);
-						selectedRowsOriginal.forEach((row) => {
-							row.tableBaseName = 'qqq';
-						});
+						if (selectedRowsOriginal.length == 0) {
+							return alert('no rows selected');
+						}
+						if (selectedRowsOriginal.length == 1) {
+							const row = selectedRowsOriginal[0];
+							row.tableBaseName = prompt('tableBaseName', row.tableBaseName);
+						} else {
+							const tableBaseName = prompt('tableBaseName', 'tableName');
+							selectedRowsOriginal.forEach((row) => {
+								row.tableBaseName = tableBaseName;
+							});
+						}
+
 						whatToShow = whatToShow;
 					}}>edit</button
 				>
@@ -307,7 +317,7 @@
 						showTable = false;
 						setTimeout(() => {
 							showTable = true;
-						}, 1000);
+						}, 200);
 						//columns = columns;
 					}}>rerender table</button
 				>
