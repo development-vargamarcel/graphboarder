@@ -105,7 +105,13 @@
 					{#if enableRowSelectionState}
 						<th>
 							<label>
-								<input type="checkbox" class="checkbox" />
+								<input
+									type="checkbox"
+									class="checkbox"
+									on:click={() => {
+										$table.toggleAllRowsSelected();
+									}}
+								/>
 							</label>
 						</th>
 					{/if}
