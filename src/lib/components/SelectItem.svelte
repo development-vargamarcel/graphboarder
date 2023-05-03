@@ -12,7 +12,7 @@
 </script>
 
 <QmsWraper
-	QMSName={endpointInfo.get_qmsNameForObjective(QMS_info, schemaData, 'getMany')}
+	QMSName={QMS_info.dd_displayName}
 	initialGqlArgObj={{}}
 	QMSType="query"
 	tableColsData_StoreInitialValue={[]}

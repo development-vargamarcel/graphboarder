@@ -165,6 +165,73 @@
 		return rowSelectionState;
 	};
 	let selectedRowsModel = {};
+	import ExplorerTable from '$lib/components/ExplorerTable.svelte';
+
+	let showExplorerTable = true;
+	let qmsData = $schemaData.queryFields;
+	let columns = [
+		{
+			accessorFn: (row) => row.dd_displayName,
+			header: 'dd_displayName',
+			footer: 'dd_displayName',
+			enableHiding: true
+		},
+		{
+			accessorFn: (row) => row.dd_rootName,
+			header: 'dd_rootName',
+			footer: 'dd_rootName',
+			enableHiding: true
+		},
+		{
+			accessorFn: (row) => (row.dd_kindList_NON_NULL ? '!' : ''),
+			header: 'L',
+			footer: 'L',
+			enableHiding: true
+		},
+		{
+			accessorFn: (row) => (row.dd_kindList ? 'list' : ''),
+			header: 'LL',
+			footer: 'LL',
+			enableHiding: true
+		},
+		{
+			accessorFn: (row) => (row.dd_kindEl_NON_NULL ? '!' : ''),
+			header: 'E',
+			footer: 'E',
+			enableHiding: true
+		},
+		{
+			accessorFn: (row) => row.dd_kindEl,
+			header: 'EE',
+			footer: 'EE',
+			enableHiding: true
+		},
+
+		{
+			accessorFn: (row) =>
+				row.args
+					?.map(
+						(arg) => `${arg.dd_displayName} (${arg.dd_kindList ? 'list of ' : ''}${arg.dd_kindEl})`
+					)
+					.join('; '),
+			header: 'Arguments',
+			footer: 'Arguments',
+			enableHiding: true
+		},
+		{
+			accessorFn: (row) => row.description?.replaceAll(',', ';'),
+			header: 'description',
+			footer: 'description',
+			enableHiding: true
+		},
+		{
+			accessorFn: (row) => row?.tableBaseName,
+			header: 'tableBaseName',
+			footer: 'tableBaseName',
+			enableHiding: true
+		}
+	];
+	let selectedQMS;
 </script>
 
 {#if showAddModal}
@@ -286,7 +353,7 @@
 	<Modal
 		showApplyBtn={true}
 		on:apply={() => {
-			rowSelectionState = getRowSelectionState(selectedRowsModel)
+			rowSelectionState = getRowSelectionState(selectedRowsModel);
 			showSelectModal = false;
 		}}
 		on:cancel={() => {
@@ -301,35 +368,48 @@
 			</div>
 
 			<div>
-				<!-- <SelectItem
-					{rowSelectionState}
-					enableMultiRowSelectionState={node.dd_kindList}
-					on:rowSelectionChange={(e) => {
-						selectedRowsModel = e.detail;
-						console.log(e.detail);
-					}}
-					on:rowClicked={(e) => {
-						console.log(e.detail);
-					}}
-					QMS_info={schemaData.get_rootType(
-						null,
-						endpointInfo.get_tableName(
-							schemaData.get_rootType(
-								null,
-								schemaData
-									.get_rootType(
-										null,
-										argsInfo.find((arg) => arg.dd_displayName == argName).dd_rootName,
-										schemaData
-									)
-									.inputFields.find((field) => field.dd_displayName == fieldName).dd_rootName,
-								schemaData
-							),
-							schemaData
-						),
-						schemaData
-					)}
-				/> -->
+				{#if showExplorerTable && qmsData.length > 1}
+					<!-- content here -->
+					<ExplorerTable
+						enableMultiRowSelectionState={false}
+						bind:data={qmsData}
+						{columns}
+						on:rowSelectionChange={(e) => {
+							selectedQMS = e.detail.rows.map((row) => row.original)[0];
+							showExplorerTable = false;
+							console.log({ selectedQMS });
+							// let columnNames = [];
+							// let rowsData;
+							// rowsData = e.detail.rows.map((row, i) => {
+							// 	return row
+							// 		.getVisibleCells()
+							// 		.map((cell) => {
+							// 			if (i == 0) {
+							// 				columnNames.push(cell.column.id);
+							// 			}
+							// 			return cell.getValue();
+							// 		})
+							// 		.join(`,`);
+							// });
+							// csvData = `${columnNames.join(`,`)}\n${rowsData.join(`\n`)}`;
+						}}
+					/>
+				{/if}
+
+				{#if selectedQMS}
+					<SelectItem
+						{rowSelectionState}
+						enableMultiRowSelectionState={node.dd_kindList}
+						on:rowSelectionChange={(e) => {
+							selectedRowsModel = e.detail;
+							console.log(e.detail);
+						}}
+						on:rowClicked={(e) => {
+							console.log(e.detail);
+						}}
+						QMS_info={selectedQMS}
+					/>
+				{/if}
 			</div>
 		</div>
 	</Modal>{/if}
