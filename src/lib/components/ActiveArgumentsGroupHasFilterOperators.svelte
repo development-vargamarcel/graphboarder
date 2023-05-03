@@ -301,7 +301,7 @@
 			</div>
 
 			<div>
-				<SelectItem
+				<!-- <SelectItem
 					{rowSelectionState}
 					enableMultiRowSelectionState={node.dd_kindList}
 					on:rowSelectionChange={(e) => {
@@ -329,7 +329,7 @@
 						),
 						schemaData
 					)}
-				/>
+				/> -->
 			</div>
 		</div>
 	</Modal>{/if}
