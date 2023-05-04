@@ -172,14 +172,10 @@
 		includeScore: false,
 		includeMatches: false,
 		threshold: 0.8,
-		ignoreLocation: true,
-		keys: ['dd_displayName', 'dd_rootName']
+		//ignoreLocation: true,
+		keys: ['dd_displayName', 'dd_rootName', 'description']
 	});
-	let qmsData = fuse
-		.search(node.dd_rootName)
-		.map((item) => item.item)
-		.filter((item) => item.dd_kindList);
-	console.log({ node, qmsData });
+	let qmsData = [];
 	let columns = [
 		{
 			accessorFn: (row) => row.dd_displayName,
@@ -233,12 +229,6 @@
 			accessorFn: (row) => row.description?.replaceAll(',', ';'),
 			header: 'description',
 			footer: 'description',
-			enableHiding: true
-		},
-		{
-			accessorFn: (row) => row?.tableBaseName,
-			header: 'tableBaseName',
-			footer: 'tableBaseName',
 			enableHiding: true
 		}
 	];
@@ -362,6 +352,15 @@
 	</Modal>{/if}
 {#if showSelectModal}
 	<Modal
+		on:mounted={() => {
+			qmsData = fuse
+				.search(
+					`${node.dd_rootName.replaceAll('_', ' ')} | ${node.dd_displayName.replaceAll('_', ' ')}`
+				)
+				.map((item) => item.item)
+				.filter((item) => item.dd_kindList);
+			console.log({ node, qmsData });
+		}}
 		showApplyBtn={true}
 		on:apply={() => {
 			rowSelectionState = getRowSelectionState(selectedRowsModel);

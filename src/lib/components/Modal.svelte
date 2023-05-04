@@ -5,11 +5,14 @@
 	import { portal } from 'svelte-portal';
 	export let modalIdetifier = 'modal';
 	export let showApplyBtn = true;
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 	const dispatch = createEventDispatcher();
 	let apply = () => {
 		dispatch('apply');
 	};
+	onMount(() => {
+		dispatch('mounted', { modalIdetifier });
+	});
 	let mainDivIntroEnd = false;
 	let bodyDivIntroEnd = false;
 
