@@ -11,7 +11,7 @@
 	import ComponentForLayout from '../../routes/endpoints/[endpointid]/queries/[queryName]/ComponentForLayout.svelte';
 	import QmsWraper from './QMSWraper.svelte';
 	import SelectItem from './SelectItem.svelte';
-
+	import Fuse from 'fuse.js';
 	const dispatch = createEventDispatcher();
 	export let nodes;
 	export let node;
@@ -168,7 +168,18 @@
 	import ExplorerTable from '$lib/components/ExplorerTable.svelte';
 
 	let showExplorerTable = true;
-	let qmsData = $schemaData.queryFields;
+	const fuse = new Fuse($schemaData.queryFields, {
+		includeScore: false,
+		includeMatches: false,
+		threshold: 0.8,
+		ignoreLocation: true,
+		keys: ['dd_displayName', 'dd_rootName']
+	});
+	let qmsData = fuse
+		.search(node.dd_rootName)
+		.map((item) => item.item)
+		.filter((item) => item.dd_kindList);
+	console.log({ node, qmsData });
 	let columns = [
 		{
 			accessorFn: (row) => row.dd_displayName,
