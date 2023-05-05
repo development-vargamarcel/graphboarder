@@ -13,7 +13,7 @@
 		activeArgumentsDataGrouped_Store.update_groups(groupNewData);
 	};
 	if ($activeArgumentsDataGrouped_Store.length == 0) {
-		activeArgumentsDataGrouped_Store.set_groups(QMS_info?.args, schemaData);
+		activeArgumentsDataGrouped_Store.set_groups(QMS_info, schemaData);
 	}
 	let showDescription = null;
 </script>

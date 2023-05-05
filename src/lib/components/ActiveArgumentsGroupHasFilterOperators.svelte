@@ -353,6 +353,65 @@
 {#if showSelectModal}
 	<Modal
 		on:mounted={() => {
+			const getReturningFields = (type) => {
+				let rootType = schemaData.get_rootType(null, type.dd_rootName, schemaData);
+				let fields = rootType?.fields;
+				if (!fields) {
+					return;
+				}
+				const myField = fields.find((field) => field.dd_displayName == node.dd_displayName);
+				if (myField) {
+					return fields;
+				}
+				let returningFields;
+				fields.find((field) => {
+					returningFields = getReturningFields(field);
+					return returningFields; //if returningFields is undefined, the loop continues
+				});
+				if (returningFields) {
+					return returningFields;
+				}
+			};
+			const originType = group.originType;
+			const originTypeRoot = schemaData.get_rootType(null, originType.dd_rootName, schemaData);
+			const fields = getReturningFields(originType);
+			console.log('aaaaaa', {
+				originType,
+				originTypeRoot,
+				group,
+				fields
+			});
+			const myField = fields.find((field) => field.dd_displayName == node.dd_displayName);
+
+			if (myField) {
+				const myFieldRoot = schemaData.get_rootType(null, myField.dd_rootName, schemaData);
+				const myFieldSubfields = myFieldRoot.fields;
+				console.log('aaaaaa', {
+					myField,
+					myFieldRoot,
+					myFieldSubfields
+				});
+				qmsData = $schemaData.queryFields.filter((item) => {
+					return item.dd_kindList && item.dd_rootName == myField.dd_rootName;
+				});
+				console.log({ qmsData });
+				if (qmsData.length == 1) {
+					selectedQMS = qmsData[0];
+					return;
+				}
+				if (qmsData.length > 0) {
+					return;
+				}
+
+				qmsData = fuse
+					.search(`${myField.dd_rootName}`)
+					.map((item) => item.item)
+					.filter((item) => item.dd_kindList);
+				if (qmsData.length > 0) {
+					return;
+				}
+			}
+
 			qmsData = fuse
 				.search(
 					`${node.dd_rootName.replaceAll('_', ' ')} | ${node.dd_displayName.replaceAll('_', ' ')}`

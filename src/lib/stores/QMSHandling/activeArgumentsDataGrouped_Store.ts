@@ -10,7 +10,8 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 		subscribe,
 		set,
 		update,
-		set_groups: (argsInfo, schemaData) => {
+		set_groups: (QMS_info, schemaData) => {
+			const argsInfo = QMS_info?.args
 			//handle generating activeArgumentsDataGrouped
 			const activeArgumentsDataGrouped = []
 			const hasRootArgs = argsInfo?.find((el) => {
@@ -20,6 +21,7 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 
 			if (hasRootArgs) {
 				const rootGroup = {
+					originType: QMS_info,
 					group_name: 'root',
 					group_isRoot: true,
 					dd_kindList: false,
@@ -32,6 +34,8 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 			argsInfo?.forEach((el) => {
 				if (!el.dd_isRootArg) {
 					const newGroupData = {
+						originType: QMS_info,
+
 						group_name: el.dd_displayName,
 						group_isRoot: false,
 						// group_info: el,
