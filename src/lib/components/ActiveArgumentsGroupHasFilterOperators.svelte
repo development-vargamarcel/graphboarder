@@ -353,19 +353,21 @@
 {#if showSelectModal}
 	<Modal
 		on:mounted={() => {
-			const getReturningFields = (type) => {
+			const getReturningFields = (type, matchingField) => {
 				let rootType = schemaData.get_rootType(null, type.dd_rootName, schemaData);
 				let fields = rootType?.fields;
 				if (!fields) {
-					return;
+					return null;
 				}
-				const myField = fields.find((field) => field.dd_displayName == node.dd_displayName);
+				const myField = fields.find(
+					(field) => field.dd_displayName == matchingField.dd_displayName
+				);
 				if (myField) {
 					return fields;
 				}
 				let returningFields;
 				fields.find((field) => {
-					returningFields = getReturningFields(field);
+					returningFields = getReturningFields(field, matchingField);
 					return returningFields; //if returningFields is undefined, the loop continues
 				});
 				if (returningFields) {
@@ -374,7 +376,7 @@
 			};
 			const originType = group.originType;
 			const originTypeRoot = schemaData.get_rootType(null, originType.dd_rootName, schemaData);
-			const fields = getReturningFields(originType);
+			const fields = getReturningFields(originType, node);
 			console.log('aaaaaa', {
 				originType,
 				originTypeRoot,
