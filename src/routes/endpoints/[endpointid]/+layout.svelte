@@ -10,14 +10,18 @@
 	import SetEndpointConfigurationToContext from '$lib/components/SetEndpointConfigurationToContext.svelte';
 </script>
 
-<QMSWraper
-	QMSName="endpoints_by_pk"
-	initialGqlArgObj={{ id: string_transformer(endpointid) }}
-	tableColsData_StoreInitialValue={[
-		{ title: 'configTemplate', stepsOfFields: ['endpoints', 'configuration', 'configuration'] }
-	]}
->
-	<SetEndpointConfigurationToContext QMSName="endpoints_by_pk">
-		<slot><!-- optional fallback --></slot>
-	</SetEndpointConfigurationToContext>
-</QMSWraper>
+{#if endpointid.startsWith('-local-')}
+	<!-- content here -->
+{:else}
+	<QMSWraper
+		QMSName="endpoints_by_pk"
+		initialGqlArgObj={{ id: string_transformer(endpointid) }}
+		tableColsData_StoreInitialValue={[
+			{ title: 'configTemplate', stepsOfFields: ['endpoints', 'configuration', 'configuration'] }
+		]}
+	>
+		<SetEndpointConfigurationToContext QMSName="endpoints_by_pk">
+			<slot><!-- optional fallback --></slot>
+		</SetEndpointConfigurationToContext>
+	</QMSWraper>
+{/if}

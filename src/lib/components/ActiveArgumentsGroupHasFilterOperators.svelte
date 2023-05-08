@@ -353,7 +353,11 @@
 {#if showSelectModal}
 	<Modal
 		on:mounted={() => {
-			const getReturningFields = (type, matchingField) => {
+			const getReturningFields = (type, matchingField, depth = 0, maxDepth = 2) => {
+				if (depth > maxDepth) {
+					return null;
+				}
+				depth++;
 				let rootType = schemaData.get_rootType(null, type.dd_rootName, schemaData);
 				let fields = rootType?.fields;
 				if (!fields) {
@@ -367,7 +371,7 @@
 				}
 				let returningFields;
 				fields.find((field) => {
-					returningFields = getReturningFields(field, matchingField);
+					returningFields = getReturningFields(field, matchingField, depth, maxDepth);
 					return returningFields; //if returningFields is undefined, the loop continues
 				});
 				if (returningFields) {
@@ -383,8 +387,8 @@
 				group,
 				fields
 			});
-			const myField = fields.find((field) => field.dd_displayName == node.dd_displayName);
-
+			
+			const myField = fields?.find((field) => field.dd_displayName == node.dd_displayName);
 			if (myField) {
 				const myFieldRoot = schemaData.get_rootType(null, myField.dd_rootName, schemaData);
 				const myFieldSubfields = myFieldRoot.fields;
@@ -399,6 +403,7 @@
 				console.log({ qmsData });
 				if (qmsData.length == 1) {
 					selectedQMS = qmsData[0];
+
 					return;
 				}
 				if (qmsData.length > 0) {
