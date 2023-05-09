@@ -387,7 +387,7 @@
 				group,
 				fields
 			});
-			
+
 			const myField = fields?.find((field) => field.dd_displayName == node.dd_displayName);
 			if (myField) {
 				const myFieldRoot = schemaData.get_rootType(null, myField.dd_rootName, schemaData);
@@ -425,6 +425,14 @@
 				)
 				.map((item) => item.item)
 				.filter((item) => item.dd_kindList);
+			if (qmsData.length > 0) {
+				return;
+			}
+			qmsData = fuse
+				.search(
+					`${node.dd_rootName.replaceAll('_', ' ')} | ${node.dd_displayName.replaceAll('_', ' ')}`
+				)
+				.map((item) => item.item);
 			console.log({ node, qmsData });
 		}}
 		showApplyBtn={true}
