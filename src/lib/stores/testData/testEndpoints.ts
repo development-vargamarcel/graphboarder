@@ -155,6 +155,16 @@ export const localEndpoints = [
 				}
 			}
 		],
+		returningColumnsPossibleLocationsInMutations: [[],
+		['returning']
+		],
+		returningColumnsPossibleLocationsInQueriesPerRow: [
+			[]
+		],
+		columnsPossibleLocationsInArg: [
+			['data']
+		]
+		,
 		rowCountLocationPossibilities: [
 			{
 				get_Val: (QMS_info, schemaData) => {
@@ -247,9 +257,6 @@ export const localEndpoints = [
 		['returning']
 		],
 		returningColumnsPossibleLocationsInQueriesPerRow: [
-			['node', 'returning'],
-			['node'],
-			['dsds', 'node'],
 			['node']
 		],
 		columnsPossibleLocationsInArg: [
