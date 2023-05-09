@@ -154,8 +154,12 @@
 	const objective = 'getOne';
 	const qmsNameForObjective = endpointInfo.get_qmsNameForObjective(QMS_info, schemaData, objective);
 	console.log({ qmsNameForObjective }, objective);
-
+	let idColName = endpointInfo.get_idField(
+		returningColumnsLocationQMS_Info || QMS_info,
+		schemaData
+	)?.dd_displayName;
 	QMSWraperContext = {
+		idColName,
 		returningColumnsLocationQMS_Info,
 		rowsLocation,
 		returningColumnsLocation,
