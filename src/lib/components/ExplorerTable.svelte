@@ -13,14 +13,6 @@
 
 	export let enableMultiRowSelectionState = true;
 	export let enableRowSelectionState = true;
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	let QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
-
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-	const schemaData = QMSMainWraperContext?.schemaData;
-	const QMS_info = QMSWraperContext?.QMS_info;
-	let idColName = endpointInfo.get_idField(QMS_info, schemaData)?.dd_displayName;
-	const { paginationOptions } = getContext(`${prefix}QMSWraperContext`);
 
 	export let infiniteHandler;
 	export let infiniteId;

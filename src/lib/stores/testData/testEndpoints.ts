@@ -236,7 +236,7 @@ export const localEndpoints = [
 		]
 	},
 	{
-		id: ' nhostRelay',
+		id: 'nhostRelay',
 
 		url: 'https://vgqkcskomrpikolllkix.nhost.run/v1beta1/relay',
 		isMantained: true,
@@ -263,7 +263,7 @@ export const localEndpoints = [
 		}
 	},
 	{
-		id: '	ehri-project',
+		id: 'ehri-project',
 
 		url: 'https://portal.ehri-project.eu/api/graphql',
 		isMantained: true,

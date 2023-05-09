@@ -10,7 +10,7 @@
 		endpointid = $page.params.endpointid;
 		if (endpointid) {
 			endpointConfiguration = localEndpoints.find(
-				(endpoint) => endpoint.id == endpointid.split('-')[1]
+				(endpoint) => endpoint.id == endpointid.split('localEndpoint--')[1]
 			);
 		}
 	}
@@ -26,7 +26,7 @@
 </script>
 
 {#if endpointid}
-	{#if endpointid.startsWith('localEndpoint-') && endpointConfiguration}
+	{#if endpointid.startsWith('localEndpoint--') && endpointConfiguration}
 		<MainWraper endpointInfoProvided={endpointConfiguration}>
 			<main class="bg-base-300  flex w-[100vw] overflow-hidden">
 				<div class="  md:max-w-[300px]">
