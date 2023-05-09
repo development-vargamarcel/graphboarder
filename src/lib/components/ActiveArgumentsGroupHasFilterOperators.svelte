@@ -492,8 +492,6 @@
 							selectedRowsModel = e.detail;
 							let selectedRowsOriginal = e.detail.rows.map((row) => row.original);
 
-							const returningColumnsPossibleLocationsInQueriesPerRow =
-								$endpointInfo.returningColumnsPossibleLocationsInQueriesPerRow;
 							const returningColumnsLocation =
 								$endpointInfo.returningColumnsPossibleLocationsInQueriesPerRow.find((item) => {
 									return hasDeepProperty(selectedRowsOriginal[0], item);
