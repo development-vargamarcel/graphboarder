@@ -12,7 +12,7 @@
 	import {
 		get_scalarColsData,
 		get_nodeFieldsQMS_info,
-		hasDeepField
+		getDeepField
 	} from '$lib/utils/usefulFunctions';
 	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
@@ -54,23 +54,40 @@
 	export let tableColsData_StoreInitialValue = [];
 	const rowsLocation = endpointInfo.get_rowsLocation(QMS_info);
 	const nodeFieldsQMS_info = get_nodeFieldsQMS_info(QMS_info, rowsLocation, schemaData);
-	let scalarColsData = get_scalarColsData(
-		nodeFieldsQMS_info,
-		[QMS_info.dd_displayName, ...rowsLocation],
-		schemaData
-	);
+	// let scalarColsData = get_scalarColsData(
+	// 	nodeFieldsQMS_info,
+	// 	[QMS_info.dd_displayName, ...rowsLocation],
+	// 	schemaData
+	// );
 	console.log({ nodeFieldsQMS_info });
+	let returningColumnsLocationQMS_Info;
 	const returningColumnsLocation =
 		$endpointInfo.returningColumnsPossibleLocationsInQueriesPerRow.find((path) => {
-			return hasDeepField(nodeFieldsQMS_info, path, schemaData, 'fields');
-		});
+			returningColumnsLocationQMS_Info = getDeepField(
+				nodeFieldsQMS_info,
+				path,
+				schemaData,
+				'fields'
+			);
+			return returningColumnsLocationQMS_Info;
+		}) || [];
 
 	let nodeFieldsQMS_info_Root = schemaData.get_rootType(
 		null,
 		nodeFieldsQMS_info?.dd_rootName,
 		schemaData
 	);
-	console.log({ nodeFieldsQMS_info, nodeFieldsQMS_info_Root, returningColumnsLocation });
+	console.log({
+		nodeFieldsQMS_info,
+		nodeFieldsQMS_info_Root,
+		returningColumnsLocation,
+		returningColumnsLocationQMS_Info
+	});
+	let scalarColsData = get_scalarColsData(
+		returningColumnsLocationQMS_Info,
+		[QMS_info.dd_displayName, ...rowsLocation, ...returningColumnsLocation],
+		schemaData
+	);
 	const dependencyColsData = paginationTypeInfo?.get_dependencyColsData(
 		QMSName,
 		'query',
@@ -139,6 +156,9 @@
 	console.log({ qmsNameForObjective }, objective);
 
 	QMSWraperContext = {
+		returningColumnsLocationQMS_Info,
+		rowsLocation,
+		returningColumnsLocation,
 		QMS_info,
 		QMSType,
 		QMSName,

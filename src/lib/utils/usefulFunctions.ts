@@ -1085,7 +1085,7 @@ export const hasDeepProperty = (obj, propertyPath) => {
 	}
 	return true;
 }
-export const hasDeepField = (obj, propertyPath, schemaData, fieldsType = 'fields') => {
+export const getDeepField = (obj, propertyPath, schemaData, fieldsType = 'fields') => {
 	let currentObj = obj;
 	for (let i = 0; i < propertyPath.length; i++) {
 		const prop = propertyPath[i];
@@ -1094,9 +1094,9 @@ export const hasDeepField = (obj, propertyPath, schemaData, fieldsType = 'fields
 		const nextObj = currentObjRootTypeFields?.find((field) => { return field.dd_displayName == prop })
 
 		if (!nextObj) {
-			return false;
+			return null;
 		}
 		currentObj = nextObj
 	}
-	return true;
+	return currentObj;
 }

@@ -19,7 +19,10 @@
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
 	const QMS_info = QMSWraperContext?.QMS_info;
-	let idColName = endpointInfo.get_idField(QMS_info, schemaData)?.dd_displayName;
+	let idColName = endpointInfo.get_idField(
+		QMSWraperContext?.returningColumnsLocationQMS_Info || QMS_info,
+		schemaData
+	)?.dd_displayName;
 	const { paginationOptions } = getContext(`${prefix}QMSWraperContext`);
 
 	export let infiniteHandler;
