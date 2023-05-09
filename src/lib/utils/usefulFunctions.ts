@@ -1074,3 +1074,14 @@ export const objectToSourceCode = (obj) => {
 
 	return convertObjectToSourceCode(obj);
 }
+export const hasDeepProperty = (obj, propertyPath) => {
+	let currentObj = obj;
+	for (let i = 0; i < propertyPath.length; i++) {
+		const prop = propertyPath[i];
+		if (!currentObj.hasOwnProperty(prop)) {
+			return false;
+		}
+		currentObj = currentObj[prop];
+	}
+	return true;
+}

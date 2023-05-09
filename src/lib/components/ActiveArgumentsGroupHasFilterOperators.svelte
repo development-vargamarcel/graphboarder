@@ -1,5 +1,9 @@
 <script>
-	import { getRootType } from './../utils/usefulFunctions.ts';
+	import {
+		getDataGivenStepsOfFields,
+		getRootType,
+		hasDeepProperty
+	} from './../utils/usefulFunctions.ts';
 	//!!! chnage bonded to item
 	import { flip } from 'svelte/animate';
 	import { dndzone, SHADOW_PLACEHOLDER_ITEM_ID } from 'svelte-dnd-action';
@@ -486,7 +490,20 @@
 						enableMultiRowSelectionState={node.dd_kindList}
 						on:rowSelectionChange={(e) => {
 							selectedRowsModel = e.detail;
-							console.log(e.detail);
+							let selectedRowsOriginal = e.detail.rows.map((row) => row.original);
+
+							const returningColumnsPossibleLocationsInQueriesPerRow =
+								$endpointInfo.returningColumnsPossibleLocationsInQueriesPerRow;
+							const returningColumnsLocation =
+								$endpointInfo.returningColumnsPossibleLocationsInQueriesPerRow.find((item) => {
+									return hasDeepProperty(selectedRowsOriginal[0], item);
+								});
+
+							console.log({ returningColumnsLocation });
+							let selectedRowsColValues = selectedRowsOriginal.map((row) =>
+								getDataGivenStepsOfFields(null, row, returningColumnsLocation)
+							);
+							console.log(e.detail, { selectedRowsColValues });
 						}}
 						on:rowClicked={(e) => {
 							console.log(e.detail);
