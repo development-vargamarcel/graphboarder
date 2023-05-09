@@ -9,7 +9,11 @@
 	import { Create_paginationState } from '$lib/stores/QMSHandling/paginationState';
 	import { Create_paginationState_derived } from '$lib/stores/QMSHandling/paginationState_derived';
 	import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
-	import { get_scalarColsData, get_nodeFieldsQMS_info } from '$lib/utils/usefulFunctions';
+	import {
+		get_scalarColsData,
+		get_nodeFieldsQMS_info,
+		hasDeepField
+	} from '$lib/utils/usefulFunctions';
 	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
@@ -56,6 +60,17 @@
 		schemaData
 	);
 	console.log({ nodeFieldsQMS_info });
+	const returningColumnsLocation =
+		$endpointInfo.returningColumnsPossibleLocationsInQueriesPerRow.find((path) => {
+			return hasDeepField(nodeFieldsQMS_info, path, schemaData, 'fields');
+		});
+
+	let nodeFieldsQMS_info_Root = schemaData.get_rootType(
+		null,
+		nodeFieldsQMS_info?.dd_rootName,
+		schemaData
+	);
+	console.log({ nodeFieldsQMS_info, nodeFieldsQMS_info_Root, returningColumnsLocation });
 	const dependencyColsData = paginationTypeInfo?.get_dependencyColsData(
 		QMSName,
 		'query',

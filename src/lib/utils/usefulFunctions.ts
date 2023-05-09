@@ -1085,3 +1085,18 @@ export const hasDeepProperty = (obj, propertyPath) => {
 	}
 	return true;
 }
+export const hasDeepField = (obj, propertyPath, schemaData, fieldsType = 'fields') => {
+	let currentObj = obj;
+	for (let i = 0; i < propertyPath.length; i++) {
+		const prop = propertyPath[i];
+		const currentObjRootType = schemaData.get_rootType(null, currentObj?.dd_rootName, schemaData)
+		const currentObjRootTypeFields = currentObjRootType?.[fieldsType]
+		const nextObj = currentObjRootTypeFields?.find((field) => { return field.dd_displayName == prop })
+
+		if (!nextObj) {
+			return false;
+		}
+		currentObj = nextObj
+	}
+	return true;
+}
