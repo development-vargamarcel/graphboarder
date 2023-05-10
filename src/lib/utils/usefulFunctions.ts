@@ -511,7 +511,7 @@ export const generate_group_gqlArgObj = (group) => {
 const validItems = (items, nodes) => {
 	return items.filter((item) => {
 		let itemData = nodes[item.id];
-
+		console.log('itemData.selectedRowsColValues', itemData.selectedRowsColValues)
 		return itemData.inUse || (itemData.operator && validItems(itemData.items, nodes).length > 0);
 	});
 };
