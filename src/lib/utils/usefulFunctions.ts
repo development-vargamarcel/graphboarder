@@ -512,7 +512,7 @@ const validItems = (items, nodes) => {
 	return items.filter((item) => {
 		let itemData = nodes[item.id];
 		console.log('itemData.selectedRowsColValues', itemData.selectedRowsColValues)
-		return itemData.inUse || (itemData.operator && validItems(itemData.items, nodes).length > 0);
+		return itemData.inUse || (itemData.operator && validItems(itemData.items, nodes).length > 0 || itemData.selectedRowsColValues);
 	});
 };
 
@@ -572,7 +572,17 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 		} else {
 			dataToAssign = nodes[item.id]?.gqlArgObj?.[group_name]
 		}
+		if (itemData.selectedRowsColValues) {
 
+
+			if (Array.isArray(dataToAssign)) {
+				dataToAssign = [...dataToAssign, ...itemData.selectedRowsColValues]
+			} else {
+				dataToAssign = _.merge(dataToAssign, itemData.selectedRowsColValues[0])
+
+			}
+		}
+		console.log({ dataToAssign }, 'itemData.selectedRowsColValues', itemData.selectedRowsColValues)
 
 		Object.assign(itemObjCurr, dataToAssign);
 		return itemObj;
