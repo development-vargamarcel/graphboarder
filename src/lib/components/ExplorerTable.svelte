@@ -34,6 +34,8 @@
 
 	export let data = [];
 	export let columns: ColumnDef<Person>[] = [];
+	console.log({ data, columns });
+
 	const getColumnVisibility = (columns) => {
 		let columnVisibility = {};
 		columns.forEach((col) => {
@@ -90,7 +92,7 @@
 	$: console.log({ table }, '$table', $table);
 </script>
 
-<div class=" h-[70vh] w-[90vw] max-w-full overscroll-contain	 overflow-y-auto rounded-box pb-32 ">
+<div class=" h-[70vh] w-[90vw] h-min max-w-full overscroll-contain	 overflow-y-auto rounded-box  ">
 	<table class="table table-compact w-full rounded-none">
 		<thead class="sticky top-0 z-20">
 			{#each $table.getHeaderGroups() as headerGroup}

@@ -237,6 +237,7 @@
 		}
 	];
 	let selectedQMS;
+	let selectedRowsColValues = [];
 </script>
 
 {#if showAddModal}
@@ -442,6 +443,7 @@
 		showApplyBtn={true}
 		on:apply={() => {
 			rowSelectionState = getRowSelectionState(selectedRowsModel);
+			node.selectedRowsColValues = selectedRowsColValues;
 			showSelectModal = false;
 		}}
 		on:cancel={() => {
@@ -498,9 +500,10 @@
 								});
 
 							console.log({ returningColumnsLocation });
-							let selectedRowsColValues = selectedRowsOriginal.map((row) =>
+							selectedRowsColValues = selectedRowsOriginal.map((row) =>
 								getDataGivenStepsOfFields(null, row, returningColumnsLocation)
 							);
+
 							console.log(e.detail, { selectedRowsColValues });
 						}}
 						on:rowClicked={(e) => {
@@ -648,6 +651,20 @@
 					showAddModal = true;
 				}}>add</button
 			>
+			{#if node?.selectedRowsColValues?.length > 0}
+				<ExplorerTable
+					enableRowSelection={false}
+					data={node?.selectedRowsColValues}
+					columns={Object.keys(selectedRowsColValues[0]).map((columnName) => {
+						return {
+							accessorFn: (row) => row[columnName],
+							header: columnName,
+							footer: columnName,
+							enableHiding: true
+						};
+					})}
+				/>
+			{/if}
 		{/if}
 		<div class="flex ">
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
