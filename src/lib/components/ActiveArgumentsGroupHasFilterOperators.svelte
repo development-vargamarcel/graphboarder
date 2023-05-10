@@ -1,5 +1,6 @@
 <script>
 	import {
+		formatData,
 		getDataGivenStepsOfFields,
 		getRootType,
 		hasDeepProperty
@@ -444,7 +445,7 @@
 		on:apply={() => {
 			rowSelectionState = getRowSelectionState(selectedRowsModel);
 			node.selectedRowsColValues = selectedRowsColValues;
-			handleChanged()
+			handleChanged();
 			showSelectModal = false;
 		}}
 		on:cancel={() => {
@@ -658,7 +659,7 @@
 					data={node?.selectedRowsColValues}
 					columns={Object.keys(selectedRowsColValues[0]).map((columnName) => {
 						return {
-							accessorFn: (row) => row[columnName],
+							accessorFn: (row) => formatData(row[columnName], 40, true),
 							header: columnName,
 							footer: columnName,
 							enableHiding: true
