@@ -444,6 +444,7 @@
 		on:apply={() => {
 			rowSelectionState = getRowSelectionState(selectedRowsModel);
 			node.selectedRowsColValues = selectedRowsColValues;
+			handleChanged()
 			showSelectModal = false;
 		}}
 		on:cancel={() => {
