@@ -134,7 +134,9 @@ export const getDataGivenStepsOfFields = (colInfo, row_resultData, stepsOfFields
 	} else {
 		stepsOfFields = colInfo.stepsOfFields;
 	}
-
+	if (stepsOfFields.length == 0) {
+		return row_resultData
+	}
 	// const handleArray = (array, element) => {
 	//     console.log('aaaa', { array })
 	//     array = array.map((subElement) => {
