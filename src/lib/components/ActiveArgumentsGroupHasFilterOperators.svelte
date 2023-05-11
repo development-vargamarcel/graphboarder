@@ -502,8 +502,9 @@
 									return hasDeepProperty(selectedRowsOriginal[0], item);
 								});
 							//string_transformer
-							const passAllObjectValuesThroughStringTransformerAndReturnObject = (obj) => {
-								//!!! to do: make this function recursive to handel nested objects
+							const passAllObjectValuesThroughStringTransformerAndReturnNewObject = (obj) => {
+								//!!! to do: make this function recursive to handle nested objects and arrays
+
 								let newObj = { ...obj };
 								Object.keys(obj).forEach((key) => {
 									if (typeof obj[key] == 'string') {
@@ -515,7 +516,9 @@
 
 							console.log({ returningColumnsLocation });
 							selectedRowsColValues = selectedRowsOriginal.map((row) => {
-								return passAllObjectValuesThroughStringTransformerAndReturnObject(getDataGivenStepsOfFields(null, row, returningColumnsLocation))
+								return passAllObjectValuesThroughStringTransformerAndReturnObject(
+									getDataGivenStepsOfFields(null, row, returningColumnsLocation)
+								);
 								//return getDataGivenStepsOfFields(null, row, returningColumnsLocation);
 							});
 							//!!every element of 'selectedRowsColValues' must be cheched like so: every element must have all values checked ,if string pass trough string transformer
