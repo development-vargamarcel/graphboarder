@@ -313,7 +313,7 @@
 	{/if}
 
 	{#if showQMSBody}
-		<div class="mockup-code== bg-base text-content my-1 mx-2 px-2 relative">
+		<div class="mockup-code bg-base text-content my-1 mx-2 px-2 ">
 			<div class="max-h-32 overflow-y-auto">
 				{#if showNonPrettifiedQMSBody}
 					<code class="px-10">{$QMS_bodyPartsUnifier_StoreDerived}</code>
