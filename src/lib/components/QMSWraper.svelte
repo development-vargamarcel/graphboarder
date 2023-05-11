@@ -62,18 +62,20 @@
 	console.log({ nodeFieldsQMS_info });
 	let returningColumnsLocationQMS_Info;
 	//!! todo:before getting returningColumnsLocation value,you should check if it is a query or a mutation,and handle it accordingly
-	let returningColumnsLocation =
-		$endpointInfo.returningColumnsPossibleLocationsInQueriesPerRow.find((path) => {
-			returningColumnsLocationQMS_Info = getDeepField(
-				nodeFieldsQMS_info,
-				path,
-				schemaData,
-				'fields'
-			);
-			return returningColumnsLocationQMS_Info;
-		});
-
-	if (!returningColumnsLocation) {
+	let returningColumnsLocation;
+	if (QMSType == 'query') {
+		returningColumnsLocation = $endpointInfo.returningColumnsPossibleLocationsInQueriesPerRow.find(
+			(path) => {
+				returningColumnsLocationQMS_Info = getDeepField(
+					nodeFieldsQMS_info,
+					path,
+					schemaData,
+					'fields'
+				);
+				return returningColumnsLocationQMS_Info;
+			}
+		);
+	} else {
 		returningColumnsLocation = $endpointInfo.returningColumnsPossibleLocationsInMutations.find(
 			(path) => {
 				returningColumnsLocationQMS_Info = getDeepField(
