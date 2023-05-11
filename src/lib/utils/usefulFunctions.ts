@@ -853,6 +853,9 @@ export const get_nodeFieldsQMS_info = (QMS_info, rowsLocation, schemaData) => {
 			return field.dd_displayName == curr_rowsLocation;
 		});
 	});
+	if (!nodeFieldsQMS_info) {//todo:This is improvised,might cause issues
+		return QMS_info;
+	}
 	return nodeFieldsQMS_info;
 };
 
@@ -1098,6 +1101,10 @@ export const hasDeepProperty = (obj, propertyPath) => {
 	return true;
 }
 export const getDeepField = (obj, propertyPath, schemaData, fieldsType = 'fields') => {
+	console.log({ obj, propertyPath })
+	if (propertyPath.length == 0) {
+		return obj
+	}
 	let currentObj = obj;
 	for (let i = 0; i < propertyPath.length; i++) {
 		const prop = propertyPath[i];

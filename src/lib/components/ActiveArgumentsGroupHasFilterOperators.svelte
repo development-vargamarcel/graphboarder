@@ -516,7 +516,7 @@
 
 							console.log({ returningColumnsLocation });
 							selectedRowsColValues = selectedRowsOriginal.map((row) => {
-								return passAllObjectValuesThroughStringTransformerAndReturnObject(
+								return passAllObjectValuesThroughStringTransformerAndReturnNewObject(
 									getDataGivenStepsOfFields(null, row, returningColumnsLocation)
 								);
 								//return getDataGivenStepsOfFields(null, row, returningColumnsLocation);

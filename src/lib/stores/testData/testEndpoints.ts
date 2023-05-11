@@ -155,8 +155,8 @@ export const localEndpoints = [
 				}
 			}
 		],
-		returningColumnsPossibleLocationsInMutations: [[],
-		['returning']
+		returningColumnsPossibleLocationsInMutations: [
+			['returning'], []
 		],
 		returningColumnsPossibleLocationsInQueriesPerRow: [
 			[]
@@ -253,8 +253,8 @@ export const localEndpoints = [
 		description: 'edgeBased pagination,no rowCount avalable',
 		headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
 		pageInfoFieldsLocation: ['pageInfo'],
-		returningColumnsPossibleLocationsInMutations: [[],
-		['returning']
+		returningColumnsPossibleLocationsInMutations: [
+			['returning'], []
 		],
 		returningColumnsPossibleLocationsInQueriesPerRow: [
 			['node']
