@@ -171,6 +171,7 @@
 	};
 	let selectedRowsModel = {};
 	import ExplorerTable from '$lib/components/ExplorerTable.svelte';
+	import { string_transformer } from '$lib/utils/dataStructureTransformers.ts';
 
 	let showExplorerTable = true;
 	const fuse = new Fuse($schemaData.queryFields, {
@@ -500,12 +501,24 @@
 								$endpointInfo.returningColumnsPossibleLocationsInQueriesPerRow.find((item) => {
 									return hasDeepProperty(selectedRowsOriginal[0], item);
 								});
+							//string_transformer
+							const passAllObjectValuesThroughStringTransformerAndReturnObject = (obj) => {
+								//!!! to do: make this function recursive to handel nested objects
+								let newObj = { ...obj };
+								Object.keys(obj).forEach((key) => {
+									if (typeof obj[key] == 'string') {
+										newObj[key] = string_transformer(obj[key]);
+									}
+								});
+								return newObj;
+							};
 
 							console.log({ returningColumnsLocation });
-							selectedRowsColValues = selectedRowsOriginal.map((row) =>
-								getDataGivenStepsOfFields(null, row, returningColumnsLocation)
-							);
-
+							selectedRowsColValues = selectedRowsOriginal.map((row) => {
+								return passAllObjectValuesThroughStringTransformerAndReturnObject(getDataGivenStepsOfFields(null, row, returningColumnsLocation))
+								//return getDataGivenStepsOfFields(null, row, returningColumnsLocation);
+							});
+							//!!every element of 'selectedRowsColValues' must be cheched like so: every element must have all values checked ,if string pass trough string transformer
 							console.log(e.detail, { selectedRowsColValues });
 						}}
 						on:rowClicked={(e) => {

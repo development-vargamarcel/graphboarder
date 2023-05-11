@@ -20,7 +20,10 @@ export const Create_QMS_bodyPartsUnifier_StoreDerived = (
 		const QMS_body = `${QMS_type}-${QMS_name}{
             ${storesReduced}
         }`;
+		const QMS_bodyProcessed = QMS_body.replace('-', ' ')
+		console.log({ QMS_bodyProcessed })
 		//return QMS_body.replaceAll(/\s/g, '').replace('-', ' ');
-		return QMS_body.replace('-', ' ')
+
+		return QMS_bodyProcessed
 	});
 };
