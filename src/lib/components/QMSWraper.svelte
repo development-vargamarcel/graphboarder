@@ -101,9 +101,13 @@
 		returningColumnsLocation,
 		returningColumnsLocationQMS_Info
 	});
+	let prefixStepsOfFields =
+		QMSType == 'query'
+			? [QMS_info.dd_displayName, ...rowsLocation, ...returningColumnsLocation]
+			: [QMS_info.dd_displayName, ...returningColumnsLocation];
 	let scalarColsData = get_scalarColsData(
 		returningColumnsLocationQMS_Info,
-		[QMS_info.dd_displayName, ...rowsLocation, ...returningColumnsLocation],
+		prefixStepsOfFields,
 		schemaData
 	);
 	const dependencyColsData = paginationTypeInfo?.get_dependencyColsData(
