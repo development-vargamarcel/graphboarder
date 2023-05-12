@@ -188,7 +188,16 @@ export const endpointInfoDefaultValues = {
 				return dd_rootNameLowerCase.includes('configuration')
 			}
 		},
-	]
+	],
+	idDecoderPossibilities: [
+		{
+			get_Val: (QMS_info, schemaData, id) => {
+				return id
+
+			},
+			check: (QMS_info, schemaData) => { return true }
+		},
+	],
 };
 
 
@@ -321,6 +330,22 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 
 			return null;
 
+		},
+		get_decodedId: (QMS_info, schemaData, id) => {
+			const storeVal = get(store);
+			if (!storeVal || !storeVal?.idDecoderPossibilities?.length > 0) {
+				return null;
+			}
+			const idDecoderPossibility = storeVal.idDecoderPossibilities.find((idDecoderPossibility) => {
+				return idDecoderPossibility.check(QMS_info, schemaData);
+			});
+
+			if (idDecoderPossibility) {
+				return idDecoderPossibility.get_Val(QMS_info, schemaData, id);
+			}
+			console.warn('no idDecoder found');
+
+			return null;
 		}
 
 

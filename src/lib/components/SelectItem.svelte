@@ -9,9 +9,11 @@
 	export let QMS_info;
 	export let enableMultiRowSelectionState = true;
 	export let rowSelectionState;
+	export let QMSWraperContext = {};
 </script>
 
 <QmsWraper
+	bind:QMSWraperContext
 	QMSName={QMS_info.dd_displayName}
 	initialGqlArgObj={{}}
 	QMSType="query"

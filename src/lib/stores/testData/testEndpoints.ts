@@ -1,4 +1,4 @@
-import { getRootType } from '$lib/utils/usefulFunctions';
+import { getRootType, stringToJs } from '$lib/utils/usefulFunctions';
 
 //TODO:
 //idFieldNamePossibilities (id naming convention)
@@ -280,6 +280,16 @@ export const localEndpoints = [
 			endCursor: 'endCursor',
 			cursor: 'cursor'
 		}
+		,
+		idDecoderPossibilities: [
+			{
+				get_Val: (QMS_info, schemaData, id) => {
+					let array = stringToJs(atob(id))
+					return array[array.length - 1]
+				},
+				check: (QMS_info, schemaData) => { return true }
+			},
+		],
 	},
 	{
 		id: 'ehri-project',

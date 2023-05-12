@@ -4,7 +4,8 @@
 		getDataGivenStepsOfFields,
 		getDeepField,
 		getRootType,
-		hasDeepProperty
+		hasDeepProperty,
+		passAllObjectValuesThroughStringTransformerAndReturnNewObject
 	} from './../utils/usefulFunctions.ts';
 	//!!! chnage bonded to item
 	import { flip } from 'svelte/animate';
@@ -252,13 +253,15 @@
 	//should work
 	let idColName;
 
-	$: if (selectedQMS) {
-		idColName = endpointInfo.get_idField(selectedQMS, schemaData)?.dd_displayName;
-		console.log({ selectedQMS, idColName },endpointInfo.get_idField(selectedQMS, schemaData));
+	$: if (QMSWraperContextForSelectedQMS) {
+		idColName = QMSWraperContextForSelectedQMS.idColName;
 	}
 	//should work
 	console.log({ node, inputColumnsLocationQMS_Info, inputColumnsLocation });
 	//------------
+
+	let QMSWraperContextForSelectedQMS = {};
+	$: console.log({ QMSWraperContextForSelectedQMS });
 </script>
 
 {#if showAddModal}
@@ -464,7 +467,13 @@
 		showApplyBtn={true}
 		on:apply={() => {
 			rowSelectionState = getRowSelectionState(selectedRowsModel);
-			node.selectedRowsColValues = selectedRowsColValues;
+			node.selectedRowsColValues = selectedRowsColValues.map((row) => {
+				let idRaw = row[idColName];
+				let idDecoded = endpointInfo.get_decodedId(null, null, idRaw);
+				return passAllObjectValuesThroughStringTransformerAndReturnNewObject({
+					[idColName]: idDecoded
+				});
+			});
 			handleChanged();
 			showSelectModal = false;
 		}}
@@ -510,6 +519,7 @@
 
 				{#if selectedQMS}
 					<SelectItem
+						bind:QMSWraperContext={QMSWraperContextForSelectedQMS}
 						{rowSelectionState}
 						enableMultiRowSelectionState={node.dd_kindList}
 						on:rowSelectionChange={(e) => {
@@ -521,23 +531,11 @@
 									return hasDeepProperty(selectedRowsOriginal[0], item);
 								});
 							//string_transformer
-							const passAllObjectValuesThroughStringTransformerAndReturnNewObject = (obj) => {
-								//!!! to do: make this function recursive to handle nested objects and arrays
-
-								let newObj = { ...obj };
-								Object.keys(obj).forEach((key) => {
-									if (typeof obj[key] == 'string') {
-										newObj[key] = string_transformer(obj[key]);
-									}
-								});
-								return newObj;
-							};
 
 							console.log({ returningColumnsLocation });
 							selectedRowsColValues = selectedRowsOriginal.map((row) => {
-								return passAllObjectValuesThroughStringTransformerAndReturnNewObject(
-									getDataGivenStepsOfFields(null, row, returningColumnsLocation)
-								);
+								return getDataGivenStepsOfFields(null, row, returningColumnsLocation);
+
 								//return getDataGivenStepsOfFields(null, row, returningColumnsLocation);
 							});
 							//!!every element of 'selectedRowsColValues' must be cheched like so: every element must have all values checked ,if string pass trough string transformer
@@ -693,12 +691,12 @@
 				>
 			{/if}
 
-			{#if node?.selectedRowsColValues?.length > 0}
+			{#if selectedRowsColValues?.length > 0}
 				<div class=" max-w-[80vw] md:max-w-[50vw] pl-1 pr-2">
 					<ExplorerTable
 						{idColName}
 						enableRowSelection={false}
-						data={node?.selectedRowsColValues}
+						data={selectedRowsColValues}
 						columns={Object.keys(selectedRowsColValues[0]).map((columnName) => {
 							return {
 								accessorFn: (row) => formatData(row[columnName], 40, true),

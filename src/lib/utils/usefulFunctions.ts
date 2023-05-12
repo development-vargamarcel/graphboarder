@@ -6,6 +6,7 @@ import { get } from 'svelte/store';
 import { page } from '$app/stores';
 import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 import { getContext } from 'svelte';
+import { string_transformer } from './dataStructureTransformers';
 export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query') => {
 	if (QMS_fields == '') {
 		console.error('no cols data,choose at least one field');
@@ -1119,3 +1120,15 @@ export const getDeepField = (obj, propertyPath, schemaData, fieldsType = 'fields
 	}
 	return currentObj;
 }
+
+export const passAllObjectValuesThroughStringTransformerAndReturnNewObject = (obj) => {
+	//!!! to do: make this function recursive to handle nested objects and arrays
+
+	let newObj = { ...obj };
+	Object.keys(obj).forEach((key) => {
+		if (typeof obj[key] == 'string') {
+			newObj[key] = string_transformer(obj[key]);
+		}
+	});
+	return newObj;
+};

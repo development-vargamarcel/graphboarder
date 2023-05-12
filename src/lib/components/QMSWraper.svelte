@@ -33,7 +33,7 @@
 		});
 	}
 
-	let QMSWraperContext = {};
+	export let QMSWraperContext = {};
 	const activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store();
 	const paginationOptions = Create_paginationOptions();
 	const paginationState = Create_paginationState(
