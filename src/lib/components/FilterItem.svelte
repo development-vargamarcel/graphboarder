@@ -17,22 +17,33 @@
 	let extraInfoExtraClass = '';
 	let btnExtraClass;
 	let titlePreChange = title;
-	choises.length == 1 ? (type = 'toggle') : '';
+	//choises.length == 1 ? (type = 'toggle') : '';
 	let reorder = false;
 	let chosenPreChange;
 	let modalVisible = false;
 	let chosenNew = [];
 	let choisesNew = [];
 	let choisesWithId;
+	let shouldToggle = choises.length == 1;
 	let showModalOrToggle = () => {
-		if (choises.length > 1) {
+		//		if (choises.length > 1) {
+		if (!shouldToggle) {
 			//show modal
 			modalVisible = true;
 			chosenPreChange = chosen;
 			titlePreChange = title;
 		} else {
 			//toggle
-			chosen.length == 1 ? (chosen = []) : (chosen = choises);
+			console.log('pre', { chosen });
+
+			if (type == 'radio') {
+				chosen?.length > 0 ? (chosen = undefined) : (chosen = choises[0]);
+				//chosen = [choises[0]];
+			} else {
+				chosen?.length > 0 ? (chosen = undefined) : (chosen = choises);
+			}
+			//chosen.length == 1 ? (chosen = []) : (chosen = choises);
+			console.log({ chosen });
 			applyFilter();
 		}
 	};
@@ -47,7 +58,7 @@
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 	let applyFilter = () => {
-		if (type !== 'toggle') {
+		if (!shouldToggle) {
 			modalVisible = false;
 			chosen = chosenInternal;
 		}

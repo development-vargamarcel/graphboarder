@@ -10,6 +10,10 @@
 	export let type;
 	export let chosenDefault;
 	export let chosen;
+	// if (typeof chosen == 'string') {
+	// 	chosen = [chosen];
+	// }
+
 	export let extraData;
 	let dispatch = createEventDispatcher();
 	let detail;

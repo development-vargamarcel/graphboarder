@@ -768,6 +768,7 @@ export const argumentCanRunQuery = (arg) => {
 		dd_kindList,
 		dd_kindList_NON_NULL
 	} = arg;
+	console.log('argumentCanRunQuery', { arg })
 	let argFinalValue = chd_needsChosen ? chd_chosen : chd_dispatchValue;
 	if (!inUse) {
 		return true;
