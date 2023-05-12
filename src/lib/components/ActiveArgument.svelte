@@ -2,7 +2,7 @@
 	import { SHADOW_ITEM_MARKER_PROPERTY_NAME } from 'svelte-dnd-action';
 	import { createEventDispatcher, getContext } from 'svelte';
 	export let setNotInUseIfNotValid = true;
-	export let setNotInUseIfNotValidForEnum = true;
+	export let setNotInUseIfNotValidAndENUM = true;
 	import List from '$lib/components/fields/List.svelte';
 	import FilterGroup from '$lib/components/FilterGroup.svelte';
 	export let prefix = '';
@@ -85,7 +85,7 @@
 		if (
 			(!activeArgumentData.inUse && get_valueToDisplay() !== undefined) ||
 			setNotInUseIfNotValid ||
-			(activeArgumentData.dd_displayInterface == 'ENUM' && setNotInUseIfNotValidForEnum)
+			(activeArgumentData.dd_displayInterface == 'ENUM' && setNotInUseIfNotValidAndENUM)
 		) {
 			inUse_toggle();
 		}
