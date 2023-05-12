@@ -161,7 +161,7 @@ export const localEndpoints = [
 		returningColumnsPossibleLocationsInQueriesPerRow: [
 			[]
 		],
-		columnsPossibleLocationsInArg: [
+		inputColumnsPossibleLocationsInArg: [
 			['data']
 		]
 		,
@@ -259,7 +259,7 @@ export const localEndpoints = [
 		returningColumnsPossibleLocationsInQueriesPerRow: [
 			['node']
 		],
-		columnsPossibleLocationsInArg: [
+		inputColumnsPossibleLocationsInArg: [
 			['data']
 		]
 		,

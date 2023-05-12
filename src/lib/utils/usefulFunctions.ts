@@ -1102,7 +1102,7 @@ export const hasDeepProperty = (obj, propertyPath) => {
 }
 export const getDeepField = (obj, propertyPath, schemaData, fieldsType = 'fields') => {
 	console.log({ obj, propertyPath })
-	if (propertyPath.length == 0) {
+	if (propertyPath.length == 0 || propertyPath[propertyPath.length - 1] == obj.dd_displayName) {//!!!this is a hack,might cause problem dd_displayName is the same in multiple places
 		return obj
 	}
 	let currentObj = obj;

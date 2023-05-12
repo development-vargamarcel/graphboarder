@@ -2,6 +2,7 @@
 	import {
 		formatData,
 		getDataGivenStepsOfFields,
+		getDeepField,
 		getRootType,
 		hasDeepProperty
 	} from './../utils/usefulFunctions.ts';
@@ -240,6 +241,16 @@
 	];
 	let selectedQMS;
 	let selectedRowsColValues = [];
+
+	//------------
+	let inputColumnsLocationQMS_Info;
+	//!! todo:before getting inputColumnsLocation value,you should check if it is a query or a mutation,and handle it accordingly
+	let inputColumnsLocation = $endpointInfo.inputColumnsPossibleLocationsInArg.find((path) => {
+		inputColumnsLocationQMS_Info = getDeepField(node, path, schemaData, 'inputFields');
+		return inputColumnsLocationQMS_Info;
+	});
+	console.log({ node, inputColumnsLocationQMS_Info, inputColumnsLocation });
+	//------------
 </script>
 
 {#if showAddModal}
@@ -657,18 +668,23 @@
 					</sup>
 				{/if}
 			</div>
-			<button
-				class="btn btn-xs normal-case"
-				on:click={() => {
-					showSelectModal = true;
-				}}>select</button
-			>
-			<button
-				class="btn btn-xs normal-case"
-				on:click={() => {
-					showAddModal = true;
-				}}>add</button
-			>
+			<!-- {#if inputColumnsLocation && inputColumnsLocationQMS_Info.dd_displayName == node.dd_displayName} -->
+
+			{#if inputColumnsLocation && inputColumnsLocationQMS_Info.dd_displayName == node.dd_displayName}
+				<button
+					class="btn btn-xs normal-case"
+					on:click={() => {
+						showSelectModal = true;
+					}}>select</button
+				>
+				<button
+					class="btn btn-xs normal-case"
+					on:click={() => {
+						showAddModal = true;
+					}}>add</button
+				>
+			{/if}
+
 			{#if node?.selectedRowsColValues?.length > 0}
 				<div class=" max-w-[80vw] md:max-w-[50vw] pl-1 pr-2">
 					<ExplorerTable
