@@ -46,7 +46,8 @@
 	let get_valueToDisplay = () => {
 		let value;
 		if (activeArgumentData.dd_displayInterface == 'ENUM') {
-			value = activeArgumentData.chd_chosen;
+			let chd_chosen = activeArgumentData.chd_chosen;
+			value = chd_chosen?.length > 0 ? chd_chosen : undefined;
 		} else {
 			if (Array.isArray(activeArgumentData.chd_dispatchValue)) {
 				value = activeArgumentData.chd_dispatchValue.join(', ');
