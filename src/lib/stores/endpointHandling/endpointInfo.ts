@@ -248,6 +248,7 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 		get_idField: (QMS_info, schemaData) => {
 			const storeVal = get(store);
 			if (!storeVal || !storeVal?.idFieldPossibilities?.length > 0) {
+				console.warn('no idFieldPossibilities found or endpointInfo value is null/undefined');
 				return null;
 			}
 			const idFieldPossibility = storeVal.idFieldPossibilities.find((idFieldPossibility) => {
@@ -257,7 +258,7 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			if (idFieldPossibility) {
 				return idFieldPossibility.get_Val(QMS_info, schemaData);
 			}
-			console.warn('no idField found');
+			console.warn('no idField found', { idFieldPossibilities: storeVal.idFieldPossibilities, idFieldPossibility, QMS_info });
 
 			return null;
 		},

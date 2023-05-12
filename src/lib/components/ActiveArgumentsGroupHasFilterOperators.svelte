@@ -249,6 +249,14 @@
 		inputColumnsLocationQMS_Info = getDeepField(node, path, schemaData, 'inputFields');
 		return inputColumnsLocationQMS_Info;
 	});
+	//should work
+	let idColName;
+
+	$: if (selectedQMS) {
+		idColName = endpointInfo.get_idField(selectedQMS, schemaData)?.dd_displayName;
+		console.log({ selectedQMS, idColName },endpointInfo.get_idField(selectedQMS, schemaData));
+	}
+	//should work
 	console.log({ node, inputColumnsLocationQMS_Info, inputColumnsLocation });
 	//------------
 </script>
@@ -688,6 +696,7 @@
 			{#if node?.selectedRowsColValues?.length > 0}
 				<div class=" max-w-[80vw] md:max-w-[50vw] pl-1 pr-2">
 					<ExplorerTable
+						{idColName}
 						enableRowSelection={false}
 						data={node?.selectedRowsColValues}
 						columns={Object.keys(selectedRowsColValues[0]).map((columnName) => {

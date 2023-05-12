@@ -66,7 +66,8 @@
 	};
 
 	console.log({ rowSelectionState });
-	const options = writable<TableOptions<Person>>({
+	export let idColName;
+	const optionsObj = {
 		data: data,
 		columns: columns,
 		getCoreRowModel: getCoreRowModel(),
@@ -76,8 +77,14 @@
 		enableHiding: true,
 		initialState: { rowSelection: rowSelectionState },
 		state: { columnVisibility, rowSelection: rowSelectionState }
+
 		//getRowId: (row) => row?.[idColName]
-	});
+	};
+	if (idColName) {
+		optionsObj.getRowId = (row) => row?.[idColName];
+	}
+	const options = writable(optionsObj);
+
 	const rerender = () => {
 		options.update((options) => ({
 			...options,
@@ -118,12 +125,17 @@
 								<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 								<label tabindex="0" class="cursor-pointer ">
 									<div class="flex space-x-2 hover:text-primary rounded-box ">
-										{#if !header.isPlaceholder}
-											<svelte:component
-												this={flexRender(header.column.columnDef.header, header.getContext())}
-											/>
-										{/if}
-
+										<div
+											class={idColName == header.column.columnDef.header
+												? ' underline decoration-dotted'
+												: ''}
+										>
+											{#if !header.isPlaceholder}
+												<svelte:component
+													this={flexRender(header.column.columnDef.header, header.getContext())}
+												/>
+											{/if}
+										</div>
 										<div class="bi bi-chevron-down " />
 									</div>
 								</label>
