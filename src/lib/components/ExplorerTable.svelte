@@ -100,7 +100,7 @@
 </script>
 
 <div
-	class=" h-[70vh] w-[90vw]  min-h-min max-h-min max-w-full overscroll-contain	 overflow-y-auto rounded-box  "
+	class="  w-[90vw]  min-h-min h-min max-h-[70vh] max-w-full overscroll-contain	 overflow-y-auto rounded-box  "
 >
 	<table class="table table-compact w-full rounded-none">
 		<thead class="sticky top-0 z-20">
