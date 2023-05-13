@@ -99,7 +99,9 @@
 	$: console.log({ table }, '$table', $table);
 </script>
 
-<div class=" h-[70vh] w-[90vw] h-min max-w-full overscroll-contain	 overflow-y-auto rounded-box  ">
+<div
+	class=" h-[70vh] w-[90vw]  min-h-min max-h-min max-w-full overscroll-contain	 overflow-y-auto rounded-box  "
+>
 	<table class="table table-compact w-full rounded-none">
 		<thead class="sticky top-0 z-20">
 			{#each $table.getHeaderGroups() as headerGroup}

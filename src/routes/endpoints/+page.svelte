@@ -31,7 +31,7 @@
 </script>
 
 {#if showExplorerTable}
-	<div class="mx-auto pl-4 pt-4">
+	<div class="mx-auto pl-4 pt-4 h-[50vh] ">
 		<ExplorerTable
 			on:rowClicked={(e) => {
 				if (browser) {
