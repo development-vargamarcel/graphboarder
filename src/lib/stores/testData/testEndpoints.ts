@@ -7,7 +7,7 @@ export const localEndpoints = [
 	{
 		id: 'directus',
 		url: 'https://7rsm0d0d.directus.app/graphql',
-		isMantained: true,
+		isMantained: false,
 		description: 'offsetBased pagination,rowCount set',
 		headers: {
 			authorization: 'Bearer aKUvsqBR4-rfnL2z6nqEQmLPRIur4c1m'
@@ -72,7 +72,7 @@ export const localEndpoints = [
 		id: 'directus2',
 
 		url: 'https://hdfgzkxs.directus.app/graphql',
-		isMantained: true,
+		isMantained: false,
 		description: 'offsetBased pagination,rowCount set',
 		headers: {
 			authorization: 'Bearer mKZiTQr8DCKMlT3teTi1Xf-3Ml9EKGXh'
@@ -190,10 +190,10 @@ export const localEndpoints = [
 
 
 	{
-		id: ' spacex',
+		id: 'spacex',
 
 		url: 'https://api.spacex.land/graphql/',
-		isMantained: true,
+		isMantained: false,
 		description: 'offsetBased pagination,no rowCount avalable',
 
 		rowsLocationPossibilities: [
@@ -216,10 +216,10 @@ export const localEndpoints = [
 		]
 	},
 	{
-		id: '	rickandmortyapi',
+		id: 'rickandmortyapi',
 
 		url: 'https://rickandmortyapi.com/graphql',
-		isMantained: true,
+		isMantained: false,
 		description: 'pageBased pagination,rowCount set',
 		rowsLocationPossibilities: [
 			{
@@ -295,7 +295,7 @@ export const localEndpoints = [
 		id: 'ehri-project',
 
 		url: 'https://portal.ehri-project.eu/api/graphql',
-		isMantained: true,
+		isMantained: false,
 		description: 'edgeBased pagination,no rowCount avalable',
 		pageInfoFieldsLocation: ['pageInfo'],
 		rowsLocationPossibilities: [
@@ -320,7 +320,7 @@ export const localEndpoints = [
 		id: 'gitlab',
 
 		url: 'https://gitlab.com/api/graphql',
-		isMantained: true,
+		isMantained: false,
 		description: 'edgeBased pagination,no rowCount avalable',
 		pageInfoFieldsLocation: ['pageInfo'],
 
@@ -347,7 +347,7 @@ export const localEndpoints = [
 
 		url: 'https://swapi-graphql.netlify.app/.netlify/functions/index',
 		authToken: '',
-		isMantained: true,
+		isMantained: false,
 		description: 'edgeBased pagination,rowCount set',
 		pageInfoFieldsLocation: ['pageInfo'],
 		rowsLocationPossibilities: [
@@ -480,7 +480,7 @@ export const localEndpoints = [
 		]
 	},
 	{
-		id: '	etmdb',
+		id: 'etmdb',
 
 		url: 'https://etmdb.com/graphql?',
 		rowsLocationPossibilities: [
@@ -679,7 +679,7 @@ export const localEndpoints = [
 
 // {
 // 	url: 'https://hdfgzkxs.directus.app/graphql',
-// 		isMantained: true,
+// 		isMantained: false,
 // 			description: 'offsetBased pagination,rowCount set',
 // 				headers: {
 // 		authorization: 'Bearer mKZiTQr8DCKMlT3teTi1Xf-3Ml9EKGXh'

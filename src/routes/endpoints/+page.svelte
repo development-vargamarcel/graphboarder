@@ -7,7 +7,7 @@
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
 
-	let showExplorerTable = false;
+	let showExplorerTable = true;
 	let columns = [
 		{
 			accessorFn: (row) => row.id,
@@ -44,7 +44,19 @@
 				//goto(`${$page.url.origin}/endpoints/${e.detail.id}`);
 			}}
 			enableMultiRowSelectionState={false}
-			data={localEndpoints}
+			data={localEndpoints
+				.filter((endpoint) => {
+					return endpoint.isMantained;
+				})
+				.sort((a, b) => {
+					if (a.id > b.id) {
+						return 1;
+					}
+					if (a.id < b.id) {
+						return -1;
+					}
+					return 0;
+				})}
 			{columns}
 			on:rowSelectionChange={(e) => {}}
 		/>
