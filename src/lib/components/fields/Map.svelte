@@ -46,7 +46,8 @@
 			style: 'mapbox://styles/mapbox/streets-v11', // style URL
 			center: [-74.5, 40], // starting position [lng, lat]
 			zoom: 9, // starting zoom
-			attributionControl: false
+			attributionControl: false,
+			logoPosition: 'bottom-right'
 			//cooperativeGestures: true
 		});
 		map.resize();
@@ -74,7 +75,7 @@
 			// The user does not have to click the polygon control button first.
 			// defaultMode: 'draw_polygon'
 		});
-		map.addControl(draw);
+		map.addControl(draw, 'top-left');
 
 		map.on('draw.create', updateArea);
 		map.on('draw.delete', updateArea);
@@ -112,7 +113,7 @@
 <div
 	id={mapContainerId}
 	bind:this={mapContainer}
-	class="h-max min-h-[180px]   aspect-video rounded-box"
+	class="h-max min-h-[110px]   aspect-video rounded-box"
 />
 
 <style>
