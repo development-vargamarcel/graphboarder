@@ -23,4 +23,6 @@
 		on:rowClicked
 		on:rowSelectionChange
 	/>
+{:else}
+	no rows
 {/if}
