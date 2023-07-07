@@ -44,8 +44,8 @@
 		map = new mapboxgl.Map({
 			container: mapContainerId, // container ID
 			style: 'mapbox://styles/mapbox/streets-v11', // style URL
-			center: [-74.5, 40], // starting position [lng, lat]
-			zoom: 9, // starting zoom
+			center: rawValue?.mapPosisitionState?.center || [-74.5, 40], // starting position [lng, lat]
+			zoom: rawValue?.mapPosisitionState?.zoom || 9, // starting zoom
 			attributionControl: false,
 			logoPosition: 'bottom-right'
 			//cooperativeGestures: true
@@ -84,6 +84,10 @@
 		function updateArea(e) {
 			const data = draw.getAll();
 			let dataCopy = JSON.parse(JSON.stringify(data));
+			dataCopy.mapPosisitionState = {
+				center: Object.values(map.transform._center),
+				zoom: map.transform._zoom
+			};
 			dispatch('changed', {
 				chd_chosen: undefined,
 				chd_needsValue: true,
