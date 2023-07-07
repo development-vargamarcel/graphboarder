@@ -43,7 +43,7 @@
 			'pk.eyJ1IjoiZGV2ZWxvcG1lbnQtdmFyZ2FtYXJjZWwiLCJhIjoiY2wwZTQ1bno0MDEzZjNvb2I3MHZydTR4dyJ9.EyYgnR9m4Efkd3T-NyrFjA';
 		map = new mapboxgl.Map({
 			container: mapContainerId, // container ID
-			style: 'mapbox://styles/mapbox/streets-v11', // style URL
+			style: 'mapbox://styles/mapbox/navigation-night-v1', // style URL
 			center: rawValue?.mapPosisitionState?.center || [-74.5, 40], // starting position [lng, lat]
 			zoom: rawValue?.mapPosisitionState?.zoom || 9, // starting zoom
 			attributionControl: false,
