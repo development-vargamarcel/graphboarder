@@ -10,6 +10,7 @@
 	import Interface from '$lib/components/fields/Interface.svelte';
 	import Modal from './Modal.svelte';
 	import { string_transformerREVERSE } from '$lib/utils/dataStructureTransformers';
+	import { argumentCanRunQuery } from '$lib/utils/usefulFunctions';
 	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
 	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
 	export let isNot;
@@ -82,12 +83,16 @@
 		console.log('detail', detail);
 		Object.assign(activeArgumentData, detail);
 		activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
-		if (
-			(!activeArgumentData.inUse && get_valueToDisplay() !== undefined) ||
-			setNotInUseIfNotValid ||
-			(activeArgumentData.dd_displayInterface == 'ENUM' && setNotInUseIfNotValidAndENUM)
-		) {
-			inUse_toggle();
+		const isValid = argumentCanRunQuery(activeArgumentData);
+		const isInUse = activeArgumentData.inUse;
+		const isENUM = activeArgumentData.dd_displayInterface == 'ENUM';
+		console.log({ isValid });
+		if (!isInUse && isValid) {
+			inUse_set(true);
+		} else if (setNotInUseIfNotValidAndENUM && isInUse && isENUM && !isValid) {
+			inUse_set(false);
+		} else if (setNotInUseIfNotValid && isInUse && !isValid) {
+			inUse_set(false);
 		}
 		dispatch('changed', detail);
 		console.log('activeArgumentsDataGrouped_Store', $activeArgumentsDataGrouped_Store);
@@ -97,11 +102,14 @@
 		//console.log('clicked outside');
 		//expandedVersion = false; //!!! this is causing the expanded version to disappear when you click outside of it,but sometimes,is not desirable like when another modal with choises opens up and if you click on anything that upper modal disappears.
 	};
-	const inUse_toggle = () => {
-		activeArgumentData.inUse = !activeArgumentData.inUse;
+	const inUse_set = (inUse) => {
+		activeArgumentData.inUse = inUse;
 		activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
 		dispatch('inUseChanged');
 		finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
+	};
+	const inUse_toggle = () => {
+		inUse_set(!activeArgumentData.inUse);
 	};
 	let showModal = false;
 	const mutationVersion = getContext('mutationVersion');
