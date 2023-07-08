@@ -283,7 +283,7 @@
 				>
 					{#if !expandedVersion && !$mutationVersion}
 						<p
-							class="shrink-0 text-base-content text-xs font-light pt-[1px] ml-1"
+							class="shrink-0 text-base-content text-xs font-light pt-[1px] mx-2 "
 							on:click|preventDefault|stopPropagation|self={() => {
 								expandedVersion = true;
 							}}
