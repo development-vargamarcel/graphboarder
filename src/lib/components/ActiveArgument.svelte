@@ -222,7 +222,7 @@
 <label
 	use:clickOutside
 	on:click_outside={handleClickOutside}
-	class=" w-min-fit   rounded-box {!expandedVersion || $mutationVersion ? ' pr-3 ' : ' '} 
+	class=" w-min-fit   rounded-box {!expandedVersion || $mutationVersion ? ' pr-2 ' : ' '} 
 		{!expandedVersion && !$mutationVersion ? ' md:max-w-[25vw]' : ' '} 
 		 my-1 flex   dnd-item 
 		 {activeArgumentData?.inUse && !$mutationVersion
