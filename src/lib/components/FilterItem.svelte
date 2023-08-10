@@ -131,7 +131,7 @@
 		chosenNew = [];
 		choisesNew = [];
 		choisesWithId.forEach((choice) => {
-			if (chosenInternal.includes(choice.title)) {
+			if (chosenInternal?.includes(choice.title)) {
 				chosenNew.push(choice.title);
 			}
 			choisesNew.push(choice.title);
