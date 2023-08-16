@@ -1,5 +1,14 @@
 # This is in beta,there will be more info soon.
 
+
+- [x] Pagination
+- [x] Infinitely advanced filtering
+- [x] Infinitely advanced sorting
+- [x] Main interfaces (map,ENUM picker,date picker...)
+- [x] Companion library (auto-gql) 
+
+
+
 For now please take a look bellow
 
 ## Terminology
