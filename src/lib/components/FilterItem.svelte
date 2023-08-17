@@ -17,6 +17,10 @@
 	let extraInfoExtraClass = '';
 	let btnExtraClass;
 	let titlePreChange = title;
+	let isToggle = false;
+	if (choises.length == 1) {
+		isToggle = true;
+	}
 	//choises.length == 1 ? (type = 'toggle') : '';
 	let reorder = false;
 	let chosenPreChange;
@@ -190,8 +194,9 @@
 	class="btn  btn-{size} {btnExtraClass}  flex  w-full normal-case"
 	on:click|stopPropagation|preventDefault|capture={showModalOrToggle}
 >
-	{title}
-	{#if extraInfo}
+	{isToggle ? choises[0] : title}
+
+	{#if extraInfo && !isToggle}
 		<div
 			class="ml-2 space-y-0 border  leading-3 {extraInfoExtraClass} rounded-box  flex space-x-1 px-1"
 		>
@@ -203,7 +208,7 @@
 		</div>
 	{/if}
 
-	{#if type != 'toggle' && !extraInfo}
+	{#if !isToggle && !extraInfo}
 		<i class="bi bi-chevron-down ml-2 text-xs" />
 	{/if}
 </btn>
