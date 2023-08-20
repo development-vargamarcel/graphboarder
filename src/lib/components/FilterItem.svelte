@@ -108,7 +108,7 @@
 		}
 		btnExtraClass =
 			'btn-outline btn-neutral bg-primary/10 hover:bg-primary/10 hover:text-base-content';
-		if (type == 'toggle') {
+		if (isToggle) {
 			title = titlePreChange;
 		} else if (type == 'radio') {
 			title = titlePreChange;
