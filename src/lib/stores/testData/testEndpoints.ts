@@ -133,7 +133,7 @@ export const localEndpoints = [
 	},
 	{
 		id: 'nhost',
-		url: 'https://vgqkcskomrpikolllkix.nhost.run/v1/graphql',
+		url: 'https://vgqkcskomrpikolllkix.hasura.eu-central-1.nhost.run/v1/graphql',
 		isMantained: true,
 		description: 'offsetBased pagination,rowCount set',
 		headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
