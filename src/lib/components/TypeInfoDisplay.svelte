@@ -77,8 +77,11 @@
 		<div class="w-1/8 text-center text-xs" />
 	</div>
 {:else if template == 'columnAddDisplay'}
-	<div class="min-w-max  w-full  cursor-pointer   px-2 rounded-box flex text-base select-none">
+	<div class="min-w-max  w-full  cursor-pointer    rounded-box flex text-base select-none">
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		{#if !canExpand}
+			<input type="checkbox" class="input input-xs checkbox input-accent  mr-1" name="" id="" />
+		{/if}
 		<div
 			class="min-w-max  w-full  pr-2 text-md hover:text-primary active:font-black duration-100  "
 			on:click={() => {
