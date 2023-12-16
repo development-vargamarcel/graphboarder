@@ -80,7 +80,7 @@
 	<div class="min-w-max  w-full  cursor-pointer    rounded-box flex text-base select-none">
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		{#if !canExpand}
-			<input type="checkbox" class="input input-xs checkbox input-accent  mr-1" name="" id="" />
+			<input type="checkbox" class="input checkbox-xs checkbox input-accent  mr-1" name="" id="" />
 		{/if}
 		<div
 			class="min-w-max  w-full  pr-2 text-md hover:text-primary active:font-black duration-100  "
