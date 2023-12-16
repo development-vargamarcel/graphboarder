@@ -113,8 +113,8 @@
 </script>
 
 <div class=" h-[80vh] overscroll-contain	 overflow-y-auto rounded-box pb-32 ">
-	<table class="table table-compact w-full rounded-none">
-		<thead class="sticky top-0 z-20">
+	<table class="table table-zebra table-compact w-full rounded-none static">
+		<thead class="sticky top-0 z-20 bg-base-300">
 			{#each $table.getHeaderGroups() as headerGroup}
 				<tr class="sticky top-0 z-20 ">
 					{#if enableRowSelectionState}
@@ -210,7 +210,7 @@
 					<td>{parseInt(row.index) + 1}</td>
 
 					{#each row.getVisibleCells() as cell}
-						<td>
+						<td class="break-no ">
 							{cell.renderValue()}
 							<!-- <svelte:component this={flexRender(cell.column.columnDef.cell, cell.getContext())} /> -->
 						</td>
