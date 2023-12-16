@@ -215,8 +215,8 @@
 	next page
 </button> -->
 <!-- main -->
-<div class="flex space-x-2 mx-2">
-	<div class="dropdown grow ">
+<div class="flex space-x-2 mx-2 z-50">
+	<div class="dropdown grow z-50">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
@@ -224,7 +224,7 @@
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 		<div
 			tabindex="0"
-			class="dropdown-content menu p-2  bg-base-100 rounded-box ==w-max max-w-screen text-sm shadow-2xl"
+			class="dropdown-content menu p-2  bg-base-100 rounded-box ==w-max max-w-screen text-sm shadow-2xl  z-50"
 		>
 			<div
 				class="max-h-[70vh] sm:max-h-[80vh] md:max-h-[80vh] overflow-auto overscroll-contain max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"

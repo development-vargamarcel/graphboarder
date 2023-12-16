@@ -103,7 +103,7 @@
 	class="  w-[90vw]  min-h-min h-min max-h-[70vh] max-w-full overscroll-contain	 overflow-y-auto rounded-box  "
 >
 	<table class="table table-compact w-full rounded-none">
-		<thead class="sticky top-0 z-20">
+		<thead class="sticky top-0 z-20 bg-base-300">
 			{#each $table.getHeaderGroups() as headerGroup}
 				<tr class="sticky top-0 z-20 ">
 					{#if enableRowSelectionState}
@@ -204,7 +204,7 @@
 					<td>{parseInt(row.index) + 1}</td>
 
 					{#each row.getVisibleCells() as cell}
-						<td>
+						<td class="break-no">
 							{cell.renderValue()}
 							<!-- <svelte:component this={flexRender(cell.column.columnDef.cell, cell.getContext())} /> -->
 						</td>
