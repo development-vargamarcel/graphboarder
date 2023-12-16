@@ -127,14 +127,19 @@ export const getFields_Grouped = (rootField, dd_displayNameToExclude = [], schem
 };
 
 //colData must become colInfo everywhere,for less ambiguity
+export const getStepsOfFieldsForDataGetter = (colInfo, stepsOfFieldsInput) => {
+	if (stepsOfFieldsInput) {
+		return stepsOfFieldsInput
+	}
+	if (colInfo.stepsOfFieldsForDataGetter) {
+		return colInfo.stepsOfFieldsForDataGetter
+	}
+	return colInfo.stepsOfFields
+}
 export const getDataGivenStepsOfFields = (colInfo, row_resultData, stepsOfFieldsInput) => {
 	//col data is column info like colInfo.stepsOfFields,not the result's column data
-	let stepsOfFields;
-	if (stepsOfFieldsInput) {
-		stepsOfFields = stepsOfFieldsInput;
-	} else {
-		stepsOfFields = colInfo.stepsOfFields;
-	}
+
+	const stepsOfFields = getStepsOfFieldsForDataGetter(colInfo, stepsOfFieldsInput)
 	if (stepsOfFields.length == 0) {
 		return row_resultData
 	}
