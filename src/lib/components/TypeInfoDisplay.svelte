@@ -18,10 +18,12 @@
 	const schemaData = QMSMainWraperContext?.schemaData;
 	const tableColsData_Store = QMSWraperContext?.tableColsData_Store;
 	const StepsOfFieldsSelected = getContext(`${prefix}StepsOfFieldsSelected`);
-	let isSelected = $StepsOfFieldsSelected.has(JSON.stringify(stepsOfFields));
-	StepsOfFieldsSelected.subscribe((value) => {
-		isSelected = value.has(JSON.stringify(stepsOfFields));
-	});
+	let isSelected = $StepsOfFieldsSelected?.has(JSON.stringify(stepsOfFields));
+	if ($StepsOfFieldsSelected) {
+		StepsOfFieldsSelected.subscribe((value) => {
+			isSelected = value.has(JSON.stringify(stepsOfFields));
+		});
+	}
 </script>
 
 {#if template == 'default'}

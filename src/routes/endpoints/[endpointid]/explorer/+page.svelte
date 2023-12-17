@@ -355,16 +355,7 @@
 		{#if showExplorer}
 			<div class="">
 				{#key whatToShow}
-					<AddColumn
-						dd_relatedRoot={whatToShow}
-						template="default"
-						depth={0}
-						on:colAddRequest={(e) => {
-							//console.log(e);
-						}}
-					/>
-
-					<!-- {#each whatToShow as type, index (index)}
+					{#each whatToShow as type, index (index)}
 						<Type
 							{index}
 							{type}
@@ -374,7 +365,7 @@
 								//console.log(e);
 							}}
 						/>
-					{/each} -->
+					{/each}
 				{/key}
 			</div>{/if}
 	</section>
