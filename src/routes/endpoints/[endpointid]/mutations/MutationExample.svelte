@@ -196,6 +196,7 @@
 	import 'highlight.js/styles/base16/solarized-dark.css';
 	import RowCount from '$lib/components/UI/rowCount.svelte';
 	import Modal from '$lib/components/Modal.svelte';
+	import TypeList from '$lib/components/TypeList.svelte';
 
 	onMount(() => {
 		hljs.registerLanguage('graphql', graphql);
@@ -250,7 +251,13 @@
 							on:keypress={addColumnFromInput}
 						/>
 						{#if dd_relatedRoot?.fields}
-							{#each dd_relatedRoot.fields as type, index (index)}
+							<TypeList
+								types={dd_relatedRoot.fields}
+								template="columnAddDisplay"
+								stepsOfFields={[QMSName]}
+								depth={0}
+							/>
+							<!-- {#each dd_relatedRoot.fields as type, index (index)}
 								<Type
 									{index}
 									{type}
@@ -258,7 +265,7 @@
 									stepsOfFields={[QMSName]}
 									depth={0}
 								/>
-							{/each}
+							{/each} -->
 						{/if}
 					</div>
 				</div>

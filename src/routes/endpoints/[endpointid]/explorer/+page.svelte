@@ -8,6 +8,7 @@
 	import { sortingFunctionMutipleColumnsGivenArray } from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
 	import ExplorerTable from '$lib/components/ExplorerTable.svelte';
+	import TypeList from '$lib/components/TypeList.svelte';
 
 	let rootTypes = $schemaData.rootTypes;
 	let queries = $schemaData.queryFields;
@@ -353,7 +354,15 @@
 		{#if showExplorer}
 			<div class="">
 				{#key whatToShow}
-					{#each whatToShow as type, index (index)}
+					<TypeList
+						types={whatToShow}
+						template="default"
+						depth={0}
+						on:colAddRequest={(e) => {
+							//console.log(e);
+						}}
+					/>
+					<!-- {#each whatToShow as type, index (index)}
 						<Type
 							{index}
 							{type}
@@ -363,7 +372,7 @@
 								//console.log(e);
 							}}
 						/>
-					{/each}
+					{/each} -->
 				{/key}
 			</div>{/if}
 	</section>

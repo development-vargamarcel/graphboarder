@@ -1,5 +1,6 @@
 <script>
 	import { generateTitleFromStepsOfFields, getRootType } from '$lib/utils/usefulFunctions';
+	import { stringify } from 'postcss';
 	import { createEventDispatcher, getContext } from 'svelte';
 	const dispatch = createEventDispatcher();
 	export let canExpand;
@@ -16,6 +17,11 @@
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
 	const tableColsData_Store = QMSWraperContext?.tableColsData_Store;
+	const StepsOfFieldsSelected = getContext(`${prefix}StepsOfFieldsSelected`);
+	let isSelected = $StepsOfFieldsSelected.has(JSON.stringify(stepsOfFields));
+	StepsOfFieldsSelected.subscribe((value) => {
+		isSelected = value.has(JSON.stringify(stepsOfFields));
+	});
 </script>
 
 {#if template == 'default'}
@@ -80,12 +86,27 @@
 	<div class="min-w-max  w-full  cursor-pointer    rounded-box flex text-base select-none">
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		{#if !canExpand}
+			<!-- {$StepsOfFieldsSelected.has(JSON.stringify(stepsOfFields))}
+			{isSelected} -->
 			<input
 				type="checkbox"
 				class=" checkbox-xs checkbox input-accent  mr-1 self-center"
+				bind:checked={isSelected}
+				on:change={() => {
+					if (isSelected) {
+						$StepsOfFieldsSelected.add(JSON.stringify(stepsOfFields));
+						$StepsOfFieldsSelected = $StepsOfFieldsSelected;
+					} else {
+						$StepsOfFieldsSelected.delete(JSON.stringify(stepsOfFields));
+						$StepsOfFieldsSelected = $StepsOfFieldsSelected;
+					}
+				}}
 				name=""
 				id=""
 			/>
+			<!-- <p class="badge badge-xs badge-accent">
+				{JSON.stringify(stepsOfFields)}
+			</p> -->
 		{/if}
 		<div
 			class="min-w-max  w-full  pr-2 text-md hover:text-primary active:font-black duration-100  "

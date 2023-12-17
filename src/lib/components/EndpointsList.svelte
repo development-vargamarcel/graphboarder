@@ -196,6 +196,7 @@
 	import RowCount from '$lib/components/UI/rowCount.svelte';
 	import Modal from '$lib/components/Modal.svelte';
 	import { browser } from '$app/environment';
+	import TypeList from './TypeList.svelte';
 
 	onMount(() => {
 		hljs.registerLanguage('graphql', graphql);
@@ -240,7 +241,14 @@
 						on:keypress={addColumnFromInput}
 					/>
 					{#if dd_relatedRoot?.fields}
-						{#each dd_relatedRoot.fields as type, index (index)}
+						<TypeList
+							
+							types={dd_relatedRoot.fields}
+							template="columnAddDisplay"
+							stepsOfFields={[queryName]}
+							depth={0}
+						/>
+						<!-- {#each dd_relatedRoot.fields as type, index (index)}
 							<Type
 								{index}
 								{type}
@@ -248,7 +256,7 @@
 								stepsOfFields={[queryName]}
 								depth={0}
 							/>
-						{/each}
+						{/each} -->
 					{/if}
 				</div>
 			</div>
