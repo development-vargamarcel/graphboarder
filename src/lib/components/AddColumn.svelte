@@ -31,7 +31,7 @@
 			class="max-h-[70vh] sm:max-h-[80vh] md:max-h-[80vh] overflow-auto overscroll-contain max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
 		>
 			<div
-				class="flex flex-col overflow-x-auto text-sm font-normal normal-case min-w-max  w-full  space-y-2"
+				class="flex flex-col overflow-x-auto text-sm font-normal normal-case min-w-max  w-full  space-y-1"
 			>
 				<!-- <input
 					type="text"

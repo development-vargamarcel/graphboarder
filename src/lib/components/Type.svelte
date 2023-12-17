@@ -13,6 +13,7 @@
 	export let index;
 	export let type;
 	export let stepsOfFields;
+	export let isOnMainList = false;
 	let {
 		dd_kindsArray,
 		dd_namesArray,
@@ -86,7 +87,7 @@
 			in:slide={{ duration: inDuration, easing: expoIn }}
 			out:slide={{ duration: inDuration, easing: expoOut }}
 		>
-			<div class="mb-2 text-center text-xs" />
+			<div class="mb-2== text-center text-xs" />
 
 			{#if type?.args && template == 'default'}
 				<div class="border-l-2 border-secondary bg-accent/5">
@@ -108,6 +109,6 @@
 		</div>
 	{/if}
 </div>
-{#if !showExpand}
-	<div class="pt-2 text-center text-xs" />
+{#if !showExpand || isOnMainList}
+	<div class="mb-2 text-center text-xs" />
 {/if}

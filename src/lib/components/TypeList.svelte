@@ -10,5 +10,14 @@
 </script>
 
 {#each types as type, index (index)}
-	<Type {index} {prefix} {type} {template} {depth} {stepsOfFields} on:colAddRequest />
+	<Type
+		{index}
+		{prefix}
+		{type}
+		{template}
+		{depth}
+		{stepsOfFields}
+		isOnMainList={true}
+		on:colAddRequest
+	/>
 {/each}
