@@ -1,4 +1,5 @@
 <script>
+	import AddColumn from './../../../../lib/components/AddColumn.svelte';
 	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
@@ -227,50 +228,7 @@
 		</div>
 	</div>
 	<div class="flex space-x-2 mx-2">
-		<div class="dropdown grow ">
-			<!-- svelte-ignore a11y-label-has-associated-control -->
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-			<label tabindex="0" class="btn btn-xs bi bi-node-plus-fill text-lg p-1  w-full" />
-			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-			<div
-				tabindex="0"
-				class="dropdown-content menu p-2  bg-base-100 rounded-box ==w-max max-w-screen text-sm shadow-2xl"
-			>
-				<div
-					class="max-h-[70vh] sm:max-h-[80vh] md:max-h-[80vh] overflow-auto overscroll-contain max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
-				>
-					<div
-						class="flex flex-col overflow-x-auto text-sm font-normal normal-case min-w-max  w-full  space-y-2"
-					>
-						<input
-							type="text"
-							class="input input-sm input-bordered input-accent m-2"
-							placeholder="(> or .) producer>films>title "
-							bind:value={column_stepsOfFields}
-							on:keypress={addColumnFromInput}
-						/>
-						{#if dd_relatedRoot?.fields}
-							<TypeList
-								types={dd_relatedRoot.fields}
-								template="columnAddDisplay"
-								stepsOfFields={[QMSName]}
-								depth={0}
-							/>
-							<!-- {#each dd_relatedRoot.fields as type, index (index)}
-								<Type
-									{index}
-									{type}
-									template="columnAddDisplay"
-									stepsOfFields={[QMSName]}
-									depth={0}
-								/>
-							{/each} -->
-						{/if}
-					</div>
-				</div>
-			</div>
-		</div>
+		<AddColumn bind:column_stepsOfFields {addColumnFromInput} {dd_relatedRoot} {QMSName} />
 
 		<button
 			class=" btn btn-xs grow normal-case "

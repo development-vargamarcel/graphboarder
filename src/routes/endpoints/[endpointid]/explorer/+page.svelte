@@ -9,6 +9,7 @@
 	import { getContext } from 'svelte';
 	import ExplorerTable from '$lib/components/ExplorerTable.svelte';
 	import TypeList from '$lib/components/TypeList.svelte';
+	import AddColumn from '$lib/components/AddColumn.svelte';
 
 	let rootTypes = $schemaData.rootTypes;
 	let queries = $schemaData.queryFields;
@@ -354,14 +355,15 @@
 		{#if showExplorer}
 			<div class="">
 				{#key whatToShow}
-					<TypeList
-						types={whatToShow}
+					<AddColumn
+						dd_relatedRoot={whatToShow}
 						template="default"
 						depth={0}
 						on:colAddRequest={(e) => {
 							//console.log(e);
 						}}
 					/>
+
 					<!-- {#each whatToShow as type, index (index)}
 						<Type
 							{index}
