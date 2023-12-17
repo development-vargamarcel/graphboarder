@@ -85,6 +85,14 @@
 {:else if template == 'columnAddDisplay'}
 	<div class="min-w-max  w-full  cursor-pointer    rounded-box flex text-base select-none">
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		{#if canExpand}
+			<div
+				class="w-10 hover:text-primary active:scale-150 duration-300 bi  mx-auto w-min {showExpand
+					? 'bi-chevron-down'
+					: 'bi-chevron-right'}"
+				on:click={expand}
+			/>
+		{/if}
 		{#if !canExpand}
 			<!-- {$StepsOfFieldsSelected.has(JSON.stringify(stepsOfFields))}
 			{isSelected} -->
@@ -126,14 +134,5 @@
 		>
 			{dd_displayName}
 		</div>
-
-		{#if canExpand}
-			<div
-				class="w-10 hover:text-primary active:scale-150 duration-300 bi  mx-auto w-min {showExpand
-					? 'bi-chevron-down'
-					: 'bi-chevron-right'}"
-				on:click={expand}
-			/>
-		{/if}
 	</div>
 {/if}
