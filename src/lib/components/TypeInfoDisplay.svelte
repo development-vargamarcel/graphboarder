@@ -87,20 +87,23 @@
 {:else if template == 'columnAddDisplay'}
 	<div class="min-w-max  w-full  cursor-pointer    rounded-box flex text-base select-none">
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
+
 		{#if canExpand}
-			<div
-				class="w-10 hover:text-primary active:scale-150 duration-300 bi  mx-auto w-min {showExpand
-					? 'bi-chevron-down'
-					: 'bi-chevron-right'}"
-				on:click={expand}
-			/>
+			<div class="overflow-visible grid  grid-col gap-[-10px] h-2 w-6">
+				<div
+					class="w-10 hover:text-primary active:scale-150 duration-300 bi  mx-auto w-min pl-1 {showExpand
+						? 'bi-arrow-90deg-down mt-2 '
+						: 'bi-chevron-expand'}"
+					on:click={expand}
+				/>
+			</div>
 		{/if}
 		{#if !canExpand}
 			<!-- {$StepsOfFieldsSelected.has(JSON.stringify(stepsOfFields))}
 			{isSelected} -->
 			<input
 				type="checkbox"
-				class=" checkbox-xs checkbox input-accent  mr-1 self-center"
+				class=" checkbox-xs checkbox input-accent  mr-1 self-center ml-1"
 				bind:checked={isSelected}
 				on:change={() => {
 					if (isSelected) {
@@ -118,6 +121,7 @@
 				{JSON.stringify(stepsOfFields)}
 			</p> -->
 		{/if}
+
 		<div
 			class="min-w-max  w-full  pr-2 text-md hover:text-primary active:font-black duration-100  "
 			on:click={() => {
@@ -136,5 +140,10 @@
 		>
 			{dd_displayName}
 		</div>
+		{#if canExpand}
+			<button class="btn btn-xs btn-ghost normal-case  rounded px-2 py-1">
+				<icon class="bi-funnel" />
+			</button>
+		{/if}
 	</div>
 {/if}
