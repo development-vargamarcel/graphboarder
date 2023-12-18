@@ -10,7 +10,7 @@
 	export let showExpand;
 	export let template = 'default';
 	export let stepsOfFields;
-	let { dd_kindsArray, dd_namesArray, dd_displayName, dd_rootName } = type;
+	let { dd_kindsArray, dd_namesArray, dd_displayName, dd_rootName, args } = type;
 	export let prefix = '';
 
 	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
@@ -85,13 +85,15 @@
 		<div class="w-1/8 text-center text-xs" />
 	</div>
 {:else if template == 'columnAddDisplay'}
-	<div class="min-w-max  w-full  cursor-pointer    rounded-box flex text-base select-none">
+	<div
+		class="min-w-max  w-full  cursor-pointer    rounded-box flex text-base select-none hover:text-primary"
+	>
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 
 		{#if canExpand}
-			<div class="overflow-visible grid  grid-col gap-[-10px] h-2 w-6">
+			<div class="overflow-visible grid  grid-col gap-[-10px] h-2 w-6 ">
 				<div
-					class="w-10 hover:text-primary  duration-100   mx-auto w-min pl-1 {showExpand
+					class="w-10   duration-100   mx-auto w-min pl-1 {showExpand
 						? 'bi-arrow-90deg-down mt-2 '
 						: 'bi-chevron-expand'}"
 					on:click={expand}
@@ -123,7 +125,7 @@
 		{/if}
 
 		<div
-			class="min-w-max  w-full  pr-2 text-md hover:text-primary  duration-100==  "
+			class="min-w-max  w-full  pr-2 text-md   duration-100==  "
 			on:click={() => {
 				if (canExpand) {
 					expand();
@@ -139,11 +141,19 @@
 			}}
 		>
 			{dd_displayName}
+			{#if canExpand && args?.length > 0 && showExpand}
+				<button
+					class="btn btn-xs btn-ghost normal-case  rounded px-2 "
+					on:click|stopPropagation={() => {}}
+				>
+					<icon class="bi-funnel" />
+				</button>
+			{/if}
 		</div>
-		{#if canExpand}
+		<!-- {#if canExpand && args?.length > 0}
 			<button class="btn btn-xs btn-ghost normal-case  rounded px-2 py-1">
 				<icon class="bi-funnel" />
 			</button>
-		{/if}
+		{/if} -->
 	</div>
 {/if}
