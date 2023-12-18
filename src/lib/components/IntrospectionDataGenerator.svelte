@@ -3,6 +3,7 @@
 </script>
 
 <script lang="ts">
+	import { endpointsSchemaData } from '$lib/stores/testData/endpointsSchemaData';
 	import { createClient, fetchExchange } from '@urql/core';
 	import { browser } from '$app/environment';
 	import { setClient, operationStore, query } from '@urql/svelte';
@@ -14,8 +15,16 @@
 	const schemaData = QMSMainWraperContext?.schemaData;
 
 	console.log({ endpointInfo }, $endpointInfo);
-
+	const endpointInfoUrl = $endpointInfo?.Url;
+	const getStoredSchemaData = (endpointInfoUrl) => {
+		return endpointsSchemaData.find((item) => item.url === endpointInfoUrl);
+	};
+	const storedSchemaData = getStoredSchemaData(endpointInfoUrl);
+	if (storedSchemaData) {
+		$schemaData = storedSchemaData;
+	}
 	//setClient(urqlCoreClient);
+  //ds
 	const queryStore = operationStore(`
     query IntrospectionQuery {
       __schema {
@@ -109,7 +118,9 @@
       }
     }
   `);
-	query(queryStore);
+	if (!storedSchemaData) {
+		query(queryStore);
+	}
 	let rootTypes = [];
 	let queries = [];
 	let mutations = [];
@@ -139,7 +150,7 @@
 	}
 </script>
 
-{#if $queryStore?.data && $schemaData.isReady}
+{#if ($queryStore?.data || storedSchemaData) && $schemaData.isReady}
 	<!-- content here -->
 	<slot><!-- optional fallback --></slot>
 {/if}
