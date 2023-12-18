@@ -91,7 +91,7 @@
 		{#if canExpand}
 			<div class="overflow-visible grid  grid-col gap-[-10px] h-2 w-6">
 				<div
-					class="w-10 hover:text-primary active:scale-150 duration-300 bi  mx-auto w-min pl-1 {showExpand
+					class="w-10 hover:text-primary  duration-100   mx-auto w-min pl-1 {showExpand
 						? 'bi-arrow-90deg-down mt-2 '
 						: 'bi-chevron-expand'}"
 					on:click={expand}
@@ -123,7 +123,7 @@
 		{/if}
 
 		<div
-			class="min-w-max  w-full  pr-2 text-md hover:text-primary active:font-black duration-100  "
+			class="min-w-max  w-full  pr-2 text-md hover:text-primary  duration-100==  "
 			on:click={() => {
 				if (canExpand) {
 					expand();
