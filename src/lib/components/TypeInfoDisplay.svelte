@@ -12,16 +12,27 @@
 	export let stepsOfFields;
 	let { dd_kindsArray, dd_namesArray, dd_displayName, dd_rootName, args } = type;
 	export let prefix = '';
+	let isSubset = (parentArray, subsetArray) => {
+		return subsetArray.every((el, index) => {
+			return parentArray[index] === el;
+		});
+	};
 
 	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
 	const tableColsData_Store = QMSWraperContext?.tableColsData_Store;
 	const StepsOfFieldsSelected = getContext(`${prefix}StepsOfFieldsSelected`);
-	let isSelected = $StepsOfFieldsSelected?.has(JSON.stringify(stepsOfFields));
+	let isSelected;
+	let hasSelected;
 	if ($StepsOfFieldsSelected) {
 		StepsOfFieldsSelected.subscribe((value) => {
+			console.log({ stepsOfFields });
 			isSelected = value.has(JSON.stringify(stepsOfFields));
+			hasSelected =
+				[...value]?.find((item) => {
+					return isSubset(JSON.parse(item), stepsOfFields);
+				}) && canExpand;
 		});
 	}
 </script>
@@ -93,9 +104,9 @@
 		{#if canExpand}
 			<div class="overflow-visible grid  grid-col gap-[-10px] h-2 w-6 ">
 				<div
-					class="w-10   duration-100   mx-auto w-min pl-1 {showExpand
-						? 'bi-arrow-90deg-down mt-2 '
-						: 'bi-chevron-expand'}"
+					class="w-10   duration-100   mx-auto w-min pl-1 {hasSelected
+						? 'text-secondary'
+						: ''} {showExpand ? 'bi-arrow-90deg-down mt-2 ' : 'bi-chevron-expand'}"
 					on:click={expand}
 				/>
 			</div>
@@ -141,7 +152,7 @@
 			}}
 		>
 			{dd_displayName}
-			{#if canExpand && args?.length > 0 && showExpand}
+			{#if canExpand && args?.length > 0 && (showExpand || hasSelected)}
 				<button
 					class="btn btn-xs btn-ghost normal-case  rounded px-2 "
 					on:click|stopPropagation={() => {}}
