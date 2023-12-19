@@ -725,9 +725,12 @@ export const getQMSLinks = (QMSName = 'query', parentURL, endpointInfo, schemaDa
 
 ////////////////////////
 
-export const stepsOfFieldsToQueryFragmentObject = (stepsOfFields) => {
+export const stepsOfFieldsToQueryFragmentObject = (stepsOfFields, excludeFirstStep = true) => {
 	let _stepsOfFields = [...stepsOfFields];
-	_stepsOfFields.shift();
+	if (excludeFirstStep) {
+		_stepsOfFields.shift();
+
+	}
 	let _stepsOfFields_length = _stepsOfFields.length;
 	let queryObject = {};
 	let queryObjectCurrLevel = queryObject;
@@ -832,7 +835,8 @@ export const get_scalarColsData = (currentQMS_info, prefixStepsOfFields = [], sc
 
 		let scalarColData = {
 			title: name,
-			stepsOfFields: stepsOfFields
+			stepsOfFields: stepsOfFields,
+			stepsOfFieldsOBJ: stepsOfFieldsToQueryFragmentObject(stepsOfFields, false)
 		};
 		return scalarColData;
 	});

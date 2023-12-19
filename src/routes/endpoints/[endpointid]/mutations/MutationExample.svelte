@@ -28,7 +28,8 @@
 		generateTitleFromStepsOfFields,
 		getDataGivenStepsOfFields,
 		getFields_Grouped,
-		getRootType
+		getRootType,
+		stepsOfFieldsToQueryFragmentObject
 	} from '$lib/utils/usefulFunctions';
 	import { onDestroy, onMount, getContext } from 'svelte';
 	import { goto } from '$app/navigation';
@@ -180,7 +181,8 @@
 				title: `col-${Math.floor(Math.random() * 200)},${generateTitleFromStepsOfFields(
 					stepsOfFields
 				)}`,
-				stepsOfFields: [QMSName, ...stepsOfFields]
+				stepsOfFields: [QMSName, ...stepsOfFields],
+				stepsOfFieldsOBJ: stepsOfFieldsToQueryFragmentObject([QMSName, ...stepsOfFields], false)
 			};
 
 			tableColsData_Store.addColumn(tableColData);

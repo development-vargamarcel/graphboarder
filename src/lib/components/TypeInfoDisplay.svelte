@@ -1,5 +1,9 @@
 <script>
-	import { generateTitleFromStepsOfFields, getRootType } from '$lib/utils/usefulFunctions';
+	import {
+		generateTitleFromStepsOfFields,
+		getRootType,
+		stepsOfFieldsToQueryFragmentObject
+	} from '$lib/utils/usefulFunctions';
 	import { stringify } from 'postcss';
 	import { createEventDispatcher, getContext } from 'svelte';
 	const dispatch = createEventDispatcher();
@@ -135,6 +139,7 @@
 			</p> -->
 		{/if}
 
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<div
 			class="min-w-max  w-full  pr-2 text-md   duration-100==  "
 			on:click={() => {
@@ -145,7 +150,8 @@
 						title: `col-${Math.floor(Math.random() * 200)},${generateTitleFromStepsOfFields(
 							stepsOfFields
 						)} `,
-						stepsOfFields: stepsOfFields
+						stepsOfFields: stepsOfFields,
+						stepsOfFieldsOBJ: stepsOfFieldsToQueryFragmentObject(stepsOfFields, false)
 					};
 					tableColsData_Store.addColumn(tableColData);
 				}

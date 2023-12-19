@@ -172,20 +172,6 @@
 	});
 
 	let column_stepsOfFields = '';
-	const addColumnFromInput = (e) => {
-		if (e.key == 'Enter') {
-			let stepsOfFields = column_stepsOfFields.replace(/\s/g, '').replace(/\./g, '>').split('>');
-			let tableColData = {
-				title: `col-${Math.floor(Math.random() * 200)},${generateTitleFromStepsOfFields(
-					stepsOfFields
-				)}`,
-				stepsOfFields: [queryName, ...stepsOfFields]
-			};
-
-			tableColsData_Store.addColumn(tableColData);
-			column_stepsOfFields = '';
-		}
-	};
 
 	//Active arguments logic
 	let showQMSBody = false;

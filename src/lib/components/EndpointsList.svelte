@@ -172,20 +172,6 @@
 	});
 
 	let column_stepsOfFields = '';
-	const addColumnFromInput = (e) => {
-		if (e.key == 'Enter') {
-			let stepsOfFields = column_stepsOfFields.replace(/\s/g, '').replace(/\./g, '>').split('>');
-			let tableColData = {
-				title: `col-${Math.floor(Math.random() * 200)},${generateTitleFromStepsOfFields(
-					stepsOfFields
-				)}`,
-				stepsOfFields: [queryName, ...stepsOfFields]
-			};
-
-			tableColsData_Store.addColumn(tableColData);
-			column_stepsOfFields = '';
-		}
-	};
 
 	//Active arguments logic
 	let showQMSBody = false;
@@ -218,7 +204,7 @@
 </button> -->
 <!-- main -->
 <div class="flex space-x-2 mx-2 z-50">
-	<AddColumn bind:column_stepsOfFields {addColumnFromInput} {dd_relatedRoot} QMSName={queryName} />
+	<AddColumn bind:column_stepsOfFields {dd_relatedRoot} QMSName={queryName} />
 	<div class="grow">
 		{#if showModal}
 			<Modal

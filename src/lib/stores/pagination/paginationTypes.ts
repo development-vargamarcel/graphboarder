@@ -1,4 +1,4 @@
-import { getDataGivenStepsOfFields } from '$lib/utils/usefulFunctions';
+import { getDataGivenStepsOfFields, stepsOfFieldsToQueryFragmentObject } from '$lib/utils/usefulFunctions';
 import { get } from 'svelte/store';
 
 
@@ -170,7 +170,8 @@ export const get_paginationTypes = (endpointInfo, schemaData) => {
 				if (namings?.cursor) {
 					dependencyColsData.push({
 						title: namings.cursor,
-						stepsOfFields: [QMS_name, ...rowsLocation, namings.cursor]
+						stepsOfFields: [QMS_name, ...rowsLocation, namings.cursor],
+						stepsOfFieldsOBJ: stepsOfFieldsToQueryFragmentObject([QMS_name, ...rowsLocation, namings.cursor],false)
 					});
 				}
 				return dependencyColsData;
