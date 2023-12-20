@@ -128,7 +128,7 @@ export const getFields_Grouped = (rootField, dd_displayNameToExclude = [], schem
 
 //colData must become colInfo everywhere,for less ambiguity
 export const getStepsOfFieldsForDataGetter = (colInfo, stepsOfFieldsInput) => {
-	const stepsOfFieldsOBJ = colInfo.stepsOfFieldsOBJ
+	const stepsOfFieldsOBJ = colInfo?.stepsOfFieldsOBJ
 	if (stepsOfFieldsOBJ) {
 		//here stringify and look for the first time there is a ",",this way you know there the object bifurcates into multiple paths and so,just before that is the farthest common step to all stepsOfFields
 	}
