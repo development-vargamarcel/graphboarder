@@ -147,6 +147,7 @@ export const getStepsOfFieldsForDataGetter = (colInfo, stepsOfFieldsInput) => {
 		//temporary solution:
 		return []
 	}
+	return []
 }
 export const getDataGivenStepsOfFields = (colInfo, row_resultData, stepsOfFieldsInput) => {
 	//col data is column info like colInfo.stepsOfFields,not the result's column data
