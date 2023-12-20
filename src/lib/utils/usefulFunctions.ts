@@ -129,16 +129,24 @@ export const getFields_Grouped = (rootField, dd_displayNameToExclude = [], schem
 //colData must become colInfo everywhere,for less ambiguity
 export const getStepsOfFieldsForDataGetter = (colInfo, stepsOfFieldsInput) => {
 	const stepsOfFieldsOBJ = colInfo?.stepsOfFieldsOBJ
-	if (stepsOfFieldsOBJ) {
-		//here stringify and look for the first time there is a ",",this way you know there the object bifurcates into multiple paths and so,just before that is the farthest common step to all stepsOfFields
-	}
+	const stepsOfFields = colInfo?.stepsOfFields
+	const stepsOfFieldsForDataGetter = colInfo?.stepsOfFieldsForDataGetter
+
 	if (stepsOfFieldsInput) {
 		return stepsOfFieldsInput
 	}
-	if (colInfo.stepsOfFieldsForDataGetter) {
-		return colInfo.stepsOfFieldsForDataGetter
+	if (stepsOfFieldsForDataGetter) {
+		return stepsOfFieldsForDataGetter
 	}
-	return colInfo.stepsOfFields
+	if (stepsOfFields) {
+		return stepsOfFields
+	}
+	if (stepsOfFieldsOBJ) {
+		//!!!change this like so:
+		//here stringify and look for the first time there is a ",",this way you know there the object bifurcates into multiple paths and so,just before that is the farthest common step to all stepsOfFields
+		//temporary solution:
+		return []
+	}
 }
 export const getDataGivenStepsOfFields = (colInfo, row_resultData, stepsOfFieldsInput) => {
 	//col data is column info like colInfo.stepsOfFields,not the result's column data
