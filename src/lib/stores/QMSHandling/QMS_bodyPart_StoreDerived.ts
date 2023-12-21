@@ -27,6 +27,7 @@ export const Create_QMS_bodyPart_StoreDerived = (
 					$finalGqlArgObj_Store?.finalGqlArgObj || {},
 					paginationState,
 				);
+				return merged;
 				if (!_.isEmpty(merged)) {
 					console.log({ merged }, gqlArgObjToString(merged))
 					return gqlArgObjToString(merged);

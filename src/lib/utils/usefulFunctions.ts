@@ -7,16 +7,166 @@ import { page } from '$app/stores';
 import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 import { getContext } from 'svelte';
 import { string_transformer } from './dataStructureTransformers';
+
+
 export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query') => {
-	if (QMS_fields == '') {
+	if (Object.keys(QMS_fields).length == 0) {
 		console.error('no cols data,choose at least one field');
 		return null;
 	}
-	return ` ${QMS_name}${QMS_args ? `(${QMS_args})` : ''}{
-${QMS_fields}
-  } `;
-};
+	if (Object.keys(QMS_args).length == 0) {
+		console.info('no args chosen');
+	}
 
+	console.log('qqqqqqqqqq', { QMS_args }, { QMS_fields })
+	const fullObject = _.merge({}, QMS_fields)
+	if (QMS_args && fullObject[QMS_name]) {
+		fullObject[QMS_name].QMSarguments = QMS_args
+	}
+	//.replaceAll('\"QMSarguments\":','')
+	console.log('wwwwwwwww', { fullObject })
+
+	const inputString = JSON.stringify(fullObject, function (key, value) {
+		if (key === "QMSarguments") {
+			console.log('QMSarguments', { value }, JSON.stringify(value))
+			return "(" + JSON.stringify(value) + ")";
+		}
+		return value;
+	}).replaceAll('\"QMSarguments\":', '')
+	const listOfSubstrings = generateListOfSubstrings(inputString)
+	console.log({ listOfSubstrings })
+	//const modifiedString = listOfSubstrings.join('').replaceAll(/novaluehere|"|:/gi, '').slice(1, -1)
+	//const modifiedString = listOfSubstrings.join('').replaceAll(/novaluehere|"|:/gi, '').slice(1, -1)
+	const outsideTextModifier = (text) => {
+		return text.replaceAll(/novaluehere|"|:/gi, '')
+	}
+	const insideModifier = (text) => {
+		return text
+			.replace(/"/g, '')
+			.replace(/'/g, `"`)
+			.replace(/&Prime;/g, `\\"`)
+			.replace(/&prime;/g, `'`)
+			.replace(/\\/g, '')
+			.slice(1, -1);
+	}
+
+	const modifiedString = smartModifyStringBasedOnBoundries(listOfSubstrings.join(''), '(', ')', insideModifier, outsideTextModifier);
+
+	console.log({ modifiedString })
+	const QMS_bodyPart = modifiedString.slice(1, -1)
+
+
+	//const QMS_bodyPart_FINAL = QMS_bodyPart.replaceAll(/novaluehere|"|:/gi, '').slice(1, -1)
+	console.log({ QMS_bodyPart })
+	return QMS_bodyPart
+};
+export const smartModifyStringBasedOnBoundries = (inputString, openBoundryChar = "(", closeBoundryChar = ")", insideTextModifier, outsideTextModifier) => {
+	if (!inputString.includes(openBoundryChar)) {
+		return inputString
+	}
+	let result = []
+	//let splitByOpened=inputString.split('(')
+	const splitByClosed = inputString.split(closeBoundryChar)
+	splitByClosed.forEach((element) => {
+		const splitByOpen = element.split(openBoundryChar)
+		let outsidePart = splitByOpen[0]
+		let insidePart = splitByOpen[1]
+		if (outsidePart) {
+			if (getPreciseType(outsideTextModifier) === 'function') {
+				outsidePart = outsideTextModifier(outsidePart)
+			}
+			result.push(outsidePart)
+		}
+		if (insidePart) {
+			if (getPreciseType(insideTextModifier) === 'function') {
+				insidePart = insideTextModifier(insidePart)
+			}
+			result.push(`${openBoundryChar}${insidePart}${closeBoundryChar}`)
+		}
+
+	});
+
+	return result.join('');
+}
+///
+function replaceLastOccurrence(str, MaxIndex, REPLACEMENT_STRING) {
+	// Find the index of the first occurrence of ":{" after the first character
+	const startIndex = str.indexOf(":{", 1);
+
+	// If the first occurrence is found
+	if (startIndex !== -1) {
+		// Find the index of the last occurrence of ":{" before the fourth character
+		const lastIndex = str.lastIndexOf(":{", MaxIndex);
+
+		// If the last occurrence is found
+		if (lastIndex !== -1) {
+			// Replace the last occurrence with a new string (e.g., "REPLACEMENT_STRING")
+			const replacedString = str.substring(0, lastIndex) + REPLACEMENT_STRING + str.substring(lastIndex + 2);
+
+			return replacedString;
+		}
+	}
+
+	// If no occurrences are found, return the original string
+	return str;
+}
+
+
+var replaceBetween = function (string, start, end, what) {
+	return string.substring(0, start) + what + string.substring(end);
+};
+function modifyString(input) {
+	// Step 1: Match the first parenthesis and the text inside them
+	const matchParenthesis = input.match(/\(([^)]+)\)/);
+	let remainingString
+	let modifiedSubstring
+	if (!matchParenthesis) {
+		modifiedSubstring = input
+		remainingString = ''
+		return { modifiedSubstring, remainingString }
+	}
+	const parenhtesisLength = matchParenthesis[0].length
+	const parenhtesisStart = matchParenthesis.index
+	const parenhtesisEnd = parenhtesisStart + parenhtesisLength
+
+	//delete matched parenthesis and it's content from string
+	input = replaceBetween(input, parenhtesisStart, parenhtesisEnd, '')
+	console.log({ matchParenthesis }, matchParenthesis.index)
+	input = replaceLastOccurrence(input, matchParenthesis.index, matchParenthesis[0] + ":{")
+	modifiedSubstring = input.substring(0, parenhtesisEnd)
+	remainingString = input.substring(parenhtesisEnd, input.length)
+	// Return the original string if no match is found
+	return { modifiedSubstring, remainingString };
+}
+const generateListOfSubstrings = (string) => {
+	const substrings = []
+	let reachedTheEnd = false
+	while (!reachedTheEnd) {
+		const { modifiedSubstring, remainingString } = modifyString(string)
+		console.log({ remainingString })
+		if (remainingString === '') {
+			reachedTheEnd = true
+		}
+		substrings.push(modifiedSubstring)
+		string = remainingString
+	}
+	return substrings
+}
+const inputString2 = "query QMS_name{ authUserRoles:{ createdAt,id,role,userId,(order_by:[{createdAt:asc_nulls_last},{userId:desc_nulls_first}],limit:20,offset:0)roleByRole{role,userRoles_aggregate{nodes{id},aggregate{count}}} } }";
+
+// Example usage: 
+const inputString = ":{textBefore:{1dadas,2dasda,(inside parentheses1{iside1:'asd1'}),3dasds :{ textBefore2:{4dadas,5dasda,(inside parentheses2,inside2:'asd2'),6dasds :{";
+const modifiedResult = modifyString(inputString);
+
+console.log(modifiedResult);
+console.log(replaceLastOccurrence("abc:{def:{ghi:{jkl", 10, "(fdsfds):{"));
+console.log('-------------------------------')
+console.log(inputString)
+const listOfSubstrings = generateListOfSubstrings(inputString)
+console.log(inputString)
+console.log({ listOfSubstrings })
+console.log("joined", listOfSubstrings.join(''))
+///
 export const get_KindsArray = (type) => {
 	let kinds = [];
 
@@ -762,19 +912,19 @@ export const tableColsDataToQueryFields = (tableColsData) => {
 	if (tableColsData.length == '') {
 		return ``;
 	}
-	let queryFragmentsObjects = tableColsData
+	const queryFragmentsObjects = tableColsData
 		.filter((colData) => {
-			return stepsOfFieldsToQueryFragmentObject(colData.stepsOfFields) !== undefined;
+			return colData.stepsOfFieldsOBJ !== undefined;
 		})
 		.map((colData) => {
-			return stepsOfFieldsToQueryFragmentObject(colData.stepsOfFields);
+			return colData.stepsOfFieldsOBJ;
 		});
 	const _queryFragmentsObjects = JSON.parse(JSON.stringify(queryFragmentsObjects));
 
 	const merged = _.merge({}, ..._queryFragmentsObjects);
-	const stringified = JSON.stringify(merged);
-	const queryFragments = stringified.replaceAll(/novaluehere|"|:/gi, '').slice(1, -1);
-	return queryFragments;
+	//const stringified = JSON.stringify(merged);
+	//const queryFragments = stringified.replaceAll(/novaluehere|"|:/gi, '').slice(1, -1);
+	return merged;
 };
 
 export const argumentCanRunQuery = (arg) => {
