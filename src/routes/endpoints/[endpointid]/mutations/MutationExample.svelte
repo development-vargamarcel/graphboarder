@@ -230,7 +230,16 @@
 		</div>
 	</div>
 	<div class="flex space-x-2 mx-2">
-		<AddColumn bind:column_stepsOfFields {addColumnFromInput} {dd_relatedRoot} {QMSName} />
+		<AddColumn
+			bind:column_stepsOfFields
+			{addColumnFromInput}
+			{dd_relatedRoot}
+			{QMSName}
+			on:newColumnAddRequest={(e) => {
+				const tableColData = e.detail;
+				tableColsData_Store.addColumn(tableColData);
+			}}
+		/>
 
 		<button
 			class=" btn btn-xs grow normal-case "

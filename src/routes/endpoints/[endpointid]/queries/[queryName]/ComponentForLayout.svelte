@@ -220,7 +220,17 @@
 </button> -->
 <!-- main -->
 <div class="flex space-x-2 mx-2">
-	<AddColumn bind:column_stepsOfFields {addColumnFromInput} {dd_relatedRoot} {QMSName} />
+	<AddColumn
+		bind:column_stepsOfFields
+		{addColumnFromInput}
+		{dd_relatedRoot}
+		{QMSName}
+		on:newColumnAddRequest={(e) => {
+			const tableColData = e.detail;
+			console.log('aaaaaaaaa', { tableColData });
+			tableColsData_Store.addColumn(tableColData);
+		}}
+	/>
 	<div class="grow">
 		{#if showModal}
 			<Modal

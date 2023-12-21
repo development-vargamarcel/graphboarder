@@ -1155,3 +1155,49 @@ export const passAllObjectValuesThroughStringTransformerAndReturnNewObject = (ob
 	});
 	return newObj;
 };
+
+
+export const getValueAtPath = (obj, path) => {
+	let current = obj;
+
+	for (let i = 0, len = path.length; i < len; i++) {
+		current = current?.[path[i]];
+
+		// If the current level is undefined, exit early
+		if (current === undefined) {
+			return undefined;
+		}
+	}
+
+	return current;
+}
+
+export const getPreciseType = (value) => {
+	return Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
+}
+
+
+export const deleteValueAtPath = (obj, path) => {
+	if (!obj || !path || path.length === 0) {
+		// Check for valid input
+		console.error('Invalid input');
+		return;
+	}
+
+	let currentObj = obj;
+
+	for (let i = 0; i < path.length - 1; i++) {
+		// Traverse the object to the specified path
+		//if (currentObj?.[path[i]] === undefined) {
+		if (currentObj[path[i]] === undefined) {
+			// If the path does not exist, return
+			console.error('Path does not exist');
+			return;
+		}
+		currentObj = currentObj[path[i]];
+	}
+
+	// Delete the value at the final key in the path
+	delete currentObj[path[path.length - 1]];
+	return obj;
+}

@@ -2,14 +2,25 @@
 	import _ from 'lodash';
 
 	import TypeList from '$lib/components/TypeList.svelte';
-	import { stepsOfFieldsToQueryFragmentObject } from '$lib/utils/usefulFunctions';
-	import { setContext, getContext } from 'svelte';
+	import {
+		generateTitleFromStepsOfFields,
+		stepsOfFieldsToQueryFragmentObject
+	} from '$lib/utils/usefulFunctions';
+	import { setContext, getContext, createEventDispatcher } from 'svelte';
 	import { writable } from 'svelte/store';
 	export let prefix = '';
 	export let column_stepsOfFields;
 	export let addColumnFromInput;
 	export let dd_relatedRoot;
 	export let QMSName;
+	const dispatchEvent = createEventDispatcher();
+	//stepsOfFieldsOBJ
+	setContext(`${prefix}stepsOfFieldsOBJ`, writable({}));
+	const stepsOfFieldsOBJ = getContext(`${prefix}stepsOfFieldsOBJ`);
+	stepsOfFieldsOBJ.subscribe((value) => {
+		console.log('stepsOfFieldsOBJ', value);
+	});
+
 	setContext(`${prefix}StepsOfFieldsSelected`, writable(new Set([])));
 	const StepsOfFieldsSelected = getContext(`${prefix}StepsOfFieldsSelected`);
 	StepsOfFieldsSelected.subscribe((value) => {
@@ -43,15 +54,16 @@
 				<button
 					class="btn btn-xs btn-primary "
 					on:click={() => {
-						//stepsOfFieldsToQueryFragmentObject
-						let StepsOfFieldsSelectedObjects = [...$StepsOfFieldsSelected].map((value) => {
-							return stepsOfFieldsToQueryFragmentObject(JSON.parse(value));
-						});
-						console.log({ StepsOfFieldsSelectedObjects });
-						const merged = _.merge({}, ...StepsOfFieldsSelectedObjects);
-						console.log('StepsOfFieldsSelectedObjects merged', { merged });
-						$StepsOfFieldsSelected.clear();
-						$StepsOfFieldsSelected = $StepsOfFieldsSelected;
+						let stepsOfFields = [];
+						let tableColData = {
+							title: `col-${Math.floor(Math.random() * 200)},${generateTitleFromStepsOfFields(
+								stepsOfFields
+							)},stepsOfFieldsOBJ `,
+							stepsOfFields: stepsOfFields,
+							stepsOfFieldsOBJ: $stepsOfFieldsOBJ
+						};
+						dispatchEvent('newColumnAddRequest', tableColData);
+						$stepsOfFieldsOBJ = {};
 					}}
 				>
 					add

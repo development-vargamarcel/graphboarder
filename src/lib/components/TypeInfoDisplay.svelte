@@ -1,9 +1,14 @@
 <script>
 	import {
+		deleteValueAtPath,
 		generateTitleFromStepsOfFields,
+		getPreciseType,
 		getRootType,
+		getValueAtPath,
 		stepsOfFieldsToQueryFragmentObject
 	} from '$lib/utils/usefulFunctions';
+	import _ from 'lodash';
+
 	import { stringify } from 'postcss';
 	import { createEventDispatcher, getContext } from 'svelte';
 	const dispatch = createEventDispatcher();
@@ -27,18 +32,43 @@
 	const schemaData = QMSMainWraperContext?.schemaData;
 	const tableColsData_Store = QMSWraperContext?.tableColsData_Store;
 	const StepsOfFieldsSelected = getContext(`${prefix}StepsOfFieldsSelected`);
+	const stepsOfFieldsOBJ = getContext(`${prefix}stepsOfFieldsOBJ`);
+	const stepsOFieldsAsQueryFragmentObject = stepsOfFieldsToQueryFragmentObject(
+		stepsOfFields,
+		false
+	);
+	//getValueAtPath
 	let isSelected;
 	let hasSelected;
-	if ($StepsOfFieldsSelected) {
-		StepsOfFieldsSelected.subscribe((value) => {
-			console.log({ stepsOfFields });
-			isSelected = value.has(JSON.stringify(stepsOfFields));
-			hasSelected =
-				[...value]?.find((item) => {
-					return isSubset(JSON.parse(item), stepsOfFields);
-				}) && canExpand;
+	if ($stepsOfFieldsOBJ) {
+		stepsOfFieldsOBJ.subscribe((value) => {
+			const valueAtPath = getValueAtPath(value, stepsOfFields);
+			const typeAtPath = getPreciseType(valueAtPath);
+			if (typeAtPath == 'undefined') {
+				hasSelected = false;
+				isSelected = false;
+				return null;
+			} else if (typeAtPath == 'string') {
+				hasSelected = true;
+				isSelected = true;
+			} else if (typeAtPath == 'object') {
+				//add "&& canExpand" ?
+				isSelected = false;
+				hasSelected = true;
+			}
 		});
 	}
+	///
+	// if ($StepsOfFieldsSelected) {
+	// 	StepsOfFieldsSelected.subscribe((value) => {
+	// 		console.log({ stepsOfFields });
+	// 		isSelected = value.has(JSON.stringify(stepsOfFields));
+	// 		hasSelected =
+	// 			[...value]?.find((item) => {
+	// 				return isSubset(JSON.parse(item), stepsOfFields);
+	// 			}) && canExpand;
+	// 	});
+	// }
 </script>
 
 {#if template == 'default'}
@@ -124,11 +154,15 @@
 				bind:checked={isSelected}
 				on:change={() => {
 					if (isSelected) {
-						$StepsOfFieldsSelected.add(JSON.stringify(stepsOfFields));
-						$StepsOfFieldsSelected = $StepsOfFieldsSelected;
+						$stepsOfFieldsOBJ = _.merge($stepsOfFieldsOBJ, stepsOFieldsAsQueryFragmentObject);
+						///
+						//	$StepsOfFieldsSelected.add(JSON.stringify(stepsOfFields));
+						//	$StepsOfFieldsSelected = $StepsOfFieldsSelected;
 					} else {
-						$StepsOfFieldsSelected.delete(JSON.stringify(stepsOfFields));
-						$StepsOfFieldsSelected = $StepsOfFieldsSelected;
+						$stepsOfFieldsOBJ = deleteValueAtPath($stepsOfFieldsOBJ, stepsOfFields);
+						///
+						//	$StepsOfFieldsSelected.delete(JSON.stringify(stepsOfFields));
+						//$StepsOfFieldsSelected = $StepsOfFieldsSelected;
 					}
 				}}
 				name=""
