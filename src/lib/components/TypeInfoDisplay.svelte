@@ -11,6 +11,11 @@
 
 	import { stringify } from 'postcss';
 	import { createEventDispatcher, getContext } from 'svelte';
+	import Modal from '$lib/components/Modal.svelte';
+	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
+	import { Create_activeArgumentsDataGrouped_Store } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
+	import QmsWraper from './QMSWraper.svelte';
+
 	const dispatch = createEventDispatcher();
 	export let canExpand;
 	export let expand;
@@ -69,6 +74,11 @@
 	// 			}) && canExpand;
 	// 	});
 	// }
+	let showModal = false;
+	const activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store();
+	activeArgumentsDataGrouped_Store.subscribe((value) => {
+		console.log('activeArgumentsDataGrouped_Store', stepsOfFields, value);
+	});
 </script>
 
 {#if template == 'default'}
@@ -195,9 +205,32 @@
 			{#if canExpand && args?.length > 0 && (showExpand || hasSelected)}
 				<button
 					class="btn btn-xs btn-ghost normal-case  rounded px-2 "
-					on:click|stopPropagation={() => {}}
+					on:click|stopPropagation={() => {
+						showModal = true;
+					}}
 				>
 					<icon class="bi-funnel" />
+					{#if showModal}
+						<Modal
+							modalIdetifier={'activeArgumentsDataModal'}
+							showApplyBtn={false}
+							on:cancel={(e) => {
+								let { detail } = e;
+								if (detail.modalIdetifier == 'activeArgumentsDataModal') {
+									showModal = false;
+								}
+							}}
+							><div class="  w-full  ">
+								<div class="mx-auto mt-2  w-full   space-y-2   pb-2  ">
+									<div class="w-2" />
+									<QmsWraper QMSName={type.dd_displayName} QMSType="query">
+										<ActiveArguments />
+									</QmsWraper>
+									<div class="w-2" />
+								</div>
+							</div>
+						</Modal>
+					{/if}
 				</button>
 			{/if}
 		</div>

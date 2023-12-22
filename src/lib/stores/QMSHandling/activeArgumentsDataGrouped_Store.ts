@@ -12,6 +12,7 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 		update,
 		set_groups: (QMS_info, schemaData) => {
 			const argsInfo = QMS_info?.args
+			console.log({ argsInfo })
 			//handle generating activeArgumentsDataGrouped
 			const activeArgumentsDataGrouped = []
 			const hasRootArgs = argsInfo?.find((el) => {
@@ -98,6 +99,7 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 			set(activeArgumentsDataGrouped);
 		},
 		update_groups: (groupNewData) => {
+			console.log({ groupNewData })
 			update((activeArgumentsDataGrouped) => {
 				let index = activeArgumentsDataGrouped.findIndex((group) => {
 					return group.group_name == groupNewData.group_name;

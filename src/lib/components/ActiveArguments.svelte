@@ -5,16 +5,22 @@
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
-	const { activeArgumentsDataGrouped_Store, QMS_info } = getContext(`${prefix}QMSWraperContext`);
+	let QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
+
+	export let activeArgumentsDataGrouped_Store = QMSWraperContext.activeArgumentsDataGrouped_Store;
+	export let QMS_info = QMSWraperContext.QMS_info;
+
 	let activeArgumentsDataGrouped = [];
 
 	$: console.log('$activeArgumentsDataGrouped_Store', $activeArgumentsDataGrouped_Store);
 	const update_activeArgumentsDataGrouped = (groupNewData) => {
+		console.log({ groupNewData });
 		activeArgumentsDataGrouped_Store.update_groups(groupNewData);
 	};
 	if ($activeArgumentsDataGrouped_Store.length == 0) {
 		activeArgumentsDataGrouped_Store.set_groups(QMS_info, schemaData);
 	}
+	console.log({ QMS_info });
 	let showDescription = null;
 </script>
 
