@@ -14,7 +14,7 @@
 	import Modal from '$lib/components/Modal.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	import { Create_activeArgumentsDataGrouped_Store } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
-	import QmsWraper from './QMSWraper.svelte';
+	import QMSWraper from '$lib/components/QMSWraper.svelte';
 
 	const dispatch = createEventDispatcher();
 	export let canExpand;
@@ -75,10 +75,30 @@
 	// 	});
 	// }
 	let showModal = false;
-	const activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store();
-	activeArgumentsDataGrouped_Store.subscribe((value) => {
-		console.log('activeArgumentsDataGrouped_Store', stepsOfFields, value);
-	});
+	let finalGqlArgObj_Store;
+	let finalGqlArgObj_StoreValue;
+	let finalGqlArgObjValue;
+	let activeArgumentsQMSWraperContext;
+	let argumentsOBJ;
+
+	$: if (finalGqlArgObj_StoreValue && finalGqlArgObj_StoreValue.final_canRunQuery) {
+		finalGqlArgObjValue = finalGqlArgObj_StoreValue.finalGqlArgObj;
+		argumentsOBJ = stepsOfFieldsToQueryFragmentObject(stepsOfFields, false, {
+			QMSarguments: finalGqlArgObjValue
+		});
+		$stepsOfFieldsOBJ = _.merge({}, argumentsOBJ, $stepsOfFieldsOBJ);
+		console.log('tttttttt', 'stepsOfFieldsOBJ', $stepsOfFieldsOBJ);
+		console.log({ argumentsOBJ });
+	}
+	$: if (activeArgumentsQMSWraperContext) {
+		finalGqlArgObj_Store = activeArgumentsQMSWraperContext.finalGqlArgObj_Store;
+		finalGqlArgObj_StoreValue = $finalGqlArgObj_Store;
+		console.log({ finalGqlArgObj_Store }, $finalGqlArgObj_Store);
+		finalGqlArgObj_Store.subscribe((value) => {
+			console.log('finalGqlArgObj_Store', value);
+		});
+		console.log({ activeArgumentsQMSWraperContext });
+	}
 </script>
 
 {#if template == 'default'}
@@ -223,9 +243,13 @@
 							><div class="  w-full  ">
 								<div class="mx-auto mt-2  w-full   space-y-2   pb-2  ">
 									<div class="w-2" />
-									<QmsWraper QMSName={type.dd_displayName} QMSType="query">
+									<QMSWraper
+										bind:QMSWraperContext={activeArgumentsQMSWraperContext}
+										QMSName={type.dd_displayName}
+										QMSType="query"
+									>
 										<ActiveArguments />
-									</QmsWraper>
+									</QMSWraper>
 									<div class="w-2" />
 								</div>
 							</div>

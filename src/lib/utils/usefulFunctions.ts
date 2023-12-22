@@ -889,7 +889,7 @@ export const getQMSLinks = (QMSName = 'query', parentURL, endpointInfo, schemaDa
 
 ////////////////////////
 
-export const stepsOfFieldsToQueryFragmentObject = (stepsOfFields, excludeFirstStep = true) => {
+export const stepsOfFieldsToQueryFragmentObject = (stepsOfFields, excludeFirstStep = true, dataForLastStep = 'novaluehere') => {
 	let _stepsOfFields = [...stepsOfFields];
 	if (excludeFirstStep) {
 		_stepsOfFields.shift();
@@ -900,7 +900,7 @@ export const stepsOfFieldsToQueryFragmentObject = (stepsOfFields, excludeFirstSt
 	let queryObjectCurrLevel = queryObject;
 	_stepsOfFields.forEach((fieldName, index) => {
 		if (_stepsOfFields_length == index + 1) {
-			queryObjectCurrLevel[fieldName] = 'novaluehere';
+			queryObjectCurrLevel[fieldName] = dataForLastStep;
 		} else {
 			queryObjectCurrLevel[fieldName] = {};
 			queryObjectCurrLevel = queryObjectCurrLevel[fieldName];

@@ -4,7 +4,7 @@
 	import { Create_finalGqlArgObj_Store } from '$lib/stores/QMSHandling/finalGqlArgObj_Store';
 	import { Create_tableColsData_Store } from '$lib/stores/QMSHandling/tableColsData_Store';
 	import { Create_QMS_bodyPart_StoreDerived } from '$lib/stores/QMSHandling/QMS_bodyPart_StoreDerived';
-	import { getContext, setContext } from 'svelte';
+	import { createEventDispatcher, getContext, setContext } from 'svelte';
 	import { Create_QMS_bodyPartsUnifier_StoreDerived } from '$lib/stores/QMSHandling/QMS_bodyPartsUnifier_StoreDerived';
 	import { Create_paginationState } from '$lib/stores/QMSHandling/paginationState';
 	import { Create_paginationState_derived } from '$lib/stores/QMSHandling/paginationState_derived';
@@ -34,7 +34,7 @@
 	}
 
 	export let QMSWraperContext = {};
-	const activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store();
+	export let activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store();
 	const paginationOptions = Create_paginationOptions();
 	const paginationState = Create_paginationState(
 		undefined,
@@ -126,7 +126,7 @@
 		tableColsData_StoreInitialValue
 	);
 
-	const finalGqlArgObj_Store = Create_finalGqlArgObj_Store(
+	export let finalGqlArgObj_Store = Create_finalGqlArgObj_Store(
 		activeArgumentsDataGrouped_Store,
 		paginationState
 	);
