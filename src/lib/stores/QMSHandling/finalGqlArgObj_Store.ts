@@ -31,7 +31,7 @@ export const Create_finalGqlArgObj_Store = (
 
 const generate_finalGqlArgObjAndCanRunQuery = (activeArgumentsDataGrouped, _paginationState_Store, resetPaginationState = true) => {
 	//reset pagination state too !!!THIS MIGHT TRIGGER 1 EXTRA SERVER REQUEST,seems not from what i saw
-	if (resetPaginationState) {
+	if (resetPaginationState && _paginationState_Store) {
 		_paginationState_Store.resetToDefault();
 	}
 	//
