@@ -1352,3 +1352,21 @@ export const deleteValueAtPath = (obj, path) => {
 	delete currentObj[path[path.length - 1]];
 	return obj;
 }
+
+export const generate_finalGqlArgObjAndCanRunQuery = (activeArgumentsDataGrouped, _paginationState_Store, resetPaginationState = true) => {
+	//reset pagination state too !!!THIS MIGHT TRIGGER 1 EXTRA SERVER REQUEST,seems not from what i saw
+	if (resetPaginationState && _paginationState_Store) {
+		_paginationState_Store.resetToDefault();
+	}
+	//
+	console.log('regenerate_groupsAndfinalGqlArgObj RUN');
+	const groups_gqlArgObj = activeArgumentsDataGrouped.map((group) => {
+		if (group.group_argsNode) {
+			return generate_gqlArgObj_forHasOperators(group);
+		} else {
+			return generate_group_gqlArgObj(group);
+		}
+	});
+	return generate_finalGqlArgObj_fromGroups(groups_gqlArgObj);
+	//better set an array?
+}
