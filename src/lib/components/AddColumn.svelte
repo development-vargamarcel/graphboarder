@@ -20,6 +20,12 @@
 	stepsOfFieldsOBJ.subscribe((value) => {
 		console.log('stepsOfFieldsOBJ', value);
 	});
+	//activeArgumentsDataGrouped_Store
+	setContext(`${prefix}activeArgumentsDataGrouped_Store`, writable({}));
+	const activeArgumentsDataGrouped_Store = getContext(`${prefix}activeArgumentsDataGrouped_Store`);
+	activeArgumentsDataGrouped_Store.subscribe((value) => {
+		console.log('activeArgumentsDataGrouped_Store', value);
+	});
 
 	setContext(`${prefix}StepsOfFieldsSelected`, writable(new Set([])));
 	const StepsOfFieldsSelected = getContext(`${prefix}StepsOfFieldsSelected`);
@@ -60,7 +66,8 @@
 								stepsOfFields
 							)},stepsOfFieldsOBJ `,
 							stepsOfFields: stepsOfFields,
-							stepsOfFieldsOBJ: $stepsOfFieldsOBJ
+							stepsOfFieldsOBJ: $stepsOfFieldsOBJ,
+							activeArgumentsDataGrouped: $activeArgumentsDataGrouped_Store
 						};
 						dispatchEvent('newColumnAddRequest', tableColData);
 						$stepsOfFieldsOBJ = {};

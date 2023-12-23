@@ -15,6 +15,8 @@
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	import { Create_activeArgumentsDataGrouped_Store } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
 	import QMSWraper from '$lib/components/QMSWraper.svelte';
+	import { get } from 'svelte/store';
+	import { get_store_value } from 'svelte/internal';
 
 	const dispatch = createEventDispatcher();
 	export let canExpand;
@@ -80,7 +82,7 @@
 	let finalGqlArgObjValue;
 	let activeArgumentsQMSWraperContext;
 	let argumentsOBJ;
-
+	let activeArgumentsDataGrouped_Store = getContext(`${prefix}activeArgumentsDataGrouped_Store`);
 	$: if (finalGqlArgObj_StoreValue && finalGqlArgObj_StoreValue.final_canRunQuery) {
 		finalGqlArgObjValue = finalGqlArgObj_StoreValue.finalGqlArgObj;
 		argumentsOBJ = stepsOfFieldsToQueryFragmentObject(stepsOfFields, false, {
@@ -91,6 +93,10 @@
 		console.log({ argumentsOBJ });
 	}
 	$: if (activeArgumentsQMSWraperContext) {
+		$activeArgumentsDataGrouped_Store = get_store_value(
+			activeArgumentsQMSWraperContext.activeArgumentsDataGrouped_Store
+		);
+
 		finalGqlArgObj_Store = activeArgumentsQMSWraperContext.finalGqlArgObj_Store;
 		finalGqlArgObj_StoreValue = $finalGqlArgObj_Store;
 		console.log({ finalGqlArgObj_Store }, $finalGqlArgObj_Store);
@@ -230,31 +236,34 @@
 					}}
 				>
 					<icon class="bi-funnel" />
-					{#if showModal}
-						<Modal
-							modalIdetifier={'activeArgumentsDataModal'}
-							showApplyBtn={false}
-							on:cancel={(e) => {
-								let { detail } = e;
-								if (detail.modalIdetifier == 'activeArgumentsDataModal') {
-									showModal = false;
-								}
-							}}
-							><div class="  w-full  ">
-								<div class="mx-auto mt-2  w-full   space-y-2   pb-2  ">
-									<div class="w-2" />
-									<QMSWraper
-										bind:QMSWraperContext={activeArgumentsQMSWraperContext}
-										QMSName={type.dd_displayName}
-										QMSType="query"
-									>
+
+					<QMSWraper
+						bind:QMSWraperContext={activeArgumentsQMSWraperContext}
+						QMSName={type.dd_displayName}
+						QMSType="query"
+					>
+						{#if showModal}
+							<Modal
+								modalIdetifier={'activeArgumentsDataModal'}
+								showApplyBtn={false}
+								on:cancel={(e) => {
+									let { detail } = e;
+									if (detail.modalIdetifier == 'activeArgumentsDataModal') {
+										showModal = false;
+									}
+								}}
+								><div class="  w-full  ">
+									<div class="mx-auto mt-2  w-full   space-y-2   pb-2  ">
+										<div class="w-2" />
+
 										<ActiveArguments />
-									</QMSWraper>
-									<div class="w-2" />
+
+										<div class="w-2" />
+									</div>
 								</div>
-							</div>
-						</Modal>
-					{/if}
+							</Modal>
+						{/if}
+					</QMSWraper>
 				</button>
 			{/if}
 		</div>

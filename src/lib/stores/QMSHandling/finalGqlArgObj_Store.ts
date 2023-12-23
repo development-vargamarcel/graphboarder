@@ -18,24 +18,31 @@ export const Create_finalGqlArgObj_Store = (
 		set,
 		update,
 		regenerate_groupsAndfinalGqlArgObj: () => {
-			//reset pagination state too !!!THIS MIGHT TRIGGER 1 EXTRA SERVER REQUEST,seems not from what i saw
-			_paginationState_Store.resetToDefault();
-			//
-			console.log('regenerate_groupsAndfinalGqlArgObj RUN');
-			let groups_gqlArgObj = get(_activeArgumentsDataGrouped_Store).map((group) => {
-				if (group.group_argsNode) {
-					return generate_gqlArgObj_forHasOperators(group);
-				} else {
-					return generate_group_gqlArgObj(group);
-				}
-			});
-			let { finalGqlArgObj, final_canRunQuery } =
-				generate_finalGqlArgObj_fromGroups(groups_gqlArgObj);
-
-			//better set an array?
-			if (final_canRunQuery) {
-				set({ finalGqlArgObj, final_canRunQuery });
+			const activeArgumentsDataGrouped = get(_activeArgumentsDataGrouped_Store);
+			const finalGqlArgObjAndCanRunQuery = generate_finalGqlArgObjAndCanRunQuery(activeArgumentsDataGrouped, _paginationState_Store, true)
+			if (finalGqlArgObjAndCanRunQuery.final_canRunQuery) {
+				set(finalGqlArgObjAndCanRunQuery);
+			} else {
+				console.log('Did not update finalGqlArgObj and final_canRunQuery because there was some error in arguments')
 			}
 		}
 	};
 };
+
+const generate_finalGqlArgObjAndCanRunQuery = (activeArgumentsDataGrouped, _paginationState_Store, resetPaginationState = true) => {
+	//reset pagination state too !!!THIS MIGHT TRIGGER 1 EXTRA SERVER REQUEST,seems not from what i saw
+	if (resetPaginationState) {
+		_paginationState_Store.resetToDefault();
+	}
+	//
+	console.log('regenerate_groupsAndfinalGqlArgObj RUN');
+	const groups_gqlArgObj = activeArgumentsDataGrouped.map((group) => {
+		if (group.group_argsNode) {
+			return generate_gqlArgObj_forHasOperators(group);
+		} else {
+			return generate_group_gqlArgObj(group);
+		}
+	});
+	return generate_finalGqlArgObj_fromGroups(groups_gqlArgObj);
+	//better set an array?
+}
