@@ -149,14 +149,14 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 					let containers = Object.values(group.group_argsNode).filter((container) => {
 						return container?.items;
 					});
-					let argumentContainerId = containers.find((container) => {
+					let argumentParentContainerId = containers.find((container) => {
 						return container.items.find((item) => {
 							return item.id == activeArgumentData.id;
 						});
 					}).id;
-					if (argumentContainerId) {
-						group.group_argsNode[argumentContainerId].items = group.group_argsNode[
-							argumentContainerId
+					if (argumentParentContainerId) {
+						group.group_argsNode[argumentParentContainerId].items = group.group_argsNode[
+							argumentParentContainerId
 						].items.filter((item) => {
 							return item.id != activeArgumentData.id;
 						});
@@ -181,42 +181,42 @@ export const Create_activeArgumentsDataGrouped_Store = () => {
 					return arg.stepsOfFieldsStringified == JSON.stringify(stepsOfFields);
 				});
 		},
-		add_activeArgument: (newArgData, groupName, containerId) => {
+		add_activeArgument: (newArgumentOrContainerData, groupName, parentContainerId) => {
 			update((activeArgumentsDataGrouped) => {
-				return add_activeArgumentTo_activeArgumentsDataGrouped(newArgData, groupName, containerId, activeArgumentsDataGrouped);
+				return add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(newArgumentOrContainerData, groupName, parentContainerId, activeArgumentsDataGrouped);
 			});
 		}
 	};
 };
-export const add_activeArgumentTo_activeArgumentsDataGrouped = (newArgData, groupName, containerId, activeArgumentsDataGrouped) => {
+export const add_activeArgumentOrContainerTo_activeArgumentsDataGrouped = (newArgumentOrContainerData, groupName, parentContainerId, activeArgumentsDataGrouped) => {
 	let group = activeArgumentsDataGrouped?.filter((group) => {
 		return group.group_name == groupName;
 	})[0];
 	const activeArgumentIndex = group.group_args?.findIndex((arg) => {
-		return arg.id == newArgData.id;
+		return arg.id == newArgumentOrContainerData.id;
 	});
 
 	{
 		if (group.group_argsNode) {
 			//to prevent --> Uncaught TypeError: Converting circular structure to JSON
-			newArgData.dd_relatedRoot =
+			newArgumentOrContainerData.dd_relatedRoot =
 				'overwritten to evade error: Uncaught TypeError: Converting circular structure to JSON';
-			newArgData.not = false;
-			group.group_argsNode[newArgData.id] = newArgData;
+			newArgumentOrContainerData.not = false;
+			group.group_argsNode[newArgumentOrContainerData.id] = newArgumentOrContainerData;
 
-			if (containerId) {
-				group.group_argsNode[containerId].items.push({ id: newArgData.id });
+			if (parentContainerId) {
+				group.group_argsNode[parentContainerId].items.push({ id: newArgumentOrContainerData.id });
 			} else {
-				group.group_argsNode.mainContainer.items.push({ id: newArgData.id });
+				group.group_argsNode.mainContainer.items.push({ id: newArgumentOrContainerData.id });
 			}
-			group.group_args.push(newArgData);
+			group.group_args.push(newArgumentOrContainerData);
 		} else {
 			if (
 				!group.group_args.some((el) => {
-					return el.stepsOfFieldsStringified == newArgData.stepsOfFieldsStringified;
+					return el.stepsOfFieldsStringified == newArgumentOrContainerData.stepsOfFieldsStringified;
 				})
 			) {
-				group.group_args.push(newArgData);
+				group.group_args.push(newArgumentOrContainerData);
 
 			} else {
 				console.log('already added');
@@ -236,6 +236,7 @@ export const generateContainerData = (stepsOfFields, type, extraData = {}) => {
 	return {
 		///inputFields,
 		///enumValues,
+		items: [],
 		stepsOfFields,
 		stepsOfFieldsStringified: JSON.stringify(stepsOfFields),
 		id: `${JSON.stringify(stepsOfFields)}${Math.random()}`,
@@ -254,6 +255,7 @@ export const generateArgData = (stepsOfFields, type, schemaData, extraData = {})
 		stepsOfFields.push(dd_displayName); //take care might caus eproblems
 	}
 	return {
+		not: false,
 		inputFields,
 		enumValues,
 		stepsOfFields,
@@ -263,3 +265,5 @@ export const generateArgData = (stepsOfFields, type, schemaData, extraData = {})
 		...extraData
 	};
 };
+
+
