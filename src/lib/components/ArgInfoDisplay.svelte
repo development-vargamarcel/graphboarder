@@ -1,4 +1,8 @@
 <script>
+	import {
+		generateArgData,
+		generateContainerData
+	} from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
 	import { getRootType } from '$lib/utils/usefulFunctions';
 	import { createEventDispatcher, getContext } from 'svelte';
 	const dispatch = createEventDispatcher();
@@ -30,49 +34,11 @@
 	export const prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
-	//console.log('====', dd_namesArray, dd_namesArray);
-	//only for  changeArguments
-	let inUse;
-
-	// testing
-	let RootType = getRootType(null, type.dd_rootName, schemaData);
-
-	let inputFields = RootType?.inputFields;
-	let enumValues = RootType?.enumValues;
-
-	/// do the above for enums
-
 	const addFilter = () => {
-		//console.log({ type }, { RootType_parent });
-		if (stepsOfFields[stepsOfFields.length - 1] !== dd_displayName) {
-			stepsOfFields.push(dd_displayName); //take care might caus eproblems
-		}
-
-		let infoToCast = {
-			inputFields,
-			enumValues,
-			stepsOfFields,
-			stepsOfFieldsStringified: JSON.stringify(stepsOfFields),
-			id: `${JSON.stringify(stepsOfFields)}${Math.random()}`,
-			...type
-		};
-
-		dispatch('argAddRequest', infoToCast);
+		dispatch('argAddRequest', generateArgData(stepsOfFields, type, schemaData));
 	};
 	const addContainer = () => {
-		if (stepsOfFields[stepsOfFields.length - 1] !== dd_displayName) {
-			stepsOfFields.push(dd_displayName); //take care might caus eproblems
-		}
-
-		let infoToCast = {
-			///inputFields,
-			///enumValues,
-			stepsOfFields,
-			stepsOfFieldsStringified: JSON.stringify(stepsOfFields),
-			id: `${JSON.stringify(stepsOfFields)}${Math.random()}`,
-			...type
-		};
-		dispatch('containerAddRequest', infoToCast);
+		dispatch('containerAddRequest', generateContainerData(stepsOfFields, type));
 	};
 </script>
 
