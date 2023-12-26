@@ -40,6 +40,8 @@
 	const tableColsData_Store = QMSWraperContext?.tableColsData_Store;
 	const StepsOfFieldsSelected = getContext(`${prefix}StepsOfFieldsSelected`);
 	const stepsOfFieldsOBJ = getContext(`${prefix}stepsOfFieldsOBJ`);
+	const stepsOfFieldsOBJFull = getContext(`${prefix}stepsOfFieldsOBJFull`);
+
 	const stepsOFieldsAsQueryFragmentObject = stepsOfFieldsToQueryFragmentObject(
 		stepsOfFields,
 		false
@@ -65,6 +67,16 @@
 			}
 		});
 	}
+	///////
+	let isUsedInSomeColumn = false;
+	if ($stepsOfFieldsOBJFull) {
+		stepsOfFieldsOBJFull.subscribe((value) => {
+			const valueAtPath = getValueAtPath(value, stepsOfFields);
+			const typeAtPath = getPreciseType(valueAtPath);
+			isUsedInSomeColumn = typeAtPath != 'undefined';
+		});
+	}
+
 	///
 	// if ($StepsOfFieldsSelected) {
 	// 	StepsOfFieldsSelected.subscribe((value) => {
@@ -228,6 +240,12 @@
 			}}
 		>
 			{dd_displayName}
+			{#if isUsedInSomeColumn}
+				<sup class="text-xs text-accent">
+					<i class="bi bi-check2" />
+				</sup>
+			{/if}
+
 			{#if canExpand && args?.length > 0 && (showExpand || hasSelected)}
 				<button
 					class="btn btn-xs btn-ghost normal-case  rounded px-2 "
@@ -256,7 +274,12 @@
 									<div class="mx-auto mt-2  w-full   space-y-2   pb-2  ">
 										<div class="w-2" />
 
-										<ActiveArguments />
+										<ActiveArguments
+											QMSarguments={getValueAtPath($stepsOfFieldsOBJ, [
+												...stepsOfFields,
+												'QMSarguments'
+											])}
+										/>
 
 										<div class="w-2" />
 									</div>

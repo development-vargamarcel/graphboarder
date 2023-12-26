@@ -7,7 +7,7 @@
 		stepsOfFieldsToQueryFragmentObject
 	} from '$lib/utils/usefulFunctions';
 	import { setContext, getContext, createEventDispatcher } from 'svelte';
-	import { writable } from 'svelte/store';
+	import { get, writable } from 'svelte/store';
 	export let prefix = '';
 	export let column_stepsOfFields;
 	export let addColumnFromInput;
@@ -20,6 +20,8 @@
 	stepsOfFieldsOBJ.subscribe((value) => {
 		console.log('stepsOfFieldsOBJ', value);
 	});
+	setContext(`${prefix}stepsOfFieldsOBJFull`, writable({}));
+	const stepsOfFieldsOBJFull = getContext(`${prefix}stepsOfFieldsOBJFull`);
 	//activeArgumentsDataGrouped_Store
 	setContext(`${prefix}activeArgumentsDataGrouped_Store`, writable({}));
 	const activeArgumentsDataGrouped_Store = getContext(`${prefix}activeArgumentsDataGrouped_Store`);
@@ -27,6 +29,18 @@
 		console.log('activeArgumentsDataGrouped_Store', value);
 	});
 
+	const tableColsData_Store = getContext(`${prefix}QMSWraperContext`).tableColsData_Store;
+	tableColsData_Store.subscribe((cols) => {
+		$stepsOfFieldsOBJFull = _.merge(
+			{},
+			...cols.map((col) => {
+				return col.stepsOfFieldsOBJ;
+			})
+		);
+	});
+	stepsOfFieldsOBJFull.subscribe((stepsOfFieldsOBJFull) => {
+		console.log({ stepsOfFieldsOBJFull });
+	});
 	setContext(`${prefix}StepsOfFieldsSelected`, writable(new Set([])));
 	const StepsOfFieldsSelected = getContext(`${prefix}StepsOfFieldsSelected`);
 	StepsOfFieldsSelected.subscribe((value) => {

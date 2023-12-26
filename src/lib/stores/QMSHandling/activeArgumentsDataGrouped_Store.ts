@@ -10,7 +10,7 @@ export const Create_activeArgumentsDataGrouped_Store = (initialValue = []) => {
 		subscribe,
 		set,
 		update,
-		set_groups: (QMS_info, schemaData) => {
+		set_groups: (QMS_info, schemaData, QMSarguments) => {
 			const argsInfo = QMS_info?.args
 			console.log({ argsInfo })
 			//handle generating activeArgumentsDataGrouped
@@ -96,6 +96,11 @@ export const Create_activeArgumentsDataGrouped_Store = (initialValue = []) => {
 				seenGroupNames.push(group.group_name)
 			})
 			//
+			//Handle QMSarguments data if present
+			console.log({ QMSarguments })
+			if (QMSarguments) {
+				objectToActiveArgumentsDataGrouped(QMSarguments, activeArgumentsDataGrouped);
+			}
 			set(activeArgumentsDataGrouped);
 		},
 		update_groups: (groupNewData) => {
@@ -274,13 +279,19 @@ const objectToActiveArgumentsDataGrouped = (object, activeArgumentsDataGrouped) 
 			return group.group_name;
 		}
 	})
-	const rootGroupName = activeArgumentsDataGrouped.map((group) => {
-		if (group.group_isRoot) {
-			return group.group_name;
+	// const rootGroupName = activeArgumentsDataGrouped.map((group) => {
+	// 	if (group.group_isRoot) {
+	// 		return group.group_name;
+	// 	}
+	// })
+	//divide object into groups
+	const rootObject = {};
+	Object.keys(object).forEach((key) => {
+		if (!nonRootGroupNames.includes(key)) {
+			rootObject[key] = object[key];
 		}
 	})
-	//divide object into groups
-	const groups = Object.keys(object).forEach((key) => { })
-
+	console.log({ rootObject })
+	return activeArgumentsDataGrouped
 
 }

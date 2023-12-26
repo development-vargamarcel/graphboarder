@@ -6,7 +6,7 @@
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
 	let QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
-
+	export let QMSarguments;
 	export let activeArgumentsDataGrouped_Store = QMSWraperContext.activeArgumentsDataGrouped_Store;
 	export let QMS_info = QMSWraperContext.QMS_info;
 
@@ -18,7 +18,7 @@
 		activeArgumentsDataGrouped_Store.update_groups(groupNewData);
 	};
 	if ($activeArgumentsDataGrouped_Store.length == 0) {
-		activeArgumentsDataGrouped_Store.set_groups(QMS_info, schemaData);
+		activeArgumentsDataGrouped_Store.set_groups(QMS_info, schemaData, QMSarguments);
 	}
 	console.log({ QMS_info });
 	let showDescription = null;
