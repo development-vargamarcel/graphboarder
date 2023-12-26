@@ -2,8 +2,8 @@ import { argumentCanRunQuery, generate_gqlArgObj, getRootType } from '$lib/utils
 import { json } from '@sveltejs/kit';
 import { get, writable } from 'svelte/store';
 
-export const Create_activeArgumentsDataGrouped_Store = () => {
-	const store = writable([]);
+export const Create_activeArgumentsDataGrouped_Store = (initialValue = []) => {
+	const store = writable(initialValue);
 	const { subscribe, set, update } = store;
 
 	return {
@@ -267,3 +267,15 @@ export const generateArgData = (stepsOfFields, type, schemaData, extraData = {})
 };
 
 
+const objectToActiveArgumentsDataGrouped = (object, activeArgumentsDataGrouped) => {
+	//object is QMSarguments object
+	const nonRootGroupNames = activeArgumentsDataGrouped.map((group) => {
+		if (!group.group_isRoot) {
+			return group.group_name;
+		}
+	})
+	//divide object into groups
+	const groups = Object.keys(object).forEach((key) => { })
+
+
+}
