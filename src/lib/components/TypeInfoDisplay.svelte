@@ -244,7 +244,7 @@
 			{dd_displayName}
 			{#if isUsedInSomeColumn}
 				<sup class="text-xs text-accent">
-					<i class="bi bi-check2" />
+					<i class="bi bi-check" />
 				</sup>
 			{/if}
 
