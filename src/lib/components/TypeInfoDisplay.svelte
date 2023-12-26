@@ -69,9 +69,11 @@
 	}
 	///////
 	let isUsedInSomeColumn = false;
+	let hasQMSarguments = false;
 	if ($stepsOfFieldsOBJFull) {
 		stepsOfFieldsOBJFull.subscribe((value) => {
 			const valueAtPath = getValueAtPath(value, stepsOfFields);
+			hasQMSarguments = valueAtPath?.QMSarguments;
 			const typeAtPath = getPreciseType(valueAtPath);
 			isUsedInSomeColumn = typeAtPath != 'undefined';
 		});
@@ -248,12 +250,14 @@
 
 			{#if canExpand && args?.length > 0 && (showExpand || hasSelected)}
 				<button
-					class="btn btn-xs btn-ghost normal-case  rounded px-2 "
+					class="btn btn-xs btn-ghost normal-case  rounded px-2 {hasQMSarguments
+						? 'text-success'
+						: ''} "
 					on:click|stopPropagation={() => {
 						showModal = true;
 					}}
 				>
-					<icon class="bi-funnel" />
+					<icon class="bi-funnel " />
 
 					<QMSWraper
 						bind:QMSWraperContext={activeArgumentsQMSWraperContext}
@@ -275,7 +279,7 @@
 										<div class="w-2" />
 
 										<ActiveArguments
-											QMSarguments={getValueAtPath($stepsOfFieldsOBJ, [
+											QMSarguments={getValueAtPath($stepsOfFieldsOBJFull, [
 												...stepsOfFields,
 												'QMSarguments'
 											])}
