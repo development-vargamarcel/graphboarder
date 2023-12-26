@@ -274,6 +274,11 @@ const objectToActiveArgumentsDataGrouped = (object, activeArgumentsDataGrouped) 
 			return group.group_name;
 		}
 	})
+	const rootGroupName = activeArgumentsDataGrouped.map((group) => {
+		if (group.group_isRoot) {
+			return group.group_name;
+		}
+	})
 	//divide object into groups
 	const groups = Object.keys(object).forEach((key) => { })
 
