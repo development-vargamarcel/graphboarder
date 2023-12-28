@@ -20,7 +20,14 @@ export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'q
 
 	console.log('qqqqqqqqqq', { QMS_args }, { QMS_fields }, { mergedChildren_finalGqlArgObj })
 	const QMSarguments = { [QMS_name]: { QMSarguments: QMS_args } }
-	const fullObject = _.merge({}, mergedChildren_finalGqlArgObj, QMSarguments, QMS_fields)
+	const customizer = (objValue, srcValue, key, object, source, stack) => {
+		if (srcValue?.QMSarguments && Object.keys(srcValue).length == 1) {
+			console.log({ objValue, srcValue, key, object, source, stack })
+			//return {}
+		}
+		return undefined
+	}
+	const fullObject = _.mergeWith({}, mergedChildren_finalGqlArgObj, QMSarguments, QMS_fields, customizer)
 	// if (QMS_args && fullObject[QMS_name]) {
 	// 	fullObject[QMS_name].QMSarguments = QMS_args
 	// }

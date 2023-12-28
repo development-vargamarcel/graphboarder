@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-export const Create_tableColsData_Store = (_paginationState_Store, initialCols = [], mergedChildren_finalGqlArgObj_Store) => {
+export const Create_tableColsData_Store = (_paginationState_Store, initialCols = []) => {
 	const store = writable(initialCols);
 	const { subscribe, set, update } = store;
 
@@ -25,10 +25,6 @@ export const Create_tableColsData_Store = (_paginationState_Store, initialCols =
 		},
 		removeColumn: (colToRemoveData_title) => {
 			_paginationState_Store.resetToDefault();
-			// $mergedChildren_finalGqlArgObj_Store = deleteValueAtPath(
-			// 	$mergedChildren_finalGqlArgObj_Store,
-			// 	stepsOfFields
-			// );
 			update((storeData) => {
 				return storeData.filter((colData) => {
 					return colData.title !== colToRemoveData_title;
