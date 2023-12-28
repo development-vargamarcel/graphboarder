@@ -122,18 +122,19 @@
 		...tableColsData_StoreInitialValue,
 		...dependencyColsData
 	];
-
+	const mergedChildren_finalGqlArgObj_Store = Create_mergedChildren_finalGqlArgObj_Store({});
+	$: console.log('$mergedChildren_finalGqlArgObj_Store', $mergedChildren_finalGqlArgObj_Store);
 	const tableColsData_Store = Create_tableColsData_Store(
 		paginationState,
-		tableColsData_StoreInitialValue
+		tableColsData_StoreInitialValue,
+		mergedChildren_finalGqlArgObj_Store
 	);
 
 	export let finalGqlArgObj_Store = Create_finalGqlArgObj_Store(
 		activeArgumentsDataGrouped_Store,
 		paginationState
 	);
-	const mergedChildren_finalGqlArgObj_Store = Create_mergedChildren_finalGqlArgObj_Store({});
-	$: console.log('$mergedChildren_finalGqlArgObj_Store', $mergedChildren_finalGqlArgObj_Store);
+
 	const QMS_bodyPart_StoreDerived = Create_QMS_bodyPart_StoreDerived(
 		finalGqlArgObj_Store,
 		tableColsData_Store,

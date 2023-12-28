@@ -218,6 +218,7 @@
 						//	$StepsOfFieldsSelected = $StepsOfFieldsSelected;
 					} else {
 						$stepsOfFieldsOBJ = deleteValueAtPath($stepsOfFieldsOBJ, stepsOfFields);
+
 						///
 						//	$StepsOfFieldsSelected.delete(JSON.stringify(stepsOfFields));
 						//$StepsOfFieldsSelected = $StepsOfFieldsSelected;
