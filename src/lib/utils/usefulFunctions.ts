@@ -9,7 +9,7 @@ import { getContext } from 'svelte';
 import { string_transformer } from './dataStructureTransformers';
 
 
-export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query') => {
+export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query', mergedChildren_finalGqlArgObj) => {
 	if (Object.keys(QMS_fields).length == 0) {
 		console.error('no cols data,choose at least one field');
 		return null;
@@ -18,9 +18,9 @@ export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'q
 		console.info('no args chosen');
 	}
 
-	console.log('qqqqqqqqqq', { QMS_args }, { QMS_fields })
+	console.log('qqqqqqqqqq', { QMS_args }, { QMS_fields }, { mergedChildren_finalGqlArgObj })
 	const QMSarguments = { [QMS_name]: { QMSarguments: QMS_args } }
-	const fullObject = _.merge({}, QMSarguments, QMS_fields)
+	const fullObject = _.merge({}, mergedChildren_finalGqlArgObj, QMSarguments, QMS_fields)
 	// if (QMS_args && fullObject[QMS_name]) {
 	// 	fullObject[QMS_name].QMSarguments = QMS_args
 	// }

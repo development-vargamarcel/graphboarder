@@ -132,7 +132,8 @@
 		activeArgumentsDataGrouped_Store,
 		paginationState
 	);
-
+	const mergedChildren_finalGqlArgObj_Store = Create_mergedChildren_finalGqlArgObj_Store({});
+	$: console.log('$mergedChildren_finalGqlArgObj_Store', $mergedChildren_finalGqlArgObj_Store);
 	const QMS_bodyPart_StoreDerived = Create_QMS_bodyPart_StoreDerived(
 		finalGqlArgObj_Store,
 		tableColsData_Store,
@@ -140,6 +141,7 @@
 		QMSName,
 		paginationOptions,
 		paginationState_derived,
+		mergedChildren_finalGqlArgObj_Store,
 		initialGqlArgObj
 	);
 
@@ -182,7 +184,7 @@
 		returningColumnsLocationQMS_Info || QMS_info,
 		schemaData
 	)?.dd_displayName;
-	const mergedChildren_finalGqlArgObj_Store = Create_mergedChildren_finalGqlArgObj_Store({});
+
 	QMSWraperContext = {
 		idColName,
 		returningColumnsLocationQMS_Info,

@@ -1,7 +1,7 @@
 import {
 	build_QMS_bodyPart,
 	gqlArgObjToString,
-	tableColsDataToQueryFields
+	tableColsDataToQueryFields,
 } from '$lib/utils/usefulFunctions';
 import { derived, get } from 'svelte/store';
 import _ from 'lodash';
@@ -12,11 +12,11 @@ export const Create_QMS_bodyPart_StoreDerived = (
 	QMS_type = 'query',
 	QMS_name: string,
 	paginationOptions_Store,
-	paginationState_derived_Store, initialGqlArgObj = {}
+	paginationState_derived_Store, mergedChildren_finalGqlArgObj_Store, initialGqlArgObj = {}
 ) => {
 	return derived(
-		[finalGqlArgObj_Store, tableColsData_Store, paginationState_derived_Store],
-		([$finalGqlArgObj_Store, $tableColsData_Store], set) => {
+		[finalGqlArgObj_Store, tableColsData_Store, paginationState_derived_Store, mergedChildren_finalGqlArgObj_Store],
+		([$finalGqlArgObj_Store, $tableColsData_Store, $mergedChildren_finalGqlArgObj_Store], set) => {
 			let paginationState = {}
 			if (paginationState_derived_Store?.get_value) {
 				paginationState = paginationState_derived_Store?.get_value()
@@ -35,13 +35,13 @@ export const Create_QMS_bodyPart_StoreDerived = (
 				return ''
 			}
 
-
+			console.log('$mergedChildren_finalGqlArgObj_Store', $mergedChildren_finalGqlArgObj_Store)
 			set(
 				build_QMS_bodyPart(
 					QMS_name,
 					tableColsDataToQueryFields($tableColsData_Store),
 					get_QMS_args(),
-					QMS_type
+					QMS_type, $mergedChildren_finalGqlArgObj_Store
 				)
 			);
 		}
