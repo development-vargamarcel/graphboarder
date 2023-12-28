@@ -8,6 +8,7 @@ import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 import { getContext } from 'svelte';
 import { string_transformer } from './dataStructureTransformers';
 function removeObjIfContainsOnlyQMSarguments(obj) {
+	obj=JSON.parse(JSON.stringify(obj) 
   for (let key in obj) {
     if (typeof obj[key] === 'object' && obj[key] !== null) {
       // Recursively call the function for nested objects
@@ -20,6 +21,7 @@ function removeObjIfContainsOnlyQMSarguments(obj) {
       }
     }
   }
+	return obj
 }
 
 export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query', mergedChildren_finalGqlArgObj) => {
