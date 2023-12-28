@@ -7,8 +7,7 @@ import { page } from '$app/stores';
 import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 import { getContext } from 'svelte';
 import { string_transformer } from './dataStructureTransformers';
-function removeObjIfContainsOnlyQMSarguments(obj) {
-	obj=JSON.parse(JSON.stringify(obj)) 
+function removeObjIfContainsOnlyQMSarguments(obj) { 
   for (let key in obj) {
     if (typeof obj[key] === 'object' && obj[key] !== null) {
       // Recursively call the function for nested objects
@@ -43,8 +42,9 @@ export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'q
 		return undefined
 	}
 	 
-	const fullObject = removeObjIfContainsOnlyQMSarguments(_.mergeWith({}, QMSarguments, mergedChildren_finalGqlArgObj,QMS_fields))
-	// if (QMS_args && fullObject[QMS_name]) {
+	const fullObject = JSON.parse(JSON.stringify(removeObjIfContainsOnlyQMSarguments(_.mergeWith({}, QMSarguments, mergedChildren_finalGqlArgObj,QMS_fields))
+	 ))
+		// if (QMS_args && fullObject[QMS_name]) {
 	// 	fullObject[QMS_name].QMSarguments = QMS_args
 	// }
 	//.replaceAll('\"QMSarguments\":','')
