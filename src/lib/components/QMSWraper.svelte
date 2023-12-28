@@ -21,6 +21,7 @@
 	const schemaData = QMSMainWraperContext?.schemaData;
 	export let initialGqlArgObj = {};
 	import { get, writable } from 'svelte/store';
+	import { Create_mergedChildren_finalGqlArgObj_Store } from '$lib/stores/QMSHandling/mergedChildren_finalGqlArgObj_Store';
 	export let QMSType = 'query';
 	export let QMSName;
 	let QMS_info = schemaData.get_QMS_Field(QMSName, QMSType, schemaData);
@@ -181,6 +182,7 @@
 		returningColumnsLocationQMS_Info || QMS_info,
 		schemaData
 	)?.dd_displayName;
+	const mergedChildren_finalGqlArgObj_Store = Create_mergedChildren_finalGqlArgObj_Store({});
 	QMSWraperContext = {
 		idColName,
 		returningColumnsLocationQMS_Info,
@@ -196,7 +198,8 @@
 		QMS_bodyPart_StoreDerived_rowsCount,
 		QMS_bodyPartsUnifier_StoreDerived,
 		paginationOptions,
-		paginationState
+		paginationState,
+		mergedChildren_finalGqlArgObj_Store
 	};
 	setContext(`${prefix}QMSWraperContext`, QMSWraperContext);
 </script>
