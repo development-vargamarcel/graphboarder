@@ -8,7 +8,7 @@ import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 import { getContext } from 'svelte';
 import { string_transformer } from './dataStructureTransformers';
 function removeObjIfContainsOnlyQMSarguments(obj) {
-	obj=JSON.parse(JSON.stringify(obj) 
+	obj=JSON.parse(JSON.stringify(obj)) 
   for (let key in obj) {
     if (typeof obj[key] === 'object' && obj[key] !== null) {
       // Recursively call the function for nested objects
