@@ -27,7 +27,7 @@ export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'q
 		}
 		return undefined
 	}
-	const fullObject = _.mergeWith({}, QMSarguments, mergedChildren_finalGqlArgObj)
+	const fullObject = _.mergeWith({}, QMSarguments, mergedChildren_finalGqlArgObj,QMS_fields)
 	// if (QMS_args && fullObject[QMS_name]) {
 	// 	fullObject[QMS_name].QMSarguments = QMS_args
 	// }
