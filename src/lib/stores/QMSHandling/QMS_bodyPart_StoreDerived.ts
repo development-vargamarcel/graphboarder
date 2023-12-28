@@ -16,7 +16,7 @@ export const Create_QMS_bodyPart_StoreDerived = (
 ) => {
 	return derived(
 		[finalGqlArgObj_Store, tableColsData_Store, paginationState_derived_Store, mergedChildren_finalGqlArgObj_Store],
-		([$finalGqlArgObj_Store, $tableColsData_Store, $mergedChildren_finalGqlArgObj_Store], set) => {
+		([$finalGqlArgObj_Store, $tableColsData_Store, , $mergedChildren_finalGqlArgObj_Store], set) => {
 			let paginationState = {}
 			if (paginationState_derived_Store?.get_value) {
 				paginationState = paginationState_derived_Store?.get_value()

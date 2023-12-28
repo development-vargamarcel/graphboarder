@@ -256,7 +256,7 @@
 				</sup>
 			{/if}
 
-			{#if canExpand && args?.length > 0 && (showExpand || hasSelected)}
+			{#if canExpand && args?.length > 0 && isUsedInSomeColumn}
 				<button
 					class="btn btn-xs btn-ghost normal-case  rounded px-2 {hasQMSarguments
 						? 'text-success'
