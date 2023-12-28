@@ -7,7 +7,20 @@ import { page } from '$app/stores';
 import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 import { getContext } from 'svelte';
 import { string_transformer } from './dataStructureTransformers';
+function removeObjIfContainsOnlyQMSarguments(obj) {
+  for (let key in obj) {
+    if (typeof obj[key] === 'object' && obj[key] !== null) {
+      // Recursively call the function for nested objects
+      removeObjIfContainsOnlyQMSarguments(obj[key]);
 
+      // Check if the current object has only one key and that key is 'QMSarguments'
+      if (Object.keys(obj[key]).length === 1 && Object.keys(obj[key])[0] === 'QMSarguments') {
+        // Delete the object with key 'QMSarguments'
+        delete obj[key];
+      }
+    }
+  }
+}
 
 export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query', mergedChildren_finalGqlArgObj) => {
 	if (Object.keys(QMS_fields).length == 0) {
@@ -27,7 +40,8 @@ export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'q
 		}
 		return undefined
 	}
-	const fullObject = _.mergeWith({}, QMSarguments, mergedChildren_finalGqlArgObj,QMS_fields)
+	 
+	const fullObject = removeObjIfContainsOnlyQMSarguments(_.mergeWith({}, QMSarguments, mergedChildren_finalGqlArgObj,QMS_fields))
 	// if (QMS_args && fullObject[QMS_name]) {
 	// 	fullObject[QMS_name].QMSarguments = QMS_args
 	// }
