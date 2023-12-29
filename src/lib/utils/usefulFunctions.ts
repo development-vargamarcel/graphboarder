@@ -15,27 +15,17 @@ function findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey(obj) {
 	if (typeof obj !== 'object' || obj === null) {
 		return null;
 	}
-	let lastIsQMSarguments = false
-	// Iterate over each key in the object
-	for (const key in obj) {
-		// Check if the value associated with the key is an object
-		if (typeof obj[key] === 'object' && obj[key] !== null) {
-			// Check if the nested object has more than one key
-			if (Object.keys(obj[key]).length > 1) {
-				return obj[key]; // Return the first nested child with more than one key
-			} else {
-				// Recursively call the function to search deeper in the object
-				const nestedResult = findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey(obj[key]);
-				//console.log(nestedResult)
-				lastIsQMSarguments = obj[key].hasOwnProperty("QMSarguments")
-				if (!lastIsQMSarguments && nestedResult) {
-					return nestedResult;
-				}
-			}
-		}
+	const objectKeys = Object.keys(obj)
+	const objectKeysLength = objectKeys.length
+	if (objectKeysLength > 1) {
+		return obj
 	}
-
-	return lastIsQMSarguments
+	if (obj.hasOwnProperty("QMSarguments") && objectKeysLength == 1) {
+		return true
+	}
+	if (objectKeysLength == 1) {
+		return findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey(obj[objectKeys[0]])
+	}
 
 }
 
@@ -65,7 +55,7 @@ function deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments(obj) {
 			deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments(obj[key])
 		}
 	}
-
+	return obj
 }
 //experiment
 function removeObjIfContainsOnlyQMSarguments(obj) {
@@ -103,7 +93,7 @@ export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'q
 		return undefined
 	}
 
-	const fullObject = JSON.parse(JSON.stringify(removeObjIfContainsOnlyQMSarguments(_.mergeWith({}, QMSarguments, mergedChildren_finalGqlArgObj, QMS_fields))
+	const fullObject = JSON.parse(JSON.stringify(deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments(_.mergeWith({}, QMSarguments, mergedChildren_finalGqlArgObj, QMS_fields))
 	))
 	// if (QMS_args && fullObject[QMS_name]) {
 	// 	fullObject[QMS_name].QMSarguments = QMS_args
