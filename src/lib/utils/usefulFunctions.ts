@@ -38,6 +38,35 @@ function findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey(obj) {
 	return lastIsQMSarguments
 
 }
+
+function deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments(obj) {
+	console.log('ttt', obj)
+	if (typeof obj !== 'object' || obj === null) {
+		return null;
+	}
+	///
+
+	///
+	for (const key in obj) {
+
+		const keys = Object.keys(obj[key])
+		const numberOfKeys = keys.length
+		if (numberOfKeys == 1 && obj[key][keys[0]] == 'QMSarguments') {
+			delete obj[key]
+			return
+		}
+		const result = findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey(obj[key])
+		console.log('yyresult', obj[key], result, getPreciseType(result) == 'object')
+		if (result === true) {
+			console.log('to delete', obj[key])
+			delete obj[key]
+		}
+		if (getPreciseType(result) == 'object') {
+			deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments(obj[key])
+		}
+	}
+
+}
 //experiment
 function removeObjIfContainsOnlyQMSarguments(obj) {
 	for (let key in obj) {
