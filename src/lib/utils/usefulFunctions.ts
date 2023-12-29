@@ -8,8 +8,8 @@ import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 import { getContext } from 'svelte';
 import { string_transformer } from './dataStructureTransformers';
 
-//experiment
-function findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey(obj) {
+
+export const findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey = (obj) => {
 	//console.log(obj)
 	// Check if the input is an object
 	if (typeof obj !== 'object' || obj === null) {
@@ -29,7 +29,7 @@ function findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey(obj) {
 
 }
 
-function deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments(obj) {
+export const deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments = (obj) => {
 	console.log('ttt', obj)
 	if (typeof obj !== 'object' || obj === null) {
 		return null;
@@ -57,22 +57,22 @@ function deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments(obj) {
 	}
 	return obj
 }
-//experiment
-function removeObjIfContainsOnlyQMSarguments(obj) {
-	for (let key in obj) {
-		if (typeof obj[key] === 'object' && obj[key] !== null) {
-			// Recursively call the function for nested objects
-			removeObjIfContainsOnlyQMSarguments(obj[key]);
 
-			// Check if the current object has only one key and that key is 'QMSarguments'
-			if (Object.keys(obj[key]).length === 1 && Object.keys(obj[key])[0] === 'QMSarguments') {
-				// Delete the object with key 'QMSarguments'
-				delete obj[key];
-			}
-		}
-	}
-	return obj
-}
+// function removeObjIfContainsOnlyQMSarguments(obj) {
+// 	for (let key in obj) {
+// 		if (typeof obj[key] === 'object' && obj[key] !== null) {
+// 			// Recursively call the function for nested objects
+// 			removeObjIfContainsOnlyQMSarguments(obj[key]);
+
+// 			// Check if the current object has only one key and that key is 'QMSarguments'
+// 			if (Object.keys(obj[key]).length === 1 && Object.keys(obj[key])[0] === 'QMSarguments') {
+// 				// Delete the object with key 'QMSarguments'
+// 				delete obj[key];
+// 			}
+// 		}
+// 	}
+// 	return obj
+// }
 
 export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query', mergedChildren_finalGqlArgObj) => {
 	if (Object.keys(QMS_fields).length == 0) {
