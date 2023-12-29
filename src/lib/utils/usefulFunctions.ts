@@ -7,19 +7,51 @@ import { page } from '$app/stores';
 import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 import { getContext } from 'svelte';
 import { string_transformer } from './dataStructureTransformers';
-function removeObjIfContainsOnlyQMSarguments(obj) { 
-  for (let key in obj) {
-    if (typeof obj[key] === 'object' && obj[key] !== null) {
-      // Recursively call the function for nested objects
-      removeObjIfContainsOnlyQMSarguments(obj[key]);
 
-      // Check if the current object has only one key and that key is 'QMSarguments'
-      if (Object.keys(obj[key]).length === 1 && Object.keys(obj[key])[0] === 'QMSarguments') {
-        // Delete the object with key 'QMSarguments'
-        delete obj[key];
-      }
-    }
-  }
+//experiment
+function findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey(obj) {
+	//console.log(obj)
+	// Check if the input is an object
+	if (typeof obj !== 'object' || obj === null) {
+		return null;
+	}
+	let lastIsQMSarguments = false
+	// Iterate over each key in the object
+	for (const key in obj) {
+		// Check if the value associated with the key is an object
+		if (typeof obj[key] === 'object' && obj[key] !== null) {
+			// Check if the nested object has more than one key
+			if (Object.keys(obj[key]).length > 1) {
+				return obj[key]; // Return the first nested child with more than one key
+			} else {
+				// Recursively call the function to search deeper in the object
+				const nestedResult = findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey(obj[key]);
+				//console.log(nestedResult)
+				lastIsQMSarguments = obj[key].hasOwnProperty("QMSarguments")
+				if (!lastIsQMSarguments && nestedResult) {
+					return nestedResult;
+				}
+			}
+		}
+	}
+
+	return lastIsQMSarguments
+
+}
+//experiment
+function removeObjIfContainsOnlyQMSarguments(obj) {
+	for (let key in obj) {
+		if (typeof obj[key] === 'object' && obj[key] !== null) {
+			// Recursively call the function for nested objects
+			removeObjIfContainsOnlyQMSarguments(obj[key]);
+
+			// Check if the current object has only one key and that key is 'QMSarguments'
+			if (Object.keys(obj[key]).length === 1 && Object.keys(obj[key])[0] === 'QMSarguments') {
+				// Delete the object with key 'QMSarguments'
+				delete obj[key];
+			}
+		}
+	}
 	return obj
 }
 
@@ -41,10 +73,10 @@ export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'q
 		}
 		return undefined
 	}
-	 
-	const fullObject = JSON.parse(JSON.stringify(removeObjIfContainsOnlyQMSarguments(_.mergeWith({}, QMSarguments, mergedChildren_finalGqlArgObj,QMS_fields))
-	 ))
-		// if (QMS_args && fullObject[QMS_name]) {
+
+	const fullObject = JSON.parse(JSON.stringify(removeObjIfContainsOnlyQMSarguments(_.mergeWith({}, QMSarguments, mergedChildren_finalGqlArgObj, QMS_fields))
+	))
+	// if (QMS_args && fullObject[QMS_name]) {
 	// 	fullObject[QMS_name].QMSarguments = QMS_args
 	// }
 	//.replaceAll('\"QMSarguments\":','')
