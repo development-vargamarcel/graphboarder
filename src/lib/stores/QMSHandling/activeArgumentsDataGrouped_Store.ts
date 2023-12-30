@@ -99,7 +99,7 @@ export const Create_activeArgumentsDataGrouped_Store = (initialValue = []) => {
 			//Handle QMSarguments data if present
 			console.log({ QMSarguments })
 			if (QMSarguments) {
-				objectToActiveArgumentsDataGrouped(QMSarguments, activeArgumentsDataGrouped);
+				gqlArgObjToActiveArgumentsDataGrouped(QMSarguments, activeArgumentsDataGrouped);
 			}
 			set(activeArgumentsDataGrouped);
 		},
@@ -272,26 +272,51 @@ export const generateArgData = (stepsOfFields, type, schemaData, extraData = {})
 };
 
 
-const objectToActiveArgumentsDataGrouped = (object, activeArgumentsDataGrouped) => {
+const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGrouped) => {
+	const getGroupGqlArgObj = (object, rootGroupGqlArgObj, group) => {
+		if (!group.group_isRoot) {
+			return object?.[group.group_name]
+		}
+		return rootGroupGqlArgObj
+	}
 	//object is QMSarguments object
 	const nonRootGroupNames = activeArgumentsDataGrouped.map((group) => {
 		if (!group.group_isRoot) {
 			return group.group_name;
 		}
 	})
-	// const rootGroupName = activeArgumentsDataGrouped.map((group) => {
-	// 	if (group.group_isRoot) {
-	// 		return group.group_name;
-	// 	}
-	// })
-	//divide object into groups
-	const rootObject = {};
+
+
+	const rootGroupGqlArgObj = {};
 	Object.keys(object).forEach((key) => {
 		if (!nonRootGroupNames.includes(key)) {
-			rootObject[key] = object[key];
+			rootGroupGqlArgObj[key] = object[key];
 		}
 	})
-	console.log({ rootObject })
+	//iterate through groups
+	activeArgumentsDataGrouped.forEach((group) => {
+		const groupGqlArgObj = getGroupGqlArgObj(object, rootGroupGqlArgObj, group)
+		console.log({ groupGqlArgObj })
+		if (groupGqlArgObj) {
+			//iterate through arguments
+			groupGqlArgObj.forEach((arg) => {
+				// //get argument data
+				// const argData = generateArgData(
+				// 	[group.group_name, arg.name],
+				// 	arg,
+				// 	arg.schema
+				// );
+				// //add argument data to activeArgumentsDataGrouped
+				// activeArgumentsDataGrouped = add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(
+				// 	argData,
+				// 	group.group_name,
+				// 	null,
+				// 	activeArgumentsDataGrouped
+				// );
+			});
+		}
+
+	})
 	return activeArgumentsDataGrouped
 
 }
