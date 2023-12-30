@@ -298,22 +298,7 @@ const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGroupe
 		const groupGqlArgObj = getGroupGqlArgObj(object, rootGroupGqlArgObj, group)
 		console.log({ groupGqlArgObj })
 		if (groupGqlArgObj) {
-			//iterate through arguments
-			groupGqlArgObj.forEach((arg) => {
-				// //get argument data
-				// const argData = generateArgData(
-				// 	[group.group_name, arg.name],
-				// 	arg,
-				// 	arg.schema
-				// );
-				// //add argument data to activeArgumentsDataGrouped
-				// activeArgumentsDataGrouped = add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(
-				// 	argData,
-				// 	group.group_name,
-				// 	null,
-				// 	activeArgumentsDataGrouped
-				// );
-			});
+			//Do the magic here
 		}
 
 	})
