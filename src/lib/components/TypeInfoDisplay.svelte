@@ -94,6 +94,8 @@
 	let showModal = false;
 	let finalGqlArgObj_Store;
 	let finalGqlArgObj_StoreValue;
+	let paginationState_derived;
+	let paginationState_derivedValue;
 	let finalGqlArgObjValue;
 	let activeArgumentsQMSWraperContext;
 	let QMSarguments;
@@ -105,10 +107,11 @@
 	$: if (finalGqlArgObj_StoreValue && finalGqlArgObj_StoreValue.final_canRunQuery) {
 		finalGqlArgObjValue = finalGqlArgObj_StoreValue.finalGqlArgObj;
 
-		QMSarguments = finalGqlArgObjValue;
+		QMSarguments = { ...finalGqlArgObjValue, ...paginationState_derivedValue };
 	}
+	$: console.log({ QMSarguments });
 
-	$: if (QMSarguments) {
+	$: if (QMSarguments || paginationState_derivedValue) {
 		mergedChildren_finalGqlArgObj_Store.update((value) => {
 			return setValueAtPath(value, [...stepsOfFields, 'QMSarguments'], QMSarguments);
 		});
@@ -120,7 +123,9 @@
 
 		finalGqlArgObj_Store = activeArgumentsQMSWraperContext.finalGqlArgObj_Store;
 		finalGqlArgObj_StoreValue = $finalGqlArgObj_Store;
-		console.log({ finalGqlArgObj_Store }, $finalGqlArgObj_Store);
+		paginationState_derived = activeArgumentsQMSWraperContext.paginationState_derived;
+		paginationState_derivedValue = $paginationState_derived;
+		console.log({ finalGqlArgObj_StoreValue, paginationState_derivedValue });
 		finalGqlArgObj_Store.subscribe((value) => {
 			console.log('finalGqlArgObj_Store', value);
 		});
