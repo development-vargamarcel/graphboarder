@@ -96,7 +96,6 @@
 	let finalGqlArgObj_StoreValue;
 	let finalGqlArgObjValue;
 	let activeArgumentsQMSWraperContext;
-	let argumentsOBJ;
 	let QMSarguments;
 	const mergedChildren_finalGqlArgObj_Store = getContext(
 		`${prefix}QMSWraperContext`
@@ -105,17 +104,13 @@
 	let activeArgumentsDataGrouped_Store = getContext(`${prefix}activeArgumentsDataGrouped_Store`);
 	$: if (finalGqlArgObj_StoreValue && finalGqlArgObj_StoreValue.final_canRunQuery) {
 		finalGqlArgObjValue = finalGqlArgObj_StoreValue.finalGqlArgObj;
-		argumentsOBJ = stepsOfFieldsToQueryFragmentObject(stepsOfFields, false, {
-			QMSarguments: finalGqlArgObjValue
-		});
+
 		QMSarguments = finalGqlArgObjValue;
-		//$stepsOfFieldsOBJ = _.merge({}, argumentsOBJ, $stepsOfFieldsOBJ);
 	}
 
-	$: if (argumentsOBJ) {
+	$: if (QMSarguments) {
 		mergedChildren_finalGqlArgObj_Store.update((value) => {
 			return setValueAtPath(value, [...stepsOfFields, 'QMSarguments'], QMSarguments);
-			return _.merge(value, argumentsOBJ);
 		});
 	}
 	$: if (activeArgumentsQMSWraperContext) {
