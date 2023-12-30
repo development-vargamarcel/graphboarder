@@ -85,14 +85,6 @@ export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'q
 
 	console.log('qqqqqqqqqq', { QMS_args }, { QMS_fields }, { mergedChildren_finalGqlArgObj })
 	const QMSarguments = { [QMS_name]: { QMSarguments: QMS_args } }
-	const customizer = (objValue, srcValue, key, object, source, stack) => {
-		if (srcValue?.QMSarguments && Object.keys(srcValue).length == 1) {
-			console.log({ objValue, srcValue, key, object, source, stack })
-			//return {}
-		}
-		return undefined
-	}
-
 	const fullObject = JSON.parse(JSON.stringify(deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments(_.mergeWith({}, QMSarguments, mergedChildren_finalGqlArgObj, QMS_fields))
 	))
 	// if (QMS_args && fullObject[QMS_name]) {
@@ -1426,7 +1418,37 @@ export const deleteValueAtPath = (obj, path) => {
 	delete currentObj[path[path.length - 1]];
 	return obj;
 }
+export const setValueAtPath = (obj, path, value, addPathIfNotExist = true) => {
+	if (!obj || !path || path.length === 0) {
+		// Check for valid input
+		console.error('Invalid input');
+		return;
+	}
 
+	let currentObj = obj;
+
+	for (let i = 0; i < path.length - 1; i++) {
+		// Traverse the object to the specified path
+		//if (currentObj?.[path[i]] === undefined) {
+		if (currentObj[path[i]] === undefined) {
+			if (addPathIfNotExist) {
+				// If the path does not exist, add it
+				console.info('Path does not exist,adding it');
+				currentObj[path[i]] = {}
+			}
+			if (!addPathIfNotExist) {
+				// If the path does not exist, return
+				console.error('Path does not exist');
+				return;
+			}
+		}
+		currentObj = currentObj[path[i]];
+	}
+
+	// Set the value at the final key in the path
+	currentObj[path[path.length - 1]] = value;
+	return obj;
+}
 export const generate_finalGqlArgObjAndCanRunQuery = (activeArgumentsDataGrouped, _paginationState_Store, resetPaginationState = true) => {
 	//reset pagination state too !!!THIS MIGHT TRIGGER 1 EXTRA SERVER REQUEST,seems not from what i saw
 	if (resetPaginationState && _paginationState_Store) {
