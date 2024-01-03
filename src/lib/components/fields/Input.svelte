@@ -24,8 +24,6 @@
 
 		dispatch('changed', {
 			chd_chosen: undefined,
-			chd_needsValue: true,
-			chd_needsChosen: false,
 			chd_rawValue: rawValue
 		}); //chd_ == chosen data sdasd ss
 	}}

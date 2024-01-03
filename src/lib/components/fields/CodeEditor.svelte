@@ -303,8 +303,6 @@
 				// console.log({ editorValueAsJs });
 				dispatch('changed', {
 					chd_chosen: undefined,
-					chd_needsValue: true,
-					chd_needsChosen: false,
 					chd_rawValue: editorValueCleaned
 				}); //chd_ == chosen data sdasd ss
 			}}>save</button

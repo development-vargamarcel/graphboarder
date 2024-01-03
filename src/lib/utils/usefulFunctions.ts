@@ -648,20 +648,20 @@ export const generate_gqlArgObj = (group_argumentsData) => {
 			canRunQuery = false
 			return false
 		}
-		let { chd_chosen, chd_dispatchValue, chd_needsValue, chd_needsChosen, stepsOfFields } =
+		let { chd_chosen, chd_dispatchValue, stepsOfFields } =
 			argData;
 
 		let curr_gqlArgObj = gqlArgObj;
 		stepsOfFields.forEach((step, index) => {
 			let isLast = index == stepsOfFields.length - 1;
 			if (isLast) {
-				if (!chd_needsChosen) {
+				if (chd_dispatchValue) {
 					if (!curr_gqlArgObj?.[step]) {
 						curr_gqlArgObj[step] = chd_dispatchValue;
 					}
 					curr_gqlArgObj = curr_gqlArgObj[step];
 				} else {
-					if (!chd_needsValue) {
+					if (chd_chosen) {
 						curr_gqlArgObj[step] = chd_chosen;
 					} else {
 						if (!curr_gqlArgObj?.[step]) {
@@ -997,9 +997,7 @@ export const tableColsDataToQueryFields = (tableColsData) => {
 export const argumentCanRunQuery = (arg) => {
 	const {
 		inUse,
-		chd_needsChosen,
 		chd_chosen,
-		chd_needsValue,
 		chd_dispatchValue,
 		dd_kindEl,
 		dd_kindEl_NON_NULL,
@@ -1007,7 +1005,7 @@ export const argumentCanRunQuery = (arg) => {
 		dd_kindList_NON_NULL
 	} = arg;
 	console.log('argumentCanRunQuery', { arg })
-	let argFinalValue = chd_needsChosen ? chd_chosen : chd_dispatchValue;
+	let argFinalValue = chd_chosen ? chd_chosen : chd_dispatchValue;
 	if (!inUse) {
 		return true;
 	}
@@ -1020,10 +1018,7 @@ export const argumentCanRunQuery = (arg) => {
 	if (dd_kindEl && (argFinalValue == undefined || argFinalValue.length == 0)) {
 		return false;
 	}
-	if (chd_needsChosen && chd_chosen.length == 0) {
-		return false;
-	}
-	if (chd_needsValue && typeof chd_dispatchValue == undefined) {
+	if (chd_chosen?.length == 0 && typeof chd_dispatchValue == undefined) {
 		return false;
 	}
 	return true;

@@ -18,9 +18,7 @@
 		on:change={() => {
 			rawValue = inputEl.checked ? true : false;
 			dispatch('changed', {
-				chd_rawValue: rawValue,
-				chd_needsValue: true,
-				chd_needsChosen: false
+				chd_rawValue: rawValue
 			});
 		}}
 	/>

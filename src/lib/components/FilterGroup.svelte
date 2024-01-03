@@ -46,8 +46,6 @@
 			dispatch('changed', {
 				chd_chosen: chosen,
 				chd_dispatchValue: dispatchValue,
-				chd_needsValue: false,
-				chd_needsChosen: true,
 				chd_choises: choises,
 				isINPUT_OBJECT,
 				chosenInputField
