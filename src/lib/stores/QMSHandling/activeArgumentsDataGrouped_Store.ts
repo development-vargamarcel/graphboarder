@@ -252,10 +252,11 @@ export const generateContainerData = (stepsOfFields, type, extraData = {}) => {
 
 export const generateArgData = (stepsOfFields, type, schemaData, extraData = {}) => {
 	const dd_displayName = type.dd_displayName;
+	const dd_displayInterface = type.dd_displayInterface;
+
 	const RootType = getRootType(null, type.dd_rootName, schemaData);
 	const inputFields = RootType?.inputFields;
 	const enumValues = RootType?.enumValues;
-
 	if (stepsOfFields[stepsOfFields.length - 1] !== dd_displayName) {
 		stepsOfFields.push(dd_displayName); //take care might caus eproblems
 	}
@@ -295,11 +296,21 @@ const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGroupe
 	})
 	//iterate through groups
 	activeArgumentsDataGrouped.forEach((group) => {
+		const groupName = group.group_name;
+		const group_isRoot = group.group_isRoot;
 		const groupGqlArgObj = getGroupGqlArgObj(object, rootGroupGqlArgObj, group)
 		console.log({ groupGqlArgObj })
-		if (groupGqlArgObj) {
-			//Do the magic here
+		if (!groupGqlArgObj) {
+			return
 		}
+		if (group_isRoot) {
+			add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(groupGqlArgObj, groupName, null, activeArgumentsDataGrouped);
+
+		}
+		console.log({ groupName, groupGqlArgObj })
+		//add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(groupGqlArgObj, groupName, null, activeArgumentsDataGrouped);
+		//Do the magic here
+
 
 	})
 	return activeArgumentsDataGrouped

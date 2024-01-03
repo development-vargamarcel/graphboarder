@@ -185,6 +185,9 @@
 		schemaData
 	)?.dd_displayName;
 
+	$: console.log('$paginationState', $paginationState);
+	$: console.log('$paginationState_derived', $paginationState_derived);
+
 	QMSWraperContext = {
 		idColName,
 		returningColumnsLocationQMS_Info,
