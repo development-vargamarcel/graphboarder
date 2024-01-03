@@ -38,7 +38,6 @@
 			return el.chd_rawValue;
 		});
 		dispatch('changed', {
-			chd_chosen: undefined,
 			chd_dispatchValue,
 			chd_rawValue
 		});

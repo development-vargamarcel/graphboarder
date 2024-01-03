@@ -23,7 +23,6 @@
 		}
 
 		dispatch('changed', {
-			chd_chosen: undefined,
 			chd_rawValue: rawValue
 		}); //chd_ == chosen data sdasd ss
 	}}

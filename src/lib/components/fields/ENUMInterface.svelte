@@ -13,7 +13,7 @@
 			: typeInfo.enumValues.map((enumValue) => {
 					return enumValue.name;
 			  })}
-		chosen={typeInfo?.chd_chosen}
+		chosen={typeInfo?.chd_dispatchValue}
 		chosenInputField={typeInfo?.chosenInputField}
 		isINPUT_OBJECT={typeInfo?.isINPUT_OBJECT}
 		rawValue={typeInfo?.chd_rawValue}

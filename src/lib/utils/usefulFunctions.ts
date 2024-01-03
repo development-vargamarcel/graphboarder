@@ -1005,7 +1005,7 @@ export const argumentCanRunQuery = (arg) => {
 		dd_kindList_NON_NULL
 	} = arg;
 	console.log('argumentCanRunQuery', { arg })
-	let argFinalValue = chd_chosen ? chd_chosen : chd_dispatchValue;
+	let argFinalValue = chd_dispatchValue;
 	if (!inUse) {
 		return true;
 	}
@@ -1018,7 +1018,7 @@ export const argumentCanRunQuery = (arg) => {
 	if (dd_kindEl && (argFinalValue == undefined || argFinalValue.length == 0)) {
 		return false;
 	}
-	if (chd_chosen?.length == 0 && typeof chd_dispatchValue == undefined) {
+	if (chd_dispatchValue == undefined) {
 		return false;
 	}
 	return true;

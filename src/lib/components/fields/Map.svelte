@@ -89,7 +89,6 @@
 				zoom: map.transform._zoom
 			};
 			dispatch('changed', {
-				chd_chosen: undefined,
 				chd_rawValue: dataCopy
 			});
 		}

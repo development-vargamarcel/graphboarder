@@ -33,7 +33,7 @@
 		{modalTitle}
 		{type}
 		{chosenDefault}
-		{chosen}
+		chosen={dispatchValue}
 		on:filterApplied={(e) => {
 			let { detail } = e;
 			chosenInputField = detail.extraData.inputFields?.filter((el) => {
@@ -43,13 +43,14 @@
 			isINPUT_OBJECT = detail.extraData.dd_displayInterface == 'INPUT_OBJECT';
 			choises = detail.choises;
 			chosen = detail.chosen;
-			dispatch('changed', {
-				chd_chosen: chosen,
-				chd_dispatchValue: dispatchValue,
+			console.log('changed', { detail });
+			const dispatchObject = {
+				chd_dispatchValue: chosen,
 				chd_choises: choises,
 				isINPUT_OBJECT,
 				chosenInputField
-			});
+			};
+			dispatch('changed', dispatchObject);
 		}}
 	/>
 	<div />

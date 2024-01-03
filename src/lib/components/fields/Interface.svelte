@@ -78,7 +78,9 @@
 	{rawValue}
 	on:changed={(e) => {
 		let { detail } = e;
-		detail.chd_dispatchValue = get_convertedValue(detail.chd_rawValue);
+		if (detail.chd_rawValue) {
+			detail.chd_dispatchValue = get_convertedValue(detail.chd_rawValue);
+		}
 		detail.choosenDisplayInteface = choosenDisplayInteface;
 		dispatch('changed', detail);
 	}}
