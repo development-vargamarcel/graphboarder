@@ -8,11 +8,9 @@
 <div class="flex flex-col">
 	<FilterGroup
 		extraData={typeInfo}
-		choises={typeInfo?.chd_choises
-			? typeInfo.chd_choises
-			: typeInfo.enumValues.map((enumValue) => {
-					return enumValue.name;
-			  })}
+		choises={typeInfo.enumValues.map((enumValue) => {
+			return enumValue.name;
+		})}
 		chosen={typeInfo?.chd_dispatchValue}
 		chosenInputField={typeInfo?.chosenInputField}
 		isINPUT_OBJECT={typeInfo?.isINPUT_OBJECT}
