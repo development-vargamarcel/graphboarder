@@ -1,12 +1,17 @@
 <script>
-	import { geojson_transformer } from '$lib/utils/dataStructureTransformers';
+	import {
+		geojson_transformer,
+		geojson_transformerREVERSE
+	} from '$lib/utils/dataStructureTransformers';
 	import * as mapboxglOriginal from 'mapbox-gl';
 	import { createEventDispatcher, onMount } from 'svelte';
 	let mapboxgl = mapboxglOriginal;
 	export let containerEl;
-	export let rawValue;
-	//console.log('rawValue from outside', rawValue);
 	export let dispatchValue;
+	export let rawValue;
+	if (!rawValue && dispatchValue) {
+		rawValue = geojson_transformerREVERSE(dispatchValue);
+	}
 	const generateUniqueId = () => {
 		return (
 			Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)

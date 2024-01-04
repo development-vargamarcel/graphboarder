@@ -28,6 +28,9 @@ export const geojson_transformer = (value) => {
 	}
 	return geojson;//this line (return geojson;) is useful in case the endpoint supports multi-polygon or multi-geometry in general...
 };
+export const geojson_transformerREVERSE = (value) => {
+	//
+};
 export const boolean_transformer = (value) => {
 	if (value == undefined) {
 		return false;
