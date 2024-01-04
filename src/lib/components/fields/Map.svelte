@@ -1,4 +1,5 @@
 <script>
+	import { geojson_transformer } from '$lib/utils/dataStructureTransformers';
 	import * as mapboxglOriginal from 'mapbox-gl';
 	import { createEventDispatcher, onMount } from 'svelte';
 	let mapboxgl = mapboxglOriginal;
@@ -89,6 +90,7 @@
 				zoom: map.transform._zoom
 			};
 			dispatch('changed', {
+				chd_dispatchValue: geojson_transformer(dataCopy),
 				chd_rawValue: dataCopy
 			});
 		}
