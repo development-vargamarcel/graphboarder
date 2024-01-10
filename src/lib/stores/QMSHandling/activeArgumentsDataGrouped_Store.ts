@@ -303,13 +303,18 @@ const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGroupe
 		if (!groupGqlArgObj) {
 			return
 		}
+		//Do the magic here:
 		if (group_isRoot) {
-			add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(groupGqlArgObj, groupName, null, activeArgumentsDataGrouped);
-
+			const argNames = Object.keys(groupGqlArgObj)
+			argNames.forEach(
+				(argName) => {
+					//const argData = generateArgData()
+					//add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(argData, groupName, null, activeArgumentsDataGrouped);
+				}
+			)
 		}
 		console.log({ groupName, groupGqlArgObj })
-		//add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(groupGqlArgObj, groupName, null, activeArgumentsDataGrouped);
-		//Do the magic here
+
 
 
 	})
