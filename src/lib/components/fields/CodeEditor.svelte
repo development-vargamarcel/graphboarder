@@ -8,7 +8,6 @@
 	import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
 	import { parseAll, stigifyAll } from '$lib/stores/testData/testEndpoints';
 	import { createEventDispatcher, getContext } from 'svelte';
-	import { string_transformerREVERSE } from '$lib/utils/dataStructureTransformers';
 
 	const configurationAsString = `{
 		description: "no description",

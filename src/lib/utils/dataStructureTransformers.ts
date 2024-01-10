@@ -1,3 +1,5 @@
+import { getPreciseType } from "./usefulFunctions";
+
 export const string_transformer = (value) => {
 	if (typeof value !== 'string') {
 		console.warn('string_transformer: value is not a string', value)
@@ -5,13 +7,18 @@ export const string_transformer = (value) => {
 	}
 	return `'${value.replaceAll(`"`, `&Prime;`).replaceAll(`'`, `&prime;`)}'`;
 };
-export const string_transformerREVERSE = (value) => {
+export const string_transformerREVERSE = (value, onlyPrimeSymbol) => {
 	if (typeof value !== 'string') {
 		console.warn('string_transformer: value is not a string', value)
 		return value
 	}
+	if (onlyPrimeSymbol) {
+		return value.replaceAll(`'`, ``)
+	}
 	return value.replaceAll(`&Prime;`, `"`).replaceAll(`&prime;`, `'`)
+
 };
+
 export const ISO8601_transformer = (value) => {
 	let date_ISO8601 = new Date(value).toISOString();
 	return string_transformer(date_ISO8601);
@@ -23,15 +30,25 @@ export const geojson_transformer = (value) => {
 		geometry.type = string_transformer(geometry.type);
 		return geometry;
 	});
+	console.log('geojson_transformer', { geojson, value }, geojson_transformerREVERSE(geojson))
 	if (featuresLength == 1) {
 		return geojson[0];
 	}
 	return geojson;//this line (return geojson;) is useful in case the endpoint supports multi-polygon or multi-geometry in general...
 };
 export const geojson_transformerREVERSE = (value) => {
-	console.info('Plese implement geojson_transformerREVERSE', value)
-	//
-	return value
+	const valueType = getPreciseType(value)
+	if (valueType == 'object') {
+		value = [value]
+	}
+	value = JSON.parse(string_transformerREVERSE(JSON.stringify(value), true));
+
+	return {
+		features: value.map((feature) => {
+			return { geometry: feature, type: 'Feature', properties: {} }
+		}),
+		type: "FeatureCollection"
+	}
 };
 export const boolean_transformer = (value) => {
 	if (value == undefined) {
