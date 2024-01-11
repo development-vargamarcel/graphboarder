@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { writable } from 'svelte/store';
-	import { createSvelteTable, flexRender, getCoreRowModel } from '@tanstack/svelte-table';
+	import { Filters, createSvelteTable, flexRender, getCoreRowModel } from '@tanstack/svelte-table';
 	import type { ColumnDef, TableOptions } from '@tanstack/table-core/src/types';
 	import { formatData, getTableCellData } from '$lib/utils/usefulFunctions';
 	import ColumnInfo from './ColumnInfo.svelte';
@@ -237,13 +237,17 @@
 	{#if $paginationOptions?.infiniteScroll && !loadMore && data?.length > 0}
 		<!-- content here -->
 		<button
-			class="btn btn-primary w-full mt-4 "
+			class="btn btn-primary w-full mt-4  sticky left-0"
 			on:click={() => {
 				loadMore = true;
 			}}
 		>
 			Load more
 		</button>
+		<div class="text-center text-xs text-gray-500 mt-4  sticky left-0">
+			For now pagination works for 'limit' over 20 if set using 'filters',works for any 'limit' if
+			set by 'pagination store'.
+		</div>
 	{/if}
 	{#if $paginationOptions?.infiniteScroll && data?.length > 0 && loadMore}
 		<InfiniteLoading on:infinite={infiniteHandler} identifier={infiniteId} distance={100} />
