@@ -222,7 +222,9 @@
 <label
 	use:clickOutside
 	on:click_outside={handleClickOutside}
-	class=" w-min-fit   rounded-box {!expandedVersion ? ' pr-1 ' : ' '} 
+	class="   rounded-box {group.group_isRoot ? ' min-w-fit w-min' : 'w-min-fit '}  {!expandedVersion
+		? ' pr-1 '
+		: ' '} 
 	{expandedVersion ? ' pr-2 ' : ' '}
 	{$mutationVersion ? ' pr-2 pb-2 ' : ' '} 
 		{!expandedVersion && !$mutationVersion ? ' md:max-w-[25vw]' : ' '} 
