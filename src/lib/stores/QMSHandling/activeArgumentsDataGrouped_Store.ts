@@ -99,7 +99,7 @@ export const Create_activeArgumentsDataGrouped_Store = (initialValue = []) => {
 			//Handle QMSarguments data if present
 			console.log({ QMSarguments })
 			if (QMSarguments) {
-				gqlArgObjToActiveArgumentsDataGrouped(QMSarguments, activeArgumentsDataGrouped);
+				gqlArgObjToActiveArgumentsDataGrouped(QMSarguments, activeArgumentsDataGrouped, schemaData);
 			}
 			set(activeArgumentsDataGrouped);
 		},
@@ -273,7 +273,7 @@ export const generateArgData = (stepsOfFields, type, schemaData, extraData = {})
 };
 
 
-const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGrouped) => {
+const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGrouped, schemaData) => {
 	const getGroupGqlArgObj = (object, rootGroupGqlArgObj, group) => {
 		if (!group.group_isRoot) {
 			return object?.[group.group_name]
