@@ -231,9 +231,9 @@
 		 my-1 flex   dnd-item 
 		 {activeArgumentData?.inUse && !$mutationVersion
 		? activeArgumentData.canRunQuery
-			? 'ring ring-[1px]  bg-base-200/50 ring-primary/25 '
+			? 'ring ring-[1px]  bg-base-200/75 ring-primary/25 '
 			: 'ring ring-[1px]  ring-primary/100 bg-error/50'
-		: 'bg-base-200/25'} 
+		: 'bg-base-200/50'} 
 		{$mutationVersion ? 'p-1 min-w-[80vw] md:min-w-[50vw]' : 'pr-[1px]'}
 		"
 	bind:this={labelEl}
