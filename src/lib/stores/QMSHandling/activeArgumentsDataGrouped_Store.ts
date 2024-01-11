@@ -2,7 +2,10 @@ import { argumentCanRunQuery, generate_gqlArgObj, getRootType } from '$lib/utils
 import { json } from '@sveltejs/kit';
 import { get, writable } from 'svelte/store';
 
-export const Create_activeArgumentsDataGrouped_Store = (initialValue = [], rootGroupArgsVisible = true) => {
+export const Create_activeArgumentsDataGrouped_Store = (
+	initialValue = [],
+	rootGroupArgsVisible = true
+) => {
 	const store = writable(initialValue);
 	const { subscribe, set, update } = store;
 
@@ -11,14 +14,13 @@ export const Create_activeArgumentsDataGrouped_Store = (initialValue = [], rootG
 		set,
 		update,
 		set_groups: (QMS_info, schemaData, QMSarguments) => {
-			const argsInfo = QMS_info?.args
-			console.log({ argsInfo })
+			const argsInfo = QMS_info?.args;
+			console.log({ argsInfo });
 			//handle generating activeArgumentsDataGrouped
-			const activeArgumentsDataGrouped = []
+			const activeArgumentsDataGrouped = [];
 			const hasRootArgs = argsInfo?.find((el) => {
-				return el.dd_isRootArg
-			})
-
+				return el.dd_isRootArg;
+			});
 
 			if (hasRootArgs) {
 				const rootGroup = {
@@ -28,9 +30,8 @@ export const Create_activeArgumentsDataGrouped_Store = (initialValue = [], rootG
 					dd_kindList: false,
 					group_args: []
 				};
-				activeArgumentsDataGrouped.push(rootGroup)
+				activeArgumentsDataGrouped.push(rootGroup);
 			}
-
 
 			argsInfo?.forEach((el) => {
 				if (!el.dd_isRootArg) {
@@ -44,7 +45,8 @@ export const Create_activeArgumentsDataGrouped_Store = (initialValue = [], rootG
 						group_args: []
 					};
 
-					const hasFilterOperators = getRootType(null, el.dd_rootName, schemaData)?.dd_baseFilterOperators?.length > 0;
+					const hasFilterOperators =
+						getRootType(null, el.dd_rootName, schemaData)?.dd_baseFilterOperators?.length > 0;
 					newGroupData.group_argsNode = {
 						mainContainer: {
 							...el,
@@ -69,7 +71,7 @@ export const Create_activeArgumentsDataGrouped_Store = (initialValue = [], rootG
 						};
 					}
 
-					const expectsList = el.dd_kindList
+					const expectsList = el.dd_kindList;
 					if (expectsList) {
 						newGroupData.group_argsNode = {
 							mainContainer: {
@@ -83,30 +85,29 @@ export const Create_activeArgumentsDataGrouped_Store = (initialValue = [], rootG
 						};
 					}
 
-
 					activeArgumentsDataGrouped.push(newGroupData);
 				}
 			});
 			//filter out duplicate groups:
-			const seenGroupNames = []
+			const seenGroupNames = [];
 			activeArgumentsDataGrouped.forEach((group, index) => {
 				if (seenGroupNames.includes(group.group_name)) {
-					activeArgumentsDataGrouped.splice(index, 1)
+					activeArgumentsDataGrouped.splice(index, 1);
 				}
-				seenGroupNames.push(group.group_name)
-			})
+				seenGroupNames.push(group.group_name);
+			});
 			//
 			//Handle QMSarguments data if present
-			console.log({ QMSarguments })
+			console.log({ QMSarguments });
 			if (QMSarguments) {
 				gqlArgObjToActiveArgumentsDataGrouped(QMSarguments, activeArgumentsDataGrouped, schemaData);
 			}
 
-			addAllRootArgs(activeArgumentsDataGrouped, schemaData)
+			addAllRootArgs(activeArgumentsDataGrouped, schemaData);
 			set(activeArgumentsDataGrouped);
 		},
 		update_groups: (groupNewData) => {
-			console.log({ groupNewData })
+			console.log({ groupNewData });
 			update((activeArgumentsDataGrouped) => {
 				let index = activeArgumentsDataGrouped.findIndex((group) => {
 					return group.group_name == groupNewData.group_name;
@@ -190,12 +191,22 @@ export const Create_activeArgumentsDataGrouped_Store = (initialValue = [], rootG
 		},
 		add_activeArgument: (newArgumentOrContainerData, groupName, parentContainerId) => {
 			update((activeArgumentsDataGrouped) => {
-				return add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(newArgumentOrContainerData, groupName, parentContainerId, activeArgumentsDataGrouped);
+				return add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(
+					newArgumentOrContainerData,
+					groupName,
+					parentContainerId,
+					activeArgumentsDataGrouped
+				);
 			});
 		}
 	};
 };
-export const add_activeArgumentOrContainerTo_activeArgumentsDataGrouped = (newArgumentOrContainerData, groupName, parentContainerId, activeArgumentsDataGrouped) => {
+export const add_activeArgumentOrContainerTo_activeArgumentsDataGrouped = (
+	newArgumentOrContainerData,
+	groupName,
+	parentContainerId,
+	activeArgumentsDataGrouped
+) => {
 	let group = activeArgumentsDataGrouped?.filter((group) => {
 		return group.group_name == groupName;
 	})[0];
@@ -224,15 +235,13 @@ export const add_activeArgumentOrContainerTo_activeArgumentsDataGrouped = (newAr
 				})
 			) {
 				group.group_args.push(newArgumentOrContainerData);
-
 			} else {
 				console.log('already added');
 			}
 		}
 	}
 	return activeArgumentsDataGrouped;
-
-}
+};
 
 export const generateContainerData = (stepsOfFields, type, extraData = {}) => {
 	const dd_displayName = type.dd_displayName;
@@ -275,74 +284,78 @@ export const generateArgData = (stepsOfFields, type, schemaData, extraData = {})
 };
 
 const addAllRootArgs = (activeArgumentsDataGrouped, schemaData) => {
-	const group = activeArgumentsDataGrouped.find((group) => { return group.group_name == "root" })
+	const group = activeArgumentsDataGrouped.find((group) => {
+		return group.group_name == 'root';
+	});
 	const groupName = group.group_name;
-	const groupOriginType = group.originType
-	const groupArgs = groupOriginType.args.filter((arg) => { return arg.dd_isRootArg })
-	groupArgs.forEach(
-		(argType, i) => {
-			const argData = generateArgData([argType.dd_displayName], argType, schemaData)
-			console.log({ argData })
-			add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(argData, groupName, null, activeArgumentsDataGrouped);
-		}
-	)
-
-}
+	const groupOriginType = group.originType;
+	const groupArgs = groupOriginType.args.filter((arg) => {
+		return arg.dd_isRootArg;
+	});
+	groupArgs.forEach((argType, i) => {
+		const argData = generateArgData([argType.dd_displayName], argType, schemaData);
+		console.log({ argData });
+		add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(
+			argData,
+			groupName,
+			null,
+			activeArgumentsDataGrouped
+		);
+	});
+};
 const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGrouped, schemaData) => {
 	const getGroupGqlArgObj = (object, rootGroupGqlArgObj, group) => {
 		if (!group.group_isRoot) {
-			return object?.[group.group_name]
+			return object?.[group.group_name];
 		}
-		return rootGroupGqlArgObj
-	}
+		return rootGroupGqlArgObj;
+	};
 	//object is QMSarguments object
 	const nonRootGroupNames = activeArgumentsDataGrouped.map((group) => {
 		if (!group.group_isRoot) {
 			return group.group_name;
 		}
-	})
-
-
+	});
 
 	const rootGroupGqlArgObj = {};
 	Object.keys(object).forEach((key) => {
 		if (!nonRootGroupNames.includes(key)) {
 			rootGroupGqlArgObj[key] = object[key];
 		}
-	})
+	});
 	//iterate through groups
 	activeArgumentsDataGrouped.forEach((group) => {
 		const groupName = group.group_name;
 		const group_isRoot = group.group_isRoot;
-		const groupGqlArgObj = getGroupGqlArgObj(object, rootGroupGqlArgObj, group)
-		const groupOriginType = group.originType
+		const groupGqlArgObj = getGroupGqlArgObj(object, rootGroupGqlArgObj, group);
+		const groupOriginType = group.originType;
 
 		if (!groupGqlArgObj) {
-			return
+			return;
 		}
 		//Do the magic here:
-		if (group_isRoot) {//this block should work correctly,you will see some errors only because root group is not handled correctly in generating gqlArgObj after ui changes,test it and see,it only handles one argument even if u set multiple.
-			const argNames = Object.keys(groupGqlArgObj)
-			console.log({ argNames })
-			argNames.forEach(
-				(argName, i) => {
-					const argType = groupOriginType.args.filter((type) => {
-						return type.dd_displayName == argName
-					})[0]
-					const argData = generateArgData([argName], argType, schemaData, {
-						chd_dispatchValue
-							: groupGqlArgObj[argName]
-					})
-					console.log({ argData })
-					add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(argData, groupName, null, activeArgumentsDataGrouped);
-				}
-			)
+		if (group_isRoot) {
+			//this block should work correctly,you will see some errors only because root group is not handled correctly in generating gqlArgObj after ui changes,test it and see,it only handles one argument even if u set multiple.
+			const argNames = Object.keys(groupGqlArgObj);
+			console.log({ argNames });
+			argNames.forEach((argName, i) => {
+				const argType = groupOriginType.args.filter((type) => {
+					return type.dd_displayName == argName;
+				})[0];
+				const argData = generateArgData([argName], argType, schemaData, {
+					chd_dispatchValue: groupGqlArgObj[argName],
+					inUse: true
+				});
+				console.log({ argData });
+				add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(
+					argData,
+					groupName,
+					null,
+					activeArgumentsDataGrouped
+				);
+			});
 		}
-		console.log({ groupName, group_isRoot, groupGqlArgObj, groupOriginType })
-
-
-
-	})
-	return activeArgumentsDataGrouped
-
-}
+		console.log({ groupName, group_isRoot, groupGqlArgObj, groupOriginType });
+	});
+	return activeArgumentsDataGrouped;
+};
