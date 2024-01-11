@@ -18,6 +18,7 @@
 	let choosenDisplayInteface = typeInfo?.choosenDisplayInteface || null;
 	let { displayInterface, get_convertedValue, defaultValue } =
 		endpointInfo.get_typeExtraData(typeInfo);
+	export let dispatchValue;
 	export let rawValue = defaultValue;
 
 	$: if (choosenDisplayInteface) {
@@ -61,6 +62,7 @@
 		}}
 		{displayInterface}
 		{rawValue}
+		{dispatchValue}
 		on:changed={(e) => {
 			let { detail } = e;
 			detail.chd_dispatchValue = get_convertedValue(detail.chd_rawValue);
@@ -76,6 +78,7 @@
 	}}
 	{displayInterface}
 	{rawValue}
+	{dispatchValue}
 	on:changed={(e) => {
 		let { detail } = e;
 		if (detail.chd_rawValue) {

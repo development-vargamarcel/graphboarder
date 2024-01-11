@@ -306,7 +306,7 @@ const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGroupe
 			return
 		}
 		//Do the magic here:
-		if (group_isRoot) {
+		if (group_isRoot) {//this block should work correctly,you will see some errors only because root group is not handled correctly in generating gqlArgObj after ui changes,test it and see,it only handles one argument even if u set multiple.
 			const argNames = Object.keys(groupGqlArgObj)
 			console.log({ argNames })
 			argNames.forEach(

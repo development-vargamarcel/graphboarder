@@ -50,7 +50,7 @@
 			<Interface
 				{typeInfo}
 				rawValue={element.chd_rawValue}
-				{dispatchValue}
+				dispatchValue={element.chd_dispatchValue}
 				on:changed={(e) => {
 					Object.assign(element, e.detail);
 					changedElement(e);

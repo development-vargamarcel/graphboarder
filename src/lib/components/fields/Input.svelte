@@ -9,8 +9,12 @@
 	let inputEl;
 	export let rawValue;
 	export let dispatchValue;
-	if (!rawValue && dispatchValue && displayInterface != 'number') {
-		rawValue = string_transformerREVERSE(dispatchValue, false);
+	if (!rawValue && dispatchValue) {
+		if (displayInterface != 'number') {
+			rawValue = dispatchValue;
+		} else {
+			rawValue = string_transformerREVERSE(dispatchValue, false);
+		}
 	}
 	console.log('rawValue', rawValue, 'chd_dispatchValue', dispatchValue);
 	const dispatch = createEventDispatcher();

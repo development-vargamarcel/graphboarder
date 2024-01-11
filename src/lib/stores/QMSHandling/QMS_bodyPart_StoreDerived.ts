@@ -23,16 +23,16 @@ export const Create_QMS_bodyPart_StoreDerived = (
 			}
 			const get_QMS_args = () => {
 				console.log({ initialGqlArgObj })
+				// const merged = _.merge({}, initialGqlArgObj || {},
+				// 	$finalGqlArgObj_Store?.finalGqlArgObj || {},
+				// 	paginationState,
+				// );
 				const merged = _.merge({}, initialGqlArgObj || {},
-					$finalGqlArgObj_Store?.finalGqlArgObj || {},
 					paginationState,
+					$finalGqlArgObj_Store?.finalGqlArgObj || {},
+
 				);
 				return merged;
-				if (!_.isEmpty(merged)) {
-					console.log({ merged }, gqlArgObjToString(merged))
-					return gqlArgObjToString(merged);
-				}
-				return ''
 			}
 
 			console.log('$mergedChildren_finalGqlArgObj_Store', $mergedChildren_finalGqlArgObj_Store)

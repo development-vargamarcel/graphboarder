@@ -702,7 +702,11 @@ export const gqlArgObjToString = (gqlArgObj) => {
 		.slice(1, -1);
 	return gqlArgObj_stringModified;
 };
-
+export const generate_group_gqlArgObjForRoot = (group_argumentsData) => {
+	return _.merge({}, ...group_argumentsData.map((arggumentData) => {
+		return arggumentData.gqlArgObj
+	}))
+}
 export const generate_group_gqlArgObj = (group) => {
 	//if is where/filter (its related_root has filter_operators  ,like __or,__and,_not) handle differently after implementing the new ui
 	let group_gqlArgObj = {};
@@ -716,24 +720,25 @@ export const generate_group_gqlArgObj = (group) => {
 	if (group_argumentsData?.length > 0) {
 		if (group.group_isRoot) {
 			//console.log('root group handled');
-			let { gqlArgObj } = generate_gqlArgObj(group_argumentsData);
-			group_gqlArgObj = { ...group_gqlArgObj, ...gqlArgObj };
+			group_gqlArgObj = generate_group_gqlArgObjForRoot(group_argumentsData)
+			console.log({ group_gqlArgObj, group_argumentsData })
 		} else {
-			//console.log('NON root group handled');
-			if (group.dd_kindList) {
-				let list = [];
-				list = group_argumentsData.map((arg) => {
-					let { gqlArgObj } = generate_gqlArgObj([arg]);
+			console.error('Uncomment code for handling non root group');
+			// //console.log('NON root group handled');
+			// if (group.dd_kindList) {
+			// 	let list = [];
+			// 	list = group_argumentsData.map((arg) => {
+			// 		let { gqlArgObj } = generate_gqlArgObj([arg]);
 
-					return gqlArgObj[group.group_name];
-				});
-				group_gqlArgObj[group.group_name] = list;
-				group_gqlArgObj = { ...group_gqlArgObj };
-				//console.log('list---', list);
-			} else {
-				let { gqlArgObj } = generate_gqlArgObj(group_argumentsData);
-				group_gqlArgObj = { ...group_gqlArgObj, ...gqlArgObj };
-			}
+			// 		return gqlArgObj[group.group_name];
+			// 	});
+			// 	group_gqlArgObj[group.group_name] = list;
+			// 	group_gqlArgObj = { ...group_gqlArgObj };
+			// 	//console.log('list---', list);
+			// } else {
+			// 	let { gqlArgObj } = generate_gqlArgObj(group_argumentsData);
+			// 	group_gqlArgObj = { ...group_gqlArgObj, ...gqlArgObj };
+			// }
 		}
 	}
 
