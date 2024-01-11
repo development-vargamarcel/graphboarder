@@ -2,7 +2,7 @@ import { argumentCanRunQuery, generate_gqlArgObj, getRootType } from '$lib/utils
 import { json } from '@sveltejs/kit';
 import { get, writable } from 'svelte/store';
 
-export const Create_activeArgumentsDataGrouped_Store = (initialValue = []) => {
+export const Create_activeArgumentsDataGrouped_Store = (initialValue = [], rootGroupArgsVisible = true) => {
 	const store = writable(initialValue);
 	const { subscribe, set, update } = store;
 
@@ -101,6 +101,8 @@ export const Create_activeArgumentsDataGrouped_Store = (initialValue = []) => {
 			if (QMSarguments) {
 				gqlArgObjToActiveArgumentsDataGrouped(QMSarguments, activeArgumentsDataGrouped, schemaData);
 			}
+
+			addAllRootArgs(activeArgumentsDataGrouped, schemaData)
 			set(activeArgumentsDataGrouped);
 		},
 		update_groups: (groupNewData) => {
@@ -272,7 +274,20 @@ export const generateArgData = (stepsOfFields, type, schemaData, extraData = {})
 	};
 };
 
+const addAllRootArgs = (activeArgumentsDataGrouped, schemaData) => {
+	const group = activeArgumentsDataGrouped.find((group) => { return group.group_name == "root" })
+	const groupName = group.group_name;
+	const groupOriginType = group.originType
+	const groupArgs = groupOriginType.args.filter((arg) => { return arg.dd_isRootArg })
+	groupArgs.forEach(
+		(argType, i) => {
+			const argData = generateArgData([argType.dd_displayName], argType, schemaData)
+			console.log({ argData })
+			add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(argData, groupName, null, activeArgumentsDataGrouped);
+		}
+	)
 
+}
 const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGrouped, schemaData) => {
 	const getGroupGqlArgObj = (object, rootGroupGqlArgObj, group) => {
 		if (!group.group_isRoot) {
