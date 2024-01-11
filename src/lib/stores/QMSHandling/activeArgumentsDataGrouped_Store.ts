@@ -288,6 +288,7 @@ const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGroupe
 	})
 
 
+
 	const rootGroupGqlArgObj = {};
 	Object.keys(object).forEach((key) => {
 		if (!nonRootGroupNames.includes(key)) {
@@ -299,21 +300,30 @@ const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGroupe
 		const groupName = group.group_name;
 		const group_isRoot = group.group_isRoot;
 		const groupGqlArgObj = getGroupGqlArgObj(object, rootGroupGqlArgObj, group)
-		console.log({ groupGqlArgObj })
+		const groupOriginType = group.originType
+
 		if (!groupGqlArgObj) {
 			return
 		}
 		//Do the magic here:
 		if (group_isRoot) {
 			const argNames = Object.keys(groupGqlArgObj)
+			console.log({ argNames })
 			argNames.forEach(
-				(argName) => {
-					//const argData = generateArgData()
-					//add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(argData, groupName, null, activeArgumentsDataGrouped);
+				(argName, i) => {
+					const argType = groupOriginType.args.filter((type) => {
+						return type.dd_displayName == argName
+					})[0]
+					const argData = generateArgData([argName], argType, schemaData, {
+						chd_dispatchValue
+							: groupGqlArgObj[argName]
+					})
+					console.log({ argData })
+					add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(argData, groupName, null, activeArgumentsDataGrouped);
 				}
 			)
 		}
-		console.log({ groupName, groupGqlArgObj })
+		console.log({ groupName, group_isRoot, groupGqlArgObj, groupOriginType })
 
 
 

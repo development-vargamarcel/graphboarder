@@ -1,9 +1,18 @@
 <script>
+	import {
+		string_transformer,
+		string_transformerREVERSE
+	} from '$lib/utils/dataStructureTransformers';
 	import { createEventDispatcher, getContext } from 'svelte';
 
 	export let displayInterface;
 	let inputEl;
 	export let rawValue;
+	export let dispatchValue;
+	if (!rawValue && dispatchValue && displayInterface != 'number') {
+		rawValue = string_transformerREVERSE(dispatchValue, false);
+	}
+	console.log('rawValue', rawValue, 'chd_dispatchValue', dispatchValue);
 	const dispatch = createEventDispatcher();
 
 	//let castAs //most of the times as string
@@ -23,7 +32,9 @@
 		}
 
 		dispatch('changed', {
-			chd_rawValue: rawValue
+			chd_rawValue: rawValue,
+			chd_dispatchValue:
+				displayInterface == 'number' ? rawValue : string_transformer(rawValue, false)
 		}); //chd_ == chosen data sdasd ss
 	}}
 />
