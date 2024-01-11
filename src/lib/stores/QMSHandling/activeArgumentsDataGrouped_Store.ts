@@ -1,7 +1,7 @@
 import { argumentCanRunQuery, generate_gqlArgObj, getRootType } from '$lib/utils/usefulFunctions';
 import { json } from '@sveltejs/kit';
 import { get, writable } from 'svelte/store';
-
+import _ from 'lodash';
 export const Create_activeArgumentsDataGrouped_Store = (
 	initialValue = [],
 	rootGroupArgsVisible = true
@@ -342,11 +342,17 @@ const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGroupe
 				const argType = groupOriginType.args.filter((type) => {
 					return type.dd_displayName == argName;
 				})[0];
-				const argData = generateArgData([argName], argType, schemaData, {
+				let argData = generateArgData([argName], argType, schemaData, {
 					chd_dispatchValue: groupGqlArgObj[argName],
 					inUse: true
 				});
+				//!!!here we will  mutate origina array
+				const gqlArgObj = generate_gqlArgObj([argData])
+				argData = _.merge({}, argData, gqlArgObj)
 				console.log({ argData });
+
+
+
 				add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(
 					argData,
 					groupName,
