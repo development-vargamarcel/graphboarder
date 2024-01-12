@@ -10,18 +10,16 @@
 	export let type;
 	export let chosenDefault;
 	export let chosen;
-	console.log({ chosen });
 	// if (typeof chosen == 'string') {
 	// 	chosen = [chosen];
 	// }
-
+	$: console.log('changed', { chosen });
 	export let extraData;
 	let dispatch = createEventDispatcher();
 	let detail;
 	export let chosenInputField;
 	let inputEl;
 	export let rawValue = '';
-	export let dispatchValue = null;
 	export let isINPUT_OBJECT = false;
 </script>
 
@@ -34,7 +32,7 @@
 		{modalTitle}
 		{type}
 		{chosenDefault}
-		chosen={dispatchValue}
+		{chosen}
 		on:filterApplied={(e) => {
 			let { detail } = e;
 			chosenInputField = detail.extraData.inputFields?.filter((el) => {
@@ -44,9 +42,10 @@
 			isINPUT_OBJECT = detail.extraData.dd_displayInterface == 'INPUT_OBJECT';
 			choises = detail.choises;
 			chosen = detail.chosen;
-			console.log('changed', { detail });
+			//console.log('changed', { detail });
 			const dispatchObject = {
 				chd_dispatchValue: chosen,
+				test: chosen,
 				isINPUT_OBJECT,
 				chosenInputField
 			};

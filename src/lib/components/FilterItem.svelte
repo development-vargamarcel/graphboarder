@@ -12,6 +12,8 @@
 	export let chosenDefault;
 	export let defaultMeansNoChange = true;
 	export let chosen = chosenDefault ? JSON.parse(JSON.stringify(chosenDefault)) : [];
+	console.log({ chosen });
+
 	let chosenInternal = JSON.parse(JSON.stringify(chosen));
 	let extraInfo = '';
 	let extraInfoExtraClass = '';
