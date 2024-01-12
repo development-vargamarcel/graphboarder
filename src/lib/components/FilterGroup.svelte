@@ -10,6 +10,7 @@
 	export let type;
 	export let chosenDefault;
 	export let chosen;
+	console.log({ chosen });
 	// if (typeof chosen == 'string') {
 	// 	chosen = [chosen];
 	// }

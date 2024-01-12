@@ -48,43 +48,33 @@
 			componentToRender = CodeEditor;
 		}
 		if (!displayInterface) {
-			componentToRender = InterfacePicker;
+			componentToRender = null;
 		}
 	}
+	const onChangeHandler = (e) => {
+		let { detail } = e;
+		detail.chd_dispatchValue = get_convertedValue(detail.chd_rawValue);
+		detail.choosenDisplayInteface = choosenDisplayInteface;
+		dispatch('changed', detail);
+	};
 </script>
 
-{#if alwaysOn_interfacePicker && displayInterface}
-	<svelte:component
-		this={InterfacePicker}
-		{typeInfo}
+{#if (alwaysOn_interfacePicker && displayInterface) || !componentToRender}
+	<InterfacePicker
 		on:interfaceChosen={(e) => {
 			choosenDisplayInteface = e.detail.chosen;
 		}}
+	/>
+{/if}
+{#if componentToRender}
+	<svelte:component
+		this={componentToRender}
+		{typeInfo}
 		{displayInterface}
 		{rawValue}
 		{dispatchValue}
 		on:changed={(e) => {
-			let { detail } = e;
-			detail.chd_dispatchValue = get_convertedValue(detail.chd_rawValue);
-			detail.choosenDisplayInteface = choosenDisplayInteface;
-			dispatch('changed', detail);
+			onChangeHandler(e);
 		}}
-	/>{/if}
-<svelte:component
-	this={componentToRender}
-	{typeInfo}
-	on:interfaceChosen={(e) => {
-		choosenDisplayInteface = e.detail.chosen;
-	}}
-	{displayInterface}
-	{rawValue}
-	{dispatchValue}
-	on:changed={(e) => {
-		let { detail } = e;
-		if (detail.chd_rawValue) {
-			detail.chd_dispatchValue = get_convertedValue(detail.chd_rawValue);
-		}
-		detail.choosenDisplayInteface = choosenDisplayInteface;
-		dispatch('changed', detail);
-	}}
-/>
+	/>
+{/if}

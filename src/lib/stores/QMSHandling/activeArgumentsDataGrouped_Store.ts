@@ -287,6 +287,10 @@ const addAllRootArgs = (activeArgumentsDataGrouped, schemaData) => {
 	const group = activeArgumentsDataGrouped.find((group) => {
 		return group.group_name == 'root';
 	});
+	if (!group) {
+		console.log('no root group');
+		return
+	}
 	const groupName = group.group_name;
 	const groupOriginType = group.originType;
 	const groupArgs = groupOriginType.args.filter((arg) => {
@@ -346,7 +350,6 @@ const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGroupe
 					chd_dispatchValue: groupGqlArgObj[argName],
 					inUse: true
 				});
-				//!!!here we will  mutate origina array
 				const gqlArgObj = generate_gqlArgObj([argData])
 				argData = _.merge({}, argData, gqlArgObj)
 				console.log({ argData });
