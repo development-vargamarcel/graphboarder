@@ -30,7 +30,7 @@ export const findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey = (obj) =
 }
 
 export const deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments = (obj) => {
-	console.log('ttt', obj)
+	//console.log('ttt', obj)
 	if (typeof obj !== 'object' || obj === null) {
 		return null;
 	}
@@ -46,9 +46,9 @@ export const deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments = (obj) => {
 			return
 		}
 		const result = findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey(obj[key])
-		console.log('yyresult', obj[key], result, getPreciseType(result) == 'object')
+		//console.log('yyresult', obj[key], result, getPreciseType(result) == 'object')
 		if (result === true) {
-			console.log('to delete', obj[key])
+			//console.log('to delete', obj[key])
 			delete obj[key]
 		}
 		if (getPreciseType(result) == 'object') {
