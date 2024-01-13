@@ -88,11 +88,25 @@ export const endpointInfoDefaultValues = {
 		}
 	],
 	typesExtraDataPossibilities: [
+
+		{
+			get_Val: () => {
+				return { displayInterface: 'codeeditor', defaultValue: '', get_convertedValue: string_transformer };
+			},
+			check: function (dd_rootName, dd_displayName, typeObj) {
+				if (!dd_rootName) {
+					return null
+				}
+				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
+				const dd_displayNameLowerCase = dd_displayName.toLowerCase();
+				return dd_displayNameLowerCase.includes('config')
+			}
+		},
 		{
 			get_Val: () => {
 				return { displayInterface: 'text', defaultValue: '', get_convertedValue: string_transformer };
 			},
-			check: function (dd_rootName) {
+			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {
 					return null
 				}
@@ -104,7 +118,7 @@ export const endpointInfoDefaultValues = {
 			get_Val: () => {
 				return { displayInterface: 'datetime-local', get_convertedValue: ISO8601_transformer };
 			},
-			check: function (dd_rootName) {
+			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {
 					return null
 				}
@@ -125,7 +139,7 @@ export const endpointInfoDefaultValues = {
 					}
 				};
 			},
-			check: function (dd_rootName) {
+			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {
 					return null
 				}
@@ -137,7 +151,7 @@ export const endpointInfoDefaultValues = {
 			get_Val: () => {
 				return { displayInterface: 'geo', defaultValue: null, get_convertedValue: geojson_transformer };
 			},
-			check: function (dd_rootName) {
+			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {
 					return null
 				}
@@ -149,7 +163,7 @@ export const endpointInfoDefaultValues = {
 			get_Val: () => {
 				return { displayInterface: 'boolean', defaultValue: true, get_convertedValue: boolean_transformer };
 			},
-			check: function (dd_rootName) {
+			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {
 					return null
 				}
@@ -160,34 +174,23 @@ export const endpointInfoDefaultValues = {
 			get_Val: () => {
 				return { displayInterface: 'ENUM', defaultValue: null, get_convertedValue: (val) => { return val } };
 			},
-			check: function (dd_rootName) {
+			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {
 					return null
 				}
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
 				return dd_rootNameLowerCase.includes('enum') || dd_rootNameLowerCase.includes('constraint');
 			}
-		}, {
+		}
+		, {
 			get_Val: () => {
 				return { displayInterface: null, defaultValue: null, get_convertedValue: (val) => { return val } };
 			},
-			check: function (dd_rootName) {
+			check: function (dd_rootName, dd_displayName, typeObj) {
 				//	console.warn('no typesExtraDataPossibility found,using the default one')
 				return true
 			}
-		},
-		{
-			get_Val: () => {
-				return { displayInterface: 'codeeditor', defaultValue: '', get_convertedValue: string_transformer };
-			},
-			check: function (dd_rootName) {
-				if (!dd_rootName) {
-					return null
-				}
-				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
-				return dd_rootNameLowerCase.includes('configuration')
-			}
-		},
+		}
 	],
 	idDecoderPossibilities: [
 		{
@@ -280,8 +283,8 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			let typesExtraDataPossibility = storeVal.typesExtraDataPossibilities.find(
 				(typesExtraDataPossibility) => {
 					return (
-						typesExtraDataPossibility.check(typeInfo.dd_kindEl) ||
-						typesExtraDataPossibility.check(typeInfo.dd_rootName)
+						typesExtraDataPossibility.check(typeInfo.dd_kindEl, typeInfo.dd_displayName, typeInfo) ||
+						typesExtraDataPossibility.check(typeInfo.dd_rootName, typeInfo.dd_displayName, typeInfo)
 
 					);
 				}
