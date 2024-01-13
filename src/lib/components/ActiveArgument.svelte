@@ -1,5 +1,5 @@
 <script>
-	import ActiveArgumentInterfaces from '$lib/components/fields/ActiveArgumentInterfaces.svelte';
+	import AutoInterface from '$lib/components/fields/AutoInterface.svelte';
 	import { SHADOW_ITEM_MARKER_PROPERTY_NAME } from 'svelte-dnd-action';
 	import { createEventDispatcher, getContext } from 'svelte';
 	export let setNotInUseIfNotValid = true;
@@ -191,7 +191,7 @@
 				</div>
 			{/if}
 			<div class="px-2 ">
-				<ActiveArgumentInterfaces
+				<AutoInterface
 					typeInfo={activeArgumentData}
 					on:changed={(e) => {
 						handleChanged(e.detail);
@@ -282,7 +282,7 @@
 			</div>
 			{#if expandedVersion || $mutationVersion}
 				<div class="pl-1 ">
-					<ActiveArgumentInterfaces
+					<AutoInterface
 						typeInfo={activeArgumentData}
 						on:changed={(e) => {
 							handleChanged(e.detail);

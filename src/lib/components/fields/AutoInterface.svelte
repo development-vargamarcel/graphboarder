@@ -1,4 +1,5 @@
 <script>
+	//this automatically dispalys the correct interface based on typeInfo
 	import InterfaceList from '$lib/components/fields/InterfaceList.svelte';
 	import Interface from '$lib/components/fields/Interface.svelte';
 	export let typeInfo;
