@@ -16,52 +16,53 @@
 	export let typeInfo;
 	export let alwaysOn_interfacePicker = false;
 	let choosenDisplayInteface = typeInfo?.choosenDisplayInteface || null;
-	let { displayInterface, get_convertedValue, defaultValue } =
-		endpointInfo.get_typeExtraData(typeInfo);
+	let typeExtraData = endpointInfo.get_typeExtraData(typeInfo);
+
 	export let dispatchValue;
-	export let rawValue = defaultValue;
+	export let rawValue = typeExtraData?.defaultValue;
 
 	$: if (choosenDisplayInteface) {
-		displayInterface = choosenDisplayInteface;
-		get_convertedValue = $endpointInfo.typesExtraDataPossibilities
-			.find((possibility) => {
-				return possibility.get_Val().displayInterface == choosenDisplayInteface;
-			})
-			.get_Val().get_convertedValue;
+		typeExtraData = endpointInfo.get_typeExtraData(typeInfo, choosenDisplayInteface);
 		typeInfo.choosenDisplayInteface = choosenDisplayInteface;
+		typeInfo.dd_displayInterface = choosenDisplayInteface;
+		typeExtraData = endpointInfo.get_typeExtraData(typeInfo);
+		if (typeof rawValue == undefined) {
+			rawValue = typeExtraData.defaultValue;
+		}
 	}
+	typeExtraData.displayInterface;
 	let componentToRender = Input;
 	$: {
-		if (['text', 'number', 'date', 'datetime-local'].includes(displayInterface)) {
+		if (['text', 'number', 'date', 'datetime-local'].includes(typeExtraData.displayInterface)) {
 			componentToRender = Input;
 		}
-		if (['geo'].includes(displayInterface)) {
+		if (['geo'].includes(typeExtraData.displayInterface)) {
 			componentToRender = Map;
 		}
-		if (['boolean'].includes(displayInterface)) {
+		if (['boolean'].includes(typeExtraData.displayInterface)) {
 			componentToRender = Toggle;
 		}
-		if (['ENUM'].includes(displayInterface)) {
+		if (['ENUM'].includes(typeExtraData.displayInterface)) {
 			componentToRender = ENUMInterface;
 		}
-		if (['codeeditor'].includes(displayInterface)) {
+		if (['codeeditor'].includes(typeExtraData.displayInterface)) {
 			componentToRender = CodeEditor;
 		}
-		if (!displayInterface) {
+		if (!typeExtraData.displayInterface) {
 			componentToRender = null;
 		}
 	}
 	const onChangeHandler = (e) => {
 		let { detail } = e;
 		if (detail.chd_rawValue) {
-			detail.chd_dispatchValue = get_convertedValue(detail.chd_rawValue);
+			detail.chd_dispatchValue = typeExtraData.get_convertedValue(detail.chd_rawValue);
 		}
 		detail.choosenDisplayInteface = choosenDisplayInteface;
 		dispatch('changed', detail);
 	};
 </script>
 
-{#if (alwaysOn_interfacePicker && displayInterface) || !componentToRender}
+{#if (alwaysOn_interfacePicker && typeExtraData.displayInterface) || !componentToRender}
 	<InterfacePicker
 		on:interfaceChosen={(e) => {
 			choosenDisplayInteface = e.detail.chosen;
@@ -72,7 +73,7 @@
 	<svelte:component
 		this={componentToRender}
 		{typeInfo}
-		{displayInterface}
+		displayInterface={typeExtraData.displayInterface}
 		{rawValue}
 		{dispatchValue}
 		on:changed={(e) => {

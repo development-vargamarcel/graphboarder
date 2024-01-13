@@ -104,7 +104,7 @@ export const endpointInfoDefaultValues = {
 		},
 		{
 			get_Val: () => {
-				return { displayInterface: 'text', defaultValue: '', get_convertedValue: string_transformer };
+				return { displayInterface: 'text', defaultValue: 'please enter some text (this is default value)', get_convertedValue: string_transformer };
 			},
 			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {
@@ -274,21 +274,33 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 
 			return null;
 		},
-		get_typeExtraData: (typeInfo) => {
+		get_typeExtraData: (typeInfo, choosenDisplayInteface) => {
 			//!!!maybe is a good approach to make available  entire typeInfo (QMS_info) to 'check' and 'get_Val'
 			const storeVal = get(store);
 			if (!storeVal || !storeVal?.typesExtraDataPossibilities?.length > 0) {
 				return null;
 			}
-			let typesExtraDataPossibility = storeVal.typesExtraDataPossibilities.find(
-				(typesExtraDataPossibility) => {
-					return (
-						typesExtraDataPossibility.check(typeInfo.dd_kindEl, typeInfo.dd_displayName, typeInfo) ||
-						typesExtraDataPossibility.check(typeInfo.dd_rootName, typeInfo.dd_displayName, typeInfo)
+			let typesExtraDataPossibility
+			if (choosenDisplayInteface) {
+				typesExtraDataPossibility = storeVal.typesExtraDataPossibilities
+					.find((possibility) => {
+						return possibility.get_Val().displayInterface == choosenDisplayInteface;
+					})
+			} else {
+				typesExtraDataPossibility = storeVal.typesExtraDataPossibilities.find(
+					(typesExtraDataPossibility) => {
+						return (
+							typesExtraDataPossibility.check(typeInfo.dd_kindEl, typeInfo.dd_displayName, typeInfo) ||
+							typesExtraDataPossibility.check(typeInfo.dd_rootName, typeInfo.dd_displayName, typeInfo)
 
-					);
-				}
-			);
+						);
+					}
+				);
+
+			}
+
+
+
 			if (typesExtraDataPossibility) {
 				return typesExtraDataPossibility.get_Val(typeInfo);
 			}
