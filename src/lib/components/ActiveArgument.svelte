@@ -3,7 +3,7 @@
 	import { createEventDispatcher, getContext } from 'svelte';
 	export let setNotInUseIfNotValid = true;
 	export let setNotInUseIfNotValidAndENUM = true;
-	import List from '$lib/components/fields/List.svelte';
+	import InterfaceList from '$lib/components/fields/InterfaceList.svelte';
 	import FilterGroup from '$lib/components/FilterGroup.svelte';
 	export let prefix = '';
 	import { clickOutside } from '$lib/actions/clickOutside';
@@ -193,7 +193,7 @@
 			{/if}
 			<div class="px-2 ">
 				{#if activeArgumentData.dd_kindList && activeArgumentData.dd_displayInterface != 'ENUM'}
-					<List
+					<InterfaceList
 						typeInfo={activeArgumentData}
 						dd_displayInterface={activeArgumentData.dd_displayInterface}
 						rawValue={activeArgumentData?.chd_rawValue}
@@ -300,7 +300,7 @@
 			{#if expandedVersion || $mutationVersion}
 				<div class="pl-1 ">
 					{#if activeArgumentData.dd_kindList && activeArgumentData.dd_displayInterface != 'ENUM'}
-						<List
+						<InterfaceList
 							typeInfo={activeArgumentData}
 							dd_displayInterface={activeArgumentData.dd_displayInterface}
 							rawValue={activeArgumentData?.chd_rawValue}
