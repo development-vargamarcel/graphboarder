@@ -15,9 +15,7 @@
 		chosenInputField={typeInfo?.chosenInputField}
 		isINPUT_OBJECT={typeInfo?.isINPUT_OBJECT}
 		rawValue={typeInfo?.chd_rawValue}
-		on:changed={(e) => {
-			dispatch('changed', e.detail);
-		}}
+		on:changed
 		id={typeInfo.stepsOfFields}
 		title="choose"
 		type={typeInfo.dd_kindList ? 'checkbox' : 'radio'}
