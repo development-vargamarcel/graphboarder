@@ -1,13 +1,12 @@
 <script>
+	import ActiveArgumentInterfaces from '$lib/components/fields/ActiveArgumentInterfaces.svelte';
 	import { SHADOW_ITEM_MARKER_PROPERTY_NAME } from 'svelte-dnd-action';
 	import { createEventDispatcher, getContext } from 'svelte';
 	export let setNotInUseIfNotValid = true;
 	export let setNotInUseIfNotValidAndENUM = true;
-	import InterfaceList from '$lib/components/fields/InterfaceList.svelte';
-	import FilterGroup from '$lib/components/FilterGroup.svelte';
+
 	export let prefix = '';
 	import { clickOutside } from '$lib/actions/clickOutside';
-	import Interface from '$lib/components/fields/Interface.svelte';
 	import Modal from './Modal.svelte';
 	import { string_transformerREVERSE } from '$lib/utils/dataStructureTransformers';
 	import { argumentCanRunQuery } from '$lib/utils/usefulFunctions';
@@ -192,28 +191,12 @@
 				</div>
 			{/if}
 			<div class="px-2 ">
-				{#if activeArgumentData.dd_kindList && activeArgumentData.dd_displayInterface != 'ENUM'}
-					<InterfaceList
-						typeInfo={activeArgumentData}
-						dd_displayInterface={activeArgumentData.dd_displayInterface}
-						rawValue={activeArgumentData?.chd_rawValue}
-						dispatchValue={activeArgumentData?.chd_dispatchValue}
-						on:changed={(e) => {
-							handleChanged(e.detail);
-						}}
-					/>
-				{:else}
-					<Interface
-						alwaysOn_interfacePicker={true}
-						typeInfo={activeArgumentData}
-						dd_displayInterface={activeArgumentData.dd_displayInterface}
-						rawValue={activeArgumentData?.chd_rawValue}
-						dispatchValue={activeArgumentData?.chd_dispatchValue}
-						on:changed={(e) => {
-							handleChanged(e.detail);
-						}}
-					/>
-				{/if}
+				<ActiveArgumentInterfaces
+					typeInfo={activeArgumentData}
+					on:changed={(e) => {
+						handleChanged(e.detail);
+					}}
+				/>
 			</div>
 		</div>
 	</Modal>{/if}
@@ -299,27 +282,12 @@
 			</div>
 			{#if expandedVersion || $mutationVersion}
 				<div class="pl-1 ">
-					{#if activeArgumentData.dd_kindList && activeArgumentData.dd_displayInterface != 'ENUM'}
-						<InterfaceList
-							typeInfo={activeArgumentData}
-							dd_displayInterface={activeArgumentData.dd_displayInterface}
-							rawValue={activeArgumentData?.chd_rawValue}
-							dispatchValue={activeArgumentData?.chd_dispatchValue}
-							on:changed={(e) => {
-								handleChanged(e.detail);
-							}}
-						/>
-					{:else}
-						<Interface
-							typeInfo={activeArgumentData}
-							dd_displayInterface={activeArgumentData.dd_displayInterface}
-							rawValue={activeArgumentData?.chd_rawValue}
-							dispatchValue={activeArgumentData?.chd_dispatchValue}
-							on:changed={(e) => {
-								handleChanged(e.detail);
-							}}
-						/>
-					{/if}
+					<ActiveArgumentInterfaces
+						typeInfo={activeArgumentData}
+						on:changed={(e) => {
+							handleChanged(e.detail);
+						}}
+					/>
 				</div>
 			{/if}
 		</div>

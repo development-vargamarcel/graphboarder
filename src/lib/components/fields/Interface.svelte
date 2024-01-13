@@ -20,15 +20,25 @@
 
 	export let dispatchValue;
 	export let rawValue = typeExtraData?.defaultValue;
-
+	if (rawValue == undefined) {
+		rawValue = 'dsds';
+	}
+	console.log(
+		'ooooooooo',
+		typeInfo.dd_displayName,
+		rawValue,
+		typeExtraData?.defaultValue,
+		typeExtraData
+	);
+	$: console.log('pppppppppooo', { rawValue });
 	$: if (choosenDisplayInteface) {
 		typeExtraData = endpointInfo.get_typeExtraData(typeInfo, choosenDisplayInteface);
 		typeInfo.choosenDisplayInteface = choosenDisplayInteface;
 		typeInfo.dd_displayInterface = choosenDisplayInteface;
 		typeExtraData = endpointInfo.get_typeExtraData(typeInfo);
-		if (typeof rawValue == undefined) {
-			rawValue = typeExtraData.defaultValue;
-		}
+		// if (typeof rawValue == undefined) {
+		// 	rawValue = typeExtraData.defaultValue;
+		// }
 	}
 	typeExtraData.displayInterface;
 	let componentToRender = Input;

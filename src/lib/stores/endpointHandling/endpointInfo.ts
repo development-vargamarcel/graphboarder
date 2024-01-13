@@ -91,7 +91,7 @@ export const endpointInfoDefaultValues = {
 
 		{
 			get_Val: () => {
-				return { displayInterface: 'codeeditor', defaultValue: '', get_convertedValue: string_transformer };
+				return { displayInterface: 'codeeditor', defaultValue: '{}', get_convertedValue: string_transformer };
 			},
 			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {
@@ -133,7 +133,7 @@ export const endpointInfoDefaultValues = {
 		{
 			get_Val: () => {
 				return {
-					displayInterface: 'number', defaultValue: null,
+					displayInterface: 'number', defaultValue: 0,
 					get_convertedValue: (value) => {
 						return value;
 					}
