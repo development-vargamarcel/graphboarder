@@ -64,7 +64,7 @@
 	}
 	const onChangeHandler = (e) => {
 		let { detail } = e;
-		if (detail.chd_rawValue) {
+		if (detail.chd_rawValue != undefined) {
 			detail.chd_dispatchValue = typeExtraData.get_convertedValue(detail.chd_rawValue);
 		}
 		detail.choosenDisplayInteface = choosenDisplayInteface;
