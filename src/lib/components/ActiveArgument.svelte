@@ -192,6 +192,7 @@
 			{/if}
 			<div class="px-2 ">
 				<AutoInterface
+					alwaysOn_interfacePicker
 					typeInfo={activeArgumentData}
 					on:changed={(e) => {
 						handleChanged(e.detail);

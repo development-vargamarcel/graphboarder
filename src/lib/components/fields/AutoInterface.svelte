@@ -3,12 +3,14 @@
 	import InterfaceList from '$lib/components/fields/InterfaceList.svelte';
 	import Interface from '$lib/components/fields/Interface.svelte';
 	export let typeInfo;
+	export let alwaysOn_interfacePicker;
 	$: rawValue = typeInfo?.chd_rawValue;
 	$: dispatchValue = typeInfo?.chd_dispatchValue;
 </script>
 
 {#if typeInfo.dd_kindList && typeInfo.dd_displayInterface != 'ENUM'}
 	<InterfaceList
+		{alwaysOn_interfacePicker}
 		{typeInfo}
 		dd_displayInterface={typeInfo.dd_displayInterface}
 		{rawValue}
@@ -17,6 +19,7 @@
 	/>
 {:else}
 	<Interface
+		{alwaysOn_interfacePicker}
 		{typeInfo}
 		dd_displayInterface={typeInfo.dd_displayInterface}
 		{rawValue}

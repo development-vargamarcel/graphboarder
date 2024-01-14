@@ -149,7 +149,7 @@ export const endpointInfoDefaultValues = {
 		},
 		{
 			get_Val: () => {
-				return { displayInterface: 'geo', defaultValue: null, get_convertedValue: geojson_transformer };
+				return { displayInterface: 'geo', defaultValue: undefined, get_convertedValue: geojson_transformer };
 			},
 			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {

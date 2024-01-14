@@ -105,7 +105,7 @@
 		mapOnLoadHandler_set = true;
 		map.on('load', () => {
 			if (rawValue) {
-				//console.log('rawValue', rawValue);
+				console.log('rawValue in map', rawValue);
 				if (draw) {
 					rawValue.features.forEach((feature) => {
 						//console.log('feature added');
