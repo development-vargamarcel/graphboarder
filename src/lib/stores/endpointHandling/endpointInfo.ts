@@ -3,7 +3,8 @@ import {
 	geojson_transformer,
 	ISO8601_transformer,
 	stringContainingQuotes_transformer,
-	string_transformer
+	string_transformer,
+	number_transformer
 } from '$lib/utils/dataStructureTransformers';
 import { writable, get } from 'svelte/store';
 import { getFields_Grouped, getRootType } from '$lib/utils/usefulFunctions';
@@ -91,7 +92,7 @@ export const endpointInfoDefaultValues = {
 
 		{
 			get_Val: () => {
-				return { displayInterface: 'codeeditor', defaultValue: '{}', get_convertedValue: string_transformer };
+				return { displayInterface: 'codeeditor', defaultValue: '{}', use_transformerREVERSE: (val) => { return val }, use_transformer: string_transformer };
 			},
 			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {
@@ -104,7 +105,7 @@ export const endpointInfoDefaultValues = {
 		},
 		{
 			get_Val: () => {
-				return { displayInterface: 'text', defaultValue: 'please enter some text (this is default value)', get_convertedValue: string_transformer };
+				return { displayInterface: 'text', defaultValue: 'please enter some text (this is default value)', use_transformerREVERSE: (val) => { return val }, use_transformer: string_transformer };
 			},
 			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {
@@ -116,7 +117,7 @@ export const endpointInfoDefaultValues = {
 		},
 		{
 			get_Val: () => {
-				return { displayInterface: 'datetime-local', get_convertedValue: ISO8601_transformer };
+				return { displayInterface: 'datetime-local', use_transformerREVERSE: (val) => { return val }, use_transformer: ISO8601_transformer };
 			},
 			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {
@@ -134,10 +135,7 @@ export const endpointInfoDefaultValues = {
 			get_Val: () => {
 				return {
 					displayInterface: 'number', defaultValue: 0,
-					get_convertedValue: (value) => {
-						//value * 1 removes leadin zeros: 0001 becomes 1, 0001.5 becomes 1.5
-						return value * 1;
-					}
+					use_transformerREVERSE: (val) => { return val }, use_transformer: number_transformer
 				};
 			},
 			check: function (dd_rootName, dd_displayName, typeObj) {
@@ -150,7 +148,7 @@ export const endpointInfoDefaultValues = {
 		},
 		{
 			get_Val: () => {
-				return { displayInterface: 'geo', defaultValue: undefined, get_convertedValue: geojson_transformer };
+				return { displayInterface: 'geo', defaultValue: undefined, use_transformerREVERSE: (val) => { return val }, use_transformer: geojson_transformer };
 			},
 			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {
@@ -162,7 +160,7 @@ export const endpointInfoDefaultValues = {
 		},
 		{
 			get_Val: () => {
-				return { displayInterface: 'boolean', defaultValue: true, get_convertedValue: boolean_transformer };
+				return { displayInterface: 'boolean', defaultValue: true, use_transformerREVERSE: (val) => { return val }, use_transformer: boolean_transformer };
 			},
 			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {
@@ -173,7 +171,7 @@ export const endpointInfoDefaultValues = {
 			}
 		}, {
 			get_Val: () => {
-				return { displayInterface: 'ENUM', defaultValue: null, get_convertedValue: (val) => { return val } };
+				return { displayInterface: 'ENUM', defaultValue: null, use_transformerREVERSE: (val) => { return val }, use_transformer: (val) => { return val } };
 			},
 			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {
@@ -185,7 +183,7 @@ export const endpointInfoDefaultValues = {
 		}
 		, {
 			get_Val: () => {
-				return { displayInterface: null, defaultValue: null, get_convertedValue: (val) => { return val } };
+				return { displayInterface: null, defaultValue: null, use_transformerREVERSE: (val) => { return val }, use_transformer: (val) => { return val } };
 			},
 			check: function (dd_rootName, dd_displayName, typeObj) {
 				//	console.warn('no typesExtraDataPossibility found,using the default one')

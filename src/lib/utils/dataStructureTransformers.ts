@@ -19,6 +19,14 @@ export const string_transformerREVERSE = (value, onlyPrimeSymbol) => {
 
 };
 
+export const number_transformer = (value) => {
+	if (typeof value !== 'number') {
+		console.warn('number_transformer: value is not a number', value)
+		return value
+	}
+	//value * 1 removes leadin zeros: 0001 becomes 1, 0001.5 becomes 1.5
+	return value * 1;
+};
 export const ISO8601_transformer = (value) => {
 	let date_ISO8601 = new Date(value).toISOString();
 	return string_transformer(date_ISO8601);

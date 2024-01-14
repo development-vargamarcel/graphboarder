@@ -94,7 +94,7 @@
 					return {
 						displayInterface: 'text',
 						defaultValue: '',
-						get_convertedValue: string_transformer
+						use_transformerREVERSE: (val) => { return val },use_transformer: string_transformer
 					};
 				},
 				check: function (dd_rootName) {
@@ -107,7 +107,7 @@
 			},
 			{
 				get_Val: () => {
-					return { displayInterface: 'datetime-local', get_convertedValue: ISO8601_transformer };
+					return { displayInterface: 'datetime-local', use_transformerREVERSE: (val) => { return val },use_transformer: ISO8601_transformer };
 				},
 				check: function (dd_rootName) {
 					if (!dd_rootName) {
@@ -126,7 +126,7 @@
 					return {
 						displayInterface: 'number',
 						defaultValue: null,
-						get_convertedValue: (value) => {
+						use_transformerREVERSE: (val) => { return val },use_transformer: (value) => {
 							return value;
 						}
 					};
@@ -147,7 +147,7 @@
 					return {
 						displayInterface: 'geo',
 						defaultValue: null,
-						get_convertedValue: geojson_transformer
+						use_transformerREVERSE: (val) => { return val },use_transformer: geojson_transformer
 					};
 				},
 				check: function (dd_rootName) {
@@ -163,7 +163,7 @@
 					return {
 						displayInterface: 'boolean',
 						defaultValue: true,
-						get_convertedValue: boolean_transformer
+						use_transformerREVERSE: (val) => { return val },use_transformer: boolean_transformer
 					};
 				},
 				check: function (dd_rootName) {
@@ -179,7 +179,7 @@
 					return {
 						displayInterface: 'ENUM',
 						defaultValue: null,
-						get_convertedValue: (val) => {
+						use_transformerREVERSE: (val) => { return val },use_transformer: (val) => {
 							return val;
 						}
 					};
@@ -199,7 +199,7 @@
 					return {
 						displayInterface: null,
 						defaultValue: null,
-						get_convertedValue: (val) => {
+						use_transformerREVERSE: (val) => { return val },use_transformer: (val) => {
 							return val;
 						}
 					};
@@ -214,7 +214,7 @@
 					return {
 						displayInterface: 'codeeditor',
 						defaultValue: '',
-						get_convertedValue: string_transformer
+						use_transformerREVERSE: (val) => { return val },use_transformer: string_transformer
 					};
 				},
 				check: function (dd_rootName) {
