@@ -135,7 +135,8 @@ export const endpointInfoDefaultValues = {
 				return {
 					displayInterface: 'number', defaultValue: 0,
 					get_convertedValue: (value) => {
-						return value;
+						//value * 1 removes leadin zeros: 0001 becomes 1, 0001.5 becomes 1.5
+						return value * 1;
 					}
 				};
 			},

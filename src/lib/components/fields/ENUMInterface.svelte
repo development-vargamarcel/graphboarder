@@ -2,6 +2,8 @@
 	import { createEventDispatcher } from 'svelte';
 	import FilterGroup from '$lib/components/FilterGroup.svelte';
 	export let typeInfo;
+	export let rawValue;
+	export let dispatchValue;
 	const dispatch = createEventDispatcher();
 </script>
 
@@ -11,11 +13,11 @@
 		choises={typeInfo.enumValues.map((enumValue) => {
 			return enumValue.name;
 		})}
-		chosen={typeInfo?.chd_dispatchValue}
+		chosen={dispatchValue}
 		chosenInputField={typeInfo?.chosenInputField}
 		chosenDefault={[]}
 		isINPUT_OBJECT={typeInfo?.isINPUT_OBJECT}
-		rawValue={typeInfo?.chd_rawValue}
+		{rawValue}
 		on:changed
 		id={typeInfo.stepsOfFields}
 		title="choose"

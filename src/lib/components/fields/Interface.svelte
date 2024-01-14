@@ -74,9 +74,9 @@
 	<svelte:component
 		this={componentToRender}
 		{typeInfo}
-		displayInterface={typeExtraData.displayInterface}
 		{rawValue}
 		{dispatchValue}
+		displayInterface={typeExtraData.displayInterface}
 		on:changed={(e) => {
 			onChangeHandler(e);
 		}}

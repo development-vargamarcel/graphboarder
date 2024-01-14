@@ -36,9 +36,9 @@
 		}
 
 		dispatch('changed', {
-			chd_rawValue: rawValue,
-			chd_dispatchValue:
-				displayInterface == 'number' ? rawValue : string_transformer(rawValue, false)
+			chd_rawValue: rawValue
+			// chd_dispatchValue:
+			// 	displayInterface == 'number' ? rawValue : string_transformer(rawValue, false)
 		}); //chd_ == chosen data sdasd ss
 	}}
 />

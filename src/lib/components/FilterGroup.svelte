@@ -44,8 +44,8 @@
 			chosen = detail.chosen;
 			//console.log('changed', { detail });
 			const dispatchObject = {
-				chd_dispatchValue: chosen,
-				//chd_rawValue: chosen,
+				// chd_dispatchValue: chosen,
+				chd_rawValue: chosen,
 				isINPUT_OBJECT,
 				chosenInputField
 			};

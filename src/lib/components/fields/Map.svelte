@@ -95,7 +95,7 @@
 				zoom: map.transform._zoom
 			};
 			dispatch('changed', {
-				chd_dispatchValue: geojson_transformer(dataCopy),
+				// chd_dispatchValue: geojson_transformer(dataCopy),
 				chd_rawValue: dataCopy
 			});
 		}
