@@ -27,9 +27,23 @@ export const number_transformer = (value) => {
 	//value * 1 removes leadin zeros: 0001 becomes 1, 0001.5 becomes 1.5
 	return value * 1;
 };
+
 export const ISO8601_transformer = (value) => {
 	let date_ISO8601 = new Date(value).toISOString();
 	return string_transformer(date_ISO8601);
+};
+export const ISO8601_transformerREVERSE = (value) => {
+	// Convert ISO 8601 string to Date object
+	const dateObject = new Date(string_transformerREVERSE(value, true));
+	// Extract individual components
+	const year = dateObject.getFullYear().toString().padStart(4, '0');
+	const preMonth = dateObject.getMonth() + 1; // Months are zero-indexed
+	const month = preMonth.toString().padStart(2, '0');
+	const day = dateObject.getDate().toString().padStart(2, '0');
+	const hour = dateObject.getHours().toString().padStart(2, '0');
+	const minute = dateObject.getMinutes().toString().padStart(2, '0');
+	//const second = dateObject.getSeconds().toString().padStart(2, '0');
+	return `${year}-${month}-${day}T${hour}:${minute}`
 };
 export const geojson_transformer = (value) => {
 	const featuresLength = value.features.length;

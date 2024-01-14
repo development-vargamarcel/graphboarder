@@ -4,7 +4,10 @@ import {
 	ISO8601_transformer,
 	stringContainingQuotes_transformer,
 	string_transformer,
-	number_transformer
+	number_transformer,
+	string_transformerREVERSE,
+	geojson_transformerREVERSE,
+	ISO8601_transformerREVERSE
 } from '$lib/utils/dataStructureTransformers';
 import { writable, get } from 'svelte/store';
 import { getFields_Grouped, getRootType } from '$lib/utils/usefulFunctions';
@@ -105,7 +108,7 @@ export const endpointInfoDefaultValues = {
 		},
 		{
 			get_Val: () => {
-				return { displayInterface: 'text', defaultValue: 'please enter some text (this is default value)', use_transformerREVERSE: (val) => { return val }, use_transformer: string_transformer };
+				return { displayInterface: 'text', defaultValue: 'please enter some text (this is default value)', use_transformerREVERSE: string_transformerREVERSE, use_transformer: string_transformer };
 			},
 			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {
@@ -117,7 +120,7 @@ export const endpointInfoDefaultValues = {
 		},
 		{
 			get_Val: () => {
-				return { displayInterface: 'datetime-local', use_transformerREVERSE: (val) => { return val }, use_transformer: ISO8601_transformer };
+				return { displayInterface: 'datetime-local', use_transformerREVERSE: ISO8601_transformerREVERSE, use_transformer: ISO8601_transformer };
 			},
 			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {
@@ -148,7 +151,7 @@ export const endpointInfoDefaultValues = {
 		},
 		{
 			get_Val: () => {
-				return { displayInterface: 'geo', defaultValue: undefined, use_transformerREVERSE: (val) => { return val }, use_transformer: geojson_transformer };
+				return { displayInterface: 'geo', defaultValue: undefined, use_transformerREVERSE: geojson_transformerREVERSE, use_transformer: geojson_transformer };
 			},
 			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {
