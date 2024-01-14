@@ -13,6 +13,7 @@
 		})}
 		chosen={typeInfo?.chd_dispatchValue}
 		chosenInputField={typeInfo?.chosenInputField}
+		chosenDefault={[]}
 		isINPUT_OBJECT={typeInfo?.isINPUT_OBJECT}
 		rawValue={typeInfo?.chd_rawValue}
 		on:changed
