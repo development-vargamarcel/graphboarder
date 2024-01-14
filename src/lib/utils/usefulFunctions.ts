@@ -655,7 +655,7 @@ export const generate_gqlArgObj = (group_argumentsData) => {
 		stepsOfFields.forEach((step, index) => {
 			let isLast = index == stepsOfFields.length - 1;
 			if (isLast) {
-				if (chd_dispatchValue) {
+				if (chd_dispatchValue != undefined) {
 					if (!curr_gqlArgObj?.[step]) {
 						curr_gqlArgObj[step] = chd_dispatchValue;
 					}
