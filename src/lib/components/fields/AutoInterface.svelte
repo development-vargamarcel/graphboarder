@@ -6,13 +6,14 @@
 	export let alwaysOn_interfacePicker;
 	$: rawValue = typeInfo?.chd_rawValue;
 	$: dispatchValue = typeInfo?.chd_dispatchValue;
+	$: displayInterface = typeInfo?.displayInterface;
 </script>
 
 {#if typeInfo.dd_kindList && typeInfo.dd_displayInterface != 'ENUM'}
 	<InterfaceList
 		{alwaysOn_interfacePicker}
 		{typeInfo}
-		dd_displayInterface={typeInfo.dd_displayInterface}
+		{displayInterface}
 		{rawValue}
 		{dispatchValue}
 		on:changed
@@ -21,7 +22,7 @@
 	<Interface
 		{alwaysOn_interfacePicker}
 		{typeInfo}
-		dd_displayInterface={typeInfo.dd_displayInterface}
+		{displayInterface}
 		{rawValue}
 		{dispatchValue}
 		on:changed

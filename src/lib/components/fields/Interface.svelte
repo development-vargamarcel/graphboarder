@@ -19,17 +19,17 @@
 	let typeExtraData = endpointInfo.get_typeExtraData(typeInfo);
 	export let dispatchValue;
 	export let rawValue = typeExtraData?.defaultValue;
-	let displayInterface = typeExtraData.displayInterface;
+	export let displayInterface = typeExtraData.displayInterface;
 
 	$: if (choosenDisplayInteface) {
 		typeExtraData = endpointInfo.get_typeExtraData(typeInfo, choosenDisplayInteface);
 		typeInfo.choosenDisplayInteface = choosenDisplayInteface;
 		typeInfo.dd_displayInterface = choosenDisplayInteface;
+		displayInterface = choosenDisplayInteface;
 		typeExtraData = endpointInfo.get_typeExtraData(typeInfo);
 		if (typeof rawValue == undefined) {
 			rawValue = typeExtraData.defaultValue;
 		}
-		displayInterface = choosenDisplayInteface;
 	}
 	let componentToRender = Input;
 	$: {
