@@ -174,7 +174,7 @@ export const endpointInfoDefaultValues = {
 			}
 		}, {
 			get_Val: () => {
-				return { displayInterface: 'ENUM', defaultValue: null, use_transformerREVERSE: (val) => { return val }, use_transformer: (val) => { return val } };
+				return { displayInterface: 'ENUM', defaultValue: [], use_transformerREVERSE: (val) => { return val }, use_transformer: (val) => { return val } };
 			},
 			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {

@@ -15,20 +15,21 @@
 	const dispatch = createEventDispatcher();
 	export let typeInfo;
 	export let alwaysOn_interfacePicker = false;
-	let choosenDisplayInteface = typeInfo?.choosenDisplayInteface || null;
+	const choosenDisplayInteface = getContext('choosenDisplayInteface');
+
 	let typeExtraData = endpointInfo.get_typeExtraData(typeInfo);
 	export let dispatchValue;
 	export let rawValue = typeExtraData?.defaultValue;
 	export let displayInterface = typeExtraData.displayInterface;
 
-	$: if (choosenDisplayInteface) {
-		typeExtraData = endpointInfo.get_typeExtraData(typeInfo, choosenDisplayInteface);
-		typeInfo.choosenDisplayInteface = choosenDisplayInteface;
-		typeInfo.dd_displayInterface = choosenDisplayInteface;
-		displayInterface = choosenDisplayInteface;
-		typeExtraData = endpointInfo.get_typeExtraData(typeInfo);
+	$: if ($choosenDisplayInteface) {
+		typeExtraData = endpointInfo.get_typeExtraData(typeInfo, $choosenDisplayInteface);
+		displayInterface = $choosenDisplayInteface;
 		if (typeof rawValue == undefined) {
 			rawValue = typeExtraData.defaultValue;
+		}
+		if (typeof dispatchValue == undefined) {
+			dispatchValue = typeExtraData.use_transformer(typeExtraData.defaultValue);
 		}
 	}
 	let componentToRender = Input;
@@ -57,7 +58,6 @@
 		if (detail.chd_rawValue != undefined) {
 			detail.chd_dispatchValue = typeExtraData.use_transformer(detail.chd_rawValue);
 		}
-		detail.choosenDisplayInteface = choosenDisplayInteface;
 		dispatch('changed', detail);
 	};
 </script>
@@ -65,7 +65,7 @@
 {#if alwaysOn_interfacePicker || !componentToRender}
 	<InterfacePicker
 		on:interfaceChosen={(e) => {
-			choosenDisplayInteface = e.detail.chosen;
+			$choosenDisplayInteface = e.detail.chosen;
 		}}
 	/>
 {/if}
@@ -76,7 +76,7 @@
 		{typeInfo}
 		{rawValue}
 		{dispatchValue}
-		displayInterface={typeExtraData.displayInterface}
+		{displayInterface}
 		on:changed={(e) => {
 			onChangeHandler(e);
 		}}

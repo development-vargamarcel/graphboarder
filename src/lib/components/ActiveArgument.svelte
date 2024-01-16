@@ -1,7 +1,8 @@
 <script>
+	import { writable } from 'svelte/store';
 	import AutoInterface from '$lib/components/fields/AutoInterface.svelte';
 	import { SHADOW_ITEM_MARKER_PROPERTY_NAME } from 'svelte-dnd-action';
-	import { createEventDispatcher, getContext } from 'svelte';
+	import { createEventDispatcher, getContext, setContext } from 'svelte';
 	export let setNotInUseIfNotValid = true;
 	export let setNotInUseIfNotValidAndENUM = true;
 
@@ -12,6 +13,7 @@
 	import { argumentCanRunQuery } from '$lib/utils/usefulFunctions';
 	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
 	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
+	setContext('choosenDisplayInteface', writable());
 	export let isNot;
 	let dispatch = createEventDispatcher();
 	export let activeArgumentData;
