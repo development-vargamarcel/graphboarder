@@ -13,12 +13,12 @@
 	import { argumentCanRunQuery } from '$lib/utils/usefulFunctions';
 	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
 	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
-	setContext('choosenDisplayInteface', writable());
 	export let isNot;
 	let dispatch = createEventDispatcher();
 	export let activeArgumentData;
 	export let group;
 	export let activeArgumentsDataGrouped;
+	setContext('choosenDisplayInteface', writable(activeArgumentData.dd_displayInterface));
 	let showDescription = false;
 	let labelEl;
 	let shadowEl;

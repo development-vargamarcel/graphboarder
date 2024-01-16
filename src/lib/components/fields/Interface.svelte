@@ -64,6 +64,7 @@
 
 {#if alwaysOn_interfacePicker || !componentToRender}
 	<InterfacePicker
+		chosen={$choosenDisplayInteface}
 		on:interfaceChosen={(e) => {
 			$choosenDisplayInteface = e.detail.chosen;
 		}}

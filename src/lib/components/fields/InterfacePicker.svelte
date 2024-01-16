@@ -3,6 +3,7 @@
 	import FilterItem from '$lib/components/FilterItem.svelte';
 	const dispatch = createEventDispatcher();
 	export let prefix = '';
+	export let chosen;
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const possible_displayInterfaces = $endpointInfo.typesExtraDataPossibilities.map(
@@ -17,6 +18,7 @@
 	choises={possible_displayInterfaces.filter((displayInterface) => {
 		return displayInterface;
 	})}
+	{chosen}
 	on:filterApplied={(e) => {
 		dispatch('interfaceChosen', { chosen: e.detail.chosen });
 		console.log(e.detail);
