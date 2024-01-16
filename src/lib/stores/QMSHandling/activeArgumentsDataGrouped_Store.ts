@@ -263,7 +263,6 @@ export const generateContainerData = (stepsOfFields, type, extraData = {}) => {
 
 export const generateArgData = (stepsOfFields, type, schemaData, extraData = {}) => {
 	const dd_displayName = type.dd_displayName;
-	const dd_displayInterface = type.dd_displayInterface;
 
 	const RootType = getRootType(null, type.dd_rootName, schemaData);
 	const inputFields = RootType?.inputFields;

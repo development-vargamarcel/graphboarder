@@ -1,7 +1,7 @@
 <script>
 	import ENUMInterface from './ENUMInterface.svelte';
 	//TODO: !!!
-	//When choosenDisplayInteface =="ENUM",nothing happens.Handle enum like all other interfaces to solve this.
+	//When choosenDisplayInterface =="ENUM",nothing happens.Handle enum like all other interfaces to solve this.
 
 	import Input from '$lib/components/fields/Input.svelte';
 	import Map from '$lib/components/fields/Map.svelte';
@@ -15,16 +15,14 @@
 	const dispatch = createEventDispatcher();
 	export let typeInfo;
 	export let alwaysOn_interfacePicker = false;
-	const choosenDisplayInteface = getContext('choosenDisplayInteface');
+	const choosenDisplayInterface = getContext('choosenDisplayInterface');
 
 	let typeExtraData = endpointInfo.get_typeExtraData(typeInfo);
 	export let dispatchValue;
 	export let rawValue = typeExtraData?.defaultValue;
-	export let displayInterface = typeExtraData.displayInterface;
 
-	$: if ($choosenDisplayInteface) {
-		typeExtraData = endpointInfo.get_typeExtraData(typeInfo, $choosenDisplayInteface);
-		displayInterface = $choosenDisplayInteface;
+	$: if ($choosenDisplayInterface) {
+		typeExtraData = endpointInfo.get_typeExtraData(typeInfo, $choosenDisplayInterface);
 		if (typeof rawValue == undefined) {
 			rawValue = typeExtraData.defaultValue;
 		}
@@ -34,22 +32,22 @@
 	}
 	let componentToRender = Input;
 	$: {
-		if (['text', 'number', 'date', 'datetime-local'].includes(displayInterface)) {
+		if (['text', 'number', 'date', 'datetime-local'].includes($choosenDisplayInterface)) {
 			componentToRender = Input;
 		}
-		if (['geo'].includes(displayInterface)) {
+		if (['geo'].includes($choosenDisplayInterface)) {
 			componentToRender = Map;
 		}
-		if (['boolean'].includes(displayInterface)) {
+		if (['boolean'].includes($choosenDisplayInterface)) {
 			componentToRender = Toggle;
 		}
-		if (['ENUM'].includes(displayInterface)) {
+		if (['ENUM'].includes($choosenDisplayInterface)) {
 			componentToRender = ENUMInterface;
 		}
-		if (['codeeditor'].includes(displayInterface)) {
+		if (['codeeditor'].includes($choosenDisplayInterface)) {
 			componentToRender = CodeEditor;
 		}
-		if (!displayInterface) {
+		if (!$choosenDisplayInterface) {
 			componentToRender = null;
 		}
 	}
@@ -64,9 +62,9 @@
 
 {#if alwaysOn_interfacePicker || !componentToRender}
 	<InterfacePicker
-		chosen={$choosenDisplayInteface}
+		chosen={$choosenDisplayInterface}
 		on:interfaceChosen={(e) => {
-			$choosenDisplayInteface = e.detail.chosen;
+			$choosenDisplayInterface = e.detail.chosen;
 		}}
 	/>
 {/if}
@@ -77,7 +75,7 @@
 		{typeInfo}
 		{rawValue}
 		{dispatchValue}
-		{displayInterface}
+		displayInterface={$choosenDisplayInterface}
 		on:changed={(e) => {
 			onChangeHandler(e);
 		}}

@@ -276,17 +276,17 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 
 			return null;
 		},
-		get_typeExtraData: (typeInfo, choosenDisplayInteface) => {
+		get_typeExtraData: (typeInfo, choosenDisplayInterface) => {
 			//!!!maybe is a good approach to make available  entire typeInfo (QMS_info) to 'check' and 'get_Val'
 			const storeVal = get(store);
 			if (!storeVal || !storeVal?.typesExtraDataPossibilities?.length > 0) {
 				return null;
 			}
 			let typesExtraDataPossibility
-			if (choosenDisplayInteface) {
+			if (choosenDisplayInterface) {
 				typesExtraDataPossibility = storeVal.typesExtraDataPossibilities
 					.find((possibility) => {
-						return possibility.get_Val().displayInterface == choosenDisplayInteface;
+						return possibility.get_Val().displayInterface == choosenDisplayInterface;
 					})
 			} else {
 				typesExtraDataPossibility = storeVal.typesExtraDataPossibilities.find(
