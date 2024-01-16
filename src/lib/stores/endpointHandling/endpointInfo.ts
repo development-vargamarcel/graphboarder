@@ -7,7 +7,8 @@ import {
 	number_transformer,
 	string_transformerREVERSE,
 	geojson_transformerREVERSE,
-	ISO8601_transformerREVERSE
+	ISO8601_transformerREVERSE,
+	ISO8601_transformerGETDEFAULTVAl
 } from '$lib/utils/dataStructureTransformers';
 import { writable, get } from 'svelte/store';
 import { getFields_Grouped, getRootType } from '$lib/utils/usefulFunctions';
@@ -120,7 +121,7 @@ export const endpointInfoDefaultValues = {
 		},
 		{
 			get_Val: () => {
-				return { displayInterface: 'datetime-local', defaultValue: ISO8601_transformerREVERSE(string_transformer(new Date().toISOString())), use_transformerREVERSE: ISO8601_transformerREVERSE, use_transformer: ISO8601_transformer };
+				return { displayInterface: 'datetime-local', defaultValue: ISO8601_transformerGETDEFAULTVAl(), use_transformerREVERSE: ISO8601_transformerREVERSE, use_transformer: ISO8601_transformer };
 			},
 			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {

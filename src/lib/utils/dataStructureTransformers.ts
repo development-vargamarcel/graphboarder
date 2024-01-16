@@ -27,7 +27,9 @@ export const number_transformer = (value) => {
 	//value * 1 removes leadin zeros: 0001 becomes 1, 0001.5 becomes 1.5
 	return value * 1;
 };
-
+export const ISO8601_transformerGETDEFAULTVAl = () => {
+	return ISO8601_transformerREVERSE(string_transformer(new Date().toISOString()))
+};
 export const ISO8601_transformer = (value) => {
 	let date_ISO8601 = new Date(value).toISOString();
 	return string_transformer(date_ISO8601);
