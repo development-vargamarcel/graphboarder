@@ -17,6 +17,8 @@
 
 	let groupArgsPossibilities = group.group_isRoot ? rootArgs : group.dd_relatedRoot.inputFields;
 	let predefinedFirstSteps = group.group_isRoot ? [] : [group.group_name];
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 </script>
 
 <div class="bg-base-100  rounded-box">
@@ -64,7 +66,12 @@
 								groupName={group.group_name}
 								on:argAddRequest={(e) => {
 									let newArgData = e.detail;
-									activeArgumentsDataGrouped_Store.add_activeArgument(newArgData, group.group_name);
+									activeArgumentsDataGrouped_Store.add_activeArgument(
+										newArgData,
+										group.group_name,
+										undefined,
+										endpointInfo
+									);
 								}}
 							/>
 						{/each}

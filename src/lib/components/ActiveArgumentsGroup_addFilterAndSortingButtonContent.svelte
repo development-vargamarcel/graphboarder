@@ -37,6 +37,7 @@
 	});
 	console.log({ groupArgsPossibilities });
 	let predefinedFirstSteps = group.group_isRoot ? [] : [group.group_name];
+	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 </script>
 
 <div
@@ -141,7 +142,8 @@
 					activeArgumentsDataGrouped_Store.add_activeArgument(
 						newArgData,
 						group.group_name,
-						node?.id
+						node?.id,
+						endpointInfo
 					);
 				}}
 				on:containerAddRequest={(e) => {

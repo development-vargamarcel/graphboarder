@@ -13,7 +13,7 @@ export const Create_activeArgumentsDataGrouped_Store = (
 		subscribe,
 		set,
 		update,
-		set_groups: (QMS_info, schemaData, QMSarguments) => {
+		set_groups: (QMS_info, schemaData, QMSarguments, endpointInfo) => {
 			const argsInfo = QMS_info?.args;
 			console.log({ argsInfo });
 			//handle generating activeArgumentsDataGrouped
@@ -100,10 +100,10 @@ export const Create_activeArgumentsDataGrouped_Store = (
 			//Handle QMSarguments data if present
 			console.log({ QMSarguments });
 			if (QMSarguments) {
-				gqlArgObjToActiveArgumentsDataGrouped(QMSarguments, activeArgumentsDataGrouped, schemaData);
+				gqlArgObjToActiveArgumentsDataGrouped(QMSarguments, activeArgumentsDataGrouped, schemaData, endpointInfo);
 			}
 
-			addAllRootArgs(activeArgumentsDataGrouped, schemaData);
+			addAllRootArgs(activeArgumentsDataGrouped, schemaData, endpointInfo);
 			set(activeArgumentsDataGrouped);
 		},
 		update_groups: (groupNewData) => {
@@ -291,7 +291,7 @@ export const generateArgData = (stepsOfFields, type, schemaData, extraData = {})
 	};
 };
 
-const addAllRootArgs = (activeArgumentsDataGrouped, schemaData) => {
+const addAllRootArgs = (activeArgumentsDataGrouped, schemaData, endpointInfo) => {
 	const group = activeArgumentsDataGrouped.find((group) => {
 		return group.group_name == 'root';
 	});
@@ -311,11 +311,11 @@ const addAllRootArgs = (activeArgumentsDataGrouped, schemaData) => {
 			argData,
 			groupName,
 			null,
-			activeArgumentsDataGrouped
+			activeArgumentsDataGrouped, endpointInfo
 		);
 	});
 };
-const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGrouped, schemaData) => {
+const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGrouped, schemaData, endpointInfo) => {
 	const getGroupGqlArgObj = (object, rootGroupGqlArgObj, group) => {
 		if (!group.group_isRoot) {
 			return object?.[group.group_name];
@@ -368,7 +368,7 @@ const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGroupe
 					argData,
 					groupName,
 					null,
-					activeArgumentsDataGrouped
+					activeArgumentsDataGrouped, endpointInfo
 				);
 			});
 		} else {
