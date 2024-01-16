@@ -145,7 +145,14 @@
 	}
 
 	if (node?.addDefaultFields || (node.isMain && addDefaultFields)) {
-		nodeAddDefaultFields(node, prefix, group, activeArgumentsDataGrouped_Store, schemaData);
+		nodeAddDefaultFields(
+			node,
+			prefix,
+			group,
+			activeArgumentsDataGrouped_Store,
+			schemaData,
+			endpointInfo
+		);
 	}
 	let showSelectModal = false;
 	const getFieldName = () => {
@@ -291,7 +298,14 @@
 				<btn
 					class="btn btn-xs btn-info normal-case  mb-6 flex-1"
 					on:click={() => {
-						nodeAddDefaultFields(node, prefix, group, activeArgumentsDataGrouped_Store, schemaData);
+						nodeAddDefaultFields(
+							node,
+							prefix,
+							group,
+							activeArgumentsDataGrouped_Store,
+							schemaData,
+							endpointInfo
+						);
 					}}
 				>
 					addDefaultFields
@@ -326,7 +340,8 @@
 								prefix,
 								group,
 								activeArgumentsDataGrouped_Store,
-								schemaData
+								schemaData,
+								endpointInfo
 							);
 						}}
 					>

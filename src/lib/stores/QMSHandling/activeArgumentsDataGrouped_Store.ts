@@ -189,13 +189,13 @@ export const Create_activeArgumentsDataGrouped_Store = (
 					return arg.stepsOfFieldsStringified == JSON.stringify(stepsOfFields);
 				});
 		},
-		add_activeArgument: (newArgumentOrContainerData, groupName, parentContainerId) => {
+		add_activeArgument: (newArgumentOrContainerData, groupName, parentContainerId, endpointInfo) => {
 			update((activeArgumentsDataGrouped) => {
 				return add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(
 					newArgumentOrContainerData,
 					groupName,
 					parentContainerId,
-					activeArgumentsDataGrouped
+					activeArgumentsDataGrouped, endpointInfo
 				);
 			});
 		}
@@ -205,7 +205,7 @@ export const add_activeArgumentOrContainerTo_activeArgumentsDataGrouped = (
 	newArgumentOrContainerData,
 	groupName,
 	parentContainerId,
-	activeArgumentsDataGrouped
+	activeArgumentsDataGrouped, endpointInfo
 ) => {
 	let group = activeArgumentsDataGrouped?.filter((group) => {
 		return group.group_name == groupName;
@@ -214,6 +214,15 @@ export const add_activeArgumentOrContainerTo_activeArgumentsDataGrouped = (
 		return arg.id == newArgumentOrContainerData.id;
 	});
 
+	if (endpointInfo) {
+		let typeExtraData = endpointInfo.get_typeExtraData(newArgumentOrContainerData);
+		if (typeExtraData && typeExtraData.defaultValue != undefined) {
+			newArgumentOrContainerData.chd_rawValue = typeExtraData.defaultValue
+			newArgumentOrContainerData.chd_dispatchValue = typeExtraData.use_transformer(typeExtraData.defaultValue);
+			const gqlArgObj = generate_gqlArgObj([newArgumentOrContainerData])
+			newArgumentOrContainerData = _.merge({}, newArgumentOrContainerData, gqlArgObj)
+		}
+	}
 	{
 		if (group.group_argsNode) {
 			//to prevent --> Uncaught TypeError: Converting circular structure to JSON
@@ -362,6 +371,8 @@ const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGroupe
 					activeArgumentsDataGrouped
 				);
 			});
+		} else {
+			//
 		}
 		console.log({ groupName, group_isRoot, groupGqlArgObj, groupOriginType });
 	});

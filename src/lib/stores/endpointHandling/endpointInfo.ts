@@ -120,7 +120,7 @@ export const endpointInfoDefaultValues = {
 		},
 		{
 			get_Val: () => {
-				return { displayInterface: 'datetime-local', use_transformerREVERSE: ISO8601_transformerREVERSE, use_transformer: ISO8601_transformer };
+				return { displayInterface: 'datetime-local', defaultValue: ISO8601_transformerREVERSE(string_transformer(new Date().toISOString())), use_transformerREVERSE: ISO8601_transformerREVERSE, use_transformer: ISO8601_transformer };
 			},
 			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {

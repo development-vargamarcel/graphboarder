@@ -10,7 +10,7 @@
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Modal from './Modal.svelte';
 	import { string_transformerREVERSE } from '$lib/utils/dataStructureTransformers';
-	import { argumentCanRunQuery } from '$lib/utils/usefulFunctions';
+	import { argumentCanRunQuery, getPreciseType } from '$lib/utils/usefulFunctions';
 	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
 	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
 	export let isNot;
@@ -51,6 +51,9 @@
 	console.log({ activeArgumentData });
 	let get_valueToDisplay = () => {
 		let value;
+		if (getPreciseType(activeArgumentData.chd_dispatchValue) == 'number') {
+			value = activeArgumentData.chd_dispatchValue;
+		}
 		if (activeArgumentData.dd_displayInterface == 'ENUM') {
 			let chd_dispatchValue = activeArgumentData.chd_dispatchValue;
 			value = chd_dispatchValue?.length > 0 ? chd_dispatchValue : undefined;

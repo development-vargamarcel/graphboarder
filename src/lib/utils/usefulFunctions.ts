@@ -644,7 +644,12 @@ export const generate_gqlArgObj = (group_argumentsData) => {
 	let canRunQuery = true;
 	group_argumentsData.every((argData) => {
 		let _argumentCanRunQuery = argumentCanRunQuery(argData)
-		if (!(argData.inUse && _argumentCanRunQuery)) {
+		// if (!(argData.inUse && _argumentCanRunQuery)) {
+		// 	canRunQuery = false
+		// 	return false
+		// }
+
+		if (!_argumentCanRunQuery) {
 			canRunQuery = false
 			return false
 		}
@@ -1134,7 +1139,7 @@ export const sortingFunctionMutipleColumnsGivenArray = (array) => {
 
 export const nodeAddDefaultFields = (node,
 	prefix = '',
-	group, activeArgumentsDataGrouped_Store, schemaData) => {
+	group, activeArgumentsDataGrouped_Store, schemaData, endpointInfo) => {
 
 
 
@@ -1180,7 +1185,7 @@ export const nodeAddDefaultFields = (node,
 			id: `${JSON.stringify(stepsOfFields)}${Math.random()}`,
 			...element
 		};
-		activeArgumentsDataGrouped_Store.add_activeArgument(newArgData, group.group_name, node?.id);
+		activeArgumentsDataGrouped_Store.add_activeArgument(newArgData, group.group_name, node?.id, endpointInfo);
 	});
 
 	let baseFilterOperators = ['_and', '_or', '_not']; //!!!this might create problem if there is some nonBase operator with the same name as one of these
