@@ -23,6 +23,7 @@
 
 	$: if ($choosenDisplayInterface) {
 		typeExtraData = endpointInfo.get_typeExtraData(typeInfo, $choosenDisplayInterface);
+		typeInfo.chosenDisplayInterface = $choosenDisplayInterface;
 		if (typeof rawValue == undefined) {
 			rawValue = typeExtraData.defaultValue;
 		}

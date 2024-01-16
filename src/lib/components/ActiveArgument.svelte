@@ -18,7 +18,10 @@
 	export let activeArgumentData;
 	export let group;
 	export let activeArgumentsDataGrouped;
-	setContext('choosenDisplayInterface', writable(activeArgumentData.dd_displayInterface));
+	setContext(
+		'choosenDisplayInterface',
+		writable(activeArgumentData.chosenDisplayInterface || activeArgumentData.dd_displayInterface)
+	);
 	let showDescription = false;
 	let labelEl;
 	let shadowEl;
