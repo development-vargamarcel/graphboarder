@@ -368,11 +368,6 @@ const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGroupe
 					chd_dispatchValue: groupGqlArgObj[argName],
 					inUse: true
 				});
-				const gqlArgObj = generate_gqlArgObj([argData])
-				argData = _.merge({}, argData, gqlArgObj)
-				console.log({ argData });
-
-
 
 				add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(
 					argData,
