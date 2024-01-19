@@ -1,4 +1,6 @@
 import { getPreciseType } from "./usefulFunctions";
+
+//In the future use terms like processString_transformer and unprocessString_transformer,and also use chd_processedValue and chd_unprocessedValue instead of chd_rawValue and chd_dispatchValue
 export const stringToQMSString_transformer = (value) => {
 	//the input value is the result of a stringified QMS object, so we need to parse it
 	if (getPreciseType(value) !== 'string') {
