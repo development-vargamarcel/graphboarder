@@ -216,12 +216,22 @@ export const add_activeArgumentOrContainerTo_activeArgumentsDataGrouped = (
 
 	if (endpointInfo) {
 		let typeExtraData = endpointInfo.get_typeExtraData(newArgumentOrContainerData);
-		if (typeExtraData && typeExtraData.defaultValue != undefined) {
-			newArgumentOrContainerData.chd_rawValue = typeExtraData.defaultValue
-			newArgumentOrContainerData.chd_dispatchValue = typeExtraData.use_transformer(typeExtraData.defaultValue);
+		if (typeExtraData) {
 			const gqlArgObj = generate_gqlArgObj([newArgumentOrContainerData])
 			newArgumentOrContainerData = _.merge({}, newArgumentOrContainerData, gqlArgObj)
+
+			if (typeExtraData.defaultValue != undefined) {
+				if (newArgumentOrContainerData.chd_rawValue == undefined) {
+					newArgumentOrContainerData.chd_rawValue = typeExtraData.defaultValue
+				}
+				if (newArgumentOrContainerData.chd_dispatchValue == undefined) {
+					newArgumentOrContainerData.chd_dispatchValue = typeExtraData.use_transformer(typeExtraData.defaultValue);
+
+				}
+			}
 		}
+
+
 	}
 	{
 		if (group.group_argsNode) {
@@ -345,12 +355,12 @@ const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGroupe
 		if (!groupGqlArgObj) {
 			return;
 		}
+
+		const groupArgNames = Object.keys(groupGqlArgObj);
 		//Do the magic here:
 		if (group_isRoot) {
 			//this block should work correctly,you will see some errors only because root group is not handled correctly in generating gqlArgObj after ui changes,test it and see,it only handles one argument even if u set multiple.
-			const argNames = Object.keys(groupGqlArgObj);
-			console.log({ argNames });
-			argNames.forEach((argName, i) => {
+			groupArgNames.forEach((argName, i) => {
 				const argType = groupOriginType.args.filter((type) => {
 					return type.dd_displayName == argName;
 				})[0];
@@ -372,9 +382,10 @@ const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGroupe
 				);
 			});
 		} else {
+
 			//
 		}
-		console.log({ groupName, group_isRoot, groupGqlArgObj, groupOriginType });
+		console.log({ groupName, group_isRoot, groupGqlArgObj, groupArgNames, groupOriginType });
 	});
 	return activeArgumentsDataGrouped;
 };
