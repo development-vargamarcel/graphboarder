@@ -2,7 +2,6 @@ import {
 	boolean_transformer,
 	geojson_transformer,
 	ISO8601_transformer,
-	stringContainingQuotes_transformer,
 	string_transformer,
 	number_transformer,
 	string_transformerREVERSE,

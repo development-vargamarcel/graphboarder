@@ -1,14 +1,27 @@
 import { getPreciseType } from "./usefulFunctions";
-
+export const stringToQMSString_transformer = (value) => {
+	//the input value is the result of a stringified QMS object, so we need to parse it
+	if (getPreciseType(value) !== 'string') {
+		console.warn('stringToQMSString_transformer: value is not a string', value)
+		return value
+	}
+	return value
+		.replace(/"/g, '')
+		.replace(/'/g, `"`)
+		.replace(/&Prime;/g, `\\"`)
+		.replace(/&prime;/g, `'`)
+		.replace(/\\/g, '')
+		.slice(1, -1);
+}
 export const string_transformer = (value) => {
-	if (typeof value !== 'string') {
+	if (getPreciseType(value) !== 'string') {
 		console.warn('string_transformer: value is not a string', value)
 		return value
 	}
 	return `'${value.replaceAll(`"`, `&Prime;`).replaceAll(`'`, `&prime;`)}'`;
 };
 export const string_transformerREVERSE = (value, onlyPrimeSymbol) => {
-	if (typeof value !== 'string') {
+	if (getPreciseType(value) !== 'string') {
 		console.warn('string_transformer: value is not a string', value)
 		return value
 	}
@@ -20,7 +33,7 @@ export const string_transformerREVERSE = (value, onlyPrimeSymbol) => {
 };
 
 export const number_transformer = (value) => {
-	if (typeof value !== 'number') {
+	if (getPreciseType(value) !== 'number') {
 		console.warn('number_transformer: value is not a number', value)
 		return value
 	}

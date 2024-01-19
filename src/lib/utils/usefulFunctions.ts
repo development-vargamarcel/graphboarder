@@ -6,7 +6,7 @@ import { get } from 'svelte/store';
 import { page } from '$app/stores';
 import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 import { getContext } from 'svelte';
-import { string_transformer } from './dataStructureTransformers';
+import { stringToQMSString_transformer, string_transformer } from '$lib/utils/dataStructureTransformers';
 
 
 export const findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey = (obj) => {
@@ -73,7 +73,6 @@ export const deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments = (obj) => {
 // 	}
 // 	return obj
 // }
-
 export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query', mergedChildren_finalGqlArgObj) => {
 	if (Object.keys(QMS_fields).length == 0) {
 		console.error('no cols data,choose at least one field');
@@ -107,17 +106,9 @@ export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'q
 	const outsideTextModifier = (text) => {
 		return text.replaceAll(/novaluehere|"|:/gi, '')
 	}
-	const insideModifier = (text) => {
-		return text
-			.replace(/"/g, '')
-			.replace(/'/g, `"`)
-			.replace(/&Prime;/g, `\\"`)
-			.replace(/&prime;/g, `'`)
-			.replace(/\\/g, '')
-			.slice(1, -1);
-	}
 
-	const modifiedString = smartModifyStringBasedOnBoundries(listOfSubstrings.join(''), '(', ')', insideModifier, outsideTextModifier);
+
+	const modifiedString = smartModifyStringBasedOnBoundries(listOfSubstrings.join(''), '(', ')', stringToQMSString_transformer, outsideTextModifier);
 
 	console.log({ modifiedString })
 	const QMS_bodyPart = modifiedString.slice(1, -1)
