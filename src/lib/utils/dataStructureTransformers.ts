@@ -98,10 +98,10 @@ const escapeAllSigngleAndDoubleQuotes = (str) => {
 		return `\\${match}`;
 	});
 }
-export const stringContainingQuotes_transformer = (value) => {
+// export const stringContainingQuotes_transformer = (value) => {
 
-	//const base64 = btoa(value)
-	//const escaped = escapeAllSigngleAndDoubleQuotes(value)
-	const modified = value.replaceAll(`'`, `~%`).replaceAll(`"`, `%~`)
-	return `'${modified}'`;
-};
+// 	//const base64 = btoa(value)
+// 	//const escaped = escapeAllSigngleAndDoubleQuotes(value)
+// 	const modified = value.replaceAll(`'`, `~%`).replaceAll(`"`, `%~`)
+// 	return `'${modified}'`;
+// };
