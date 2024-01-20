@@ -356,15 +356,15 @@ const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGroupe
 			return;
 		}
 
-		const groupArgNames = Object.keys(groupGqlArgObj);
 		//Do the magic here:
 		if (group_isRoot) {
+			const groupArgNames = Object.keys(groupGqlArgObj);
 			//this block should work correctly,you will see some errors only because root group is not handled correctly in generating gqlArgObj after ui changes,test it and see,it only handles one argument even if u set multiple.
 			groupArgNames.forEach((argName, i) => {
 				const argType = groupOriginType.args.filter((type) => {
 					return type.dd_displayName == argName;
 				})[0];
-				let argData = generateArgData([argName], argType, schemaData, {
+				const argData = generateArgData([argName], argType, schemaData, {
 					chd_dispatchValue: groupGqlArgObj[argName],
 					inUse: true
 				});
@@ -380,7 +380,7 @@ const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGroupe
 
 			//
 		}
-		console.log({ groupName, group_isRoot, groupGqlArgObj, groupArgNames, groupOriginType });
+		console.log({ groupName, group_isRoot, groupGqlArgObj, groupOriginType });
 	});
 	return activeArgumentsDataGrouped;
 };
