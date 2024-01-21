@@ -7,10 +7,12 @@
 	export let prefix = '';
 	export let parent_inputFields;
 	export let parent_stepsOfFields;
+	const groupName = group.group_name;
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
 	import { getContext, setContext } from 'svelte';
 	import Arg from '$lib/components/Arg.svelte';
 	import { getRootType } from '$lib/utils/usefulFunctions';
+	import { add_activeArgumentOrContainerTo_activeArgumentsDataGrouped } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
 	let dragDisabled = true;
 	const hasGroup_argsNode = group.group_argsNode;
 	const mainContainerOperator = group.group_argsNode?.mainContainer?.operator;
@@ -49,7 +51,7 @@
 				class="btn btn-primary btn-xs  normal-case font-thin text-base sticky top-0"
 				on:click={() => {
 					let randomNr = Math.random();
-					group.group_argsNode[`${randomNr}`] = {
+					const newContainerData = {
 						parent_node: node,
 						// inputFields: parent_inputFields,
 						// stepsOfFields: parent_stepsOfFields,
@@ -59,15 +61,19 @@
 						isMain: false,
 						items: []
 					};
-					if (node?.items) {
-						node.items.push({ id: randomNr });
-					} else {
-						group.group_argsNode['mainContainer'].items.push({ id: randomNr });
-					}
+					add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(
+						newContainerData,
+						groupName,
+						node?.id,
+						activeArgumentsDataGrouped,
+						endpointInfo,
+						group
+					);
+					group = group;
 				}}
 				on:contextmenu|preventDefault={() => {
 					let randomNr = Math.random();
-					group.group_argsNode[`${randomNr}`] = {
+					const newContainerData = {
 						addDefaultFields: true,
 						parent_node: node,
 						// inputFields: parent_inputFields,
@@ -78,11 +84,15 @@
 						isMain: false,
 						items: []
 					};
-					if (node?.items) {
-						node.items.push({ id: randomNr });
-					} else {
-						group.group_argsNode['mainContainer'].items.push({ id: randomNr });
-					}
+					add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(
+						newContainerData,
+						groupName,
+						node?.id,
+						activeArgumentsDataGrouped,
+						endpointInfo,
+						group
+					);
+					group = group;
 				}}
 			>
 				[item] (bonded)
@@ -92,25 +102,27 @@
 				class="btn btn-primary btn-xs  normal-case font-thin text-base sticky top-0"
 				on:click={() => {
 					let randomNr = Math.random();
-					group.group_argsNode[`${randomNr}`] = {
+					const newContainerData = {
 						id: randomNr,
 						operator: '_or',
 						not: false,
 						isMain: false,
 						items: []
 					};
-
-					if (node?.items) {
-						node.items.push({ id: randomNr });
-					} else {
-						group.group_argsNode['mainContainer'].items.push({ id: randomNr });
-					}
+					add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(
+						newContainerData,
+						groupName,
+						node?.id,
+						activeArgumentsDataGrouped,
+						endpointInfo,
+						group
+					);
+					group = group;
 				}}
 				on:contextmenu|preventDefault={() => {
 					let randomNr = Math.random();
-					group.group_argsNode[`${randomNr}`] = {
+					const newContainerData = {
 						addDefaultFields: true,
-
 						id: randomNr,
 						operator: '_or',
 						not: false,
@@ -118,11 +130,15 @@
 						items: []
 					};
 
-					if (node?.items) {
-						node.items.push({ id: randomNr });
-					} else {
-						group.group_argsNode['mainContainer'].items.push({ id: randomNr });
-					}
+					add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(
+						newContainerData,
+						groupName,
+						node?.id,
+						activeArgumentsDataGrouped,
+						endpointInfo,
+						group
+					);
+					group = group;
 				}}
 			>
 				or / and / bonded
@@ -141,7 +157,7 @@
 					let newArgData = e.detail;
 					activeArgumentsDataGrouped_Store.add_activeArgument(
 						newArgData,
-						group.group_name,
+						groupName,
 						node?.id,
 						endpointInfo
 					);

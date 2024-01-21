@@ -205,16 +205,23 @@ export const add_activeArgumentOrContainerTo_activeArgumentsDataGrouped = (
 	newArgumentOrContainerData,
 	groupName,
 	parentContainerId,
-	activeArgumentsDataGrouped, endpointInfo
+	activeArgumentsDataGrouped, endpointInfo, group
 ) => {
-	let group = activeArgumentsDataGrouped?.filter((group) => {
-		return group.group_name == groupName;
-	})[0];
-	const activeArgumentIndex = group.group_args?.findIndex((arg) => {
-		return arg.id == newArgumentOrContainerData.id;
-	});
-
+	const dataIsForContainer = newArgumentOrContainerData?.items;
+	if (!group) {
+		group = activeArgumentsDataGrouped?.find((currGroup) => {
+			console.log('currGroup', currGroup, currGroup.group_name, groupName, currGroup.group_name == groupName, currGroup.group_name === groupName);
+			return currGroup.group_name == groupName;
+		})
+	}
+	if (!group) {
+		console.warn('group not found', { groupName, newArgumentOrContainerData })
+		return
+	}
 	; (function () {
+		if (dataIsForContainer) {
+			return
+		}
 		if (!endpointInfo) { return }
 		let typeExtraData = endpointInfo.get_typeExtraData(newArgumentOrContainerData);
 		if (!typeExtraData) { return }
