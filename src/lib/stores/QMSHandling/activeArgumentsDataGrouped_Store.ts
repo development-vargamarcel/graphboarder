@@ -378,7 +378,7 @@ const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGroupe
 					argData,
 					groupName,
 					null,
-					activeArgumentsDataGrouped, endpointInfo
+					activeArgumentsDataGrouped, endpointInfo, undefined
 				);
 			});
 		} else {
