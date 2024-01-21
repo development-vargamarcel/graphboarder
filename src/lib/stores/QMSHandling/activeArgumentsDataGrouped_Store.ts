@@ -230,23 +230,6 @@ export const add_activeArgumentOrContainerTo_activeArgumentsDataGrouped = (
 		}
 	})()
 
-	// if (endpointInfo) {
-	// 	let typeExtraData = endpointInfo.get_typeExtraData(newArgumentOrContainerData);
-	// 	if (typeExtraData) {
-	// 		const gqlArgObj = generate_gqlArgObj([newArgumentOrContainerData])
-	// 		newArgumentOrContainerData = _.merge({}, newArgumentOrContainerData, gqlArgObj)
-	// 		if (typeExtraData.defaultValue != undefined) {
-
-	// 			if (newArgumentOrContainerData.chd_rawValue == undefined) {
-	// 				newArgumentOrContainerData.chd_rawValue = typeExtraData.defaultValue
-	// 			}
-	// 			if (newArgumentOrContainerData.chd_dispatchValue == undefined) {
-	// 				newArgumentOrContainerData.chd_dispatchValue = typeExtraData.use_transformer(typeExtraData.defaultValue);
-	// 			}
-	// 		}
-	// 	}
-	// }
-
 
 	{
 		if (group.group_argsNode) {
