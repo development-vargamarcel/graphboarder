@@ -1,4 +1,4 @@
-import { argumentCanRunQuery, generate_gqlArgObj, getRootType } from '$lib/utils/usefulFunctions';
+import { argumentCanRunQuery, generate_gqlArgObj, getPreciseType, getRootType } from '$lib/utils/usefulFunctions';
 import { json } from '@sveltejs/kit';
 import { get, writable } from 'svelte/store';
 import _ from 'lodash';
@@ -208,6 +208,7 @@ export const add_activeArgumentOrContainerTo_activeArgumentsDataGrouped = (
 	activeArgumentsDataGrouped, endpointInfo, group
 ) => {
 	const dataIsForContainer = newArgumentOrContainerData?.items;
+	console.log({ dataIsForContainer, newArgumentOrContainerData })
 	if (!group) {
 		group = activeArgumentsDataGrouped?.find((currGroup) => {
 			console.log('currGroup', currGroup, currGroup.group_name, groupName, currGroup.group_name == groupName, currGroup.group_name === groupName);
@@ -247,9 +248,9 @@ export const add_activeArgumentOrContainerTo_activeArgumentsDataGrouped = (
 			group.group_argsNode[newArgumentOrContainerData.id] = newArgumentOrContainerData;
 
 			if (parentContainerId) {
-				group.group_argsNode[parentContainerId].items.push({ id: newArgumentOrContainerData.id });
+				group.group_argsNode[parentContainerId].items.push(newArgumentOrContainerData);
 			} else {
-				group.group_argsNode.mainContainer.items.push({ id: newArgumentOrContainerData.id });
+				group.group_argsNode.mainContainer.items.push(newArgumentOrContainerData);
 			}
 			group.group_args.push(newArgumentOrContainerData);
 		} else {
@@ -389,3 +390,21 @@ const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGroupe
 	});
 	return activeArgumentsDataGrouped;
 };
+
+const gqlArgObjToActiveArgumentsDataGroupedForHasArgsNode = (gqlArgObj, type, groupName, group, activeArgumentsDataGrouped, schemaData, endpointInfo) => {
+	let group_argsNode
+	const gqlArgObjTypeOf = getPreciseType(gqlArgObj);
+	const isContainer = type.dd_shouldExpand
+		; (function () {//handle containers only
+			if (!isContainer) {
+				return
+			}
+			if (gqlArgObjTypeOf == 'array') {
+
+				gqlArgObj.forEach(element => {
+				});
+
+			}
+
+		})()
+}
