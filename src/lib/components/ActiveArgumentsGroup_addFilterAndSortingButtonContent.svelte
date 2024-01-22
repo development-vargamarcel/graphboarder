@@ -198,8 +198,7 @@
 					if (!operator) {
 						operator = 'bonded';
 					}
-
-					group.group_argsNode[`${randomNr}`] = {
+					newContainerData = {
 						...newContainerData,
 						inputFields: newContainerDataRootType?.inputFields,
 						id: randomNr,
@@ -208,13 +207,15 @@
 						isMain: false,
 						items: []
 					};
-					console.log({ newContainerDataRootType });
-					console.log({ newContainerData });
-					if (node?.items) {
-						node.items.push({ id: randomNr });
-					} else {
-						group.group_argsNode['mainContainer'].items.push({ id: randomNr });
-					}
+					add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(
+						newContainerData,
+						groupName,
+						node?.id,
+						activeArgumentsDataGrouped,
+						endpointInfo,
+						group
+					);
+					group = group;
 				}}
 			/>
 		{/each}
