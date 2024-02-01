@@ -629,26 +629,21 @@ export const generate_derivedData = (type, rootTypes, isQMSField, endpointInfo, 
 	return derivedData;
 };
 
-export const generate_gqlArgObj = (group_argumentsData) => {
+export const generate_gqlArgObj = (group_argumentsData, group_name) => {
 	// check for group if expects list and treat it accordingly like here --->https://stackoverflow.com/questions/69040911/hasura-order-by-date-with-distinct
 	let gqlArgObj = {};
 	let canRunQuery = true;
 	group_argumentsData.every((argData) => {
 		let _argumentCanRunQuery = argumentCanRunQuery(argData)
-		// if (!(argData.inUse && _argumentCanRunQuery)) {
-		// 	canRunQuery = false
-		// 	return false
-		// }
-
 		if (!_argumentCanRunQuery) {
 			canRunQuery = false
 			return false
 		}
-		let { chd_chosen, chd_dispatchValue, stepsOfFields } =
+		let { chd_dispatchValue, stepsOfFields, dd_displayName, groupName } =
 			argData;
 
 		let curr_gqlArgObj = gqlArgObj;
-		stepsOfFields.forEach((step, index) => {
+		[stepsOfFields[0] || groupName || group_name, dd_displayName].forEach((step, index) => {
 			let isLast = index == stepsOfFields.length - 1;
 			if (isLast) {
 				if (chd_dispatchValue != undefined) {
@@ -657,16 +652,10 @@ export const generate_gqlArgObj = (group_argumentsData) => {
 					}
 					curr_gqlArgObj = curr_gqlArgObj[step];
 				} else {
-					if (chd_chosen) {
-						curr_gqlArgObj[step] = chd_chosen;
-					} else {
-						if (!curr_gqlArgObj?.[step]) {
-							curr_gqlArgObj[step] = {};
-						}
-						curr_gqlArgObj = curr_gqlArgObj[step];
-						curr_gqlArgObj[chd_chosen] = chd_dispatchValue !== undefined ? chd_dispatchValue : '';
-						curr_gqlArgObj = curr_gqlArgObj[chd_chosen];
+					if (!curr_gqlArgObj?.[step]) {
+						curr_gqlArgObj[step] = {};
 					}
+					curr_gqlArgObj = curr_gqlArgObj[step];
 				}
 			} else {
 				if (!curr_gqlArgObj?.[step]) {
@@ -760,7 +749,7 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 	let itemsObj = items.map((item) => {
 		let itemData = nodes[item.id];
 		const stepsOfFields = itemData?.stepsOfFields
-
+		console.log('[[[[stepsOfFields', { stepsOfFields })
 
 
 
@@ -777,6 +766,7 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 		}
 		if (operator) {
 			if (stepsOfFields) {
+
 				const stepsOfFieldsLength = stepsOfFields.length
 				const stepsOfFieldsLastEl = stepsOfFields[stepsOfFieldsLength - 1]
 				const stepsOfFieldsAllButFirstEl = [...stepsOfFields].slice(1)
