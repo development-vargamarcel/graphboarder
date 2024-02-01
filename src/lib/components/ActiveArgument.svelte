@@ -106,6 +106,7 @@
 		finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 	};
 	const handleClickOutside = () => {
+		//
 		//console.log('clicked outside');
 		//expandedVersion = false; //!!! this is causing the expanded version to disappear when you click outside of it,but sometimes,is not desirable like when another modal with choises opens up and if you click on anything that upper modal disappears.
 	};
@@ -132,11 +133,12 @@
 		<div class="flex flex-col">
 			<div class="w-full text-lg text-center  mb-2 ">
 				<p class="badge badge-info font-bold">
-					{#if group.group_name == 'root'}
+					<!-- {#if group.group_name == 'root'}
 						{activeArgumentData.stepsOfFields?.join(' > ')}
 					{:else}
 						{activeArgumentData.stepsOfFields?.slice(1)?.join(' > ')}
-					{/if}
+					{/if} -->
+					{activeArgumentData.stepsOfFields[activeArgumentData.stepsOfFields.length - 1]}
 				</p>
 			</div>
 
@@ -261,11 +263,12 @@
 						expandedVersion = !expandedVersion;
 					}}
 				>
-					{#if group.group_name == 'root'}
+					<!-- {#if group.group_name == 'root'}
 						{activeArgumentData.stepsOfFields?.join(' > ') + ':'}
 					{:else}
 						{activeArgumentData.stepsOfFields?.slice(1)?.join(' > ') + ':'}
-					{/if}
+					{/if} -->
+					{activeArgumentData.stepsOfFields[activeArgumentData.stepsOfFields.length - 1]}
 					{#if activeArgumentData.dd_NON_NULL}
 						<sup>
 							<i class="text-primary bi bi-asterisk" />

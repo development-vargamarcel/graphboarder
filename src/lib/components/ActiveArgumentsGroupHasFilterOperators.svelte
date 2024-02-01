@@ -3,6 +3,7 @@
 		formatData,
 		getDataGivenStepsOfFields,
 		getDeepField,
+		getPreciseType,
 		getRootType,
 		hasDeepProperty,
 		passAllObjectValuesThroughStringTransformerAndReturnNewObject
@@ -10,24 +11,81 @@
 	//!!! chnage bonded to item
 	import { flip } from 'svelte/animate';
 	import { dndzone, SHADOW_PLACEHOLDER_ITEM_ID } from 'svelte-dnd-action';
-	import { createEventDispatcher, getContext } from 'svelte';
+	import { createEventDispatcher, getContext, onDestroy, onMount, setContext } from 'svelte';
 	import ActiveArgument from '$lib/components/ActiveArgument.svelte';
 	import ActiveArgumentsGroup_addFilterAndSortingButtonContent from '$lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte';
 	import Modal from './Modal.svelte';
-	import { getFields_Grouped, nodeAddDefaultFields } from '$lib/utils/usefulFunctions';
-	import ComponentForLayout from '../../routes/endpoints/[endpointid]/queries/[queryName]/ComponentForLayout.svelte';
-	import QmsWraper from './QMSWraper.svelte';
+	import { nodeAddDefaultFields } from '$lib/utils/usefulFunctions';
 	import SelectItem from './SelectItem.svelte';
 	import Fuse from 'fuse.js';
 	const dispatch = createEventDispatcher();
 	export let nodes;
+	export let parentNode;
 	export let node;
 	export let availableOperators;
 	export let group;
 	export let type;
 	export let originalNodes;
-	export let parent_inputFields;
-	export let parent_stepsOfFields;
+	let stepsOfNodes = [];
+	let stepsOfFields = [];
+	let stepsOfFieldsFull = [];
+	let testName_stepsOFFieldsWasUpdated = false;
+	const operatorChangeHandler = () => {
+		stepsOfNodes = getUpdatedStepsOfNodes(
+			JSON.parse(JSON.stringify(parentNode?.stepsOfNodes || []))
+		);
+	};
+	const filterElFromArr = (arr, undesiredElements = []) => {
+		return arr.filter((el) => {
+			return !undesiredElements.includes(el);
+		});
+	};
+	const stepsOfNodesToStepsOfFields = (stepsOfNodes) => {
+		//console.log({ stepsOfNodes });
+		const stepsOfFields = stepsOfNodes
+			.filter((step) => {
+				const [not, displayName, operator] = step;
+				return displayName || operator || not;
+			})
+			.map((step) => {
+				const [not, displayName, operator] = step;
+				const stepMod = [];
+				if (not) {
+					stepMod.push(not);
+				}
+				if (displayName) {
+					stepMod.push(displayName);
+				}
+				if (operator && (operator != 'bonded' || (operator == 'bonded' && displayName == null))) {
+					stepMod.push(operator);
+				}
+
+				return stepMod;
+			})
+			.flat(Infinity);
+		return stepsOfFields;
+	};
+	const getUpdatedStepsOfNodes = (stepsOfNodesParent) => {
+		testName_stepsOFFieldsWasUpdated = true;
+		let stepsOfNodesCopy = JSON.parse(JSON.stringify(stepsOfNodesParent));
+		stepsOfNodesCopy.push([node?.not ? '_not' : undefined, node?.dd_displayName, node?.operator]);
+		return stepsOfNodesCopy;
+	};
+
+	if (!testName_stepsOFFieldsWasUpdated) {
+		stepsOfNodes = getUpdatedStepsOfNodes(
+			JSON.parse(JSON.stringify(parentNode?.stepsOfNodes || []))
+		);
+	}
+
+	$: {
+		stepsOfFieldsFull = stepsOfNodesToStepsOfFields(stepsOfNodes);
+		stepsOfFields = filterElFromArr(stepsOfFieldsFull, ['list', 'bonded']);
+		node.stepsOfFieldsFull = stepsOfFieldsFull;
+		node.stepsOfFields = stepsOfFields;
+		node.stepsOfNodes = stepsOfNodes;
+		node.stepsOfFieldsStringified = JSON.stringify(stepsOfFields);
+	}
 	export let addDefaultFields;
 	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
@@ -122,26 +180,30 @@
 	let groupDisplayTitle = '';
 	$: {
 		groupDisplayTitle = '';
-
-		if (node?.stepsOfFields) {
-			groupDisplayTitle = groupDisplayTitle + node?.stepsOfFields.slice(1);
-		} else if (parent_stepsOfFields) {
-			// groupDisplayTitle = groupDisplayTitle + `(${parent_stepsOfFields.slice(1)})`;
-			// //groupDisplayTitle = groupDisplayTitle + `[item]`; //bonded
+		//if (node?.not) {
+		//	groupDisplayTitle = `${groupDisplayTitle}_not `;
+		//}
+		if (node.dd_displayName) {
+			groupDisplayTitle = `${groupDisplayTitle}${node.dd_displayName}`;
 		}
 
 		if (node?.operator != 'bonded') {
 			if (groupDisplayTitle.trim() != '') {
-				groupDisplayTitle = `${groupDisplayTitle},`;
+				groupDisplayTitle = `${groupDisplayTitle} `;
 			}
-			groupDisplayTitle = `${groupDisplayTitle}${node?.operator}`;
+
+			if (node?.operator == 'list') {
+				groupDisplayTitle = `${groupDisplayTitle} (list)`;
+			}
 			if (['_and', '_or'].includes(node?.operator)) {
-				groupDisplayTitle = `${groupDisplayTitle},list`;
+				groupDisplayTitle = `${groupDisplayTitle}${node?.operator} (list)`;
 			}
 		}
-		if (groupDisplayTitle.trim() == '') {
-			groupDisplayTitle = '[item]'; //bonded
+		if (groupDisplayTitle.trim() == '' || getPreciseType(groupDisplayTitle) == 'undefined') {
+			groupDisplayTitle = '(item)'; //bonded
 		}
+		groupDisplayTitle = `${groupDisplayTitle}`;
+		//groupDisplayTitle = stepsOfNodes.join('->') + `(${groupDisplayTitle})`;
 	}
 
 	if (node?.addDefaultFields || (node.isMain && addDefaultFields)) {
@@ -151,20 +213,12 @@
 			group,
 			activeArgumentsDataGrouped_Store,
 			schemaData,
-			endpointInfo
+			endpointInfo,
+			stepsOfFields
 		);
 	}
 	let showSelectModal = false;
-	const getFieldName = () => {
-		return node?.stepsOfFields
-			? node?.stepsOfFields.slice(1)[0]
-			: parent_stepsOfFields?.slice(1)?.[0];
-	};
-	const getArgName = () => {
-		return node?.stepsOfFields ? node?.stepsOfFields[0] : parent_stepsOfFields?.[0];
-	};
-	let fieldName = getFieldName();
-	let argName = getArgName();
+
 	let showAddModal = false;
 	let rowSelectionState = {};
 	const getRowSelectionState = (selectedRowsModel) => {
@@ -181,6 +235,7 @@
 	let selectedRowsModel = {};
 	import ExplorerTable from '$lib/components/ExplorerTable.svelte';
 	import { string_transformer } from '$lib/utils/dataStructureTransformers.ts';
+	import { writable } from 'svelte/store';
 
 	let showExplorerTable = true;
 	const fuse = new Fuse($schemaData.queryFields, {
@@ -304,7 +359,8 @@
 							group,
 							activeArgumentsDataGrouped_Store,
 							schemaData,
-							endpointInfo
+							endpointInfo,
+							stepsOfFields
 						);
 					}}
 				>
@@ -324,6 +380,7 @@
 								on:change|preventDefault|stopPropagation={() => {
 									if (!node?.isMain) {
 										node.not = !node.not;
+										operatorChangeHandler();
 										handleChanged();
 										dispatch('changed');
 									}
@@ -341,7 +398,8 @@
 								group,
 								activeArgumentsDataGrouped_Store,
 								schemaData,
-								endpointInfo
+								endpointInfo,
+								stepsOfFields
 							);
 						}}
 					>
@@ -360,6 +418,7 @@
 									node.operator = '_or';
 								}
 							}
+							operatorChangeHandler();
 							handleChanged();
 							dispatch('changed');
 						}}
@@ -382,8 +441,8 @@
 			{/if}
 			<div>
 				<ActiveArgumentsGroup_addFilterAndSortingButtonContent
-					{parent_inputFields}
-					{parent_stepsOfFields}
+					parent_inputFields={parentNode?.inputFields}
+					parent_stepsOfFields={stepsOfFields}
 					on:updateQuery
 					bind:group
 					bind:argsInfo
@@ -577,7 +636,7 @@
 						? 'text-base-content'
 						: node?.operator == '_and'
 						? 'text-primary'
-						: 'text-accent-focus'} 
+						: 'text-secondary'} 
 						{node?.not ? ' bg-gradient-to-r== from-base-300/100==' : 'bg-error/0'}
 						"
 					style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
@@ -608,7 +667,7 @@
 						? 'text-base-content'
 						: node?.operator == '_and'
 						? 'text-primary'
-						: 'text-accent-focus'} break-all h-max  w-max
+						: 'text-secondary'} break-all h-max  w-max
 						{node?.not ? ' bg-gradient-to-r from-secondary/50' : 'bg-error/0'}
 						"
 					on:click={() => {
@@ -619,6 +678,7 @@
 					}}
 				>
 					{groupDisplayTitle}
+					<!-- <sub>{stepsOfFields.join('->')}</sub> -->
 					{#if node.dd_NON_NULL}
 						<sup>
 							<i class="text-primary bi bi-asterisk" />
@@ -643,7 +703,7 @@
 		? 'border-base-content'
 		: node?.operator == '_and'
 		? 'border-primary'
-		: 'border-accent-focus '}
+		: 'border-secondary '}
 
 
 "
@@ -670,7 +730,7 @@
 					? 'text-base-content'
 					: node?.operator == '_and'
 					? 'text-primary'
-					: 'text-accent-focus'} break-all h-max  w-max
+					: 'text-secondary'} break-all h-max  w-max
 						{node?.not ? ' bg-gradient-to-r from-secondary/50' : 'bg-error/0'}
 						"
 				on:click={() => {
@@ -733,7 +793,7 @@
 						? 'text-base-content'
 						: node?.operator == '_and'
 						? 'text-primary'
-						: 'text-accent-focus'} break-all h-max  w-max"
+						: 'text-secondary'} break-all h-max  w-max"
 					on:click={() => {
 						showModal = true;
 					}}
@@ -795,23 +855,27 @@
 				}) as item (item.id)}
 					<div animate:flip={{ duration: flipDurationMs }} class="    border-2== max-w-min my-1 ">
 						<div class="flex dnd-item">
-							<svelte:self
-								on:deleteSubNode={(e) => {
-									deleteItem(e);
-									//console.log(e.detail.id, node);
-								}}
-								parent_inputFields={node?.inputFields}
-								parent_stepsOfFields={node?.stepsOfFields}
-								{originalNodes}
-								on:updateQuery
-								{type}
-								bind:nodes
-								node={nodes[item.id]}
-								on:changed
-								{availableOperators}
-								on:childrenStartDrag={startDrag}
-								{group}
-							/>
+							{#key stepsOfFields}
+								{#if testName_stepsOFFieldsWasUpdated}
+									<svelte:self
+										on:deleteSubNode={(e) => {
+											deleteItem(e);
+											//
+											//console.log(e.detail.id, node);
+										}}
+										{originalNodes}
+										on:updateQuery
+										{type}
+										bind:nodes
+										node={nodes[item.id]}
+										parentNode={node}
+										on:changed
+										{availableOperators}
+										on:childrenStartDrag={startDrag}
+										{group}
+									/>
+								{/if}
+							{/key}
 						</div>
 					</div>
 				{/each}
