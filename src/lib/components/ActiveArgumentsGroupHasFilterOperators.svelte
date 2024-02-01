@@ -83,6 +83,7 @@
 		stepsOfFields = filterElFromArr(stepsOfFieldsFull, ['list', 'bonded']);
 		node.stepsOfFieldsFull = stepsOfFieldsFull;
 		node.stepsOfFields = stepsOfFields;
+		node.stepsOfFieldsMinimal = filterElFromArr(stepsOfFields, ['_and', '_or', '_not']);
 		node.stepsOfNodes = stepsOfNodes;
 		node.stepsOfFieldsStringified = JSON.stringify(stepsOfFields);
 	}
