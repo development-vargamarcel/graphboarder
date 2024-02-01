@@ -357,8 +357,6 @@
 								} else if (node?.operator == '_and') {
 									node.operator = 'bonded';
 								} else if (node?.operator == 'bonded') {
-									node.operator = 'list';
-								} else {
 									node.operator = '_or';
 								}
 							}

@@ -629,7 +629,7 @@ export const generate_derivedData = (type, rootTypes, isQMSField, endpointInfo, 
 	return derivedData;
 };
 
-export const generate_gqlArgObj = (group_argumentsData, group_name) => {
+export const generate_gqlArgObj = (group_argumentsData) => {
 	// check for group if expects list and treat it accordingly like here --->https://stackoverflow.com/questions/69040911/hasura-order-by-date-with-distinct
 	let gqlArgObj = {};
 	let canRunQuery = true;
@@ -639,7 +639,7 @@ export const generate_gqlArgObj = (group_argumentsData, group_name) => {
 			canRunQuery = false
 			return false
 		}
-		let { chd_dispatchValue, stepsOfFields, dd_displayName, groupName } =
+		let { chd_dispatchValue, stepsOfFields, dd_displayName } =
 			argData;
 
 		let curr_gqlArgObj = gqlArgObj;
@@ -729,55 +729,39 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 	let itemsObj = items.map((item) => {
 		let itemData = nodes[item.id];
 		const stepsOfFields = itemData?.stepsOfFields
-		console.log('[[[[stepsOfFields', { stepsOfFields })
-
-
 
 		const operator = itemData.operator
-
 		let itemObj = {};
 		let itemObjCurr = {};
-		//
 		if (itemData.not) {
 			itemObj['_not'] = {};
 			itemObjCurr = itemObj['_not'];
 		} else {
 			itemObjCurr = itemObj;
 		}
+		const displayName = itemData?.dd_displayName
 		if (operator) {
-			if (stepsOfFields) {
-
-				const stepsOfFieldsLength = stepsOfFields.length
-				const stepsOfFieldsLastEl = stepsOfFields[stepsOfFieldsLength - 1]
-				const stepsOfFieldsAllButFirstEl = [...stepsOfFields].slice(1)
-				stepsOfFieldsAllButFirstEl.forEach(step => {
-					const isLastStep = step == stepsOfFieldsLastEl
-					if (isLastStep && operator == 'list') {
-						itemObjCurr[step] = []
-					} else {
-						itemObjCurr[step] = {}
-					}
-					itemObjCurr = itemObjCurr[step]
-				});
-
+			if (displayName) {
+				itemObjCurr[displayName] = {}
+				itemObjCurr = itemObjCurr[displayName]
 			}
 			if (operator.startsWith('_')) {
 				itemObjCurr[operator] = []
 				itemObjCurr = itemObjCurr[operator]
 			}
 		}
-
 		let dataToAssign
 
 		if (itemData.operator) {
 			const validItemsResult = validItems(itemData.items, nodes);
+			const gqlArgObjForItems = generate_gqlArgObjForItems(validItemsResult, group_name, nodes)
 			if (operator == 'bonded') {
-				const gqlArgObjForItems = generate_gqlArgObjForItems(validItemsResult, group_name, nodes)
 				const merged_gqlArgObjForItems = _.merge({}, ...gqlArgObjForItems)
 				dataToAssign = merged_gqlArgObjForItems
 			} else {
-				dataToAssign = generate_gqlArgObjForItems(validItemsResult, group_name, nodes)
+				dataToAssign = gqlArgObjForItems
 			}
+			console.log('vvvvvvv', gqlArgObjForItems, dataToAssign)
 		} else {
 			dataToAssign = nodes[item.id]?.gqlArgObj
 		}
@@ -792,8 +776,8 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 			}
 		}
 		console.log({ dataToAssign }, 'itemData.selectedRowsColValues', itemData.selectedRowsColValues)
-
-		Object.assign(itemObjCurr, dataToAssign);
+		itemObjCurr = _.merge(itemObjCurr, dataToAssign)
+		//Object.assign(itemObjCurr, dataToAssign);
 		return itemObj;
 	});
 	return itemsObj;
