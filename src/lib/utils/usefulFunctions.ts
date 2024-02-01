@@ -643,27 +643,7 @@ export const generate_gqlArgObj = (group_argumentsData, group_name) => {
 			argData;
 
 		let curr_gqlArgObj = gqlArgObj;
-		[stepsOfFields[0] || groupName || group_name, dd_displayName].forEach((step, index) => {
-			let isLast = index == stepsOfFields.length - 1;
-			if (isLast) {
-				if (chd_dispatchValue != undefined) {
-					if (!curr_gqlArgObj?.[step]) {
-						curr_gqlArgObj[step] = chd_dispatchValue;
-					}
-					curr_gqlArgObj = curr_gqlArgObj[step];
-				} else {
-					if (!curr_gqlArgObj?.[step]) {
-						curr_gqlArgObj[step] = {};
-					}
-					curr_gqlArgObj = curr_gqlArgObj[step];
-				}
-			} else {
-				if (!curr_gqlArgObj?.[step]) {
-					curr_gqlArgObj[step] = {};
-				}
-				curr_gqlArgObj = curr_gqlArgObj[step];
-			}
-		});
+		curr_gqlArgObj[dd_displayName] = chd_dispatchValue
 	});
 
 	return {
@@ -799,7 +779,7 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 				dataToAssign = generate_gqlArgObjForItems(validItemsResult, group_name, nodes)
 			}
 		} else {
-			dataToAssign = nodes[item.id]?.gqlArgObj?.[group_name]
+			dataToAssign = nodes[item.id]?.gqlArgObj
 		}
 		if (itemData.selectedRowsColValues) {
 
