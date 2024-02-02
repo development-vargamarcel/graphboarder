@@ -34,9 +34,9 @@
 		groupArgsPossibilities = getRootType(null, group.dd_rootName, schemaData).inputFields;
 	}
 	let baseFilterOperators = ['_and', '_or', '_not']; //!!!this might create problem if there is some nonBase operator with the same name as one of these
-	groupArgsPossibilities = groupArgsPossibilities.filter((arg) => {
-		return !baseFilterOperators.includes(arg.dd_displayName);
-	});
+	// groupArgsPossibilities = groupArgsPossibilities.filter((arg) => {
+	// 	return !baseFilterOperators.includes(arg.dd_displayName);
+	// });
 	console.log({ groupArgsPossibilities });
 	let predefinedFirstSteps = group.group_isRoot ? [] : [group.group_name];
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;

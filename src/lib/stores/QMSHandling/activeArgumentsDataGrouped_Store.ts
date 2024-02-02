@@ -274,15 +274,22 @@ export const generateContainerData = (stepsOfFields, type, extraData = {}) => {
 	if (stepsOfFields[stepsOfFields.length - 1] !== dd_displayName) {
 		stepsOfFields.push(dd_displayName); //take care might caus eproblems
 	}
+
+	const lastDefiningData = {}
+	if (type && type.dd_kindList) {
+		lastDefiningData.operator = 'list'
+	}
+
 	return {
 		///inputFields,
 		///enumValues,
 		items: [],
 		stepsOfFields,
 		stepsOfFieldsStringified: JSON.stringify(stepsOfFields),
-		id: `${JSON.stringify(stepsOfFields)}${Math.random()}`,
+		id: `qqqqqq${Math.random()}`,
 		...type,
-		...extraData
+		...extraData,
+		...lastDefiningData
 	};
 };
 
@@ -301,7 +308,7 @@ export const generateArgData = (stepsOfFields, type, schemaData, extraData = {})
 		enumValues,
 		stepsOfFields,
 		stepsOfFieldsStringified: JSON.stringify(stepsOfFields),
-		id: `${JSON.stringify(stepsOfFields)}${Math.random()}`,
+		id: `qqqqqq${Math.random()}`,
 		...type,
 		...extraData
 	};
