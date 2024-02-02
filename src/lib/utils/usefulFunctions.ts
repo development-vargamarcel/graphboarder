@@ -864,7 +864,9 @@ export const generate_gqlArgObjForItemsV3 = (items, group_name, nodes) => {
 		console.log({ nodeStepClean }, { itemObjectTest }, { itemObjectTest2 }, { dataToAssign }, 'itemData.selectedRowsColValues', itemData.selectedRowsColValues)
 		itemObjCurr = _.merge(itemObjCurr, dataToAssign)
 		//Object.assign(itemObjCurr, dataToAssign);
+		//		return itemObjectTest;
 		return itemObj;
+
 	});
 	return {
 		itemObjectTest,
@@ -887,7 +889,7 @@ export const generate_gqlArgObj_forHasOperators = (group) => {
 		group_name,
 		nodes
 	)
-	console.log({ generate_gqlArgObjForItemsV2RESULT }, { generate_gqlArgObjForItemsV3RESULT })
+	console.log({ generate_gqlArgObjForItemsV3RESULT })
 
 	let group_argumentsData = group.group_args.filter((arg) => {
 		return arg.inUse;
