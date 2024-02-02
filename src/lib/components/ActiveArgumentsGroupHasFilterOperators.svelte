@@ -1,5 +1,6 @@
 <script>
 	import {
+		filterElFromArr,
 		formatData,
 		getDataGivenStepsOfFields,
 		getDeepField,
@@ -35,11 +36,7 @@
 			JSON.parse(JSON.stringify(parentNode?.stepsOfNodes || []))
 		);
 	};
-	const filterElFromArr = (arr, undesiredElements = []) => {
-		return arr.filter((el) => {
-			return !undesiredElements.includes(el);
-		});
-	};
+
 	const stepsOfNodesToStepsOfFields = (stepsOfNodes) => {
 		//console.log({ stepsOfNodes });
 		const stepsOfFields = stepsOfNodes
@@ -416,6 +413,8 @@
 								} else if (node?.operator == '_and') {
 									node.operator = 'bonded';
 								} else if (node?.operator == 'bonded') {
+									node.operator = 'list';
+								} else {
 									node.operator = '_or';
 								}
 							}

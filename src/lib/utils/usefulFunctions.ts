@@ -725,10 +725,17 @@ const validItems = (items, nodes) => {
 };
 
 //
+export const filterElFromArr = (arr, undesiredElements = []) => {
+	return arr.filter((el) => {
+		return !undesiredElements.includes(el);
+	});
+};
 const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 	let itemsObj = items.map((item) => {
 		let itemData = nodes[item.id];
-		const stepsOfFields = itemData?.stepsOfFields
+		const nodeStep = itemData?.stepsOfNodes[itemData?.stepsOfNodes.length - 1]
+		const nodeStepClean = filterElFromArr(nodeStep, [null, undefined, 'bonded', 'list'])
+		console.log({ nodeStep }, { nodeStepClean })
 
 		const operator = itemData.operator
 		let itemObj = {};
@@ -775,7 +782,15 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 
 			}
 		}
-		console.log({ dataToAssign }, 'itemData.selectedRowsColValues', itemData.selectedRowsColValues)
+		let itemObjectTest = setValueAtPath({}, nodeStepClean, dataToAssign, true)
+		let itemObjectTest2 = 'not set'
+		if (itemObjectTest == undefined) {
+			let itemObjectTest2 = 'set'
+			//itemObjectTest2 = dataToAssign
+			itemObjectTest = dataToAssign
+
+		}
+		console.log({ nodeStepClean }, { itemObjectTest }, { itemObjectTest2 }, { dataToAssign }, 'itemData.selectedRowsColValues', itemData.selectedRowsColValues)
 		itemObjCurr = _.merge(itemObjCurr, dataToAssign)
 		//Object.assign(itemObjCurr, dataToAssign);
 		return itemObj;
@@ -783,51 +798,108 @@ const generate_gqlArgObjForItems = (items, group_name, nodes) => {
 	return itemsObj;
 };
 //
+
+////testing
+export const generate_gqlArgObjForItemsV2 = (items, group_name, nodes) => {
+	let itemObjectTest
+	let itemsObj = items.map((item) => {
+		let itemData = nodes[item.id];
+		const nodeStep = itemData?.stepsOfNodes[itemData?.stepsOfNodes.length - 1]
+		const nodeStepClean = filterElFromArr(nodeStep, [null, undefined, 'bonded', 'list'])
+		console.log({ nodeStep }, { nodeStepClean })
+
+		const operator = itemData.operator
+		let itemObj = {};
+		let itemObjCurr = {};
+		if (itemData.not) {
+			itemObj['_not'] = {};
+			itemObjCurr = itemObj['_not'];
+		} else {
+			itemObjCurr = itemObj;
+		}
+		const displayName = itemData?.dd_displayName
+		if (operator) {
+			if (displayName) {
+				itemObjCurr[displayName] = {}
+				itemObjCurr = itemObjCurr[displayName]
+			}
+			if (operator.startsWith('_')) {
+				itemObjCurr[operator] = []
+				itemObjCurr = itemObjCurr[operator]
+			}
+		}
+		let dataToAssign
+
+		if (itemData.operator) {
+			const validItemsResult = validItems(itemData.items, nodes);
+			const gqlArgObjForItems = generate_gqlArgObjForItems(validItemsResult, group_name, nodes)
+			if (operator == 'bonded') {
+				const merged_gqlArgObjForItems = _.merge({}, ...gqlArgObjForItems)
+				dataToAssign = merged_gqlArgObjForItems
+			} else {
+				dataToAssign = gqlArgObjForItems
+			}
+			console.log('vvvvvvv', gqlArgObjForItems, dataToAssign)
+		} else {
+			dataToAssign = nodes[item.id]?.gqlArgObj
+		}
+		if (itemData.selectedRowsColValues) {
+
+
+			if (Array.isArray(dataToAssign)) {
+				dataToAssign = [...dataToAssign, ...itemData.selectedRowsColValues]
+			} else {
+				dataToAssign = _.merge(dataToAssign, itemData.selectedRowsColValues[0])
+
+			}
+		}
+		itemObjectTest = setValueAtPath({}, nodeStepClean, dataToAssign, true)
+		let itemObjectTest2 = 'not set'
+		if (itemObjectTest == undefined) {
+			let itemObjectTest2 = 'set'
+			//itemObjectTest2 = dataToAssign
+			itemObjectTest = dataToAssign
+
+		}
+		console.log({ nodeStepClean }, { itemObjectTest }, { itemObjectTest2 }, { dataToAssign }, 'itemData.selectedRowsColValues', itemData.selectedRowsColValues)
+		itemObjCurr = _.merge(itemObjCurr, dataToAssign)
+		//Object.assign(itemObjCurr, dataToAssign);
+		return itemObj;
+	});
+	return itemObjectTest;
+};
+////testing
 export const generate_gqlArgObj_forHasOperators = (group) => {
 	let { group_argsNode, group_name } = group;
 
 
 	let group_canRunQuery = true;
-	let nodes = JSON.parse(JSON.stringify(group_argsNode));
-	let nodesArray = Object.values(nodes);
-	let mainContainer = nodesArray.filter((node) => {
+	const nodes = JSON.parse(JSON.stringify(group_argsNode));
+	const nodesArray = Object.values(nodes);
+	const mainContainer = nodesArray.filter((node) => {
 		return node.isMain;
 	})[0];
-	let mainContainerOperator = mainContainer.operator
-	let group_gqlArgObj
 
-
+	const generate_gqlArgObjForItemsV2RESULT = generate_gqlArgObjForItemsV2(
+		[mainContainer],
+		group_name,
+		nodes
+	)
 	const gqlArgObjForItems = generate_gqlArgObjForItems(
 		validItems(mainContainer?.items, nodes),
 		group_name,
 		nodes
 	);
-	console.log({ gqlArgObjForItems })
-	if (mainContainerOperator == '_and') {
-		group_gqlArgObj = { [group_name]: { _and: [] } };
-		group_gqlArgObj[group_name]['_and'] = gqlArgObjForItems
-	} else if (mainContainerOperator == 'list') {
-		group_gqlArgObj = { [group_name]: [] };
-		group_gqlArgObj[group_name] = gqlArgObjForItems
-	} else {
-		group_gqlArgObj = { [group_name]: {} };
-		const merged_gqlArgObjForItems = _.merge({}, ...gqlArgObjForItems)
-		group_gqlArgObj[group_name] = merged_gqlArgObjForItems
-	}
-
-
-	if (gqlArgObjForItems?.length == 0) {
-		group_canRunQuery = false;
-		group_gqlArgObj = {};
-	}
-	let group_argumentsData = group.group_args.filter((arg) => {
+	console.clear()
+	console.log({ generate_gqlArgObjForItemsV2RESULT }, { gqlArgObjForItems })
+	const group_argumentsData = group.group_args.filter((arg) => {
 		return arg.inUse;
 	});
 	group_canRunQuery = group_argumentsData.every((arg) => {
 		return arg.canRunQuery;
 	});
-
-	let group_gqlArgObj_string = gqlArgObjToString(group_gqlArgObj);
+	const group_gqlArgObj = generate_gqlArgObjForItemsV2RESULT
+	const group_gqlArgObj_string = gqlArgObjToString(group_gqlArgObj);
 	return {
 		group_gqlArgObj,
 		group_gqlArgObj_string,
