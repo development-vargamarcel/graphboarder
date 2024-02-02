@@ -854,17 +854,19 @@ export const generate_gqlArgObjForItemsV3 = (items, group_name, nodes) => {
 			}
 		}
 		itemObjectTest = setValueAtPath({}, nodeStepClean, dataToAssign, true)
+		let itemObjectTestCurr = setValueAtPath({}, nodeStepClean, dataToAssign, true)
 		let itemObjectTest2 = 'not set'
 		if (itemObjectTest == undefined) {
 			let itemObjectTest2 = 'set'
 			//itemObjectTest2 = dataToAssign
 			itemObjectTest = dataToAssign
-
+			itemObjectTestCurr = dataToAssign
 		}
-		console.log({ nodeStepClean }, { itemObjectTest }, { itemObjectTest2 }, { dataToAssign }, 'itemData.selectedRowsColValues', itemData.selectedRowsColValues)
+		console.log({ nodeStepClean }, { itemObjectTest }, { itemObjectTest2 }, { itemObjectTestCurr }, { dataToAssign }, 'itemData.selectedRowsColValues', itemData.selectedRowsColValues)
 		itemObjCurr = _.merge(itemObjCurr, dataToAssign)
 		//Object.assign(itemObjCurr, dataToAssign);
 		//		return itemObjectTest;
+		//return itemObjectTestCurr
 		return itemObj;
 
 	});
