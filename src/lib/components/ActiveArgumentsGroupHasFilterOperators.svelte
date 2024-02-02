@@ -366,7 +366,9 @@
 				</btn>
 			{/if}
 
-			{#if !node?.isMain}
+					{#if !node?.isMain && parentNode?.inputFields?.some((inputField) => {
+					return inputField.dd_displayName == '_not';
+				})}
 				<div class="flex space-x-4 ">
 					<div class="form-control mr-1">
 						<label class="label cursor-pointer w-min py-0">
