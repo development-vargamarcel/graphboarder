@@ -814,6 +814,7 @@
 		<div class="pr-2 rounded-box  w-full">
 			<div class=" transition-color duration-500 rounded-box ringxxx  ring-1xxx    ">
 				<ActiveArgument
+					{parentNode}
 					on:contextmenuUsed={() => {
 						if (!node?.isMain) {
 							node.not = !node.not;

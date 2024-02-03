@@ -5,7 +5,7 @@
 	import { createEventDispatcher, getContext, setContext } from 'svelte';
 	export let setNotInUseIfNotValid = true;
 	export let setNotInUseIfNotValidAndENUM = true;
-
+	export let parentNode;
 	export let prefix = '';
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Modal from './Modal.svelte';
@@ -143,19 +143,24 @@
 			</div>
 
 			<div class="mb-6 flex">
-				<div class="form-control mr-1">
-					<label class="label cursor-pointer w-min py-0">
-						<span class="label-text pr-1">Not</span>
-						<input
-							type="checkbox"
-							class="toggle toggle-sm"
-							bind:checked={isNot}
-							on:change={() => {
-								dispatch('contextmenuUsed');
-							}}
-						/>
-					</label>
-				</div>
+				{#if parentNode?.inputFields?.some((inputField) => {
+					return inputField.dd_displayName == '_not';
+				})}
+					<div class="form-control mr-1">
+						<label class="label cursor-pointer w-min py-0">
+							<span class="label-text pr-1">Not</span>
+							<input
+								type="checkbox"
+								class="toggle toggle-sm"
+								bind:checked={isNot}
+								on:change={() => {
+									dispatch('contextmenuUsed');
+								}}
+							/>
+						</label>
+					</div>
+				{/if}
+
 				<div class="form-control mr-1">
 					<label class="label cursor-pointer w-min py-0">
 						<span class="label-text pr-1">active</span>
