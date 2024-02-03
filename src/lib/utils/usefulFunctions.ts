@@ -810,24 +810,16 @@ export const generate_gqlArgObjForItemsV3 = (items, group_name, nodes) => {
 
 		const operator = itemData.operator
 		let itemObj = {};
-		let itemObjCurr = {};
-		if (itemData.not) {
-			itemObj['_not'] = {};
-			itemObjCurr = itemObj['_not'];
-		} else {
-			itemObjCurr = itemObj;
-		}
+		let itemObjCurr = itemObj
+
 		const displayName = itemData?.dd_displayName
-		if (operator) {
-			if (displayName) {
-				itemObjCurr[displayName] = {}
-				itemObjCurr = itemObjCurr[displayName]
-			}
-			if (operator.startsWith('_')) {
-				itemObjCurr[operator] = []
-				itemObjCurr = itemObjCurr[operator]
-			}
-		}
+		// //this is useful for handling operator starting with _,like _and,_or
+		// if (operator) {
+		// 	if (operator.startsWith('_')) {
+		// 		itemObjCurr[operator] = []
+		// 		itemObjCurr = itemObjCurr[operator]
+		// 	}
+		// }
 		let dataToAssign
 
 		if (itemData.operator) {
@@ -849,7 +841,7 @@ export const generate_gqlArgObjForItemsV3 = (items, group_name, nodes) => {
 			if (Array.isArray(dataToAssign)) {
 				dataToAssign = [...dataToAssign, ...itemData.selectedRowsColValues]
 			} else {
-				dataToAssign = _.merge(dataToAssign, itemData.selectedRowsColValues[0])
+				dataToAssign = _.merge({}, dataToAssign, itemData.selectedRowsColValues[0])
 
 			}
 		}
@@ -862,8 +854,25 @@ export const generate_gqlArgObjForItemsV3 = (items, group_name, nodes) => {
 			itemObjectTest = dataToAssign
 			itemObjectTestCurr = dataToAssign
 		}
-		console.log({ nodeStepClean }, { itemObjectTest }, { itemObjectTest2 }, { itemObjectTestCurr }, { dataToAssign }, 'itemData.selectedRowsColValues', itemData.selectedRowsColValues)
-		itemObjCurr = _.merge(itemObjCurr, dataToAssign)
+
+		if (operator && displayName) {
+			if (itemData.not) {
+				itemObjCurr['_not'] = {};
+				itemObjCurr = itemObjCurr['_not'];
+			}
+			itemObjCurr[displayName] = dataToAssign
+			itemObjCurr = itemObjCurr[displayName]
+		} else if (displayName) {
+			if (itemData.not) {
+				itemObjCurr['_not'] = dataToAssign;
+				itemObjCurr = itemObjCurr['_not'];
+			} else {
+				itemObj = dataToAssign
+			}
+		}
+		console.log(nodeStepClean, { itemObj }, { itemObjectTest }, { itemObjectTest2 }, { itemObjectTestCurr }, { dataToAssign }, 'itemData.selectedRowsColValues', itemData.selectedRowsColValues)
+
+		//itemObjCurr = _.merge(itemObjCurr, dataToAssign)
 		//Object.assign(itemObjCurr, dataToAssign);
 		//		return itemObjectTest;
 		//return itemObjectTestCurr

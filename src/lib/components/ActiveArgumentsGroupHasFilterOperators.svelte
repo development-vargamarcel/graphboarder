@@ -204,7 +204,7 @@
 		//groupDisplayTitle = stepsOfNodes.join('->') + `(${groupDisplayTitle})`;
 	}
 
-	if (node?.addDefaultFields || (node.isMain && addDefaultFields)) {
+	if (node?.addDefaultFields || (node?.isMain && addDefaultFields)) {
 		nodeAddDefaultFields(
 			node,
 			prefix,
@@ -366,7 +366,7 @@
 				</btn>
 			{/if}
 
-					{#if !node?.isMain && parentNode?.inputFields?.some((inputField) => {
+			{#if !node?.isMain && parentNode?.inputFields?.some((inputField) => {
 					return inputField.dd_displayName == '_not';
 				})}
 				<div class="flex space-x-4 ">
