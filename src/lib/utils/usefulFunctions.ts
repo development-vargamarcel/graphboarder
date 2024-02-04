@@ -814,7 +814,7 @@ export const generate_group_gqlArgObj = (items, group_name, nodes) => {
 	};
 };
 
-export const generate_gqlArgObj_forHasOperators = (group) => {
+export const generate_group_gqlArgObj_forHasOperators = (group) => {
 	let { group_argsNode, group_name } = group;
 
 	let group_canRunQuery = true;
@@ -1419,7 +1419,7 @@ export const generate_finalGqlArgObjAndCanRunQuery = (activeArgumentsDataGrouped
 	console.log('regenerate_groupsAndfinalGqlArgObj RUN');
 	const groups_gqlArgObj = activeArgumentsDataGrouped.map((group) => {
 		if (group.group_argsNode) {
-			return generate_gqlArgObj_forHasOperators(group);
+			return generate_group_gqlArgObj_forHasOperators(group);
 		} else {
 			return generate_group_gqlArgObj(group);
 		}
