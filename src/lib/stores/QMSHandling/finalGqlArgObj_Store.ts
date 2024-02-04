@@ -1,7 +1,7 @@
 import {
 	generate_finalGqlArgObjAndCanRunQuery,
 	generate_finalGqlArgObj_fromGroups,
-	generate_group_gqlArgObj_forHasOperators,
+	generate_group_gqlArgObjAndCanRunQuery_forHasOperators,
 	generate_group_gqlArgObj,
 } from '$lib/utils/usefulFunctions';
 import { writable, get } from 'svelte/store';

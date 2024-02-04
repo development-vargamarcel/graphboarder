@@ -732,7 +732,7 @@ export const filterElFromArr = (arr, undesiredElements = []) => {
 	});
 };
 
-export const generate_group_gqlArgObj = (items, group_name, nodes) => {
+export const generate_group_gqlArgObj_forHasOperators = (items, group_name, nodes) => {
 	let resultingGqlArgObj
 	let itemsResultingData = []
 	items.forEach((item) => {
@@ -749,7 +749,7 @@ export const generate_group_gqlArgObj = (items, group_name, nodes) => {
 
 		if (itemData.operator) {
 			const validItemsResult = validItems(itemData.items, nodes);
-			const gqlArgObjForItems = generate_group_gqlArgObj(validItemsResult, group_name, nodes).itemsResultingData
+			const gqlArgObjForItems = generate_group_gqlArgObj_forHasOperators(validItemsResult, group_name, nodes).itemsResultingData
 			if (operator == 'bonded') {
 				const merged_gqlArgObjForItems = _.merge({}, ...gqlArgObjForItems)
 				dataToAssign = merged_gqlArgObjForItems
@@ -814,7 +814,7 @@ export const generate_group_gqlArgObj = (items, group_name, nodes) => {
 	};
 };
 
-export const generate_group_gqlArgObj_forHasOperators = (group) => {
+export const generate_group_gqlArgObjAndCanRunQuery_forHasOperators = (group) => {
 	let { group_argsNode, group_name } = group;
 
 	let group_canRunQuery = true;
@@ -824,12 +824,12 @@ export const generate_group_gqlArgObj_forHasOperators = (group) => {
 		return node.isMain;
 	})[0];
 
-	const generate_group_gqlArgObjRESULT = generate_group_gqlArgObj(
+	const generate_group_gqlArgObj_forHasOperatorsRESULT = generate_group_gqlArgObj_forHasOperators(
 		[mainContainer],
 		group_name,
 		nodes
 	)
-	console.log({ generate_group_gqlArgObjRESULT })
+	console.log({ generate_group_gqlArgObj_forHasOperatorsRESULT })
 
 	let group_argumentsData = group.group_args.filter((arg) => {
 		return arg.inUse;
@@ -837,7 +837,7 @@ export const generate_group_gqlArgObj_forHasOperators = (group) => {
 	group_canRunQuery = group_argumentsData.every((arg) => {
 		return arg.canRunQuery;
 	});
-	let group_gqlArgObj = generate_group_gqlArgObjRESULT.resultingGqlArgObj
+	let group_gqlArgObj = generate_group_gqlArgObj_forHasOperatorsRESULT.resultingGqlArgObj
 	let group_gqlArgObj_string = gqlArgObjToString(group_gqlArgObj);
 	return {
 		group_gqlArgObj,
@@ -1419,7 +1419,7 @@ export const generate_finalGqlArgObjAndCanRunQuery = (activeArgumentsDataGrouped
 	console.log('regenerate_groupsAndfinalGqlArgObj RUN');
 	const groups_gqlArgObj = activeArgumentsDataGrouped.map((group) => {
 		if (group.group_argsNode) {
-			return generate_group_gqlArgObj_forHasOperators(group);
+			return generate_group_gqlArgObjAndCanRunQuery_forHasOperators(group);
 		} else {
 			return generate_group_gqlArgObj(group);
 		}
