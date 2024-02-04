@@ -1,15 +1,10 @@
 <script>
 	export let group;
 	export let argsInfo;
-	export let update_activeArgumentsDataGrouped;
 	export let activeArgumentsDataGrouped;
 	export let node;
-	export let nodes;
 	export let prefix = '';
 	export let parent_inputFields;
-	export let parent_stepsOfFields;
-	export let parentNodeId;
-	let parentNode = nodes[parentNodeId];
 	const groupName = group.group_name;
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
 	import { getContext, setContext } from 'svelte';
@@ -54,9 +49,8 @@
 			on:click={() => {
 				let randomNr = Math.random();
 				const newContainerData = {
-					parentNodeId: parentNodeId,
-					// inputFields: parent_inputFields,
-					// stepsOfFields: parent_stepsOfFields,
+					...node,
+					dd_displayName: undefined,
 					id: randomNr,
 					operator: '~spread~',
 					not: false,
@@ -167,7 +161,7 @@
 					d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
 				/></svg
 			>
-			<span>'_and', '_or', '_not' are hidden.</span>
+			<!-- <span>'_and', '_or', '_not' are hidden.</span> -->
 		</div>
 	</div>
 </div>

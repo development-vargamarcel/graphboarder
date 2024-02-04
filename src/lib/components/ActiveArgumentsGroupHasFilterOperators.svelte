@@ -852,7 +852,7 @@
 				flipDurationMs,
 				transformDraggedElement,
 				centreDraggedOnCursor: true,
-				type
+				type: node?.dd_rootName || 'default'
 			}}
 			on:consider={handleDndConsider}
 			on:finalize={handleDndFinalize}
