@@ -21,7 +21,8 @@
 	import Fuse from 'fuse.js';
 	const dispatch = createEventDispatcher();
 	export let nodes;
-	export let parentNode;
+	export let parentNodeId;
+	export let parentNode = nodes[parentNodeId];
 	export let node;
 	export let availableOperators;
 	export let group;
@@ -448,9 +449,11 @@
 				<ActiveArgumentsGroup_addFilterAndSortingButtonContent
 					parent_inputFields={parentNode?.inputFields}
 					parent_stepsOfFields={stepsOfFields}
+					parentNodeId={node.id}
 					on:updateQuery
 					bind:group
 					bind:argsInfo
+					{nodes}
 					{node}
 				/>
 			</div>
@@ -875,6 +878,7 @@
 										bind:nodes
 										node={nodes[item.id]}
 										parentNode={node}
+										parentNodeId={node.id}
 										on:changed
 										{availableOperators}
 										on:childrenStartDrag={startDrag}

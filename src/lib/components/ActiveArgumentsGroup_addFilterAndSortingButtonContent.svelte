@@ -4,9 +4,12 @@
 	export let update_activeArgumentsDataGrouped;
 	export let activeArgumentsDataGrouped;
 	export let node;
+	export let nodes;
 	export let prefix = '';
 	export let parent_inputFields;
 	export let parent_stepsOfFields;
+	export let parentNodeId;
+	let parentNode = nodes[parentNodeId];
 	const groupName = group.group_name;
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
 	import { getContext, setContext } from 'svelte';
@@ -51,7 +54,7 @@
 			on:click={() => {
 				let randomNr = Math.random();
 				const newContainerData = {
-					//parent_node: node,
+					parentNodeId: parentNodeId,
 					// inputFields: parent_inputFields,
 					// stepsOfFields: parent_stepsOfFields,
 					id: randomNr,
