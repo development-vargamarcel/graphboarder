@@ -864,8 +864,8 @@
 				}) as item (item.id)}
 					<div animate:flip={{ duration: flipDurationMs }} class="    border-2== max-w-min my-1 ">
 						<div class="flex dnd-item">
-							{#key stepsOfFields}
-								{#if testName_stepsOFFieldsWasUpdated}
+							{#if testName_stepsOFFieldsWasUpdated}
+								{#key stepsOfFields}
 									<svelte:self
 										on:deleteSubNode={(e) => {
 											deleteItem(e);
@@ -884,8 +884,8 @@
 										on:childrenStartDrag={startDrag}
 										{group}
 									/>
-								{/if}
-							{/key}
+								{/key}
+							{/if}
 						</div>
 					</div>
 				{/each}
