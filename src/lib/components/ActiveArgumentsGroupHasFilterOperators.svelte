@@ -198,7 +198,11 @@
 			}
 		}
 		if (groupDisplayTitle.trim() == '' || getPreciseType(groupDisplayTitle) == 'undefined') {
-			groupDisplayTitle = '(item)'; //bonded
+			if (node?.operator == 'bonded') {
+				groupDisplayTitle = '(item)'; //bonded
+			} else if (node?.operator == '~spread~') {
+				groupDisplayTitle = '(~spread~)'; //~spread~
+			}
 		}
 		groupDisplayTitle = `${groupDisplayTitle}`;
 		//groupDisplayTitle = stepsOfNodes.join('->') + `(${groupDisplayTitle})`;
@@ -366,29 +370,30 @@
 				</btn>
 			{/if}
 
-			{#if !node?.isMain && parentNode?.inputFields?.some((inputField) => {
-					return inputField.dd_displayName == '_not';
-				})}
+			{#if !node?.isMain}
 				<div class="flex space-x-4 ">
-					<div class="form-control mr-1">
-						<label class="label cursor-pointer w-min py-0">
-							<span class="label-text pr-1">Not</span>
-							<input
-								type="checkbox"
-								class="toggle toggle-sm"
-								checked={node.not}
-								on:change|preventDefault|stopPropagation={() => {
-									if (!node?.isMain) {
-										node.not = !node.not;
-										operatorChangeHandler();
-										handleChanged();
-										dispatch('changed');
-									}
-								}}
-							/>
-						</label>
-					</div>
-
+					{#if parentNode?.inputFields?.some((inputField) => {
+						return inputField.dd_displayName == '_not';
+					})}
+						<div class="form-control mr-1">
+							<label class="label cursor-pointer w-min py-0">
+								<span class="label-text pr-1">Not</span>
+								<input
+									type="checkbox"
+									class="toggle toggle-sm"
+									checked={node.not}
+									on:change|preventDefault|stopPropagation={() => {
+										if (!node?.isMain) {
+											node.not = !node.not;
+											operatorChangeHandler();
+											handleChanged();
+											dispatch('changed');
+										}
+									}}
+								/>
+							</label>
+						</div>
+					{/if}
 					<btn
 						class="btn btn-xs btn-info  normal-case mb-6 flex-1"
 						on:click={() => {
@@ -410,14 +415,12 @@
 						class="btn btn-xs text-sm mb-1 normal-case flex-1"
 						on:click={() => {
 							if (node?.operator && !node?.isMain) {
-								if (node?.operator == '_or') {
-									node.operator = '_and';
-								} else if (node?.operator == '_and') {
+								if (node?.operator == '~spread~') {
 									node.operator = 'bonded';
 								} else if (node?.operator == 'bonded') {
-									node.operator = 'list';
+									node.operator = '~spread~';
 								} else {
-									node.operator = '_or';
+									node.operator = 'bonded';
 								}
 							}
 							operatorChangeHandler();

@@ -56,7 +56,7 @@
 						// inputFields: parent_inputFields,
 						// stepsOfFields: parent_stepsOfFields,
 						id: randomNr,
-						operator: 'bonded',
+						operator: '~spread~',
 						not: false,
 						isMain: false,
 						items: []

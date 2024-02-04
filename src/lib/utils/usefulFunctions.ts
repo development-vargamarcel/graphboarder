@@ -7,6 +7,7 @@ import { page } from '$app/stores';
 import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 import { getContext } from 'svelte';
 import { stringToQMSString_transformer, string_transformer } from '$lib/utils/dataStructureTransformers';
+import { spread } from 'svelte/internal';
 
 
 export const findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey = (obj) => {
@@ -802,7 +803,8 @@ export const filterElFromArr = (arr, undesiredElements = []) => {
 ////testing
 export const generate_gqlArgObjForItemsV3 = (items, group_name, nodes) => {
 	let itemObjectTest
-	let itemsObj = items.map((item) => {
+	let itemsObj = []
+	items.forEach((item) => {
 		let itemData = nodes[item.id];
 		const nodeStep = itemData?.stepsOfNodes[itemData?.stepsOfNodes.length - 1]
 		const nodeStepClean = filterElFromArr(nodeStep, [null, undefined, 'bonded', 'list'])
@@ -876,8 +878,17 @@ export const generate_gqlArgObjForItemsV3 = (items, group_name, nodes) => {
 		//Object.assign(itemObjCurr, dataToAssign);
 		//		return itemObjectTest;
 		//return itemObjectTestCurr
-		return itemObj;
-
+		// return itemObj;
+		if (operator == '~spread~') {
+			const spread = []
+			for (const key in dataToAssign) {
+				spread.push(dataToAssign[key])
+			}
+			itemsObj.push(...spread)
+		} else {
+			itemsObj.push(itemObj)
+		}
+		//itemsObj.push(itemObj)
 	});
 	return {
 		itemObjectTest,
