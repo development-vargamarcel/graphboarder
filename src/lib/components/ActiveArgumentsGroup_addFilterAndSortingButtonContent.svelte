@@ -46,104 +46,33 @@
 	class="flex flex-col overflow-x-auto overscroll-contain text-sm text-base-content font-normal normal-case min-w-max w-full "
 >
 	{#if hasGroup_argsNode}
-		{#if node?.operator == 'bonded' || node?.operator == 'list'}
-			<button
-				class="btn btn-primary btn-xs  normal-case font-thin text-base sticky top-0"
-				on:click={() => {
-					let randomNr = Math.random();
-					const newContainerData = {
-						parent_node: node,
-						// inputFields: parent_inputFields,
-						// stepsOfFields: parent_stepsOfFields,
-						id: randomNr,
-						operator: '~spread~',
-						not: false,
-						isMain: false,
-						items: []
-					};
-					add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(
-						newContainerData,
-						groupName,
-						node?.id,
-						activeArgumentsDataGrouped,
-						endpointInfo,
-						group
-					);
-					group = group;
-				}}
-				on:contextmenu|preventDefault={() => {
-					let randomNr = Math.random();
-					const newContainerData = {
-						addDefaultFields: true,
-						parent_node: node,
-						// inputFields: parent_inputFields,
-						// stepsOfFields: parent_stepsOfFields,
-						id: randomNr,
-						operator: 'bonded',
-						not: false,
-						isMain: false,
-						items: []
-					};
-					add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(
-						newContainerData,
-						groupName,
-						node?.id,
-						activeArgumentsDataGrouped,
-						endpointInfo,
-						group
-					);
-					group = group;
-				}}
-			>
-				[item] (bonded)
-			</button>
-		{:else}
-			<button
-				class="btn btn-primary btn-xs  normal-case font-thin text-base sticky top-0"
-				on:click={() => {
-					let randomNr = Math.random();
-					const newContainerData = {
-						id: randomNr,
-						operator: '_or',
-						not: false,
-						isMain: false,
-						items: []
-					};
-					add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(
-						newContainerData,
-						groupName,
-						node?.id,
-						activeArgumentsDataGrouped,
-						endpointInfo,
-						group
-					);
-					group = group;
-				}}
-				on:contextmenu|preventDefault={() => {
-					let randomNr = Math.random();
-					const newContainerData = {
-						addDefaultFields: true,
-						id: randomNr,
-						operator: '_or',
-						not: false,
-						isMain: false,
-						items: []
-					};
-
-					add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(
-						newContainerData,
-						groupName,
-						node?.id,
-						activeArgumentsDataGrouped,
-						endpointInfo,
-						group
-					);
-					group = group;
-				}}
-			>
-				or / and / bonded
-			</button>
-		{/if}
+		<button
+			class="btn btn-primary btn-xs  normal-case font-thin text-base sticky top-0"
+			on:click={() => {
+				let randomNr = Math.random();
+				const newContainerData = {
+					//parent_node: node,
+					// inputFields: parent_inputFields,
+					// stepsOfFields: parent_stepsOfFields,
+					id: randomNr,
+					operator: '~spread~',
+					not: false,
+					isMain: false,
+					items: []
+				};
+				add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(
+					newContainerData,
+					groupName,
+					node?.id,
+					activeArgumentsDataGrouped,
+					endpointInfo,
+					group
+				);
+				group = group;
+			}}
+		>
+			add container
+		</button>
 	{/if}
 	<div class="my-2 border-2 rounded-box ">
 		{#each groupArgsPossibilities as arg, index}
