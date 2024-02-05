@@ -184,6 +184,8 @@
 	import Modal from '$lib/components/Modal.svelte';
 	import { browser } from '$app/environment';
 	import TypeList from './TypeList.svelte';
+	import CodeEditor from './fields/CodeEditor.svelte';
+	import GraphqlCodeDisplay from './GraphqlCodeDisplay.svelte';
 
 	onMount(() => {
 		hljs.registerLanguage('graphql', graphql);
@@ -292,27 +294,7 @@
 	<p>Loading...</p>
 {/if}
 {#if showQMSBody}
-	<div class="mockup-code bg-base text-content my-1 mx-2 px-2 ">
-		<div class="max-h-32 overflow-y-auto">
-			{#if showNonPrettifiedQMSBody}
-				<code class="px-10">{$QMS_bodyPartsUnifier_StoreDerived}</code>
-			{:else}
-				<code class="language-graphql "
-					>{@html hljs
-						.highlight(format($QMS_bodyPartsUnifier_StoreDerived), { language: 'graphql' })
-						.value.trim()}</code
-				>
-			{/if}
-		</div>
-		<button
-			class="btn btn-xs btn-accent mx-atuo absolute top-3 right-4 normal-case"
-			on:click={() => {
-				showNonPrettifiedQMSBody = !showNonPrettifiedQMSBody;
-			}}
-		>
-			{showNonPrettifiedQMSBody ? ' show prettified ' : ' show non-prettified '}</button
-		>
-	</div>
+	<GraphqlCodeDisplay {showNonPrettifiedQMSBody} value={$QMS_bodyPartsUnifier_StoreDerived} />
 {/if}
 
 <div class="md:px-2">
