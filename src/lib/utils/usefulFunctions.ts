@@ -780,14 +780,20 @@ export const generate_group_gqlArgObj_forHasOperators = (items, group_name, node
 			itemObjectTestCurr = dataToAssign
 		}
 
-		if (operator && displayName) {
+		if (operator) {
 			if (itemData.not) {
-				itemObjCurr['_not'] = {};
+				itemObjCurr['_not'] = displayName ? {} : dataToAssign;
 				itemObjCurr = itemObjCurr['_not'];
 			}
-			itemObjCurr[displayName] = dataToAssign
-			itemObjCurr = itemObjCurr[displayName]
-		} else if (displayName) {
+			if (displayName) {
+				itemObjCurr[displayName] = dataToAssign
+				itemObjCurr = itemObjCurr[displayName]
+			} else {
+				itemObjCurr = _.merge(itemObjCurr, dataToAssign)
+			}
+		}
+
+		if (!operator && displayName) {
 			if (itemData.not) {
 				itemObjCurr['_not'] = dataToAssign;
 				itemObjCurr = itemObjCurr['_not'];
@@ -795,6 +801,7 @@ export const generate_group_gqlArgObj_forHasOperators = (items, group_name, node
 				itemObj = dataToAssign
 			}
 		}
+
 		console.log(nodeStepClean, { itemObj }, { resultingGqlArgObj }, { itemObjectTest2 }, { itemObjectTestCurr }, { dataToAssign }, 'itemData.selectedRowsColValues', itemData.selectedRowsColValues)
 
 
