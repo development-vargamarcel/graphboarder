@@ -737,6 +737,7 @@ export const generate_group_gqlArgObj_forHasOperators = (items, group_name, node
 	let itemsResultingData = []
 	items.forEach((item) => {
 		let itemData = nodes[item.id];
+		const isContainer = itemData.hasOwnProperty('items')
 		const nodeStep = itemData?.stepsOfNodes[itemData?.stepsOfNodes.length - 1]
 		const nodeStepClean = filterElFromArr(nodeStep, [null, undefined, 'bonded', 'list'])
 		console.log({ nodeStep }, { nodeStepClean })
@@ -747,10 +748,10 @@ export const generate_group_gqlArgObj_forHasOperators = (items, group_name, node
 		const displayName = itemData?.dd_displayName
 		let dataToAssign
 
-		if (itemData.operator) {
+		if (isContainer) {
 			const validItemsResult = validItems(itemData.items, nodes);
 			const gqlArgObjForItems = generate_group_gqlArgObj_forHasOperators(validItemsResult, group_name, nodes).itemsResultingData
-			if (operator == 'bonded') {
+			if (operator == 'bonded' || !itemData?.dd_kindList) {
 				const merged_gqlArgObjForItems = _.merge({}, ...gqlArgObjForItems)
 				dataToAssign = merged_gqlArgObjForItems
 			} else {
@@ -780,7 +781,7 @@ export const generate_group_gqlArgObj_forHasOperators = (items, group_name, node
 			itemObjectTestCurr = dataToAssign
 		}
 
-		if (operator) {
+		if (isContainer) {
 			if (itemData.not) {
 				itemObjCurr['_not'] = displayName ? {} : dataToAssign;
 				itemObjCurr = itemObjCurr['_not'];
@@ -793,7 +794,7 @@ export const generate_group_gqlArgObj_forHasOperators = (items, group_name, node
 			}
 		}
 
-		if (!operator && displayName) {
+		if (!isContainer && displayName) {
 			if (itemData.not) {
 				itemObjCurr['_not'] = dataToAssign;
 				itemObjCurr = itemObjCurr['_not'];
