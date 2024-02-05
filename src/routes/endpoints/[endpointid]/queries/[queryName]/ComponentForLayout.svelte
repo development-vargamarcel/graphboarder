@@ -328,7 +328,9 @@
 						.highlight(format($QMS_bodyPartsUnifier_StoreDerived), { language: 'graphql' })
 						.value.trim()}</code
 				>
-				<CodeEditor rawValue={$QMS_bodyPartsUnifier_StoreDerived} language="graphql" />
+				<div class="mx-4 mt-2">
+					<CodeEditor rawValue={$QMS_bodyPartsUnifier_StoreDerived} language="graphql" />
+				</div>
 			{/if}
 		</div>
 		<button
