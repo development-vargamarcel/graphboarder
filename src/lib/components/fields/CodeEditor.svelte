@@ -8,7 +8,7 @@
 	import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
 	import { parseAll, stigifyAll } from '$lib/stores/testData/testEndpoints';
 	import { createEventDispatcher, getContext } from 'svelte';
-
+	export let language = 'javascript';
 	const configurationAsString = `{
 		description: "no description",
 		rowsLocationPossibilities: [
@@ -239,7 +239,7 @@
 	let Monaco;
 
 	console.log({ configurationAsString });
-	onMount(async () => {
+	const initializeEditor = async () => {
 		// @ts-ignore
 		self.MonacoEnvironment = {
 			getWorker: function (_moduleId: any, label: string) {
@@ -261,8 +261,8 @@
 
 		Monaco = await import('monaco-editor');
 		editor = Monaco.editor.create(divEl, {
-			value: 'const data = '.concat(rawValue || '{}'),
-			language: 'javascript',
+			value: language == 'javascript' ? 'const data = '.concat(rawValue || '{}') : rawValue,
+			language: language,
 			lineNumbers: 'on',
 			roundedSelection: false,
 			scrollBeyondLastLine: false,
@@ -279,9 +279,12 @@
 		return () => {
 			editor.dispose();
 		};
-	});
+	};
+	onMount(initializeEditor);
 	$: {
-		editor?.setValue('const data = '.concat(rawValue || '{}'));
+		editor?.setValue(
+			language == 'javascript' ? 'const data = '.concat(rawValue || '{}') : rawValue
+		);
 	}
 </script>
 
@@ -310,6 +313,15 @@
 			on:click={() => {
 				editor.setValue('const data = '.concat(configurationAsString));
 			}}>load demo data</button
+		>
+		<button
+			class="btn btn-primary btn-xs normal-case ml-2"
+			on:click={() => {
+				divEl.requestFullscreen();
+				editor.dispose();
+				setTimeout(initializeEditor, 500);
+				//initializeEditor();
+			}}>full screen</button
 		>
 	</div>
 </div>
