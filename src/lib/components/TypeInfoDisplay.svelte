@@ -276,6 +276,7 @@
 						bind:QMSWraperContext={activeArgumentsQMSWraperContext}
 						QMSName={type.dd_displayName}
 						QMSType="query"
+						QMS_info={type}
 					>
 						{#if showModal}
 							<Modal

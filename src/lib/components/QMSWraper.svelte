@@ -26,8 +26,10 @@
 
 	export let QMSType = 'query';
 	export let QMSName;
-	let QMS_info = schemaData.get_QMS_Field(QMSName, QMSType, schemaData);
-	console.log({ QMS_info });
+	export let QMS_info = schemaData.get_QMS_Field(QMSName, QMSType, schemaData);
+	if (!QMS_info) {
+		QMS_info = schemaData.get_QMS_Field(QMSName, QMSType, schemaData);
+	}
 	const dd_paginationType = QMS_info?.dd_paginationType;
 	let paginationTypeInfo;
 	if (dd_paginationType) {
@@ -36,7 +38,7 @@
 			return pagType.name == dd_paginationType;
 		});
 	}
-
+	console.log({ QMSType, QMSName, QMS_info });
 	export let QMSWraperContext = {};
 	export let activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store();
 	const paginationOptions = Create_paginationOptions();
@@ -99,7 +101,10 @@
 		schemaData
 	);
 	console.log({
+		QMSType,
+		QMSName,
 		QMS_info,
+		schemaData,
 		nodeFieldsQMS_info,
 		nodeFieldsQMS_info_Root,
 		returningColumnsLocation,
