@@ -102,6 +102,9 @@
 	const mergedChildren_finalGqlArgObj_Store = getContext(
 		`${prefix}QMSWraperContext`
 	).mergedChildren_finalGqlArgObj_Store;
+	const mergedChildren_activeArgumentsDataGrouped_Store = getContext(
+		`${prefix}QMSWraperContext`
+	).mergedChildren_activeArgumentsDataGrouped_Store;
 
 	let activeArgumentsDataGrouped_Store = getContext(`${prefix}activeArgumentsDataGrouped_Store`);
 	$: if (finalGqlArgObj_StoreValue && finalGqlArgObj_StoreValue.final_canRunQuery) {
@@ -115,6 +118,18 @@
 		mergedChildren_finalGqlArgObj_Store.update((value) => {
 			return setValueAtPath(value, [...stepsOfFields, 'QMSarguments'], QMSarguments);
 		});
+		if (activeArgumentsQMSWraperContext?.activeArgumentsDataGrouped_Store) {
+			const activeArgumentsDataGrouped_StoreCurrent = get_store_value(
+				activeArgumentsQMSWraperContext.activeArgumentsDataGrouped_Store
+			);
+			mergedChildren_activeArgumentsDataGrouped_Store.update((value) => {
+				return setValueAtPath(
+					value,
+					[...stepsOfFields, 'activeArgumentsDataGrouped'],
+					activeArgumentsDataGrouped_StoreCurrent
+				);
+			});
+		}
 	}
 	$: if (activeArgumentsQMSWraperContext) {
 		$activeArgumentsDataGrouped_Store = get_store_value(
@@ -293,10 +308,10 @@
 										<div class="w-2" />
 
 										<ActiveArguments
-											QMSarguments={getValueAtPath($mergedChildren_finalGqlArgObj_Store, [
-												...stepsOfFields,
-												'QMSarguments'
-											])}
+											QMSarguments={getValueAtPath(
+												$mergedChildren_activeArgumentsDataGrouped_Store,
+												[...stepsOfFields, 'activeArgumentsDataGrouped']
+											)}
 										/>
 
 										<div class="w-2" />
