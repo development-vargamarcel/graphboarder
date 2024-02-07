@@ -292,6 +292,10 @@
 						QMSName={type.dd_displayName}
 						QMSType="query"
 						QMS_info={type}
+						activeArgumentsDataGrouped_StoreInitialValue={getValueAtPath(
+							$mergedChildren_activeArgumentsDataGrouped_Store,
+							[...stepsOfFields, 'activeArgumentsDataGrouped']
+						)}
 					>
 						{#if showModal}
 							<Modal

@@ -40,7 +40,10 @@
 	}
 	console.log({ QMSType, QMSName, QMS_info });
 	export let QMSWraperContext = {};
-	export let activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store();
+	export let activeArgumentsDataGrouped_StoreInitialValue;
+	export let activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store(
+		activeArgumentsDataGrouped_StoreInitialValue
+	);
 	const paginationOptions = Create_paginationOptions();
 	const paginationState = Create_paginationState(
 		undefined,
