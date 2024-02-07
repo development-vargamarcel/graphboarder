@@ -99,7 +99,8 @@ export const Create_activeArgumentsDataGrouped_Store = (
 			//
 			//Handle QMSarguments data if present
 			console.log({ QMSarguments });
-			if (QMSarguments) {
+			const storeVal = get(store);
+			if (!storeVal && QMSarguments) {
 				gqlArgObjToActiveArgumentsDataGrouped(QMSarguments, activeArgumentsDataGrouped, schemaData, endpointInfo);
 			}
 

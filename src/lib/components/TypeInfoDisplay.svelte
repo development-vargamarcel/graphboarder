@@ -308,10 +308,10 @@
 										<div class="w-2" />
 
 										<ActiveArguments
-											QMSarguments={getValueAtPath(
-												$mergedChildren_activeArgumentsDataGrouped_Store,
-												[...stepsOfFields, 'activeArgumentsDataGrouped']
-											)}
+											QMSarguments={getValueAtPath($mergedChildren_finalGqlArgObj_Store, [
+												...stepsOfFields,
+												'QMSarguments'
+											])}
 										/>
 
 										<div class="w-2" />
