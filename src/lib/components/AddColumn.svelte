@@ -93,7 +93,7 @@
 					add
 				</button>
 				{#if dd_relatedRoot?.fields}
-					<Type type={QMS_info} template="columnAddDisplay" depth={0} />
+					<Type type={QMS_info} template="columnAddDisplay" depth={0} isOnMainList={true} />
 					<!-- <TypeList
 						types={dd_relatedRoot.fields}
 						template="columnAddDisplay"

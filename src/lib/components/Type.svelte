@@ -13,7 +13,7 @@
 	export let index;
 	export let type;
 	export let stepsOfFields;
-	export let isOnMainList = false;
+	export let isOnMainList = !stepsOfFields;
 	let {
 		dd_kindsArray,
 		dd_namesArray,
@@ -34,12 +34,13 @@
 	export let depth = 0;
 	let inDuration = 300;
 
-	let showExpand = false;
+	export let showExpand = false;
 	let expandData = {};
 	let canExpand = false;
 	if (!dd_kindsArray?.includes('SCALAR') && dd_kindsArray.length > 0) {
 		canExpand = true;
 	}
+
 	const expand = () => {
 		//console.log('dd_rootName', dd_rootName);
 		expandData = getRootType($schemaData.rootTypes, dd_rootName, schemaData);
@@ -69,6 +70,10 @@
 			//console.log('expandData', expandData);
 		}
 	};
+
+	if (canExpand && isOnMainList) {
+		expand();
+	}
 </script>
 
 {#if template == 'default'}
