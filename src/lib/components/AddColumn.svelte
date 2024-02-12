@@ -8,11 +8,14 @@
 	} from '$lib/utils/usefulFunctions';
 	import { setContext, getContext, createEventDispatcher } from 'svelte';
 	import { get, writable } from 'svelte/store';
+	import Type from './Type.svelte';
 	export let prefix = '';
 	export let column_stepsOfFields;
 	export let addColumnFromInput;
 	export let dd_relatedRoot;
 	export let QMSName;
+	export let QMS_info;
+
 	const dispatchEvent = createEventDispatcher();
 	//stepsOfFieldsOBJ
 	setContext(`${prefix}stepsOfFieldsOBJ`, writable({}));
@@ -90,12 +93,13 @@
 					add
 				</button>
 				{#if dd_relatedRoot?.fields}
-					<TypeList
+					<Type type={QMS_info} template="columnAddDisplay" depth={0} />
+					<!-- <TypeList
 						types={dd_relatedRoot.fields}
 						template="columnAddDisplay"
 						stepsOfFields={[QMSName]}
 						depth={0}
-					/>
+					/> -->
 					<!-- {#each dd_relatedRoot.fields as type, index (index)}
 							<Type
 								{index}

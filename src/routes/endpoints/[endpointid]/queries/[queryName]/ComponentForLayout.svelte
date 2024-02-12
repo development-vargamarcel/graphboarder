@@ -227,6 +227,7 @@
 		{addColumnFromInput}
 		{dd_relatedRoot}
 		{QMSName}
+		QMS_info={currentQMS_info}
 		on:newColumnAddRequest={(e) => {
 			const tableColData = e.detail;
 			console.log('aaaaaaaaa', { tableColData });

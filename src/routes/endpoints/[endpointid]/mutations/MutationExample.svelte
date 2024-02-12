@@ -237,6 +237,7 @@
 			{addColumnFromInput}
 			{dd_relatedRoot}
 			{QMSName}
+			{QMS_info}
 			on:newColumnAddRequest={(e) => {
 				const tableColData = e.detail;
 				tableColsData_Store.addColumn(tableColData);

@@ -206,7 +206,12 @@
 </button> -->
 <!-- main -->
 <div class="flex space-x-2 mx-2 z-50">
-	<AddColumn bind:column_stepsOfFields {dd_relatedRoot} QMSName={queryName} />
+	<AddColumn
+		bind:column_stepsOfFields
+		{dd_relatedRoot}
+		QMSName={queryName}
+		QMS_info={currentQMS_info}
+	/>
 	<div class="grow">
 		{#if showModal}
 			<Modal
