@@ -146,6 +146,10 @@
 		});
 		console.log({ activeArgumentsQMSWraperContext });
 	}
+	$: currentActiveArgumentsDataGrouped = getValueAtPath(
+		$mergedChildren_activeArgumentsDataGrouped_Store,
+		[...stepsOfFields, 'activeArgumentsDataGrouped']
+	);
 </script>
 
 {#if template == 'default'}
@@ -285,10 +289,10 @@
 						showModal = true;
 					}}
 				>
-					<icon class="bi-funnel " />
+					<icon class=" {currentActiveArgumentsDataGrouped ? 'bi-funnel-fill' : 'bi-funnel'} " />
 
 					<QMSWraper
-						bind:QMSWraperContext={activeArgumentsQMSWraperContext}
+						bind:QMSWraperContext={activeArgumentsQMSWraperContext}		
 						QMSName={type.dd_displayName}
 						QMSType="query"
 						QMS_info={type}
