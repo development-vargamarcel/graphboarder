@@ -74,24 +74,27 @@
 					bind:value={column_stepsOfFields}
 					on:keypress={addColumnFromInput}
 				/> -->
-				<button
-					class="btn btn-xs btn-primary "
-					on:click={() => {
-						let stepsOfFields = [];
-						let tableColData = {
-							title: `col-${Math.floor(Math.random() * 200)},${generateTitleFromStepsOfFields(
-								stepsOfFields
-							)},stepsOfFieldsOBJ `,
-							stepsOfFields: stepsOfFields,
-							stepsOfFieldsOBJ: $stepsOfFieldsOBJ,
-							activeArgumentsDataGrouped: $activeArgumentsDataGrouped_Store
-						};
-						dispatchEvent('newColumnAddRequest', tableColData);
-						$stepsOfFieldsOBJ = {};
-					}}
-				>
-					add
-				</button>
+				<div class="text-center sticky left-0  bg-black= mx-auto ">
+					<button
+						class="btn btn-xs btn-primary w-min "
+						on:click={() => {
+							let stepsOfFields = [];
+							let tableColData = {
+								title: `col-${Math.floor(Math.random() * 200)},${generateTitleFromStepsOfFields(
+									stepsOfFields
+								)},stepsOfFieldsOBJ `,
+								stepsOfFields: stepsOfFields,
+								stepsOfFieldsOBJ: $stepsOfFieldsOBJ,
+								activeArgumentsDataGrouped: $activeArgumentsDataGrouped_Store
+							};
+							dispatchEvent('newColumnAddRequest', tableColData);
+							$stepsOfFieldsOBJ = {};
+						}}
+					>
+						add
+					</button>
+				</div>
+
 				{#if dd_relatedRoot?.fields}
 					<Type type={QMS_info} template="columnAddDisplay" depth={0} isOnMainList={true} />
 					<!-- <TypeList
