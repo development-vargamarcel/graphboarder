@@ -234,7 +234,7 @@
 			tableColsData_Store.addColumn(tableColData);
 		}}
 	/>
-	<div class="grow">
+	<div class="grow==">
 		{#if showModal}
 			<Modal
 				modalIdetifier={'activeArgumentsDataModal'}
@@ -255,7 +255,7 @@
 			</Modal>
 		{/if}
 
-		<div class="flex space-x-2 mb-2 px-2">
+		<!-- <div class="flex space-x-2 mb-2 px-2">
 			<button
 				class="btn btn-xs btn-block  "
 				on:click={() => {
@@ -265,7 +265,7 @@
 				}}
 				><i class="bi bi-funnel-fill" />
 			</button>
-		</div>
+		</div> -->
 	</div>
 	<button
 		class=" btn btn-xs grow normal-case "
