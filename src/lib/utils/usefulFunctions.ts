@@ -298,19 +298,26 @@ export const getRootType = (rootTypes, RootType_Name, schemaData) => {
 };
 
 export const getFields_Grouped = (rootField, dd_displayNameToExclude = [], schemaData) => {
+	//rootField must be renamed to node
+	const node_rootType = schemaData?.get_rootType(
+		null,
+		rootField?.dd_rootName || rootField.parent_node.dd_rootName,
+		schemaData
+	);
 	let scalarFields = [];
 	let non_scalarFields = [];
 	let enumFields = [];
 
 	let fieldsArray
-	if (rootField?.enumValues) {
+	if (rootField?.args) {
+		fieldsArray = rootField?.args
+	} else if (node_rootType?.enumValues) {
 		fieldsArray = rootField?.enumValues
-	} else
-		if (rootField?.fields) {
-			fieldsArray = rootField?.fields
-		} else {
-			fieldsArray = rootField?.inputFields
-		}
+	} else if (node_rootType?.fields) {
+		fieldsArray = node_rootType?.fields
+	} else if (node_rootType?.inputFields) {
+		fieldsArray = node_rootType?.inputFields
+	}
 
 
 
@@ -1020,7 +1027,7 @@ export const get_scalarColsData = (currentQMS_info, prefixStepsOfFields = [], sc
 		keep_currentQMS_info_dd_displayName = false;
 	}
 	let dd_relatedRoot = getRootType(null, currentQMS_info.dd_rootName, schemaData);
-	let { scalarFields } = getFields_Grouped(dd_relatedRoot);
+	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], schemaData);
 	let currentQuery_fields_SCALAR_names = scalarFields.map((field) => {
 		return field.name;
 	});
@@ -1127,7 +1134,7 @@ export const nodeAddDefaultFields = (node,
 	console.log({ dd_displayNameToExclude });
 
 	let fields_Grouped = getFields_Grouped(
-		node_rootType,
+		node,
 		dd_displayNameToExclude, schemaData
 	);
 	let scalarFields = fields_Grouped.scalarFields

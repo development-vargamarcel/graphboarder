@@ -56,7 +56,7 @@
 		$activeArgumentsDataGrouped_Store.length > 0 ? true : false;
 	//
 
-	let { scalarFields } = getFields_Grouped(dd_relatedRoot);
+	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], schemaData);
 
 	let queryData;
 	let rows = [];
