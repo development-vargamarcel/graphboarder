@@ -14,6 +14,7 @@ export const Create_activeArgumentsDataGrouped_Store = (
 		set,
 		update,
 		set_groups: (QMS_info, schemaData, QMSarguments, endpointInfo) => {
+			const QMS_infoRoot = getRootType(null, QMS_info.dd_rootName, schemaData)
 			const argsInfo = QMS_info?.args;
 			console.log({ argsInfo });
 			//handle generating activeArgumentsDataGrouped
@@ -21,7 +22,29 @@ export const Create_activeArgumentsDataGrouped_Store = (
 			const hasRootArgs = argsInfo?.find((el) => {
 				return el.dd_isRootArg;
 			});
+			////--------
+			console.log('ppppp', QMS_info, QMS_infoRoot)
+			const newGroupData = {
+				originType: QMS_info,
 
+				group_name: 'all',
+				group_isRoot: false,
+				// group_info: el,
+				...QMS_info,
+				group_args: []
+			};
+			newGroupData.group_argsNode = {
+				mainContainer: {
+					...QMS_info,
+					operator: 'bonded',
+					isMain: true,
+					not: false,
+					items: [],
+					id: 'mainContainer'
+				}
+			};
+			activeArgumentsDataGrouped.push(newGroupData);
+			////-----------
 			if (hasRootArgs) {
 				const rootGroup = {
 					originType: QMS_info,

@@ -1134,6 +1134,7 @@ export const nodeAddDefaultFields = (node,
 	let non_scalarFields = fields_Grouped.non_scalarFields
 	let enumFields = fields_Grouped.enumFields
 
+	console.log({ group, node, node_rootType, dd_displayNameToExclude, fields_Grouped });
 
 	console.log({ scalarFields });
 	console.log({ enumFields });
