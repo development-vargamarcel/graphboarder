@@ -22,95 +22,110 @@ export const Create_activeArgumentsDataGrouped_Store = (
 			const hasRootArgs = argsInfo?.find((el) => {
 				return el.dd_isRootArg;
 			});
-			////--------
-			console.log('ppppp', QMS_info, QMS_infoRoot)
-			const newGroupData = {
-				originType: QMS_info,
 
-				group_name: 'all',
-				group_isRoot: false,
-				// group_info: el,
-				...QMS_info,
-				group_args: []
-			};
-			newGroupData.group_argsNode = {
-				mainContainer: {
-					...QMS_info,
-					operator: 'bonded',
-					isMain: true,
-					not: false,
-					items: [],
-					id: 'mainContainer'
-				}
-			};
-			activeArgumentsDataGrouped.push(newGroupData);
-			////-----------
-			if (hasRootArgs) {
-				const rootGroup = {
+
+
+			////-------- all encompassing group !!!put this first to have it overriden by other groups,or last for opposite result
+			const addAllArgsGroup = () => {
+				console.log('ppppp', QMS_info, QMS_infoRoot)
+				const newGroupData = {
 					originType: QMS_info,
-					group_name: 'root',
-					group_isRoot: true,
-					dd_kindList: false,
+
+					group_name: 'all',
+					group_hasAllArgs: true,
+					group_isRoot: false,
+					// group_info: el,
+					...QMS_info,
 					group_args: []
 				};
-				activeArgumentsDataGrouped.push(rootGroup);
+				newGroupData.group_argsNode = {
+					mainContainer: {
+						...QMS_info,
+						operator: 'bonded',
+						isMain: true,
+						not: false,
+						items: [],
+						id: 'mainContainer'
+					}
+				};
+				activeArgumentsDataGrouped.push(newGroupData);
 			}
-
-			argsInfo?.forEach((el) => {
-				if (!el.dd_isRootArg) {
-					const newGroupData = {
+			////-----------
+			//////////////////////////----------Smart groups
+			const addSmartGroups = () => {
+				if (hasRootArgs) {
+					const rootGroup = {
 						originType: QMS_info,
-
-						group_name: el.dd_displayName,
-						group_isRoot: false,
-						// group_info: el,
-						...el,
+						group_name: 'root',
+						group_isRoot: true,
+						dd_kindList: false,
 						group_args: []
 					};
-
-					const hasFilterOperators =
-						getRootType(null, el.dd_rootName, schemaData)?.dd_baseFilterOperators?.length > 0;
-					newGroupData.group_argsNode = {
-						mainContainer: {
-							...el,
-							operator: 'bonded',
-							isMain: true,
-							not: false,
-							items: [],
-							id: 'mainContainer'
-						}
-					};
-
-					if (hasFilterOperators) {
-						newGroupData.group_argsNode = {
-							mainContainer: {
-								...el,
-								operator: '_and',
-								isMain: true,
-								not: false,
-								items: [],
-								id: 'mainContainer'
-							}
-						};
-					}
-
-					const expectsList = el.dd_kindList;
-					if (expectsList) {
-						newGroupData.group_argsNode = {
-							mainContainer: {
-								...el,
-								operator: 'list',
-								isMain: true,
-								not: false,
-								items: [],
-								id: 'mainContainer'
-							}
-						};
-					}
-
-					activeArgumentsDataGrouped.push(newGroupData);
+					activeArgumentsDataGrouped.push(rootGroup);
 				}
-			});
+
+				argsInfo?.forEach((el) => {
+					if (!el.dd_isRootArg) {
+						const newGroupData = {
+							originType: QMS_info,
+
+							group_name: el.dd_displayName,
+							group_isRoot: false,
+							// group_info: el,
+							...el,
+							group_args: []
+						};
+
+						const hasFilterOperators =
+							getRootType(null, el.dd_rootName, schemaData)?.dd_baseFilterOperators?.length > 0;
+						newGroupData.group_argsNode = {
+							mainContainer: {
+								...el,
+								operator: 'bonded',
+								isMain: true,
+								not: false,
+								items: [],
+								id: 'mainContainer'
+							}
+						};
+
+						if (hasFilterOperators) {
+							newGroupData.group_argsNode = {
+								mainContainer: {
+									...el,
+									operator: '_and',
+									isMain: true,
+									not: false,
+									items: [],
+									id: 'mainContainer'
+								}
+							};
+						}
+
+						const expectsList = el.dd_kindList;
+						if (expectsList) {
+							newGroupData.group_argsNode = {
+								mainContainer: {
+									...el,
+									operator: 'list',
+									isMain: true,
+									not: false,
+									items: [],
+									id: 'mainContainer'
+								}
+							};
+						}
+
+						activeArgumentsDataGrouped.push(newGroupData);
+					}
+				});
+			}
+			//////////////////////////----------
+			//addSmartGroups()
+			addAllArgsGroup()//!!!put this first to have it overriden by other groups, or last for opposite result
+
+
+
 			//filter out duplicate groups:
 			const seenGroupNames = [];
 			activeArgumentsDataGrouped.forEach((group, index) => {
