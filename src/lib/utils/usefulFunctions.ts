@@ -297,11 +297,10 @@ export const getRootType = (rootTypes, RootType_Name, schemaData) => {
 	})[0];
 };
 
-export const getFields_Grouped = (rootField, dd_displayNameToExclude = [], schemaData) => {
-	//rootField must be renamed to node
+export const getFields_Grouped = (node, dd_displayNameToExclude = [], schemaData) => {
 	const node_rootType = schemaData?.get_rootType(
 		null,
-		rootField?.dd_rootName || rootField.parent_node.dd_rootName,
+		node?.dd_rootName || node.parent_node.dd_rootName,
 		schemaData
 	);
 	let scalarFields = [];
@@ -309,10 +308,10 @@ export const getFields_Grouped = (rootField, dd_displayNameToExclude = [], schem
 	let enumFields = [];
 
 	let fieldsArray
-	if (rootField?.args) {
-		fieldsArray = rootField?.args
+	if (node?.args) {
+		fieldsArray = node?.args
 	} else if (node_rootType?.enumValues) {
-		fieldsArray = rootField?.enumValues
+		fieldsArray = node?.enumValues
 	} else if (node_rootType?.fields) {
 		fieldsArray = node_rootType?.fields
 	} else if (node_rootType?.inputFields) {
