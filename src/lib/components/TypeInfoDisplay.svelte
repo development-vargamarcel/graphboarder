@@ -105,7 +105,9 @@
 	const mergedChildren_activeArgumentsDataGrouped_Store = getContext(
 		`${prefix}QMSWraperContext`
 	).mergedChildren_activeArgumentsDataGrouped_Store;
-
+	const mergedChildren_QMSWraperCtxData_Store = getContext(
+		`${prefix}QMSWraperContext`
+	).mergedChildren_QMSWraperCtxData_Store;
 	let activeArgumentsDataGrouped_Store = getContext(`${prefix}activeArgumentsDataGrouped_Store`);
 	$: if (finalGqlArgObj_StoreValue && finalGqlArgObj_StoreValue.final_canRunQuery) {
 		finalGqlArgObjValue = finalGqlArgObj_StoreValue.finalGqlArgObj;
@@ -130,6 +132,20 @@
 				);
 			});
 		}
+		////
+		if (activeArgumentsQMSWraperContext) {
+			const activeArgumentsDataGrouped_StoreCurrent = get_store_value(
+				activeArgumentsQMSWraperContext.activeArgumentsDataGrouped_Store
+			);
+			mergedChildren_QMSWraperCtxData_Store.update((value) => {
+				return setValueAtPath(
+					value,
+					[...stepsOfFields, 'QMSWraperCtxData'],
+					activeArgumentsQMSWraperContext
+				);
+			});
+		}
+		////
 	}
 	$: if (activeArgumentsQMSWraperContext) {
 		$activeArgumentsDataGrouped_Store = get_store_value(
@@ -150,6 +166,10 @@
 		$mergedChildren_activeArgumentsDataGrouped_Store,
 		[...stepsOfFields, 'activeArgumentsDataGrouped']
 	);
+	$: currentQMSWraperCtxData = getValueAtPath($mergedChildren_QMSWraperCtxData_Store, [
+		...stepsOfFields,
+		'QMSWraperCtxData'
+	]);
 </script>
 
 {#if template == 'default'}
@@ -291,15 +311,17 @@
 				>
 					<icon class=" {currentActiveArgumentsDataGrouped ? 'bi-funnel-fill' : 'bi-funnel'} " />
 
+					<!-- activeArgumentsDataGrouped_StoreInitialValue={getValueAtPath(
+							$mergedChildren_activeArgumentsDataGrouped_Store,
+							[...stepsOfFields, 'activeArgumentsDataGrouped']
+						)} -->
+
 					<QMSWraper
-						bind:QMSWraperContext={activeArgumentsQMSWraperContext}		
+						bind:QMSWraperContext={activeArgumentsQMSWraperContext}
 						QMSName={type.dd_displayName}
 						QMSType="query"
 						QMS_info={type}
-						activeArgumentsDataGrouped_StoreInitialValue={getValueAtPath(
-							$mergedChildren_activeArgumentsDataGrouped_Store,
-							[...stepsOfFields, 'activeArgumentsDataGrouped']
-						)}
+						QMSWraperContextGiven={currentQMSWraperCtxData}
 					>
 						{#if showModal}
 							<Modal
