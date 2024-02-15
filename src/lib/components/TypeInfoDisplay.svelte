@@ -102,9 +102,9 @@
 	const mergedChildren_finalGqlArgObj_Store = getContext(
 		`${prefix}QMSWraperContext`
 	).mergedChildren_finalGqlArgObj_Store;
-	const mergedChildren_activeArgumentsDataGrouped_Store = getContext(
-		`${prefix}QMSWraperContext`
-	).mergedChildren_activeArgumentsDataGrouped_Store;
+	// const mergedChildren_activeArgumentsDataGrouped_Store = getContext(
+	// 	`${prefix}QMSWraperContext`
+	// ).mergedChildren_activeArgumentsDataGrouped_Store;
 	const mergedChildren_QMSWraperCtxData_Store = getContext(
 		`${prefix}QMSWraperContext`
 	).mergedChildren_QMSWraperCtxData_Store;
@@ -120,18 +120,18 @@
 		mergedChildren_finalGqlArgObj_Store.update((value) => {
 			return setValueAtPath(value, [...stepsOfFields, 'QMSarguments'], QMSarguments);
 		});
-		if (activeArgumentsQMSWraperContext?.activeArgumentsDataGrouped_Store) {
-			const activeArgumentsDataGrouped_StoreCurrent = get_store_value(
-				activeArgumentsQMSWraperContext.activeArgumentsDataGrouped_Store
-			);
-			mergedChildren_activeArgumentsDataGrouped_Store.update((value) => {
-				return setValueAtPath(
-					value,
-					[...stepsOfFields, 'activeArgumentsDataGrouped'],
-					activeArgumentsDataGrouped_StoreCurrent
-				);
-			});
-		}
+		// if (activeArgumentsQMSWraperContext?.activeArgumentsDataGrouped_Store) {
+		// 	const activeArgumentsDataGrouped_StoreCurrent = get_store_value(
+		// 		activeArgumentsQMSWraperContext.activeArgumentsDataGrouped_Store
+		// 	);
+		// 	mergedChildren_activeArgumentsDataGrouped_Store.update((value) => {
+		// 		return setValueAtPath(
+		// 			value,
+		// 			[...stepsOfFields, 'activeArgumentsDataGrouped'],
+		// 			activeArgumentsDataGrouped_StoreCurrent
+		// 		);
+		// 	});
+		// }
 		////
 		if (activeArgumentsQMSWraperContext) {
 			const activeArgumentsDataGrouped_StoreCurrent = get_store_value(
@@ -162,10 +162,10 @@
 		});
 		console.log({ activeArgumentsQMSWraperContext });
 	}
-	$: currentActiveArgumentsDataGrouped = getValueAtPath(
-		$mergedChildren_activeArgumentsDataGrouped_Store,
-		[...stepsOfFields, 'activeArgumentsDataGrouped']
-	);
+	// $: currentActiveArgumentsDataGrouped = getValueAtPath(
+	// 	$mergedChildren_activeArgumentsDataGrouped_Store,
+	// 	[...stepsOfFields, 'activeArgumentsDataGrouped']
+	// );
 	$: currentQMSWraperCtxData = getValueAtPath($mergedChildren_QMSWraperCtxData_Store, [
 		...stepsOfFields,
 		'QMSWraperCtxData'
@@ -309,7 +309,7 @@
 						showModal = true;
 					}}
 				>
-					<icon class=" {currentActiveArgumentsDataGrouped ? 'bi-funnel-fill' : 'bi-funnel'} " />
+					<icon class=" {currentQMSWraperCtxData ? 'bi-funnel-fill' : 'bi-funnel'} " />
 
 					<!-- activeArgumentsDataGrouped_StoreInitialValue={getValueAtPath(
 							$mergedChildren_activeArgumentsDataGrouped_Store,
