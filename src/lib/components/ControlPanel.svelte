@@ -1,10 +1,17 @@
 <script>
 	import AddColumn from './AddColumn.svelte';
-	///
+	///not good
 	//1.Select type using Type or AddColumn
 	//2.Create QMSWraperCtx if not existent
 	//3.Select node from QMSWraperCtx.ActiveArgumentsDataGrouped_Store (show list of nodes Object.values(nodes) <show stepsOfFields>)
 	//4.Add a way to create nested nodes fast,just by needidng to choose
+	///
+
+	///
+	//1.stepsOfFieldsThisAppliesTo will go into activeArgumentsContext
+	//1.5 every node must have knowledge of the steps of fields to the filters trough a activeArgumentsContext
+	//
+	//2.Select node from QMSWraperCtx.ActiveArgumentsDataGrouped_Store (show list of nodes Object.values(nodes) <show stepsOfFields>)
 	///
 	import Type from './Type.svelte';
 	export let type;

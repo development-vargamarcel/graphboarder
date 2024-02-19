@@ -345,6 +345,7 @@
 										<div class="w-2" />
 
 										<ActiveArguments
+											stepsOfFieldsThisAppliesTo={stepsOfFields}
 											QMSarguments={getValueAtPath($mergedChildren_finalGqlArgObj_Store, [
 												...stepsOfFields,
 												'QMSarguments'
