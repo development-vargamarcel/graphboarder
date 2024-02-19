@@ -203,6 +203,7 @@
 	import RowCount from '$lib/components/UI/rowCount.svelte';
 	import Modal from '$lib/components/Modal.svelte';
 	import GraphqlCodeDisplay from '$lib/components/GraphqlCodeDisplay.svelte';
+	import ControlPanel from '$lib/components/ControlPanel.svelte';
 	export let rowSelectionState;
 
 	onMount(() => {
@@ -221,6 +222,9 @@
 	next page
 </button> -->
 <!-- main -->
+<div class="p-2">
+	<ControlPanel />
+</div>
 <div class="flex space-x-2 mx-2">
 	<AddColumn
 		bind:column_stepsOfFields
