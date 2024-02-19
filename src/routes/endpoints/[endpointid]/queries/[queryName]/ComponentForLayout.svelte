@@ -223,7 +223,7 @@
 </button> -->
 <!-- main -->
 <div class="p-2">
-	<ControlPanel />
+	<ControlPanel type={currentQMS_info} />
 </div>
 <div class="flex space-x-2 mx-2">
 	<AddColumn
