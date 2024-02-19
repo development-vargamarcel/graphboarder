@@ -223,7 +223,19 @@
 </button> -->
 <!-- main -->
 <div class="p-2">
-	<ControlPanel type={currentQMS_info} />
+	<ControlPanel
+		type={currentQMS_info}
+		bind:column_stepsOfFields
+		{addColumnFromInput}
+		{dd_relatedRoot}
+		{QMSName}
+		{currentQMS_info}
+		on:newColumnAddRequest={(e) => {
+			const tableColData = e.detail;
+			console.log('aaaaaaaaa', { tableColData });
+			tableColsData_Store.addColumn(tableColData);
+		}}
+	/>
 </div>
 <div class="flex space-x-2 mx-2">
 	<AddColumn
