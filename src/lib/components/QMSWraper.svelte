@@ -24,6 +24,7 @@
 	import { Create_mergedChildren_finalGqlArgObj_Store } from '$lib/stores/QMSHandling/mergedChildren_finalGqlArgObj_Store';
 	//import { Create_mergedChildren_activeArgumentsDataGrouped_Store } from '$lib/stores/QMSHandling/mergedChildren_activeArgumentsDataGrouped_Store';
 	import { Create_mergedChildren_QMSWraperCtxData_Store } from '$lib/stores/QMSHandling/mergedChildren_QMSWraperCtxData_Store ';
+	import { Create_mergedChildren_controlPanel_Store } from '$lib/stores/QMSHandling/mergedChildren_controlPanel_Store ';
 
 	export let QMSType = 'query';
 	export let QMSName;
@@ -147,6 +148,7 @@
 	// const mergedChildren_activeArgumentsDataGrouped_Store =
 	// 	Create_mergedChildren_activeArgumentsDataGrouped_Store({});
 	const mergedChildren_QMSWraperCtxData_Store = Create_mergedChildren_QMSWraperCtxData_Store([]);
+	const mergedChildren_controlPanel_Store = Create_mergedChildren_controlPanel_Store([]);
 
 	$: console.log('$mergedChildren_finalGqlArgObj_Store', $mergedChildren_finalGqlArgObj_Store);
 	// $: console.log(
@@ -154,6 +156,8 @@
 	// 	$mergedChildren_activeArgumentsDataGrouped_Store
 	// );
 	$: console.log('$mergedChildren_QMSWraperCtxData_Store ', $mergedChildren_QMSWraperCtxData_Store);
+	$: console.log('$mergedChildren_controlPanel_Store ', $mergedChildren_controlPanel_Store);
+
 	const QMS_bodyPart_StoreDerived = Create_QMS_bodyPart_StoreDerived(
 		finalGqlArgObj_Store,
 		tableColsData_Store,
@@ -228,7 +232,8 @@
 		paginationState_derived,
 		mergedChildren_finalGqlArgObj_Store,
 		//mergedChildren_activeArgumentsDataGrouped_Store,
-		mergedChildren_QMSWraperCtxData_Store
+		mergedChildren_QMSWraperCtxData_Store,
+		mergedChildren_controlPanel_Store
 	};
 	if (preferGivenQMSWraperContext && QMSWraperContextGiven) {
 		QMSWraperContext = QMSWraperContextGiven;

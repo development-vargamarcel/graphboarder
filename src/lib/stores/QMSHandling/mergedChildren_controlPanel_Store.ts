@@ -1,16 +1,18 @@
 import { get, writable } from "svelte/store";
-const getObjIndexInArray = (arr = [], obj = {}, identifierKey = 'stepsOfFieldsAndId') => {
-  const objIdentifierKeyValue_string = JSON.stringify(obj[identifierKey])
-  return arr.findIndex((currObj) => { return JSON.stringify(currObj[identifierKey]) == objIdentifierKeyValue_string })
+const getIdentifierValue = (obj) => {
+  return JSON.stringify(obj.stepsOfFieldsThisAppliesTo) + obj.nodeId
 }
-export const Create_mergedChildren_c
-ontrolPanel_Store = (initialValue = []) => {
+const getObjIndexInArray = (arr = [], obj = {}, getIdentifierValue) => {
+  const objIdentifierValue = getIdentifierValue(obj)
+  return arr.findIndex((currObj) => { return objIdentifierValue == getIdentifierValue(currObj) })
+}
+export const Create_mergedChildren_controlPanel_Store = (initialValue = []) => {
   const store = writable(initialValue);
   const { subscribe, set, update } = store;
   return {
     ...store, addOrReplace: (obj) => {
       const storeVal = get(store)
-      const objIndexInArray = getObjIndexInArray(storeVal, obj, 'stepsOfFieldsAndId')
+      const objIndexInArray = getObjIndexInArray(storeVal, obj, getIdentifierValue)
       const objIsPresentInArray = objIndexInArray > -1
       if (objIsPresentInArray) {
         storeVal[objIndexInArray] = obj
@@ -19,9 +21,20 @@ ontrolPanel_Store = (initialValue = []) => {
       }
       store.set(storeVal)
     },
-    getObj: (stepsOfFields) => {
+    delete: (obj) => {
       const storeVal = get(store)
-      const objIndexInArray = getObjIndexInArray(storeVal, { stepsOfFields }, 'stepsOfFields')
+      const objIndexInArray = getObjIndexInArray(storeVal, obj, getIdentifierValue)
+      const objIsPresentInArray = objIndexInArray > -1
+      if (objIsPresentInArray) {
+        storeVal.splice(objIndexInArray, 1)
+      } else {
+        console.warn('nothing to delete')
+      }
+      store.set(storeVal)
+    },
+    getObj: (obj) => {
+      const storeVal = get(store)
+      const objIndexInArray = getObjIndexInArray(storeVal, obj, getIdentifierValue)
       const objIsPresentInArray = objIndexInArray > -1
       return storeVal[objIndexInArray]
     }

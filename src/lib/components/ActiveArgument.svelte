@@ -11,6 +11,7 @@
 	import Modal from './Modal.svelte';
 	import { string_transformerREVERSE } from '$lib/utils/dataStructureTransformers';
 	import { argumentCanRunQuery, getPreciseType } from '$lib/utils/usefulFunctions';
+	import AddNodeToControlPanel from './AddNodeToControlPanel.svelte';
 	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
 	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
 	export let isNot;
@@ -121,6 +122,7 @@
 	};
 	let showModal = false;
 	const mutationVersion = getContext('mutationVersion');
+	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
 </script>
 
 {#if showModal}
@@ -142,11 +144,11 @@
 				</p>
 			</div>
 
-			<div class="mb-6 flex">
+			<div class="mb-6 flex space-x-4">
 				{#if parentNode?.inputFields?.some((inputField) => {
 					return inputField.dd_displayName == '_not';
 				})}
-					<div class="form-control mr-1">
+					<div class="form-control ">
 						<label class="label cursor-pointer w-min py-0">
 							<span class="label-text pr-1">Not</span>
 							<input
@@ -184,6 +186,7 @@
 				>
 					<i class="bi bi-trash-fill" />
 				</btn>
+				<AddNodeToControlPanel node={parentNode} />
 			</div>
 
 			{#if activeArgumentData?.description}

@@ -18,7 +18,7 @@
 	let rootArgs = argsInfo.filter((arg) => {
 		return arg.dd_isRootArg;
 	});
-
+	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
 	let groupArgsPossibilities;

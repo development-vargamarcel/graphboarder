@@ -1,7 +1,10 @@
 <script lang="ts">
+	export let stepsOfFieldsThisAppliesTo;
+	const activeArgumentsContext = { stepsOfFieldsThisAppliesTo };
 	import { createEventDispatcher, each, getContext, setContext } from 'svelte/internal';
 	import ActiveArgumentsGroupWraper from '$lib/components/ActiveArgumentsGroupWraper.svelte';
 	export let prefix = '';
+	setContext(`${prefix}activeArgumentsContext`, activeArgumentsContext);
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;

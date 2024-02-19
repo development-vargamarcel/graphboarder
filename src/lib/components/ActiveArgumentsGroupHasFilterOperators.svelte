@@ -239,6 +239,7 @@
 	import ExplorerTable from '$lib/components/ExplorerTable.svelte';
 	import { string_transformer } from '$lib/utils/dataStructureTransformers.ts';
 	import { writable } from 'svelte/store';
+	import AddNodeToControlPanel from './AddNodeToControlPanel.svelte';
 
 	let showExplorerTable = true;
 	const fuse = new Fuse($schemaData.queryFields, {
@@ -327,6 +328,7 @@
 
 	let QMSWraperContextForSelectedQMS = {};
 	$: console.log({ QMSWraperContextForSelectedQMS });
+	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
 </script>
 
 {#if showAddModal}
@@ -443,6 +445,7 @@
 					>
 						<i class="bi bi-trash-fill" />
 					</btn>
+					<AddNodeToControlPanel {node} />
 				</div>
 			{/if}
 			<div>
