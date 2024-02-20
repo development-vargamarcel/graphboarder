@@ -172,7 +172,7 @@
 	$: if ($mergedChildren_QMSWraperCtxData_Store) {
 		currentQMSWraperCtxData = mergedChildren_QMSWraperCtxData_Store.getObj(stepsOfFields);
 	}
-	$: console.log({ currentQMSWraperCtxData });
+	//$: console.log({ currentQMSWraperCtxData });//!!!This logs multiple times when expected only one log,because $mergedChildren_QMSWraperCtxData_Store is being updated multiple times instead of just onece
 	$: currentQMSArguments = getValueAtPath($mergedChildren_finalGqlArgObj_Store, [
 		...stepsOfFields,
 		'QMSarguments'
