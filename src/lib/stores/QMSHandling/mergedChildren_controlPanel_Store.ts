@@ -10,12 +10,12 @@ export const Create_mergedChildren_controlPanel_Store = (initialValue = []) => {
   const store = writable(initialValue);
   const { subscribe, set, update } = store;
   return {
-    ...store, addOrReplace: (obj) => {
+    ...store, addOrReplaceKeepingOldId: (obj) => {
       const storeVal = get(store)
       const objIndexInArray = getObjIndexInArray(storeVal, obj, getIdentifierValue)
       const objIsPresentInArray = objIndexInArray > -1
       if (objIsPresentInArray) {
-        storeVal[objIndexInArray] = obj
+        storeVal[objIndexInArray] = { obj, id: storeVal[objIndexInArray]?.id }
       } else {
         storeVal.push(obj)
       }

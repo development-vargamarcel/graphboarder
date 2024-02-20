@@ -6,6 +6,7 @@
 	export let setNotInUseIfNotValid = true;
 	export let setNotInUseIfNotValidAndENUM = true;
 	export let parentNode;
+	export let node;
 	export let prefix = '';
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Modal from './Modal.svelte';
@@ -186,7 +187,7 @@
 				>
 					<i class="bi bi-trash-fill" />
 				</btn>
-				<AddNodeToControlPanel node={parentNode} />
+				<AddNodeToControlPanel {node} />
 			</div>
 
 			{#if activeArgumentData?.description}

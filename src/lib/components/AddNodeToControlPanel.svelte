@@ -6,7 +6,8 @@
 	const { mergedChildren_controlPanel_Store } = getContext(`${prefix}QMSWraperContext`);
 	let currentObject = {
 		stepsOfFieldsThisAppliesTo: activeArgumentsContext.stepsOfFieldsThisAppliesTo,
-		nodeId: node.id
+		nodeId: node.id,
+		id: Date.now() + Math.random()
 	};
 	$: objIsStarred = mergedChildren_controlPanel_Store.getObj(currentObject);
 	$: console.log({ objIsStarred });
@@ -18,7 +19,7 @@
 		if (objIsStarred) {
 			mergedChildren_controlPanel_Store.delete(currentObject);
 		} else {
-			mergedChildren_controlPanel_Store.addOrReplace(currentObject);
+			mergedChildren_controlPanel_Store.addOrReplaceKeepingOldId(currentObject);
 		}
 		objIsStarred = mergedChildren_controlPanel_Store.getObj(currentObject);
 	}}
