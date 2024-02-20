@@ -99,6 +99,7 @@
 	let finalGqlArgObjValue;
 	let activeArgumentsQMSWraperContext;
 	let QMSarguments;
+	$: canAcceptArguments = canExpand && args?.length > 0 && isUsedInSomeColumn;
 	const mergedChildren_finalGqlArgObj_Store = getContext(
 		`${prefix}QMSWraperContext`
 	).mergedChildren_finalGqlArgObj_Store;
@@ -133,7 +134,11 @@
 		// 	});
 		// }
 		////
-		if (activeArgumentsQMSWraperContext) {
+
+		////
+	}
+	$: if (activeArgumentsQMSWraperContext) {
+		if (canAcceptArguments) {
 			const activeArgumentsDataGrouped_StoreCurrent = get_store_value(
 				activeArgumentsQMSWraperContext.activeArgumentsDataGrouped_Store
 			);
@@ -143,17 +148,8 @@
 				...activeArgumentsQMSWraperContext
 			});
 			//
-			// mergedChildren_QMSWraperCtxData_Store.update((value) => {
-			// 	return setValueAtPath(
-			// 		value,
-			// 		[...stepsOfFields, 'QMSWraperCtxData'],
-			// 		activeArgumentsQMSWraperContext
-			// 	);
-			// });
 		}
-		////
-	}
-	$: if (activeArgumentsQMSWraperContext) {
+
 		$activeArgumentsDataGrouped_Store = get_store_value(
 			activeArgumentsQMSWraperContext.activeArgumentsDataGrouped_Store
 		);
@@ -307,7 +303,7 @@
 				</sup>
 			{/if}
 
-			{#if canExpand && args?.length > 0 && isUsedInSomeColumn}
+			{#if canAcceptArguments}
 				<button
 					class="btn btn-xs btn-ghost normal-case  rounded px-2 {hasQMSarguments
 						? 'text-success'
