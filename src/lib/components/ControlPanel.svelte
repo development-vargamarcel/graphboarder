@@ -76,50 +76,20 @@
 /> -->
 
 <div class="card w-full ">
-	<div class="card-body  m-2">
-		<!-- {#each $mergedChildren_controlPanel_Store as item}
-			{item.id}
-		{:else}
-			No starred elements detected.
-		{/each} -->
+	<div class="card-body   {controlPanelNodes.length > 0 ? 'h-32' : ''}  overflow-y-auto resize">
+		<!-- <div class="flex w-min">
+			<icon class=" bi bi-star" />{$mergedChildren_controlPanel_Store.length}
+		</div> -->
+
 		{#key controlPanelNodes}
-			{#if controlPanelNodes.length > 0 || true}
-				<button
-					class="btn btn-xs btn-ghost normal-case  rounded px-2  "
-					on:click|stopPropagation={() => {
-						showModal = true;
-					}}
+			{#if controlPanelNodes.length > 0}
+				<QMSWraper
+					QMSName={type.dd_displayName}
+					QMSType="query"
+					QMS_info={{ ...type, args: controlPanelNodes }}
 				>
-					<icon class=" bi bi-star" />{$mergedChildren_controlPanel_Store.length}
-
-					<QMSWraper
-						QMSName={type.dd_displayName}
-						QMSType="query"
-						QMS_info={{ ...type, args: controlPanelNodes }}
-					>
-						{#if showModal}
-							<Modal
-								modalIdetifier={'activeArgumentsDataModal'}
-								showApplyBtn={false}
-								on:cancel={(e) => {
-									let { detail } = e;
-									if (detail.modalIdetifier == 'activeArgumentsDataModal') {
-										showModal = false;
-									}
-								}}
-								><div class="  w-full  ">
-									<div class="mx-auto mt-2  w-full   space-y-2   pb-2  ">
-										<div class="w-2" />
-
-										<ActiveArguments />
-
-										<div class="w-2" />
-									</div>
-								</div>
-							</Modal>
-						{/if}
-					</QMSWraper>
-				</button>
+					<ActiveArguments />
+				</QMSWraper>
 			{/if}
 		{/key}
 	</div>
