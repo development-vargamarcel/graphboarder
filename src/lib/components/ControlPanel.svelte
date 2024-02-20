@@ -28,13 +28,20 @@
 		mergedChildren_controlPanel_Store,
 		mergedChildren_finalGqlArgObj_Store
 	} = QMSWraperContext;
-	console.log(
-		'from control panel',
-		QMSWraperContext,
-		$mergedChildren_controlPanel_Store,
-		$mergedChildren_finalGqlArgObj_Store,
-		$mergedChildren_QMSWraperCtxData_Store
-	);
+	$: {
+		console.log(
+			'from control panel',
+			QMSWraperContext,
+			$mergedChildren_controlPanel_Store,
+			$mergedChildren_finalGqlArgObj_Store,
+			$mergedChildren_QMSWraperCtxData_Store
+		);
+	}
+	const getNodeGivenControlPanelItem = (
+		CPItem,
+		mergedChildren_QMSWraperCtxData_Value,
+		mergedChildren_controlPanel_Value
+	) => {};
 </script>
 
 <!-- <AddColumn
