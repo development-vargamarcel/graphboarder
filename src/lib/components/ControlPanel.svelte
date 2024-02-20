@@ -15,6 +15,11 @@
 	//2.Select node from QMSWraperCtx.ActiveArgumentsDataGrouped_Store (show list of nodes Object.values(nodes) <show stepsOfFields>)
 	///
 	import Type from './Type.svelte';
+	import Modal from './Modal.svelte';
+	import ActiveArguments from './ActiveArguments.svelte';
+	import QMSWraper from './QMSWraper.svelte';
+	import { get } from 'svelte/store';
+
 	export let type;
 	export let prefix = '';
 	export let column_stepsOfFields;
@@ -33,15 +38,32 @@
 			'from control panel',
 			QMSWraperContext,
 			$mergedChildren_controlPanel_Store,
-			$mergedChildren_finalGqlArgObj_Store,
 			$mergedChildren_QMSWraperCtxData_Store
 		);
 	}
 	const getNodeGivenControlPanelItem = (
 		CPItem,
-		mergedChildren_QMSWraperCtxData_Value,
-		mergedChildren_controlPanel_Value
-	) => {};
+		mergedChildren_controlPanel_Value,
+		mergedChildren_QMSWraperCtxData_Value
+	) => {
+		const activeArgumentsDataGrouped_Store = mergedChildren_QMSWraperCtxData_Value.find(
+			(currCtx) => {
+				return currCtx.stepsOfFields.join() == CPItem.stepsOfFieldsThisAppliesTo;
+			}
+		).activeArgumentsDataGrouped_Store;
+
+		const node = get(activeArgumentsDataGrouped_Store)[0].group_argsNode[CPItem.nodeId];
+		return node;
+	};
+	$: controlPanelNodes = $mergedChildren_controlPanel_Store.map((CPItem) => {
+		return getNodeGivenControlPanelItem(
+			CPItem,
+			$mergedChildren_controlPanel_Store,
+			$mergedChildren_QMSWraperCtxData_Store
+		);
+	});
+	$: console.log('from control panel', { controlPanelNodes });
+	let showModal = false;
 </script>
 
 <!-- <AddColumn
@@ -55,29 +77,50 @@
 {$mergedChildren_controlPanel_Store.length}
 <div class="card w-full ">
 	<div class="card-body  m-2">
-		{#each $mergedChildren_controlPanel_Store as item}
+		<!-- {#each $mergedChildren_controlPanel_Store as item}
 			{item.id}
 		{:else}
 			No starred elements detected.
-		{/each}
-		{#if false}
-			<div class="dropdown grow ">
-				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-				<label tabindex="0" class="btn btn-xs bi bi-list-nested text-lg p-1  w-min" />
-				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-				<div
-					tabindex="0"
-					class="dropdown-content menu p-2  bg-base-100 rounded-box ==w-max max-w-screen text-sm shadow-2xl z-[9999] "
+		{/each} -->
+		<!-- {#key controlPanelNodes}
+			{#if controlPanelNodes.length > 0 || true}
+				<button
+					class="btn btn-xs btn-ghost normal-case  rounded px-2  "
+					on:click|stopPropagation={() => {
+						showModal = true;
+					}}
 				>
-					<div
-						class="max-h-[70vh] sm:max-h-[80vh] md:max-h-[80vh] overflow-auto overscroll-contain max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
+					<icon class=" bi bi-star" />
+
+					<QMSWraper
+						QMSName={type.dd_displayName}
+						QMSType="query"
+						QMS_info={{ ...type, args: controlPanelNodes }}
 					>
-						<!-- <Type template="columnAddDisplay" isOnMainList={true} {type} /> -->
-					</div>
-				</div>
-			</div>
-		{/if}
+						{#if showModal}
+							<Modal
+								modalIdetifier={'activeArgumentsDataModal'}
+								showApplyBtn={false}
+								on:cancel={(e) => {
+									let { detail } = e;
+									if (detail.modalIdetifier == 'activeArgumentsDataModal') {
+										showModal = false;
+									}
+								}}
+								><div class="  w-full  ">
+									<div class="mx-auto mt-2  w-full   space-y-2   pb-2  ">
+										<div class="w-2" />
+
+										<ActiveArguments />
+
+										<div class="w-2" />
+									</div>
+								</div>
+							</Modal>
+						{/if}
+					</QMSWraper>
+				</button>
+			{/if}
+		{/key} -->
 	</div>
 </div>
