@@ -9,7 +9,7 @@
 <Page MenuItem={false} CustomId="fdsfdsee" backPath={`/`} title={$page.params.item}>
 	{#key $page.params.item}
 		{#if $page.params.item}
-			<QMSWraper QMSName={$page.params.item} QMSType="mutation">
+			<QMSWraper isOutermostQMSWraper={true} QMSName={$page.params.item} QMSType="mutation">
 				<MutationExample />
 			</QMSWraper>
 		{/if}

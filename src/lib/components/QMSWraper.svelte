@@ -25,7 +25,7 @@
 	//import { Create_mergedChildren_activeArgumentsDataGrouped_Store } from '$lib/stores/QMSHandling/mergedChildren_activeArgumentsDataGrouped_Store';
 	import { Create_mergedChildren_QMSWraperCtxData_Store } from '$lib/stores/QMSHandling/mergedChildren_QMSWraperCtxData_Store';
 	import { Create_mergedChildren_controlPanel_Store } from '$lib/stores/QMSHandling/mergedChildren_controlPanel_Store';
-
+	export let isOutermostQMSWraper = getContext(`${prefix}QMSWraperContext`) ? false : true;
 	export let QMSType = 'query';
 	export let QMSName;
 	export let QMS_info = schemaData.get_QMS_Field(QMSName, QMSType, schemaData);
@@ -239,6 +239,9 @@
 		QMSWraperContext = QMSWraperContextGiven;
 	}
 	setContext(`${prefix}QMSWraperContext`, QMSWraperContext);
+	if (isOutermostQMSWraper) {
+		setContext(`${prefix}OutermostQMSWraperContext`, QMSWraperContext);
+	}
 </script>
 
 {#if QMS_info || (preferGivenQMSWraperContext && QMSWraperContextGiven)}

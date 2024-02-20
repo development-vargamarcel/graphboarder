@@ -22,7 +22,7 @@
 	export let dd_relatedRoot;
 	export let QMSName;
 	export let currentQMS_info;
-	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
+	const QMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	const {
 		mergedChildren_QMSWraperCtxData_Store,
 		mergedChildren_controlPanel_Store,
@@ -32,7 +32,8 @@
 		'from control panel',
 		QMSWraperContext,
 		$mergedChildren_controlPanel_Store,
-		$mergedChildren_finalGqlArgObj_Store
+		$mergedChildren_finalGqlArgObj_Store,
+		$mergedChildren_QMSWraperCtxData_Store
 	);
 </script>
 

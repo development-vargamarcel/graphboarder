@@ -61,6 +61,7 @@
 		</MainWraper>
 	{:else}
 		<QMSWraper
+			isOutermostQMSWraper={true}
 			QMSName="endpoints_by_pk"
 			initialGqlArgObj={{ id: string_transformer(endpointid) }}
 			tableColsData_StoreInitialValue={[

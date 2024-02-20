@@ -3,7 +3,7 @@
 	export let prefix = '';
 	export let node;
 	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
-	const { mergedChildren_controlPanel_Store } = getContext(`${prefix}QMSWraperContext`);
+	const { mergedChildren_controlPanel_Store } = getContext(`${prefix}OutermostQMSWraperContext`);
 	let currentObject = {
 		stepsOfFieldsThisAppliesTo: activeArgumentsContext.stepsOfFieldsThisAppliesTo,
 		nodeId: node.id,

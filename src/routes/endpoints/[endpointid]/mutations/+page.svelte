@@ -21,7 +21,7 @@
 		/>
 		{#key QMSName}
 			{#if QMSName}
-				<QMSWraper {QMSName} QMSType="mutation">
+				<QMSWraper isOutermostQMSWraper={true} {QMSName} QMSType="mutation">
 					<MutationExample />
 				</QMSWraper>
 			{/if}

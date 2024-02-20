@@ -8,6 +8,6 @@
 </script>
 
 <slot />
-<QMSWraper QMSName={queryName}>
+<QMSWraper isOutermostQMSWraper={true} QMSName={queryName}>
 	<ComponentForLayout />
 </QMSWraper>

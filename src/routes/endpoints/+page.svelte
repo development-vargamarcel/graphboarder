@@ -63,6 +63,7 @@
 	</div>
 {:else}
 	<QMSWraper
+		isOutermostQMSWraper={true}
 		QMSName="endpoints"
 		tableColsData_StoreInitialValue={[
 			{ title: 'provider name', stepsOfFields: ['endpoints', 'configuration', 'id'] },
