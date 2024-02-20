@@ -120,16 +120,18 @@
 		finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 		//update the activeArgumentsDataGrouped_StoreForCPItem and related
 		if (node.CPItem) {
-			const activeArgumentsDataGrouped_StoreForCPItem = $mergedChildren_QMSWraperCtxData_Store.find(
+			const QMSWraperCtxData_StoreForCPItem = $mergedChildren_QMSWraperCtxData_Store.find(
 				(currCtx) => {
 					return currCtx.stepsOfFields.join() == node.CPItem.stepsOfFieldsThisAppliesTo.join();
 				}
-			).activeArgumentsDataGrouped_Store;
+			);
+			const activeArgumentsDataGrouped_StoreForCPItem =
+				QMSWraperCtxData_StoreForCPItem.activeArgumentsDataGrouped_Store;
 			activeArgumentsDataGrouped_StoreForCPItem.update_activeArgument(
 				activeArgumentData,
 				group.group_name
 			);
-			outermostQMSWraperContext.finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj(); //!!!is not enough to rerun query it seems
+			QMSWraperCtxData_StoreForCPItem.finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj(); //!!!is not enough to rerun query it seems
 		}
 	};
 	const inUse_set = (inUse) => {

@@ -74,7 +74,7 @@
 	QMS_info={currentQMS_info}
 	on:newColumnAddRequest
 /> -->
-{$mergedChildren_controlPanel_Store.length}
+
 <div class="card w-full ">
 	<div class="card-body  m-2">
 		<!-- {#each $mergedChildren_controlPanel_Store as item}
@@ -90,7 +90,7 @@
 						showModal = true;
 					}}
 				>
-					<icon class=" bi bi-star" />
+					<icon class=" bi bi-star" />{$mergedChildren_controlPanel_Store.length}
 
 					<QMSWraper
 						QMSName={type.dd_displayName}
