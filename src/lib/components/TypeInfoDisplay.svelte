@@ -168,7 +168,11 @@
 	// 	$mergedChildren_activeArgumentsDataGrouped_Store,
 	// 	[...stepsOfFields, 'activeArgumentsDataGrouped']
 	// );
-	$: currentQMSWraperCtxData = mergedChildren_QMSWraperCtxData_Store.getObj(stepsOfFields);
+	let currentQMSWraperCtxData;
+	$: if ($mergedChildren_QMSWraperCtxData_Store) {
+		currentQMSWraperCtxData = mergedChildren_QMSWraperCtxData_Store.getObj(stepsOfFields);
+	}
+	$: console.log({ currentQMSWraperCtxData });
 	$: currentQMSArguments = getValueAtPath($mergedChildren_finalGqlArgObj_Store, [
 		...stepsOfFields,
 		'QMSarguments'
