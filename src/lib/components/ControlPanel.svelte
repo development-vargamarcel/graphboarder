@@ -1,4 +1,5 @@
 <script>
+	import { getContext } from 'svelte';
 	import AddColumn from './AddColumn.svelte';
 	///not good
 	//1.Select type using Type or AddColumn
@@ -15,12 +16,24 @@
 	///
 	import Type from './Type.svelte';
 	export let type;
-
+	export let prefix = '';
 	export let column_stepsOfFields;
 	export let addColumnFromInput;
 	export let dd_relatedRoot;
 	export let QMSName;
 	export let currentQMS_info;
+	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
+	const {
+		mergedChildren_QMSWraperCtxData_Store,
+		mergedChildren_controlPanel_Store,
+		mergedChildren_finalGqlArgObj_Store
+	} = QMSWraperContext;
+	console.log(
+		'from control panel',
+		QMSWraperContext,
+		$mergedChildren_controlPanel_Store,
+		$mergedChildren_finalGqlArgObj_Store
+	);
 </script>
 
 <!-- <AddColumn
@@ -31,10 +44,15 @@
 	QMS_info={currentQMS_info}
 	on:newColumnAddRequest
 /> -->
-
-{#if false}
-	<div class="card w-full ">
-		<div class="card-body  m-2">
+{$mergedChildren_controlPanel_Store.length}
+<div class="card w-full ">
+	<div class="card-body  m-2">
+		{#each $mergedChildren_controlPanel_Store as item}
+			{item.id}
+		{:else}
+			No starred elements detected.
+		{/each}
+		{#if false}
 			<div class="dropdown grow ">
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -52,5 +70,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>{/if}
+		{/if}
+	</div>
+</div>
