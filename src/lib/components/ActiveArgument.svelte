@@ -87,11 +87,12 @@
 			expandedVersion = true;
 		}
 	}
-
+	const outermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
+	const { mergedChildren_QMSWraperCtxData_Store } = outermostQMSWraperContext;
 	const handleChanged = (detail) => {
 		console.log('detail', detail);
 		Object.assign(activeArgumentData, detail);
-		updateActiveArgument();
+
 		const isValid = argumentCanRunQuery(activeArgumentData);
 		const isInUse = activeArgumentData.inUse;
 		const isENUM = activeArgumentData.dd_displayInterface == 'ENUM';
@@ -105,18 +106,19 @@
 		}
 		dispatch('changed', detail);
 		console.log('activeArgumentsDataGrouped_Store', $activeArgumentsDataGrouped_Store);
-		finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
+		updateActiveArgument();
+		//finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 	};
 	const handleClickOutside = () => {
 		//
 		//console.log('clicked outside');
 		//expandedVersion = false; //!!! this is causing the expanded version to disappear when you click outside of it,but sometimes,is not desirable like when another modal with choises opens up and if you click on anything that upper modal disappears.
 	};
-	const outermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
-	const { mergedChildren_QMSWraperCtxData_Store } = outermostQMSWraperContext;
+
 	const updateActiveArgument = () => {
 		activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
-
+		finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
+		//update the activeArgumentsDataGrouped_StoreForCPItem and related
 		if (node.CPItem) {
 			const activeArgumentsDataGrouped_StoreForCPItem = $mergedChildren_QMSWraperCtxData_Store.find(
 				(currCtx) => {
@@ -127,6 +129,7 @@
 				activeArgumentData,
 				group.group_name
 			);
+			outermostQMSWraperContext.finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj(); //!!!is not enough to rerun query it seems
 		}
 	};
 	const inUse_set = (inUse) => {
@@ -134,7 +137,7 @@
 		updateActiveArgument();
 
 		dispatch('inUseChanged');
-		finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
+		//finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 	};
 	const inUse_toggle = () => {
 		inUse_set(!activeArgumentData.inUse);
