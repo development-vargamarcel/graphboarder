@@ -91,7 +91,7 @@
 	const handleChanged = (detail) => {
 		console.log('detail', detail);
 		Object.assign(activeArgumentData, detail);
-		activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
+		updateActiveArgument();
 		const isValid = argumentCanRunQuery(activeArgumentData);
 		const isInUse = activeArgumentData.inUse;
 		const isENUM = activeArgumentData.dd_displayInterface == 'ENUM';
@@ -112,9 +112,27 @@
 		//console.log('clicked outside');
 		//expandedVersion = false; //!!! this is causing the expanded version to disappear when you click outside of it,but sometimes,is not desirable like when another modal with choises opens up and if you click on anything that upper modal disappears.
 	};
+	const outermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
+	const { mergedChildren_QMSWraperCtxData_Store } = outermostQMSWraperContext;
+	const updateActiveArgument = () => {
+		activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
+
+		if (node.CPItem) {
+			const activeArgumentsDataGrouped_StoreForCPItem = $mergedChildren_QMSWraperCtxData_Store.find(
+				(currCtx) => {
+					return currCtx.stepsOfFields.join() == node.CPItem.stepsOfFieldsThisAppliesTo.join();
+				}
+			).activeArgumentsDataGrouped_Store;
+			activeArgumentsDataGrouped_StoreForCPItem.update_activeArgument(
+				activeArgumentData,
+				group.group_name
+			);
+		}
+	};
 	const inUse_set = (inUse) => {
 		activeArgumentData.inUse = inUse;
-		activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
+		updateActiveArgument();
+
 		dispatch('inUseChanged');
 		finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 	};

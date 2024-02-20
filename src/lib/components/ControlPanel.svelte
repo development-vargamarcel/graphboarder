@@ -48,12 +48,12 @@
 	) => {
 		const activeArgumentsDataGrouped_Store = mergedChildren_QMSWraperCtxData_Value.find(
 			(currCtx) => {
-				return currCtx.stepsOfFields.join() == CPItem.stepsOfFieldsThisAppliesTo;
+				return currCtx.stepsOfFields.join() == CPItem.stepsOfFieldsThisAppliesTo.join();
 			}
 		).activeArgumentsDataGrouped_Store;
 
 		const node = get(activeArgumentsDataGrouped_Store)[0].group_argsNode[CPItem.nodeId];
-		return node;
+		return { ...node, CPItem };
 	};
 	$: controlPanelNodes = $mergedChildren_controlPanel_Store.map((CPItem) => {
 		return getNodeGivenControlPanelItem(
@@ -82,7 +82,7 @@
 		{:else}
 			No starred elements detected.
 		{/each} -->
-		<!-- {#key controlPanelNodes}
+		{#key controlPanelNodes}
 			{#if controlPanelNodes.length > 0 || true}
 				<button
 					class="btn btn-xs btn-ghost normal-case  rounded px-2  "
@@ -121,6 +121,6 @@
 					</QMSWraper>
 				</button>
 			{/if}
-		{/key} -->
+		{/key}
 	</div>
 </div>
