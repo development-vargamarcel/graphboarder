@@ -39,7 +39,6 @@
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
 	const tableColsData_Store = QMSWraperContext?.tableColsData_Store;
-	const StepsOfFieldsSelected = getContext(`${prefix}StepsOfFieldsSelected`);
 	const stepsOfFieldsOBJ = getContext(`${prefix}stepsOfFieldsOBJ`);
 	const stepsOfFieldsOBJFull = getContext(`${prefix}stepsOfFieldsOBJFull`);
 
@@ -80,17 +79,6 @@
 		});
 	}
 
-	///
-	// if ($StepsOfFieldsSelected) {
-	// 	StepsOfFieldsSelected.subscribe((value) => {
-	// 		console.log({ stepsOfFields });
-	// 		isSelected = value.has(JSON.stringify(stepsOfFields));
-	// 		hasSelected =
-	// 			[...value]?.find((item) => {
-	// 				return isSubset(JSON.parse(item), stepsOfFields);
-	// 			}) && canExpand;
-	// 	});
-	// }
 	let showModal = false;
 	let finalGqlArgObj_Store;
 	let finalGqlArgObj_StoreValue;
@@ -101,14 +89,11 @@
 	let QMSarguments;
 	$: canAcceptArguments = canExpand && args?.length > 0 && isUsedInSomeColumn;
 
-	const mergedChildren_finalGqlArgObj_Store = getContext(
-		`${prefix}QMSWraperContext`
-	).mergedChildren_finalGqlArgObj_Store;
-
-	const mergedChildren_QMSWraperCtxData_Store = getContext(
-		`${prefix}QMSWraperContext`
-	).mergedChildren_QMSWraperCtxData_Store;
+	const mergedChildren_finalGqlArgObj_Store = QMSWraperContext.mergedChildren_finalGqlArgObj_Store;
+	const mergedChildren_QMSWraperCtxData_Store =
+		QMSWraperContext.mergedChildren_QMSWraperCtxData_Store;
 	let activeArgumentsDataGrouped_Store = getContext(`${prefix}activeArgumentsDataGrouped_Store`);
+
 	$: if (finalGqlArgObj_StoreValue && finalGqlArgObj_StoreValue.final_canRunQuery) {
 		finalGqlArgObjValue = finalGqlArgObj_StoreValue.finalGqlArgObj;
 
