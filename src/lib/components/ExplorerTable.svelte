@@ -5,7 +5,6 @@
 	import { formatData, getTableCellData } from '$lib/utils/usefulFunctions';
 	import ColumnInfo from './ColumnInfo.svelte';
 	import { createEventDispatcher, getContext } from 'svelte';
-	import InfiniteLoading from 'svelte-infinite-loading';
 	const dispatch = createEventDispatcher();
 	export let prefix = '';
 
