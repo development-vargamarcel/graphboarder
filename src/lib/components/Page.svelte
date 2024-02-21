@@ -77,8 +77,8 @@
 
 {#if MenuItem}
 	<main
-		in:fade={{ duration: 350, delay: 200 }}
-		out:fade={{ duration: 200 }}
+		in:fade|global={{ duration: 350, delay: 200 }}
+		out:fade|global={{ duration: 200 }}
 		id={CustomId}
 		class=" z-0 h-screen w-full overflow-y-scrollxxx overflow-hidden "
 	>
@@ -86,8 +86,8 @@
 	</main>
 {:else}
 	<main
-		in:scale={{ x: 200, duration: 300, opacity: 1, start: 0.97 }}
-		out:scale={{ x: 300, duration: 300, opacity: 0, start: 0.97 }}
+		in:scale|global={{ x: 200, duration: 300, opacity: 1, start: 0.97 }}
+		out:scale|global={{ x: 300, duration: 300, opacity: 0, start: 0.97 }}
 		id={CustomId}
 		class="  overflow-y-scroll pb-96 fixed top-0 h-full w-full z-40 bg-base-100"
 	>

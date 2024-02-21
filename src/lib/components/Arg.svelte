@@ -81,8 +81,8 @@
 
 		<div
 			class="border-l-2 border-secondary bg-accent/5"
-			in:slide={{ duration: inDuration, easing: expoIn }}
-			out:slide={{ duration: inDuration, easing: expoOut }}
+			in:slide|global={{ duration: inDuration, easing: expoIn }}
+			out:slide|global={{ duration: inDuration, easing: expoOut }}
 		>
 			<div class="">
 				{#each expandData.inputFields || expandData.enumValues as arg, index}

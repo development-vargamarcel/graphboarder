@@ -40,8 +40,8 @@
 	use:portal={'body'}
 	hidden
 	bind:this={mainDiv}
-	in:fade={{ delay: 0, duration: 50 }}
-	out:fade={{ delay: 0, duration: 50 }}
+	in:fade|global={{ delay: 0, duration: 50 }}
+	out:fade|global={{ delay: 0, duration: 50 }}
 	on:introend={() => (mainDivIntroEnd = true)}
 	on:click|self|stopPropagation|preventDefault={() => {
 		dispatch('cancel', { modalIdetifier });
@@ -60,7 +60,7 @@
 			id={modalIdetifier}
 			class=" shadowTop card-bordered card rounded-box z-[99]
 			my-0 min-h-[80vh] max-h-min space-y-0 rounded-b-none border-transparent bg-base-100  mx-auto md:w-2/3 pb-8 "
-			in:fly={{
+			in:fly|global={{
 				delay: 20,
 				duration: 200,
 				x: 0,
@@ -69,7 +69,7 @@
 				start: 0,
 				easing: sineOut
 			}}
-			out:fly={{ delay: 0, duration: 100, x: 0, y: 20, opacity: 0, start: 0, easing: sineIn }}
+			out:fly|global={{ delay: 0, duration: 100, x: 0, y: 20, opacity: 0, start: 0, easing: sineIn }}
 			on:introend={() => (bodyDivIntroEnd = true)}
 		>
 			<div class="sticky top-0  bg-base-100 rounded-xl z-50 ">
