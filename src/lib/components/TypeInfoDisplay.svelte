@@ -100,12 +100,11 @@
 	let activeArgumentsQMSWraperContext;
 	let QMSarguments;
 	$: canAcceptArguments = canExpand && args?.length > 0 && isUsedInSomeColumn;
+
 	const mergedChildren_finalGqlArgObj_Store = getContext(
 		`${prefix}QMSWraperContext`
 	).mergedChildren_finalGqlArgObj_Store;
-	// const mergedChildren_activeArgumentsDataGrouped_Store = getContext(
-	// 	`${prefix}QMSWraperContext`
-	// ).mergedChildren_activeArgumentsDataGrouped_Store;
+
 	const mergedChildren_QMSWraperCtxData_Store = getContext(
 		`${prefix}QMSWraperContext`
 	).mergedChildren_QMSWraperCtxData_Store;
@@ -121,33 +120,13 @@
 		mergedChildren_finalGqlArgObj_Store.update((value) => {
 			return setValueAtPath(value, [...stepsOfFields, 'QMSarguments'], QMSarguments);
 		});
-		// if (activeArgumentsQMSWraperContext?.activeArgumentsDataGrouped_Store) {
-		// 	const activeArgumentsDataGrouped_StoreCurrent = get_store_value(
-		// 		activeArgumentsQMSWraperContext.activeArgumentsDataGrouped_Store
-		// 	);
-		// 	mergedChildren_activeArgumentsDataGrouped_Store.update((value) => {
-		// 		return setValueAtPath(
-		// 			value,
-		// 			[...stepsOfFields, 'activeArgumentsDataGrouped'],
-		// 			activeArgumentsDataGrouped_StoreCurrent
-		// 		);
-		// 	});
-		// }
-		////
-
-		////
 	}
 	$: if (activeArgumentsQMSWraperContext) {
 		if (canAcceptArguments) {
-			const activeArgumentsDataGrouped_StoreCurrent = get_store_value(
-				activeArgumentsQMSWraperContext.activeArgumentsDataGrouped_Store
-			);
-			//
 			mergedChildren_QMSWraperCtxData_Store.addOrReplace({
 				stepsOfFields,
 				...activeArgumentsQMSWraperContext
 			});
-			//
 		}
 
 		$activeArgumentsDataGrouped_Store = get_store_value(
@@ -158,16 +137,12 @@
 		finalGqlArgObj_StoreValue = $finalGqlArgObj_Store;
 		paginationState_derived = activeArgumentsQMSWraperContext.paginationState_derived;
 		paginationState_derivedValue = $paginationState_derived;
-		console.log({ finalGqlArgObj_StoreValue, paginationState_derivedValue });
 		finalGqlArgObj_Store.subscribe((value) => {
 			console.log('finalGqlArgObj_Store', value);
 		});
 		console.log({ activeArgumentsQMSWraperContext });
 	}
-	// $: currentActiveArgumentsDataGrouped = getValueAtPath(
-	// 	$mergedChildren_activeArgumentsDataGrouped_Store,
-	// 	[...stepsOfFields, 'activeArgumentsDataGrouped']
-	// );
+
 	let currentQMSWraperCtxData;
 	$: if ($mergedChildren_QMSWraperCtxData_Store) {
 		currentQMSWraperCtxData = mergedChildren_QMSWraperCtxData_Store.getObj(stepsOfFields);
