@@ -94,6 +94,7 @@
 		QMSWraperContext.mergedChildren_QMSWraperCtxData_Store;
 	let activeArgumentsDataGrouped_Store = getContext(`${prefix}activeArgumentsDataGrouped_Store`);
 
+	//S//move to QMSWraper (outermost if possible)
 	$: if (finalGqlArgObj_StoreValue && finalGqlArgObj_StoreValue.final_canRunQuery) {
 		finalGqlArgObjValue = finalGqlArgObj_StoreValue.finalGqlArgObj;
 
@@ -106,6 +107,8 @@
 			return setValueAtPath(value, [...stepsOfFields, 'QMSarguments'], QMSarguments);
 		});
 	}
+	//E//move to QMSWraper (outermost if possible)
+
 	$: if (activeArgumentsQMSWraperContext) {
 		if (canAcceptArguments) {
 			mergedChildren_QMSWraperCtxData_Store.addOrReplace({
@@ -122,10 +125,6 @@
 		finalGqlArgObj_StoreValue = $finalGqlArgObj_Store;
 		paginationState_derived = activeArgumentsQMSWraperContext.paginationState_derived;
 		paginationState_derivedValue = $paginationState_derived;
-		finalGqlArgObj_Store.subscribe((value) => {
-			console.log('finalGqlArgObj_Store', value);
-		});
-		console.log({ activeArgumentsQMSWraperContext });
 	}
 
 	let currentQMSWraperCtxData;
