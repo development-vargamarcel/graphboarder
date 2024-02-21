@@ -45,6 +45,7 @@
 		"@lukeed/uuid": "^2.0.0",
 		"@tanstack/svelte-table": "^8.8.5",
 		"@urql/core": "^2.4.4",
+		"@urql/svelte": "^4.0.4",
 		"bootstrap-icons": "^1.8.1",
 		"cookie": "^0.4.1",
 		"daisyui": "^4.4.20",
