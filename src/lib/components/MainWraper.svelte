@@ -4,17 +4,17 @@
 	import { create_schemaData } from '$lib/stores/endpointHandling/schemaData';
 
 	import { setContext } from 'svelte';
-	import { createClient, fetchExchange } from '@urql/core';
+	import { createClient,  } from '@urql/core';
 	import { browser } from '$app/environment';
 	import { Create_urqlCoreClient } from '$lib/utils/urqlCoreClient';
-	import { setClient } from '@urql/svelte';
+	import { setContextClient,Client,fetchExchange } from '@urql/svelte';
 	export let prefix = '';
 	export let endpointInfoProvided = null;
 
 	const endpointInfo = create_endpointInfo_Store(endpointInfoProvided);
 	const schemaData = create_schemaData();
 
-	let client = createClient({
+	let client = new Client({
 		url: $endpointInfo.url,
 		fetchOptions: () => {
 			return {
@@ -37,7 +37,7 @@
 	const urqlCoreClient = Create_urqlCoreClient();
 	urqlCoreClient.set(client);
 
-	setClient(client);
+	setContextClient(client);
 	setContext(`${prefix}QMSMainWraperContext`, {
 		endpointInfo: endpointInfo,
 		schemaData: schemaData,

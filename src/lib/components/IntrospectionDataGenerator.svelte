@@ -6,7 +6,7 @@
 	import { endpointsSchemaData } from '$lib/stores/testData/endpointsSchemaData';
 	import { createClient, fetchExchange } from '@urql/core';
 	import { browser } from '$app/environment';
-	import { setClient, operationStore, query } from '@urql/svelte';
+	import {  queryStore,gql,getContextClient  } from '@urql/svelte';
 	import { getContext } from 'svelte';
 	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
@@ -25,7 +25,9 @@
 	}
 	//setClient(urqlCoreClient);
   //ds
-	const queryStore = operationStore(`
+	const queryStoreRes = queryStore({
+		client: getContextClient(),
+		query:gql`
     query IntrospectionQuery {
       __schema {
         queryType { name }
@@ -117,10 +119,10 @@
         }
       }
     }
-  `);
-	if (!storedSchemaData) {
-		query(queryStore);
-	}
+  `});
+	// if (!storedSchemaData) {
+	// 	query(queryStoreRes);
+	// }
 	let rootTypes = [];
 	let queries = [];
 	let mutations = [];
@@ -132,29 +134,30 @@
 	$schemaData.isReady = false;
 	const handleData = () => {
 		console.log('handledata run');
-		schema = $queryStore?.data?.__schema;
+		schema = $queryStoreRes?.data?.__schema;
 		console.log('ppppp', endpointInfo, schema);
 		$schemaData.schema = schema;
 		schemaData.set_fields(endpointInfo);
 		console.log('schemaData', $schemaData);
 	};
-	$: if (!$queryStore.fetching) {
-		if (queryStore?.data) {
-			//console.log($queryStore?.data);
+	$:console.log({$queryStoreRes})
+	$: if (!$queryStoreRes.fetching) {
+		if ($queryStoreRes?.data) {
+			console.log($queryStoreRes?.data);
 			handleData();
-		} else if ($queryStore?.error) {
-			console.log($queryStore?.error);
+		} else if ($queryStoreRes?.error) {
+			console.log($queryStoreRes?.error);
 		} else {
-			//console.log('no data');
+			console.log('no data');
 		}
 	}
 </script>
 
-{#if ($queryStore?.data || storedSchemaData) && $schemaData.isReady}
+{#if ($queryStoreRes?.data || storedSchemaData) && $schemaData.isReady}
 	<!-- content here -->
 	<slot><!-- optional fallback --></slot>
 {/if}
-{#if $queryStore?.error}
+{#if $queryStoreRes?.error}
 	<!-- The button to open modal -->
 	<!-- <label for="my-modal" class="btn">open modal</label> -->
 
@@ -176,7 +179,7 @@
 							d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
 						/></svg
 					>
-					<span>{$queryStore?.error}</span>
+					<span>{$queryStoreRes?.error}</span>
 				</div>
 			</div>
 			<div class="alert alert-info shadow-lg mt-4">
