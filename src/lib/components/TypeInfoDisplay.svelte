@@ -94,20 +94,20 @@
 		QMSWraperContext.mergedChildren_QMSWraperCtxData_Store;
 	let activeArgumentsDataGrouped_Store = getContext(`${prefix}activeArgumentsDataGrouped_Store`);
 
-	//S//move to QMSWraper (outermost if possible)
-	$: if (finalGqlArgObj_StoreValue && finalGqlArgObj_StoreValue.final_canRunQuery) {
-		finalGqlArgObjValue = finalGqlArgObj_StoreValue.finalGqlArgObj;
+	// //S//move to QMSWraper (outermost if possible)
+	// $: if (finalGqlArgObj_StoreValue && finalGqlArgObj_StoreValue.final_canRunQuery) {
+	// 	finalGqlArgObjValue = finalGqlArgObj_StoreValue.finalGqlArgObj;
 
-		QMSarguments = { ...finalGqlArgObjValue, ...paginationState_derivedValue };
-	}
-	$: console.log({ QMSarguments });
+	// 	QMSarguments = { ...finalGqlArgObjValue, ...paginationState_derivedValue };
+	// }
+	// $: console.log({ QMSarguments });
 
-	$: if (QMSarguments || paginationState_derivedValue) {
-		mergedChildren_finalGqlArgObj_Store.update((value) => {
-			return setValueAtPath(value, [...stepsOfFields, 'QMSarguments'], QMSarguments);
-		});
-	}
-	//E//move to QMSWraper (outermost if possible)
+	// $: if (QMSarguments || paginationState_derivedValue) {
+	// 	mergedChildren_finalGqlArgObj_Store.update((value) => {
+	// 		return setValueAtPath(value, [...stepsOfFields, 'QMSarguments'], QMSarguments);
+	// 	});
+	// }
+	// //E//move to QMSWraper (outermost if possible)
 
 	$: if (activeArgumentsQMSWraperContext) {
 		if (canAcceptArguments) {
@@ -139,18 +139,18 @@
 </script>
 
 {#if template == 'default'}
-	<div class="flex space-x-2 min-w-max  w-full">
-		<div class="flex space-x-2 w-1/3 min-w-max  w-full">
+	<div class="flex space-x-2 min-w-max w-full">
+		<div class="flex space-x-2 w-1/3 min-w-max w-full">
 			{#if canExpand}
-				<div class="btn btn-xs  p-1 rounded normal-case" on:click={expand}>
+				<div class="btn btn-xs p-1 rounded normal-case" on:click={expand}>
 					{showExpand ? '-' : '+'}
 				</div>
 			{:else}
-				<div class="btn btn-xs  p-1 rounded normal-case btn-disabled" on:click={expand}>+</div>
+				<div class="btn btn-xs p-1 rounded normal-case btn-disabled" on:click={expand}>+</div>
 			{/if}
 			<div class="bg-secondary p-1 rounded">{index + 1}</div>
 			<div
-				class="btn btn-xs btn-info normal-case font-light "
+				class="btn btn-xs btn-info normal-case font-light"
 				on:click={() => {
 					console.log(type);
 					//console.log(dd_namesArray);
@@ -175,7 +175,7 @@
 		{/if}
 		{#if canExpand}
 			<div
-				class="btn btn-xs  btn-accent normal-case  rounded px-2 py-1"
+				class="btn btn-xs btn-accent normal-case rounded px-2 py-1"
 				on:click={() => {
 					console.log(getRootType(null, dd_rootName, schemaData));
 				}}
@@ -187,9 +187,9 @@
 				{/if}
 			</div>
 		{/if}
-		<div class="w-1/2 ">
+		<div class="w-1/2">
 			<div class="flex">
-				<div class="bg-secondary p-1 rounded ">{dd_kindsArray?.join(' of ')}</div>
+				<div class="bg-secondary p-1 rounded">{dd_kindsArray?.join(' of ')}</div>
 			</div>
 
 			<div class="flex" />
@@ -198,14 +198,14 @@
 	</div>
 {:else if template == 'columnAddDisplay'}
 	<div
-		class="min-w-max  w-full  cursor-pointer    rounded-box flex text-base select-none hover:text-primary"
+		class="min-w-max w-full cursor-pointer rounded-box flex text-base select-none hover:text-primary"
 	>
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 
 		{#if canExpand}
-			<div class="overflow-visible grid  grid-col gap-[-10px] h-2 w-6 ">
+			<div class="overflow-visible grid grid-col gap-[-10px] h-2 w-6">
 				<div
-					class="w-10   duration-100   mx-auto w-min pl-1 {hasSelected
+					class="w-10 duration-100 mx-auto w-min pl-1 {hasSelected
 						? 'text-secondary'
 						: ''} {showExpand ? 'bi-arrow-90deg-down mt-2 ' : 'bi-chevron-expand'}"
 					on:click={expand}
@@ -217,7 +217,7 @@
 			{isSelected} -->
 			<input
 				type="checkbox"
-				class=" checkbox-xs checkbox input-accent  mr-1 self-center ml-1"
+				class=" checkbox-xs checkbox input-accent mr-1 self-center ml-1"
 				bind:checked={isSelected}
 				on:change={() => {
 					if (isSelected) {
@@ -243,7 +243,7 @@
 
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<div
-			class="min-w-max  w-full  pr-2 text-md   duration-100==  "
+			class="min-w-max w-full pr-2 text-md duration-100=="
 			on:click={() => {
 				if (canExpand) {
 					expand();
@@ -268,7 +268,7 @@
 
 			{#if canAcceptArguments}
 				<button
-					class="btn btn-xs btn-ghost normal-case  rounded px-2 {hasQMSarguments
+					class="btn btn-xs btn-ghost normal-case rounded px-2 {hasQMSarguments
 						? 'text-success'
 						: ''} "
 					on:click|stopPropagation={() => {
@@ -299,8 +299,8 @@
 										showModal = false;
 									}
 								}}
-								><div class="  w-full  ">
-									<div class="mx-auto mt-2  w-full   space-y-2   pb-2  ">
+								><div class="  w-full">
+									<div class="mx-auto mt-2 w-full space-y-2 pb-2">
 										<div class="w-2" />
 
 										<ActiveArguments
