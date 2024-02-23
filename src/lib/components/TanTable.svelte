@@ -16,22 +16,12 @@
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	let QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-	const schemaData = QMSMainWraperContext?.schemaData;
-	const QMS_info = QMSWraperContext?.QMS_info;
 	let idColName = QMSWraperContext?.idColName;
 	const { paginationOptions } = getContext(`${prefix}QMSWraperContext`);
 
 	export let infiniteHandler;
 	export let infiniteId;
-	type Person = {
-		firstName: string;
-		lastName: string;
-		age: number;
-		visits: number;
-		status: string;
-		progress: number;
-	};
+
 	export let data;
 	export let cols = [];
 	const getColumnVisibility = (cols) => {
@@ -44,7 +34,7 @@
 	let columnVisibility = getColumnVisibility(cols);
 	console.log({ columnVisibility });
 	const getColumns = (cols) => {
-		let columns: ColumnDef<Person>[] = cols.map((col) => {
+		let columns = cols.map((col) => {
 			return {
 				...col,
 				accessorFn: (row) => formatData(getTableCellData(row, col), 40, true),
@@ -55,7 +45,7 @@
 		});
 		return columns;
 	};
-	let columns: ColumnDef<Person>[] = getColumns(cols);
+	let columns = getColumns(cols);
 	$: {
 		columns = getColumns(cols);
 	}
@@ -112,11 +102,11 @@
 	$: console.log({ table }, '$table', $table);
 </script>
 
-<div class=" h-[80vh] overscroll-contain	 overflow-y-auto rounded-box pb-32 ">
+<div class=" h-[80vh] overscroll-contain overflow-y-auto rounded-box pb-32">
 	<table class="table table-zebra table-compact w-full rounded-none static">
 		<thead class="sticky top-0 z-20 bg-base-300">
 			{#each $table.getHeaderGroups() as headerGroup}
-				<tr class="sticky top-0 z-20 ">
+				<tr class="sticky top-0 z-20">
 					{#if enableRowSelectionState}
 						<th>
 							<label>
@@ -126,12 +116,12 @@
 					{/if}
 					<th>#</th>
 					{#each headerGroup.headers as header}
-						<th class="normal-case ">
-							<div class="dropdown dropdown-end  ">
+						<th class="normal-case">
+							<div class="dropdown dropdown-end">
 								<!-- svelte-ignore a11y-label-has-associated-control -->
 								<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-								<label tabindex="0" class="cursor-pointer ">
-									<div class="flex space-x-2 hover:text-primary rounded-box ">
+								<label tabindex="0" class="cursor-pointer">
+									<div class="flex space-x-2 hover:text-primary rounded-box">
 										<div
 											class={idColName == header.column.columnDef.header
 												? ' underline decoration-dotted'
@@ -143,7 +133,7 @@
 												/>
 											{/if}
 										</div>
-										<div class="bi bi-chevron-down " />
+										<div class="bi bi-chevron-down" />
 									</div>
 								</label>
 								<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
@@ -154,16 +144,16 @@
 									<div
 										class="flex flex-col overflow-x-auto text-sm font-normal normal-case w-full space-y-2"
 									>
-										<div class="w-full   p-2 rounded-box flex flex-col space-y-2">
+										<div class="w-full p-2 rounded-box flex flex-col space-y-2">
 											<div
-												class="w-full pr-2 hover:text-primary cursor-pointer max-w-xs  md:max-w-sm overflow-x-auto"
+												class="w-full pr-2 hover:text-primary cursor-pointer max-w-xs md:max-w-sm overflow-x-auto"
 											>
 												<ColumnInfo stepsOfFields={header.column.columnDef.stepsOfFields} />
 												<!-- {colsData[index].stepsOfFields.join(' > ')} -->
 											</div>
 											<!-- svelte-ignore a11y-click-events-have-key-events -->
 											<div
-												class="w-full pr-2 hover:text-primary cursor-pointer "
+												class="w-full pr-2 hover:text-primary cursor-pointer"
 												on:click={() => {
 													dispatch('hideColumn', { column: header.column.columnDef.header });
 												}}
@@ -210,7 +200,7 @@
 					<td>{parseInt(row.index) + 1}</td>
 
 					{#each row.getVisibleCells() as cell}
-						<td class="break-no ">
+						<td class="break-no">
 							{cell.renderValue()}
 							<!-- <svelte:component this={flexRender(cell.column.columnDef.cell, cell.getContext())} /> -->
 						</td>
@@ -218,33 +208,18 @@
 				</tr>
 			{/each}
 		</tbody>
-		<!-- <tfoot>
-			{#each $table.getFooterGroups() as footerGroup}
-				<tr>
-					{#each footerGroup.headers as header}
-						<th>
-							{#if !header.isPlaceholder}
-								<svelte:component
-									this={flexRender(header.column.columnDef.footer, header.getContext())}
-								/>
-							{/if}
-						</th>
-					{/each}
-				</tr>
-			{/each}
-		</tfoot> -->
 	</table>
 	{#if $paginationOptions?.infiniteScroll && !loadMore && data?.length > 0}
 		<!-- content here -->
 		<button
-			class="btn btn-primary w-full mt-4  sticky left-0"
+			class="btn btn-primary w-full mt-4 sticky left-0"
 			on:click={() => {
 				loadMore = true;
 			}}
 		>
 			Load more
 		</button>
-		<div class="text-center text-xs text-gray-500 mt-4  sticky left-0">
+		<div class="text-center text-xs text-gray-500 mt-4 sticky left-0">
 			For now pagination works for 'limit' over 20 if set using 'filters',works for any 'limit' if
 			set by 'pagination store'.
 		</div>
