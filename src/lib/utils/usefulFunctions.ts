@@ -1216,13 +1216,13 @@ export const nodeAddDefaultFields = (node,
 			}
 
 			group.group_argsNode[`${randomNr}`] = {
+				items: [],
 				...newContainerData,
 				inputFields: newContainerDataRootType?.inputFields,
 				id: randomNr,
 				operator,
 				not: false,
 				isMain: false,
-				items: []
 			};
 			console.log({ newContainerDataRootType });
 			console.log({ newContainerData });
