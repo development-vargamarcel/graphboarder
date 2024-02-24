@@ -63,7 +63,7 @@
 		);
 	});
 	$: console.log('from control panel', { controlPanelNodes });
-	let showModal = false;
+	let showControlPanel = false;
 </script>
 
 <!-- <AddColumn
@@ -74,23 +74,32 @@
 	QMS_info={currentQMS_info}
 	on:newColumnAddRequest
 /> -->
+<button
+	class="btn btn-xs w-full"
+	on:click={() => {
+		showControlPanel = !showControlPanel;
+	}}
+>
+	toggle control panel
+</button>
+{#if showControlPanel}
+	<div class="card w-full">
+		<div class="card-body {controlPanelNodes.length > 0 ? 'h-32' : ''}  overflow-y-auto resize">
+			<!-- <div class="flex w-min">
+				 <icon class=" bi bi-star" />{$mergedChildren_controlPanel_Store.length}
+			 </div> -->
 
-<div class="card w-full ">
-	<div class="card-body   {controlPanelNodes.length > 0 ? 'h-32' : ''}  overflow-y-auto resize">
-		<!-- <div class="flex w-min">
-			<icon class=" bi bi-star" />{$mergedChildren_controlPanel_Store.length}
-		</div> -->
-
-		{#key controlPanelNodes}
-			{#if controlPanelNodes.length > 0}
-				<QMSWraper
-					QMSName={type.dd_displayName}
-					QMSType="query"
-					QMS_info={{ ...type, args: controlPanelNodes }}
-				>
-					<ActiveArguments />
-				</QMSWraper>
-			{/if}
-		{/key}
+			{#key controlPanelNodes}
+				{#if controlPanelNodes.length > 0}
+					<QMSWraper
+						QMSName={type.dd_displayName}
+						QMSType="query"
+						QMS_info={{ ...type, args: controlPanelNodes }}
+					>
+						<ActiveArguments />
+					</QMSWraper>
+				{/if}
+			{/key}
+		</div>
 	</div>
-</div>
+{/if}

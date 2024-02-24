@@ -20,6 +20,7 @@
 	export let activeArgumentData;
 	export let group;
 	export let activeArgumentsDataGrouped;
+	export let CPItem = node?.CPItem;
 	setContext(
 		'choosenDisplayInterface',
 		writable(activeArgumentData.chosenDisplayInterface || activeArgumentData.dd_displayInterface)
@@ -119,10 +120,10 @@
 		activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
 		finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 		//update the activeArgumentsDataGrouped_StoreForCPItem and related
-		if (node.CPItem) {
+		if (CPItem) {
 			const QMSWraperCtxData_StoreForCPItem = $mergedChildren_QMSWraperCtxData_Store.find(
 				(currCtx) => {
-					return currCtx.stepsOfFields.join() == node.CPItem.stepsOfFieldsThisAppliesTo.join();
+					return currCtx.stepsOfFields.join() == CPItem.stepsOfFieldsThisAppliesTo.join();
 				}
 			);
 			const activeArgumentsDataGrouped_StoreForCPItem =
@@ -157,7 +158,7 @@
 		}}
 	>
 		<div class="flex flex-col">
-			<div class="w-full text-lg text-center  mb-2 ">
+			<div class="w-full text-lg text-center mb-2">
 				<p class="badge badge-info font-bold">
 					<!-- {#if group.group_name == 'root'}
 						{activeArgumentData.stepsOfFields?.join(' > ')}
@@ -172,7 +173,7 @@
 				{#if parentNode?.inputFields?.some((inputField) => {
 					return inputField.dd_displayName == '_not';
 				})}
-					<div class="form-control ">
+					<div class="form-control">
 						<label class="label cursor-pointer w-min py-0">
 							<span class="label-text pr-1">Not</span>
 							<input
@@ -199,7 +200,7 @@
 					</label>
 				</div>
 				<btn
-					class="btn btn-xs btn-warning    flex-1"
+					class="btn btn-xs btn-warning flex-1"
 					on:click={() => {
 						activeArgumentsDataGrouped_Store.delete_activeArgument(
 							activeArgumentData,
@@ -232,7 +233,7 @@
 					</div>
 				</div>
 			{/if}
-			<div class="px-2 ">
+			<div class="px-2">
 				<AutoInterface
 					alwaysOn_interfacePicker
 					typeInfo={activeArgumentData}
@@ -254,7 +255,7 @@
 	{expandedVersion ? ' pr-2 ' : ' '}
 	{$mutationVersion ? ' pr-2 pb-2 ' : ' '} 
 		{!expandedVersion && !$mutationVersion ? ' md:max-w-[25vw]' : ' '} 
-		 my-1 flex   dnd-item 
+		 my-1 flex dnd-item
 		 {activeArgumentData?.inUse && !$mutationVersion
 		? activeArgumentData.canRunQuery
 			? 'ring ring-[1px]  bg-base-200/75 ring-primary/25 '
@@ -264,8 +265,8 @@
 		"
 	bind:this={labelEl}
 >
-	<div class="grow  ">
-		<div class="  flex {$mutationVersion ? 'flex-col' : ''}  space-x-0 ">
+	<div class="grow">
+		<div class="  flex {$mutationVersion ? 'flex-col' : ''}  space-x-0">
 			<input
 				type="checkbox"
 				class="checkbox input-primary hidden"
@@ -274,7 +275,7 @@
 				}}
 			/>
 			<div
-				class="   text-xs  select-none flex grow flex-nowrap 
+				class="   text-xs select-none flex grow flex-nowrap
 											"
 			>
 				<button
@@ -286,7 +287,7 @@
 						{activeArgumentData.inUse ? 'font-semibold' : 'font-normal outline-0'}
 						{$mutationVersion ? 'mb-1 ml-1' : ''}
 						
-						btn-ghost text-base-content  btn   btn-xs text-xs normal-case  rounded-box  pl-1  py-0 h-full min-h-min     
+						btn-ghost text-base-content btn btn-xs text-xs normal-case rounded-box pl-1 py-0 h-full min-h-min
 						{isNot ? ' bg-gradient-to-r from-secondary/30 outline-dashed' : 'bg-error/0'}"
 					on:click={() => {
 						showModal = true;
@@ -309,12 +310,12 @@
 				</button>
 
 				<div
-					class="flex flex-nowrap  overflow-x-auto  max-w-[65vw] 
+					class="flex flex-nowrap overflow-x-auto max-w-[65vw]
 								"
 				>
 					{#if !expandedVersion && !$mutationVersion}
 						<p
-							class="shrink-0 text-base-content text-xs font-light pt-[1px] mx-2 "
+							class="shrink-0 text-base-content text-xs font-light pt-[1px] mx-2"
 							on:click|preventDefault|stopPropagation|self={() => {
 								expandedVersion = true;
 							}}
@@ -325,7 +326,7 @@
 				</div>
 			</div>
 			{#if expandedVersion || $mutationVersion}
-				<div class="pl-1 ">
+				<div class="pl-1">
 					<AutoInterface
 						typeInfo={activeArgumentData}
 						on:changed={(e) => {
@@ -339,9 +340,5 @@
 </label>
 
 {#if activeArgumentData[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
-	<div
-		class=" ml-8 h-0    absolute w-11/12   top-0 left-0 visible"
-		id="shadowEl"
-		bind:this={shadowEl}
-	/>
+	<div class=" ml-8 h-0 absolute w-11/12 top-0 left-0 visible" id="shadowEl" bind:this={shadowEl} />
 {/if}

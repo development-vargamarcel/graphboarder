@@ -30,6 +30,7 @@
 	export let type;
 	export let originalNodes;
 	export let prefix = '';
+	export let CPItem = node?.CPItem;
 	////
 	if (typeof node === 'undefined') {
 		console.log({ parentNode });
@@ -44,15 +45,25 @@
 	const getNodesGivenControlNodeWithPanelItem = (node, mergedChildren_QMSWraperCtxData_Value) => {
 		const activeArgumentsDataGrouped_Store = mergedChildren_QMSWraperCtxData_Value.find(
 			(currCtx) => {
-				return currCtx.stepsOfFields.join() == node.CPItem.stepsOfFieldsThisAppliesTo.join();
+				return currCtx.stepsOfFields.join() == CPItem.stepsOfFieldsThisAppliesTo.join();
 			}
 		).activeArgumentsDataGrouped_Store;
 
 		const group_argsNode = get(activeArgumentsDataGrouped_Store)[0].group_argsNode;
 		return group_argsNode;
 	};
-	if (node.hasOwnProperty('CPItem') && node?.operator) {
+	console.log('1', { nodes });
+	if (node.items?.length > 0 && !nodes?.[node.items[0]] && CPItem) {
 		nodes = getNodesGivenControlNodeWithPanelItem(node, $mergedChildren_QMSWraperCtxData_Store);
+		console.log('2', { nodes });
+	}
+	let nodesRemoteTest;
+
+	if (CPItem) {
+		nodesRemoteTest = getNodesGivenControlNodeWithPanelItem(
+			node,
+			$mergedChildren_QMSWraperCtxData_Store
+		);
 	}
 	////
 	let stepsOfNodes = [];
@@ -205,36 +216,38 @@
 
 	let groupDisplayTitle = '';
 	$: {
-		groupDisplayTitle = '';
-		//if (node?.not) {
-		//	groupDisplayTitle = `${groupDisplayTitle}_not `;
-		//}
-		console.log({ node });
-		if (node.dd_displayName) {
-			groupDisplayTitle = `${groupDisplayTitle}${node.dd_displayName}`;
-		}
-
-		if (node?.operator != 'bonded') {
-			if (groupDisplayTitle.trim() != '') {
-				groupDisplayTitle = `${groupDisplayTitle} `;
+		if (node) {
+			groupDisplayTitle = '';
+			//if (node?.not) {
+			//	groupDisplayTitle = `${groupDisplayTitle}_not `;
+			//}
+			console.log({ node });
+			if (node.dd_displayName) {
+				groupDisplayTitle = `${groupDisplayTitle}${node.dd_displayName}`;
 			}
 
-			if (node?.operator == 'list') {
-				groupDisplayTitle = `${groupDisplayTitle} (list)`;
+			if (node?.operator != 'bonded') {
+				if (groupDisplayTitle.trim() != '') {
+					groupDisplayTitle = `${groupDisplayTitle} `;
+				}
+
+				if (node?.operator == 'list') {
+					groupDisplayTitle = `${groupDisplayTitle} (list)`;
+				}
+				if (['_and', '_or'].includes(node?.operator)) {
+					groupDisplayTitle = `${groupDisplayTitle}${node?.operator} (list)`;
+				}
 			}
-			if (['_and', '_or'].includes(node?.operator)) {
-				groupDisplayTitle = `${groupDisplayTitle}${node?.operator} (list)`;
+			if (groupDisplayTitle.trim() == '' || getPreciseType(groupDisplayTitle) == 'undefined') {
+				if (node?.operator == 'bonded') {
+					groupDisplayTitle = '(item)'; //bonded
+				} else if (node?.operator == '~spread~') {
+					groupDisplayTitle = '(~spread~)'; //~spread~
+				}
 			}
+			groupDisplayTitle = `${groupDisplayTitle}`;
+			//groupDisplayTitle = stepsOfNodes.join('->') + `(${groupDisplayTitle})`;
 		}
-		if (groupDisplayTitle.trim() == '' || getPreciseType(groupDisplayTitle) == 'undefined') {
-			if (node?.operator == 'bonded') {
-				groupDisplayTitle = '(item)'; //bonded
-			} else if (node?.operator == '~spread~') {
-				groupDisplayTitle = '(~spread~)'; //~spread~
-			}
-		}
-		groupDisplayTitle = `${groupDisplayTitle}`;
-		//groupDisplayTitle = stepsOfNodes.join('->') + `(${groupDisplayTitle})`;
 	}
 
 	if (node?.addDefaultFields || (node?.isMain && addDefaultFields)) {
@@ -860,6 +873,7 @@
 							dispatch('changed');
 						}
 					}}
+					{CPItem}
 					isNot={node.not}
 					on:updateQuery
 					on:inUseChanged={() => {}}
@@ -898,25 +912,57 @@
 						<div class="flex dnd-item">
 							{#if testName_stepsOFFieldsWasUpdated}
 								{#key stepsOfFields}
-									<svelte:self
-										on:deleteSubNode={(e) => {
-											deleteItem(e);
-											//
-											//console.log(e.detail.id, node);
-										}}
-										{originalNodes}
-										on:updateQuery
-										{type}
-										bind:nodes
-										node={nodes[item.id]}
-										nodeId={item.id}
-										parentNode={node}
-										parentNodeId={node.id}
-										on:changed
-										{availableOperators}
-										on:childrenStartDrag={startDrag}
-										{group}
-									/>
+									{#if nodes?.[item.id]}
+										<svelte:self
+											on:deleteSubNode={(e) => {
+												deleteItem(e);
+												//
+												//console.log(e.detail.id, node);
+											}}
+											{originalNodes}
+											on:updateQuery
+											{type}
+											{CPItem}
+											bind:nodes
+											node={nodes[item.id]}
+											nodeId={item.id}
+											parentNode={node}
+											parentNodeId={node.id}
+											on:changed
+											{availableOperators}
+											on:childrenStartDrag={startDrag}
+											{group}
+										/>
+									{:else}
+										{#key nodesRemoteTest}
+											{#if nodesRemoteTest}
+												<svelte:self
+													on:deleteSubNode={(e) => {
+														deleteItem(e);
+														//
+														//console.log(e.detail.id, node);
+													}}
+													{originalNodes}
+													on:updateQuery
+													{type}
+													{CPItem}
+													nodes={nodesRemoteTest}
+													node={nodesRemoteTest[item.id]}
+													nodeId={item.id}
+													parentNode={node}
+													parentNodeId={node.id}
+													on:changed
+													{availableOperators}
+													on:childrenStartDrag={startDrag}
+													{group}
+												/>
+
+												<!-- keys:{Object.keys(nodes).join()}
+												keysRemote:{Object.keys(nodesRemoteTest).join()}
+												itemId:{item.id} -->
+											{/if}
+										{/key}
+									{/if}
 								{/key}
 							{/if}
 						</div>
