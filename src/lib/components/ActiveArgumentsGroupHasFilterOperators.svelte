@@ -23,6 +23,7 @@
 	export let nodes;
 	export let parentNodeId;
 	export let parentNode = nodes[parentNodeId];
+	export let nodeId;
 	export let node;
 	export let availableOperators;
 	export let group;
@@ -30,7 +31,10 @@
 	export let originalNodes;
 	export let prefix = '';
 	////
-
+	if (typeof node === 'undefined') {
+		console.log({ parentNode });
+	}
+	console.log('===================================', { nodeId });
 	const QMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	const {
 		mergedChildren_QMSWraperCtxData_Store,
@@ -905,6 +909,7 @@
 										{type}
 										bind:nodes
 										node={nodes[item.id]}
+										nodeId={item.id}
 										parentNode={node}
 										parentNodeId={node.id}
 										on:changed
