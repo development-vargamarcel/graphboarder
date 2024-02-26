@@ -35,9 +35,9 @@
 	if (activeArgumentsContext.isControlPanelChild) {
 		//
 	}
+	let nodeContext = getContext(`${prefix}nodeContext`);
 
 	////
-
 	console.log('===================================', { nodeId });
 	const QMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	const {
@@ -45,7 +45,7 @@
 		mergedChildren_controlPanel_Store,
 		mergedChildren_finalGqlArgObj_Store
 	} = QMSWraperContext;
-	const getNodesGivenControlNodeWithPanelItem = (node, mergedChildren_QMSWraperCtxData_Value) => {
+	const getNodesGivenControlNodeWithPanelItem = (CPItem, mergedChildren_QMSWraperCtxData_Value) => {
 		const activeArgumentsDataGrouped_Store = mergedChildren_QMSWraperCtxData_Value.find(
 			(currCtx) => {
 				return currCtx.stepsOfFields.join() == CPItem.stepsOfFieldsThisAppliesTo.join();
@@ -57,19 +57,25 @@
 	};
 
 	//-------------
-	console.log('1', { nodes });
-	if (node.items?.length > 0 && !nodes?.[node.items[0]] && CPItem) {
-		nodes = getNodesGivenControlNodeWithPanelItem(node, $mergedChildren_QMSWraperCtxData_Store);
-		console.log('2', { nodes });
-	}
 	let nodesRemoteTest;
 	if (activeArgumentsContext.isControlPanelChild) {
+		console.log('1', { nodes }, Object.keys(nodes).join());
+		if (node.items?.length > 0 && !nodes?.[node.items[0]] && CPItem) {
+			nodes = getNodesGivenControlNodeWithPanelItem(CPItem, $mergedChildren_QMSWraperCtxData_Store);
+			console.log('2', { nodes }, Object.keys(nodes).join());
+		}
 		if (CPItem) {
 			nodesRemoteTest = getNodesGivenControlNodeWithPanelItem(
-				node,
+				CPItem,
 				$mergedChildren_QMSWraperCtxData_Store
 			);
+		} else {
+			if (nodeContext) {
+				nodesRemoteTest = nodeContext.nodes;
+			}
+			console.log({ nodeContext });
 		}
+		setContext(`${prefix}nodeContext`, { nodes: nodesRemoteTest });
 	}
 
 	////
@@ -929,7 +935,7 @@
 											on:updateQuery
 											{type}
 											{CPItem}
-											bind:nodes
+											{nodes}
 											node={nodes[item.id]}
 											nodeId={item.id}
 											parentNode={node}
@@ -940,6 +946,7 @@
 											{group}
 										/>
 									{:else}
+										2
 										{#key nodesRemoteTest}
 											{#if nodesRemoteTest}
 												<svelte:self
