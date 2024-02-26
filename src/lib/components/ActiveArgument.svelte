@@ -117,8 +117,10 @@
 	};
 
 	const updateActiveArgument = () => {
-		activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
-		finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
+		if (!activeArgumentsContext.isControlPanelChild) {
+			activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
+			finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
+		}
 		//update the activeArgumentsDataGrouped_StoreForCPItem and related
 		if (CPItem) {
 			const QMSWraperCtxData_StoreForCPItem = $mergedChildren_QMSWraperCtxData_Store.find(
