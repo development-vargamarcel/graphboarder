@@ -31,10 +31,13 @@
 	export let originalNodes;
 	export let prefix = '';
 	export let CPItem = node?.CPItem;
-	////
-	if (typeof node === 'undefined') {
-		console.log({ parentNode });
+	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
+	if (activeArgumentsContext.isControlPanelChild) {
+		//
 	}
+
+	////
+
 	console.log('===================================', { nodeId });
 	const QMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	const {
@@ -52,19 +55,23 @@
 		const group_argsNode = get(activeArgumentsDataGrouped_Store)[0].group_argsNode;
 		return group_argsNode;
 	};
+
+	//-------------
 	console.log('1', { nodes });
 	if (node.items?.length > 0 && !nodes?.[node.items[0]] && CPItem) {
 		nodes = getNodesGivenControlNodeWithPanelItem(node, $mergedChildren_QMSWraperCtxData_Store);
 		console.log('2', { nodes });
 	}
 	let nodesRemoteTest;
-
-	if (CPItem) {
-		nodesRemoteTest = getNodesGivenControlNodeWithPanelItem(
-			node,
-			$mergedChildren_QMSWraperCtxData_Store
-		);
+	if (activeArgumentsContext.isControlPanelChild) {
+		if (CPItem) {
+			nodesRemoteTest = getNodesGivenControlNodeWithPanelItem(
+				node,
+				$mergedChildren_QMSWraperCtxData_Store
+			);
+		}
 	}
+
 	////
 	let stepsOfNodes = [];
 	let stepsOfFields = [];
@@ -369,7 +376,6 @@
 
 	let QMSWraperContextForSelectedQMS = {};
 	$: console.log({ QMSWraperContextForSelectedQMS });
-	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
 </script>
 
 {#if showAddModal}

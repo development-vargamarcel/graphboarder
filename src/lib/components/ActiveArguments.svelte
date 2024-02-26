@@ -1,6 +1,7 @@
 <script lang="ts">
+	export let isControlPanelChild;
 	export let stepsOfFieldsThisAppliesTo;
-	const activeArgumentsContext = { stepsOfFieldsThisAppliesTo };
+	const activeArgumentsContext = { stepsOfFieldsThisAppliesTo, isControlPanelChild };
 	import { createEventDispatcher, each, getContext, setContext } from 'svelte/internal';
 	import ActiveArgumentsGroupWraper from '$lib/components/ActiveArgumentsGroupWraper.svelte';
 	export let prefix = '';

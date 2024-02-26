@@ -1,5 +1,5 @@
 <script>
-	import { getContext } from 'svelte';
+	import { getContext, setContext } from 'svelte';
 	import AddColumn from './AddColumn.svelte';
 	///not good
 	//1.Select type using Type or AddColumn
@@ -64,6 +64,8 @@
 	});
 	$: console.log('from control panel', { controlPanelNodes });
 	let showControlPanel = false;
+	const controlPanelContext = {};
+	setContext(`${prefix}controlPanelContext`, controlPanelContext);
 </script>
 
 <!-- <AddColumn
@@ -96,7 +98,7 @@
 						QMSType="query"
 						QMS_info={{ ...type, args: controlPanelNodes }}
 					>
-						<ActiveArguments />
+						<ActiveArguments isControlPanelChild={true} />
 					</QMSWraper>
 				{/if}
 			{/key}

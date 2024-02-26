@@ -27,9 +27,10 @@
 	setContext('dndIsOn', dndIsOn);
 	const mutationVersion = writable(false);
 	setContext('mutationVersion', mutationVersion);
+	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
 </script>
 
-<div class="flex  ">
+<div class="flex">
 	<ActiveArgumentsGroup_info {group} />
 	{#if !hasGroup_argsNode}
 		<ActiveArgumentsGroup_addFilterAndSortingButton
@@ -66,7 +67,7 @@
 </div>
 <div class="pb-10">
 	{#if hasGroup_argsNode}
-		<div class=" overflow-x-auto overflow-y-visible ">
+		<div class=" overflow-x-auto overflow-y-visible">
 			<ActiveArgumentsGroupHasFilterOperators
 				addDefaultFields={true}
 				on:updateQuery={() => {
@@ -76,14 +77,15 @@
 						return !node?.operator;
 					});
 					update_activeArgumentsDataGrouped(group);
-
-					finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
+					if (!activeArgumentsContext.isControlPanelChild) {
+						finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
+					}
 				}}
 				type={group.group_name + 'ActiveArgumentsGroupHasFilterOperators'}
 				node={group.group_argsNode.mainContainer}
 				originalNodes={group.group_argsNode}
 				{group}
-				bind:nodes={group.group_argsNode}
+				nodes={group.group_argsNode}
 				on:changed={() => {
 					group.group_args = Object.values(group.group_argsNode)?.filter((node) => {
 						return !node?.operator;
