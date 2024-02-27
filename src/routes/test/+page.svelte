@@ -2,6 +2,7 @@
 	import CodeEditor from './../../lib/components/fields/CodeEditor.svelte';
 	import { parseAll } from '$lib/stores/testData/testEndpoints';
 	import { objectToSourceCode } from '$lib/utils/usefulFunctions';
+	import CrazyNesting from '$lib/components/testing/CrazyNesting.svelte';
 
 	let text = '{ "a": 1, "b": 2 }';
 
@@ -24,3 +25,5 @@
 		{sourceCode}
 	</div>
 </div>
+
+<CrazyNesting></CrazyNesting>
