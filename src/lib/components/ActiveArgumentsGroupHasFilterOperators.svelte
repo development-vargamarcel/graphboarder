@@ -59,12 +59,15 @@
 	//-------------
 	let nodesRemoteTest;
 	if (activeArgumentsContext.isControlPanelChild) {
-		console.log('1', { nodes }, Object.keys(nodes).join());
-		if (node.items?.length > 0 && !nodes?.[node.items[0]] && CPItem) {
-			nodes = getNodesGivenControlNodeWithPanelItem(CPItem, $mergedChildren_QMSWraperCtxData_Store);
-			console.log('2', { nodes }, Object.keys(nodes).join());
-		}
 		if (CPItem) {
+			console.log('1', { nodes }, Object.keys(nodes).join());
+			if (node.items?.length > 0 && !nodes?.[node.items[0]]) {
+				nodes = getNodesGivenControlNodeWithPanelItem(
+					CPItem,
+					$mergedChildren_QMSWraperCtxData_Store
+				);
+				console.log('2', { nodes }, Object.keys(nodes).join());
+			}
 			nodesRemoteTest = getNodesGivenControlNodeWithPanelItem(
 				CPItem,
 				$mergedChildren_QMSWraperCtxData_Store
@@ -144,7 +147,7 @@
 	let dragDisabled = true;
 	const flipDurationMs = 500;
 	function handleDndConsider(e) {
-		//console.log('considering', e, nodes);
+		console.log('considering', e, e.detail.items, nodes);
 		node.items = e.detail.items;
 		dragDisabled = true;
 	}
@@ -219,7 +222,9 @@
 		`${prefix}QMSWraperContext`
 	);
 	const handleChanged = () => {
-		finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
+		if (!activeArgumentsContext.isControlPanelChild) {
+			finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
+		}
 	};
 
 	let argsInfo = QMS_info?.args;
