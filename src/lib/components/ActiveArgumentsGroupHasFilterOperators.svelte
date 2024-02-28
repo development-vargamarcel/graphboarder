@@ -1,4 +1,5 @@
 <script>
+	import { updated } from '$app/stores';
 	import {
 		filterElFromArr,
 		formatData,
@@ -55,6 +56,18 @@
 		const group_argsNode = get(activeArgumentsDataGrouped_Store)[0].group_argsNode;
 		return group_argsNode;
 	};
+	const setUpdatedGroup_argsNode=(CPItem, mergedChildren_QMSWraperCtxData_Value,updatedGroup_argsNode)=>{
+				const activeArgumentsDataGrouped_Store = mergedChildren_QMSWraperCtxData_Value.find(
+			(currCtx) => {
+				return currCtx.stepsOfFields.join() == CPItem.stepsOfFieldsThisAppliesTo.join();
+			}
+		).activeArgumentsDataGrouped_Store;
+
+activeArgumentsDataGrouped_Store.update((storeVal)=>{
+storeVal[0].group_argsNode=updatedGroup_argsNode
+return storeVal
+})
+	}
 
 	//-------------
 	let nodesRemoteTest;
@@ -70,6 +83,7 @@
 			}
 		}
 		nodes= nodesRemoteTest;
+		console.log('nodes === nodesRemoteTest',nodes === nodesRemoteTest,nodesRemoteTest===nodesRemoteTest);
 		setContext(`${prefix}nodeContext`, { nodes: nodesRemoteTest });
 	}
 
@@ -147,6 +161,9 @@
 		node.items = e.detail.items;
 		//console.log(e);
 		nodes = { ...nodes };
+		if (activeArgumentsContext.isControlPanelChild) {
+			//setUpdatedGroup_argsNode(CPItem, $mergedChildren_QMSWraperCtxData_Store,nodes)
+		}
 		handleChanged();
 		dispatch('changed');
 		dragDisabled = true;
@@ -159,6 +176,9 @@
 		// nodes[e.detail.id] = undefined;
 		//!!! to do: also delete the node from "nodes"
 		nodes = { ...nodes };
+				if (activeArgumentsContext.isControlPanelChild) {
+			//setUpdatedGroup_argsNode(CPItem, $mergedChildren_QMSWraperCtxData_Store,nodes)
+		}
 		handleChanged();
 		dispatch('changed');
 	};
