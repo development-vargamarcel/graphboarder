@@ -60,14 +60,6 @@
 	let nodesRemoteTest;
 	if (activeArgumentsContext.isControlPanelChild) {
 		if (CPItem) {
-			console.log('1', { nodes }, Object.keys(nodes).join());
-			if (node.items?.length > 0 && !nodes?.[node.items[0]]) {
-				nodes = getNodesGivenControlNodeWithPanelItem(
-					CPItem,
-					$mergedChildren_QMSWraperCtxData_Store
-				);
-				console.log('2', { nodes }, Object.keys(nodes).join());
-			}
 			nodesRemoteTest = getNodesGivenControlNodeWithPanelItem(
 				CPItem,
 				$mergedChildren_QMSWraperCtxData_Store
@@ -76,8 +68,8 @@
 			if (nodeContext) {
 				nodesRemoteTest = nodeContext.nodes;
 			}
-			console.log({ nodeContext });
 		}
+		nodes= nodesRemoteTest;
 		setContext(`${prefix}nodeContext`, { nodes: nodesRemoteTest });
 	}
 
