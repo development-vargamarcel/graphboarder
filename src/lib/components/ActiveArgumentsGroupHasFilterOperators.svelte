@@ -46,24 +46,17 @@
 		mergedChildren_controlPanel_Store,
 		mergedChildren_finalGqlArgObj_Store
 	} = QMSWraperContext;
-	const getNodesGivenControlNodeWithPanelItem = (CPItem, mergedChildren_QMSWraperCtxData_Value) => {
-		const activeArgumentsDataGrouped_Store = mergedChildren_QMSWraperCtxData_Value.find(
-			(currCtx) => {
-				return currCtx.stepsOfFields.join() == CPItem.stepsOfFieldsThisAppliesTo.join();
-			}
-		).activeArgumentsDataGrouped_Store;
-
-		const group_argsNode = get(activeArgumentsDataGrouped_Store)[0].group_argsNode;
+	let activeArgumentsDataGrouped_StoreForCPItem = $mergedChildren_QMSWraperCtxData_Store?.find(
+		(currCtx) => {
+			return currCtx.stepsOfFields.join() == CPItem?.stepsOfFieldsThisAppliesTo.join();
+		}
+	)?.activeArgumentsDataGrouped_StoreForCPItem;
+	const getNodesGivenControlNodeWithPanelItem = () => {
+		const group_argsNode = get(activeArgumentsDataGrouped_StoreForCPItem)[0].group_argsNode;
 		return group_argsNode;
 	};
-	const setUpdatedGroup_argsNode=(CPItem, mergedChildren_QMSWraperCtxData_Value,updatedGroup_argsNode)=>{
-				const activeArgumentsDataGrouped_Store = mergedChildren_QMSWraperCtxData_Value.find(
-			(currCtx) => {
-				return currCtx.stepsOfFields.join() == CPItem.stepsOfFieldsThisAppliesTo.join();
-			}
-		).activeArgumentsDataGrouped_Store;
-
-activeArgumentsDataGrouped_Store.update((storeVal)=>{
+	const setUpdatedGroup_argsNode=(updatedGroup_argsNode)=>{
+activeArgumentsDataGrouped_StoreForCPItem.update((storeVal)=>{
 storeVal[0].group_argsNode=updatedGroup_argsNode
 return storeVal
 })
@@ -73,10 +66,7 @@ return storeVal
 	let nodesRemoteTest;
 	if (activeArgumentsContext.isControlPanelChild) {
 		if (CPItem) {
-			nodesRemoteTest = getNodesGivenControlNodeWithPanelItem(
-				CPItem,
-				$mergedChildren_QMSWraperCtxData_Store
-			);
+			nodesRemoteTest = getNodesGivenControlNodeWithPanelItem();
 		} else {
 			if (nodeContext) {
 				nodesRemoteTest = nodeContext.nodes;
@@ -162,7 +152,7 @@ return storeVal
 		//console.log(e);
 		nodes = { ...nodes };
 		if (activeArgumentsContext.isControlPanelChild) {
-			//setUpdatedGroup_argsNode(CPItem, $mergedChildren_QMSWraperCtxData_Store,nodes)
+			//setUpdatedGroup_argsNode(nodes)
 		}
 		handleChanged();
 		dispatch('changed');
@@ -177,7 +167,7 @@ return storeVal
 		//!!! to do: also delete the node from "nodes"
 		nodes = { ...nodes };
 				if (activeArgumentsContext.isControlPanelChild) {
-			//setUpdatedGroup_argsNode(CPItem, $mergedChildren_QMSWraperCtxData_Store,nodes)
+			//setUpdatedGroup_argsNode(nodes)
 		}
 		handleChanged();
 		dispatch('changed');
