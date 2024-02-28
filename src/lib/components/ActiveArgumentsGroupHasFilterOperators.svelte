@@ -50,7 +50,7 @@
 		(currCtx) => {
 			return currCtx.stepsOfFields.join() == CPItem?.stepsOfFieldsThisAppliesTo.join();
 		}
-	)?.activeArgumentsDataGrouped_StoreForCPItem;
+	)?.activeArgumentsDataGrouped_Store
 	const getNodesGivenControlNodeWithPanelItem = () => {
 		const group_argsNode = get(activeArgumentsDataGrouped_StoreForCPItem)[0].group_argsNode;
 		return group_argsNode;
