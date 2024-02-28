@@ -86,7 +86,7 @@
 </button>
 {#if showControlPanel}
 	<div class="card w-full">
-		<div class="card-body {controlPanelNodes.length > 0 ? 'h-32' : ''}  overflow-y-auto resize">
+		<div class="card-body {controlPanelNodes.length > 0 ? 'h-60' : ''}  overflow-y-auto resize">
 			<!-- <div class="flex w-min">
 				 <icon class=" bi bi-star" />{$mergedChildren_controlPanel_Store.length}
 			 </div> -->
