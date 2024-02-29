@@ -1,5 +1,4 @@
 <script>
-	import { updated } from '$app/stores';
 	import {
 		filterElFromArr,
 		formatData,
@@ -24,69 +23,15 @@
 	export let nodes;
 	export let parentNodeId;
 	export let parentNode = nodes[parentNodeId];
-	export let nodeId;
 	export let node;
 	export let availableOperators;
 	export let group;
 	export let type;
 	export let originalNodes;
-	export let prefix = '';
-	export let CPItem = node?.CPItem;
-	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
-	if (activeArgumentsContext?.isControlPanelChild) {
-		//
-	}
-	let nodeContext = getContext(`${prefix}nodeContext`);
-
-	////
-	console.log('===================================', { nodeId });
-	const QMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
-	const {
-		mergedChildren_QMSWraperCtxData_Store,
-		mergedChildren_controlPanel_Store,
-		mergedChildren_finalGqlArgObj_Store
-	} = QMSWraperContext;
-	let activeArgumentsDataGrouped_StoreForCPItem = $mergedChildren_QMSWraperCtxData_Store?.find(
-		(currCtx) => {
-			return currCtx.stepsOfFields.join() == CPItem?.stepsOfFieldsThisAppliesTo.join();
-		}
-	)?.activeArgumentsDataGrouped_Store;
-	const getNodesGivenControlNodeWithPanelItem = () => {
-		const group_argsNode = get(activeArgumentsDataGrouped_StoreForCPItem)[0].group_argsNode;
-		return group_argsNode;
-	};
-	const setUpdatedGroup_argsNode = (updatedGroup_argsNode) => {
-		activeArgumentsDataGrouped_StoreForCPItem.update((storeVal) => {
-			storeVal[0].group_argsNode = updatedGroup_argsNode;
-			return storeVal;
-		});
-	};
-
-	//-------------
-	let nodesRemoteTest;
-	if (activeArgumentsContext?.isControlPanelChild) {
-		if (CPItem) {
-			nodesRemoteTest = getNodesGivenControlNodeWithPanelItem();
-		} else {
-			if (nodeContext) {
-				nodesRemoteTest = nodeContext.nodes;
-			}
-		}
-		nodes = nodesRemoteTest;
-		console.log(
-			'nodes === nodesRemoteTest',
-			nodes === nodesRemoteTest,
-			nodesRemoteTest === nodesRemoteTest
-		);
-		setContext(`${prefix}nodeContext`, { nodes: nodesRemoteTest });
-	}
-
-	////
 	let stepsOfNodes = [];
 	let stepsOfFields = [];
 	let stepsOfFieldsFull = [];
 	let testName_stepsOFFieldsWasUpdated = false;
-	console.log('hasfilterOperators...', { node, nodes, parentNodeId, parentNode });
 	const operatorChangeHandler = () => {
 		stepsOfNodes = getUpdatedStepsOfNodes(
 			JSON.parse(JSON.stringify(parentNode?.stepsOfNodes || []))
@@ -141,13 +86,14 @@
 		node.stepsOfFieldsStringified = JSON.stringify(stepsOfFields);
 	}
 	export let addDefaultFields;
+	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
 	let dragDisabled = true;
 	const flipDurationMs = 500;
 	function handleDndConsider(e) {
-		console.log('considering', e, e.detail.items, nodes);
+		//console.log('considering', e, nodes);
 		node.items = e.detail.items;
 		dragDisabled = true;
 	}
@@ -155,9 +101,6 @@
 		node.items = e.detail.items;
 		//console.log(e);
 		nodes = { ...nodes };
-		if (activeArgumentsContext?.isControlPanelChild) {
-			//setUpdatedGroup_argsNode(nodes)
-		}
 		handleChanged();
 		dispatch('changed');
 		dragDisabled = true;
@@ -170,9 +113,6 @@
 		// nodes[e.detail.id] = undefined;
 		//!!! to do: also delete the node from "nodes"
 		nodes = { ...nodes };
-		if (activeArgumentsContext?.isControlPanelChild) {
-			//setUpdatedGroup_argsNode(nodes)
-		}
 		handleChanged();
 		dispatch('changed');
 	};
@@ -228,9 +168,7 @@
 		`${prefix}QMSWraperContext`
 	);
 	const handleChanged = () => {
-		if (!activeArgumentsContext?.isControlPanelChild) {
-			finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
-		}
+		finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 	};
 
 	let argsInfo = QMS_info?.args;
@@ -240,38 +178,35 @@
 
 	let groupDisplayTitle = '';
 	$: {
-		if (node) {
-			groupDisplayTitle = '';
-			//if (node?.not) {
-			//	groupDisplayTitle = `${groupDisplayTitle}_not `;
-			//}
-			console.log({ node });
-			if (node.dd_displayName) {
-				groupDisplayTitle = `${groupDisplayTitle}${node.dd_displayName}`;
-			}
-
-			if (node?.operator != 'bonded') {
-				if (groupDisplayTitle.trim() != '') {
-					groupDisplayTitle = `${groupDisplayTitle} `;
-				}
-
-				if (node?.operator == 'list') {
-					groupDisplayTitle = `${groupDisplayTitle} (list)`;
-				}
-				if (['_and', '_or'].includes(node?.operator)) {
-					groupDisplayTitle = `${groupDisplayTitle}${node?.operator} (list)`;
-				}
-			}
-			if (groupDisplayTitle.trim() == '' || getPreciseType(groupDisplayTitle) == 'undefined') {
-				if (node?.operator == 'bonded') {
-					groupDisplayTitle = '(item)'; //bonded
-				} else if (node?.operator == '~spread~') {
-					groupDisplayTitle = '(~spread~)'; //~spread~
-				}
-			}
-			groupDisplayTitle = `${groupDisplayTitle}`;
-			//groupDisplayTitle = stepsOfNodes.join('->') + `(${groupDisplayTitle})`;
+		groupDisplayTitle = '';
+		//if (node?.not) {
+		//	groupDisplayTitle = `${groupDisplayTitle}_not `;
+		//}
+		if (node.dd_displayName) {
+			groupDisplayTitle = `${groupDisplayTitle}${node.dd_displayName}`;
 		}
+
+		if (node?.operator != 'bonded') {
+			if (groupDisplayTitle.trim() != '') {
+				groupDisplayTitle = `${groupDisplayTitle} `;
+			}
+
+			if (node?.operator == 'list') {
+				groupDisplayTitle = `${groupDisplayTitle} (list)`;
+			}
+			if (['_and', '_or'].includes(node?.operator)) {
+				groupDisplayTitle = `${groupDisplayTitle}${node?.operator} (list)`;
+			}
+		}
+		if (groupDisplayTitle.trim() == '' || getPreciseType(groupDisplayTitle) == 'undefined') {
+			if (node?.operator == 'bonded') {
+				groupDisplayTitle = '(item)'; //bonded
+			} else if (node?.operator == '~spread~') {
+				groupDisplayTitle = '(~spread~)'; //~spread~
+			}
+		}
+		groupDisplayTitle = `${groupDisplayTitle}`;
+		//groupDisplayTitle = stepsOfNodes.join('->') + `(${groupDisplayTitle})`;
 	}
 
 	if (node?.addDefaultFields || (node?.isMain && addDefaultFields)) {
@@ -303,7 +238,7 @@
 	let selectedRowsModel = {};
 	import ExplorerTable from '$lib/components/ExplorerTable.svelte';
 	import { string_transformer } from '$lib/utils/dataStructureTransformers.ts';
-	import { get, writable } from 'svelte/store';
+	import { writable } from 'svelte/store';
 	import AddNodeToControlPanel from './AddNodeToControlPanel.svelte';
 
 	let showExplorerTable = true;
@@ -393,6 +328,7 @@
 
 	let QMSWraperContextForSelectedQMS = {};
 	$: console.log({ QMSWraperContextForSelectedQMS });
+	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
 </script>
 
 {#if showAddModal}
@@ -411,8 +347,8 @@
 			showModal = false;
 		}}
 	>
-		<div class="flex flex-col">
-			<div class="w-full text-lg text-center mb-2">
+		<div class="flex flex-col ">
+			<div class="w-full text-lg text-center  mb-2 ">
 				<p class="badge badge-info font-bold">
 					{groupDisplayTitle}
 				</p>
@@ -420,7 +356,7 @@
 
 			{#if node?.isMain}
 				<btn
-					class="btn btn-xs btn-info normal-case mb-6 flex-1"
+					class="btn btn-xs btn-info normal-case  mb-6 flex-1"
 					on:click={() => {
 						nodeAddDefaultFields(
 							node,
@@ -438,7 +374,7 @@
 			{/if}
 
 			{#if !node?.isMain}
-				<div class="flex space-x-4">
+				<div class="flex space-x-4 ">
 					{#if parentNode?.inputFields?.some((inputField) => {
 						return inputField.dd_displayName == '_not';
 					})}
@@ -462,7 +398,7 @@
 						</div>
 					{/if}
 					<btn
-						class="btn btn-xs btn-info normal-case mb-6 flex-1"
+						class="btn btn-xs btn-info  normal-case mb-6 flex-1"
 						on:click={() => {
 							nodeAddDefaultFields(
 								node,
@@ -499,7 +435,7 @@
 					</btn>
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<btn
-						class="btn btn-xs btn-warning mb-6 flex-1"
+						class="btn btn-xs btn-warning  mb-6 flex-1"
 						on:click={() => {
 							alert('not yet implemented');
 							console.log(
@@ -628,8 +564,8 @@
 			showSelectModal = false;
 		}}
 	>
-		<div class="flex flex-col">
-			<div class="w-full text-lg text-center mb-2">
+		<div class="flex flex-col ">
+			<div class="w-full text-lg text-center  mb-2 ">
 				<p class="badge badge-info font-bold">
 					{groupDisplayTitle}
 				</p>
@@ -699,14 +635,14 @@
 	</Modal>{/if}
 
 {#if !node?.isMain}
-	<div class="   grid content-center rounded-full w-min-max w-max">
+	<div class="   grid   content-center  rounded-full w-min-max w-max">
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-		<div class="flex">
+		<div class="flex ">
 			{#if $dndIsOn}
 				<div
 					tabindex={dragDisabled ? 0 : -1}
 					aria-label="drag-handle"
-					class="  transition:all|global duration-500 bi bi-grip-vertical ml-2 -mr-1 text-lg rounded-l-md {node?.operator ==
+					class="  transition:all duration-500 bi bi-grip-vertical ml-2  -mr-1 text-lg rounded-l-md {node?.operator ==
 						undefined || node?.operator == 'bonded'
 						? 'text-base-content'
 						: node?.operator == '_and'
@@ -737,12 +673,12 @@
 			{#if node?.operator && !$mutationVersion}
 				<div
 					tabindex="0"
-					class="btn btn-xs btn-ghost px-[1px] text-xs font-light transition-all duration-500 rounded-full normal-case {node?.operator ==
+					class="btn btn-xs btn-ghost px-[1px] text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
 						'bonded' || node?.operator == 'list'
 						? 'text-base-content'
 						: node?.operator == '_and'
 						? 'text-primary'
-						: 'text-secondary'} break-all h-max w-max
+						: 'text-secondary'} break-all h-max  w-max
 						{node?.not ? ' bg-gradient-to-r from-secondary/50' : 'bg-error/0'}
 						"
 					on:click={() => {
@@ -800,12 +736,12 @@
 		{#if $mutationVersion && !node?.isMain}
 			<div
 				tabindex="0"
-				class="btn btn-xs btn-ghost px-[1px] text-xs font-light transition-all duration-500 rounded-full normal-case {node?.operator ==
+				class="btn btn-xs btn-ghost px-[1px] text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
 					'bonded' || node?.operator == 'list'
 					? 'text-base-content'
 					: node?.operator == '_and'
 					? 'text-primary'
-					: 'text-secondary'} break-all h-max w-max
+					: 'text-secondary'} break-all h-max  w-max
 						{node?.not ? ' bg-gradient-to-r from-secondary/50' : 'bg-error/0'}
 						"
 				on:click={() => {
@@ -857,18 +793,18 @@
 				</div>
 			{/if}
 		{/if}
-		<div class="flex">
+		<div class="flex ">
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<!-- node?.items?.length > 1 || node?.isMain -->
 			{#if node?.isMain}
 				<div
 					tabindex="0"
-					class="btn btn-xs btn-ghost px-[1px] text-xs font-light transition-all duration-500 rounded-full normal-case {node?.operator ==
+					class="btn btn-xs btn-ghost px-[1px] text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
 						'bonded' || node?.operator == 'list'
 						? 'text-base-content'
 						: node?.operator == '_and'
 						? 'text-primary'
-						: 'text-secondary'} break-all h-max w-max"
+						: 'text-secondary'} break-all h-max  w-max"
 					on:click={() => {
 						showModal = true;
 					}}
@@ -884,8 +820,8 @@
 			<p class="grow" />
 		</div>
 	{:else}
-		<div class="pr-2 rounded-box w-full">
-			<div class=" transition-color duration-500 rounded-box ringxxx ring-1xxx">
+		<div class="pr-2 rounded-box  w-full">
+			<div class=" transition-color duration-500 rounded-box ringxxx  ring-1xxx    ">
 				<ActiveArgument
 					{parentNode}
 					{node}
@@ -896,7 +832,6 @@
 							dispatch('changed');
 						}
 					}}
-					{CPItem}
 					isNot={node.not}
 					on:updateQuery
 					on:inUseChanged={() => {}}
@@ -911,7 +846,7 @@
 		<section
 			class=" duration-500 {$dndIsOn
 				? '  min-h-[30px] min-w-[200px]'
-				: 'pl-1'} rounded-l-none {node?.isMain
+				: 'pl-1'} rounded-l-none  {node?.isMain
 				? ' border-l-2 border-l-transparent  min-h-[40vh] md:min-h-[60vh] '
 				: ' '}
 				 w-full"
@@ -931,62 +866,28 @@
 				{#each node.items.filter((item) => {
 					return item.id !== SHADOW_PLACEHOLDER_ITEM_ID;
 				}) as item (item.id)}
-					<div animate:flip={{ duration: flipDurationMs }} class="    border-2== max-w-min my-1">
+					<div animate:flip={{ duration: flipDurationMs }} class="    border-2== max-w-min my-1 ">
 						<div class="flex dnd-item">
 							{#if testName_stepsOFFieldsWasUpdated}
 								{#key stepsOfFields}
-									{#if nodes?.[item.id]}
-										<svelte:self
-											on:deleteSubNode={(e) => {
-												deleteItem(e);
-												//
-												//console.log(e.detail.id, node);
-											}}
-											{originalNodes}
-											on:updateQuery
-											{type}
-											{CPItem}
-											{nodes}
-											node={nodes[item.id]}
-											nodeId={item.id}
-											parentNode={node}
-											parentNodeId={node.id}
-											on:changed
-											{availableOperators}
-											on:childrenStartDrag={startDrag}
-											{group}
-										/>
-									{:else}
-										2
-										{#key nodesRemoteTest}
-											{#if nodesRemoteTest}
-												<svelte:self
-													on:deleteSubNode={(e) => {
-														deleteItem(e);
-														//
-														//console.log(e.detail.id, node);
-													}}
-													{originalNodes}
-													on:updateQuery
-													{type}
-													{CPItem}
-													nodes={nodesRemoteTest}
-													node={nodesRemoteTest[item.id]}
-													nodeId={item.id}
-													parentNode={node}
-													parentNodeId={node.id}
-													on:changed
-													{availableOperators}
-													on:childrenStartDrag={startDrag}
-													{group}
-												/>
-
-												<!-- keys:{Object.keys(nodes).join()}
-												keysRemote:{Object.keys(nodesRemoteTest).join()}
-												itemId:{item.id} -->
-											{/if}
-										{/key}
-									{/if}
+									<svelte:self
+										on:deleteSubNode={(e) => {
+											deleteItem(e);
+											//
+											//console.log(e.detail.id, node);
+										}}
+										{originalNodes}
+										on:updateQuery
+										{type}
+										bind:nodes
+										node={nodes[item.id]}
+										parentNode={node}
+										parentNodeId={node.id}
+										on:changed
+										{availableOperators}
+										on:childrenStartDrag={startDrag}
+										{group}
+									/>
 								{/key}
 							{/if}
 						</div>
@@ -997,7 +898,7 @@
 	{/if}
 </div>
 {#if node.id == SHADOW_PLACEHOLDER_ITEM_ID}
-	<div class=" ml-8 h-0 top-0 left-0 visible" id="shadowEl" bind:this={shadowEl} />
+	<div class=" ml-8 h-0     top-0 left-0 visible" id="shadowEl" bind:this={shadowEl} />
 {/if}
 
 <style>

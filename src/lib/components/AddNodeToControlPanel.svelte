@@ -5,7 +5,7 @@
 	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
 	const { mergedChildren_controlPanel_Store } = getContext(`${prefix}OutermostQMSWraperContext`);
 	let currentObject = {
-		stepsOfFieldsThisAppliesTo: activeArgumentsContext.stepsOfFieldsThisAppliesTo,
+		stepsOfFieldsThisAppliesTo: activeArgumentsContext?.stepsOfFieldsThisAppliesTo,
 		nodeId: node.id,
 		id: Date.now() + Math.random()
 	};
