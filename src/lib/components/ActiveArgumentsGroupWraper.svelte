@@ -28,6 +28,7 @@
 	const mutationVersion = writable(false);
 	setContext('mutationVersion', mutationVersion);
 	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
+	const CPItemContext = getContext(`${prefix}CPItemContext`);
 </script>
 
 <div class="flex space-x-1">
@@ -82,7 +83,9 @@
 					}
 				}}
 				type={group.group_name + 'ActiveArgumentsGroupHasFilterOperators'}
-				node={group.group_argsNode.mainContainer}
+				node={CPItemContext
+					? group.group_argsNode[CPItemContext?.CPItem.nodeId]
+					: group.group_argsNode.mainContainer}
 				originalNodes={group.group_argsNode}
 				{group}
 				nodes={group.group_argsNode}
