@@ -37,10 +37,14 @@
 	setContext(`${prefix}CPItemContext`, CPItemContext);
 </script>
 
-<ActiveArgumentsGroupWraper
-	on:updateQuery={() => {}}
-	update_activeArgumentsDataGrouped={() => {}}
-	group={$activeArgumentsDataGrouped_StoreCurr[0]}
-	argsInfo={QMSWraperCtxValCurr.QMS_info?.args}
-	activeArgumentsDataGrouped={$activeArgumentsDataGrouped_StoreCurr}
-/>
+<div class="card w-full bg-base-100 text-base-content">
+	<div class="card-body pb-0">
+		<ActiveArgumentsGroupWraper
+			on:updateQuery={() => {}}
+			update_activeArgumentsDataGrouped={() => {}}
+			group={$activeArgumentsDataGrouped_StoreCurr[0]}
+			argsInfo={QMSWraperCtxValCurr.QMS_info?.args}
+			activeArgumentsDataGrouped={$activeArgumentsDataGrouped_StoreCurr}
+		/>
+	</div>
+</div>
