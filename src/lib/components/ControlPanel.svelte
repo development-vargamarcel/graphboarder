@@ -28,7 +28,7 @@
 {#if showControlPanel}
 	<div class="card w-full pr-4 md:pr-0">
 		<div
-			class="card-body {$mergedChildren_controlPanel_Store.length > 0
+			class="card-body p-0 pt-2 {$mergedChildren_controlPanel_Store.length > 0
 				? 'h-60'
 				: ''}  overflow-y-auto resize"
 		>
