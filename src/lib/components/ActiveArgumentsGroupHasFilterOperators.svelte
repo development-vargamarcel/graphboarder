@@ -33,7 +33,7 @@
 	export let prefix = '';
 	export let CPItem = node?.CPItem;
 	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
-	if (activeArgumentsContext.isControlPanelChild) {
+	if (activeArgumentsContext?.isControlPanelChild) {
 		//
 	}
 	let nodeContext = getContext(`${prefix}nodeContext`);
@@ -50,21 +50,21 @@
 		(currCtx) => {
 			return currCtx.stepsOfFields.join() == CPItem?.stepsOfFieldsThisAppliesTo.join();
 		}
-	)?.activeArgumentsDataGrouped_Store
+	)?.activeArgumentsDataGrouped_Store;
 	const getNodesGivenControlNodeWithPanelItem = () => {
 		const group_argsNode = get(activeArgumentsDataGrouped_StoreForCPItem)[0].group_argsNode;
 		return group_argsNode;
 	};
-	const setUpdatedGroup_argsNode=(updatedGroup_argsNode)=>{
-activeArgumentsDataGrouped_StoreForCPItem.update((storeVal)=>{
-storeVal[0].group_argsNode=updatedGroup_argsNode
-return storeVal
-})
-	}
+	const setUpdatedGroup_argsNode = (updatedGroup_argsNode) => {
+		activeArgumentsDataGrouped_StoreForCPItem.update((storeVal) => {
+			storeVal[0].group_argsNode = updatedGroup_argsNode;
+			return storeVal;
+		});
+	};
 
 	//-------------
 	let nodesRemoteTest;
-	if (activeArgumentsContext.isControlPanelChild) {
+	if (activeArgumentsContext?.isControlPanelChild) {
 		if (CPItem) {
 			nodesRemoteTest = getNodesGivenControlNodeWithPanelItem();
 		} else {
@@ -72,8 +72,12 @@ return storeVal
 				nodesRemoteTest = nodeContext.nodes;
 			}
 		}
-		nodes= nodesRemoteTest;
-		console.log('nodes === nodesRemoteTest',nodes === nodesRemoteTest,nodesRemoteTest===nodesRemoteTest);
+		nodes = nodesRemoteTest;
+		console.log(
+			'nodes === nodesRemoteTest',
+			nodes === nodesRemoteTest,
+			nodesRemoteTest === nodesRemoteTest
+		);
 		setContext(`${prefix}nodeContext`, { nodes: nodesRemoteTest });
 	}
 
@@ -151,7 +155,7 @@ return storeVal
 		node.items = e.detail.items;
 		//console.log(e);
 		nodes = { ...nodes };
-		if (activeArgumentsContext.isControlPanelChild) {
+		if (activeArgumentsContext?.isControlPanelChild) {
 			//setUpdatedGroup_argsNode(nodes)
 		}
 		handleChanged();
@@ -166,7 +170,7 @@ return storeVal
 		// nodes[e.detail.id] = undefined;
 		//!!! to do: also delete the node from "nodes"
 		nodes = { ...nodes };
-				if (activeArgumentsContext.isControlPanelChild) {
+		if (activeArgumentsContext?.isControlPanelChild) {
 			//setUpdatedGroup_argsNode(nodes)
 		}
 		handleChanged();
@@ -224,7 +228,7 @@ return storeVal
 		`${prefix}QMSWraperContext`
 	);
 	const handleChanged = () => {
-		if (!activeArgumentsContext.isControlPanelChild) {
+		if (!activeArgumentsContext?.isControlPanelChild) {
 			finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 		}
 	};
@@ -706,8 +710,8 @@ return storeVal
 						undefined || node?.operator == 'bonded'
 						? 'text-base-content'
 						: node?.operator == '_and'
-							? 'text-primary'
-							: 'text-secondary'} 
+						? 'text-primary'
+						: 'text-secondary'} 
 						{node?.not ? ' bg-gradient-to-r== from-base-300/100==' : 'bg-error/0'}
 						"
 					style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
@@ -737,8 +741,8 @@ return storeVal
 						'bonded' || node?.operator == 'list'
 						? 'text-base-content'
 						: node?.operator == '_and'
-							? 'text-primary'
-							: 'text-secondary'} break-all h-max w-max
+						? 'text-primary'
+						: 'text-secondary'} break-all h-max w-max
 						{node?.not ? ' bg-gradient-to-r from-secondary/50' : 'bg-error/0'}
 						"
 					on:click={() => {
@@ -773,8 +777,8 @@ return storeVal
 {node?.operator == 'bonded' || node?.operator == 'list'
 		? 'border-base-content'
 		: node?.operator == '_and'
-			? 'border-primary'
-			: 'border-secondary '}
+		? 'border-primary'
+		: 'border-secondary '}
 
 
 "
@@ -800,8 +804,8 @@ return storeVal
 					'bonded' || node?.operator == 'list'
 					? 'text-base-content'
 					: node?.operator == '_and'
-						? 'text-primary'
-						: 'text-secondary'} break-all h-max w-max
+					? 'text-primary'
+					: 'text-secondary'} break-all h-max w-max
 						{node?.not ? ' bg-gradient-to-r from-secondary/50' : 'bg-error/0'}
 						"
 				on:click={() => {
@@ -863,8 +867,8 @@ return storeVal
 						'bonded' || node?.operator == 'list'
 						? 'text-base-content'
 						: node?.operator == '_and'
-							? 'text-primary'
-							: 'text-secondary'} break-all h-max w-max"
+						? 'text-primary'
+						: 'text-secondary'} break-all h-max w-max"
 					on:click={() => {
 						showModal = true;
 					}}

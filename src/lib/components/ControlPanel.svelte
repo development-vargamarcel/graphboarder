@@ -19,6 +19,9 @@
 	import ActiveArguments from './ActiveArguments.svelte';
 	import QMSWraper from './QMSWraper.svelte';
 	import { get } from 'svelte/store';
+	import ActiveArgumentsGroupHasFilterOperators from './ActiveArgumentsGroupHasFilterOperators.svelte';
+	import { each } from 'svelte/internal';
+	import ActiveArgumentsGroupWraper from './ActiveArgumentsGroupWraper.svelte';
 
 	export let type;
 	export let prefix = '';
@@ -41,26 +44,29 @@
 			$mergedChildren_QMSWraperCtxData_Store
 		);
 	}
-	const getNodeGivenControlPanelItem = (
+	const getNodeGivenControlPanelItem = (activeArgumentsDataGrouped_Store, CPItem) => {
+		const node = get(activeArgumentsDataGrouped_Store)[0].group_argsNode[CPItem.nodeId];
+		node.CPItem = CPItem;
+		return node;
+	};
+	const getQMSWraperCtxDataGivenControlPanelItem = (
 		CPItem,
 		mergedChildren_controlPanel_Value,
 		mergedChildren_QMSWraperCtxData_Value
 	) => {
-		const activeArgumentsDataGrouped_Store = mergedChildren_QMSWraperCtxData_Value.find(
-			(currCtx) => {
-				return currCtx.stepsOfFields.join() == CPItem.stepsOfFieldsThisAppliesTo.join();
-			}
-		).activeArgumentsDataGrouped_Store;
-
-		const node = get(activeArgumentsDataGrouped_Store)[0].group_argsNode[CPItem.nodeId];
-		return { ...node, CPItem };
+		const QMSWraperCtxData = mergedChildren_QMSWraperCtxData_Value.find((currCtx) => {
+			return currCtx.stepsOfFields.join() == CPItem.stepsOfFieldsThisAppliesTo.join();
+		});
+		return QMSWraperCtxData;
 	};
+
 	$: controlPanelNodes = $mergedChildren_controlPanel_Store.map((CPItem) => {
-		return getNodeGivenControlPanelItem(
+		const activeArgumentsDataGrouped_StoreCurr = getQMSWraperCtxDataGivenControlPanelItem(
 			CPItem,
 			$mergedChildren_controlPanel_Store,
 			$mergedChildren_QMSWraperCtxData_Store
-		);
+		).activeArgumentsDataGrouped_Store;
+		return getNodeGivenControlPanelItem(activeArgumentsDataGrouped_StoreCurr, CPItem);
 	});
 	$: console.log('from control panel', { controlPanelNodes });
 	let showControlPanel = false;
@@ -85,23 +91,24 @@
 	toggle control panel
 </button>
 {#if showControlPanel}
-	<div class="card w-full">
-		<div class="card-body {controlPanelNodes.length > 0 ? 'h-60' : ''}  overflow-y-auto resize">
-			<!-- <div class="flex w-min">
-				 <icon class=" bi bi-star" />{$mergedChildren_controlPanel_Store.length}
-			 </div> -->
-
-			{#key controlPanelNodes}
-				{#if controlPanelNodes.length > 0}
-					<QMSWraper
-						QMSName={type.dd_displayName}
-						QMSType="query"
-						QMS_info={{ ...type, args: controlPanelNodes }}
-					>
-						<ActiveArguments isControlPanelChild={true} />
-					</QMSWraper>
-				{/if}
-			{/key}
-		</div>
-	</div>
+	{#each $mergedChildren_controlPanel_Store as CPItem}
+		{@const activeArgumentsDataGrouped_StoreValCurr = get(
+			getQMSWraperCtxDataGivenControlPanelItem(
+				CPItem,
+				$mergedChildren_controlPanel_Store,
+				$mergedChildren_QMSWraperCtxData_Store
+			).activeArgumentsDataGrouped_Store
+		)}
+		{@const QMSWraperCtxValCurr = getQMSWraperCtxDataGivenControlPanelItem(
+			CPItem,
+			$mergedChildren_controlPanel_Store,
+			$mergedChildren_QMSWraperCtxData_Store
+		)}
+		<ActiveArgumentsGroupWraper
+			on:updateQuery={() => {}}
+			update_activeArgumentsDataGrouped={() => {}}
+			group={activeArgumentsDataGrouped_StoreValCurr[0]}
+			argsInfo={QMSWraperCtxValCurr.QMS_info?.args}
+			{activeArgumentsDataGrouped_StoreValCurr}
+		/>{/each}
 {/if}
