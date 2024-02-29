@@ -9,7 +9,9 @@
 </script>
 
 {#if !group.group_isRoot}
-	{group.group_name}
+	<div class="text-sm">
+		{group.group_name}
+	</div>
 {/if}
 <div class="text-xs ml-2 pt-1">
 	{#if group.dd_kindList}

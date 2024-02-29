@@ -38,7 +38,7 @@
 </script>
 
 <div class="card w-full bg-base-100 text-base-content">
-	<div class="card-body pb-0">
+	<div class="card-body p-2">
 		<ActiveArgumentsGroupWraper
 			on:updateQuery={() => {}}
 			update_activeArgumentsDataGrouped={() => {}}

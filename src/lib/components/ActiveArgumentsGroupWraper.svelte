@@ -30,7 +30,7 @@
 	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
 </script>
 
-<div class="flex">
+<div class="flex space-x-1">
 	<ActiveArgumentsGroup_info {group} />
 	{#if !hasGroup_argsNode}
 		<ActiveArgumentsGroup_addFilterAndSortingButton
@@ -42,22 +42,22 @@
 			node={group.group_argsNode?.mainContainer}
 		/>
 	{/if}
-	<div class="w-min flex space-x-2 ml-4 {hasGroup_argsNode ? '' : 'pt-1'}">
-		<div>dnd:</div>
+	<div class="w-min flex space-x-1 ml-4 {hasGroup_argsNode ? '' : 'pt-1'}">
+		<div class="text-sm">dnd:</div>
 		<Toggle
 			showValue={false}
-			otherClases="toggle-sm"
+			otherClases="toggle-xs"
 			rawValue={$dndIsOn}
 			on:changed={() => {
 				$dndIsOn = !$dndIsOn;
 			}}
 		/>
 	</div>
-	<div class="w-min flex space-x-2 ml-4 {hasGroup_argsNode ? '' : 'pt-1'}">
-		<div>mutVer:</div>
+	<div class="w-min flex space-x-1 ml-4 {hasGroup_argsNode ? '' : 'pt-1'}">
+		<div class="text-sm">mutVer:</div>
 		<Toggle
 			showValue={false}
-			otherClases="toggle-sm"
+			otherClases="toggle-xs"
 			rawValue={$mutationVersion}
 			on:changed={() => {
 				$mutationVersion = !$mutationVersion;
@@ -65,7 +65,7 @@
 		/>
 	</div>
 </div>
-<div class="pb-10">
+<div class="pb-10==">
 	{#if hasGroup_argsNode}
 		<div class=" overflow-x-auto overflow-y-visible">
 			<ActiveArgumentsGroupHasFilterOperators
