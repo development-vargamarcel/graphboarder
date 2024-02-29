@@ -8,6 +8,7 @@
 	export let parentNode;
 	export let node;
 	export let prefix = '';
+	import Toggle from '$lib/components/fields/Toggle.svelte';
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Modal from './Modal.svelte';
 	import { string_transformerREVERSE } from '$lib/utils/dataStructureTransformers';
@@ -195,7 +196,7 @@
 						<span class="label-text pr-1">active</span>
 						<input
 							type="checkbox"
-							class="toggle toggle-sm"
+							class="toggle toggle-xs"
 							checked={activeArgumentData?.inUse}
 							on:change|self|stopPropagation|capture={inUse_toggle}
 						/>
@@ -214,6 +215,19 @@
 					<i class="bi bi-trash-fill" />
 				</btn>
 				<AddNodeToControlPanel {node} />
+				<div class="form-control mr-1">
+					<label class="label cursor-pointer w-min py-0">
+						<span class="label-text pr-1">mutVer</span>
+						<input
+							type="checkbox"
+							class="toggle toggle-xs"
+							checked={$mutationVersion}
+							on:change|self|stopPropagation|capture={() => {
+								$mutationVersion = !$mutationVersion;
+							}}
+						/>
+					</label>
+				</div>
 			</div>
 
 			{#if activeArgumentData?.description}
