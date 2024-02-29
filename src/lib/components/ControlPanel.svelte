@@ -61,14 +61,6 @@
 	setContext(`${prefix}controlPanelContext`, controlPanelContext);
 </script>
 
-<!-- <AddColumn
-	bind:column_stepsOfFields
-	{addColumnFromInput}
-	{dd_relatedRoot}
-	{QMSName}
-	QMS_info={currentQMS_info}
-	on:newColumnAddRequest
-/> -->
 <button
 	class="btn btn-xs w-full"
 	on:click={() => {
