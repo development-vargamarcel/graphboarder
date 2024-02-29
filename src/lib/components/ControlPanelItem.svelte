@@ -22,18 +22,14 @@
 		return QMSWraperCtxData;
 	};
 
-	const activeArgumentsDataGrouped_StoreCurr = getQMSWraperCtxDataGivenControlPanelItem(
-		CPItem,
-		$mergedChildren_controlPanel_Store,
-		$mergedChildren_QMSWraperCtxData_Store
-	).activeArgumentsDataGrouped_Store;
-
-	const QMSWraperCtxValCurr = getQMSWraperCtxDataGivenControlPanelItem(
+	const QMSWraperCtx = getQMSWraperCtxDataGivenControlPanelItem(
 		CPItem,
 		$mergedChildren_controlPanel_Store,
 		$mergedChildren_QMSWraperCtxData_Store
 	);
-	const CPItemContext = { CPItem };
+	const activeArgumentsDataGrouped_Store = QMSWraperCtx.activeArgumentsDataGrouped_Store;
+
+	const CPItemContext = { CPItem, QMSWraperCtx };
 	setContext(`${prefix}CPItemContext`, CPItemContext);
 </script>
 
@@ -42,9 +38,9 @@
 		<ActiveArgumentsGroupWraper
 			on:updateQuery={() => {}}
 			update_activeArgumentsDataGrouped={() => {}}
-			group={$activeArgumentsDataGrouped_StoreCurr[0]}
-			argsInfo={QMSWraperCtxValCurr.QMS_info?.args}
-			activeArgumentsDataGrouped={$activeArgumentsDataGrouped_StoreCurr}
+			group={$activeArgumentsDataGrouped_Store[0]}
+			argsInfo={QMSWraperCtx.QMS_info?.args}
+			activeArgumentsDataGrouped={$activeArgumentsDataGrouped_Store}
 		/>
 	</div>
 </div>
