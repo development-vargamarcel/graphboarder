@@ -20,7 +20,6 @@
 	export let activeArgumentData;
 	export let group;
 	export let activeArgumentsDataGrouped;
-	export let CPItem = node?.CPItem;
 	setContext(
 		'choosenDisplayInterface',
 		writable(activeArgumentData.chosenDisplayInterface || activeArgumentData.dd_displayInterface)
@@ -115,9 +114,10 @@
 		//console.log('clicked outside');
 		//expandedVersion = false; //!!! this is causing the expanded version to disappear when you click outside of it,but sometimes,is not desirable like when another modal with choises opens up and if you click on anything that upper modal disappears.
 	};
-
+	const CPItemContext = getContext(`${prefix}CPItemContext`);
+	const CPItem = CPItemContext?.CPItem;
 	const updateActiveArgument = () => {
-		if (!activeArgumentsContext.isControlPanelChild) {
+		if (!CPItemContext) {
 			activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
 			finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 		}
