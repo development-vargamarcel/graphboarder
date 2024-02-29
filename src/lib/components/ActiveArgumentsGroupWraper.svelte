@@ -31,41 +31,43 @@
 	const CPItemContext = getContext(`${prefix}CPItemContext`);
 </script>
 
-<div class="flex space-x-1">
-	<ActiveArgumentsGroup_info {group} />
-	{#if !hasGroup_argsNode}
-		<ActiveArgumentsGroup_addFilterAndSortingButton
-			on:updateQuery
-			bind:group
-			bind:argsInfo
-			bind:update_activeArgumentsDataGrouped
-			bind:activeArgumentsDataGrouped
-			node={group.group_argsNode?.mainContainer}
-		/>
-	{/if}
-	<div class="w-min flex space-x-1 ml-4 {hasGroup_argsNode ? '' : 'pt-1'}">
-		<div class="text-sm">dnd:</div>
-		<Toggle
-			showValue={false}
-			otherClases="toggle-xs"
-			rawValue={$dndIsOn}
-			on:changed={() => {
-				$dndIsOn = !$dndIsOn;
-			}}
-		/>
-	</div>
-	<div class="w-min flex space-x-1 ml-4 {hasGroup_argsNode ? '' : 'pt-1'}">
-		<div class="text-sm">mutVer:</div>
-		<Toggle
-			showValue={false}
-			otherClases="toggle-xs"
-			rawValue={$mutationVersion}
-			on:changed={() => {
-				$mutationVersion = !$mutationVersion;
-			}}
-		/>
-	</div>
-</div>
+{#if (CPItemContext && group.group_argsNode[CPItemContext?.CPItem.nodeId].operator) || !CPItemContext}
+	<div class="flex space-x-1">
+		<ActiveArgumentsGroup_info {group} />
+		{#if !hasGroup_argsNode}
+			<ActiveArgumentsGroup_addFilterAndSortingButton
+				on:updateQuery
+				bind:group
+				bind:argsInfo
+				bind:update_activeArgumentsDataGrouped
+				bind:activeArgumentsDataGrouped
+				node={group.group_argsNode?.mainContainer}
+			/>
+		{/if}
+		<div class="w-min flex space-x-1 ml-4 {hasGroup_argsNode ? '' : 'pt-1'}">
+			<div class="text-sm">dnd:</div>
+			<Toggle
+				showValue={false}
+				otherClases="toggle-xs"
+				rawValue={$dndIsOn}
+				on:changed={() => {
+					$dndIsOn = !$dndIsOn;
+				}}
+			/>
+		</div>
+		<div class="w-min flex space-x-1 ml-4 {hasGroup_argsNode ? '' : 'pt-1'}">
+			<div class="text-sm">mutVer:</div>
+			<Toggle
+				showValue={false}
+				otherClases="toggle-xs"
+				rawValue={$mutationVersion}
+				on:changed={() => {
+					$mutationVersion = !$mutationVersion;
+				}}
+			/>
+		</div>
+	</div>{/if}
+
 <div class="pb-10==">
 	{#if hasGroup_argsNode}
 		<div class=" overflow-x-auto overflow-y-visible">
