@@ -1,7 +1,7 @@
 <script>
 	import { get } from 'svelte/store';
 	import ActiveArgumentsGroupWraper from './ActiveArgumentsGroupWraper.svelte';
-	import { getContext } from 'svelte';
+	import { getContext, setContext } from 'svelte';
 	export let prefix = '';
 	export let CPItem;
 	const QMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
@@ -33,6 +33,8 @@
 		$mergedChildren_controlPanel_Store,
 		$mergedChildren_QMSWraperCtxData_Store
 	);
+	const CPItemContext = { CPItem };
+	setContext(`${prefix}CPItemContext`, CPItemContext);
 </script>
 
 <ActiveArgumentsGroupWraper
