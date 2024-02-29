@@ -26,7 +26,15 @@
 	toggle control panel
 </button>
 {#if showControlPanel}
-	{#each $mergedChildren_controlPanel_Store as CPItem}
-		<ControlPanelItem {CPItem} />
-	{/each}
+	<div class="card w-full pr-4 md:pr-0">
+		<div
+			class="card-body {$mergedChildren_controlPanel_Store.length > 0
+				? 'h-60'
+				: ''}  overflow-y-auto resize"
+		>
+			{#each $mergedChildren_controlPanel_Store as CPItem}
+				<ControlPanelItem {CPItem} />
+			{/each}
+		</div>
+	</div>
 {/if}
