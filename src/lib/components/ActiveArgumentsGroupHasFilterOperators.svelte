@@ -257,6 +257,7 @@
 	import { string_transformer } from '$lib/utils/dataStructureTransformers.ts';
 	import { writable } from 'svelte/store';
 	import AddNodeToControlPanel from './AddNodeToControlPanel.svelte';
+	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
 
 	let showExplorerTable = true;
 	const fuse = new Fuse($schemaData.queryFields, {
@@ -714,6 +715,9 @@
 							</sup>
 						{/if}
 					</div>
+					{#if nodeIsInCP && node.operator}
+						<GroupDescriptionAndControls />
+					{/if}
 				{/if}
 			</div>
 		</div>
@@ -752,28 +756,34 @@
 	>
 		{#if node?.operator}
 			{#if $mutationVersion && !node?.isMain}
-				<div
-					tabindex="0"
-					class="btn btn-xs btn-ghost px-[1px] text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
-						'bonded' || node?.operator == 'list'
-						? 'text-base-content'
-						: node?.operator == '_and'
-						? 'text-primary'
-						: 'text-secondary'} break-all h-max  w-max
+				<div class="flex">
+					<div
+						tabindex="0"
+						class="btn btn-xs btn-ghost px-[1px] text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
+							'bonded' || node?.operator == 'list'
+							? 'text-base-content'
+							: node?.operator == '_and'
+							? 'text-primary'
+							: 'text-secondary'} break-all h-max  w-max
 						{node?.not ? ' bg-gradient-to-r from-secondary/50' : 'bg-error/0'}
 						"
-					on:click={() => {
-						showModal = true;
-					}}
-					on:contextmenu|preventDefault|stopPropagation={() => {
-						//
-					}}
-				>
-					{groupDisplayTitle}
-					{#if node.dd_NON_NULL}
-						<sup>
-							<i class="text-primary bi bi-asterisk" />
-						</sup>
+						on:click={() => {
+							showModal = true;
+						}}
+						on:contextmenu|preventDefault|stopPropagation={() => {
+							//
+						}}
+					>
+						{groupDisplayTitle}
+						{#if node.dd_NON_NULL}
+							<sup>
+								<i class="text-primary bi bi-asterisk" />
+							</sup>
+						{/if}
+					</div>
+
+					{#if nodeIsInCP && node.operator}
+						<GroupDescriptionAndControls />
 					{/if}
 				</div>
 				<!-- {#if inputColumnsLocation && inputColumnsLocationQMS_Info.dd_displayName == node.dd_displayName} -->
@@ -814,6 +824,7 @@
 			<div class="flex ">
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<!-- node?.items?.length > 1 || node?.isMain -->
+
 				{#if node?.isMain}
 					<div
 						tabindex="0"
