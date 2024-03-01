@@ -464,7 +464,9 @@
 						>
 							<i class="bi bi-trash-fill" />
 						</btn>
-						<AddNodeToControlPanel {node} />
+						{#if !CPItemContext}
+							<AddNodeToControlPanel {node} />
+						{/if}
 					</div>
 				{/if}
 				<div>

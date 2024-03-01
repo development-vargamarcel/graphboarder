@@ -14,6 +14,7 @@
 	import { string_transformerREVERSE } from '$lib/utils/dataStructureTransformers';
 	import { argumentCanRunQuery, getPreciseType } from '$lib/utils/usefulFunctions';
 	import AddNodeToControlPanel from './AddNodeToControlPanel.svelte';
+	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
 	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
 	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
 	export let isNot;
@@ -214,20 +215,12 @@
 				>
 					<i class="bi bi-trash-fill" />
 				</btn>
-				<AddNodeToControlPanel {node} />
-				<div class="form-control mr-1">
-					<label class="label cursor-pointer w-min py-0">
-						<span class="label-text pr-1">mutVer</span>
-						<input
-							type="checkbox"
-							class="toggle toggle-xs"
-							checked={$mutationVersion}
-							on:change|self|stopPropagation|capture={() => {
-								$mutationVersion = !$mutationVersion;
-							}}
-						/>
-					</label>
-				</div>
+				{#if !CPItemContext}
+					<AddNodeToControlPanel {node} />
+				{/if}
+				{#if CPItemContext}
+					<GroupDescriptionAndControls />
+				{/if}
 			</div>
 
 			{#if activeArgumentData?.description}
