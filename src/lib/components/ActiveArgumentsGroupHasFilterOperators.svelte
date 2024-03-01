@@ -657,7 +657,7 @@
 		<div class="   grid   content-center  rounded-full w-min-max w-max">
 			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 			<div class="flex ">
-				{#if $dndIsOn}
+				{#if $dndIsOn && !nodeIsInCP}
 					<div
 						tabindex={dragDisabled ? 0 : -1}
 						aria-label="drag-handle"
