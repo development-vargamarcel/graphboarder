@@ -25,17 +25,17 @@
 
 	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
 	const CPItemContext = getContext(`${prefix}CPItemContext`);
-	const showGroupInfoAndControls =
-		(CPItemContext && group.group_argsNode[CPItemContext?.CPItem.nodeId].operator) ||
-		!CPItemContext;
+
 	const dndIsOn = writable(false);
 	setContext('dndIsOn', dndIsOn);
-	const mutationVersion = writable(showGroupInfoAndControls ? false : true);
+	const mutationVersion = writable(
+		!CPItemContext || group.group_argsNode[CPItemContext.CPItem.nodeId]?.operator ? false : true
+	);
 	setContext('mutationVersion', mutationVersion);
 	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
 </script>
 
-{#if showGroupInfoAndControls}
+{#if !CPItemContext}
 	<div class="flex space-x-1">
 		<ActiveArgumentsGroup_info {group} />
 		{#if !hasGroup_argsNode}
