@@ -22,17 +22,12 @@
 		return QMSWraperCtxData;
 	};
 
-	const activeArgumentsDataGrouped_StoreCurr = getQMSWraperCtxDataGivenControlPanelItem(
-		CPItem,
-		$mergedChildren_controlPanel_Store,
-		$mergedChildren_QMSWraperCtxData_Store
-	).activeArgumentsDataGrouped_Store;
-
 	const QMSWraperCtxValCurr = getQMSWraperCtxDataGivenControlPanelItem(
 		CPItem,
 		$mergedChildren_controlPanel_Store,
 		$mergedChildren_QMSWraperCtxData_Store
 	);
+	const activeArgumentsDataGrouped_StoreCurr = QMSWraperCtxValCurr.activeArgumentsDataGrouped_Store;
 	const CPItemContext = { CPItem };
 	setContext(`${prefix}CPItemContext`, CPItemContext);
 </script>

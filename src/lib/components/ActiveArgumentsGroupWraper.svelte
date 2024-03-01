@@ -11,6 +11,7 @@
 	import ActiveArgumentsGroupHasFilterOperators from '$lib/components/ActiveArgumentsGroupHasFilterOperators.svelte';
 	import Toggle from './fields/Toggle.svelte';
 	import { writable } from 'svelte/store';
+	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
 
 	let dragDisabled = true;
 	const dispatch = createEventDispatcher();
@@ -23,15 +24,18 @@
 	export let prefix = '';
 
 	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
+	const CPItemContext = getContext(`${prefix}CPItemContext`);
+	const showGroupInfoAndControls =
+		(CPItemContext && group.group_argsNode[CPItemContext?.CPItem.nodeId].operator) ||
+		!CPItemContext;
 	const dndIsOn = writable(false);
 	setContext('dndIsOn', dndIsOn);
-	const mutationVersion = writable(false);
+	const mutationVersion = writable(showGroupInfoAndControls ? false : true);
 	setContext('mutationVersion', mutationVersion);
 	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
-	const CPItemContext = getContext(`${prefix}CPItemContext`);
 </script>
 
-{#if (CPItemContext && group.group_argsNode[CPItemContext?.CPItem.nodeId].operator) || !CPItemContext}
+{#if showGroupInfoAndControls}
 	<div class="flex space-x-1">
 		<ActiveArgumentsGroup_info {group} />
 		{#if !hasGroup_argsNode}
@@ -44,28 +48,7 @@
 				node={group.group_argsNode?.mainContainer}
 			/>
 		{/if}
-		<div class="w-min flex space-x-1 ml-4 {hasGroup_argsNode ? '' : 'pt-1'}">
-			<div class="text-sm">dnd:</div>
-			<Toggle
-				showValue={false}
-				otherClases="toggle-xs"
-				rawValue={$dndIsOn}
-				on:changed={() => {
-					$dndIsOn = !$dndIsOn;
-				}}
-			/>
-		</div>
-		<div class="w-min flex space-x-1 ml-4 {hasGroup_argsNode ? '' : 'pt-1'}">
-			<div class="text-sm">mutVer:</div>
-			<Toggle
-				showValue={false}
-				otherClases="toggle-xs"
-				rawValue={$mutationVersion}
-				on:changed={() => {
-					$mutationVersion = !$mutationVersion;
-				}}
-			/>
-		</div>
+		<GroupDescriptionAndControls {hasGroup_argsNode} />
 	</div>{/if}
 
 <div class="pb-10==">
