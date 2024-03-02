@@ -4,13 +4,12 @@
 	import { getContext, setContext } from 'svelte';
 	export let prefix = '';
 	export let CPItem;
-	const QMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	const {
 		mergedChildren_QMSWraperCtxData_Store,
 		mergedChildren_controlPanel_Store,
 		mergedChildren_finalGqlArgObj_Store
-	} = QMSWraperContext;
-
+	} = OutermostQMSWraperContext;
 	const getQMSWraperCtxDataGivenControlPanelItem = (
 		CPItem,
 		mergedChildren_controlPanel_Value,
@@ -21,7 +20,6 @@
 		});
 		return QMSWraperCtxData;
 	};
-
 	const QMSWraperCtxValCurr = getQMSWraperCtxDataGivenControlPanelItem(
 		CPItem,
 		$mergedChildren_controlPanel_Store,

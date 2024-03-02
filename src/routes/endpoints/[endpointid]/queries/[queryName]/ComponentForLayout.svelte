@@ -12,7 +12,7 @@
 	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
 	export let enableMultiRowSelectionState = true;
 	/// if CPContext,QMSWraperContext will be relative to that
-
+	const CPItemContext = getContext(`${prefix}CPItemContext`);
 	///
 	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 	const {
