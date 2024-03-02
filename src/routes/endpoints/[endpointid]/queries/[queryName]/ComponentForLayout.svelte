@@ -11,7 +11,9 @@
 	const dispatch = createEventDispatcher();
 	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
 	export let enableMultiRowSelectionState = true;
+	/// if CPContext,QMSWraperContext will be relative to that
 
+	///
 	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 	const {
 		QMS_bodyPart_StoreDerived_rowsCount,
