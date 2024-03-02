@@ -228,7 +228,7 @@
 
 			{#if activeArgumentData?.description}
 				<div class="alert alert-info shadow-lg py-2 mb-2">
-					<div>
+					<div class="flex">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
