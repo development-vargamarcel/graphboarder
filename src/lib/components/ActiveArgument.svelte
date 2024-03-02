@@ -77,13 +77,16 @@
 
 		return value;
 	};
+	const CPItemContext = getContext(`${prefix}CPItemContext`);
+	const CPItem = CPItemContext?.CPItem;
 	let expandedVersion;
 	let valueToDisplay = undefined;
 	$: {
 		if (true || activeArgumentData?.inUse) {
 			valueToDisplay = get_valueToDisplay();
 		}
-		if (valueToDisplay !== undefined) {
+		// if (valueToDisplay !== undefined ) {
+		if (!CPItemContext) {
 			expandedVersion = false;
 		} else {
 			expandedVersion = true;
@@ -91,6 +94,7 @@
 	}
 	const outermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	const { mergedChildren_QMSWraperCtxData_Store } = outermostQMSWraperContext;
+
 	const handleChanged = (detail) => {
 		console.log('detail', detail);
 		Object.assign(activeArgumentData, detail);
@@ -116,8 +120,7 @@
 		//console.log('clicked outside');
 		//expandedVersion = false; //!!! this is causing the expanded version to disappear when you click outside of it,but sometimes,is not desirable like when another modal with choises opens up and if you click on anything that upper modal disappears.
 	};
-	const CPItemContext = getContext(`${prefix}CPItemContext`);
-	const CPItem = CPItemContext?.CPItem;
+
 	const updateActiveArgument = () => {
 		if (!CPItemContext) {
 			activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
