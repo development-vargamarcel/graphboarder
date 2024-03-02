@@ -28,9 +28,10 @@
 
 	const dndIsOn = writable(false);
 	setContext('dndIsOn', dndIsOn);
-	const mutationVersion = writable(
-		!CPItemContext || group.group_argsNode[CPItemContext.CPItem.nodeId]?.operator ? false : true
-	);
+	// const mutationVersion = writable(
+	// 	!CPItemContext || group.group_argsNode[CPItemContext.CPItem.nodeId]?.operator ? false : true
+	// );
+	const mutationVersion = writable(false);
 	setContext('mutationVersion', mutationVersion);
 	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
 </script>
