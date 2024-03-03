@@ -2,20 +2,10 @@
 	import { get } from 'svelte/store';
 	import ActiveArgumentsGroupWraper from './ActiveArgumentsGroupWraper.svelte';
 	import { getContext, setContext } from 'svelte';
+	import { getQMSWraperCtxDataGivenControlPanelItem } from '$lib/utils/usefulFunctions';
 	export let prefix = '';
 	export let CPItem;
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
-
-	const getQMSWraperCtxDataGivenControlPanelItem = (CPItem, OutermostQMSWraperContext) => {
-		const { mergedChildren_QMSWraperCtxData_Store } = OutermostQMSWraperContext;
-
-		let mergedChildren_QMSWraperCtxData_Value = get(mergedChildren_QMSWraperCtxData_Store);
-
-		const QMSWraperCtxData = mergedChildren_QMSWraperCtxData_Value.find((currCtx) => {
-			return currCtx.stepsOfFields.join() == CPItem.stepsOfFieldsThisAppliesTo.join();
-		});
-		return QMSWraperCtxData;
-	};
 
 	const QMSWraperCtx = getQMSWraperCtxDataGivenControlPanelItem(CPItem, OutermostQMSWraperContext);
 	const activeArgumentsDataGrouped_Store = QMSWraperCtx.activeArgumentsDataGrouped_Store;

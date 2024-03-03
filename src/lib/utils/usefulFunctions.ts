@@ -1447,3 +1447,14 @@ export const generate_finalGqlArgObjAndCanRunQuery = (activeArgumentsDataGrouped
 	return generate_finalGqlArgObj_fromGroups(groups_gqlArgObj);
 	//better set an array?
 }
+
+export const getQMSWraperCtxDataGivenControlPanelItem = (CPItem, OutermostQMSWraperContext) => {
+	const { mergedChildren_QMSWraperCtxData_Store } = OutermostQMSWraperContext;
+
+	let mergedChildren_QMSWraperCtxData_Value = get(mergedChildren_QMSWraperCtxData_Store);
+
+	const QMSWraperCtxData = mergedChildren_QMSWraperCtxData_Value.find((currCtx) => {
+		return currCtx.stepsOfFields.join() == CPItem.stepsOfFieldsThisAppliesTo.join();
+	});
+	return QMSWraperCtxData;
+};
