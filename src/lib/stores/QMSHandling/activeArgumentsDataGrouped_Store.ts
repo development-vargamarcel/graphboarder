@@ -256,7 +256,7 @@ export const add_activeArgumentOrContainerTo_activeArgumentsDataGrouped = (
 	}
 	if (!group) {
 		console.warn('group not found', { groupName, newArgumentOrContainerData })
-		return
+		return activeArgumentsDataGrouped
 	}
 	; (function () {
 		if (dataIsForContainer) {

@@ -56,10 +56,16 @@
 		return pagType.name == currentQMS_info.dd_paginationType;
 	});
 	let activeArgumentsDataGrouped_Store_IS_SET = false;
-	$: activeArgumentsDataGrouped_Store_IS_SET =
-		$activeArgumentsDataGrouped_Store.length > 0 ? true : false;
-	//
+	$: {
+		console.log({
+			QMSWraperContext,
+			$activeArgumentsDataGrouped_Store
+		});
 
+		activeArgumentsDataGrouped_Store_IS_SET =
+			$activeArgumentsDataGrouped_Store.length > 0 ? true : false;
+	}
+	//
 	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], schemaData);
 
 	let queryData;
