@@ -9,12 +9,42 @@
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
 	import { getContext, setContext } from 'svelte';
 	import Arg from '$lib/components/Arg.svelte';
-	import { getRootType } from '$lib/utils/usefulFunctions';
+	import {
+		getQMSWraperCtxDataGivenControlPanelItem,
+		getRootType
+	} from '$lib/utils/usefulFunctions';
 	import { add_activeArgumentOrContainerTo_activeArgumentsDataGrouped } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
 	let dragDisabled = true;
 	const hasGroup_argsNode = group.group_argsNode;
 	const mainContainerOperator = group.group_argsNode?.mainContainer?.operator;
-	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
+	/////start
+	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
+	let pathIsInCP = false;
+	const nodeContext = getContext(`${prefix}nodeContext`);
+	if (nodeContext) {
+		pathIsInCP = nodeContext?.pathIsInCP;
+	}
+	let nodeIsInCP = false;
+	const CPItemContext = getContext(`${prefix}CPItemContext`);
+	if (CPItemContext?.CPItem.nodeId == node.id) {
+		setContext(`${prefix}nodeContext`, { pathIsInCP: true });
+		nodeIsInCP = true;
+	}
+	const isCPChild = CPItemContext ? true : false;
+	const visibleInCP = pathIsInCP || nodeIsInCP;
+	const visible = visibleInCP || !CPItemContext || node.isMain;
+	let correctQMSWraperContext;
+	if (isCPChild) {
+		correctQMSWraperContext = getQMSWraperCtxDataGivenControlPanelItem(
+			CPItemContext?.CPItem,
+			OutermostQMSWraperContext
+		);
+	} else {
+		correctQMSWraperContext = getContext(`${prefix}QMSWraperContext`);
+	}
+	const { finalGqlArgObj_Store, QMS_info, activeArgumentsDataGrouped_Store } =
+		correctQMSWraperContext;
+	/////end
 	let rootArgs = argsInfo.filter((arg) => {
 		return arg.dd_isRootArg;
 	});

@@ -34,8 +34,8 @@
 	let stepsOfFieldsFull = [];
 	let testName_stepsOFFieldsWasUpdated = false;
 	export let prefix = '';
-	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	/////start
+	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	let pathIsInCP = false;
 	const nodeContext = getContext(`${prefix}nodeContext`);
 	if (nodeContext) {
@@ -50,7 +50,6 @@
 	const isCPChild = CPItemContext ? true : false;
 	const visibleInCP = pathIsInCP || nodeIsInCP;
 	const visible = visibleInCP || !CPItemContext || node.isMain;
-	/////end
 	let correctQMSWraperContext = '';
 	if (isCPChild) {
 		correctQMSWraperContext = getQMSWraperCtxDataGivenControlPanelItem(
@@ -60,6 +59,7 @@
 	} else {
 		correctQMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 	}
+	/////end
 	const { finalGqlArgObj_Store, QMS_info, activeArgumentsDataGrouped_Store } =
 		correctQMSWraperContext;
 	const operatorChangeHandler = () => {
