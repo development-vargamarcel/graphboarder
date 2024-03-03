@@ -4,29 +4,20 @@
 	import { getContext, setContext } from 'svelte';
 	export let prefix = '';
 	export let CPItem;
-	const QMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
-	const {
-		mergedChildren_QMSWraperCtxData_Store,
-		mergedChildren_controlPanel_Store,
-		mergedChildren_finalGqlArgObj_Store
-	} = QMSWraperContext;
+	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 
-	const getQMSWraperCtxDataGivenControlPanelItem = (
-		CPItem,
-		mergedChildren_controlPanel_Value,
-		mergedChildren_QMSWraperCtxData_Value
-	) => {
+	const getQMSWraperCtxDataGivenControlPanelItem = (CPItem, OutermostQMSWraperContext) => {
+		const { mergedChildren_QMSWraperCtxData_Store } = OutermostQMSWraperContext;
+
+		let mergedChildren_QMSWraperCtxData_Value = get(mergedChildren_QMSWraperCtxData_Store);
+
 		const QMSWraperCtxData = mergedChildren_QMSWraperCtxData_Value.find((currCtx) => {
 			return currCtx.stepsOfFields.join() == CPItem.stepsOfFieldsThisAppliesTo.join();
 		});
 		return QMSWraperCtxData;
 	};
 
-	const QMSWraperCtx = getQMSWraperCtxDataGivenControlPanelItem(
-		CPItem,
-		$mergedChildren_controlPanel_Store,
-		$mergedChildren_QMSWraperCtxData_Store
-	);
+	const QMSWraperCtx = getQMSWraperCtxDataGivenControlPanelItem(CPItem, OutermostQMSWraperContext);
 	const activeArgumentsDataGrouped_Store = QMSWraperCtx.activeArgumentsDataGrouped_Store;
 
 	const CPItemContext = { CPItem, QMSWraperCtx };

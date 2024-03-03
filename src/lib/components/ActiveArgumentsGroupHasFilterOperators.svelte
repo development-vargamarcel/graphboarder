@@ -49,6 +49,15 @@
 	const visibleInCP = pathIsInCP || nodeIsInCP;
 	const visible = visibleInCP || !CPItemContext || node.isMain;
 	/////end
+	let correctQMSWraperContext = '';
+	if (isCPChild) {
+		correctQMSWraperContext = '';
+	} else {
+		correctQMSWraperContext = getContext(`${prefix}QMSWraperContext`);
+	}
+	const { finalGqlArgObj_Store, QMS_info, activeArgumentsDataGrouped_Store } = getContext(
+		`${prefix}QMSWraperContext`
+	);
 	const operatorChangeHandler = () => {
 		stepsOfNodes = getUpdatedStepsOfNodes(
 			JSON.parse(JSON.stringify(parentNode?.stepsOfNodes || []))
@@ -181,9 +190,6 @@
 	//
 	const dragDisabledConstantTest = true;
 
-	const { finalGqlArgObj_Store, QMS_info, activeArgumentsDataGrouped_Store } = getContext(
-		`${prefix}QMSWraperContext`
-	);
 	const handleChanged = () => {
 		finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 	};
