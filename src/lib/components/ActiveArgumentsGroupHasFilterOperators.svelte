@@ -5,6 +5,7 @@
 		getDataGivenStepsOfFields,
 		getDeepField,
 		getPreciseType,
+		getQMSWraperCtxDataGivenControlPanelItem,
 		getRootType,
 		hasDeepProperty,
 		passAllObjectValuesThroughStringTransformerAndReturnNewObject
@@ -33,6 +34,7 @@
 	let stepsOfFieldsFull = [];
 	let testName_stepsOFFieldsWasUpdated = false;
 	export let prefix = '';
+	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	/////start
 	let pathIsInCP = false;
 	const nodeContext = getContext(`${prefix}nodeContext`);
@@ -51,13 +53,15 @@
 	/////end
 	let correctQMSWraperContext = '';
 	if (isCPChild) {
-		correctQMSWraperContext = '';
+		correctQMSWraperContext = getQMSWraperCtxDataGivenControlPanelItem(
+			CPItemContext?.CPItem,
+			OutermostQMSWraperContext
+		);
 	} else {
 		correctQMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 	}
-	const { finalGqlArgObj_Store, QMS_info, activeArgumentsDataGrouped_Store } = getContext(
-		`${prefix}QMSWraperContext`
-	);
+	const { finalGqlArgObj_Store, QMS_info, activeArgumentsDataGrouped_Store } =
+		correctQMSWraperContext;
 	const operatorChangeHandler = () => {
 		stepsOfNodes = getUpdatedStepsOfNodes(
 			JSON.parse(JSON.stringify(parentNode?.stepsOfNodes || []))
