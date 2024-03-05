@@ -87,12 +87,16 @@ export const endpointInfoDefaultValues = {
 				if (idField) {
 					return idField
 				}
-				idField = nonNullScalarFields?.find((field) => {
+
+				let idFields = nonNullScalarFields?.filter((field) => {
 					const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase().replaceAll('s', '')//the last part handles plurar-singular problems
 					return fieldDisplayNameLowercase.includes('id');
 				});
-				if (idField) {
-					return idField
+				if (idFields.length > 1) {
+					console.info('private key could be a conbination of these columns:', { idFields })
+				}
+				if (idFields.length == 1) {
+					return idFields[0]
 				}
 				console.warn('id field is one of these', { nonNullScalarFields })
 
