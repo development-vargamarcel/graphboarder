@@ -6,11 +6,11 @@ import { getRootType, stringToJs } from '$lib/utils/usefulFunctions';
 export const localEndpoints = [
 	{
 		id: 'directus',
-		url: 'https://7rsm0d0d.directus.app/graphql',
-		isMantained: false,
+		url: 'https://directus-production-c2de.up.railway.app/graphql',
+		isMantained: true,
 		description: 'offsetBased pagination,rowCount set',
 		headers: {
-			authorization: 'Bearer aKUvsqBR4-rfnL2z6nqEQmLPRIur4c1m'
+			authorization: 'Bearer S4YM_Cd7Uo6laJhQV594l59EGZASSmBw'
 		},
 		displayNamePossibilitiesForCreateItem: [
 			{
