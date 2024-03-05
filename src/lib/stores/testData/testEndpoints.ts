@@ -66,7 +66,16 @@ export const localEndpoints = [
 					);
 				}
 			}
+		],
+		returningColumnsPossibleLocationsInMutations: [[]
+		],
+		returningColumnsPossibleLocationsInQueriesPerRow: [
+			[]
+		],
+		inputColumnsPossibleLocationsInArg: [
+			[]
 		]
+		,
 	},
 	{
 		id: 'directus2',
@@ -129,7 +138,16 @@ export const localEndpoints = [
 					);
 				}
 			}
+		],
+		returningColumnsPossibleLocationsInMutations: [[]
+		],
+		returningColumnsPossibleLocationsInQueriesPerRow: [
+			[]
+		],
+		inputColumnsPossibleLocationsInArg: [
+			[]
 		]
+		,
 	},
 	{
 		id: 'nhost',
