@@ -62,10 +62,11 @@ export const endpointInfoDefaultValues = {
 					return nonNullScalarFields[0]
 				}
 
-				const tableNameLowercase = QMS_info.dd_displayName.toLowerCase()
+				const tableNameLowercase = QMS_info.dd_displayName.toLowerCase().replaceAll('s', '')//the last part handles plurar-singular problems
+
 				let possibleNames = ['id', `${tableNameLowercase}_id`, `${tableNameLowercase}id`];
 				idField = nonNullScalarFields?.find((field) => {
-					const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase()
+					const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase().replaceAll('s', '')//the last part handles plurar-singular problems
 					return possibleNames.includes(fieldDisplayNameLowercase) || field.dd_rootName == 'ID'
 				});
 				if (idField) {
@@ -73,15 +74,22 @@ export const endpointInfoDefaultValues = {
 				}
 
 				idField = nonNullScalarFields?.find((field) => {
-					const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase()
+					const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase().replaceAll('s', '')//the last part handles plurar-singular problems
 					return tableNameLowercase.includes(fieldDisplayNameLowercase);
 				});
 				if (idField) {
 					return idField
 				}
 				idField = nonNullScalarFields?.find((field) => {
-					const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase()
+					const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase().replaceAll('s', '')//the last part handles plurar-singular problems
 					return fieldDisplayNameLowercase.includes(tableNameLowercase);
+				});
+				if (idField) {
+					return idField
+				}
+				idField = nonNullScalarFields?.find((field) => {
+					const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase().replaceAll('s', '')//the last part handles plurar-singular problems
+					return fieldDisplayNameLowercase.includes('id');
 				});
 				if (idField) {
 					return idField
