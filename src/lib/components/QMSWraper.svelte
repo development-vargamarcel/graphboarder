@@ -100,7 +100,7 @@
 			}
 		);
 	}
-
+	console.log({ returningColumnsLocationQMS_Info, returningColumnsLocation, QMSType });
 	let nodeFieldsQMS_info_Root = schemaData.get_rootType(
 		null,
 		nodeFieldsQMS_info?.dd_rootName,
