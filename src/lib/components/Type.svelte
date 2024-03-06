@@ -1,6 +1,8 @@
 <script>
 	export const prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
+	const isForExplorer = OutermostQMSWraperContext?.extraInfo?.isForExplorer;
 	const schemaData = QMSMainWraperContext?.schemaData;
 	import { slide } from 'svelte/transition';
 
@@ -71,7 +73,7 @@
 		}
 	};
 
-	if (canExpand && isOnMainList) {
+	if (canExpand && isOnMainList && !isForExplorer) {
 		expand();
 	}
 </script>
