@@ -317,7 +317,7 @@ export const localEndpoints = [
 		headers: { 'apiKey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJkcGt0enlxc3phcW5sYnVzaGhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk1NDg1ODcsImV4cCI6MjAyNTEyNDU4N30.ADkneNGSwCcLgtKSdQuMOd0P5dN6ZZ1FFNnjgQaid44' },
 		pageInfoFieldsLocation: ['pageInfo'],
 		returningColumnsPossibleLocationsInMutations: [
-			['returning'], []
+			['records'], []
 		],
 		returningColumnsPossibleLocationsInQueriesPerRow: [
 			['node'], []
