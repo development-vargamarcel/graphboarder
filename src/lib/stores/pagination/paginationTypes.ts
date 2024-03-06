@@ -1,4 +1,4 @@
-import { getDataGivenStepsOfFields, stepsOfFieldsToQueryFragmentObject } from '$lib/utils/usefulFunctions';
+import { getDataGivenStepsOfFields, setValueAtPath, stepsOfFieldsToQueryFragmentObject } from '$lib/utils/usefulFunctions';
 import { get } from 'svelte/store';
 
 
@@ -140,38 +140,43 @@ export const get_paginationTypes = (endpointInfo, schemaData) => {
 						dependencyColsData.push({
 							title: namings.hasNextPage,
 							hidden: true,
-							stepsOfFields: [QMS_name, ...pageInfoFieldsLocation, namings.hasNextPage]
+							stepsOfFields: [QMS_name, ...pageInfoFieldsLocation, namings.hasNextPage],
+							stepsOfFieldsOBJ: setValueAtPath({}, [QMS_name, ...pageInfoFieldsLocation, namings.hasNextPage], 'novaluehere', true)
 						});
 					}
 					if (namings?.hasPreviousPage) {
 						dependencyColsData.push({
 							title: namings.hasPreviousPage,
 							hidden: true,
-							stepsOfFields: [QMS_name, ...pageInfoFieldsLocation, namings.hasPreviousPage]
+							stepsOfFields: [QMS_name, ...pageInfoFieldsLocation, namings.hasPreviousPage],
+							stepsOfFieldsOBJ: setValueAtPath({}, [QMS_name, ...pageInfoFieldsLocation, namings.hasPreviousPage], 'novaluehere', true)
 						});
 					}
 					if (namings?.startCursor) {
 						dependencyColsData.push({
 							title: namings.startCursor,
 							hidden: true,
-							stepsOfFields: [QMS_name, ...pageInfoFieldsLocation, namings.startCursor]
+							stepsOfFields: [QMS_name, ...pageInfoFieldsLocation, namings.startCursor],
+							stepsOfFieldsOBJ: setValueAtPath({}, [QMS_name, ...pageInfoFieldsLocation, namings.startCursor], 'novaluehere', true)
 						});
 					}
 					if (namings?.endCursor) {
 						dependencyColsData.push({
 							title: namings.endCursor,
 							hidden: true,
-							stepsOfFields: [QMS_name, ...pageInfoFieldsLocation, namings.endCursor]
+							stepsOfFields: [QMS_name, ...pageInfoFieldsLocation, namings.endCursor],
+							stepsOfFieldsOBJ: setValueAtPath({}, [QMS_name, ...pageInfoFieldsLocation, namings.endCursor], 'novaluehere', true)
 						});
 					}
-					return dependencyColsData;
+					//return dependencyColsData;
 				}
 
 				if (namings?.cursor) {
 					dependencyColsData.push({
 						title: namings.cursor,
 						stepsOfFields: [QMS_name, ...rowsLocation, namings.cursor],
-						stepsOfFieldsOBJ: stepsOfFieldsToQueryFragmentObject([QMS_name, ...rowsLocation, namings.cursor],false)
+						stepsOfFieldsOBJ: setValueAtPath({}, [QMS_name, ...rowsLocation, namings.cursor], 'novaluehere', true)
+						//stepsOfFieldsOBJ: stepsOfFieldsToQueryFragmentObject([QMS_name, ...rowsLocation, namings.cursor], false)
 					});
 				}
 				return dependencyColsData;
