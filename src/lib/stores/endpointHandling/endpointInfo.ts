@@ -58,6 +58,7 @@ export const endpointInfoDefaultValues = {
 				const nonNullScalarFields = scalarFields.filter((field) => {
 					return field.dd_NON_NULL
 				})
+				console.log({ nonNullScalarFields })
 				if (nonNullScalarFields.length == 1) {
 					return nonNullScalarFields[0]
 				}
@@ -65,6 +66,17 @@ export const endpointInfoDefaultValues = {
 				const tableNameLowercase = QMS_info.dd_displayName.toLowerCase().replaceAll('s', '')//the last part handles plurar-singular problems
 
 				let possibleNames = ['id', `${tableNameLowercase}_id`, `${tableNameLowercase}id`];
+				possibleNames.find(possibleName => {
+					idField = nonNullScalarFields?.find((field) => {
+						const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase().replaceAll('s', '')//the last part handles plurar-singular problems
+						return possibleName == fieldDisplayNameLowercase
+					});
+					return idField
+				});
+				console.log({ nonNullScalarFields, idField })
+				if (idField) {
+					return idField
+				}
 				idField = nonNullScalarFields?.find((field) => {
 					const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase().replaceAll('s', '')//the last part handles plurar-singular problems
 					return possibleNames.includes(fieldDisplayNameLowercase) || field.dd_rootName == 'ID'
