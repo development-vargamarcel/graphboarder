@@ -134,22 +134,22 @@
 		</div>
 
 		<!-- {#if dd_shouldExpand} -->
-		{#if true}
-			<div class="w-10  ">
-				{#if dd_kindList && dd_shouldExpand}
-					<div class="bi bi-card-list mx-auto w-min" />
-				{:else if dd_kindEl == 'INPUT_OBJECT'}
-					<div class="bi bi-box mx-auto w-min" />
-				{:else if showExpand}
-					<div class="bi bi-chevron-down mx-auto w-min" />
-				{:else}
-					<!-- <div class="bi bi-chevron-right mx-auto   w-min" /> -->
-				{/if}
-			</div>
-		{:else}
-			<!-- <div class="w-10  ">
+		<!-- {#if true} -->
+		<div class="w-10  ">
+			{#if dd_kindList && dd_shouldExpand}
+				<div class="bi bi-card-list mx-auto w-min" />
+			{:else if dd_kindEl == 'INPUT_OBJECT'}
+				<div class="bi bi-box mx-auto w-min" />
+			{:else if showExpand}
+				<div class="bi bi-chevron-down mx-auto w-min" />
+			{:else}
+				<!-- <div class="bi bi-chevron-right mx-auto   w-min" /> -->
+			{/if}
+		</div>
+		<!-- {:else} -->
+		<!-- <div class="w-10  ">
 				<div class="bi bi-plus mx-auto   w-min " />
 			</div> -->
-		{/if}
+		<!-- {/if} -->
 	</label>
 {/if}
