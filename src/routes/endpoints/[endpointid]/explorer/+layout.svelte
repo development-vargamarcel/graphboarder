@@ -12,6 +12,6 @@
 </script>
 
 {#if schemaData}
-	<QMSWraper QMS_info={queryFields[0]} prefix="">
+	<QMSWraper QMS_info={queryFields[0]} prefix="" extraInfo={{ isForExplorer: true }}>
 		<slot />
 	</QMSWraper>{/if}

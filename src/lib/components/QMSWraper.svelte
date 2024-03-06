@@ -15,7 +15,7 @@
 		getDeepField
 	} from '$lib/utils/usefulFunctions';
 	export let prefix = '';
-
+	export let extraInfo = {};
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
@@ -240,7 +240,8 @@
 		mergedChildren_finalGqlArgObj_Store,
 		//mergedChildren_activeArgumentsDataGrouped_Store,
 		mergedChildren_QMSWraperCtxData_Store,
-		mergedChildren_controlPanel_Store
+		mergedChildren_controlPanel_Store,
+		extraInfo
 	};
 	if (preferGivenQMSWraperContext && QMSWraperContextGiven) {
 		QMSWraperContext = QMSWraperContextGiven;
