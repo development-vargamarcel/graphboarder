@@ -73,7 +73,7 @@ export const endpointInfoDefaultValues = {
 					});
 					return idField
 				});
-				console.log({ nonNullScalarFields, idField })
+				//console.log({ nonNullScalarFields, idField })
 				if (idField) {
 					return idField
 				}
