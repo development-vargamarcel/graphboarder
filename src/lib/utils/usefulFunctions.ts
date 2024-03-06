@@ -190,7 +190,7 @@ function modifyString(input) {
 
 	//delete matched parenthesis and it's content from string
 	input = replaceBetween(input, parenhtesisStart, parenhtesisEnd, '')
-	console.log({ matchParenthesis }, matchParenthesis.index)
+	//console.log({ matchParenthesis }, matchParenthesis.index)
 	input = replaceLastOccurrence(input, matchParenthesis.index, matchParenthesis[0] + ":{")
 	modifiedSubstring = input.substring(0, parenhtesisEnd)
 	remainingString = input.substring(parenhtesisEnd, input.length)
@@ -202,7 +202,7 @@ const generateListOfSubstrings = (string) => {
 	let reachedTheEnd = false
 	while (!reachedTheEnd) {
 		const { modifiedSubstring, remainingString } = modifyString(string)
-		console.log({ remainingString })
+		//console.log({ remainingString })
 		if (remainingString === '') {
 			reachedTheEnd = true
 		}
@@ -217,14 +217,14 @@ const inputString2 = "query QMS_name{ authUserRoles:{ createdAt,id,role,userId,(
 const inputString = ":{textBefore:{1dadas,2dasda,(inside parentheses1{iside1:'asd1'}),3dasds :{ textBefore2:{4dadas,5dasda,(inside parentheses2,inside2:'asd2'),6dasds :{";
 const modifiedResult = modifyString(inputString);
 
-console.log(modifiedResult);
-console.log(replaceLastOccurrence("abc:{def:{ghi:{jkl", 10, "(fdsfds):{"));
-console.log('-------------------------------')
-console.log(inputString)
+//console.log(modifiedResult);
+//console.log(replaceLastOccurrence("abc:{def:{ghi:{jkl", 10, "(fdsfds):{"));
+//console.log('-------------------------------')
+//console.log(inputString)
 const listOfSubstrings = generateListOfSubstrings(inputString)
-console.log(inputString)
-console.log({ listOfSubstrings })
-console.log("joined", listOfSubstrings.join(''))
+//console.log(inputString)
+//console.log({ listOfSubstrings })
+//console.log("joined", listOfSubstrings.join(''))
 ///
 export const get_KindsArray = (type) => {
 	let kinds = [];
