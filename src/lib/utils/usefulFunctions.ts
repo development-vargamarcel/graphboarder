@@ -91,7 +91,7 @@ export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'q
 	// 	fullObject[QMS_name].QMSarguments = QMS_args
 	// }
 	//.replaceAll('\"QMSarguments\":','')
-	console.log('wwwwwwwww', { fullObject })
+	// console.log('wwwwwwwww', { fullObject })
 
 	const inputString = JSON.stringify(fullObject, function (key, value) {
 		if (key === "QMSarguments") {
@@ -331,11 +331,11 @@ export const getFields_Grouped = (node, dd_displayNameToExclude = [], schemaData
 				non_scalarFields.push(field);
 			}
 	});
-	console.log('wwwww', {
-		node, node_rootType, fieldsArray, scalarFields,
-		non_scalarFields,
-		enumFields
-	})
+	// console.log('wwwww', {
+	// 	node, node_rootType, fieldsArray, scalarFields,
+	// 	non_scalarFields,
+	// 	enumFields
+	// })
 
 
 	return {
@@ -1039,7 +1039,7 @@ export const get_scalarColsData = (currentQMS_info, prefixStepsOfFields = [], sc
 	let currentQuery_fields_SCALAR_names = scalarFields.map((field) => {
 		return field.name;
 	});
-	console.log('qqqq', { dd_relatedRoot, scalarFields, currentQuery_fields_SCALAR_names })
+	//console.log('qqqq', { dd_relatedRoot, scalarFields, currentQuery_fields_SCALAR_names })
 	let scalarColsData = currentQuery_fields_SCALAR_names.map((name) => {
 		let stepsOfFields;
 		if (keep_currentQMS_info_dd_displayName) {
@@ -1268,6 +1268,10 @@ export const parseAll = (json) => {
 
 
 export const stringToJs = (string) => {
+	if (getPreciseType(string) !== "string") {
+		console.warn(`expectig string but got ${getPreciseType(string)},will use it as is.If object,you do not need this function,maybe this function was run previously.`, { string });
+		return string;
+	}
 	if (string.includes('/Function') && string.includes(')/')) {
 		return parseAll(string);
 	}
