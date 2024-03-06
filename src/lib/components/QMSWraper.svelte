@@ -28,7 +28,7 @@
 	import QMSWraperCtxDataCurrentComputations from './QMSWraperCtxDataCurrentComputations.svelte';
 	export let isOutermostQMSWraper = getContext(`${prefix}QMSWraperContext`) ? false : true;
 	export let QMSType = 'query';
-	export let QMSName;
+	export let QMSName = `${Math.random()}`;
 	export let QMS_info = schemaData.get_QMS_Field(QMSName, QMSType, schemaData);
 	if (!QMS_info) {
 		QMS_info = schemaData.get_QMS_Field(QMSName, QMSType, schemaData);
