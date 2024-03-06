@@ -106,16 +106,7 @@
 		nodeFieldsQMS_info?.dd_rootName,
 		schemaData
 	);
-	console.log({
-		QMSType,
-		QMSName,
-		QMS_info,
-		schemaData,
-		nodeFieldsQMS_info,
-		nodeFieldsQMS_info_Root,
-		returningColumnsLocation,
-		returningColumnsLocationQMS_Info
-	});
+
 	let prefixStepsOfFields =
 		QMSType == 'query'
 			? [QMS_info.dd_displayName, ...rowsLocation, ...returningColumnsLocation]
@@ -135,7 +126,20 @@
 		...tableColsData_StoreInitialValue,
 		...dependencyColsData
 	];
-
+	console.log({
+		QMSType,
+		QMSName,
+		QMS_info,
+		schemaData,
+		nodeFieldsQMS_info,
+		nodeFieldsQMS_info_Root,
+		returningColumnsLocation,
+		returningColumnsLocationQMS_Info,
+		prefixStepsOfFields,
+		scalarColsData,
+		dependencyColsData,
+		tableColsData_StoreInitialValue
+	});
 	const tableColsData_Store = Create_tableColsData_Store(
 		paginationState,
 		tableColsData_StoreInitialValue
