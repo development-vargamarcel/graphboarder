@@ -215,6 +215,15 @@ export const endpointInfoDefaultValues = {
 			check: (QMS_info, schemaData) => { return true }
 		},
 	],
+	returningColumnsPossibleLocationsInMutations: [[]
+	],
+	returningColumnsPossibleLocationsInQueriesPerRow: [
+		[]
+	],
+	inputColumnsPossibleLocationsInArg: [
+		[]
+	]
+	,
 };
 
 
