@@ -110,38 +110,40 @@
 		class=" cursor-pointer  hover:text-primary px-2 py-2 rounded-box flex text-base min-w-max  w-full active:font-black duration-100 select-none"
 		on:click={() => {
 			// if (dd_canExpand && !allInputFieldsAreScalar && !enumValues) {
-			if (dd_shouldExpand) {
-				if (dd_kindList) {
-					addContainer();
-				} else if (dd_kindEl == 'INPUT_OBJECT') {
-					addContainer();
-				} else if (
-					getRootType(null, dd_rootName, schemaData)?.dd_baseFilterOperators ||
-					getRootType(null, dd_rootName, schemaData)?.dd_nonBaseFilterOperators
-				) {
-					addContainer();
-				} else {
-					expand();
-				}
+			//		if (dd_shouldExpand) {
+			if (dd_kindList && dd_shouldExpand) {
+				addContainer();
+			} else if (dd_kindEl == 'INPUT_OBJECT') {
+				addContainer();
+			} else if (
+				getRootType(null, dd_rootName, schemaData)?.dd_baseFilterOperators ||
+				getRootType(null, dd_rootName, schemaData)?.dd_nonBaseFilterOperators
+			) {
+				addContainer();
 			} else {
+				//expand();
 				addFilter();
 			}
+			// } else {
+			// 	addFilter();
+			// }
 		}}
 	>
 		<div class=" pr-2  w-full min-w-max {dd_NON_NULL && 'underline underline-offset-0'}">
 			{dd_displayName}
 		</div>
 
-		{#if dd_shouldExpand}
+		<!-- {#if dd_shouldExpand} -->
+		{#if true}
 			<div class="w-10  ">
-				{#if dd_kindList}
+				{#if dd_kindList && dd_shouldExpand}
 					<div class="bi bi-card-list mx-auto w-min" />
-				{:else if getRootType(null, dd_rootName, schemaData)?.dd_nonBaseFilterOperators || dd_kindEl}
+				{:else if dd_kindEl == 'INPUT_OBJECT'}
 					<div class="bi bi-box mx-auto w-min" />
 				{:else if showExpand}
 					<div class="bi bi-chevron-down mx-auto w-min" />
 				{:else}
-					<div class="bi bi-chevron-right mx-auto   w-min" />
+					<!-- <div class="bi bi-chevron-right mx-auto   w-min" /> -->
 				{/if}
 			</div>
 		{:else}
