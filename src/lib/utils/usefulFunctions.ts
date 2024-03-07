@@ -578,7 +578,7 @@ export const generate_derivedData = (type, rootTypes, isQMSField, endpointInfo, 
 	derivedData.dd_canExpand =
 		!derivedData.dd_kindsArray?.includes('SCALAR') && derivedData.dd_kindsArray.length > 0;
 	if (derivedData.dd_isArg) {
-		const baseFilterOperatorNames = ['_and', '_or', '_not']
+		const baseFilterOperatorNames = ['_and', '_or', '_not', 'and', 'or', 'not']
 		let dd_baseFilterOperators = []
 		let dd_nonBaseFilterOperators = []
 		if (type?.inputFields) {
@@ -1135,10 +1135,7 @@ export const nodeAddDefaultFields = (node,
 	const dd_displayNameToExclude = [
 		...node.items.map((item) => {
 			return group_argsNode?.[item.id]?.dd_displayName;
-		}),
-		'_and',
-		'_or',
-		'_not'
+		}), '_and', '_or', '_not', 'and', 'or', 'not'
 	];
 	console.log({ dd_displayNameToExclude });
 
@@ -1169,7 +1166,7 @@ export const nodeAddDefaultFields = (node,
 		activeArgumentsDataGrouped_Store.add_activeArgument(newArgData, group.group_name, node?.id, endpointInfo);
 	});
 
-	let baseFilterOperators = ['_and', '_or', '_not']; //!!!this might create problem if there is some nonBase operator with the same name as one of these
+	let baseFilterOperators = ['_and', '_or', '_not', 'and', 'or', 'not']; //!!!this might create problem if there is some nonBase operator with the same name as one of these
 
 	non_scalarFields
 		?.filter((arg) => {
