@@ -19,7 +19,7 @@
 </script>
 
 {#if description}
-	<div class="alert alert-info shadow-lg py-2 mt-2">
+	<div class="alert alert-info shadow-lg py-2 mt-2 text-md">
 		<div class="flex">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
