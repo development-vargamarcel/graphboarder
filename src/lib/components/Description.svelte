@@ -10,7 +10,7 @@
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
 	const nodeRootType = getRootType(null, QMSInfo.dd_rootName, schemaData);
-	const description = `${QMSInfo?.description || ''} ${nodeRootType?.description || ''}`;
+	const description = `${QMSInfo?.description || ''} ${nodeRootType?.description || ''}`.trim();
 </script>
 
 {#if description}
