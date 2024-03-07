@@ -11,9 +11,11 @@
 	const schemaData = QMSMainWraperContext?.schemaData;
 	const nodeRootType = getRootType(null, QMSInfo.dd_rootName, schemaData);
 	const descriptionNeedsSeparator = QMSInfo?.description && nodeRootType?.description;
-	const description = `${nodeRootType?.description || ''} ${
-		descriptionNeedsSeparator ? ' <> ' : ''
-	}${QMSInfo?.description || ''} `.trim();
+	const description = `
+  ${nodeRootType?.description || ''} 
+  ${descriptionNeedsSeparator ? ' <> ' : ''}
+  ${QMSInfo?.description || ''} 
+  `.trim();
 </script>
 
 {#if description}
