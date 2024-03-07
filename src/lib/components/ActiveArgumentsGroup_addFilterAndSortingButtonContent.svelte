@@ -6,6 +6,8 @@
 	export let prefix = '';
 	export let parent_inputFields;
 	const groupName = group.group_name;
+	import Description from './Description.svelte';
+
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
 	import { getContext, setContext } from 'svelte';
 	import Arg from '$lib/components/Arg.svelte';
@@ -51,6 +53,7 @@
 	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
+	const nodeRootType = getRootType(null, node.dd_rootName, schemaData);
 	let groupArgsPossibilities;
 	if (group.group_isRoot) {
 		groupArgsPossibilities = rootArgs;
@@ -179,22 +182,5 @@
 			/>
 		{/each}
 	</div>
-	{#if node?.description}
-		<div class="alert alert-info shadow-lg py-2">
-			<div class="flex">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 24 24"
-					class="stroke-current flex-shrink-0 w-6 h-6"
-					><path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-					/></svg
-				>
-				<div>{node.description}</div>
-			</div>
-		</div>{/if}
+	<Description QMSInfo={node} />
 </div>

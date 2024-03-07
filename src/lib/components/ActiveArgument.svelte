@@ -1,4 +1,6 @@
 <script>
+	import Description from './Description.svelte';
+
 	import { writable } from 'svelte/store';
 	import AutoInterface from '$lib/components/fields/AutoInterface.svelte';
 	import { SHADOW_ITEM_MARKER_PROPERTY_NAME } from 'svelte-dnd-action';
@@ -12,7 +14,7 @@
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Modal from './Modal.svelte';
 	import { string_transformerREVERSE } from '$lib/utils/dataStructureTransformers';
-	import { argumentCanRunQuery, getPreciseType } from '$lib/utils/usefulFunctions';
+	import { argumentCanRunQuery, getPreciseType, getRootType } from '$lib/utils/usefulFunctions';
 	import AddNodeToControlPanel from './AddNodeToControlPanel.svelte';
 	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
 	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
@@ -155,6 +157,9 @@
 	let showModal = false;
 	const mutationVersion = getContext('mutationVersion');
 	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const schemaData = QMSMainWraperContext?.schemaData;
+	const nodeRootType = getRootType(null, activeArgumentData.dd_rootName, schemaData);
 </script>
 
 {#if showModal}
@@ -226,25 +231,6 @@
 				{/if}
 			</div>
 
-			{#if activeArgumentData?.description}
-				<div class="alert alert-info shadow-lg py-2 mb-2">
-					<div class="flex">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							class="stroke-current flex-shrink-0 w-6 h-6"
-							><path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-							/></svg
-						>
-						<span>{activeArgumentData.description}</span>
-					</div>
-				</div>
-			{/if}
 			<div class="px-2">
 				<AutoInterface
 					alwaysOn_interfacePicker
@@ -254,6 +240,7 @@
 					}}
 				/>
 			</div>
+			<Description QMSInfo={activeArgumentData} />
 		</div>
 	</Modal>{/if}
 
