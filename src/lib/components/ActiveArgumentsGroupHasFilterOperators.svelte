@@ -60,13 +60,18 @@
 		correctQMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 	}
 	/////end
-	const { finalGqlArgObj_Store, QMS_info, activeArgumentsDataGrouped_Store } =
+	const { finalGqlArgObj_Store, QMS_info, activeArgumentsDataGrouped_Store, QMSType } =
 		correctQMSWraperContext;
 	const operatorChangeHandler = () => {
 		stepsOfNodes = getUpdatedStepsOfNodes(
 			JSON.parse(JSON.stringify(parentNode?.stepsOfNodes || []))
 		);
 	};
+	const dndIsOn = getContext('dndIsOn');
+	const mutationVersion = getContext('mutationVersion');
+	if (QMSType == 'mutation') {
+		$mutationVersion = true;
+	}
 
 	const stepsOfNodesToStepsOfFields = (stepsOfNodes) => {
 		//console.log({ stepsOfNodes });
@@ -200,8 +205,6 @@
 
 	let argsInfo = QMS_info?.args;
 	let showModal = false;
-	const dndIsOn = getContext('dndIsOn');
-	const mutationVersion = getContext('mutationVersion');
 
 	let groupDisplayTitle = '';
 	$: {
