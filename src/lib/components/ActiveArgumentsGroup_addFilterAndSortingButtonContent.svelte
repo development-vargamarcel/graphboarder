@@ -88,7 +88,7 @@
 					...node,
 					dd_displayName: undefined,
 					id: randomNr,
-					operator: '~spread~',
+					operator: OutermostQMSWraperContext?.QMSType == 'mutation' ? 'bonded' : '~spread~',
 					not: false,
 					isMain: false,
 					items: []
