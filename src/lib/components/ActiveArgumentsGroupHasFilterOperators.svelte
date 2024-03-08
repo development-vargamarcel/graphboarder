@@ -360,6 +360,7 @@
 	let QMSWraperContextForSelectedQMS = {};
 	$: console.log({ QMSWraperContextForSelectedQMS });
 	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
+	let forceShowSelectAndAddButtons = true;
 </script>
 
 {#if visible}
@@ -803,7 +804,7 @@
 				</div>
 				<!-- {#if inputColumnsLocation && inputColumnsLocationQMS_Info.dd_displayName == node.dd_displayName} -->
 
-				{#if inputColumnsLocation && inputColumnsLocationQMS_Info.dd_displayName == node.dd_displayName}
+				{#if (inputColumnsLocation && inputColumnsLocationQMS_Info.dd_displayName == node.dd_displayName) || forceShowSelectAndAddButtons}
 					<button
 						class="btn btn-xs normal-case"
 						on:click={() => {
