@@ -360,7 +360,7 @@
 	let QMSWraperContextForSelectedQMS = {};
 	$: console.log({ QMSWraperContextForSelectedQMS });
 	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
-	let forceShowSelectAndAddButtons = true;
+	let forceShowSelectAndAddButtons = false;
 </script>
 
 {#if visible}
