@@ -77,7 +77,7 @@
 </script>
 
 <div
-	class="flex flex-col overflow-x-auto overscroll-contain text-sm text-base-content font-normal normal-case min-w-max w-full "
+	class="flex flex-col overflow-x-auto overscroll-contain text-sm text-base-content font-normal normal-case min-w-full w-full "
 >
 	{#if hasGroup_argsNode}
 		<button
