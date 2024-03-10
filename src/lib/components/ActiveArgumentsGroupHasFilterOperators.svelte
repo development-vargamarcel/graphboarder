@@ -565,10 +565,14 @@
 						return;
 					}
 				}
-
+				//	console.log({ node, qmsData });
 				qmsData = fuse
 					.search(
-						`${node.dd_rootName.replaceAll('_', ' ')} | ${node.dd_displayName.replaceAll('_', ' ')}`
+						`${node?.dd_rootName?.replaceAll('_', ' ')} | ${node?.dd_displayName?.replaceAll(
+							//!!!node?.dd_displayName?.replaceAll "?" might cause unexpected problems
+							'_',
+							' '
+						)}`
 					)
 					.map((item) => item.item)
 					.filter((item) => item.dd_kindList);

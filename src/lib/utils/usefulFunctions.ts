@@ -775,9 +775,9 @@ export const generate_group_gqlArgObj_forHasOperators = (items, group_name, node
 
 
 			if (Array.isArray(dataToAssign)) {
-				dataToAssign = [...dataToAssign, ...itemData.selectedRowsColValues]
+				dataToAssign = [...itemData.selectedRowsColValues, ...dataToAssign]
 			} else {
-				dataToAssign = _.merge({}, dataToAssign, itemData.selectedRowsColValues[0])
+				dataToAssign = _.merge({}, itemData.selectedRowsColValues[0], dataToAssign)
 
 			}
 		}
