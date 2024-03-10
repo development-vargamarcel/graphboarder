@@ -588,7 +588,9 @@
 				node.selectedRowsColValues = selectedRowsColValues.map((row) => {
 					let idRaw = row[idColName];
 					let idDecoded = endpointInfo.get_decodedId(null, null, idRaw);
+
 					return passAllObjectValuesThroughStringTransformerAndReturnNewObject({
+						...row,
 						[idColName]: idDecoded
 					});
 				});
