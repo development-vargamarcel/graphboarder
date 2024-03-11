@@ -270,6 +270,7 @@
 	import { writable } from 'svelte/store';
 	import AddNodeToControlPanel from './AddNodeToControlPanel.svelte';
 	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
+	import ManyToAllSelectInterfaceDefinition from './ManyToAllSelectInterfaceDefinition.svelte';
 
 	let selectedRowsColValues = [];
 
@@ -430,6 +431,7 @@
 				</div>
 			</div>
 		</Modal>{/if}
+
 	<SelectModal
 		on:deleteSubNode={(e) => {
 			deleteItem(e);
@@ -587,6 +589,18 @@
 				<!-- {#if inputColumnsLocation && inputColumnsLocationQMS_Info.dd_displayName == node.dd_displayName} -->
 
 				{#if (inputColumnsLocation && inputColumnsLocationQMS_Info.dd_displayName == node.dd_displayName) || forceShowSelectAndAddButtons}
+					<ManyToAllSelectInterfaceDefinition
+						bind:selectedRowsColValues
+						bind:showSelectModal
+						{originalNodes}
+						{type}
+						bind:nodes
+						{node}
+						{parentNode}
+						{parentNodeId}
+						{availableOperators}
+						{group}
+					/>
 					<button
 						class="btn btn-xs normal-case"
 						on:click={() => {
