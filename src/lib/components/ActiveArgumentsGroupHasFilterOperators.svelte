@@ -1,4 +1,6 @@
 <script>
+	import SelectModal from './SelectModal.svelte';
+
 	import {
 		filterElFromArr,
 		formatData,
@@ -497,183 +499,25 @@
 				</div>
 			</div>
 		</Modal>{/if}
-	{#if showSelectModal}
-		<Modal
-			on:mounted={() => {
-				const getReturningFields = (type, matchingField, depth = 0, maxDepth = 2) => {
-					if (depth > maxDepth) {
-						return null;
-					}
-					depth++;
-					let rootType = schemaData.get_rootType(null, type.dd_rootName, schemaData);
-					let fields = rootType?.fields;
-					if (!fields) {
-						return null;
-					}
-					const myField = fields.find(
-						(field) => field.dd_displayName == matchingField.dd_displayName
-					);
-					if (myField) {
-						return fields;
-					}
-					let returningFields;
-					fields.find((field) => {
-						returningFields = getReturningFields(field, matchingField, depth, maxDepth);
-						return returningFields; //if returningFields is undefined, the loop continues
-					});
-					if (returningFields) {
-						return returningFields;
-					}
-				};
-				const originType = group.originType;
-				const originTypeRoot = schemaData.get_rootType(null, originType.dd_rootName, schemaData);
-				const fields = getReturningFields(originType, node);
-				console.log('aaaaaa', {
-					originType,
-					originTypeRoot,
-					group,
-					fields
-				});
-
-				const myField = fields?.find((field) => field.dd_displayName == node.dd_displayName);
-				if (myField) {
-					const myFieldRoot = schemaData.get_rootType(null, myField.dd_rootName, schemaData);
-					const myFieldSubfields = myFieldRoot.fields;
-					console.log('aaaaaa', {
-						myField,
-						myFieldRoot,
-						myFieldSubfields
-					});
-					qmsData = $schemaData.queryFields.filter((item) => {
-						return item.dd_kindList && item.dd_rootName == myField.dd_rootName;
-					});
-					console.log({ qmsData });
-					if (qmsData.length == 1) {
-						selectedQMS = qmsData[0];
-
-						return;
-					}
-					if (qmsData.length > 0) {
-						return;
-					}
-
-					qmsData = fuse
-						.search(`${myField.dd_rootName}`)
-						.map((item) => item.item)
-						.filter((item) => item.dd_kindList);
-					if (qmsData.length > 0) {
-						return;
-					}
-				}
-				//	console.log({ node, qmsData });
-				qmsData = fuse
-					.search(
-						`${node?.dd_rootName?.replaceAll('_', ' ')} | ${node?.dd_displayName?.replaceAll(
-							//!!!node?.dd_displayName?.replaceAll "?" might cause unexpected problems
-							'_',
-							' '
-						)}`
-					)
-					.map((item) => item.item)
-					.filter((item) => item.dd_kindList);
-				if (qmsData.length > 0) {
-					return;
-				}
-				qmsData = fuse
-					.search(
-						`${node.dd_rootName.replaceAll('_', ' ')} | ${node.dd_displayName.replaceAll('_', ' ')}`
-					)
-					.map((item) => item.item);
-				console.log({ node, qmsData });
-			}}
-			showApplyBtn={true}
-			on:apply={() => {
-				rowSelectionState = getRowSelectionState(selectedRowsModel);
-				node.selectedRowsColValues = selectedRowsColValues.map((row) => {
-					let idRaw = row[idColName];
-					let idDecoded = endpointInfo.get_decodedId(null, null, idRaw);
-
-					return passAllObjectValuesThroughStringTransformerAndReturnNewObject({
-						...row,
-						[idColName]: idDecoded
-					});
-				});
-				handleChanged();
-				showSelectModal = false;
-			}}
-			on:cancel={() => {
-				showSelectModal = false;
-			}}
-		>
-			<div class="flex flex-col ">
-				<div class="w-full text-lg text-center  mb-2 ">
-					<p class="badge badge-info font-bold">
-						{groupDisplayTitle}
-					</p>
-				</div>
-
-				<div>
-					{#if showExplorerTable && qmsData.length > 1}
-						<!-- content here -->
-						<ExplorerTable
-							enableMultiRowSelectionState={false}
-							bind:data={qmsData}
-							{columns}
-							on:rowSelectionChange={(e) => {
-								selectedQMS = e.detail.rows.map((row) => row.original)[0];
-								showExplorerTable = false;
-								console.log({ selectedQMS });
-								// let columnNames = [];
-								// let rowsData;
-								// rowsData = e.detail.rows.map((row, i) => {
-								// 	return row
-								// 		.getVisibleCells()
-								// 		.map((cell) => {
-								// 			if (i == 0) {
-								// 				columnNames.push(cell.column.id);
-								// 			}
-								// 			return cell.getValue();
-								// 		})
-								// 		.join(`,`);
-								// });
-								// csvData = `${columnNames.join(`,`)}\n${rowsData.join(`\n`)}`;
-							}}
-						/>
-					{/if}
-
-					{#if selectedQMS}
-						<SelectItem
-							bind:QMSWraperContext={QMSWraperContextForSelectedQMS}
-							{rowSelectionState}
-							enableMultiRowSelectionState={node.dd_kindList}
-							on:rowSelectionChange={(e) => {
-								selectedRowsModel = e.detail;
-								let selectedRowsOriginal = e.detail.rows.map((row) => row.original);
-
-								const returningColumnsLocation =
-									$endpointInfo.returningColumnsPossibleLocationsInQueriesPerRow.find((item) => {
-										return hasDeepProperty(selectedRowsOriginal[0], item);
-									});
-								//string_transformer
-
-								console.log({ returningColumnsLocation });
-								selectedRowsColValues = selectedRowsOriginal.map((row) => {
-									return getDataGivenStepsOfFields(null, row, returningColumnsLocation);
-
-									//return getDataGivenStepsOfFields(null, row, returningColumnsLocation);
-								});
-								//!!every element of 'selectedRowsColValues' must be cheched like so: every element must have all values checked ,if string pass trough string transformer
-								console.log(e.detail, { selectedRowsColValues });
-							}}
-							on:rowClicked={(e) => {
-								console.log(e.detail);
-							}}
-							QMS_info={selectedQMS}
-						/>
-					{/if}
-				</div>
-			</div>
-		</Modal>{/if}
+	<SelectModal
+		on:deleteSubNode={(e) => {
+			deleteItem(e);
+			//
+			//console.log(e.detail.id, node);
+		}}
+		bind:showSelectModal
+		{originalNodes}
+		on:updateQuery
+		{type}
+		bind:nodes
+		{node}
+		{parentNode}
+		{parentNodeId}
+		on:changed
+		{availableOperators}
+		on:childrenStartDrag={startDrag}
+		{group}
+	/>
 
 	{#if !node?.isMain}
 		<div class="   grid   content-center  rounded-full w-min-max w-max">
