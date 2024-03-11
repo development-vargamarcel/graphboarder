@@ -20,8 +20,6 @@
 	import ActiveArgumentsGroup_addFilterAndSortingButtonContent from '$lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte';
 	import Modal from './Modal.svelte';
 	import { nodeAddDefaultFields } from '$lib/utils/usefulFunctions';
-	import SelectItem from './SelectItem.svelte';
-	import Fuse from 'fuse.js';
 	const dispatch = createEventDispatcher();
 	export let nodes;
 	export let parentNodeId;
@@ -199,7 +197,6 @@
 			?.classList.add('bg-accent/25', 'border-2', 'border-accent');
 	};
 	//
-	const dragDisabledConstantTest = true;
 
 	const handleChanged = () => {
 		finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
@@ -274,72 +271,6 @@
 	import AddNodeToControlPanel from './AddNodeToControlPanel.svelte';
 	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
 
-	let showExplorerTable = true;
-	const fuse = new Fuse($schemaData.queryFields, {
-		includeScore: false,
-		includeMatches: false,
-		threshold: 0.8,
-		//ignoreLocation: true,
-		keys: ['dd_displayName', 'dd_rootName', 'description']
-	});
-	let qmsData = [];
-	let columns = [
-		{
-			accessorFn: (row) => row.dd_displayName,
-			header: 'dd_displayName',
-			footer: 'dd_displayName',
-			enableHiding: true
-		},
-		{
-			accessorFn: (row) => row.dd_rootName,
-			header: 'dd_rootName',
-			footer: 'dd_rootName',
-			enableHiding: true
-		},
-		{
-			accessorFn: (row) => (row.dd_kindList_NON_NULL ? '!' : ''),
-			header: 'L',
-			footer: 'L',
-			enableHiding: true
-		},
-		{
-			accessorFn: (row) => (row.dd_kindList ? 'list' : ''),
-			header: 'LL',
-			footer: 'LL',
-			enableHiding: true
-		},
-		{
-			accessorFn: (row) => (row.dd_kindEl_NON_NULL ? '!' : ''),
-			header: 'E',
-			footer: 'E',
-			enableHiding: true
-		},
-		{
-			accessorFn: (row) => row.dd_kindEl,
-			header: 'EE',
-			footer: 'EE',
-			enableHiding: true
-		},
-
-		{
-			accessorFn: (row) =>
-				row.args
-					?.map(
-						(arg) => `${arg.dd_displayName} (${arg.dd_kindList ? 'list of ' : ''}${arg.dd_kindEl})`
-					)
-					.join('; '),
-			header: 'Arguments',
-			footer: 'Arguments',
-			enableHiding: true
-		},
-		{
-			accessorFn: (row) => row.description?.replaceAll(',', ';'),
-			header: 'description',
-			footer: 'description',
-			enableHiding: true
-		}
-	];
-	let selectedQMS;
 	let selectedRowsColValues = [];
 
 	//------------
@@ -505,6 +436,7 @@
 			//
 			//console.log(e.detail.id, node);
 		}}
+		bind:selectedRowsColValues
 		bind:showSelectModal
 		{originalNodes}
 		on:updateQuery
