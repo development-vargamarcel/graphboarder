@@ -32,11 +32,11 @@ export const findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey = (obj) =
 
 export const deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments = (obj) => {
 	//console.log('ttt', obj)
-	if (typeof obj !== 'object' || obj === null) {
+	if (getPreciseType(obj) !== 'object' || obj === null) {
 		return null;
 	}
 	///
-
+	console.log({ obj })
 	///
 	for (const key in obj) {
 
