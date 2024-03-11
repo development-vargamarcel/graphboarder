@@ -34,6 +34,7 @@
 	let stepsOfFieldsFull = [];
 	let testName_stepsOFFieldsWasUpdated = false;
 	export let prefix = '';
+	console.log({ node });
 	/////start
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	let pathIsInCP = false;
@@ -458,9 +459,16 @@
 			node.selectedRowsColValues = selectedRowsColValues.map((row) => {
 				let idRaw = row[idColName];
 				let idDecoded = endpointInfo.get_decodedId(null, null, idRaw);
+				console.log({ node, row });
+				const requiredColNames = node?.inputFields
+					.filter((field) => field.dd_NON_NULL)
+					.map((field) => field.dd_displayName);
 
+				const rowWithRequiredColsOnly = {};
+				requiredColNames.forEach((name) => (rowWithRequiredColsOnly[name] = row[name]));
+				//const requiredColValues=requiredColNames.map((name)=>row[name]);
 				return passAllObjectValuesThroughStringTransformerAndReturnNewObject({
-					...row,
+					...rowWithRequiredColsOnly,
 					[idColName]: idDecoded
 				});
 			});
