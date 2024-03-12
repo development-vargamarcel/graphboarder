@@ -636,9 +636,15 @@ export const generate_derivedData = (type, rootTypes, isQMSField, endpointInfo, 
 	if (isQMSField) {
 		//derivedData.dd_tableName = endpointInfo.get_tableName(derivedData, schemaData)
 	}
-
+	//	derivedData.dd_StrForFuseComparison = `${derivedData.dd_displayName}  ${derivedData.dd_rootName} ${derivedData.description}`
+	//${derivedData.dd_displayName}  ${derivedData.dd_rootName} ${derivedData.description}
+	derivedData.dd_StrForFuseComparison = `${prepareStrForFuseComparison(`${derivedData.dd_displayName}   `)} `
+	//console.log(derivedData.dd_StrForFuseComparison)
 	return derivedData;
 };
+const prepareStrForFuseComparison = (str) => {
+	return str.replace(/(?=[A-Z_])/g, ' ').replace(/_/g, ' ').replace(/s|null/g, '').toLowerCase();
+}
 
 export const generate_gqlArgObj = (group_argumentsData) => {
 	// check for group if expects list and treat it accordingly like here --->https://stackoverflow.com/questions/69040911/hasura-order-by-date-with-distinct

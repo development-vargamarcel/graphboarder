@@ -36,7 +36,8 @@
 		includeMatches: false,
 		threshold: 0.8,
 		//ignoreLocation: true,
-		keys: ['dd_displayName', 'dd_rootName', 'description']
+		//		keys: ['dd_displayName', 'dd_rootName', 'description']
+		keys: ['dd_StrForFuseComparison']
 	});
 
 	const getPossibleQMS = () => {
@@ -94,7 +95,13 @@
 			if (QMSRows.length > 0) {
 				return;
 			}
-
+			QMSRows = fuse
+				.search(`${myField.dd_StrForFuseComparison}`)
+				.map((item) => item.item)
+				.filter((item) => item.dd_kindList);
+			if (QMSRows.length > 0) {
+				return;
+			}
 			QMSRows = fuse
 				.search(`${myField.dd_rootName}`)
 				.map((item) => item.item)
