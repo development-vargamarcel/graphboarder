@@ -369,6 +369,16 @@
 	$: console.log({ QMSWraperContextForSelectedQMS });
 	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
 	let forceShowSelectAndAddButtons = false;
+	const inputFieldsContainerLocation = endpointInfo.get_inputFieldsContainerLocation(
+		node,
+		schemaData
+	);
+	const inputFieldsContainer = getDeepField(
+		node,
+		inputFieldsContainerLocation,
+		schemaData,
+		'inputFields'
+	);
 </script>
 
 {#if showSelectModal}
@@ -526,7 +536,7 @@
 					<SelectItem
 						bind:QMSWraperContext={QMSWraperContextForSelectedQMS}
 						{rowSelectionState}
-						enableMultiRowSelectionState={node.dd_kindList}
+						enableMultiRowSelectionState={inputFieldsContainer.dd_kindList}
 						on:rowSelectionChange={(e) => {
 							selectedRowsModel = e.detail;
 							let selectedRowsOriginal = e.detail.rows.map((row) => row.original);
