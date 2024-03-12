@@ -305,6 +305,7 @@
 	$: console.log({ QMSWraperContextForSelectedQMS });
 	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
 	let forceShowSelectAndAddButtons = false;
+	let showManyToAllSelectInterfaceDefinition = false;
 </script>
 
 {#if visible}
@@ -570,8 +571,9 @@
 				<div class="flex">
 					<div
 						tabindex="0"
-						class="btn btn-xs btn-ghost px-[1px] text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
-							'bonded' || node?.operator == 'list'
+						class="btn btn-xs btn-ghost px-[1px] text-xs font-light transition-all duration-500  rounded-full  normal-case {getManyQMS
+							? 'text-secondary'
+							: ''}   {node?.operator == 'bonded' || node?.operator == 'list'
 							? 'text-base-content'
 							: node?.operator == '_and'
 							? 'text-primary'
@@ -582,7 +584,8 @@
 							showModal = true;
 						}}
 						on:contextmenu|preventDefault|stopPropagation={() => {
-							//
+							showSelectModal = !showSelectModal;
+							showManyToAllSelectInterfaceDefinition = !showManyToAllSelectInterfaceDefinition;
 						}}
 					>
 						{groupDisplayTitle}
@@ -598,21 +601,22 @@
 					{/if}
 				</div>
 				<!-- {#if inputColumnsLocation && inputColumnsLocationQMS_Info.dd_displayName == node.dd_displayName} -->
+				{#if showManyToAllSelectInterfaceDefinition}
+					<ManyToAllSelectInterfaceDefinition
+						bind:selectedRowsColValues
+						{originalNodes}
+						{type}
+						bind:nodes
+						{node}
+						{parentNode}
+						{parentNodeId}
+						{availableOperators}
+						{group}
+					/>{/if}
 
-				<ManyToAllSelectInterfaceDefinition
-					bind:selectedRowsColValues
-					{originalNodes}
-					{type}
-					bind:nodes
-					{node}
-					{parentNode}
-					{parentNodeId}
-					{availableOperators}
-					{group}
-				/>
 				{#if (inputColumnsLocation && inputColumnsLocationQMS_Info.dd_displayName == node.dd_displayName) || forceShowSelectAndAddButtons || getManyQMS}
 					<!-- {getManyQMS?.dd_displayName} -->
-					<button
+					<!-- <button
 						class="btn btn-xs normal-case"
 						on:click={() => {
 							showSelectModal = true;
@@ -623,7 +627,7 @@
 						on:click={() => {
 							showAddModal = true;
 						}}>add</button
-					>
+					> -->
 				{/if}
 
 				{#if selectedRowsColValues?.length > 0}

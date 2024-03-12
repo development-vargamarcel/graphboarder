@@ -4,6 +4,7 @@
 	import Fuse from 'fuse.js';
 	import Modal from './Modal.svelte';
 	import SelectQMS from './SelectQMS.svelte';
+	import { getDeepField } from '$lib/utils/usefulFunctions';
 
 	export let nodes;
 	export let parentNodeId;
@@ -21,8 +22,24 @@
 	export let selectedRowsColValues = [];
 	export let field;
 	export let QMSRows;
+	//
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+	const schemaData = QMSMainWraperContext?.schemaData;
+	//
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
+	const inputFieldsContainerLocation = endpointInfo.get_inputFieldsContainerLocation(
+		field,
+		schemaData
+	);
+	const inputFieldsContainer = getDeepField(
+		field,
+		inputFieldsContainerLocation,
+		schemaData,
+		'inputFields'
+	);
+	console.log({ inputFieldsContainerLocation, inputFieldsContainer });
 	$: if (selectedQMS) {
 		console.log(
 			{ field, node, nodes },
@@ -36,11 +53,7 @@
 		};
 		QMSFieldToQMSGetMany_Store.addOrReplaceKeepingOldId(objToAdd);
 	}
-	//
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-	const schemaData = QMSMainWraperContext?.schemaData;
-	//
+
 	const handleClick = () => {
 		getPossibleQMS();
 		showSelectModal = true;

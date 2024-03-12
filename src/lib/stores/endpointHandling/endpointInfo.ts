@@ -10,7 +10,7 @@ import {
 	ISO8601_transformerGETDEFAULTVAl
 } from '$lib/utils/dataStructureTransformers';
 import { writable, get } from 'svelte/store';
-import { getFields_Grouped, getRootType } from '$lib/utils/usefulFunctions';
+import { getDeepField, getFields_Grouped, getRootType } from '$lib/utils/usefulFunctions';
 export const endpointInfoDefaultValues = {
 	description: 'no description',
 	rowsLocationPossibilities: [
@@ -255,6 +255,34 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 		},
 		smartSet: (newEndpoint) => {
 			store.set({ ...endpointInfoDefaultValues, ...newEndpoint });
+		},
+		get_inputFieldsContainerLocation: function (QMS_info, schemaData) {
+			const storeVal = get(store);
+			if (!storeVal?.inputColumnsPossibleLocationsInArg?.length > 0) {
+				return [];
+			}
+
+			let inputColumnsLocationInArg = storeVal.inputColumnsPossibleLocationsInArg.find(
+				(currPossibility) => {
+					if (currPossibility.length == 0) {
+						return true;
+					}
+					const deepField = getDeepField(
+						QMS_info,
+						currPossibility,
+						schemaData,
+						'inputFields'
+					);
+					if (deepField) {
+						return true
+					}
+				}
+			);
+
+			if (inputColumnsLocationInArg) {
+				return inputColumnsLocationInArg
+			}
+			return [];
 		},
 		get_rowsLocation: function (QMS_info) {
 			const storeVal = get(store);
