@@ -3,7 +3,7 @@
 	import SelectModal from './SelectModal.svelte';
 	import Fuse from 'fuse.js';
 	import Modal from './Modal.svelte';
-	import GetQmsGivenField from './GetQMSGivenField.svelte';
+	import SelectQMS from './SelectQMS.svelte';
 
 	export let nodes;
 	export let parentNodeId;
@@ -137,4 +137,4 @@
 {#if qmsData?.length > 0 && !selectedQMS}
 	<!-- content here -->
 {/if}
-<GetQmsGivenField bind:showSelectModal {qmsData} bind:selectedQMS />
+<SelectQMS bind:showSelectModal {qmsData} bind:selectedQMS />
