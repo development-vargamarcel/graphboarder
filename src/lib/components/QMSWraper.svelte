@@ -26,6 +26,7 @@
 	import { Create_mergedChildren_QMSWraperCtxData_Store } from '$lib/stores/QMSHandling/mergedChildren_QMSWraperCtxData_Store';
 	import { Create_mergedChildren_controlPanel_Store } from '$lib/stores/QMSHandling/mergedChildren_controlPanel_Store';
 	import QMSWraperCtxDataCurrentComputations from './QMSWraperCtxDataCurrentComputations.svelte';
+	import { Create_QMSFieldToQMSGetMany_Store } from '$lib/stores/QMSFieldToQMSGetMany_Store';
 	export let isOutermostQMSWraper = getContext(`${prefix}QMSWraperContext`) ? false : true;
 	export let QMSType = 'query';
 	export let QMSName = `${Math.random()}`;
@@ -154,6 +155,9 @@
 	// 	Create_mergedChildren_activeArgumentsDataGrouped_Store({});
 	const mergedChildren_QMSWraperCtxData_Store = Create_mergedChildren_QMSWraperCtxData_Store([]);
 	const mergedChildren_controlPanel_Store = Create_mergedChildren_controlPanel_Store([]);
+	const QMSFieldToQMSGetMany_Store = Create_QMSFieldToQMSGetMany_Store([]);
+
+	$: console.log('$QMSFieldToQMSGetMany_Store ', $QMSFieldToQMSGetMany_Store);
 
 	$: console.log('$mergedChildren_finalGqlArgObj_Store', $mergedChildren_finalGqlArgObj_Store);
 	// $: console.log(
@@ -241,6 +245,7 @@
 		//mergedChildren_activeArgumentsDataGrouped_Store,
 		mergedChildren_QMSWraperCtxData_Store,
 		mergedChildren_controlPanel_Store,
+		QMSFieldToQMSGetMany_Store,
 		extraInfo
 	};
 	if (preferGivenQMSWraperContext && QMSWraperContextGiven) {

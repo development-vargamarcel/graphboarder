@@ -60,6 +60,16 @@
 		correctQMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 	}
 	/////end
+	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
+	let getManyQMS;
+	$: if ($QMSFieldToQMSGetMany_Store.length > 0) {
+		getManyQMS = QMSFieldToQMSGetMany_Store.getObj({
+			nodeOrField: node
+		})?.getMany?.selectedQMS;
+		if (getManyQMS) {
+			console.log({ getManyQMS });
+		}
+	}
 	const { finalGqlArgObj_Store, QMS_info, activeArgumentsDataGrouped_Store, QMSType } =
 		correctQMSWraperContext;
 	const operatorChangeHandler = () => {
@@ -438,6 +448,7 @@
 			//
 			//console.log(e.detail.id, node);
 		}}
+		bind:selectedQMS={getManyQMS}
 		bind:selectedRowsColValues
 		bind:showSelectModal
 		{originalNodes}
@@ -588,19 +599,19 @@
 				</div>
 				<!-- {#if inputColumnsLocation && inputColumnsLocationQMS_Info.dd_displayName == node.dd_displayName} -->
 
-				{#if (inputColumnsLocation && inputColumnsLocationQMS_Info.dd_displayName == node.dd_displayName) || forceShowSelectAndAddButtons}
-					<ManyToAllSelectInterfaceDefinition
-						bind:selectedRowsColValues
-						bind:showSelectModal
-						{originalNodes}
-						{type}
-						bind:nodes
-						{node}
-						{parentNode}
-						{parentNodeId}
-						{availableOperators}
-						{group}
-					/>
+				<ManyToAllSelectInterfaceDefinition
+					bind:selectedRowsColValues
+					{originalNodes}
+					{type}
+					bind:nodes
+					{node}
+					{parentNode}
+					{parentNodeId}
+					{availableOperators}
+					{group}
+				/>
+				{#if (inputColumnsLocation && inputColumnsLocationQMS_Info.dd_displayName == node.dd_displayName) || forceShowSelectAndAddButtons || getManyQMS}
+					<!-- {getManyQMS?.dd_displayName} -->
 					<button
 						class="btn btn-xs normal-case"
 						on:click={() => {

@@ -21,6 +21,21 @@
 	export let selectedRowsColValues = [];
 	export let field;
 	export let QMSRows;
+	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
+	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
+	$: if (selectedQMS) {
+		console.log(
+			{ field, node, nodes },
+			nodes[node.id],
+			schemaData.get_rootType(null, field.dd_rootName, schemaData)
+		);
+		const objToAdd = {
+			nodeOrField: field,
+			getMany: { selectedQMS, rowSelectionState },
+			id: Math.random().toString(36).substr(2, 9)
+		};
+		QMSFieldToQMSGetMany_Store.addOrReplaceKeepingOldId(objToAdd);
+	}
 	//
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;

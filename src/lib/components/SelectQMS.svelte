@@ -83,7 +83,7 @@
 			</div> -->
 
 			<div>
-				{#if QMSRows.length > 1}
+				{#if QMSRows?.length > 1}
 					<!-- content here -->
 					<ExplorerTable
 						enableMultiRowSelectionState={false}

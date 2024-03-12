@@ -35,6 +35,8 @@
 	let testName_stepsOFFieldsWasUpdated = false;
 	export let prefix = '';
 	console.log({ node });
+	export let selectedQMS;
+
 	/////start
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	let pathIsInCP = false;
@@ -61,8 +63,13 @@
 		correctQMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 	}
 	/////end
+
 	const { finalGqlArgObj_Store, QMS_info, activeArgumentsDataGrouped_Store, QMSType } =
 		correctQMSWraperContext;
+	if (node?.selectedQMS) {
+		selectedQMS = node.selectedQMS;
+		$activeArgumentsDataGrouped_Store = $activeArgumentsDataGrouped_Store;
+	}
 	const operatorChangeHandler = () => {
 		stepsOfNodes = getUpdatedStepsOfNodes(
 			JSON.parse(JSON.stringify(parentNode?.stepsOfNodes || []))
@@ -338,7 +345,7 @@
 			enableHiding: true
 		}
 	];
-	export let selectedQMS;
+
 	export let selectedRowsColValues = [];
 
 	//------------

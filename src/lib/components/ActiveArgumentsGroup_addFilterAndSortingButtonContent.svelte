@@ -16,6 +16,7 @@
 		getRootType
 	} from '$lib/utils/usefulFunctions';
 	import { add_activeArgumentOrContainerTo_activeArgumentsDataGrouped } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
+	import ManyToAllSelectInterfaceDefinition from './ManyToAllSelectInterfaceDefinition.svelte';
 	let dragDisabled = true;
 	const hasGroup_argsNode = group.group_argsNode;
 	const mainContainerOperator = group.group_argsNode?.mainContainer?.operator;
@@ -106,6 +107,17 @@
 		>
 			add container
 		</button>
+		<!-- <ManyToAllSelectInterfaceDefinition
+			bind:selectedRowsColValues
+			{originalNodes}
+			{type}
+			bind:nodes
+			{node}
+			{parentNode}
+			{parentNodeId}
+			{availableOperators}
+			{group}
+		/> -->
 	{/if}
 	<div class="my-2 border-2 rounded-box ">
 		{#each groupArgsPossibilities as arg, index}
