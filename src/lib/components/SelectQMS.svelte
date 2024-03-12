@@ -3,7 +3,7 @@
 	import ExplorerTable from './ExplorerTable.svelte';
 
 	export let showSelectModal;
-	export let qmsData;
+	export let QMSRows;
 	export let selectedQMS;
 	let rowSelectionState = {};
 	let columns = [
@@ -83,12 +83,12 @@
 			</div> -->
 
 			<div>
-				{#if qmsData.length > 1}
+				{#if QMSRows.length > 1}
 					<!-- content here -->
 					<ExplorerTable
 						enableMultiRowSelectionState={false}
 						bind:rowSelectionState
-						bind:data={qmsData}
+						bind:data={QMSRows}
 						{columns}
 						on:rowSelectionChange={(e) => {
 							selectedQMS = e.detail.rows.map((row) => row.original)[0];

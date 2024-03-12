@@ -281,7 +281,7 @@
 		//ignoreLocation: true,
 		keys: ['dd_displayName', 'dd_rootName', 'description']
 	});
-	let qmsData = [];
+	let QMSRows = [];
 	let columns = [
 		{
 			accessorFn: (row) => row.dd_displayName,
@@ -411,29 +411,29 @@
 					myFieldRoot,
 					myFieldSubfields
 				});
-				qmsData = $schemaData.queryFields.filter((item) => {
+				QMSRows = $schemaData.queryFields.filter((item) => {
 					return item.dd_kindList && item.dd_rootName == myField.dd_rootName;
 				});
-				console.log({ qmsData });
-				if (qmsData.length == 1) {
-					selectedQMS = qmsData[0];
+				console.log({ QMSRows });
+				if (QMSRows.length == 1) {
+					selectedQMS = QMSRows[0];
 
 					return;
 				}
-				if (qmsData.length > 0) {
+				if (QMSRows.length > 0) {
 					return;
 				}
 
-				qmsData = fuse
+				QMSRows = fuse
 					.search(`${myField.dd_rootName}`)
 					.map((item) => item.item)
 					.filter((item) => item.dd_kindList);
-				if (qmsData.length > 0) {
+				if (QMSRows.length > 0) {
 					return;
 				}
 			}
-			//	console.log({ node, qmsData });
-			qmsData = fuse
+			//	console.log({ node, QMSRows });
+			QMSRows = fuse
 				.search(
 					`${node?.dd_rootName?.replaceAll('_', ' ')} | ${node?.dd_displayName?.replaceAll(
 						//!!!node?.dd_displayName?.replaceAll "?" might cause unexpected problems
@@ -443,15 +443,15 @@
 				)
 				.map((item) => item.item)
 				.filter((item) => item.dd_kindList);
-			if (qmsData.length > 0) {
+			if (QMSRows.length > 0) {
 				return;
 			}
-			qmsData = fuse
+			QMSRows = fuse
 				.search(
 					`${node.dd_rootName.replaceAll('_', ' ')} | ${node.dd_displayName.replaceAll('_', ' ')}`
 				)
 				.map((item) => item.item);
-			console.log({ node, qmsData });
+			console.log({ node, QMSRows });
 		}}
 		showApplyBtn={true}
 		on:apply={() => {
@@ -487,11 +487,11 @@
 			</div>
 
 			<div>
-				{#if showExplorerTable && qmsData.length > 1}
+				{#if showExplorerTable && QMSRows.length > 1}
 					<!-- content here -->
 					<ExplorerTable
 						enableMultiRowSelectionState={false}
-						bind:data={qmsData}
+						bind:data={QMSRows}
 						{columns}
 						on:rowSelectionChange={(e) => {
 							selectedQMS = e.detail.rows.map((row) => row.original)[0];

@@ -20,7 +20,7 @@
 	export let selectedQMS;
 	export let selectedRowsColValues = [];
 	export let field;
-	export let qmsData;
+	export let QMSRows;
 	//
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
@@ -29,7 +29,7 @@
 	const handleClick = () => {
 		getPossibleQMS();
 		showSelectModal = true;
-		console.log({ field, qmsData });
+		console.log({ field, QMSRows });
 	};
 	const fuse = new Fuse($schemaData.queryFields, {
 		includeScore: false,
@@ -82,29 +82,29 @@
 				myFieldRoot,
 				myFieldSubfields
 			});
-			qmsData = $schemaData.queryFields.filter((item) => {
+			QMSRows = $schemaData.queryFields.filter((item) => {
 				return item.dd_kindList && item.dd_rootName == myField.dd_rootName;
 			});
-			console.log({ qmsData });
-			if (qmsData.length == 1) {
-				selectedQMS = qmsData[0];
+			console.log({ QMSRows });
+			if (QMSRows.length == 1) {
+				selectedQMS = QMSRows[0];
 
 				return;
 			}
-			if (qmsData.length > 0) {
+			if (QMSRows.length > 0) {
 				return;
 			}
 
-			qmsData = fuse
+			QMSRows = fuse
 				.search(`${myField.dd_rootName}`)
 				.map((item) => item.item)
 				.filter((item) => item.dd_kindList);
-			if (qmsData.length > 0) {
+			if (QMSRows.length > 0) {
 				return;
 			}
 		}
-		//	console.log({ node, qmsData });
-		qmsData = fuse
+		//	console.log({ node, QMSRows });
+		QMSRows = fuse
 			.search(
 				`${node?.dd_rootName?.replaceAll('_', ' ')} | ${node?.dd_displayName?.replaceAll(
 					//!!!node?.dd_displayName?.replaceAll "?" might cause unexpected problems
@@ -114,15 +114,15 @@
 			)
 			.map((item) => item.item)
 			.filter((item) => item.dd_kindList);
-		if (qmsData.length > 0) {
+		if (QMSRows.length > 0) {
 			return;
 		}
-		qmsData = fuse
+		QMSRows = fuse
 			.search(
 				`${node.dd_rootName.replaceAll('_', ' ')} | ${node.dd_displayName.replaceAll('_', ' ')}`
 			)
 			.map((item) => item.item);
-		console.log({ node, qmsData });
+		console.log({ node, QMSRows });
 	};
 </script>
 
@@ -134,7 +134,7 @@
 		</sup>
 	{/if}
 </button>
-{#if qmsData?.length > 0 && !selectedQMS}
+{#if QMSRows?.length > 0 && !selectedQMS}
 	<!-- content here -->
 {/if}
-<SelectQMS bind:showSelectModal {qmsData} bind:selectedQMS />
+<SelectQMS bind:showSelectModal {QMSRows} bind:selectedQMS />
