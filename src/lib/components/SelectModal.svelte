@@ -36,7 +36,9 @@
 	export let prefix = '';
 	console.log({ node });
 	export let selectedQMS;
-
+	$: if (selectedQMS) {
+		console.log('ssssssssaaa', node.dd_displayName, { selectedQMS });
+	}
 	/////start
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	let pathIsInCP = false;
@@ -356,7 +358,7 @@
 		return inputColumnsLocationQMS_Info;
 	});
 	//should work
-	let idColName;
+	export let idColName;
 
 	$: if (QMSWraperContextForSelectedQMS) {
 		idColName = QMSWraperContextForSelectedQMS.idColName;
@@ -379,6 +381,7 @@
 		schemaData,
 		'inputFields'
 	);
+	export let selectedRowsColValuesProcessed;
 </script>
 
 {#if showSelectModal}
@@ -473,22 +476,28 @@
 		showApplyBtn={true}
 		on:apply={() => {
 			rowSelectionState = getRowSelectionState(selectedRowsModel);
-			node.selectedRowsColValues = selectedRowsColValues.map((row) => {
+			selectedRowsColValuesProcessed = selectedRowsColValues.map((row) => {
 				let idRaw = row[idColName];
 				let idDecoded = endpointInfo.get_decodedId(null, null, idRaw);
 				console.log({ node, row });
-				const requiredColNames = node?.inputFields
-					.filter((field) => field.dd_NON_NULL)
-					.map((field) => field.dd_displayName);
-
+				let requiredColNames = [];
+				if (!(node.dd_kindEl == 'SCALAR')) {
+					requiredColNames = node?.inputFields
+						.filter((field) => field.dd_NON_NULL)
+						.map((field) => field.dd_displayName);
+				}
 				const rowWithRequiredColsOnly = {};
 				requiredColNames.forEach((name) => (rowWithRequiredColsOnly[name] = row[name]));
 				//const requiredColValues=requiredColNames.map((name)=>row[name]);
+				if (node.dd_kindEl == 'SCALAR') {
+					return { [node.dd_displayName]: idDecoded };
+				}
 				return passAllObjectValuesThroughStringTransformerAndReturnNewObject({
 					...rowWithRequiredColsOnly,
 					[idColName]: idDecoded
 				});
 			});
+			node.selectedRowsColValues = selectedRowsColValuesProcessed;
 			handleChanged();
 			showSelectModal = false;
 		}}
@@ -504,7 +513,7 @@
 			</div>
 
 			<div>
-				{#if showExplorerTable && QMSRows.length > 1}
+				{#if showExplorerTable && QMSRows.length > 1 && !selectedQMS}
 					<!-- content here -->
 					<ExplorerTable
 						enableMultiRowSelectionState={false}

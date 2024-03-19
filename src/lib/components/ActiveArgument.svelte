@@ -14,9 +14,16 @@
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Modal from './Modal.svelte';
 	import { string_transformerREVERSE } from '$lib/utils/dataStructureTransformers';
-	import { argumentCanRunQuery, getPreciseType, getRootType } from '$lib/utils/usefulFunctions';
+	import {
+		argumentCanRunQuery,
+		formatData,
+		getPreciseType,
+		getRootType
+	} from '$lib/utils/usefulFunctions';
 	import AddNodeToControlPanel from './AddNodeToControlPanel.svelte';
 	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
+	import SelectModal from './SelectModal.svelte';
+	import ExplorerTable from './ExplorerTable.svelte';
 	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
 	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
 	export let isNot;
@@ -24,6 +31,15 @@
 	export let activeArgumentData;
 	export let group;
 	export let activeArgumentsDataGrouped;
+	//
+	export let nodes;
+	export let originalNodes;
+	export let type;
+	export let parentNodeId;
+	export let availableOperators;
+	export let startDrag;
+	let idColNameOfSelectedRow;
+	//
 	setContext(
 		'choosenDisplayInterface',
 		writable(activeArgumentData.chosenDisplayInterface || activeArgumentData.dd_displayInterface)
@@ -160,8 +176,51 @@
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
 	const nodeRootType = getRootType(null, activeArgumentData.dd_rootName, schemaData);
+	let showSelectModal = false;
+	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
+
+	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
+	let getManyQMS;
+	$: if ($QMSFieldToQMSGetMany_Store.length > 0) {
+		getManyQMS = QMSFieldToQMSGetMany_Store.getObj({
+			nodeOrField: node
+		})?.getMany?.selectedQMS;
+		if (getManyQMS) {
+			console.log({ getManyQMS });
+		}
+	}
+	$: if (node?.selectedRowsColValues || selectedRowsColValues) {
+		console.log({ selectedRowsColValues, selectedRowsColValuesProcessed, node });
+	}
+	let selectedRowsColValues = [];
+	let selectedRowsColValuesProcessed;
+	$: if (selectedRowsColValuesProcessed) {
+	}
 </script>
 
+<SelectModal
+	on:deleteSubNode={(e) => {
+		deleteItem(e);
+		//
+		//console.log(e.detail.id, node);
+	}}
+	bind:idColName={idColNameOfSelectedRow}
+	bind:selectedRowsColValuesProcessed
+	bind:selectedQMS={getManyQMS}
+	bind:selectedRowsColValues
+	bind:showSelectModal
+	on:updateQuery
+	bind:nodes
+	on:changed
+	on:childrenStartDrag={startDrag}
+	{originalNodes}
+	{type}
+	{node}
+	{parentNode}
+	{parentNodeId}
+	{availableOperators}
+	{group}
+/>
 {#if showModal}
 	<Modal
 		showApplyBtn={false}
@@ -287,11 +346,14 @@
 						{$mutationVersion ? 'mb-1 ml-1' : ''}
 						
 						btn-ghost text-base-content btn btn-xs text-xs normal-case rounded-box pl-1 py-0 h-full min-h-min
-						{isNot ? ' bg-gradient-to-r from-secondary/30 outline-dashed' : 'bg-error/0'}"
+						{isNot ? ' bg-gradient-to-r from-secondary/30 outline-dashed' : 'bg-error/0'} {getManyQMS
+						? 'text-secondary'
+						: ''}"
 					on:click={() => {
 						showModal = true;
 					}}
 					on:contextmenu|preventDefault|stopPropagation|self={() => {
+						showSelectModal = !showSelectModal;
 						expandedVersion = !expandedVersion;
 					}}
 				>
@@ -306,6 +368,9 @@
 							<i class="text-primary bi bi-asterisk" />
 						</sup>
 					{/if}
+					<!-- {#if selectedRowsColValuesProcessed}
+						: {Object.values(selectedRowsColValuesProcessed[0])[0]}
+					{/if} -->
 				</button>
 
 				<div
@@ -325,14 +390,34 @@
 				</div>
 			</div>
 			{#if expandedVersion || $mutationVersion}
-				<div class="pl-1">
-					<AutoInterface
-						typeInfo={activeArgumentData}
-						on:changed={(e) => {
-							handleChanged(e.detail);
-						}}
-					/>
-				</div>
+				{#if !selectedRowsColValuesProcessed}
+					<div class="pl-1">
+						<AutoInterface
+							typeInfo={activeArgumentData}
+							on:changed={(e) => {
+								handleChanged(e.detail);
+							}}
+						/>
+					</div>
+				{/if}
+
+				{#if selectedRowsColValues?.length > 0 && idColNameOfSelectedRow}
+					<div class=" max-w-[80vw] md:max-w-[50vw] pl-1 pr-2">
+						<ExplorerTable
+							idColName={idColNameOfSelectedRow}
+							enableRowSelection={false}
+							data={selectedRowsColValues}
+							columns={Object.keys(selectedRowsColValues[0]).map((columnName) => {
+								return {
+									accessorFn: (row) => formatData(row[columnName], 40, true),
+									header: columnName,
+									footer: columnName,
+									enableHiding: true
+								};
+							})}
+						/>
+					</div>
+				{/if}
 			{/if}
 		</div>
 	</div>

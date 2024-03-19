@@ -679,6 +679,13 @@
 			<div class="pr-2 rounded-box  w-full">
 				<div class=" transition-color duration-500 rounded-box ringxxx  ring-1xxx    ">
 					<ActiveArgument
+						
+						bind:selectedRowsColValues
+						bind:showSelectModal
+						on:updateQuery
+						bind:nodes
+						on:changed
+						on:childrenStartDrag={startDrag}
 						{parentNode}
 						{node}
 						on:contextmenuUsed={() => {
