@@ -305,7 +305,6 @@
 	$: console.log({ QMSWraperContextForSelectedQMS });
 	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
 	let forceShowSelectAndAddButtons = false;
-	let showManyToAllSelectInterfaceDefinition = false;
 </script>
 
 {#if visible}
@@ -375,6 +374,7 @@
 								</label>
 							</div>
 						{/if}
+
 						<btn
 							class="btn btn-xs btn-info  normal-case mb-6 flex-1"
 							on:click={() => {
@@ -428,6 +428,23 @@
 						{/if}
 					</div>
 				{/if}
+				<div class="my-2 flex">
+					<div class="card w-full bg-neutral text-neutral-content">
+						<div class="card-body items-center text-center">
+							<ManyToAllSelectInterfaceDefinition
+								bind:selectedRowsColValues
+								{originalNodes}
+								{type}
+								bind:nodes
+								{node}
+								{parentNode}
+								{parentNodeId}
+								{availableOperators}
+								{group}
+							/>
+						</div>
+					</div>
+				</div>
 				<div>
 					<ActiveArgumentsGroup_addFilterAndSortingButtonContent
 						parent_inputFields={parentNode?.inputFields}
@@ -585,7 +602,6 @@
 						}}
 						on:contextmenu|preventDefault|stopPropagation={() => {
 							showSelectModal = !showSelectModal;
-							showManyToAllSelectInterfaceDefinition = !showManyToAllSelectInterfaceDefinition;
 						}}
 					>
 						{groupDisplayTitle}
@@ -601,18 +617,6 @@
 					{/if}
 				</div>
 				<!-- {#if inputColumnsLocation && inputColumnsLocationQMS_Info.dd_displayName == node.dd_displayName} -->
-				{#if showManyToAllSelectInterfaceDefinition}
-					<ManyToAllSelectInterfaceDefinition
-						bind:selectedRowsColValues
-						{originalNodes}
-						{type}
-						bind:nodes
-						{node}
-						{parentNode}
-						{parentNodeId}
-						{availableOperators}
-						{group}
-					/>{/if}
 
 				{#if (inputColumnsLocation && inputColumnsLocationQMS_Info.dd_displayName == node.dd_displayName) || forceShowSelectAndAddButtons || getManyQMS}
 					<!-- {getManyQMS?.dd_displayName} -->
@@ -679,7 +683,6 @@
 			<div class="pr-2 rounded-box  w-full">
 				<div class=" transition-color duration-500 rounded-box ringxxx  ring-1xxx    ">
 					<ActiveArgument
-						
 						bind:selectedRowsColValues
 						bind:showSelectModal
 						on:updateQuery
