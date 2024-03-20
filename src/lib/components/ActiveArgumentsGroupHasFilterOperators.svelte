@@ -429,8 +429,8 @@
 					</div>
 				{/if}
 				<div class="my-2 flex">
-					<div class="card w-full bg-neutral text-neutral-content">
-						<div class="card-body items-center text-center">
+					<div class="card w-full bg-neutral text-neutral-content overflow-x-auto">
+						<div class="card-body  pl-0">
 							<ManyToAllSelectInterfaceDefinition
 								bind:selectedRowsColValues
 								{originalNodes}

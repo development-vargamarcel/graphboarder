@@ -40,7 +40,7 @@
 </script>
 
 <div class="flex space-x-2">
-	{inputFieldsContainer?.dd_kindList ? '(LIST) ' : '(OBJECT) '}
+	<!-- {inputFieldsContainer?.dd_kindList ? '(LIST) ' : '(OBJECT) '} -->
 	{#each inputFields as field}
 		<ManyToAllSelectInterfaceDefinitionItem
 			{field}
