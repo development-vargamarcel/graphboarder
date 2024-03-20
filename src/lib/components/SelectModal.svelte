@@ -19,6 +19,8 @@
 	import Modal from './Modal.svelte';
 	import { nodeAddDefaultFields } from '$lib/utils/usefulFunctions';
 	import SelectItem from './SelectItem.svelte';
+	import SelectQMS from './SelectQMS.svelte';
+
 	import Fuse from 'fuse.js';
 	const dispatch = createEventDispatcher();
 	export let nodes;
@@ -382,6 +384,7 @@
 		'inputFields'
 	);
 	export let selectedRowsColValuesProcessed;
+	let showSelectQMSModal = true;
 </script>
 
 {#if showSelectModal}
@@ -513,8 +516,7 @@
 			</div>
 
 			<div>
-				{#if showExplorerTable && QMSRows.length > 1 && !selectedQMS}
-					<!-- content here -->
+				<!-- {#if showExplorerTable && QMSRows.length > 1 && !selectedQMS}
 					<ExplorerTable
 						enableMultiRowSelectionState={false}
 						bind:data={QMSRows}
@@ -523,54 +525,51 @@
 							selectedQMS = e.detail.rows.map((row) => row.original)[0];
 							showExplorerTable = false;
 							console.log({ selectedQMS });
-							// let columnNames = [];
-							// let rowsData;
-							// rowsData = e.detail.rows.map((row, i) => {
-							// 	return row
-							// 		.getVisibleCells()
-							// 		.map((cell) => {
-							// 			if (i == 0) {
-							// 				columnNames.push(cell.column.id);
-							// 			}
-							// 			return cell.getValue();
-							// 		})
-							// 		.join(`,`);
-							// });
-							// csvData = `${columnNames.join(`,`)}\n${rowsData.join(`\n`)}`;
 						}}
 					/>
-				{/if}
+				{/if} -->
+				{#key selectedQMS}
+					{#if selectedQMS}
+						<SelectItem
+							bind:QMSWraperContext={QMSWraperContextForSelectedQMS}
+							{rowSelectionState}
+							enableMultiRowSelectionState={inputFieldsContainer.dd_kindList}
+							on:rowSelectionChange={(e) => {
+								selectedRowsModel = e.detail;
+								let selectedRowsOriginal = e.detail.rows.map((row) => row.original);
 
-				{#if selectedQMS}
-					<SelectItem
-						bind:QMSWraperContext={QMSWraperContextForSelectedQMS}
-						{rowSelectionState}
-						enableMultiRowSelectionState={inputFieldsContainer.dd_kindList}
-						on:rowSelectionChange={(e) => {
-							selectedRowsModel = e.detail;
-							let selectedRowsOriginal = e.detail.rows.map((row) => row.original);
+								const returningColumnsLocation =
+									$endpointInfo.returningColumnsPossibleLocationsInQueriesPerRow.find((item) => {
+										return hasDeepProperty(selectedRowsOriginal[0], item);
+									});
+								//string_transformer
 
-							const returningColumnsLocation =
-								$endpointInfo.returningColumnsPossibleLocationsInQueriesPerRow.find((item) => {
-									return hasDeepProperty(selectedRowsOriginal[0], item);
+								console.log({ returningColumnsLocation });
+								selectedRowsColValues = selectedRowsOriginal.map((row) => {
+									return getDataGivenStepsOfFields(null, row, returningColumnsLocation);
+
+									//return getDataGivenStepsOfFields(null, row, returningColumnsLocation);
 								});
-							//string_transformer
+								//!!every element of 'selectedRowsColValues' must be cheched like so: every element must have all values checked ,if string pass trough string transformer
+								console.log(e.detail, { selectedRowsColValues });
+							}}
+							on:rowClicked={(e) => {
+								console.log(e.detail);
+							}}
+							QMS_info={selectedQMS}
+						/>
+					{/if}
+				{/key}
 
-							console.log({ returningColumnsLocation });
-							selectedRowsColValues = selectedRowsOriginal.map((row) => {
-								return getDataGivenStepsOfFields(null, row, returningColumnsLocation);
-
-								//return getDataGivenStepsOfFields(null, row, returningColumnsLocation);
-							});
-							//!!every element of 'selectedRowsColValues' must be cheched like so: every element must have all values checked ,if string pass trough string transformer
-							console.log(e.detail, { selectedRowsColValues });
-						}}
-						on:rowClicked={(e) => {
-							console.log(e.detail);
-						}}
-						QMS_info={selectedQMS}
-					/>
-				{/if}
+				<button
+					class="btn btn-primary btn-sm w-full"
+					on:click={() => {
+						showSelectQMSModal = true;
+					}}
+				>
+					showSelectQMSModal
+				</button>
+				<SelectQMS bind:showSelectModal={showSelectQMSModal} {QMSRows} bind:selectedQMS />
 			</div>
 		</div>
 	</Modal>
