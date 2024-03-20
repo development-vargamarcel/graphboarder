@@ -513,21 +513,9 @@
 				<p class="badge badge-info font-bold">
 					{groupDisplayTitle}
 				</p>
-			</div>
 
-			<div>
-				<!-- {#if showExplorerTable && QMSRows.length > 1 && !selectedQMS}
-					<ExplorerTable
-						enableMultiRowSelectionState={false}
-						bind:data={QMSRows}
-						{columns}
-						on:rowSelectionChange={(e) => {
-							selectedQMS = e.detail.rows.map((row) => row.original)[0];
-							showExplorerTable = false;
-							console.log({ selectedQMS });
-						}}
-					/>
-				{/if} -->
+				<SelectQMS bind:showSelectModal={showSelectQMSModal} {QMSRows} bind:selectedQMS />
+
 				{#key selectedQMS}
 					{#if selectedQMS}
 						<SelectItem
@@ -562,14 +550,13 @@
 				{/key}
 
 				<button
-					class="btn btn-primary btn-sm w-full"
+					class="btn btn-accent btn-xs w-full"
 					on:click={() => {
 						showSelectQMSModal = true;
 					}}
 				>
 					showSelectQMSModal
 				</button>
-				<SelectQMS bind:showSelectModal={showSelectQMSModal} {QMSRows} bind:selectedQMS />
 			</div>
 		</div>
 	</Modal>
