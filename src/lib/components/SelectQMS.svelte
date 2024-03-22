@@ -2,7 +2,7 @@
 	import Modal from './Modal.svelte';
 	import ExplorerTable from './ExplorerTable.svelte';
 
-	export let showSelectModal;
+	export let showSelectQMSModal;
 	export let QMSRows;
 	export let selectedQMS;
 	let rowSelectionState = {};
@@ -64,15 +64,15 @@
 	];
 </script>
 
-{#if showSelectModal}
+{#if showSelectQMSModal}
 	<!-- 
 		on:apply={() => {
-			showSelectModal = false;
+			showSelectQMSModal = false;
 		}} -->
 	<Modal
 		showApplyBtn={false}
 		on:cancel={() => {
-			showSelectModal = false;
+			showSelectQMSModal = false;
 		}}
 	>
 		<div class="flex flex-col ">
@@ -107,7 +107,7 @@
 							// 		.join(`,`);
 							// });
 							// csvData = `${columnNames.join(`,`)}\n${rowsData.join(`\n`)}`;
-							showSelectModal = false;
+							showSelectQMSModal = false;
 						}}
 					/>
 				{/if}

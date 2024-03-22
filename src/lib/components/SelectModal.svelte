@@ -262,7 +262,7 @@
 			stepsOfFields
 		);
 	}
-	export let showSelectModal = false;
+	export let showSelectModal;
 
 	let showAddModal = false;
 	export let rowSelectionState = {};
@@ -384,7 +384,7 @@
 		'inputFields'
 	);
 	export let selectedRowsColValuesProcessed;
-	let showSelectQMSModal = true;
+	let showSelectQMSModal = selectedQMS ? true : false;
 </script>
 
 {#if showSelectModal}
@@ -514,7 +514,7 @@
 					{groupDisplayTitle}
 				</p>
 
-				<SelectQMS bind:showSelectModal={showSelectQMSModal} {QMSRows} bind:selectedQMS />
+				<SelectQMS bind:showSelectQMSModal {QMSRows} bind:selectedQMS />
 
 				{#key selectedQMS}
 					{#if selectedQMS}

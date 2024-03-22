@@ -16,7 +16,7 @@
 	export let originalNodes;
 	export let prefix = '';
 	export let addDefaultFields;
-	export let showSelectModal = false;
+	export let showSelectQMSModal = false;
 	export let rowSelectionState = {};
 	export let selectedQMS;
 	export let selectedRowsColValues = [];
@@ -56,7 +56,7 @@
 
 	const handleClick = () => {
 		getPossibleQMS();
-		showSelectModal = true;
+		showSelectQMSModal = true;
 		console.log({ field, QMSRows });
 	};
 	const fuse = new Fuse($schemaData.queryFields, {
@@ -172,4 +172,4 @@
 {#if QMSRows?.length > 0 && !selectedQMS}
 	<!-- content here -->
 {/if}
-<SelectQMS bind:showSelectModal {QMSRows} bind:selectedQMS />
+<SelectQMS bind:showSelectQMSModal {QMSRows} bind:selectedQMS />

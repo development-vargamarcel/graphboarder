@@ -12,7 +12,7 @@
 	export let originalNodes;
 	export let prefix = '';
 	export let addDefaultFields;
-	export let showSelectModal = false;
+	export let showSelectQMSModal = false;
 	export let rowSelectionState = {};
 	export let selectedQMS;
 	export let selectedRowsColValues = [];
@@ -54,7 +54,7 @@
 			{originalNodes}
 			{prefix}
 			{addDefaultFields}
-			{showSelectModal}
+			{showSelectQMSModal}
 			{rowSelectionState}
 			{selectedQMS}
 			{selectedRowsColValues}
