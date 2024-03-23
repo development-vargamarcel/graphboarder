@@ -634,11 +634,8 @@
 						}}>add</button
 					> -->
 				{/if}
-				{#key selectedRowsColValues && idColName}
-					{#if selectedRowsColValues?.length > 0}
-						<SelectedRowsDisplay bind:idColName bind:selectedRowsColValues />
-					{/if}
-				{/key}
+
+				<SelectedRowsDisplay bind:idColName bind:selectedRowsColValues />
 			{/if}
 			<div class="flex ">
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
