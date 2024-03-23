@@ -281,6 +281,7 @@
 	import AddNodeToControlPanel from './AddNodeToControlPanel.svelte';
 	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
 	import ManyToAllSelectInterfaceDefinition from './ManyToAllSelectInterfaceDefinition.svelte';
+	import SelectedRowsDisplay from './SelectedRowsDisplay.svelte';
 
 	let selectedRowsColValues = [];
 
@@ -633,24 +634,11 @@
 						}}>add</button
 					> -->
 				{/if}
-
-				{#if selectedRowsColValues?.length > 0}
-					<div class=" max-w-[80vw] md:max-w-[50vw] pl-1 pr-2">
-						<ExplorerTable
-							{idColName}
-							enableRowSelection={false}
-							data={selectedRowsColValues}
-							columns={Object.keys(selectedRowsColValues[0]).map((columnName) => {
-								return {
-									accessorFn: (row) => formatData(row[columnName], 40, true),
-									header: columnName,
-									footer: columnName,
-									enableHiding: true
-								};
-							})}
-						/>
-					</div>
-				{/if}
+				{#key selectedRowsColValues && idColName}
+					{#if selectedRowsColValues?.length > 0}
+						<SelectedRowsDisplay bind:idColName bind:selectedRowsColValues />
+					{/if}
+				{/key}
 			{/if}
 			<div class="flex ">
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
