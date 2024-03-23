@@ -384,7 +384,7 @@
 		'inputFields'
 	);
 	export let selectedRowsColValuesProcessed;
-	let showSelectQMSModal = selectedQMS ? true : false;
+	let showSelectQMSModal = selectedQMS || QMSRows?.length == 1 ? false : true;
 </script>
 
 {#if showSelectModal}
@@ -514,40 +514,36 @@
 					{groupDisplayTitle}
 				</p>
 
-				<SelectQMS bind:showSelectQMSModal {QMSRows} bind:selectedQMS />
+				<SelectQMS bind:showSelectQMSModal bind:QMSRows bind:selectedQMS />
 
-				{#key selectedQMS}
-					{#if selectedQMS}
-						<SelectItem
-							bind:QMSWraperContext={QMSWraperContextForSelectedQMS}
-							{rowSelectionState}
-							enableMultiRowSelectionState={inputFieldsContainer.dd_kindList}
-							on:rowSelectionChange={(e) => {
-								selectedRowsModel = e.detail;
-								let selectedRowsOriginal = e.detail.rows.map((row) => row.original);
+				<SelectItem
+					bind:QMSWraperContext={QMSWraperContextForSelectedQMS}
+					{rowSelectionState}
+					enableMultiRowSelectionState={inputFieldsContainer.dd_kindList}
+					on:rowSelectionChange={(e) => {
+						selectedRowsModel = e.detail;
+						let selectedRowsOriginal = e.detail.rows.map((row) => row.original);
 
-								const returningColumnsLocation =
-									$endpointInfo.returningColumnsPossibleLocationsInQueriesPerRow.find((item) => {
-										return hasDeepProperty(selectedRowsOriginal[0], item);
-									});
-								//string_transformer
+						const returningColumnsLocation =
+							$endpointInfo.returningColumnsPossibleLocationsInQueriesPerRow.find((item) => {
+								return hasDeepProperty(selectedRowsOriginal[0], item);
+							});
+						//string_transformer
 
-								console.log({ returningColumnsLocation });
-								selectedRowsColValues = selectedRowsOriginal.map((row) => {
-									return getDataGivenStepsOfFields(null, row, returningColumnsLocation);
+						console.log({ returningColumnsLocation });
+						selectedRowsColValues = selectedRowsOriginal.map((row) => {
+							return getDataGivenStepsOfFields(null, row, returningColumnsLocation);
 
-									//return getDataGivenStepsOfFields(null, row, returningColumnsLocation);
-								});
-								//!!every element of 'selectedRowsColValues' must be cheched like so: every element must have all values checked ,if string pass trough string transformer
-								console.log(e.detail, { selectedRowsColValues });
-							}}
-							on:rowClicked={(e) => {
-								console.log(e.detail);
-							}}
-							QMS_info={selectedQMS}
-						/>
-					{/if}
-				{/key}
+							//return getDataGivenStepsOfFields(null, row, returningColumnsLocation);
+						});
+						//!!every element of 'selectedRowsColValues' must be cheched like so: every element must have all values checked ,if string pass trough string transformer
+						console.log(e.detail, { selectedRowsColValues });
+					}}
+					on:rowClicked={(e) => {
+						console.log(e.detail);
+					}}
+					bind:QMS_info={selectedQMS}
+				/>
 
 				<button
 					class="btn btn-accent btn-xs w-full"

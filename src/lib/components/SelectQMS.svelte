@@ -83,34 +83,34 @@
 			</div> -->
 
 			<div>
-				{#if QMSRows?.length > 1}
-					<!-- content here -->
-					<ExplorerTable
-						enableMultiRowSelectionState={false}
-						bind:rowSelectionState
-						bind:data={QMSRows}
-						{columns}
-						on:rowSelectionChange={(e) => {
-							selectedQMS = e.detail.rows.map((row) => row.original)[0];
-							console.log({ selectedQMS });
-							// let columnNames = [];
-							// let rowsData;
-							// rowsData = e.detail.rows.map((row, i) => {
-							// 	return row
-							// 		.getVisibleCells()
-							// 		.map((cell) => {
-							// 			if (i == 0) {
-							// 				columnNames.push(cell.column.id);
-							// 			}
-							// 			return cell.getValue();
-							// 		})
-							// 		.join(`,`);
-							// });
-							// csvData = `${columnNames.join(`,`)}\n${rowsData.join(`\n`)}`;
-							showSelectQMSModal = false;
-						}}
-					/>
-				{/if}
+				<!-- {#if QMSRows?.length > 1} -->
+				<!-- content here -->
+				<ExplorerTable
+					enableMultiRowSelectionState={false}
+					bind:rowSelectionState
+					bind:data={QMSRows}
+					{columns}
+					on:rowSelectionChange={(e) => {
+						selectedQMS = e.detail.rows.map((row) => row.original)[0];
+						console.log({ selectedQMS });
+						// let columnNames = [];
+						// let rowsData;
+						// rowsData = e.detail.rows.map((row, i) => {
+						// 	return row
+						// 		.getVisibleCells()
+						// 		.map((cell) => {
+						// 			if (i == 0) {
+						// 				columnNames.push(cell.column.id);
+						// 			}
+						// 			return cell.getValue();
+						// 		})
+						// 		.join(`,`);
+						// });
+						// csvData = `${columnNames.join(`,`)}\n${rowsData.join(`\n`)}`;
+						showSelectQMSModal = false;
+					}}
+				/>
+				<!-- {/if} -->
 			</div>
 		</div>
 	</Modal>

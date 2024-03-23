@@ -12,19 +12,22 @@
 	export let QMSWraperContext = {};
 </script>
 
-<QmsWraper
-	bind:QMSWraperContext
-	QMSName={QMS_info.dd_displayName}
-	initialGqlArgObj={{}}
-	QMSType="query"
-	tableColsData_StoreInitialValue={[]}
->
-	<ComponentForLayout
-		on:rowClicked
-		on:rowSelectionChange
-		{rowSelectionState}
-		{enableMultiRowSelectionState}
-	/>
-</QmsWraper>
+{#key QMS_info}
+	{#if QMS_info}
+		<QmsWraper
+			bind:QMSWraperContext
+			QMSName={QMS_info.dd_displayName}
+			initialGqlArgObj={{}}
+			QMSType="query"
+			tableColsData_StoreInitialValue={[]}
+		>
+			<ComponentForLayout
+				on:rowClicked
+				on:rowSelectionChange
+				{rowSelectionState}
+				{enableMultiRowSelectionState}
+			/>
+		</QmsWraper>{/if}
+{/key}
 
 <!-- currentQMS_info={endpointInfo.get_qmsNameForObjective(QMS_info, schemaData, 'getMany')} -->
