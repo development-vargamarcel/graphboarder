@@ -384,7 +384,18 @@
 		schemaData,
 		'inputFields'
 	);
-	let showSelectQMSModal = $selectedQMS || $QMSRows?.length == 1 ? false : true;
+	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
+	let getManyQMS;
+	$: if ($QMSFieldToQMSGetMany_Store.length > 0) {
+		getManyQMS = QMSFieldToQMSGetMany_Store.getObj({
+			nodeOrField: node
+		})?.getMany?.selectedQMS;
+		if (getManyQMS) {
+			console.log({ getManyQMS });
+		}
+	}
+	let showSelectQMSModal = getManyQMS ? false : true;
+	console.log('qqqqqqwwwww', { getManyQMS, showSelectQMSModal });
 </script>
 
 {#if showSelectModal}
