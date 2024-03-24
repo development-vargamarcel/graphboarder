@@ -2,13 +2,11 @@
 	import Modal from './Modal.svelte';
 	import ExplorerTable from './ExplorerTable.svelte';
 	import { getContext } from 'svelte';
-	export let showSelectQMSModal;
 	export let prefix = '';
 	export let node;
 	const nodeContext_forDynamicData = getContext(`${prefix}nodeContext_forDynamicData`);
-	let selectedQMS = nodeContext_forDynamicData.selectedQMS;
+	//let selectedQMS = nodeContext_forDynamicData.selectedQMS;
 	let QMSRows = nodeContext_forDynamicData.QMSRows;
-	let rowSelectionState = nodeContext_forDynamicData.rowSelectionState;
 	let columns = [
 		{
 			accessorFn: (row) => row.dd_displayName,
@@ -67,6 +65,19 @@
 	];
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
+	let getManyData;
+	$: if ($QMSFieldToQMSGetMany_Store.length > 0) {
+		getManyData = QMSFieldToQMSGetMany_Store.getObj({
+			nodeOrField: node
+		})?.getMany;
+	}
+	let selectedQMS;
+	let rowSelectionState;
+	$: if (getManyData) {
+		selectedQMS = getManyData.selectedQMS;
+		rowSelectionState = getManyData.rowSelectionState;
+	}
+	export let showSelectQMSModal;
 </script>
 
 {#if showSelectQMSModal}
@@ -92,7 +103,7 @@
 				<!-- content here -->
 				<ExplorerTable
 					enableMultiRowSelectionState={false}
-					bind:rowSelectionState={$rowSelectionState}
+					bind:rowSelectionState
 					bind:data={$QMSRows}
 					{columns}
 					on:rowSelectionChange={(e) => {
@@ -109,7 +120,6 @@
 						QMSFieldToQMSGetMany_Store.addOrReplaceKeepingOldId(objToAdd);
 						////
 						//	$selectedQMS = e.detail.rows.map((row) => row.original)[0];
-						console.log({ selectedQMS });
 
 						showSelectQMSModal = false;
 					}}

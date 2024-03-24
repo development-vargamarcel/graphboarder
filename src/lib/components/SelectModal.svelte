@@ -394,7 +394,7 @@
 			console.log({ getManyQMS });
 		}
 	}
-	let showSelectQMSModal = getManyQMS ? false : true;
+	let showSelectQMSModal = false;
 	console.log('qqqqqqwwwww', { getManyQMS, showSelectQMSModal });
 </script>
 
@@ -529,7 +529,7 @@
 				<SelectItem
 					{node}
 					bind:QMSWraperContext={QMSWraperContextForSelectedQMS}
-					{rowSelectionState}
+					bind:rowSelectionState={$rowSelectionState}
 					enableMultiRowSelectionState={inputFieldsContainer.dd_kindList}
 					on:rowSelectionChange={(e) => {
 						selectedRowsModel = e.detail;
