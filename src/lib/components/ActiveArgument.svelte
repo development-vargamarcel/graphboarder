@@ -191,7 +191,7 @@
 	let selectedRowsColValues = nodeContext_forDynamicData.selectedRowsColValues;
 </script>
 
-{selectedQMS}
+
 <SelectModal
 	on:deleteSubNode={(e) => {
 		deleteItem(e);
