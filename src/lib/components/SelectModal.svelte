@@ -513,9 +513,10 @@
 					{groupDisplayTitle}
 				</p>
 
-				<SelectQMS bind:showSelectQMSModal />
+				<SelectQMS bind:showSelectQMSModal {node} />
 
 				<SelectItem
+					{node}
 					bind:QMSWraperContext={QMSWraperContextForSelectedQMS}
 					{rowSelectionState}
 					enableMultiRowSelectionState={inputFieldsContainer.dd_kindList}

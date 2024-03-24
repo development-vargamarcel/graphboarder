@@ -83,6 +83,20 @@
 
 	setContext(`${prefix}nodeContext_forDynamicData`, nodeContext_forDynamicData);
 	///
+	// $: if ($selectedQMSAAA) {
+	// 	// console.log(
+	// 	// 	{ field, node, nodes },
+	// 	// 	nodes[node.id],
+	// 	// 	schemaData.get_rootType(null, field.dd_rootName, schemaData)
+	// 	// );
+	// 	const objToAdd = {
+	// 		nodeOrField: node,
+	// 		getMany: { selectedQMS: $selectedQMSAAA, rowSelectionState: $rowSelectionStateAAA },
+	// 		id: Math.random().toString(36).substr(2, 9)
+	// 	};
+	// 	console.log({ objToAdd });
+	// 	QMSFieldToQMSGetMany_Store.addOrReplaceKeepingOldId(objToAdd);
+	// }
 	/////start
 
 	let pathIsInCP = false;
@@ -660,7 +674,7 @@
 				</div>
 				<!-- {#if inputColumnsLocation && inputColumnsLocationQMS_Info.dd_displayName == node.dd_displayName} -->
 
-				{#if (inputColumnsLocation && inputColumnsLocationQMS_Info.dd_displayName == node.dd_displayName) || forceShowSelectAndAddButtons || $getManyQMS}
+				{#if (inputColumnsLocation && inputColumnsLocationQMS_Info.dd_displayName == node.dd_displayName) || forceShowSelectAndAddButtons || getManyQMS}
 					<!-- {getManyQMS?.dd_displayName} -->
 					<!-- <button
 						class="btn btn-xs normal-case"

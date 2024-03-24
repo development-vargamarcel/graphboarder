@@ -41,19 +41,20 @@
 		'inputFields'
 	);
 	console.log({ inputFieldsContainerLocation, inputFieldsContainer });
-	$: if ($selectedQMS) {
-		console.log(
-			{ field, node, nodes },
-			nodes[node.id],
-			schemaData.get_rootType(null, field.dd_rootName, schemaData)
-		);
-		const objToAdd = {
-			nodeOrField: field,
-			getMany: { selectedQMS: $selectedQMS, rowSelectionState: $rowSelectionState },
-			id: Math.random().toString(36).substr(2, 9)
-		};
-		QMSFieldToQMSGetMany_Store.addOrReplaceKeepingOldId(objToAdd);
-	}
+	// $: if ($selectedQMS) {
+	// 	// console.log(
+	// 	// 	{ field, node, nodes },
+	// 	// 	nodes[node.id],
+	// 	// 	schemaData.get_rootType(null, field.dd_rootName, schemaData)
+	// 	// );
+	// 	const objToAdd = {
+	// 		nodeOrField: field,
+	// 		getMany: { selectedQMS: $selectedQMS, rowSelectionState: $rowSelectionState },
+	// 		id: Math.random().toString(36).substr(2, 9)
+	// 	};
+	// 	console.log({ objToAdd });
+	// 	QMSFieldToQMSGetMany_Store.addOrReplaceKeepingOldId(objToAdd);
+	// }
 
 	const handleClick = () => {
 		getPossibleQMS();

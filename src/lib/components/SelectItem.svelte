@@ -10,13 +10,26 @@
 	export let enableMultiRowSelectionState = true;
 	export let rowSelectionState;
 	export let QMSWraperContext = {};
+	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
+	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
+	export let node;
+	console.log('nooooddeeee', { node });
+	let getManyQMS;
+	$: if ($QMSFieldToQMSGetMany_Store.length > 0) {
+		getManyQMS = QMSFieldToQMSGetMany_Store.getObj({
+			nodeOrField: node
+		})?.getMany?.selectedQMS;
+		if (getManyQMS) {
+			console.log({ getManyQMS });
+		}
+	}
 </script>
 
-{#key QMS_info}
-	{#if QMS_info}
+{#key getManyQMS}
+	{#if getManyQMS}
 		<QmsWraper
 			bind:QMSWraperContext
-			QMSName={QMS_info.dd_displayName}
+			QMSName={getManyQMS.dd_displayName}
 			initialGqlArgObj={{}}
 			QMSType="query"
 			tableColsData_StoreInitialValue={[]}

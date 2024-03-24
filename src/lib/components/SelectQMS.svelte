@@ -4,6 +4,7 @@
 	import { getContext } from 'svelte';
 	export let showSelectQMSModal;
 	export let prefix = '';
+	export let node;
 	const nodeContext_forDynamicData = getContext(`${prefix}nodeContext_forDynamicData`);
 	let selectedQMS = nodeContext_forDynamicData.selectedQMS;
 	let QMSRows = nodeContext_forDynamicData.QMSRows;
@@ -64,6 +65,8 @@
 			enableHiding: true
 		}
 	];
+	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
+	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
 </script>
 
 {#if showSelectQMSModal}
@@ -93,22 +96,21 @@
 					bind:data={$QMSRows}
 					{columns}
 					on:rowSelectionChange={(e) => {
-						$selectedQMS = e.detail.rows.map((row) => row.original)[0];
+						////
+						const objToAdd = {
+							nodeOrField: node,
+							getMany: {
+								selectedQMS: e.detail.rows.map((row) => row.original)[0],
+								rowSelectionState: e.detail.rowSelectionState
+							},
+							id: Math.random().toString(36).substr(2, 9)
+						};
+						console.log({ objToAdd });
+						QMSFieldToQMSGetMany_Store.addOrReplaceKeepingOldId(objToAdd);
+						////
+						//	$selectedQMS = e.detail.rows.map((row) => row.original)[0];
 						console.log({ selectedQMS });
-						// let columnNames = [];
-						// let rowsData;
-						// rowsData = e.detail.rows.map((row, i) => {
-						// 	return row
-						// 		.getVisibleCells()
-						// 		.map((cell) => {
-						// 			if (i == 0) {
-						// 				columnNames.push(cell.column.id);
-						// 			}
-						// 			return cell.getValue();
-						// 		})
-						// 		.join(`,`);
-						// });
-						// csvData = `${columnNames.join(`,`)}\n${rowsData.join(`\n`)}`;
+
 						showSelectQMSModal = false;
 					}}
 				/>

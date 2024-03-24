@@ -46,7 +46,7 @@
 		}));
 
 		console.log($table.getSelectedRowModel());
-		dispatch('rowSelectionChange', { ...$table.getSelectedRowModel() });
+		dispatch('rowSelectionChange', { ...$table.getSelectedRowModel(), rowSelectionState });
 	};
 
 	console.log({ rowSelectionState });
