@@ -775,7 +775,7 @@
 					{#each node.items.filter((item) => {
 						return item.id !== SHADOW_PLACEHOLDER_ITEM_ID;
 					}) as item (item.id)}
-						<div animate:flip={{ duration: flipDurationMs }} class="    border-2== max-w-min my-1 ">
+						<div animate:flip={{ duration: flipDurationMs }} class="    border-2== max-w-min mt-2 ">
 							<div class="flex dnd-item">
 								{#if testName_stepsOFFieldsWasUpdated}
 									{#key stepsOfFields}
