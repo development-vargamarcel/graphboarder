@@ -51,6 +51,7 @@
 
 	console.log({ rowSelectionState });
 	export let idColName;
+	export let requiredColNames;
 	const optionsObj = {
 		data: data,
 		columns: columns,
@@ -110,9 +111,11 @@
 								<label tabindex="0" class="cursor-pointer">
 									<div class="flex space-x-2 hover:text-primary rounded-box">
 										<div
-											class={idColName == header.column.columnDef.header
-												? ' underline decoration-dotted'
-												: ''}
+											class="{idColName == header.column.columnDef.header
+												? ' underline decoration-dotted font-black text-primary'
+												: ''} {requiredColNames == header.column.columnDef.header
+												? ' font-black text-primary'
+												: ''} "
 										>
 											{#if !header.isPlaceholder}
 												<svelte:component

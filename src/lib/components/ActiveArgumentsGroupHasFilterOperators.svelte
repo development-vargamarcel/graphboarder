@@ -59,6 +59,7 @@
 		nodeContext_forDynamicData.selectedQMS = writable();
 		nodeContext_forDynamicData.QMSRows = writable();
 		nodeContext_forDynamicData.itemColumns = writable();
+		nodeContext_forDynamicData.requiredColNames = writable();
 
 		node.nodeContext_forDynamicData = nodeContext_forDynamicData;
 	}
@@ -69,6 +70,7 @@
 	let selectedQMSAAA = nodeContext_forDynamicData.selectedQMS;
 	let QMSRowsAAA = nodeContext_forDynamicData.QMSRows;
 	let QMSColumnsAAA = nodeContext_forDynamicData.itemColumns;
+	let requiredColNamesAAA = nodeContext_forDynamicData.requiredColNames;
 
 	$: console.log('nodeContext_forDynamicData.selectedRowsColValues', $selectedRowsColValuesAAA);
 	$: console.log(
@@ -80,6 +82,7 @@
 	$: console.log('nodeContext_forDynamicData.selectedQMS', $selectedQMSAAA);
 	$: console.log('nodeContext_forDynamicData.QMSRows', $QMSRowsAAA);
 	$: console.log('nodeContext_forDynamicData.itemColumns', $QMSColumnsAAA);
+	$: console.log('nodeContext_forDynamicData.requiredColNames', $requiredColNamesAAA);
 
 	setContext(`${prefix}nodeContext_forDynamicData`, nodeContext_forDynamicData);
 	///

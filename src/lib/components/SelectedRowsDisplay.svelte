@@ -6,6 +6,8 @@
 	export let prefix = '';
 	const nodeContext_forDynamicData = getContext(`${prefix}nodeContext_forDynamicData`);
 	let idColName = nodeContext_forDynamicData.idColName;
+	let requiredColNames = nodeContext_forDynamicData.requiredColNames;
+
 	let selectedRowsColValues = nodeContext_forDynamicData.selectedRowsColValues;
 	let columns;
 	$: if ($selectedRowsColValues) {
@@ -22,11 +24,13 @@
 	}
 </script>
 
+{$requiredColNames?.join(',')}
 {#key $selectedRowsColValues}
 	{#if $selectedRowsColValues?.length > 0}
 		<div class=" max-w-[80vw] md:max-w-[50vw] pl-1 pr-2">
 			<ExplorerTable
 				bind:idColName={$idColName}
+				bind:requiredColNames={$requiredColNames}
 				enableRowSelection={false}
 				data={$selectedRowsColValues}
 				{columns}

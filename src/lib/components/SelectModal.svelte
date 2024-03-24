@@ -291,6 +291,7 @@
 	let selectedRowsColValues = nodeContext_forDynamicData.selectedRowsColValues;
 	let selectedRowsColValuesProcessed = nodeContext_forDynamicData.selectedRowsColValuesProcessed;
 	let idColName = nodeContext_forDynamicData.idColName;
+	let requiredColNames = nodeContext_forDynamicData.requiredColNames;
 
 	//let QMSRows = [];
 	let columns = [
@@ -493,14 +494,13 @@
 				let idRaw = row[$idColName];
 				let idDecoded = endpointInfo.get_decodedId(null, null, idRaw);
 				console.log({ node, row });
-				let requiredColNames = [];
 				if (!(node.dd_kindEl == 'SCALAR')) {
-					requiredColNames = node?.inputFields
+					$requiredColNames = node?.inputFields
 						.filter((field) => field.dd_NON_NULL)
 						.map((field) => field.dd_displayName);
 				}
 				const rowWithRequiredColsOnly = {};
-				requiredColNames.forEach((name) => (rowWithRequiredColsOnly[name] = row[name]));
+				$requiredColNames?.forEach((name) => (rowWithRequiredColsOnly[name] = row[name]));
 				//const requiredColValues=requiredColNames.map((name)=>row[name]);
 				if (node.dd_kindEl == 'SCALAR') {
 					return { [node.dd_displayName]: idDecoded };
