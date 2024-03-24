@@ -17,11 +17,12 @@
 	export let prefix = '';
 	export let addDefaultFields;
 	export let showSelectQMSModal = false;
-	export let rowSelectionState = {};
-	export let selectedQMS;
 	export let selectedRowsColValues = [];
 	export let field;
-	export let QMSRows;
+	const nodeContext_forDynamicData = getContext(`${prefix}nodeContext_forDynamicData`);
+	let selectedQMS = nodeContext_forDynamicData.selectedQMS;
+	let QMSRows = nodeContext_forDynamicData.QMSRows;
+	let rowSelectionState = nodeContext_forDynamicData.rowSelectionState;
 	//
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
@@ -40,7 +41,7 @@
 		'inputFields'
 	);
 	console.log({ inputFieldsContainerLocation, inputFieldsContainer });
-	$: if (selectedQMS) {
+	$: if ($selectedQMS) {
 		console.log(
 			{ field, node, nodes },
 			nodes[node.id],
@@ -48,7 +49,7 @@
 		);
 		const objToAdd = {
 			nodeOrField: field,
-			getMany: { selectedQMS, rowSelectionState },
+			getMany: { selectedQMS: $selectedQMS, rowSelectionState: $rowSelectionState },
 			id: Math.random().toString(36).substr(2, 9)
 		};
 		QMSFieldToQMSGetMany_Store.addOrReplaceKeepingOldId(objToAdd);
@@ -57,7 +58,6 @@
 	const handleClick = () => {
 		getPossibleQMS();
 		showSelectQMSModal = true;
-		console.log({ field, QMSRows });
 	};
 	const fuse = new Fuse($schemaData.queryFields, {
 		includeScore: false,
@@ -111,35 +111,35 @@
 				myFieldRoot,
 				myFieldSubfields
 			});
-			QMSRows = $schemaData.queryFields.filter((item) => {
+			$QMSRows = $schemaData.queryFields.filter((item) => {
 				return item.dd_kindList && item.dd_rootName == myField.dd_rootName;
 			});
 			console.log({ QMSRows });
-			if (QMSRows.length == 1) {
-				selectedQMS = QMSRows[0];
+			if ($QMSRows.length == 1) {
+				$selectedQMS = $QMSRows[0];
 
 				return;
 			}
-			if (QMSRows.length > 0) {
+			if ($QMSRows.length > 0) {
 				return;
 			}
-			QMSRows = fuse
+			$QMSRows = fuse
 				.search(`${myField.dd_StrForFuseComparison}`)
 				.map((item) => item.item)
 				.filter((item) => item.dd_kindList);
-			if (QMSRows.length > 0) {
+			if ($QMSRows.length > 0) {
 				return;
 			}
-			QMSRows = fuse
+			$QMSRows = fuse
 				.search(`${myField.dd_rootName}`)
 				.map((item) => item.item)
 				.filter((item) => item.dd_kindList);
-			if (QMSRows.length > 0) {
+			if ($QMSRows.length > 0) {
 				return;
 			}
 		}
 		//	console.log({ node, QMSRows });
-		QMSRows = fuse
+		$QMSRows = fuse
 			.search(
 				`${node?.dd_rootName?.replaceAll('_', ' ')} | ${node?.dd_displayName?.replaceAll(
 					//!!!node?.dd_displayName?.replaceAll "?" might cause unexpected problems
@@ -149,15 +149,14 @@
 			)
 			.map((item) => item.item)
 			.filter((item) => item.dd_kindList);
-		if (QMSRows.length > 0) {
+		if ($QMSRows.length > 0) {
 			return;
 		}
-		QMSRows = fuse
+		$QMSRows = fuse
 			.search(
 				`${node.dd_rootName.replaceAll('_', ' ')} | ${node.dd_displayName.replaceAll('_', ' ')}`
 			)
 			.map((item) => item.item);
-		console.log({ node, QMSRows });
 	};
 </script>
 
@@ -169,7 +168,4 @@
 		</sup>
 	{/if}
 </button>
-{#if QMSRows?.length > 0 && !selectedQMS}
-	<!-- content here -->
-{/if}
-<SelectQMS bind:showSelectQMSModal {QMSRows} bind:selectedQMS />
+<SelectQMS bind:showSelectQMSModal />

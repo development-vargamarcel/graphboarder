@@ -24,6 +24,7 @@
 	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
 	import SelectModal from './SelectModal.svelte';
 	import ExplorerTable from './ExplorerTable.svelte';
+	import SelectedRowsDisplay from './SelectedRowsDisplay.svelte';
 	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
 	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
 	export let isNot;
@@ -180,22 +181,14 @@
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
-	let getManyQMS;
+	let selectedQMS;
 	$: if ($QMSFieldToQMSGetMany_Store.length > 0) {
-		getManyQMS = QMSFieldToQMSGetMany_Store.getObj({
+		selectedQMS = QMSFieldToQMSGetMany_Store.getObj({
 			nodeOrField: node
 		})?.getMany?.selectedQMS;
-		if (getManyQMS) {
-			console.log({ getManyQMS });
-		}
 	}
-	$: if (node?.selectedRowsColValues || selectedRowsColValues) {
-		console.log({ selectedRowsColValues, selectedRowsColValuesProcessed, node });
-	}
-	let selectedRowsColValues = [];
-	let selectedRowsColValuesProcessed;
-	$: if (selectedRowsColValuesProcessed) {
-	}
+	const nodeContext_forDynamicData = getContext(`${prefix}nodeContext_forDynamicData`);
+	let selectedRowsColValues = nodeContext_forDynamicData.selectedRowsColValues;
 </script>
 
 <SelectModal
@@ -204,10 +197,6 @@
 		//
 		//console.log(e.detail.id, node);
 	}}
-	bind:idColName={idColNameOfSelectedRow}
-	bind:selectedRowsColValuesProcessed
-	bind:selectedQMS={getManyQMS}
-	bind:selectedRowsColValues
 	bind:showSelectModal
 	on:updateQuery
 	bind:nodes
@@ -346,7 +335,7 @@
 						{$mutationVersion ? 'mb-1 ml-1' : ''}
 						
 						btn-ghost text-base-content btn btn-xs text-xs normal-case rounded-box pl-1 py-0 h-full min-h-min
-						{isNot ? ' bg-gradient-to-r from-secondary/30 outline-dashed' : 'bg-error/0'} {getManyQMS
+						{isNot ? ' bg-gradient-to-r from-secondary/30 outline-dashed' : 'bg-error/0'} {selectedQMS
 						? 'text-secondary'
 						: ''}"
 					on:click={() => {
@@ -390,31 +379,15 @@
 				</div>
 			</div>
 			{#if expandedVersion || $mutationVersion}
-				{#if !selectedRowsColValuesProcessed}
+				{#if $selectedRowsColValues?.length > 0}
+					<SelectedRowsDisplay />
+				{:else}
 					<div class="pl-1">
 						<AutoInterface
 							typeInfo={activeArgumentData}
 							on:changed={(e) => {
 								handleChanged(e.detail);
 							}}
-						/>
-					</div>
-				{/if}
-
-				{#if selectedRowsColValues?.length > 0 && idColNameOfSelectedRow}
-					<div class=" max-w-[80vw] md:max-w-[50vw] pl-1 pr-2">
-						<ExplorerTable
-							idColName={idColNameOfSelectedRow}
-							enableRowSelection={false}
-							data={selectedRowsColValues}
-							columns={Object.keys(selectedRowsColValues[0]).map((columnName) => {
-								return {
-									accessorFn: (row) => formatData(row[columnName], 40, true),
-									header: columnName,
-									footer: columnName,
-									enableHiding: true
-								};
-							})}
 						/>
 					</div>
 				{/if}

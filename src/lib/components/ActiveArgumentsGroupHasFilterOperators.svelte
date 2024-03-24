@@ -34,8 +34,57 @@
 	let stepsOfFieldsFull = [];
 	let testName_stepsOFFieldsWasUpdated = false;
 	export let prefix = '';
-	/////start
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
+	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
+	let getManyQMS;
+	$: if ($QMSFieldToQMSGetMany_Store.length > 0) {
+		getManyQMS = QMSFieldToQMSGetMany_Store.getObj({
+			nodeOrField: node
+		})?.getMany?.selectedQMS;
+		if (getManyQMS) {
+			console.log({ getManyQMS });
+		}
+	}
+	///
+
+	let nodeContext_forDynamicData = {};
+	if (node.nodeContext_forDynamicData) {
+		nodeContext_forDynamicData = node.nodeContext_forDynamicData;
+	} else {
+		nodeContext_forDynamicData.selectedRowsColValues = writable();
+		nodeContext_forDynamicData.selectedRowsColValuesProcessed = writable();
+
+		nodeContext_forDynamicData.rowSelectionState = writable();
+		nodeContext_forDynamicData.idColName = writable();
+		nodeContext_forDynamicData.selectedQMS = writable();
+		nodeContext_forDynamicData.QMSRows = writable();
+		nodeContext_forDynamicData.itemColumns = writable();
+
+		node.nodeContext_forDynamicData = nodeContext_forDynamicData;
+	}
+	let selectedRowsColValuesAAA = nodeContext_forDynamicData.selectedRowsColValues;
+	let selectedRowsColValuesProcessedAAA = nodeContext_forDynamicData.selectedRowsColValuesProcessed;
+	let rowSelectionStateAAA = nodeContext_forDynamicData.rowSelectionState;
+	let idColNameAAA = nodeContext_forDynamicData.idColName;
+	let selectedQMSAAA = nodeContext_forDynamicData.selectedQMS;
+	let QMSRowsAAA = nodeContext_forDynamicData.QMSRows;
+	let QMSColumnsAAA = nodeContext_forDynamicData.itemColumns;
+
+	$: console.log('nodeContext_forDynamicData.selectedRowsColValues', $selectedRowsColValuesAAA);
+	$: console.log(
+		'nodeContext_forDynamicData.selectedRowsColValuesProcessed',
+		$selectedRowsColValuesProcessedAAA
+	);
+	$: console.log('nodeContext_forDynamicData.rowSelectionState', $rowSelectionStateAAA);
+	$: console.log('nodeContext_forDynamicData.idColName', $idColNameAAA);
+	$: console.log('nodeContext_forDynamicData.selectedQMS', $selectedQMSAAA);
+	$: console.log('nodeContext_forDynamicData.QMSRows', $QMSRowsAAA);
+	$: console.log('nodeContext_forDynamicData.itemColumns', $QMSColumnsAAA);
+
+	setContext(`${prefix}nodeContext_forDynamicData`, nodeContext_forDynamicData);
+	///
+	/////start
+
 	let pathIsInCP = false;
 	const nodeContext = getContext(`${prefix}nodeContext`);
 	if (nodeContext) {
@@ -60,16 +109,7 @@
 		correctQMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 	}
 	/////end
-	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
-	let getManyQMS;
-	$: if ($QMSFieldToQMSGetMany_Store.length > 0) {
-		getManyQMS = QMSFieldToQMSGetMany_Store.getObj({
-			nodeOrField: node
-		})?.getMany?.selectedQMS;
-		if (getManyQMS) {
-			console.log({ getManyQMS });
-		}
-	}
+
 	const { finalGqlArgObj_Store, QMS_info, activeArgumentsDataGrouped_Store, QMSType } =
 		correctQMSWraperContext;
 	const operatorChangeHandler = () => {
@@ -589,7 +629,8 @@
 				<div class="flex">
 					<div
 						tabindex="0"
-						class="btn btn-xs btn-ghost px-[1px] text-xs font-light transition-all duration-500  rounded-full  normal-case {getManyQMS
+						class="btn btn-xs btn-ghost px-[1px] text-xs font-light transition-all duration-500  rounded-full  normal-case {getManyQMS ||
+						$selectedQMSAAA
 							? 'text-secondary'
 							: ''}   {node?.operator == 'bonded' || node?.operator == 'list'
 							? 'text-base-content'
@@ -619,7 +660,7 @@
 				</div>
 				<!-- {#if inputColumnsLocation && inputColumnsLocationQMS_Info.dd_displayName == node.dd_displayName} -->
 
-				{#if (inputColumnsLocation && inputColumnsLocationQMS_Info.dd_displayName == node.dd_displayName) || forceShowSelectAndAddButtons || getManyQMS}
+				{#if (inputColumnsLocation && inputColumnsLocationQMS_Info.dd_displayName == node.dd_displayName) || forceShowSelectAndAddButtons || $getManyQMS}
 					<!-- {getManyQMS?.dd_displayName} -->
 					<!-- <button
 						class="btn btn-xs normal-case"
@@ -635,7 +676,7 @@
 					> -->
 				{/if}
 
-				<SelectedRowsDisplay bind:idColName bind:selectedRowsColValues />
+				<SelectedRowsDisplay />
 			{/if}
 			<div class="flex ">
 				<!-- svelte-ignore a11y-click-events-have-key-events -->

@@ -37,10 +37,6 @@
 	let testName_stepsOFFieldsWasUpdated = false;
 	export let prefix = '';
 	console.log({ node });
-	export let selectedQMS;
-	$: if (selectedQMS) {
-		console.log('ssssssssaaa', node.dd_displayName, { selectedQMS });
-	}
 	/////start
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	let pathIsInCP = false;
@@ -70,10 +66,7 @@
 
 	const { finalGqlArgObj_Store, QMS_info, activeArgumentsDataGrouped_Store, QMSType } =
 		correctQMSWraperContext;
-	if (node?.selectedQMS) {
-		selectedQMS = node.selectedQMS;
-		$activeArgumentsDataGrouped_Store = $activeArgumentsDataGrouped_Store;
-	}
+
 	const operatorChangeHandler = () => {
 		stepsOfNodes = getUpdatedStepsOfNodes(
 			JSON.parse(JSON.stringify(parentNode?.stepsOfNodes || []))
@@ -265,7 +258,6 @@
 	export let showSelectModal;
 
 	let showAddModal = false;
-	export let rowSelectionState = {};
 	const getRowSelectionState = (selectedRowsModel) => {
 		let rowSelectionState = {};
 		console.log({ selectedRowsModel });
@@ -292,7 +284,14 @@
 		//ignoreLocation: true,
 		keys: ['dd_displayName', 'dd_rootName', 'description']
 	});
-	let QMSRows = [];
+	const nodeContext_forDynamicData = getContext(`${prefix}nodeContext_forDynamicData`);
+	let selectedQMS = nodeContext_forDynamicData.selectedQMS;
+	let QMSRows = nodeContext_forDynamicData.QMSRows;
+	let rowSelectionState = nodeContext_forDynamicData.rowSelectionState;
+	let selectedRowsColValues = nodeContext_forDynamicData.selectedRowsColValues;
+	let selectedRowsColValuesProcessed = nodeContext_forDynamicData.selectedRowsColValuesProcessed;
+
+	//let QMSRows = [];
 	let columns = [
 		{
 			accessorFn: (row) => row.dd_displayName,
@@ -350,8 +349,10 @@
 		}
 	];
 
-	export let selectedRowsColValues = [];
-
+	if (node?.selectedQMS) {
+		$selectedQMS = node.selectedQMS;
+		$activeArgumentsDataGrouped_Store = $activeArgumentsDataGrouped_Store;
+	}
 	//------------
 	let inputColumnsLocationQMS_Info;
 	//!! todo:before getting inputColumnsLocation value,you should check if it is a query or a mutation,and handle it accordingly
@@ -383,8 +384,7 @@
 		schemaData,
 		'inputFields'
 	);
-	export let selectedRowsColValuesProcessed;
-	let showSelectQMSModal = selectedQMS || QMSRows?.length == 1 ? false : true;
+	let showSelectQMSModal = $selectedQMS || $QMSRows?.length == 1 ? false : true;
 </script>
 
 {#if showSelectModal}
@@ -434,29 +434,28 @@
 					myFieldRoot,
 					myFieldSubfields
 				});
-				QMSRows = $schemaData.queryFields.filter((item) => {
+				$QMSRows = $schemaData.queryFields.filter((item) => {
 					return item.dd_kindList && item.dd_rootName == myField.dd_rootName;
 				});
-				console.log({ QMSRows });
-				if (QMSRows.length == 1) {
-					selectedQMS = QMSRows[0];
+				if ($QMSRows.length == 1) {
+					$selectedQMS = $QMSRows[0];
 
 					return;
 				}
-				if (QMSRows.length > 0) {
+				if ($QMSRows.length > 0) {
 					return;
 				}
 
-				QMSRows = fuse
+				$QMSRows = fuse
 					.search(`${myField.dd_rootName}`)
 					.map((item) => item.item)
 					.filter((item) => item.dd_kindList);
-				if (QMSRows.length > 0) {
+				if ($QMSRows.length > 0) {
 					return;
 				}
 			}
 			//	console.log({ node, QMSRows });
-			QMSRows = fuse
+			$QMSRows = fuse
 				.search(
 					`${node?.dd_rootName?.replaceAll('_', ' ')} | ${node?.dd_displayName?.replaceAll(
 						//!!!node?.dd_displayName?.replaceAll "?" might cause unexpected problems
@@ -466,20 +465,20 @@
 				)
 				.map((item) => item.item)
 				.filter((item) => item.dd_kindList);
-			if (QMSRows.length > 0) {
+			if ($QMSRows.length > 0) {
 				return;
 			}
-			QMSRows = fuse
+			$QMSRows = fuse
 				.search(
 					`${node.dd_rootName.replaceAll('_', ' ')} | ${node.dd_displayName.replaceAll('_', ' ')}`
 				)
 				.map((item) => item.item);
-			console.log({ node, QMSRows });
+			//console.log({ node, QMSRows });
 		}}
 		showApplyBtn={true}
 		on:apply={() => {
-			rowSelectionState = getRowSelectionState(selectedRowsModel);
-			selectedRowsColValuesProcessed = selectedRowsColValues.map((row) => {
+			$rowSelectionState = getRowSelectionState(selectedRowsModel);
+			$selectedRowsColValuesProcessed = $selectedRowsColValues?.map((row) => {
 				let idRaw = row[idColName];
 				let idDecoded = endpointInfo.get_decodedId(null, null, idRaw);
 				console.log({ node, row });
@@ -500,7 +499,7 @@
 					[idColName]: idDecoded
 				});
 			});
-			node.selectedRowsColValues = selectedRowsColValuesProcessed;
+			node.selectedRowsColValues = $selectedRowsColValuesProcessed;
 			handleChanged();
 			showSelectModal = false;
 		}}
@@ -514,7 +513,7 @@
 					{groupDisplayTitle}
 				</p>
 
-				<SelectQMS bind:showSelectQMSModal bind:QMSRows bind:selectedQMS />
+				<SelectQMS bind:showSelectQMSModal />
 
 				<SelectItem
 					bind:QMSWraperContext={QMSWraperContextForSelectedQMS}
@@ -531,18 +530,17 @@
 						//string_transformer
 
 						console.log({ returningColumnsLocation });
-						selectedRowsColValues = selectedRowsOriginal.map((row) => {
+						$selectedRowsColValues = selectedRowsOriginal.map((row) => {
 							return getDataGivenStepsOfFields(null, row, returningColumnsLocation);
 
 							//return getDataGivenStepsOfFields(null, row, returningColumnsLocation);
 						});
 						//!!every element of 'selectedRowsColValues' must be cheched like so: every element must have all values checked ,if string pass trough string transformer
-						console.log(e.detail, { selectedRowsColValues });
 					}}
 					on:rowClicked={(e) => {
 						console.log(e.detail);
 					}}
-					bind:QMS_info={selectedQMS}
+					bind:QMS_info={$selectedQMS}
 				/>
 
 				<button

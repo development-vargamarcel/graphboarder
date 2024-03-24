@@ -1,11 +1,13 @@
 <script>
 	import Modal from './Modal.svelte';
 	import ExplorerTable from './ExplorerTable.svelte';
-
+	import { getContext } from 'svelte';
 	export let showSelectQMSModal;
-	export let QMSRows;
-	export let selectedQMS;
-	let rowSelectionState = {};
+	export let prefix = '';
+	const nodeContext_forDynamicData = getContext(`${prefix}nodeContext_forDynamicData`);
+	let selectedQMS = nodeContext_forDynamicData.selectedQMS;
+	let QMSRows = nodeContext_forDynamicData.QMSRows;
+	let rowSelectionState = nodeContext_forDynamicData.rowSelectionState;
 	let columns = [
 		{
 			accessorFn: (row) => row.dd_displayName,
@@ -87,11 +89,11 @@
 				<!-- content here -->
 				<ExplorerTable
 					enableMultiRowSelectionState={false}
-					bind:rowSelectionState
-					bind:data={QMSRows}
+					bind:rowSelectionState={$rowSelectionState}
+					bind:data={$QMSRows}
 					{columns}
 					on:rowSelectionChange={(e) => {
-						selectedQMS = e.detail.rows.map((row) => row.original)[0];
+						$selectedQMS = e.detail.rows.map((row) => row.original)[0];
 						console.log({ selectedQMS });
 						// let columnNames = [];
 						// let rowsData;
