@@ -24,7 +24,6 @@
 	}
 </script>
 
-{$requiredColNames?.join(',')}
 {#key $selectedRowsColValues}
 	{#if $selectedRowsColValues?.length > 0}
 		<div class=" max-w-[80vw] md:max-w-[50vw] pl-1 pr-2">
