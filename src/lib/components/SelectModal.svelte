@@ -290,6 +290,7 @@
 	let rowSelectionState = nodeContext_forDynamicData.rowSelectionState;
 	let selectedRowsColValues = nodeContext_forDynamicData.selectedRowsColValues;
 	let selectedRowsColValuesProcessed = nodeContext_forDynamicData.selectedRowsColValuesProcessed;
+	let idColName = nodeContext_forDynamicData.idColName;
 
 	//let QMSRows = [];
 	let columns = [
@@ -361,10 +362,9 @@
 		return inputColumnsLocationQMS_Info;
 	});
 	//should work
-	export let idColName;
 
 	$: if (QMSWraperContextForSelectedQMS) {
-		idColName = QMSWraperContextForSelectedQMS.idColName;
+		$idColName = QMSWraperContextForSelectedQMS.idColName;
 	}
 	//should work
 	console.log({ node, inputColumnsLocationQMS_Info, inputColumnsLocation });
@@ -490,7 +490,7 @@
 		on:apply={() => {
 			$rowSelectionState = getRowSelectionState(selectedRowsModel);
 			$selectedRowsColValuesProcessed = $selectedRowsColValues?.map((row) => {
-				let idRaw = row[idColName];
+				let idRaw = row[$idColName];
 				let idDecoded = endpointInfo.get_decodedId(null, null, idRaw);
 				console.log({ node, row });
 				let requiredColNames = [];
@@ -507,7 +507,7 @@
 				}
 				return passAllObjectValuesThroughStringTransformerAndReturnNewObject({
 					...rowWithRequiredColsOnly,
-					[idColName]: idDecoded
+					[$idColName]: idDecoded
 				});
 			});
 			node.selectedRowsColValues = $selectedRowsColValuesProcessed;

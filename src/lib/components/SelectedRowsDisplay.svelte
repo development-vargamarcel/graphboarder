@@ -26,7 +26,7 @@
 	{#if $selectedRowsColValues?.length > 0}
 		<div class=" max-w-[80vw] md:max-w-[50vw] pl-1 pr-2">
 			<ExplorerTable
-				idColName={$idColName}
+				bind:idColName={$idColName}
 				enableRowSelection={false}
 				data={$selectedRowsColValues}
 				{columns}
