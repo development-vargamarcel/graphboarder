@@ -87,6 +87,7 @@
 				let randomNr = Math.random();
 				const newContainerData = {
 					...node,
+					addDefaultFields: true,
 					dd_displayName: undefined,
 					id: randomNr,
 					operator: OutermostQMSWraperContext?.QMSType == 'mutation' ? 'bonded' : '~spread~',
@@ -105,7 +106,7 @@
 				group = group;
 			}}
 		>
-			add container
+			{OutermostQMSWraperContext?.QMSType == 'mutation' ? 'add item' : 'add container'}
 		</button>
 		<!-- <ManyToAllSelectInterfaceDefinition
 			bind:selectedRowsColValues
