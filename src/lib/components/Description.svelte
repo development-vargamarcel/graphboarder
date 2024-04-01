@@ -11,21 +11,16 @@
 	const schemaData = QMSMainWraperContext?.schemaData;
 	const nodeRootType = getRootType(null, QMSInfo.dd_rootName, schemaData);
 	const descriptionNeedsSeparator = QMSInfo?.description && nodeRootType?.description;
-	const description = `
-  ${nodeRootType?.description || ''} 
-  ${descriptionNeedsSeparator ? ' <> ' : ''}
-  ${QMSInfo?.description || ''} 
-  `.trim();
 </script>
 
-{#if description}
+{#if nodeRootType?.description || QMSInfo?.description}
 	<div class="alert alert-info shadow-lg py-2 mt-2 text-md  ">
-		<div class="flex">
+		<div class="flex space-x-4">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"
 				viewBox="0 0 24 24"
-				class="stroke-current flex-shrink-0 w-6 h-6"
+				class="stroke-current flex-shrink-0 w-6 h-6 my-auto"
 				><path
 					stroke-linecap="round"
 					stroke-linejoin="round"
@@ -33,7 +28,16 @@
 					d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
 				/></svg
 			>
-			<div class="">{description}</div>
+			<ul class="">
+				{#if nodeRootType?.description}
+					<li class="">
+						{nodeRootType?.description}
+					</li>
+				{/if}
+				{#if QMSInfo?.description}
+					<li class="">{QMSInfo?.description}</li>
+				{/if}
+			</ul>
 		</div>
 	</div>
 {/if}
