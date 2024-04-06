@@ -30,10 +30,11 @@
 			>
 			<ul class="">
 				{#if nodeRootType?.description}
-					<li class="">
+					<li class="pb-2">
 						{nodeRootType?.description}
 					</li>
 				{/if}
+
 				{#if QMSInfo?.description}
 					<li class="">{QMSInfo?.description}</li>
 				{/if}
