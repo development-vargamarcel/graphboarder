@@ -63,6 +63,7 @@
 
 {#if alwaysOn_interfacePicker || !componentToRender}
 	<InterfacePicker
+		{typeInfo}
 		chosen={$choosenDisplayInterface}
 		on:interfaceChosen={(e) => {
 			$choosenDisplayInterface = e.detail.chosen;
