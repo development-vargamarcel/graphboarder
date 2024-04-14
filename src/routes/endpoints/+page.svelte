@@ -7,6 +7,7 @@
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
 	import AddEndpointToLocalStorage from '$lib/components/addEndpointToLocalStorage.svelte';
+	import { stringToJs } from '$lib/utils/usefulFunctions';
 
 	let showExplorerTable = true;
 	let columns = [
@@ -30,13 +31,11 @@
 		}
 	];
 	let showAddEndpoint = false;
+	const localStorageEndpoints = stringToJs(localStorage.getItem('endpoints') || []);
+	let endpointsToShow = 'local';
 </script>
 
-{#if showAddEndpoint}
-	<AddEndpointToLocalStorage />
-{/if}
-
-{#if showExplorerTable}
+{#if endpointsToShow == 'local'}
 	<div class="mx-auto pl-4 pt-4 h-[50vh] ">
 		<ExplorerTable
 			on:rowClicked={(e) => {
@@ -67,7 +66,39 @@
 			on:rowSelectionChange={(e) => {}}
 		/>
 	</div>
-{:else}
+{/if}
+{#if endpointsToShow == 'localstorage'}
+	{#if showAddEndpoint}
+		<AddEndpointToLocalStorage on:hide={() => (showAddEndpoint = false)} />
+	{/if}
+	<div class="mx-auto pl-4 pt-4 h-[50vh] ">
+		<ExplorerTable
+			on:rowClicked={(e) => {
+				if (browser) {
+					window.open(
+						`${$page.url.origin}/endpoints/localstorageEndpoint--${e.detail.id}`,
+						'_blank' // <- This is what makes it open in a new window.
+					);
+					//	window.location = `${$page.url.origin}/endpoints/${e.detail.id}`;
+				}
+				//goto(`${$page.url.origin}/endpoints/${e.detail.id}`);
+			}}
+			enableMultiRowSelectionState={false}
+			data={localStorageEndpoints.sort((a, b) => {
+				if (a.id > b.id) {
+					return 1;
+				}
+				if (a.id < b.id) {
+					return -1;
+				}
+				return 0;
+			})}
+			{columns}
+			on:rowSelectionChange={(e) => {}}
+		/>
+	</div>
+{/if}
+{#if endpointsToShow == 'remote'}
 	<QMSWraper
 		isOutermostQMSWraper={true}
 		QMSName="endpoints"
@@ -83,21 +114,40 @@
 	</QMSWraper>
 {/if}
 
-<div class="fixed bottom-1 right-1 flex">
+<div class="fixed bottom-1 right-1 flex space-x-2">
 	<button
 		class="btn btn-xs"
 		on:click={() => {
-			showExplorerTable = !showExplorerTable;
+			endpointsToShow = 'local';
 		}}
 	>
-		{showExplorerTable ? 'remote' : 'local'}
+		local
 	</button>
+	<div class="flex">
+		<button
+			class="btn btn-xs"
+			on:click={() => {
+				endpointsToShow = 'localstorage';
+			}}
+		>
+			localstorage
+		</button>
+		<button
+			class="btn btn-xs"
+			on:click={() => {
+				endpointsToShow = 'localstorage';
+				showAddEndpoint = true;
+			}}
+		>
+			+
+		</button>
+	</div>
 	<button
 		class="btn btn-xs"
 		on:click={() => {
-			showAddEndpoint = !showAddEndpoint;
+			endpointsToShow = 'remote';
 		}}
 	>
-		add endpoint
+		remote
 	</button>
 </div>

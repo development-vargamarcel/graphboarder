@@ -1,5 +1,6 @@
 <script>
 	import { stringToJs } from '$lib/utils/usefulFunctions';
+	import { createEventDispatcher } from 'svelte';
 	import CodeEditor from './fields/CodeEditor.svelte';
 	const handleCodeChanged = (e) => {
 		const newConfigurationString = e.detail.chd_rawValue;
@@ -20,6 +21,7 @@
 		}
 		localStorage.setItem('endpoints', JSON.stringify(localStorageEndpoints));
 	};
+	const dispatch = createEventDispatcher();
 </script>
 
 <div class="w-full p-2">
@@ -41,7 +43,12 @@
 			/>
 
 			<div class="card-actions justify-end">
-				<button class="btn btn-primary">Learn now!</button>
+				<button
+					class="btn btn-error"
+					on:click={() => {
+						dispatch('hide');
+					}}>hide</button
+				>
 			</div>
 		</div>
 	</div>
