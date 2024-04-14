@@ -751,22 +751,22 @@ export const filterElFromArr = (arr, undesiredElements = []) => {
 export const generate_group_gqlArgObj_forHasOperators = (items, group_name, nodes) => {
 	let resultingGqlArgObj
 	let itemsResultingData = []
-	const getItemsWithoutSpreadContainers = (items) => {
-		let itemsWithoutSpreadContainers = []
+	const spreadItemsIfInSpreadContainers = (items) => {
+		const spreadOutItems = []
 		items.forEach(item => {
 			if (item?.operator == '~spread~') {
 				const validItemsResult = validItems(item.items, nodes);
-				itemsWithoutSpreadContainers.push(...validItemsResult)
+				spreadOutItems.push(...validItemsResult)
 			} else {
-				itemsWithoutSpreadContainers.push(item)
+				spreadOutItems.push(item)
 			}
 		});
-		return itemsWithoutSpreadContainers
+		return spreadOutItems
 	}
 
-	const itemsWithoutSpreadContainers = getItemsWithoutSpreadContainers(items)
-	console.log({ items, itemsWithoutSpreadContainers })
-	itemsWithoutSpreadContainers.forEach((item) => {
+	const spreadOutItems = spreadItemsIfInSpreadContainers(items)
+	console.log({ items, spreadOutItems })
+	spreadOutItems.forEach((item) => {
 		let itemData = nodes[item.id];
 		const isContainer = itemData.hasOwnProperty('items')
 		const nodeStep = itemData?.stepsOfNodes[itemData?.stepsOfNodes.length - 1]
@@ -780,7 +780,7 @@ export const generate_group_gqlArgObj_forHasOperators = (items, group_name, node
 		let dataToAssign
 
 		if (isContainer) {
-			const validItemsResult = validItems(getItemsWithoutSpreadContainers(itemData.items), nodes);
+			const validItemsResult = validItems(spreadItemsIfInSpreadContainers(itemData.items), nodes);
 			const gqlArgObjForItems = generate_group_gqlArgObj_forHasOperators(validItemsResult, group_name, nodes).itemsResultingData
 			if (operator == 'bonded' || !itemData?.dd_kindList) {
 				const merged_gqlArgObjForItems = _.merge({}, ...gqlArgObjForItems)
