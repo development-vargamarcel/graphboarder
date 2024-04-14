@@ -89,18 +89,18 @@ export const Create_activeArgumentsDataGrouped_Store = (
 							}
 						};
 
-						if (hasFilterOperators) {
-							newGroupData.group_argsNode = {
-								mainContainer: {
-									...el,
-									operator: '_and',
-									isMain: true,
-									not: false,
-									items: [],
-									id: 'mainContainer'
-								}
-							};
-						}
+						// if (hasFilterOperators) {
+						// 	newGroupData.group_argsNode = {
+						// 		mainContainer: {
+						// 			...el,
+						// 			operator: '_and',
+						// 			isMain: true,
+						// 			not: false,
+						// 			items: [],
+						// 			id: 'mainContainer'
+						// 		}
+						// 	};
+						// }
 
 						const expectsList = el.dd_kindList;
 						if (expectsList) {

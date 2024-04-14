@@ -1215,9 +1215,9 @@ export const nodeAddDefaultFields = (node,
 				operator = 'list';
 			}
 
-			if (!operator && hasBaseFilterOperators && node.dd_rootName && !NODEhasBaseFilterOperators) {
-				operator = '_and';
-			}
+			// if (!operator && hasBaseFilterOperators && node.dd_rootName && !NODEhasBaseFilterOperators) {
+			// 	operator = '_and';
+			// }
 
 			if (!operator) {
 				operator = 'bonded';
