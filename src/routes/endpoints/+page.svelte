@@ -6,6 +6,7 @@
 	import ExplorerTable from '$lib/components/ExplorerTable.svelte';
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
+	import AddEndpointToLocalStorage from '$lib/components/addEndpointToLocalStorage.svelte';
 
 	let showExplorerTable = true;
 	let columns = [
@@ -28,7 +29,12 @@
 			enableHiding: true
 		}
 	];
+	let showAddEndpoint = false;
 </script>
+
+{#if showAddEndpoint}
+	<AddEndpointToLocalStorage />
+{/if}
 
 {#if showExplorerTable}
 	<div class="mx-auto pl-4 pt-4 h-[50vh] ">
@@ -77,7 +83,7 @@
 	</QMSWraper>
 {/if}
 
-<div class="fixed bottom-1 right-1">
+<div class="fixed bottom-1 right-1 flex">
 	<button
 		class="btn btn-xs"
 		on:click={() => {
@@ -85,5 +91,13 @@
 		}}
 	>
 		{showExplorerTable ? 'remote' : 'local'}
+	</button>
+	<button
+		class="btn btn-xs"
+		on:click={() => {
+			showAddEndpoint = !showAddEndpoint;
+		}}
+	>
+		add endpoint
 	</button>
 </div>

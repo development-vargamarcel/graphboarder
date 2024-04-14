@@ -9,9 +9,19 @@
 	$: {
 		endpointid = $page.params.endpointid;
 		if (endpointid) {
-			endpointConfiguration = localEndpoints.find(
-				(endpoint) => endpoint.id == endpointid.split('localEndpoint--')[1]
-			);
+			if (endpointid.startsWith('localEndpoint--')) {
+				endpointConfiguration = localEndpoints.find(
+					(endpoint) => endpoint.id == endpointid.split('--')[1]
+				);
+			}
+			if (endpointid.startsWith('localstorageEndpoint--')) {
+				const localStorageEndpoints = stringToJs(localStorage.getItem('endpoints') || null);
+				if (localStorageEndpoints?.length > 0) {
+					endpointConfiguration = localStorageEndpoints.find(
+						(endpoint) => endpoint.id == endpointid.split('--')[1]
+					);
+				}
+			}
 		}
 	}
 	$: console.log({ endpointid });
@@ -21,12 +31,13 @@
 	import MainWraper from '$lib/components/MainWraper.svelte';
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	import { localEndpoints } from '$lib/stores/testData/testEndpoints';
+	import { stringToJs } from '$lib/utils/usefulFunctions';
 
 	let forceVisibleSidebar = false;
 </script>
 
 {#if endpointid}
-	{#if endpointid.startsWith('localEndpoint--') && endpointConfiguration}
+	{#if (endpointid.startsWith('localEndpoint--') || endpointid.startsWith('localstorageEndpoint--')) && endpointConfiguration}
 		<MainWraper endpointInfoProvided={endpointConfiguration}>
 			<main class="bg-base-300  flex w-[100vw] overflow-hidden">
 				<div class="  md:max-w-[300px]">
