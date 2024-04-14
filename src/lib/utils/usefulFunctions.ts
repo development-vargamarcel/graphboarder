@@ -837,15 +837,9 @@ export const generate_group_gqlArgObj_forHasOperators = (items, group_name, node
 		console.log(nodeStepClean, { itemObj }, { resultingGqlArgObj }, { itemObjectTest2 }, { itemObjectTestCurr }, { dataToAssign }, 'itemData.selectedRowsColValues', itemData.selectedRowsColValues)
 
 
-		if (operator == '~spread~') {
-			const spread = []
-			for (const key in dataToAssign) {
-				spread.push(dataToAssign[key])
-			}
-			itemsResultingData.push(...spread)
-		} else {
-			itemsResultingData.push(itemObj)
-		}
+
+		itemsResultingData.push(itemObj)
+
 		console.log({ itemsResultingData, dataToAssign, itemData })
 	});
 	return {
