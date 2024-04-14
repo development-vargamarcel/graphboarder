@@ -99,6 +99,22 @@
 	</div>
 {/if}
 {#if endpointsToShow == 'remote'}
+	<div class="w-full p-2">
+		<div class="card w-full glass">
+			<div class="card-body">
+				<h2 class="card-title">Add new Endpoint</h2>
+				<p>To remote db</p>
+				<a href="/endpoints/localEndpoint--nhost/mutations/insert_endpoints_one"
+					>/endpoints/localEndpoint--nhost/mutations/insert_endpoints_one</a
+				>
+
+				<a href="/endpoints/localEndpoint--nhostRelay/mutations/insert_endpoints_one"
+					>/endpoints/localEndpoint--nhostRelay/mutations/insert_endpoints_one</a
+				>
+			</div>
+		</div>
+	</div>
+
 	<QMSWraper
 		isOutermostQMSWraper={true}
 		QMSName="endpoints"
