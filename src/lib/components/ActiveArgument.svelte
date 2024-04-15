@@ -290,7 +290,7 @@
 				/>
 			</div>
 			<Description QMSInfo={activeArgumentData} />
-			<div class="mt-2">
+			<div class="mt-2 w-full overflow-x-auto">
 				<Type
 					index={0}
 					type={activeArgumentData}
