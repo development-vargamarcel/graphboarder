@@ -1,4 +1,5 @@
 <script>
+	import Type from '$lib/components/Type.svelte';
 	export let group;
 	export let argsInfo;
 	export let activeArgumentsDataGrouped;
@@ -196,4 +197,15 @@
 		{/each}
 	</div>
 	<Description QMSInfo={node} />
+	<div class="mt-2">
+		<Type
+			index={0}
+			type={node}
+			template="default"
+			depth={0}
+			on:colAddRequest={(e) => {
+				//console.log(e);
+			}}
+		/>
+	</div>
 </div>

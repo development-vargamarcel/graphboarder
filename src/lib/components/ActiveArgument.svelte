@@ -1,4 +1,5 @@
 <script>
+	import Type from '$lib/components/Type.svelte';
 	import Description from './Description.svelte';
 
 	import { writable } from 'svelte/store';
@@ -191,7 +192,6 @@
 	let selectedRowsColValues = nodeContext_forDynamicData.selectedRowsColValues;
 </script>
 
-
 <SelectModal
 	on:deleteSubNode={(e) => {
 		deleteItem(e);
@@ -290,6 +290,17 @@
 				/>
 			</div>
 			<Description QMSInfo={activeArgumentData} />
+			<div class="mt-2">
+				<Type
+					index={0}
+					type={activeArgumentData}
+					template="default"
+					depth={0}
+					on:colAddRequest={(e) => {
+						//console.log(e);
+					}}
+				/>
+			</div>
 		</div>
 	</Modal>{/if}
 
