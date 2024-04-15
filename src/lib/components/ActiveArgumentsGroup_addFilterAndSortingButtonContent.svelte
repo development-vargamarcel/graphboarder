@@ -197,7 +197,7 @@
 		{/each}
 	</div>
 	<Description QMSInfo={node} />
-	<div class="mt-2">
+	<div class="mt-2  w-full overflow-x-auto ">
 		<Type
 			index={0}
 			type={node}
