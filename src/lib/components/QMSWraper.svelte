@@ -158,8 +158,14 @@
 	const QMSFieldToQMSGetMany_Store = Create_QMSFieldToQMSGetMany_Store([]);
 
 	$: console.log('$QMSFieldToQMSGetMany_Store ', $QMSFieldToQMSGetMany_Store);
+	import JSON5 from 'json5';
 
-	$: console.log('$mergedChildren_finalGqlArgObj_Store', $mergedChildren_finalGqlArgObj_Store);
+	$: console.log(
+		'$mergedChildren_finalGqlArgObj_Store',
+		'\n',
+		$mergedChildren_finalGqlArgObj_Store,
+		JSON5.stringify($mergedChildren_finalGqlArgObj_Store)
+	);
 	// $: console.log(
 	// 	'$mergedChildren_activeArgumentsDataGrouped_Store',
 	// 	$mergedChildren_activeArgumentsDataGrouped_Store
