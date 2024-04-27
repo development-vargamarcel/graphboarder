@@ -41,12 +41,12 @@
 			>
 			<div class="mx-4 mt-2 ">
 				<!-- <CodeMirrorCustom {value} language="graphql" /> -->
-				<!-- <CodeEditor rawValue={value} language="graphql" /> -->
+				<CodeEditor rawValue={value} language="graphql" />
 			</div>
 			<div class="mx-4 mt-2 ">
-				<CodeMirrorCustom value={`const ast:${astAsString}`} language="typescript" />
+				<!-- <CodeMirrorCustom value={`const ast:${astAsString}`} language="typescript" /> -->
 
-				<!-- <CodeEditor rawValue={astAsString} language="javascript" /> -->
+				<CodeEditor rawValue={astAsString} language="javascript" />
 			</div>
 		{/if}
 	</div>
