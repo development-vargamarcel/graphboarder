@@ -15,12 +15,15 @@
 	});
 	import { parse, print } from 'graphql';
 	import JSON5 from 'json5';
+	import CodeMirrorCustom from './fields/CodeMirrorCustom.svelte';
 	let astAsString = '';
+	let astAsString2 = '';
 
 	$: ast = parse(value);
 	$: if (getPreciseType(ast) == 'object') {
 		console.log('qqqwww', value, ast, astAsString);
 		astAsString = JSON5.stringify(ast);
+		//astAsString2 = objectToSourceCode(ast);
 		console.log('qqqwww2', value, ast, astAsString);
 	}
 </script>
@@ -37,10 +40,13 @@
 				>{@html hljs.highlight(format(value), { language: 'graphql' }).value.trim()}</code
 			>
 			<div class="mx-4 mt-2 ">
-				<CodeEditor rawValue={value} language="graphql" />
+				<CodeMirrorCustom {value} language="graphql" />
+				<!-- <CodeEditor rawValue={value} language="graphql" /> -->
 			</div>
 			<div class="mx-4 mt-2 ">
-				<CodeEditor rawValue={astAsString} language="javascript" />
+				<CodeMirrorCustom value={`const ast:${astAsString}`} language="typescript" />
+
+				<!-- <CodeEditor rawValue={astAsString} language="javascript" /> -->
 			</div>
 		{/if}
 	</div>
