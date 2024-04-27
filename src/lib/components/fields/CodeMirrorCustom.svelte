@@ -47,16 +47,12 @@
 			class="btn btn-primary btn-xs normal-case ml-2"
 			on:click={() => {
 				mainContainerEl.requestFullscreen();
-				setTimeout(initializeEditor, 500);
-				//initializeEditor();
 			}}>fullscreen</button
 		>
 		<button
 			class="btn btn-primary btn-xs normal-case ml-2"
 			on:click={() => {
 				document.exitFullscreen();
-				setTimeout(initializeEditor, 500);
-				//initializeEditor();
 			}}>exit fullscreen</button
 		>
 	</div>
