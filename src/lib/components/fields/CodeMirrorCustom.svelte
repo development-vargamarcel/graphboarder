@@ -6,7 +6,6 @@
 	import prettierPluginTypescript from 'https://unpkg.com/prettier@3.2.5/plugins/typescript.mjs';
 	import prettierPluginGraphql from 'https://unpkg.com/prettier@3.2.5/plugins/graphql.mjs';
 	import prettierPluginEstree from 'https://unpkg.com/prettier@3.2.5/plugins/estree.mjs';
-
 	export let language = 'typescript';
 	export let value = '';
 	const configurations = [
@@ -39,5 +38,7 @@
 	};
 </script>
 
-<CodeMirror bind:value lang={chosenConfig.codemirrorLanguage} />
+<div class="bg-base-300">
+	<CodeMirror bind:value lang={chosenConfig.codemirrorLanguage} />
+</div>
 <button class="btn btn-xs btn-primary" on:click={handlechange}> format </button>
