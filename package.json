@@ -46,7 +46,6 @@
 	"dependencies": {
 		"@codemirror/lang-javascript": "^6.2.2",
 		"@lukeed/uuid": "^2.0.0",
-		"@neocodemirror/svelte": "^0.0.17",
 		"@tanstack/svelte-table": "^8.8.5",
 		"@urql/core": "^2.4.4",
 		"@urql/svelte": "^4.0.4",
