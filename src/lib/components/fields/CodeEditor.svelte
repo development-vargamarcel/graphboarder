@@ -286,9 +286,48 @@
 			language == 'javascript' ? 'const data = '.concat(rawValue || '{}') : rawValue
 		);
 	}
+	////////
+	import CodeMirror from 'svelte-codemirror-editor';
+	import { javascript } from '@codemirror/lang-javascript';
+	import { graphql } from 'cm6-graphql';
+	import * as prettier from 'https://unpkg.com/prettier@3.2.5/standalone.mjs';
+	import prettierPluginTypescript from 'https://unpkg.com/prettier@3.2.5/plugins/typescript.mjs';
+	import prettierPluginGraphql from 'https://unpkg.com/prettier@3.2.5/plugins/graphql.mjs';
+	import prettierPluginEstree from 'https://unpkg.com/prettier@3.2.5/plugins/estree.mjs';
+	export let value = '';
+	const configurations = [
+		{
+			language: 'graphql',
+			codemirrorLanguage: graphql(),
+			plugins: [prettierPluginGraphql]
+		},
+		{
+			language: 'typescript',
+			codemirrorLanguage: javascript({ typescript: true }),
+			plugins: [prettierPluginTypescript, prettierPluginEstree]
+		}
+	];
+	let chosenConfig = configurations.find((config) => {
+		return (
+			config.language == language || (language == 'javascript' && config.language == 'typescript')
+		);
+	});
+	const prettify = async () => {
+		const editorValue = editor.getValue();
+
+		value = await prettier.format(editorValue, {
+			parser: chosenConfig?.language,
+			plugins: chosenConfig?.plugins
+		});
+		editor.setValue(value);
+	};
+
+	let mainContainerEl;
+
+	///////
 </script>
 
-<div class="flex flex-col">
+<div class="flex flex-col max-h-[90vh] overflow-auto" bind:this={mainContainerEl}>
 	<div class="overflow-hidden rounded-box">
 		<div bind:this={divEl} class="h-max min-h-[180px]   aspect-video rounded-box" />
 	</div>
@@ -317,11 +356,19 @@
 		<button
 			class="btn btn-primary btn-xs normal-case ml-2"
 			on:click={() => {
-				divEl.requestFullscreen();
+				document.exitFullscreen();
+			}}>exit fullscreen</button
+		>
+		<button
+			class="btn btn-primary btn-xs normal-case ml-2"
+			on:click={() => {
+				mainContainerEl.requestFullscreen();
 				editor.dispose();
 				setTimeout(initializeEditor, 500);
 				//initializeEditor();
 			}}>full screen</button
 		>
+
+		<button class="btn btn-xs btn-primary" on:click={prettify}> format </button>
 	</div>
 </div>
