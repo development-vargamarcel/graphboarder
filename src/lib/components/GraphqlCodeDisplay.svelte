@@ -40,7 +40,7 @@
 				>{@html hljs.highlight(format(value), { language: 'graphql' }).value.trim()}</code
 			>
 			<div class="mx-4 mt-2 ">
-				<CodeMirrorCustom {value} language="graphql" />
+				<!-- <CodeMirrorCustom {value} language="graphql" /> -->
 				<!-- <CodeEditor rawValue={value} language="graphql" /> -->
 			</div>
 			<div class="mx-4 mt-2 ">
