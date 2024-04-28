@@ -271,7 +271,8 @@
 			tabSize: 2,
 			formatOnType: true,
 			formatOnPaste: true,
-			minimap: { enabled: false }
+			minimap: { enabled: false },
+			folding: false
 		});
 		editor.onDidChangeModelContent(function (e) {
 			//	console.log('changed');
