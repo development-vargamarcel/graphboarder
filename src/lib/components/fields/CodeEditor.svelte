@@ -263,7 +263,7 @@
 		editor = Monaco.editor.create(divEl, {
 			value: language == 'javascript' ? 'const data = '.concat(rawValue || '{}') : rawValue,
 			language: language,
-			lineNumbers: 'on',
+			lineNumbers: 'off',
 			roundedSelection: false,
 			scrollBeyondLastLine: false,
 			readOnly: false,
@@ -271,13 +271,12 @@
 			tabSize: 2,
 			formatOnType: true,
 			formatOnPaste: true,
-			minimap: { enabled: false },
-			lineNumbers: 'off',
-			folding: false
+			minimap: { enabled: false }
 		});
 		editor.onDidChangeModelContent(function (e) {
 			//	console.log('changed');
 		});
+		prettify();
 
 		return () => {
 			editor.dispose();
@@ -371,6 +370,7 @@
 				mainContainerEl.requestFullscreen();
 				editor.dispose();
 				setTimeout(initializeEditor, 500);
+
 				//initializeEditor();
 			}}>full screen</button
 		>
