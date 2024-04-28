@@ -270,7 +270,10 @@
 			theme: 'vs-dark',
 			tabSize: 2,
 			formatOnType: true,
-			formatOnPaste: true
+			formatOnPaste: true,
+			minimap: { enabled: false },
+			lineNumbers: 'off',
+			folding: false
 		});
 		editor.onDidChangeModelContent(function (e) {
 			//	console.log('changed');
@@ -327,11 +330,14 @@
 	///////
 </script>
 
-<div class="flex flex-col max-h-[90vh] overflow-auto" bind:this={mainContainerEl}>
-	<div class="overflow-hidden rounded-box">
-		<div bind:this={divEl} class="h-max min-h-[180px]   aspect-video rounded-box" />
+<div
+	class="flex flex-col max-h-[90vh] overflow-auto h-max min-h-[180px]   aspect-video mx-2 "
+	bind:this={mainContainerEl}
+>
+	<div class="overflow-hidden rounded-box  h-full">
+		<div bind:this={divEl} class="   h-full " />
 	</div>
-	<div class="flex flex-row-reverse mt-2">
+	<div class="flex flex-row-reverse mt-2 w-full overflow-x-auto px-10 h-min-content">
 		<button
 			class="btn btn-primary btn-xs normal-case ml-2"
 			on:click={() => {
