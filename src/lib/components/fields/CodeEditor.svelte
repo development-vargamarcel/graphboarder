@@ -337,7 +337,7 @@
 	<div class="overflow-hidden rounded-box  h-full">
 		<div bind:this={divEl} class="   h-full " />
 	</div>
-	<div class="flex flex-row-reverse  w-full overflow-x-auto px-10  pb-4 pt-2 h-min-content">
+	<div class="flex flex-row-reverse  w-full overflow-x-auto overflow-h-hidden px-10  pb-4 pt-2 ">
 		<button
 			class="btn btn-primary btn-xs normal-case ml-2"
 			on:click={() => {
