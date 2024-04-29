@@ -272,7 +272,7 @@
 			formatOnType: true,
 			formatOnPaste: true,
 			minimap: { enabled: false },
-			folding: false
+			folding: true
 		});
 		editor.onDidChangeModelContent(function (e) {
 			//	console.log('changed');
