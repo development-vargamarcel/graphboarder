@@ -331,7 +331,7 @@
 </script>
 
 <div
-	class="flex flex-col max-h-[90vh] overflow-auto h-max min-h-[180px]   aspect-video mx-2 "
+	class="flex flex-col max-h-[90vh] overflow-auto h-max min-h-[180px]   aspect-video mx-auto"
 	bind:this={mainContainerEl}
 >
 	<div class="overflow-hidden rounded-box  h-full">
