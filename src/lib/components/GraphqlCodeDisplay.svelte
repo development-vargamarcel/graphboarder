@@ -13,7 +13,7 @@
 		hljs.registerLanguage('graphql', graphql);
 		hljs.highlightAll();
 	});
-	import { parse, print } from 'graphql';
+	import { parse, print, visit } from 'graphql';
 	import JSON5 from 'json5';
 	import CodeMirrorCustom from './fields/CodeMirrorCustom.svelte';
 	let astAsString = '';
@@ -26,6 +26,30 @@
 		//astAsString2 = objectToSourceCode(ast);
 		console.log('qqqwww2', value, ast, astAsString);
 	}
+
+	///
+	const visitAst = () => {
+		const editedAST = visit(ast, {
+			enter(node, key, parent, path, ancestors) {
+				console.log({ node, key, parent, path, ancestors });
+				// @return
+				//   undefined: no action
+				//   false: skip visiting this node
+				//   visitor.BREAK: stop visiting altogether
+				//   null: delete this node
+				//   any value: replace this node with the returned value
+			}
+			// leave(node, key, parent, path, ancestors) {
+			//   // @return
+			//   //   undefined: no action
+			//   //   false: no action
+			//   //   visitor.BREAK: stop visiting altogether
+			//   //   null: delete this node
+			//   //   any value: replace this node with the returned value
+			// }
+		});
+	};
+	///
 </script>
 
 <div class="mockup-code bg-base text-content my-1 mx-2 px-2 ">
@@ -47,6 +71,7 @@
 				<!-- <CodeMirrorCustom value={`const ast:${astAsString}`} language="typescript" /> -->
 
 				<CodeEditor rawValue={astAsString} language="javascript" />
+				<button class="btn btn-xs btn-primary" on:click={visitAst}> visit ast </button>
 			</div>
 		{/if}
 	</div>
