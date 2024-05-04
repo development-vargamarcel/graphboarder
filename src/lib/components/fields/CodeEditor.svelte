@@ -335,10 +335,10 @@
 </script>
 
 <div
-	class="flex flex-col max-h-[90vh] overflow-auto h-max min-h-[180px]   aspect-video mx-auto"
+	class="flex flex-col max-h-[30vh] overflow-auto h-max min-h-[180px]   aspect-video mx-auto rounded-box"
 	bind:this={mainContainerEl}
 >
-	<div class="overflow-hidden rounded-box  h-full">
+	<div class="   h-full">
 		<div bind:this={divEl} class="   h-full " />
 	</div>
 	<div class="flex flex-row-reverse  w-full overflow-x-auto overflow-h-hidden px-10  pb-4 pt-2 ">
