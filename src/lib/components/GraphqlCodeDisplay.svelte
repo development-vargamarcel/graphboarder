@@ -8,7 +8,7 @@
 	import { getPreciseType, objectToSourceCode } from '$lib/utils/usefulFunctions';
 	export let showNonPrettifiedQMSBody;
 	export let value;
-
+	let valueModifiedManually;
 	onMount(() => {
 		hljs.registerLanguage('graphql', graphql);
 		hljs.highlightAll();
@@ -18,13 +18,27 @@
 	import CodeMirrorCustom from './fields/CodeMirrorCustom.svelte';
 	let astAsString = '';
 	let astAsString2 = '';
-
+	let ast;
+	let astPrinted;
 	$: ast = parse(value);
+	$: if (ast) {
+		// Extract operation type and name
+		//const operationType = ast.definitions[0]?.operation;
+		//const operationName = ast.definitions[0]?.name?.value;
+
+		astPrinted = print(ast);
+	}
+	$: {
+		if (valueModifiedManually) {
+			ast = parse(valueModifiedManually);
+		}
+	}
+
 	$: if (getPreciseType(ast) == 'object') {
-		console.log('qqqwww', value, ast, astAsString);
+		//console.log('qqqwww', value, ast, astAsString);
 		astAsString = JSON5.stringify(ast);
 		//astAsString2 = objectToSourceCode(ast);
-		console.log('qqqwww2', value, ast, astAsString);
+		//console.log('qqqwww2', value, ast, astAsString);
 	}
 
 	///
@@ -65,7 +79,13 @@
 			>
 			<div class="mx-4 mt-2 ">
 				<!-- <CodeMirrorCustom {value} language="graphql" /> -->
-				<CodeEditor rawValue={value} language="graphql" />
+				<CodeEditor
+					rawValue={value}
+					language="graphql"
+					on:changed={(e) => {
+						valueModifiedManually = e.detail.chd_rawValue;
+					}}
+				/>
 			</div>
 			<div class="mx-4 mt-2 ">
 				<!-- <CodeMirrorCustom value={`const ast:${astAsString}`} language="typescript" /> -->
@@ -73,6 +93,12 @@
 				<CodeEditor rawValue={astAsString} language="javascript" />
 				<button class="btn btn-xs btn-primary" on:click={visitAst}> visit ast </button>
 			</div>
+			{#if astPrinted}
+				<div class="mx-4 mt-2 ">
+					<!-- <CodeMirrorCustom {value} language="graphql" /> -->
+					<CodeEditor rawValue={astPrinted} language="graphql" />
+				</div>
+			{/if}
 		{/if}
 	</div>
 	<button

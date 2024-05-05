@@ -75,6 +75,7 @@
 
 	$: {
 		editor?.setValue(language === 'javascript' ? `const data = ${rawValue || '{}'}` : rawValue);
+		prettify();
 	}
 
 	const configurations = [
@@ -98,6 +99,9 @@
 	});
 
 	const prettify = async () => {
+		if (!editor) {
+			return;
+		}
 		const editorValue = editor.getValue();
 
 		value = await prettier.format(editorValue, {
@@ -105,6 +109,17 @@
 			plugins: chosenConfig?.plugins
 		});
 		editor.setValue(value);
+	};
+	const prettifyString = async (string, callback) => {
+		const value = await prettier.format(string, {
+			parser: chosenConfig?.language,
+			plugins: chosenConfig?.plugins
+		});
+		if (callback) {
+			callback(value);
+		} else {
+			console.info('callback not defined');
+		}
 	};
 
 	let mainContainerEl: HTMLDivElement;
@@ -147,7 +162,7 @@
 				const lastCurlyBraces = editorValue.lastIndexOf('}');
 				const editorValueCleaned = editorValue.substring(firstCurlyBraces, lastCurlyBraces + 1);
 				dispatch('changed', {
-					chd_rawValue: editorValueCleaned
+					chd_rawValue: chosenConfig?.language == 'typescript' ? editorValueCleaned : editorValue
 				});
 			}}
 		>
