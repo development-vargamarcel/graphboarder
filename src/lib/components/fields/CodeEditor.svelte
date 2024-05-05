@@ -146,7 +146,7 @@
 </script>
 
 <div
-	class="flex flex-col max-h-[30vh] pt-2 px-2 bg-black h-max min-h-[180px] aspect-video mx-auto rounded-box"
+	class="flex flex-col max-h-[30vh] pt-2 px-2 bg-base-300 h-max min-h-[180px] aspect-video mx-auto rounded-box"
 	{id}
 	bind:this={mainContainerEl}
 >
