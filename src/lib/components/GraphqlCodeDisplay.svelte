@@ -1,4 +1,5 @@
 <script>
+	import { stringify } from 'postcss';
 	import CodeEditor from './fields/CodeEditor.svelte';
 	import { format } from 'graphql-formatter';
 	import hljs from 'highlight.js/lib/core';
@@ -45,7 +46,7 @@
 	const visitAst = () => {
 		const editedAST = visit(ast, {
 			enter(node, key, parent, path, ancestors) {
-				console.log({ node, key, parent, path, ancestors });
+				console.log(JSON.parse(JSON.stringify({ node, key, parent, path, ancestors })));
 				// @return
 				//   undefined: no action
 				//   false: skip visiting this node
