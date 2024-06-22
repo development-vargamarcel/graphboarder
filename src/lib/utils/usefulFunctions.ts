@@ -74,6 +74,17 @@ export const deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments = (obj) => {
 // 	}
 // 	return obj
 // }
+export const objectIsEmpty = (obj) => {
+	if (Object.keys(obj).length === 0 && obj.constructor === Object) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+
+
+
 export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query', mergedChildren_finalGqlArgObj) => {
 	if (Object.keys(QMS_fields).length == 0) {
 		console.error('no cols data,choose at least one field');
@@ -119,7 +130,7 @@ export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'q
 	console.log({ QMS_bodyPart })
 	return QMS_bodyPart
 };
-export const smartModifyStringBasedOnBoundries = (inputString, openBoundryChar = "(", closeBoundryChar = ")", insideTextModifier, outsideTextModifier) => {
+export const smartModifyStringBasedOnBoundries = (inputString, openBoundryChar = "(", closeBoundryChar = ")", insideTextModifier, outsideTextModifier, deleteBoundriesIfTextInsideIsEmpty = true) => {
 	if (!inputString.includes(openBoundryChar)) {
 		return inputString
 	}
@@ -140,7 +151,11 @@ export const smartModifyStringBasedOnBoundries = (inputString, openBoundryChar =
 			if (getPreciseType(insideTextModifier) === 'function') {
 				insidePart = insideTextModifier(insidePart)
 			}
-			result.push(`${openBoundryChar}${insidePart}${closeBoundryChar}`)
+			if (deleteBoundriesIfTextInsideIsEmpty && insidePart == '') {
+				result.push(``)
+			} else {
+				result.push(`${openBoundryChar}${insidePart}${closeBoundryChar}`)
+			}
 		}
 
 	});

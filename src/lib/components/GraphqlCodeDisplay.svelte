@@ -62,7 +62,7 @@
 			//   //   null: delete this node
 			//   //   any value: replace this node with the returned value
 			// }
-		});
+		},);
 	};
 	///
 </script>
