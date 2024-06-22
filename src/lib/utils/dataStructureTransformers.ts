@@ -7,13 +7,16 @@ export const stringToQMSString_transformer = (value) => {
 		console.warn('stringToQMSString_transformer: value is not a string', value)
 		return value
 	}
-	return value
+	const modifiedValue = value
 		.replace(/"/g, '')
 		.replace(/'/g, `"`)
 		.replace(/&Prime;/g, `\\"`)
 		.replace(/&prime;/g, `'`)
 		.replace(/\\/g, '')
 		.slice(1, -1);
+	console.log('stringToQMSString_transformer', { value, modifiedValue })
+
+	return modifiedValue
 }
 export const string_transformer = (value) => {
 	if (getPreciseType(value) !== 'string') {
