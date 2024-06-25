@@ -19,6 +19,7 @@
 		} else {
 			localStorageEndpoints = [newConfigurationJs];
 		}
+		console.log({ localStorageEndpoints, indexOfNewEndpointIdInLocalStorage });
 		localStorage.setItem('endpoints', JSON.stringify(localStorageEndpoints));
 	};
 	const dispatch = createEventDispatcher();
