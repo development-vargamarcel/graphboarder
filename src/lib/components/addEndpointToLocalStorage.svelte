@@ -29,18 +29,19 @@
 		<div class="card-body">
 			<h2 class="card-title">Add new Endpoint</h2>
 			<p>To Local Storage</p>
-
-			<CodeEditor
-				language="javascript"
-				on:changed={handleCodeChanged}
-				rawValue={`data = {
+			<div>
+				<CodeEditor
+					language="javascript"
+					on:changed={handleCodeChanged}
+					rawValue={`data = {
 		id: 'directus',
 		url: 'https://directus-production-654456.up.railway.app/graphql',
 		headers: {
 			authorization: 'Bearer S4YM_Cd7Uo6laJhQV594l59EGZASSkJs'
 		},
 	}`}
-			/>
+				/>
+			</div>
 
 			<div class="card-actions justify-end">
 				<button
