@@ -78,7 +78,6 @@
 		/>
 	</div>
 {/if}
-{$localStorageEndpoints.length}
 {#if endpointsToShow == 'localstorage'}
 	{#if showAddEndpoint}
 		<AddEndpointToLocalStorage on:hide={() => (showAddEndpoint = false)} />
