@@ -40,6 +40,22 @@
 
 	let showAddEndpoint = false;
 	let endpointsToShow = 'local';
+	let selectedRows = [];
+
+	const HandleRowSelectionChange = (e) => {
+		console.log(e);
+		selectedRows = e.detail.rows.map((row) => row.original);
+	};
+	const deleteSelectedEndpoint = () => {
+		localStorageEndpoints.set(
+			$localStorageEndpoints.filter((endpoint) => {
+				return !selectedRows.some((row) => {
+					return row.id == endpoint.id;
+				});
+			})
+		);
+		selectedRows = [];
+	};
 </script>
 
 {#if endpointsToShow == 'local'}
@@ -67,9 +83,15 @@
 	{#if showAddEndpoint}
 		<AddEndpointToLocalStorage on:hide={() => (showAddEndpoint = false)} />
 	{/if}
+	{#if selectedRows.length > 0}
+		<button class="btn btn-sm btn-warning" on:click={deleteSelectedEndpoint}
+			>delete selected rows</button
+		>
+	{/if}
 	<div class="mx-auto pl-4 pt-4 h-[50vh] ">
 		{#key $localStorageEndpoints}
 			<ExplorerTable
+				on:rowSelectionChange={HandleRowSelectionChange}
 				on:rowClicked={(e) => {
 					if (browser) {
 						window.open(
@@ -80,7 +102,7 @@
 					}
 					//goto(`${$page.url.origin}/endpoints/${e.detail.id}`);
 				}}
-				enableMultiRowSelectionState={false}
+				enableMultiRowSelectionState
 				data={$localStorageEndpoints}
 				{columns}
 				on:rowSelectionChange={(e) => {}}
