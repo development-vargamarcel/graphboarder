@@ -8,14 +8,11 @@
 	import { browser } from '$app/environment';
 	import AddEndpointToLocalStorage from '$lib/components/addEndpointToLocalStorage.svelte';
 	import { stringToJs } from '$lib/utils/usefulFunctions';
-	import { onDestroy, onMount, setContext } from 'svelte';
+	import { getContext, onDestroy, onMount, setContext } from 'svelte';
 	import { persisted } from 'svelte-persisted-store';
 	import { getSortedAndOrderedEndpoints } from '$lib/utils/usefulFunctions';
-	export const localStorageEndpoints = persisted(
-		'localStorageEndpoints',
-		getSortedAndOrderedEndpoints(stringToJs(localStorage.getItem('endpoints') || []))
-	);
-	setContext('localStorageEndpoints', localStorageEndpoints);
+
+	const localStorageEndpoints = getContext('localStorageEndpoints');
 	let showExplorerTable = true;
 	let columns = [
 		{
