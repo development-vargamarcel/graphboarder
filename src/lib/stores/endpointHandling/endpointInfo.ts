@@ -31,6 +31,14 @@ export const endpointInfoDefaultValues = {
 		endCursor: 'nextPage',
 		cursor: 'cursor'
 	},
+	possibleNames: {
+		hasNextPage: ['hasNextPage'],
+		hasPreviousPage: ['hasPreviousPage'],
+		startCursor: ['previousPage', 'startCursor'],
+		endCursor: ['nextPage', 'endCursor'],
+		cursor: ['cursor']
+	}
+	,
 	paginationArgsPossibleNames: {
 		limit: ['limit'],
 		offset: ['offset', 'skip'],
@@ -235,7 +243,8 @@ export const endpointInfoDefaultValues = {
 	inputColumnsPossibleLocationsInArg: [
 		[]
 	]
-	,
+	, pageInfoFieldsLocation: ['pageInfo'],
+
 };
 
 
