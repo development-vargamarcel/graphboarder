@@ -6,18 +6,18 @@
 		const newConfigurationString = e.detail.chd_rawValue;
 		console.log(newConfigurationString);
 		const newConfigurationJs = stringToJs(newConfigurationString);
-		let localStorageEndpoints = stringToJs(localStorage.getItem('endpoints') || null);
+		let localStorageEndpoints = stringToJs(localStorage.getItem('endpoints') || []);
 		let indexOfNewEndpointIdInLocalStorage;
 		if (localStorageEndpoints?.length > 0) {
-			indexOfNewEndpointIdInLocalStorage = localStorageEndpoints.indexOf(
+			indexOfNewEndpointIdInLocalStorage = localStorageEndpoints.findIndex(
 				(endpoint) => endpoint.id == newConfigurationJs.id
 			);
 		}
-
+		console.log({ newConfigurationJs, localStorageEndpoints, indexOfNewEndpointIdInLocalStorage });
 		if (indexOfNewEndpointIdInLocalStorage > -1) {
 			localStorageEndpoints[indexOfNewEndpointIdInLocalStorage] = newConfigurationJs;
 		} else {
-			localStorageEndpoints = [newConfigurationJs];
+			localStorageEndpoints.push(newConfigurationJs);
 		}
 		console.log({ localStorageEndpoints, indexOfNewEndpointIdInLocalStorage });
 		localStorage.setItem('endpoints', JSON.stringify(localStorageEndpoints));
@@ -36,9 +36,9 @@
 					on:changed={handleCodeChanged}
 					rawValue={`data = {
 		id: 'directus',
-		url: 'https://directus-production-654456.up.railway.app/graphql',
+		url: 'https://directus-production-c2de.up.railway.app/graphql',
 		headers: {
-			authorization: 'Bearer S4YM_Cd7Uo6laJhQV594l59EGZASSkJs'
+			authorization: 'Bearer S4YM_Cd7Uo6laJhQV594l59EGZASSmBw'
 		},
 	}`}
 				/>
