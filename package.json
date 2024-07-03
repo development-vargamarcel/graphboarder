@@ -70,6 +70,7 @@
 		"svelte-codemirror-editor": "^1.3.0",
 		"svelte-dnd-action": "^0.9.21",
 		"svelte-infinite-loading": "^1.3.8",
+		"svelte-persisted-store": "^0.11.0",
 		"svelte-portal": "^2.2.0"
 	}
 }

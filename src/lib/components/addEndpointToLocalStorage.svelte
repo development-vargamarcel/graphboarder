@@ -1,26 +1,33 @@
 <script>
 	import { stringToJs } from '$lib/utils/usefulFunctions';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 	import CodeEditor from './fields/CodeEditor.svelte';
+	import { getSortedAndOrderedEndpoints } from '$lib/utils/usefulFunctions';
+
+	let localStorageEndpoints = getContext('localStorageEndpoints');
 	const handleCodeChanged = (e) => {
 		const newConfigurationString = e.detail.chd_rawValue;
 		console.log(newConfigurationString);
 		const newConfigurationJs = stringToJs(newConfigurationString);
-		let localStorageEndpoints = stringToJs(localStorage.getItem('endpoints') || []);
 		let indexOfNewEndpointIdInLocalStorage;
-		if (localStorageEndpoints?.length > 0) {
-			indexOfNewEndpointIdInLocalStorage = localStorageEndpoints.findIndex(
+		if ($localStorageEndpoints?.length > 0) {
+			indexOfNewEndpointIdInLocalStorage = $localStorageEndpoints.findIndex(
 				(endpoint) => endpoint.id == newConfigurationJs.id
 			);
 		}
-		console.log({ newConfigurationJs, localStorageEndpoints, indexOfNewEndpointIdInLocalStorage });
+		console.log({
+			newConfigurationString,
+			newConfigurationJs,
+			$localStorageEndpoints,
+			indexOfNewEndpointIdInLocalStorage
+		});
 		if (indexOfNewEndpointIdInLocalStorage > -1) {
-			localStorageEndpoints[indexOfNewEndpointIdInLocalStorage] = newConfigurationJs;
+			$localStorageEndpoints[indexOfNewEndpointIdInLocalStorage] = newConfigurationJs;
 		} else {
-			localStorageEndpoints.push(newConfigurationJs);
+			$localStorageEndpoints.push(newConfigurationJs);
 		}
-		console.log({ localStorageEndpoints, indexOfNewEndpointIdInLocalStorage });
-		localStorage.setItem('endpoints', JSON.stringify(localStorageEndpoints));
+		localStorageEndpoints.set(getSortedAndOrderedEndpoints($localStorageEndpoints));
+		console.log({ $localStorageEndpoints, indexOfNewEndpointIdInLocalStorage });
 	};
 	const dispatch = createEventDispatcher();
 </script>
@@ -34,7 +41,7 @@
 				<CodeEditor
 					language="javascript"
 					on:changed={handleCodeChanged}
-					rawValue={`data = {
+					rawValue={`{
 		id: 'directus',
 		url: 'https://directus-production-c2de.up.railway.app/graphql',
 		headers: {
