@@ -1495,3 +1495,20 @@ export const getQMSWraperCtxDataGivenControlPanelItem = (CPItem, OutermostQMSWra
 	});
 	return QMSWraperCtxData;
 };
+export const getSortedAndOrderedEndpoints = (endpoints, filterOutIfNotMaintaned = false) => {
+	const sortedEndpoints = endpoints.sort((a, b) => {
+		if (a.id > b.id) {
+			return 1;
+		}
+		if (a.id < b.id) {
+			return -1;
+		}
+		return 0;
+	});
+	if (!filterOutIfNotMaintaned) {
+		return sortedEndpoints;
+	}
+	return sortedEndpoints.filter((endpoint) => {
+		return endpoint.isMantained;
+	});
+};

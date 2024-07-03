@@ -8,7 +8,14 @@
 	import { browser } from '$app/environment';
 	import AddEndpointToLocalStorage from '$lib/components/addEndpointToLocalStorage.svelte';
 	import { stringToJs } from '$lib/utils/usefulFunctions';
-
+	import { onDestroy, onMount, setContext } from 'svelte';
+	import { persisted } from 'svelte-persisted-store';
+	import { getSortedAndOrderedEndpoints } from '$lib/utils/usefulFunctions';
+	export const localStorageEndpoints = persisted(
+		'localStorageEndpoints',
+		getSortedAndOrderedEndpoints(stringToJs(localStorage.getItem('endpoints') || []))
+	);
+	setContext('localStorageEndpoints', localStorageEndpoints);
 	let showExplorerTable = true;
 	let columns = [
 		{
@@ -30,8 +37,8 @@
 			enableHiding: true
 		}
 	];
+
 	let showAddEndpoint = false;
-	const localStorageEndpoints = stringToJs(localStorage.getItem('endpoints') || []);
 	let endpointsToShow = 'local';
 </script>
 
@@ -49,53 +56,36 @@
 				//goto(`${$page.url.origin}/endpoints/${e.detail.id}`);
 			}}
 			enableMultiRowSelectionState={false}
-			data={localEndpoints
-				.filter((endpoint) => {
-					return endpoint.isMantained;
-				})
-				.sort((a, b) => {
-					if (a.id > b.id) {
-						return 1;
-					}
-					if (a.id < b.id) {
-						return -1;
-					}
-					return 0;
-				})}
+			data={getSortedAndOrderedEndpoints(localEndpoints, true)}
 			{columns}
 			on:rowSelectionChange={(e) => {}}
 		/>
 	</div>
 {/if}
+{$localStorageEndpoints.length}
 {#if endpointsToShow == 'localstorage'}
 	{#if showAddEndpoint}
 		<AddEndpointToLocalStorage on:hide={() => (showAddEndpoint = false)} />
 	{/if}
 	<div class="mx-auto pl-4 pt-4 h-[50vh] ">
-		<ExplorerTable
-			on:rowClicked={(e) => {
-				if (browser) {
-					window.open(
-						`${$page.url.origin}/endpoints/localstorageEndpoint--${e.detail.id}`,
-						'_blank' // <- This is what makes it open in a new window.
-					);
-					//	window.location = `${$page.url.origin}/endpoints/${e.detail.id}`;
-				}
-				//goto(`${$page.url.origin}/endpoints/${e.detail.id}`);
-			}}
-			enableMultiRowSelectionState={false}
-			data={localStorageEndpoints.sort((a, b) => {
-				if (a.id > b.id) {
-					return 1;
-				}
-				if (a.id < b.id) {
-					return -1;
-				}
-				return 0;
-			})}
-			{columns}
-			on:rowSelectionChange={(e) => {}}
-		/>
+		{#key $localStorageEndpoints}
+			<ExplorerTable
+				on:rowClicked={(e) => {
+					if (browser) {
+						window.open(
+							`${$page.url.origin}/endpoints/localstorageEndpoint--${e.detail.id}`,
+							'_blank' // <- This is what makes it open in a new window.
+						);
+						//	window.location = `${$page.url.origin}/endpoints/${e.detail.id}`;
+					}
+					//goto(`${$page.url.origin}/endpoints/${e.detail.id}`);
+				}}
+				enableMultiRowSelectionState={false}
+				data={$localStorageEndpoints}
+				{columns}
+				on:rowSelectionChange={(e) => {}}
+			/>
+		{/key}
 	</div>
 {/if}
 {#if endpointsToShow == 'remote'}
