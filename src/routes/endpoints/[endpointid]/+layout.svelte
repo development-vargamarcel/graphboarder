@@ -4,6 +4,7 @@
 
 	export let data: LayoutData;
 	import { page } from '$app/stores';
+	let localStorageEndpoints = getContext('localStorageEndpoints');
 	let endpointConfiguration;
 	let endpointid;
 	$: {
@@ -15,9 +16,8 @@
 				);
 			}
 			if (endpointid.startsWith('localstorageEndpoint--')) {
-				const localStorageEndpoints = stringToJs(localStorage.getItem('endpoints') || null);
-				if (localStorageEndpoints?.length > 0) {
-					endpointConfiguration = localStorageEndpoints.find(
+				if ($localStorageEndpoints?.length > 0) {
+					endpointConfiguration = $localStorageEndpoints.find(
 						(endpoint) => endpoint.id == endpointid.split('--')[1]
 					);
 				}
@@ -32,6 +32,7 @@
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	import { localEndpoints } from '$lib/stores/testData/testEndpoints';
 	import { stringToJs } from '$lib/utils/usefulFunctions';
+	import { getContext } from 'svelte';
 
 	let forceVisibleSidebar = false;
 </script>

@@ -5,13 +5,23 @@
 	export const prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
-	import { getRootType } from '$lib/utils/usefulFunctions';
-	import { getContext } from 'svelte';
+	import {
+		getRootType,
+		getSortedAndOrderedEndpoints,
+		stringToJs
+	} from '$lib/utils/usefulFunctions';
+	import { getContext, setContext } from 'svelte';
 	import { localEndpoints, stigifyAll } from '$lib/stores/testData/testEndpoints';
+	import { persisted } from 'svelte-persisted-store';
 
 	export let data: LayoutData;
 	const endpointInfoProvided = localEndpoints.find((endpoint) => endpoint.id == 'nhost');
 	//console.log('endpointInfoProvided json', stigifyAll(endpointInfoProvided));
+	export const localStorageEndpoints = persisted(
+		'localStorageEndpoints',
+		getSortedAndOrderedEndpoints(stringToJs(localStorage.getItem('endpoints') || []))
+	);
+	setContext('localStorageEndpoints', localStorageEndpoints);
 </script>
 
 <MainWraper {endpointInfoProvided}>
