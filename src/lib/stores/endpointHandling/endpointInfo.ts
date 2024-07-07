@@ -140,7 +140,7 @@ export const endpointInfoDefaultValues = {
 		},
 		{
 			get_Val: () => {
-				return { displayInterface: 'text', defaultValue: 'please enter some text', use_transformerREVERSE: string_transformerREVERSE, use_transformer: string_transformer };
+				return { displayInterface: 'text', defaultValue: '', use_transformerREVERSE: string_transformerREVERSE, use_transformer: string_transformer };
 			},
 			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {
