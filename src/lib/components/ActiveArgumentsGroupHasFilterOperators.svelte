@@ -135,6 +135,8 @@
 		);
 	};
 	const dndIsOn = getContext('dndIsOn');
+	const showInputField = getContext('showInputField');
+
 	const mutationVersion = getContext('mutationVersion');
 	if (QMSType == 'mutation') {
 		$mutationVersion = true;

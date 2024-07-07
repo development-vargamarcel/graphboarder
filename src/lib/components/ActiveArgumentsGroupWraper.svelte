@@ -27,7 +27,10 @@
 	const CPItemContext = getContext(`${prefix}CPItemContext`);
 
 	const dndIsOn = writable(false);
+	const showInputField = writable(false);
 	setContext('dndIsOn', dndIsOn);
+	setContext('showInputField', showInputField);
+
 	// const mutationVersion = writable(
 	// 	!CPItemContext || group.group_argsNode[CPItemContext.CPItem.nodeId]?.operator ? false : true
 	// );
