@@ -63,6 +63,7 @@
 	const hasGroup_argsNode = group.group_argsNode;
 	//
 	const dndIsOn = getContext('dndIsOn');
+	const showInputField = getContext('showInputField');
 </script>
 
 <ul

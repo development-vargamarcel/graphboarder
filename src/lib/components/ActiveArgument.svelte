@@ -174,6 +174,8 @@
 	};
 	let showModal = false;
 	const mutationVersion = getContext('mutationVersion');
+	const showInputField = getContext('showInputField');
+
 	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
@@ -378,7 +380,7 @@
 					class="flex flex-nowrap overflow-x-auto max-w-[65vw]
 								"
 				>
-					{#if !expandedVersion && !$mutationVersion}
+					{#if !expandedVersion && !$mutationVersion && !$showInputField}
 						<p
 							class="shrink-0 text-base-content text-xs font-light pt-[1px] mx-2"
 							on:click|preventDefault|stopPropagation|self={() => {
@@ -390,7 +392,7 @@
 					{/if}
 				</div>
 			</div>
-			{#if expandedVersion || $mutationVersion}
+			{#if expandedVersion || $mutationVersion || $showInputField}
 				{#if $selectedRowsColValues?.length > 0}
 					<SelectedRowsDisplay />
 				{:else}
