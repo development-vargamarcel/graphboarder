@@ -65,7 +65,7 @@
 	);
 
 	export let tableColsData_StoreInitialValue = [];
-	const rowsLocation = endpointInfo.get_rowsLocation(QMS_info);
+	const rowsLocation = endpointInfo.get_rowsLocation(QMS_info, schemaData);
 	const nodeFieldsQMS_info = get_nodeFieldsQMS_info(QMS_info, rowsLocation, schemaData);
 	// let scalarColsData = get_scalarColsData(
 	// 	nodeFieldsQMS_info,

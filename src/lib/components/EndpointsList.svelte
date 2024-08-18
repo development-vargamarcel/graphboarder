@@ -102,7 +102,7 @@
 				queryData = { fetching, error, data };
 				let stepsOfFieldsInput = [
 					currentQMS_info.dd_displayName,
-					...endpointInfo.get_rowsLocation(currentQMS_info)
+					...endpointInfo.get_rowsLocation(currentQMS_info, schemaData)
 				];
 				console.log({ stepsOfFieldsInput }, currentQMS_info.dd_displayName);
 				rowsCurrent = getDataGivenStepsOfFields(undefined, queryData.data, stepsOfFieldsInput);
