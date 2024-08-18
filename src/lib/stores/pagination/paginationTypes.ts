@@ -130,11 +130,20 @@ export const get_paginationTypes = (endpointInfo, schemaData) => {
 				//using 'pageInfo' for getting next page cursor,'nextPage' is not a standard,some use another name like 'endCursor' { title: 'nextPageCursor', stepsOfFields: [QMS_name, 'pageInfo', 'nextPage'] }
 				const dependencyColsData = [];
 				const endpointInfoVal = get(endpointInfo);
-				const namings = endpointInfoVal?.namings;
 				const pageInfoFieldsLocation = endpointInfoVal.pageInfoFieldsLocation;
 				let currentQMS_info = schemaData.get_QMS_Field(QMS_name, QMS_type, schemaData);
 				const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_info);
 
+				const relayPageInfoFieldsNames = endpointInfo.get_relayPageInfoFieldsNames(currentQMS_info, pageInfoFieldsLocation, schemaData)
+				const relayCursorFieldName = endpointInfo.get_relayCursorFieldName(currentQMS_info, rowsLocation, schemaData)
+
+				const namings = {
+					...relayPageInfoFieldsNames, ...relayCursorFieldName
+				}
+				console.log({
+					relayPageInfoFieldsNames,
+					relayCursorFieldName, namings
+				})
 				if (namings?.endCursor || namings?.startCursor) {
 					if (namings?.hasNextPage) {
 						dependencyColsData.push({

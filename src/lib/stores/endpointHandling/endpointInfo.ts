@@ -36,9 +36,17 @@ export const endpointInfoDefaultValues = {
 		hasPreviousPage: ['hasPreviousPage'],
 		startCursor: ['previousPage', 'startCursor'],
 		endCursor: ['nextPage', 'endCursor'],
+	},
+	relayPageInfoFieldsPossibleNames: {
+		hasNextPage: ['hasNextPage'],
+		hasPreviousPage: ['hasPreviousPage'],
+		startCursor: ['previousPage', 'startCursor'],
+		endCursor: ['nextPage', 'endCursor'],
 		cursor: ['cursor']
-	}
-	,
+	},
+	relayCursorPossibleNames: {
+		cursor: ['cursor']
+	},
 	paginationArgsPossibleNames: {
 		limit: ['limit'],
 		offset: ['offset', 'skip'],
@@ -255,7 +263,21 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 
 	const store = writable({ ...endpointInfoDefaultValues, ...endpointConfiguration });
 
+	const get_fieldsNames = (currentQMS_info, fieldsLocation, schemaData, FieldsPossibleNamesName) => {
+		const storeVal = get(store);
+		if (!storeVal || !storeVal?.[FieldsPossibleNamesName]) {
+			return null;
+		}
+		const fieldsNames = {}
+		const QMSInfo = getDeepField(currentQMS_info, fieldsLocation, schemaData, 'fields')
+		const QMSInfoROOT = getRootType(null, QMSInfo.dd_rootName, schemaData)
+		const QMSInfoROOTFieldNames = QMSInfoROOT.fields.map(field => field.dd_displayName)
 
+		for (const [name, possibilities] of Object.entries(storeVal[FieldsPossibleNamesName])) {
+			fieldsNames[name] = possibilities.find(possibility => QMSInfoROOTFieldNames.includes(possibility))
+		}
+		return fieldsNames
+	}
 
 	return {
 		...store,
@@ -435,6 +457,24 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			return null;
 		}
 
+		,
+		get_relayPageInfoFieldsNames: (currentQMS_info, pageInfoFieldsLocation, schemaData) => {
+			const storeVal = get(store);
+			if (!storeVal || !storeVal?.relayPageInfoFieldsPossibleNames) {
+				return null;
+			}
+			return get_fieldsNames(currentQMS_info, pageInfoFieldsLocation, schemaData, 'relayPageInfoFieldsPossibleNames')
+
+		}
+		,
+		get_relayCursorFieldName: (currentQMS_info, rowsLocation, schemaData) => {
+			const storeVal = get(store);
+			if (!storeVal || !storeVal?.relayCursorPossibleNames) {
+				return null;
+			}
+			return get_fieldsNames(currentQMS_info, rowsLocation, schemaData, 'relayCursorPossibleNames')
+
+		}
 
 	}
 }
