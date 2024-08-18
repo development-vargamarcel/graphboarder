@@ -132,7 +132,7 @@ export const get_paginationTypes = (endpointInfo, schemaData) => {
 				const endpointInfoVal = get(endpointInfo);
 				const pageInfoFieldsLocation = endpointInfoVal.pageInfoFieldsLocation;
 				let currentQMS_info = schemaData.get_QMS_Field(QMS_name, QMS_type, schemaData);
-				const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_info);
+				const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_info, schemaData);
 
 				const relayPageInfoFieldsNames = endpointInfo.get_relayPageInfoFieldsNames(currentQMS_info, pageInfoFieldsLocation, schemaData)
 				const relayCursorFieldName = endpointInfo.get_relayCursorFieldName(currentQMS_info, rowsLocation, schemaData)

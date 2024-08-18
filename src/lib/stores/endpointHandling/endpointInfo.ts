@@ -16,6 +16,21 @@ export const endpointInfoDefaultValues = {
 	rowsLocationPossibilities: [
 		{
 			get_Val: (QMS_info) => {
+				return ['edges'];
+			},
+			check: (QMS_info, schemaData) => {
+				const QMS_infoRootType = getRootType(null, QMS_info.dd_rootName, schemaData);
+				console.log({ QMS_infoRootType, QMS_info })
+				if (!QMS_infoRootType?.fields) {
+					console.error('QMS_infoRootType.fields is undefined');
+					return false;
+				}
+				return QMS_infoRootType.fields.find((field) => field.dd_displayName === 'edges')
+			}
+		}
+		,
+		{
+			get_Val: (QMS_info) => {
 				return [];
 			},
 			check: (QMS_info) => {
@@ -302,7 +317,7 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			}
 			return [];
 		},
-		get_rowsLocation: function (QMS_info) {
+		get_rowsLocation: function (QMS_info, schemaData) {
 			const storeVal = get(store);
 			if (!storeVal?.rowsLocationPossibilities?.length > 0) {
 				return [];
@@ -310,11 +325,11 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 
 			let rowsLocationPossibilitiy = storeVal.rowsLocationPossibilities.find(
 				(rowsLocationPossibilitiy) => {
-					return rowsLocationPossibilitiy.check(QMS_info);
+					return rowsLocationPossibilitiy.check(QMS_info, schemaData);
 				}
 			);
 			if (rowsLocationPossibilitiy) {
-				return rowsLocationPossibilitiy.get_Val(QMS_info);
+				return rowsLocationPossibilitiy.get_Val(QMS_info, schemaData);
 			}
 			return [];
 		},
