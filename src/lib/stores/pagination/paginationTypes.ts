@@ -192,12 +192,19 @@ export const get_paginationTypes = (endpointInfo, schemaData) => {
 			},
 			get_nextPageState: (state, paginationArgs, returnedDataBatch_last, QMS_name, QMS_type) => {
 				const endpointInfoVal = get(endpointInfo);
-				const namings = endpointInfoVal?.namings;
 				let currentQMS_info = schemaData.get_QMS_Field(QMS_name, QMS_type, schemaData);
 				const pageInfoFieldsLocation = endpointInfoVal.pageInfoFieldsLocation;
 				const rowsLocation = endpointInfoVal.rowsLocationPossibilities.find((rowsLocation) => {
 					return rowsLocation.check(currentQMS_info);
 				}).rowsLocation;
+
+				const relayPageInfoFieldsNames = endpointInfo.get_relayPageInfoFieldsNames(currentQMS_info, pageInfoFieldsLocation, schemaData)
+				const relayCursorFieldName = endpointInfo.get_relayCursorFieldName(currentQMS_info, rowsLocation, schemaData)
+
+				const namings = {
+					...relayPageInfoFieldsNames, ...relayCursorFieldName
+				}
+
 
 				const afterName = paginationArgs.find((arg) => {
 					return arg.dd_standsFor == 'after';
