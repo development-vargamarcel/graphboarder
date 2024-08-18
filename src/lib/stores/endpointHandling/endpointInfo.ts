@@ -24,13 +24,6 @@ export const endpointInfoDefaultValues = {
 		}
 	],
 	rowCountLocationPossibilities: [],
-
-	possibleNames: {
-		hasNextPage: ['hasNextPage'],
-		hasPreviousPage: ['hasPreviousPage'],
-		startCursor: ['previousPage', 'startCursor'],
-		endCursor: ['nextPage', 'endCursor'],
-	},
 	relayPageInfoFieldsPossibleNames: {
 		hasNextPage: ['hasNextPage'],
 		hasPreviousPage: ['hasPreviousPage'],
