@@ -266,6 +266,7 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 	const store = writable({ ...endpointInfoDefaultValues, ...endpointConfiguration });
 
 	const get_fieldsNames = (currentQMS_info, fieldsLocation, schemaData, FieldsPossibleNamesName) => {
+		//do not move this function,needs "store" to be defined
 		const storeVal = get(store);
 		if (!storeVal || !storeVal?.[FieldsPossibleNamesName]) {
 			return null;
