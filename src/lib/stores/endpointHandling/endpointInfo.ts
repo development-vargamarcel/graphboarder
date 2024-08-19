@@ -248,7 +248,7 @@ export const endpointInfoDefaultValues = {
 	returningColumnsPossibleLocationsInMutations: [[]
 	],
 	returningColumnsPossibleLocationsInQueriesPerRow: [
-		[]
+		['node'], []
 	],
 	inputColumnsPossibleLocationsInArg: [
 		[]
