@@ -156,6 +156,9 @@ export const endpointInfoDefaultValues = {
 				if (!dd_rootName) {
 					return null
 				}
+				if (typeObj.dd_kindEl?.toLowerCase() == 'enum') {
+					return null
+				}
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
 				return dd_rootNameLowerCase.includes('string') || dd_rootNameLowerCase.includes('text');
 			}
@@ -166,6 +169,9 @@ export const endpointInfoDefaultValues = {
 			},
 			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {
+					return null
+				}
+				if (typeObj.dd_kindEl?.toLowerCase() == 'enum') {
 					return null
 				}
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
@@ -187,6 +193,9 @@ export const endpointInfoDefaultValues = {
 				if (!dd_rootName) {
 					return null
 				}
+				if (typeObj.dd_kindEl?.toLowerCase() == 'enum') {
+					return null
+				}
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
 				return dd_rootNameLowerCase.replace('constraint', '').includes('int') || dd_rootNameLowerCase.includes('float');
 			}
@@ -199,6 +208,9 @@ export const endpointInfoDefaultValues = {
 				if (!dd_rootName) {
 					return null
 				}
+				if (typeObj.dd_kindEl?.toLowerCase() == 'enum') {
+					return null
+				}
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
 				return dd_rootNameLowerCase.includes('geo');
 			}
@@ -209,6 +221,9 @@ export const endpointInfoDefaultValues = {
 			},
 			check: function (dd_rootName, dd_displayName, typeObj) {
 				if (!dd_rootName) {
+					return null
+				}
+				if (typeObj.dd_kindEl?.toLowerCase() == 'enum') {
 					return null
 				}
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
