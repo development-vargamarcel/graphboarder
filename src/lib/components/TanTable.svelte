@@ -2,7 +2,7 @@
 	import { writable } from 'svelte/store';
 	import { Filters, createSvelteTable, flexRender, getCoreRowModel } from '@tanstack/svelte-table';
 	import type { ColumnDef, TableOptions } from '@tanstack/table-core/src/types';
-	import { formatData, getTableCellData } from '$lib/utils/usefulFunctions';
+	import { formatData, getPreciseType, getTableCellData } from '$lib/utils/usefulFunctions';
 	import ColumnInfo from './ColumnInfo.svelte';
 	import { createEventDispatcher, getContext } from 'svelte';
 	import InfiniteLoading from 'svelte-infinite-loading';
@@ -37,7 +37,7 @@
 		let columns = cols.map((col) => {
 			return {
 				...col,
-				accessorFn: (row) => formatData(getTableCellData(row, col), 40, true),
+				accessorFn: (row) => getTableCellData(row, col),
 				header: col.title,
 				footer: col.title,
 				enableHiding: true
@@ -200,8 +200,12 @@
 					<td>{parseInt(row.index) + 1}</td>
 
 					{#each row.getVisibleCells() as cell}
-						<td class="break-no">
-							{cell.renderValue()}
+						<td class="break-no" title={cell.renderValue()}>
+							<!-- {cell.renderValue()} -->
+							{formatData(cell.renderValue(), 40, true)}
+							{#if getPreciseType(cell.renderValue()) == 'array'}
+								<sup>{cell.renderValue().length}</sup>
+							{/if}
 							<!-- <svelte:component this={flexRender(cell.column.columnDef.cell, cell.getContext())} /> -->
 						</td>
 					{/each}
