@@ -16,7 +16,7 @@
 		{rowSelectionState}
 		{enableMultiRowSelectionState}
 		{prefix}
-		bind:data={rows}
+		bind:data={rows}	
 		bind:cols={colsData}
 		on:hideColumn
 		{infiniteHandler}
