@@ -1,112 +1,58 @@
-# This is in beta,there will be more info soon.
+# create-svelte
 
+Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
 
-- [x] Pagination
-- [x] Infinitely advanced filtering
-- [x] Infinitely advanced sorting
-- [x] Main interfaces (map,ENUM picker,date picker...)
-- [x] Companion library (auto-gql) 
+## Creating a project
 
-
-
-For now please take a look bellow
-
-## Terminology
-
-QMS means Query/Mutation/Subscription
-QMS_body is the payload
-
-## Install
+If you're seeing this, you've probably already done this step. Congrats!
 
 ```bash
-npm i auto-gql
+# create a new project in the current directory
+npx sv create
+
+# create a new project in my-app
+npx sv create my-app
 ```
 
-## How To Use
+## Developing
 
-Wrap everything in MainWraper component
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
 ```bash
-<MainWraper endpointInfoProvided={{url:'https://rickandmortyapi.com/graphql'}}>
-  #as many <QMSWraper> </QMSWraper> as you like
-  </MainWraper>
+npm run dev
 
-  # or you can omit endpointInfoProvided and instead do the bellow (inside MainWraper or inside it's parent),this can be usefull for example when implementing an endpoint picker:
-  endpointInfo.smartSet({url:'https://rickandmortyapi.com/graphql'})
-  setContext('endpointInfo', endpointInfo);
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
 ```
 
-Every QMS must be wraped in QMSWraper component
+## Building
+
+To create a production version of your app:
 
 ```bash
-const queryName = 'articles'
-const columns=[{title:'id',stepsOfFields:['aticles','id']},{title:'author name',stepsOfFields:['aticles','author','name']}]
-<QMSWraper QMSName={queryName} tableColsData_StoreInitialValue={columns}>
-  # Do your magic here
-  </QMSWraper>
+npm run build
 ```
 
-Now use the stores present in the context
+You can preview the production build with `npm run preview`.
 
-```bash
-	const QMS_bodyPartsUnifier_StoreDerived = getContext('QMS_bodyPartsUnifier_StoreDerived');
-
-	QMS_bodyPartsUnifier_StoreDerived.subscribe((QMS_body) => {
-    console.log({QMS_body})
-  runQuery(QMS_body);
-	});
-```
-
-```bash
-# next page request example
-const paginationState = getContext(`paginationState`);
-
-let lastBatchOfDataFetched=queryData?.data
-const QMS_name = 'articles'
-const QMS_type='query'
-paginationState.nextPage(lastBatchOfDataFetched, queryName, QMS_type);
-```
-
-```bash
-# add column example
-const tableColsData_Store = getContext('tableColsData_Store');
-const new_tableColData={title:'summary',stepsOfFields:['articles','summary']}
-tableColsData_Store.addColumn(new_tableColData)
-```
-
-**Also you can get the entire QMSWraperContext,containing everything you need.**
-
-```
-const QMSWraperContext= getContext(`${prefix}QMSWraperContext`);
-
-```
-
-# A simple complete example
-
-```bash
-# MyArticles.svelte
-<script>
-const QMS_bodyPartsUnifier_StoreDerived = getContext('QMS_bodyPartsUnifier_StoreDerived');
-
-QMS_bodyPartsUnifier_StoreDerived.subscribe((QMS_body) => {
-  console.log({QMS_body})
-  ///runQuery(QMS_body);
-});
-</script>
-```
-
-```bash
-<script>
-import MyArticles from '$lib/MyArticles.svelte'
-const queryName = 'articles'
-const columns=[{title:'id',stepsOfFields:['aticles','id']},{title:'author name',stepsOfFields:['aticles','author','name']}]
-</script>
+> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
 
 
-<MainWraper endpointInfoProvided={{url:'https://rickandmortyapi.com/graphql'}}>
-<QMSWraper QMSName={queryName} tableColsData_StoreInitialValue={columns}>
-  <MyArticles/>
-  </QMSWraper>
-  </MainWraper>
+next steps:
 
-```
+Integration next steps ─────────────────────────────────────────────╮
+│                                                                      │
+│  drizzle:                                                            │
+│  - You will need to set DATABASE_URL in your production environment  │
+│  - Run npm run db:push to update your database schema                │
+│                                                                      │
+│  lucia:                                                              │
+│  - Run npm run db:push to update your database schema                │
+│  - Visit /demo/lucia route to view the demo                          │
+│                                                                      │
+│  paraglide:                                                          │
+│  - Edit your messages in messages/en.json                            │
+│  - Consider installing the Sherlock IDE Extension                    │
+│  - Visit /demo/paraglide route to view the demo                      │
+│                                                                      │
+├──────────────────────────────────────────────────────────────────────╯

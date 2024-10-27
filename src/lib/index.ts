@@ -1,3 +1,1 @@
-import Input from './components/fields/Input.svelte';
-
-export { Input };
+// place files you want to import through the `$lib` alias in this folder.
