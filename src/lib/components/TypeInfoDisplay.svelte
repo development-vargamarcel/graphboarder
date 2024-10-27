@@ -19,7 +19,6 @@
 	import { Create_activeArgumentsDataGrouped_Store } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
 	import QMSWraper from '$lib/components/QMSWraper.svelte';
 	import { get } from 'svelte/store';
-	import { get_store_value } from 'svelte/internal';
 
 	const dispatch = createEventDispatcher();
 	let { dd_kindsArray, dd_namesArray, dd_displayName, dd_rootName, args } = type;
@@ -123,7 +122,7 @@
 				});
 			}
 
-			$activeArgumentsDataGrouped_Store = get_store_value(
+			$activeArgumentsDataGrouped_Store = get(
 				activeArgumentsQMSWraperContext.activeArgumentsDataGrouped_Store
 			);
 
@@ -141,10 +140,9 @@
 		}
 	});
 	//$: console.log({ currentQMSWraperCtxData });//!!!This logs multiple times when expected only one log,because $mergedChildren_QMSWraperCtxData_Store is being updated multiple times instead of just onece
-	let currentQMSArguments = $derived(getValueAtPath($mergedChildren_finalGqlArgObj_Store, [
-		...stepsOfFields,
-		'QMSarguments'
-	]));
+	let currentQMSArguments = $derived(
+		getValueAtPath($mergedChildren_finalGqlArgObj_Store, [...stepsOfFields, 'QMSarguments'])
+	);
 </script>
 
 {#if template == 'default'}
@@ -201,9 +199,9 @@
 				<div class="bg-secondary p-1 rounded">{dd_kindsArray?.join(' of ')}</div>
 			</div>
 
-			<div class="flex"></div>
+			<div class="flex" />
 		</div>
-		<div class="w-1/8 text-center text-xs"></div>
+		<div class="w-1/8 text-center text-xs" />
 	</div>
 {:else if template == 'columnAddDisplay'}
 	<div
@@ -218,7 +216,7 @@
 						? 'text-secondary'
 						: ''} {showExpand ? 'bi-arrow-90deg-down mt-2 ' : 'bi-chevron-expand'}"
 					onclick={expand}
-				></div>
+				/>
 			</div>
 		{/if}
 		{#if !canExpand}
@@ -271,7 +269,7 @@
 			{dd_displayName}
 			{#if isUsedInSomeColumn}
 				<sup class="text-xs text-accent">
-					<i class="bi bi-check"></i>
+					<i class="bi bi-check" />
 				</sup>
 			{/if}
 
@@ -284,7 +282,7 @@
 						showModal = true;
 					})}
 				>
-					<icon class=" {currentQMSArguments ? 'bi-funnel-fill' : 'bi-funnel'} "></icon>
+					<icon class=" {currentQMSArguments ? 'bi-funnel-fill' : 'bi-funnel'} " />
 
 					<!-- activeArgumentsDataGrouped_StoreInitialValue={getValueAtPath(
 							$mergedChildren_activeArgumentsDataGrouped_Store,
@@ -310,7 +308,7 @@
 								}}
 								><div class="  w-full">
 									<div class="mx-auto mt-2 w-full space-y-2 pb-2">
-										<div class="w-2"></div>
+										<div class="w-2" />
 
 										<ActiveArguments
 											stepsOfFieldsThisAppliesTo={stepsOfFields}
@@ -320,7 +318,7 @@
 											])}
 										/>
 
-										<div class="w-2"></div>
+										<div class="w-2" />
 									</div>
 								</div>
 							</Modal>

@@ -7,7 +7,6 @@ import { page } from '$app/stores';
 import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 import { getContext } from 'svelte';
 import { stringToQMSString_transformer, string_transformer } from '$lib/utils/dataStructureTransformers';
-import { spread } from 'svelte/internal';
 
 
 export const findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey = (obj) => {
