@@ -2,12 +2,15 @@
 	import { page } from '$app/stores';
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
-	export let title;
-	export let icon;
-	export let url;
-	export let hasFill = true;
-	export let urlIsRoute;
-	export let target = '';
+	/** @type {{title: any, icon: any, url: any, hasFill?: boolean, urlIsRoute: any, target?: string}} */
+	let {
+		title,
+		icon,
+		url,
+		hasFill = true,
+		urlIsRoute,
+		target = ''
+	} = $props();
 </script>
 
 <a
@@ -22,6 +25,6 @@
 		class="{$page.url.pathname.startsWith(url) && hasFill
 			? icon + '-fill '
 			: icon + '  '}  text-lg mx-auto leading-none"
-	/>
+	></i>
 	{title}
 </a>

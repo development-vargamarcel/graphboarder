@@ -1,3 +1,4 @@
+<!-- @migration-task Error while migrating Svelte code: `<tHead>` is invalid inside `<table>` -->
 <script>
 	import EndpointinfoGeneratorAssistantItem from './EndpointinfoGeneratorAssistantItem.svelte';
 

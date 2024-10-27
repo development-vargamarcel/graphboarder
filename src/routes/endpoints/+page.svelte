@@ -35,9 +35,9 @@
 		}
 	];
 
-	let showAddEndpoint = false;
-	let endpointsToShow = 'local';
-	let selectedRows = [];
+	let showAddEndpoint = $state(false);
+	let endpointsToShow = $state('local');
+	let selectedRows = $state([]);
 
 	const HandleRowSelectionChange = (e) => {
 		console.log(e);
@@ -80,7 +80,7 @@
 		<AddEndpointToLocalStorage on:hide={() => (showAddEndpoint = false)} />
 	{/if}
 	{#if selectedRows.length > 0}
-		<button class="btn btn-sm btn-warning" on:click={deleteSelectedEndpoint}
+		<button class="btn btn-sm btn-warning" onclick={deleteSelectedEndpoint}
 			>delete selected rows</button
 		>
 	{/if}
@@ -141,7 +141,7 @@
 <div class="fixed bottom-1 right-1 flex space-x-2">
 	<button
 		class="btn btn-xs"
-		on:click={() => {
+		onclick={() => {
 			endpointsToShow = 'local';
 		}}
 	>
@@ -150,7 +150,7 @@
 	<div class="flex">
 		<button
 			class="btn btn-xs"
-			on:click={() => {
+			onclick={() => {
 				endpointsToShow = 'localstorage';
 			}}
 		>
@@ -158,7 +158,7 @@
 		</button>
 		<button
 			class="btn btn-xs"
-			on:click={() => {
+			onclick={() => {
 				endpointsToShow = 'localstorage';
 				showAddEndpoint = true;
 			}}
@@ -168,7 +168,7 @@
 	</div>
 	<button
 		class="btn btn-xs"
-		on:click={() => {
+		onclick={() => {
 			endpointsToShow = 'remote';
 		}}
 	>

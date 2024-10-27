@@ -3,8 +3,8 @@
 	import QMSWraper from '$lib/components/QMSWraper.svelte';
 	import Page from '$lib/components/Page.svelte';
 
-	let QMSName;
-	let input;
+	let QMSName = $state();
+	let input = $state();
 </script>
 
 <Page MenuItem={true} CustomId="fdsfds" backPath={`/`}>
@@ -13,7 +13,7 @@
 			class="input input-xs w-32 m-5"
 			type="text"
 			bind:this={input}
-			on:change={(e) => {
+			onchange={(e) => {
 				QMSName = input.value;
 				console.log(QMSName);
 				console.log(input.value);

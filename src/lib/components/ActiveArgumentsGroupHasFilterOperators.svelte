@@ -1,4 +1,7 @@
 <script>
+	import ActiveArgumentsGroupHasFilterOperators from './ActiveArgumentsGroupHasFilterOperators.svelte';
+	import { run, preventDefault, stopPropagation } from 'svelte/legacy';
+
 	import SelectModal from './SelectModal.svelte';
 
 	import {
@@ -21,30 +24,13 @@
 	import Modal from './Modal.svelte';
 	import { nodeAddDefaultFields } from '$lib/utils/usefulFunctions';
 	const dispatch = createEventDispatcher();
-	export let nodes;
-	export let parentNodeId;
-	export let parentNode = nodes[parentNodeId];
-	export let node;
-	export let availableOperators;
-	export let group;
-	export let type;
-	export let originalNodes;
-	let stepsOfNodes = [];
-	let stepsOfFields = [];
-	let stepsOfFieldsFull = [];
-	let testName_stepsOFFieldsWasUpdated = false;
-	export let prefix = '';
+	let stepsOfNodes = $state([]);
+	let stepsOfFields = $state([]);
+	let stepsOfFieldsFull = $state([]);
+	let testName_stepsOFFieldsWasUpdated = $state(false);
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
-	let getManyQMS;
-	$: if ($QMSFieldToQMSGetMany_Store.length > 0) {
-		getManyQMS = QMSFieldToQMSGetMany_Store.getObj({
-			nodeOrField: node
-		})?.getMany?.selectedQMS;
-		if (getManyQMS) {
-			console.log({ getManyQMS });
-		}
-	}
+	let getManyQMS = $state();
 	///
 
 	let nodeContext_forDynamicData = {};
@@ -72,17 +58,6 @@
 	let QMSColumnsAAA = nodeContext_forDynamicData.itemColumns;
 	let requiredColNamesAAA = nodeContext_forDynamicData.requiredColNames;
 
-	$: console.log('nodeContext_forDynamicData.selectedRowsColValues', $selectedRowsColValuesAAA);
-	$: console.log(
-		'nodeContext_forDynamicData.selectedRowsColValuesProcessed',
-		$selectedRowsColValuesProcessedAAA
-	);
-	$: console.log('nodeContext_forDynamicData.rowSelectionState', $rowSelectionStateAAA);
-	$: console.log('nodeContext_forDynamicData.idColName', $idColNameAAA);
-	$: console.log('nodeContext_forDynamicData.selectedQMS', $selectedQMSAAA);
-	$: console.log('nodeContext_forDynamicData.QMSRows', $QMSRowsAAA);
-	$: console.log('nodeContext_forDynamicData.itemColumns', $QMSColumnsAAA);
-	$: console.log('nodeContext_forDynamicData.requiredColNames', $requiredColNamesAAA);
 
 	setContext(`${prefix}nodeContext_forDynamicData`, nodeContext_forDynamicData);
 	///
@@ -107,7 +82,7 @@
 	if (nodeContext) {
 		pathIsInCP = nodeContext?.pathIsInCP;
 	}
-	let nodeIsInCP = false;
+	let nodeIsInCP = $state(false);
 	const CPItemContext = getContext(`${prefix}CPItemContext`);
 	if (CPItemContext?.CPItem.nodeId == node.id) {
 		setContext(`${prefix}nodeContext`, { pathIsInCP: true });
@@ -180,21 +155,11 @@
 		);
 	}
 
-	$: {
-		stepsOfFieldsFull = stepsOfNodesToStepsOfFields(stepsOfNodes);
-		stepsOfFields = filterElFromArr(stepsOfFieldsFull, ['list', 'bonded']);
-		node.stepsOfFieldsFull = stepsOfFieldsFull;
-		node.stepsOfFields = stepsOfFields;
-		node.stepsOfFieldsMinimal = filterElFromArr(stepsOfFields, ['_and', '_or', '_not']);
-		node.stepsOfNodes = stepsOfNodes;
-		node.stepsOfFieldsStringified = JSON.stringify(stepsOfFields);
-	}
-	export let addDefaultFields;
 
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
-	let dragDisabled = true;
+	let dragDisabled = $state(true);
 	const flipDurationMs = 500;
 	function handleDndConsider(e) {
 		//console.log('considering', e, nodes);
@@ -221,36 +186,14 @@
 		dispatch('changed');
 	};
 	//
-	let labelEl;
-	let shadowEl;
-	let shadowHeight = 20;
-	let shadowWidth = 20;
+	let labelEl = $state();
+	let shadowEl = $state();
+	let shadowHeight = $state(20);
+	let shadowWidth = $state(20);
 
-	let labelElClone;
+	let labelElClone = $state();
 
-	$: if (labelEl) {
-		shadowHeight = labelEl.clientHeight;
-		shadowWidth = labelEl.clientWidth;
-	}
 
-	//$: console.log(shadowEl);
-	$: if (shadowHeight && shadowEl) {
-		if (shadowEl.style.height == 0) {
-			//if (shadowEl.style.height == 0) ensures the bellow runs only once per grab of element to move
-			shadowEl.style.height = `${shadowHeight + 18}px`;
-			shadowEl.style.width = `${shadowWidth}px`;
-
-			//put labelElClone in place of shadowEl
-			// if (labelElClone) {
-			// 	shadowEl.removeChild(labelElClone);
-			// }
-			labelElClone = labelEl.cloneNode(true);
-			labelElClone.classList.remove('dnd-item');
-			labelElClone.classList.add('border-2', 'border-accent');
-
-			shadowEl.appendChild(labelElClone);
-		}
-	}
 	function startDrag(e) {
 		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
 		//e.preventDefault();
@@ -271,11 +214,151 @@
 		finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 	};
 
-	let argsInfo = QMS_info?.args;
-	let showModal = false;
+	let argsInfo = $state(QMS_info?.args);
+	let showModal = $state(false);
 
-	let groupDisplayTitle = '';
-	$: {
+	let groupDisplayTitle = $state('');
+
+	if (node?.addDefaultFields || (node?.isMain && addDefaultFields)) {
+		nodeAddDefaultFields(
+			node,
+			prefix,
+			group,
+			activeArgumentsDataGrouped_Store,
+			schemaData,
+			endpointInfo,
+			stepsOfFields
+		);
+	}
+	let showSelectModal = $state(false);
+
+	let showAddModal = $state(false);
+	let rowSelectionState = {};
+	const getRowSelectionState = (selectedRowsModel) => {
+		let rowSelectionState = {};
+		console.log({ selectedRowsModel });
+		if (!selectedRowsModel?.rows) {
+			return rowSelectionState;
+		}
+		selectedRowsModel.rows.forEach((row) => {
+			rowSelectionState[row.id] = true;
+		});
+		return rowSelectionState;
+	};
+	let selectedRowsModel = {};
+	import ExplorerTable from '$lib/components/ExplorerTable.svelte';
+	import { string_transformer } from '$lib/utils/dataStructureTransformers.ts';
+	import { writable } from 'svelte/store';
+	import AddNodeToControlPanel from './AddNodeToControlPanel.svelte';
+	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
+	import ManyToAllSelectInterfaceDefinition from './ManyToAllSelectInterfaceDefinition.svelte';
+	import SelectedRowsDisplay from './SelectedRowsDisplay.svelte';
+	/** @type {{nodes: any, parentNodeId: any, parentNode?: any, node: any, availableOperators: any, group: any, type: any, originalNodes: any, prefix?: string, addDefaultFields: any}} */
+	let {
+		nodes = $bindable(),
+		parentNodeId,
+		parentNode = nodes[parentNodeId],
+		node = $bindable(),
+		availableOperators,
+		group = $bindable(),
+		type,
+		originalNodes,
+		prefix = '',
+		addDefaultFields
+	} = $props();
+
+	let selectedRowsColValues = $state([]);
+
+	//------------
+	let inputColumnsLocationQMS_Info = $state();
+	//!! todo:before getting inputColumnsLocation value,you should check if it is a query or a mutation,and handle it accordingly
+	let inputColumnsLocation = $endpointInfo.inputColumnsPossibleLocationsInArg.find((path) => {
+		inputColumnsLocationQMS_Info = getDeepField(node, path, schemaData, 'inputFields');
+		return inputColumnsLocationQMS_Info;
+	});
+	//should work
+	let idColName = $state();
+
+	//should work
+	console.log({ node, inputColumnsLocationQMS_Info, inputColumnsLocation });
+	//------------
+
+	let QMSWraperContextForSelectedQMS = {};
+	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
+	let forceShowSelectAndAddButtons = false;
+	run(() => {
+		if ($QMSFieldToQMSGetMany_Store.length > 0) {
+			getManyQMS = QMSFieldToQMSGetMany_Store.getObj({
+				nodeOrField: node
+			})?.getMany?.selectedQMS;
+			if (getManyQMS) {
+				console.log({ getManyQMS });
+			}
+		}
+	});
+	run(() => {
+		console.log('nodeContext_forDynamicData.selectedRowsColValues', $selectedRowsColValuesAAA);
+	});
+	run(() => {
+		console.log(
+			'nodeContext_forDynamicData.selectedRowsColValuesProcessed',
+			$selectedRowsColValuesProcessedAAA
+		);
+	});
+	run(() => {
+		console.log('nodeContext_forDynamicData.rowSelectionState', $rowSelectionStateAAA);
+	});
+	run(() => {
+		console.log('nodeContext_forDynamicData.idColName', $idColNameAAA);
+	});
+	run(() => {
+		console.log('nodeContext_forDynamicData.selectedQMS', $selectedQMSAAA);
+	});
+	run(() => {
+		console.log('nodeContext_forDynamicData.QMSRows', $QMSRowsAAA);
+	});
+	run(() => {
+		console.log('nodeContext_forDynamicData.itemColumns', $QMSColumnsAAA);
+	});
+	run(() => {
+		console.log('nodeContext_forDynamicData.requiredColNames', $requiredColNamesAAA);
+	});
+	run(() => {
+		stepsOfFieldsFull = stepsOfNodesToStepsOfFields(stepsOfNodes);
+		stepsOfFields = filterElFromArr(stepsOfFieldsFull, ['list', 'bonded']);
+		node.stepsOfFieldsFull = stepsOfFieldsFull;
+		node.stepsOfFields = stepsOfFields;
+		node.stepsOfFieldsMinimal = filterElFromArr(stepsOfFields, ['_and', '_or', '_not']);
+		node.stepsOfNodes = stepsOfNodes;
+		node.stepsOfFieldsStringified = JSON.stringify(stepsOfFields);
+	});
+	run(() => {
+		if (labelEl) {
+			shadowHeight = labelEl.clientHeight;
+			shadowWidth = labelEl.clientWidth;
+		}
+	});
+	//$: console.log(shadowEl);
+	run(() => {
+		if (shadowHeight && shadowEl) {
+			if (shadowEl.style.height == 0) {
+				//if (shadowEl.style.height == 0) ensures the bellow runs only once per grab of element to move
+				shadowEl.style.height = `${shadowHeight + 18}px`;
+				shadowEl.style.width = `${shadowWidth}px`;
+
+				//put labelElClone in place of shadowEl
+				// if (labelElClone) {
+				// 	shadowEl.removeChild(labelElClone);
+				// }
+				labelElClone = labelEl.cloneNode(true);
+				labelElClone.classList.remove('dnd-item');
+				labelElClone.classList.add('border-2', 'border-accent');
+
+				shadowEl.appendChild(labelElClone);
+			}
+		}
+	});
+	run(() => {
 		groupDisplayTitle = '';
 		//if (node?.not) {
 		//	groupDisplayTitle = `${groupDisplayTitle}_not `;
@@ -305,66 +388,15 @@
 		}
 		groupDisplayTitle = `${groupDisplayTitle}`;
 		//groupDisplayTitle = stepsOfNodes.join('->') + `(${groupDisplayTitle})`;
-	}
-
-	if (node?.addDefaultFields || (node?.isMain && addDefaultFields)) {
-		nodeAddDefaultFields(
-			node,
-			prefix,
-			group,
-			activeArgumentsDataGrouped_Store,
-			schemaData,
-			endpointInfo,
-			stepsOfFields
-		);
-	}
-	let showSelectModal = false;
-
-	let showAddModal = false;
-	let rowSelectionState = {};
-	const getRowSelectionState = (selectedRowsModel) => {
-		let rowSelectionState = {};
-		console.log({ selectedRowsModel });
-		if (!selectedRowsModel?.rows) {
-			return rowSelectionState;
-		}
-		selectedRowsModel.rows.forEach((row) => {
-			rowSelectionState[row.id] = true;
-		});
-		return rowSelectionState;
-	};
-	let selectedRowsModel = {};
-	import ExplorerTable from '$lib/components/ExplorerTable.svelte';
-	import { string_transformer } from '$lib/utils/dataStructureTransformers.ts';
-	import { writable } from 'svelte/store';
-	import AddNodeToControlPanel from './AddNodeToControlPanel.svelte';
-	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
-	import ManyToAllSelectInterfaceDefinition from './ManyToAllSelectInterfaceDefinition.svelte';
-	import SelectedRowsDisplay from './SelectedRowsDisplay.svelte';
-
-	let selectedRowsColValues = [];
-
-	//------------
-	let inputColumnsLocationQMS_Info;
-	//!! todo:before getting inputColumnsLocation value,you should check if it is a query or a mutation,and handle it accordingly
-	let inputColumnsLocation = $endpointInfo.inputColumnsPossibleLocationsInArg.find((path) => {
-		inputColumnsLocationQMS_Info = getDeepField(node, path, schemaData, 'inputFields');
-		return inputColumnsLocationQMS_Info;
 	});
-	//should work
-	let idColName;
-
-	$: if (QMSWraperContextForSelectedQMS) {
-		idColName = QMSWraperContextForSelectedQMS.idColName;
-	}
-	//should work
-	console.log({ node, inputColumnsLocationQMS_Info, inputColumnsLocation });
-	//------------
-
-	let QMSWraperContextForSelectedQMS = {};
-	$: console.log({ QMSWraperContextForSelectedQMS });
-	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
-	let forceShowSelectAndAddButtons = false;
+	run(() => {
+		if (QMSWraperContextForSelectedQMS) {
+			idColName = QMSWraperContextForSelectedQMS.idColName;
+		}
+	});
+	run(() => {
+		console.log({ QMSWraperContextForSelectedQMS });
+	});
 </script>
 
 {#if visible}
@@ -394,7 +426,7 @@
 				{#if node?.isMain}
 					<btn
 						class="btn btn-xs btn-info normal-case  mb-6 flex-1"
-						on:click={() => {
+						onclick={() => {
 							nodeAddDefaultFields(
 								node,
 								prefix,
@@ -422,14 +454,14 @@
 										type="checkbox"
 										class="toggle toggle-sm"
 										checked={node.not}
-										on:change|preventDefault|stopPropagation={() => {
+										onchange={stopPropagation(preventDefault(() => {
 											if (!node?.isMain) {
 												node.not = !node.not;
 												operatorChangeHandler();
 												handleChanged();
 												dispatch('changed');
 											}
-										}}
+										}))}
 									/>
 								</label>
 							</div>
@@ -437,7 +469,7 @@
 
 						<btn
 							class="btn btn-xs btn-info  normal-case mb-6 flex-1"
-							on:click={() => {
+							onclick={() => {
 								nodeAddDefaultFields(
 									node,
 									prefix,
@@ -454,7 +486,7 @@
 
 						<btn
 							class="btn btn-xs text-sm mb-1 normal-case flex-1"
-							on:click={() => {
+							onclick={() => {
 								if (node?.operator && !node?.isMain) {
 									if (node?.operator == '~spread~') {
 										node.operator = 'bonded';
@@ -471,17 +503,17 @@
 						>
 							change
 						</btn>
-						<!-- svelte-ignore a11y-click-events-have-key-events -->
+						<!-- svelte-ignore a11y_click_events_have_key_events -->
 						<btn
 							class="btn btn-xs btn-warning  mb-6 flex-1"
-							on:click={() => {
+							onclick={() => {
 								alert('not yet implemented');
 								console.log(
 									'not yet implemented,implement here.Delete node and his items and items of his items recursively until the very end of the tree.'
 								);
 							}}
 						>
-							<i class="bi bi-trash-fill" />
+							<i class="bi bi-trash-fill"></i>
 						</btn>
 						{#if !CPItemContext}
 							<AddNodeToControlPanel {node} />
@@ -544,7 +576,7 @@
 
 	{#if !node?.isMain}
 		<div class="   grid   content-center  rounded-full w-min-max w-max">
-			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+			<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 			<div class="flex ">
 				{#if $dndIsOn && !nodeIsInCP}
 					<div
@@ -559,23 +591,23 @@
 						{node?.not ? ' bg-gradient-to-r== from-base-300/100==' : 'bg-error/0'}
 						"
 						style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
-						on:mousedown={(e) => {
+						onmousedown={(e) => {
 							// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
 							e.preventDefault();
 
 							dispatch('childrenStartDrag');
 						}}
-						on:touchstart={(e) => {
+						ontouchstart={(e) => {
 							// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
 							e.preventDefault();
 
 							dispatch('childrenStartDrag');
 						}}
-						on:keydown={handleKeyDown}
-						on:contextmenu|preventDefault|stopPropagation={() => {
+						onkeydown={handleKeyDown}
+						oncontextmenu={stopPropagation(preventDefault(() => {
 							//
-						}}
-					/>
+						}))}
+					></div>
 				{/if}
 				<!-- node?.items?.length <= 1 -->
 				{#if node?.operator && !$mutationVersion}
@@ -589,18 +621,18 @@
 							: 'text-secondary'} break-all h-max  w-max
 						{node?.not ? ' bg-gradient-to-r from-secondary/50' : 'bg-error/0'}
 						"
-						on:click={() => {
+						onclick={() => {
 							showModal = true;
 						}}
-						on:contextmenu|preventDefault|stopPropagation={() => {
+						oncontextmenu={stopPropagation(preventDefault(() => {
 							//
-						}}
+						}))}
 					>
 						{groupDisplayTitle}
 						<!-- <sub>{stepsOfFields.join('->')}</sub> -->
 						{#if node.dd_NON_NULL}
 							<sup>
-								<i class="text-primary bi bi-asterisk" />
+								<i class="text-primary bi bi-asterisk"></i>
 							</sup>
 						{/if}
 					</div>
@@ -629,17 +661,17 @@
 
 
 "
-		on:contextmenu|preventDefault|stopPropagation={() => {
+		oncontextmenu={stopPropagation(preventDefault(() => {
 			//
-		}}
+		}))}
 		bind:this={labelEl}
-		on:mousedown={() => {
+		onmousedown={() => {
 			dragDisabled = true;
 		}}
-		on:touchstart={() => {
+		ontouchstart={() => {
 			dragDisabled = true;
 		}}
-		on:keydown={() => {
+		onkeydown={() => {
 			dragDisabled = true;
 		}}
 	>
@@ -658,17 +690,17 @@
 							: 'text-secondary'} break-all h-max  w-max
 						{node?.not ? ' bg-gradient-to-r from-secondary/50' : 'bg-error/0'}
 						"
-						on:click={() => {
+						onclick={() => {
 							showModal = true;
 						}}
-						on:contextmenu|preventDefault|stopPropagation={() => {
+						oncontextmenu={stopPropagation(preventDefault(() => {
 							showSelectModal = !showSelectModal;
-						}}
+						}))}
 					>
 						{groupDisplayTitle}
 						{#if node.dd_NON_NULL}
 							<sup>
-								<i class="text-primary bi bi-asterisk" />
+								<i class="text-primary bi bi-asterisk"></i>
 							</sup>
 						{/if}
 					</div>
@@ -698,7 +730,7 @@
 				<SelectedRowsDisplay />
 			{/if}
 			<div class="flex ">
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<!-- svelte-ignore a11y_click_events_have_key_events -->
 				<!-- node?.items?.length > 1 || node?.isMain -->
 
 				{#if node?.isMain}
@@ -710,19 +742,19 @@
 							: node?.operator == '_and'
 							? 'text-primary'
 							: 'text-secondary'} break-all h-max  w-max"
-						on:click={() => {
+						onclick={() => {
 							showModal = true;
 						}}
 					>
 						{groupDisplayTitle}
 						{#if node.dd_NON_NULL}
 							<sup>
-								<i class="text-primary bi bi-asterisk" />
+								<i class="text-primary bi bi-asterisk"></i>
 							</sup>
 						{/if}
 					</div>
 				{/if}
-				<p class="grow" />
+				<p class="grow"></p>
 			</div>
 		{:else}
 			<div class="pr-2 rounded-box  w-full">
@@ -769,8 +801,8 @@
 					centreDraggedOnCursor: true,
 					type: node?.dd_rootName || 'default'
 				}}
-				on:consider={handleDndConsider}
-				on:finalize={handleDndFinalize}
+				onconsider={handleDndConsider}
+				onfinalize={handleDndFinalize}
 			>
 				<!-- WE FILTER THE SHADOW PLACEHOLDER THAT WAS ADDED IN VERSION 0.7.4, filtering this way rather than checking whether 'nodes' have the id became possible in version 0.9.1 -->
 				{#if node.items.length > 1 || node?.isMain || true}
@@ -784,7 +816,7 @@
 							<div class="flex dnd-item">
 								{#if testName_stepsOFFieldsWasUpdated}
 									{#key stepsOfFields}
-										<svelte:self
+										<ActiveArgumentsGroupHasFilterOperators
 											on:deleteSubNode={(e) => {
 												deleteItem(e);
 												//
@@ -812,6 +844,6 @@
 		{/if}
 	</div>
 	{#if node.id == SHADOW_PLACEHOLDER_ITEM_ID}
-		<div class=" ml-8 h-0     top-0 left-0 visible" id="shadowEl" bind:this={shadowEl} />
+		<div class=" ml-8 h-0     top-0 left-0 visible" id="shadowEl" bind:this={shadowEl}></div>
 	{/if}
 {/if}

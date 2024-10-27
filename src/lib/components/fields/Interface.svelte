@@ -1,4 +1,6 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import ENUMInterface from './ENUMInterface.svelte';
 	//TODO: !!!
 	//When choosenDisplayInterface =="ENUM",nothing happens.Handle enum like all other interfaces to solve this.
@@ -8,31 +10,36 @@
 	import Toggle from '$lib/components/fields/Toggle.svelte';
 	import CodeEditor from '$lib/components/fields/CodeEditor.svelte';
 	import { createEventDispatcher, getContext } from 'svelte';
-	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	import InterfacePicker from './InterfacePicker.svelte';
 	const dispatch = createEventDispatcher();
-	export let typeInfo;
-	export let alwaysOn_interfacePicker = false;
 	const choosenDisplayInterface = getContext('choosenDisplayInterface');
 
-	let typeExtraData = endpointInfo.get_typeExtraData(typeInfo);
-	export let dispatchValue;
-	export let rawValue = typeExtraData?.defaultValue;
+	let typeExtraData = $state(endpointInfo.get_typeExtraData(typeInfo));
+	/** @type {{prefix?: string, typeInfo: any, alwaysOn_interfacePicker?: boolean, dispatchValue: any, rawValue?: any}} */
+	let {
+		prefix = '',
+		typeInfo = $bindable(),
+		alwaysOn_interfacePicker = false,
+		dispatchValue = $bindable(),
+		rawValue = $bindable(typeExtraData?.defaultValue)
+	} = $props();
 
-	$: if ($choosenDisplayInterface) {
-		typeExtraData = endpointInfo.get_typeExtraData(typeInfo, $choosenDisplayInterface);
-		typeInfo.chosenDisplayInterface = $choosenDisplayInterface;
-		if (typeof rawValue == undefined) {
-			rawValue = typeExtraData.defaultValue;
+	run(() => {
+		if ($choosenDisplayInterface) {
+			typeExtraData = endpointInfo.get_typeExtraData(typeInfo, $choosenDisplayInterface);
+			typeInfo.chosenDisplayInterface = $choosenDisplayInterface;
+			if (typeof rawValue == undefined) {
+				rawValue = typeExtraData.defaultValue;
+			}
+			if (typeof dispatchValue == undefined) {
+				dispatchValue = typeExtraData.use_transformer(typeExtraData.defaultValue);
+			}
 		}
-		if (typeof dispatchValue == undefined) {
-			dispatchValue = typeExtraData.use_transformer(typeExtraData.defaultValue);
-		}
-	}
-	let componentToRender = Input;
-	$: {
+	});
+	let componentToRender = $state(Input);
+	run(() => {
 		if (['text', 'number', 'date', 'datetime-local'].includes($choosenDisplayInterface)) {
 			componentToRender = Input;
 		}
@@ -51,7 +58,7 @@
 		if (!$choosenDisplayInterface) {
 			componentToRender = null;
 		}
-	}
+	});
 	const onChangeHandler = (e) => {
 		let { detail } = e;
 		if (detail.chd_rawValue != undefined) {
@@ -72,8 +79,8 @@
 {/if}
 
 {#if componentToRender}
-	<svelte:component
-		this={componentToRender}
+	{@const SvelteComponent = componentToRender}
+	<SvelteComponent
 		{typeInfo}
 		{rawValue}
 		{dispatchValue}

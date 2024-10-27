@@ -1,5 +1,6 @@
 <script>
-	export let stepsOfFields;
+	/** @type {{stepsOfFields: any}} */
+	let { stepsOfFields } = $props();
 	let stepsOfFields_display = stepsOfFields
 		.map((el) => {
 			if (typeof el == 'string') {

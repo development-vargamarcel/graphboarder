@@ -1,4 +1,6 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { stringify } from 'postcss';
 	import CodeEditor from './fields/CodeEditor.svelte';
 	import { format } from 'graphql-formatter';
@@ -7,9 +9,7 @@
 	import graphql from 'highlight.js/lib/languages/graphql';
 	import 'highlight.js/styles/base16/solarized-dark.css';
 	import { getPreciseType, objectToSourceCode } from '$lib/utils/usefulFunctions';
-	export let showNonPrettifiedQMSBody;
-	export let value;
-	let valueModifiedManually;
+	let valueModifiedManually = $state();
 	onMount(() => {
 		hljs.registerLanguage('graphql', graphql);
 		hljs.highlightAll();
@@ -17,30 +17,38 @@
 	import { parse, print, visit } from 'graphql';
 	import JSON5 from 'json5';
 	import CodeMirrorCustom from './fields/CodeMirrorCustom.svelte';
-	let astAsString = '';
+	/** @type {{showNonPrettifiedQMSBody: any, value: any}} */
+	let { showNonPrettifiedQMSBody = $bindable(), value } = $props();
+	let astAsString = $state('');
 	let astAsString2 = '';
-	let ast;
-	let astPrinted;
-	$: ast = parse(value);
-	$: if (ast) {
-		// Extract operation type and name
-		//const operationType = ast.definitions[0]?.operation;
-		//const operationName = ast.definitions[0]?.name?.value;
+	let ast = $state();
+	let astPrinted = $state();
+	run(() => {
+		ast = parse(value);
+	});
+	run(() => {
+		if (ast) {
+			// Extract operation type and name
+			//const operationType = ast.definitions[0]?.operation;
+			//const operationName = ast.definitions[0]?.name?.value;
 
-		astPrinted = print(ast);
-	}
-	$: {
+			astPrinted = print(ast);
+		}
+	});
+	run(() => {
 		if (valueModifiedManually) {
 			ast = parse(valueModifiedManually);
 		}
-	}
+	});
 
-	$: if (getPreciseType(ast) == 'object') {
-		//console.log('qqqwww', value, ast, astAsString);
-		astAsString = JSON5.stringify(ast);
-		//astAsString2 = objectToSourceCode(ast);
-		//console.log('qqqwww2', value, ast, astAsString);
-	}
+	run(() => {
+		if (getPreciseType(ast) == 'object') {
+			//console.log('qqqwww', value, ast, astAsString);
+			astAsString = JSON5.stringify(ast);
+			//astAsString2 = objectToSourceCode(ast);
+			//console.log('qqqwww2', value, ast, astAsString);
+		}
+	});
 
 	///
 	const visitAst = () => {
@@ -92,7 +100,7 @@
 				<!-- <CodeMirrorCustom value={`const ast:${astAsString}`} language="typescript" /> -->
 
 				<CodeEditor rawValue={astAsString} language="javascript" />
-				<button class="btn btn-xs btn-primary" on:click={visitAst}> visit ast </button>
+				<button class="btn btn-xs btn-primary" onclick={visitAst}> visit ast </button>
 			</div>
 			{#if astPrinted}
 				<div class="mx-4 mt-2 ">
@@ -104,7 +112,7 @@
 	</div>
 	<button
 		class="btn btn-xs btn-accent mx-atuo absolute top-3 right-4 normal-case"
-		on:click={() => {
+		onclick={() => {
 			showNonPrettifiedQMSBody = !showNonPrettifiedQMSBody;
 		}}
 	>

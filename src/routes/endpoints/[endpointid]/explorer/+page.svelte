@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import EndpointinfoGeneratorAssistant from './../../../../lib/components/EndpointinfoGeneratorAssistant.svelte';
 	export const prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
@@ -14,12 +16,14 @@
 	let rootTypes = $schemaData.rootTypes;
 	let queries = $schemaData.queryFields;
 	let mutations = $schemaData.mutationFields;
-	let whatToShow = [];
-	let whatToShowLastUsed;
-	let sortingInputValue = '';
-	let sortingArray = [];
-	let caseSensitive = false;
-	$: sortingArray = sortingInputValue.split(' ');
+	let whatToShow = $state([]);
+	let whatToShowLastUsed = $state();
+	let sortingInputValue = $state('');
+	let sortingArray = $state([]);
+	let caseSensitive = $state(false);
+	run(() => {
+		sortingArray = sortingInputValue.split(' ');
+	});
 
 	const filterByWord = () => {
 		if (sortingArray.length == 1 && sortingArray[0] == '') {
@@ -170,83 +174,85 @@
 			return item.name == name;
 		})[0];
 	};
-	let columns = [];
+	let columns = $state([]);
 
-	$: if (whatToShow.length > 0) {
-		columns = [
-			{
-				accessorFn: (row) => row.dd_displayName,
-				header: 'dd_displayName',
-				footer: 'dd_displayName',
-				enableHiding: true
-			},
-			{
-				accessorFn: (row) => row.dd_rootName,
-				header: 'dd_rootName',
-				footer: 'dd_rootName',
-				enableHiding: true
-			},
-			{
-				accessorFn: (row) => (row.dd_kindList_NON_NULL ? '!' : ''),
-				header: 'L',
-				footer: 'L',
-				enableHiding: true
-			},
-			{
-				accessorFn: (row) => (row.dd_kindList ? 'list' : ''),
-				header: 'LL',
-				footer: 'LL',
-				enableHiding: true
-			},
-			{
-				accessorFn: (row) => (row.dd_kindEl_NON_NULL ? '!' : ''),
-				header: 'E',
-				footer: 'E',
-				enableHiding: true
-			},
-			{
-				accessorFn: (row) => row.dd_kindEl,
-				header: 'EE',
-				footer: 'EE',
-				enableHiding: true
-			},
+	run(() => {
+		if (whatToShow.length > 0) {
+			columns = [
+				{
+					accessorFn: (row) => row.dd_displayName,
+					header: 'dd_displayName',
+					footer: 'dd_displayName',
+					enableHiding: true
+				},
+				{
+					accessorFn: (row) => row.dd_rootName,
+					header: 'dd_rootName',
+					footer: 'dd_rootName',
+					enableHiding: true
+				},
+				{
+					accessorFn: (row) => (row.dd_kindList_NON_NULL ? '!' : ''),
+					header: 'L',
+					footer: 'L',
+					enableHiding: true
+				},
+				{
+					accessorFn: (row) => (row.dd_kindList ? 'list' : ''),
+					header: 'LL',
+					footer: 'LL',
+					enableHiding: true
+				},
+				{
+					accessorFn: (row) => (row.dd_kindEl_NON_NULL ? '!' : ''),
+					header: 'E',
+					footer: 'E',
+					enableHiding: true
+				},
+				{
+					accessorFn: (row) => row.dd_kindEl,
+					header: 'EE',
+					footer: 'EE',
+					enableHiding: true
+				},
 
-			{
-				accessorFn: (row) =>
-					row.args
-						?.map(
-							(arg) =>
-								`${arg.dd_displayName} (${arg.dd_kindList ? 'list of ' : ''}${arg.dd_kindEl})`
-						)
-						.join('; '),
-				header: 'Arguments',
-				footer: 'Arguments',
-				enableHiding: true
-			},
-			{
-				accessorFn: (row) => row.description?.replaceAll(',', ';'),
-				header: 'description',
-				footer: 'description',
-				enableHiding: true
-			},
-			{
-				accessorFn: (row) => row?.tableBaseName,
-				header: 'tableBaseName',
-				footer: 'tableBaseName',
-				enableHiding: true
-			}
-		];
-	}
-	let showExplorer = false;
-	let showTable = false;
+				{
+					accessorFn: (row) =>
+						row.args
+							?.map(
+								(arg) =>
+									`${arg.dd_displayName} (${arg.dd_kindList ? 'list of ' : ''}${arg.dd_kindEl})`
+							)
+							.join('; '),
+					header: 'Arguments',
+					footer: 'Arguments',
+					enableHiding: true
+				},
+				{
+					accessorFn: (row) => row.description?.replaceAll(',', ';'),
+					header: 'description',
+					footer: 'description',
+					enableHiding: true
+				},
+				{
+					accessorFn: (row) => row?.tableBaseName,
+					header: 'tableBaseName',
+					footer: 'tableBaseName',
+					enableHiding: true
+				}
+			];
+		}
+	});
+	let showExplorer = $state(false);
+	let showTable = $state(false);
 	const toggleExplorer = () => {
 		showExplorer = !showExplorer;
 	};
 	const toggleTable = () => {
 		showTable = !showTable;
 	};
-	let csvData;
-	let selectedRowsOriginal;
+	let csvData = $state();
+	let selectedRowsOriginal = $state();
 </script>
 
 <Page MenuItem={true}>
@@ -255,7 +261,7 @@
 			<div class="flex space-x-2 ">
 				<button
 					class="p-1 rounded-sm leading-none bg-accent text-xs max-w-min"
-					on:click={() => {
+					onclick={() => {
 						caseSensitive = !caseSensitive;
 					}}>{caseSensitive ? 'case sensitive' : 'case insesitive'}</button
 				>
@@ -263,12 +269,12 @@
 					type="text"
 					class="input input-xs mt-1"
 					bind:value={sortingInputValue}
-					on:change={filterByWord}
+					onchange={filterByWord}
 				/>
 
 				<button
 					class="mt-1 btn bg-primary btn-xs normal-case"
-					on:click={() => {
+					onclick={() => {
 						whatToShowLastUsed?.();
 						filterByWord();
 					}}>Filter</button
@@ -277,24 +283,24 @@
 				<br />
 			</div>
 			<div>
-				<button class="btn btn-xs " on:click={showRootTypes}> root</button>
-				<button class="btn btn-xs" on:click={showQueries}> queries</button>
-				<button class="btn btn-xs" on:click={showMutations}> mutations</button>
-				<button class="btn btn-xs" on:click={showQueriesAndMutations}> Q&M</button>
-				<button class="btn btn-xs" on:click={showAll}> all</button>
+				<button class="btn btn-xs " onclick={showRootTypes}> root</button>
+				<button class="btn btn-xs" onclick={showQueries}> queries</button>
+				<button class="btn btn-xs" onclick={showMutations}> mutations</button>
+				<button class="btn btn-xs" onclick={showQueriesAndMutations}> Q&M</button>
+				<button class="btn btn-xs" onclick={showAll}> all</button>
 			</div>
 			<div>
-				<button class="btn btn-xs btn-accent" on:click={toggleExplorer}>toggle explorer</button>
-				<button class="btn btn-xs btn-accent" on:click={toggleTable}>toggle table</button>
+				<button class="btn btn-xs btn-accent" onclick={toggleExplorer}>toggle explorer</button>
+				<button class="btn btn-xs btn-accent" onclick={toggleTable}>toggle table</button>
 				<button
 					class="btn btn-xs btn-primary"
-					on:click={() => {
+					onclick={() => {
 						navigator.clipboard.writeText(csvData);
 					}}>copy csv</button
 				>
 				<button
 					class="btn btn-xs btn-primary"
-					on:click={() => {
+					onclick={() => {
 						console.log(selectedRowsOriginal);
 						if (selectedRowsOriginal.length == 0) {
 							return alert('no rows selected');
@@ -314,7 +320,7 @@
 				>
 				<button
 					class="btn btn-xs btn-primary"
-					on:click={() => {
+					onclick={() => {
 						whatToShow = whatToShow;
 						showTable = false;
 						setTimeout(() => {

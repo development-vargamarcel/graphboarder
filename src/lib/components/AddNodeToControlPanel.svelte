@@ -1,7 +1,9 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { getContext } from 'svelte';
-	export let prefix = '';
-	export let node;
+	/** @type {{prefix?: string, node: any}} */
+	let { prefix = '', node } = $props();
 	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
 	const { mergedChildren_controlPanel_Store } = getContext(`${prefix}OutermostQMSWraperContext`);
 	let currentObject = {
@@ -9,13 +11,18 @@
 		nodeId: node.id,
 		id: Date.now() + Math.random()
 	};
-	$: objIsStarred = mergedChildren_controlPanel_Store.getObj(currentObject);
-	$: console.log({ objIsStarred });
+	let objIsStarred;
+	run(() => {
+		objIsStarred = mergedChildren_controlPanel_Store.getObj(currentObject);
+	});
+	run(() => {
+		console.log({ objIsStarred });
+	});
 </script>
 
 <button
 	class="flex btn btn-xs "
-	on:click={() => {
+	onclick={() => {
 		if (objIsStarred) {
 			mergedChildren_controlPanel_Store.delete(currentObject);
 		} else {
@@ -24,5 +31,5 @@
 		objIsStarred = mergedChildren_controlPanel_Store.getObj(currentObject);
 	}}
 >
-	<i class="bi  {objIsStarred ? 'bi-star-fill' : 'bi-star'}" />
+	<i class="bi  {objIsStarred ? 'bi-star-fill' : 'bi-star'}"></i>
 </button>

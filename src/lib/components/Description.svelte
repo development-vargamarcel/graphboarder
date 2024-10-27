@@ -1,12 +1,15 @@
 <script>
 	import { getRootType } from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
-	export let setNotInUseIfNotValid = true;
-	export let setNotInUseIfNotValidAndENUM = true;
-	export let parentNode;
-	export let node;
-	export let prefix = '';
-	export let QMSInfo;
+	/** @type {{setNotInUseIfNotValid?: boolean, setNotInUseIfNotValidAndENUM?: boolean, parentNode: any, node: any, prefix?: string, QMSInfo: any}} */
+	let {
+		setNotInUseIfNotValid = true,
+		setNotInUseIfNotValidAndENUM = true,
+		parentNode,
+		node,
+		prefix = '',
+		QMSInfo
+	} = $props();
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
 	const nodeRootType = getRootType(null, QMSInfo.dd_rootName, schemaData);

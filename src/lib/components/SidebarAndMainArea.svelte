@@ -2,8 +2,9 @@
 	import { clickOutside } from '$lib/actions/clickOutside';
 
 	import Page from '$lib/Page.svelte';
-	let forceVisibleSidebar = false;
-	export let title;
+	let forceVisibleSidebar = $state(false);
+	/** @type {{title: any, sidebar?: import('svelte').Snippet, main?: import('svelte').Snippet}} */
+	let { title, sidebar, main } = $props();
 </script>
 
 <div class="flex w-full">
@@ -12,14 +13,14 @@
 			? 'visible '
 			: ' invisible'} fixed left-0 top-0 z-50 lg:z-0 lg:visible lg:static bg-base-200 overflow-y-auto"
 		use:clickOutside
-		on:click={() => {
+		onclick={() => {
 			forceVisibleSidebar = false;
 		}}
-		on:click_outside={() => {
+		onclick_outside={() => {
 			forceVisibleSidebar = false;
 		}}
 	>
-		<slot name="sidebar" />
+		{@render sidebar?.()}
 	</div>
 
 	<Page MenuItem={true}>
@@ -28,7 +29,7 @@
 				<label
 					for="my-drawer-3"
 					class="btn btn-square btn-ghost"
-					on:click={() => {
+					onclick={() => {
 						forceVisibleSidebar = !forceVisibleSidebar;
 					}}
 				>
@@ -50,11 +51,11 @@
 			<div class="flex-none block">
 				<ul class="flex">
 					<li>
-						<button class="btn btn-sm "><i class="bi bi-plus-square text-xl " /> </button>
+						<button class="btn btn-sm "><i class="bi bi-plus-square text-xl "></i> </button>
 					</li>
 				</ul>
 			</div>
 		</div>
-		<slot name="main" />
+		{@render main?.()}
 	</Page>
 </div>

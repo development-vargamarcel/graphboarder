@@ -1,22 +1,37 @@
 <script lang="ts">
-	export let isControlPanelChild;
-	export let stepsOfFieldsThisAppliesTo;
+	import { run } from 'svelte/legacy';
+
 	const activeArgumentsContext = { stepsOfFieldsThisAppliesTo, isControlPanelChild };
 	import { createEventDispatcher, each, getContext, setContext } from 'svelte/internal';
 	import ActiveArgumentsGroupWraper from '$lib/components/ActiveArgumentsGroupWraper.svelte';
-	export let prefix = '';
 	setContext(`${prefix}activeArgumentsContext`, activeArgumentsContext);
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
 	let QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
-	export let QMSarguments;
-	export let activeArgumentsDataGrouped_Store = QMSWraperContext.activeArgumentsDataGrouped_Store;
-	export let QMS_info = QMSWraperContext.QMS_info;
+	interface Props {
+		isControlPanelChild: any;
+		stepsOfFieldsThisAppliesTo: any;
+		prefix?: string;
+		QMSarguments: any;
+		activeArgumentsDataGrouped_Store?: any;
+		QMS_info?: any;
+	}
+
+	let {
+		isControlPanelChild,
+		stepsOfFieldsThisAppliesTo,
+		prefix = '',
+		QMSarguments,
+		activeArgumentsDataGrouped_Store = QMSWraperContext.activeArgumentsDataGrouped_Store,
+		QMS_info = QMSWraperContext.QMS_info
+	}: Props = $props();
 
 	let activeArgumentsDataGrouped = [];
 
-	$: console.log('$activeArgumentsDataGrouped_Store', $activeArgumentsDataGrouped_Store);
+	run(() => {
+		console.log('$activeArgumentsDataGrouped_Store', $activeArgumentsDataGrouped_Store);
+	});
 	const update_activeArgumentsDataGrouped = (groupNewData) => {
 		console.log({ groupNewData });
 		activeArgumentsDataGrouped_Store.update_groups(groupNewData);

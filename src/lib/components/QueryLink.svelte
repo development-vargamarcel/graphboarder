@@ -1,5 +1,4 @@
 <script>
-	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 
@@ -11,10 +10,10 @@
 	} from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
 
-	export let origin;
-	export let query;
+	/** @type {{prefix?: string, origin: any, query: any}} */
+	let { prefix = '', origin, query } = $props();
 	let queryName = query.name;
-	let queryNameDisplay = queryName;
+	let queryNameDisplay = $state(queryName);
 	let queryTitleDisplay = '';
 	//let { scalarFields, non_scalarFields } = getFields_Grouped(currentQueryFromRootTypes);
 	let currentQMS_info = schemaData.get_QMS_Field(queryName, 'query', schemaData);

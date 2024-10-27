@@ -1,7 +1,7 @@
 <script>
 	import Content from './Content.svelte';
 
-	let nodes = {
+	let nodes = $state({
 		node1: {
 			name: 'node 1',
 			items: [{ id: 'node2' }, { id: 'node3' }, { id: 'node4' }],
@@ -23,7 +23,7 @@
 			id: 'node4',
 			color: 'salmon'
 		}
-	};
+	});
 
 	for (let i = 5; i < 17; i++) {
 		nodes[`node${i}`] = { id: `node${i}`, name: `item ${i}` };

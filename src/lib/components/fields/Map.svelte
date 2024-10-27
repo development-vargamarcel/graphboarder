@@ -1,4 +1,6 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import {
 		geojson_transformer,
 		geojson_transformerREVERSE
@@ -6,9 +8,8 @@
 	import * as mapboxglOriginal from 'mapbox-gl';
 	import { createEventDispatcher, onMount } from 'svelte';
 	let mapboxgl = mapboxglOriginal;
-	export let containerEl;
-	export let dispatchValue;
-	export let rawValue;
+	/** @type {{containerEl: any, dispatchValue: any, rawValue: any}} */
+	let { containerEl, dispatchValue, rawValue = $bindable() } = $props();
 	if (!rawValue && dispatchValue) {
 		rawValue = geojson_transformerREVERSE(dispatchValue);
 	}
@@ -19,10 +20,10 @@
 	};
 	const mapContainerId = generateUniqueId();
 	//s
-	let map;
-	let mapContainer;
+	let map = $state();
+	let mapContainer = $state();
 	let dispatch = createEventDispatcher();
-	let draw;
+	let draw = $state();
 	let location;
 	onMount(() => {
 		if (navigator.geolocation) {
@@ -100,21 +101,23 @@
 			});
 		}
 	});
-	let mapOnLoadHandler_set = false;
-	$: if (map && !mapOnLoadHandler_set) {
-		mapOnLoadHandler_set = true;
-		map.on('load', () => {
-			if (rawValue) {
-				console.log('rawValue in map', rawValue);
-				if (draw) {
-					rawValue.features.forEach((feature) => {
-						//console.log('feature added');
-						draw.add(feature);
-					});
+	let mapOnLoadHandler_set = $state(false);
+	run(() => {
+		if (map && !mapOnLoadHandler_set) {
+			mapOnLoadHandler_set = true;
+			map.on('load', () => {
+				if (rawValue) {
+					console.log('rawValue in map', rawValue);
+					if (draw) {
+						rawValue.features.forEach((feature) => {
+							//console.log('feature added');
+							draw.add(feature);
+						});
+					}
 				}
-			}
-		});
-	}
+			});
+		}
+	});
 	let showMap = true;
 </script>
 
@@ -122,7 +125,7 @@
 	id={mapContainerId}
 	bind:this={mapContainer}
 	class="h-max min-h-[110px]   aspect-video rounded-box"
-/>
+></div>
 
 <style>
 </style>

@@ -1,8 +1,9 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import CodeEditor from '$lib/components/fields/CodeEditor.svelte';
 	import AddColumn from './../../../../../lib/components/AddColumn.svelte';
 	import TypeList from './../../../../../lib/components/TypeList.svelte';
-	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
@@ -10,7 +11,6 @@
 	import Table from '$lib/components/Table.svelte';
 	const dispatch = createEventDispatcher();
 	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
-	export let enableMultiRowSelectionState = true;
 	/// if CPContext,QMSWraperContext will be relative to that
 
 	///
@@ -40,12 +40,13 @@
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 
-	$: console.log('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
+	run(() => {
+		console.log('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
+	});
 	onDestroy(() => {
 		document.getElementById('my-drawer-3')?.click();
 	});
 
-	export let currentQMS_info = schemaData.get_QMS_Field(QMSName, 'query', schemaData);
 	let dd_relatedRoot = getRootType(null, currentQMS_info.dd_rootName, schemaData);
 	if (!currentQMS_info) {
 		goto('/queries');
@@ -55,8 +56,8 @@
 	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData).find((pagType) => {
 		return pagType.name == currentQMS_info.dd_paginationType;
 	});
-	let activeArgumentsDataGrouped_Store_IS_SET = false;
-	$: {
+	let activeArgumentsDataGrouped_Store_IS_SET = $state(false);
+	run(() => {
 		console.log({
 			QMSWraperContext,
 			$activeArgumentsDataGrouped_Store
@@ -64,16 +65,16 @@
 
 		activeArgumentsDataGrouped_Store_IS_SET =
 			$activeArgumentsDataGrouped_Store.length > 0 ? true : false;
-	}
+	});
 	//
 	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], schemaData);
 
-	let queryData;
-	let rows = [];
+	let queryData = $state();
+	let rows = $state([]);
 	let rowsCurrent = [];
 	let loadedF;
 	let completeF;
-	let infiniteId = Math.random();
+	let infiniteId = $state(Math.random());
 	function infiniteHandler({ detail: { loaded, complete } }) {
 		loadedF = loaded;
 		completeF = complete;
@@ -169,7 +170,9 @@
 		}
 	});
 
-	$: console.log({ queryData });
+	run(() => {
+		console.log({ queryData });
+	});
 	if (scalarFields.length == 0) {
 		queryData = { fetching: false, error: false, data: false };
 	} else {
@@ -184,7 +187,7 @@
 		console.log(data);
 	});
 
-	let column_stepsOfFields = '';
+	let column_stepsOfFields = $state('');
 	const addColumnFromInput = (e) => {
 		if (e.key == 'Enter') {
 			let stepsOfFields = column_stepsOfFields.replace(/\s/g, '').replace(/\./g, '>').split('>');
@@ -202,7 +205,7 @@
 	};
 
 	//Active arguments logic
-	let showQMSBody = false;
+	let showQMSBody = $state(false);
 	let showNonPrettifiedQMSBody = false;
 	import { format } from 'graphql-formatter';
 	import hljs from 'highlight.js/lib/core';
@@ -212,13 +215,20 @@
 	import Modal from '$lib/components/Modal.svelte';
 	import GraphqlCodeDisplay from '$lib/components/GraphqlCodeDisplay.svelte';
 	import ControlPanel from '$lib/components/ControlPanel.svelte';
-	export let rowSelectionState;
+	/** @type {{prefix?: string, enableMultiRowSelectionState?: boolean, currentQMS_info?: any, rowSelectionState: any, children?: import('svelte').Snippet}} */
+	let {
+		prefix = '',
+		enableMultiRowSelectionState = true,
+		currentQMS_info = schemaData.get_QMS_Field(QMSName, 'query', schemaData),
+		rowSelectionState,
+		children
+	} = $props();
 
 	onMount(() => {
 		hljs.registerLanguage('graphql', graphql);
 		hljs.highlightAll();
 	});
-	let showModal = false;
+	let showModal = $state(false);
 	let showActiveFilters;
 </script>
 
@@ -271,9 +281,9 @@
 				}}
 				><div class="  w-full  ">
 					<div class="mx-auto mt-2  w-full   space-y-2   pb-2  ">
-						<div class="w-2" />
+						<div class="w-2"></div>
 						<ActiveArguments />
-						<div class="w-2" />
+						<div class="w-2"></div>
 					</div>
 				</div>
 			</Modal>
@@ -293,7 +303,7 @@
 	</div>
 	<button
 		class=" btn btn-xs grow normal-case "
-		on:click={() => {
+		onclick={() => {
 			showQMSBody = !showQMSBody;
 		}}>QMS body</button
 	>
@@ -307,19 +317,19 @@
 		</div>
 	{/if}
 	<button class="btn btn-xs btn-primary ">
-		<i class="bi bi-plus-circle-fill " />
+		<i class="bi bi-plus-circle-fill "></i>
 	</button>
 </div>
 
-<slot />
+{@render children?.()}
 {#if queryData.error}
 	<div class="px-4 mx-auto  mb-2">
 		<div class="alert alert-error shadow-lg ">
 			<div>
 				<button class="btn btn-ghost btn-sm p-0">
-					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<!-- svelte-ignore a11y_click_events_have_key_events -->
 					<svg
-						on:click={() => {
+						onclick={() => {
 							queryData.error = null;
 						}}
 						xmlns="http://www.w3.org/2000/svg"

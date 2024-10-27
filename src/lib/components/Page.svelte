@@ -3,17 +3,21 @@
 	//import { cubicInOut } from 'svelte/easing';
 	import { browser } from '$app/environment';
 
-	import { onDestroy, onMount, beforeUpdate, afterUpdate } from 'svelte';
+	import { onDestroy, onMount, } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { showTabs } from '$lib/stores/showTabs';
-	export let backPath;
-	export let CustomId;
-	export let MenuItem;
-	export let RememberScroll = false;
-	export let title;
+	/** @type {{backPath: any, CustomId: any, MenuItem: any, RememberScroll?: boolean, title: any, children?: import('svelte').Snippet}} */
+	let {
+		backPath,
+		CustomId,
+		MenuItem,
+		RememberScroll = false,
+		title,
+		children
+	} = $props();
 	//showTabs.set(true); // must change this line !!!!!!!!!!!!!!
 
-	let hasPreviousPage = false;
+	let hasPreviousPage = $state(false);
 	if (browser) {
 		hasPreviousPage = window.history.length == 1 ? false : true;
 	}
@@ -82,7 +86,7 @@
 		id={CustomId}
 		class=" z-0 h-screen w-full overflow-y-scrollxxx overflow-hidden "
 	>
-		<slot />
+		{@render children?.()}
 	</main>
 {:else}
 	<main
@@ -93,13 +97,13 @@
 	>
 		<div class="navbar sticky top-0 mb-2  bg-base-100   shadow-md text-base-content w-full z-50">
 			<div class="flex-none ">
-				<button class="btn btn-square btn-ghost" on:click={backButtonClick}>
+				<button class="btn btn-square btn-ghost" onclick={backButtonClick}>
 					{#if hasPreviousPage}
-						<i class="bi bi-chevron-left  text-success text-3xl font-black" />
+						<i class="bi bi-chevron-left  text-success text-3xl font-black"></i>
 					{:else if backPath}
-						<i class="bi bi-box-arrow-left  text-success text-3xl font-black" />
+						<i class="bi bi-box-arrow-left  text-success text-3xl font-black"></i>
 					{:else}
-						<i class="bi bi-house  text-success text-3xl font-black" />
+						<i class="bi bi-house  text-success text-3xl font-black"></i>
 					{/if}
 				</button>
 			</div>
@@ -108,7 +112,7 @@
 			</div>
 		</div>
 		<div class="w-full md:w-[70vw]   p-2 ">
-			<slot />
+			{@render children?.()}
 		</div>
 	</main>
 {/if}

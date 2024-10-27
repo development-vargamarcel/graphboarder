@@ -1,7 +1,12 @@
 <script lang="ts">
 	import type { LayoutData } from './$types';
 
-	export let data: LayoutData;
+	interface Props {
+		data: LayoutData;
+		children?: import('svelte').Snippet;
+	}
+
+	let { data, children }: Props = $props();
 </script>
 
-<slot />
+{@render children?.()}

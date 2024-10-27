@@ -54,7 +54,7 @@
 			<div class="card-actions justify-end">
 				<button
 					class="btn btn-error"
-					on:click={() => {
+					onclick={() => {
 						dispatch('hide');
 					}}>hide</button
 				>

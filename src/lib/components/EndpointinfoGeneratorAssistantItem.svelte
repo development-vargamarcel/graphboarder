@@ -1,9 +1,8 @@
 <script>
 	import { getContext } from 'svelte';
 
-	export let type;
-	export let i;
-	export let prefix = '';
+	/** @type {{type: any, i: any, prefix?: string}} */
+	let { type, i, prefix = '' } = $props();
 
 	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
@@ -14,7 +13,7 @@
 	<th>{i + 1}</th>
 	<td
 		class="cursor-pointer hover:text-primary"
-		on:click={() => {
+		onclick={() => {
 			console.log(type);
 		}}
 	>
@@ -22,7 +21,7 @@
 	>
 	<td
 		class="cursor-pointer hover:text-primary"
-		on:click={() => {
+		onclick={() => {
 			console.log(schemaData.get_rootType(null, type.dd_rootName, schemaData));
 		}}>{type.dd_rootName}</td
 	>
