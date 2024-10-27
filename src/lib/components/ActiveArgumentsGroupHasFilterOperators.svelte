@@ -550,7 +550,7 @@
 					<div
 						tabindex={dragDisabled ? 0 : -1}
 						aria-label="drag-handle"
-						class="  transition:all duration-500 bi bi-grip-vertical ml-2  -mr-1 text-lg rounded-l-md {node?.operator ==
+						class="  transition:all|global duration-500 bi bi-grip-vertical ml-2  -mr-1 text-lg rounded-l-md {node?.operator ==
 							undefined || node?.operator == 'bonded'
 							? 'text-base-content'
 							: node?.operator == '_and'
