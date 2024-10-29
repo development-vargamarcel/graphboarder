@@ -11,8 +11,6 @@
 
 	let loadMore = false;
 
-
-
 	console.log({ data, columns });
 
 	const getColumnVisibility = (columns) => {
@@ -139,9 +137,11 @@
 												: ''} "
 										>
 											{#if !header.isPlaceholder}
-												{@const SvelteComponent = flexRender(header.column.columnDef.header, header.getContext())}
-												<SvelteComponent
-												/>
+												{@const SvelteComponent = flexRender(
+													header.column.columnDef.header,
+													header.getContext()
+												)}
+												<SvelteComponent />
 											{/if}
 										</div>
 										<div class="bi bi-chevron-down"></div>
