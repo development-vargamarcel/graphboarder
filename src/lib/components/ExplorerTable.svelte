@@ -8,7 +8,31 @@
 	import ColumnInfo from './ColumnInfo.svelte';
 	import { createEventDispatcher, getContext } from 'svelte';
 	const dispatch = createEventDispatcher();
+	interface Props {
+		prefix?: string;
+		enableMultiRowSelectionState?: boolean;
+		enableRowSelectionState?: boolean;
+		infiniteHandler: any;
+		infiniteId: any;
+		data?: any;
+		columns?: any;
+		rowSelectionState?: any;
+		idColName: any;
+		requiredColNames: any;
+	}
 
+	let {
+		prefix = '',
+		enableMultiRowSelectionState = true,
+		enableRowSelectionState = true,
+		infiniteHandler,
+		infiniteId,
+		data = [],
+		columns = [],
+		rowSelectionState = $bindable({}),
+		idColName,
+		requiredColNames
+	}: Props = $props();
 	let loadMore = false;
 
 	console.log({ data, columns });
@@ -42,31 +66,7 @@
 	};
 
 	console.log({ rowSelectionState });
-	interface Props {
-		prefix?: string;
-		enableMultiRowSelectionState?: boolean;
-		enableRowSelectionState?: boolean;
-		infiniteHandler: any;
-		infiniteId: any;
-		data?: any;
-		columns?: any;
-		rowSelectionState?: any;
-		idColName: any;
-		requiredColNames: any;
-	}
 
-	let {
-		prefix = '',
-		enableMultiRowSelectionState = true,
-		enableRowSelectionState = true,
-		infiniteHandler,
-		infiniteId,
-		data = [],
-		columns = [],
-		rowSelectionState = $bindable({}),
-		idColName,
-		requiredColNames
-	}: Props = $props();
 	const optionsObj = {
 		data: data,
 		columns: columns,

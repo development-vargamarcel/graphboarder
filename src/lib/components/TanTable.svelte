@@ -2,7 +2,7 @@
 	import { run, stopPropagation } from 'svelte/legacy';
 
 	import { writable } from 'svelte/store';
-	import { Filters, createSvelteTable, flexRender, getCoreRowModel } from '@tanstack/svelte-table';
+	import { createSvelteTable, flexRender, getCoreRowModel } from '@tanstack/svelte-table';
 	import type { ColumnDef, TableOptions } from '@tanstack/table-core/src/types';
 	import { formatData, getPreciseType, getTableCellData } from '$lib/utils/usefulFunctions';
 	import ColumnInfo from './ColumnInfo.svelte';
@@ -17,7 +17,6 @@
 
 	let idColName = QMSWraperContext?.idColName;
 	const { paginationOptions } = getContext(`${prefix}QMSWraperContext`);
-
 
 	const getColumnVisibility = (cols) => {
 		let columnVisibility = {};
@@ -145,9 +144,11 @@
 												: ''}
 										>
 											{#if !header.isPlaceholder}
-												{@const SvelteComponent = flexRender(header.column.columnDef.header, header.getContext())}
-												<SvelteComponent
-												/>
+												{@const SvelteComponent = flexRender(
+													header.column.columnDef.header,
+													header.getContext()
+												)}
+												<SvelteComponent />
 											{/if}
 										</div>
 										<div class="bi bi-chevron-down"></div>
