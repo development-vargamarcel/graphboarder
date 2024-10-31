@@ -23,11 +23,6 @@
 	import SelectModal from './SelectModal.svelte';
 	import ExplorerTable from './ExplorerTable.svelte';
 	import SelectedRowsDisplay from './SelectedRowsDisplay.svelte';
-	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
-	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
-	let dispatch = createEventDispatcher();
-	//
-	/** @type {{setNotInUseIfNotValid?: boolean, setNotInUseIfNotValidAndENUM?: boolean, parentNode: any, node: any, prefix?: string, isNot: any, activeArgumentData: any, group: any, activeArgumentsDataGrouped: any, nodes: any, originalNodes: any, type: any, parentNodeId: any, availableOperators: any, startDrag: any}} */
 	let {
 		setNotInUseIfNotValid = true,
 		setNotInUseIfNotValidAndENUM = true,
@@ -45,6 +40,12 @@
 		availableOperators,
 		startDrag
 	} = $props();
+	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
+	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
+	let dispatch = createEventDispatcher();
+	//
+	/** @type {{setNotInUseIfNotValid?: boolean, setNotInUseIfNotValidAndENUM?: boolean, parentNode: any, node: any, prefix?: string, isNot: any, activeArgumentData: any, group: any, activeArgumentsDataGrouped: any, nodes: any, originalNodes: any, type: any, parentNodeId: any, availableOperators: any, startDrag: any}} */
+
 	let idColNameOfSelectedRow;
 	//
 	setContext(
@@ -366,10 +367,14 @@
 					onclick={() => {
 						showModal = true;
 					}}
-					oncontextmenu={self(stopPropagation(preventDefault(() => {
-						showSelectModal = !showSelectModal;
-						expandedVersion = !expandedVersion;
-					})))}
+					oncontextmenu={self(
+						stopPropagation(
+							preventDefault(() => {
+								showSelectModal = !showSelectModal;
+								expandedVersion = !expandedVersion;
+							})
+						)
+					)}
 				>
 					<!-- {#if group.group_name == 'root'}
 						{activeArgumentData.stepsOfFields?.join(' > ') + ':'}
@@ -394,9 +399,13 @@
 					{#if !expandedVersion && !$mutationVersion && !$showInputField}
 						<p
 							class="shrink-0 text-base-content text-xs font-light pt-[1px] mx-2"
-							onclick={self(stopPropagation(preventDefault(() => {
-								expandedVersion = true;
-							})))}
+							onclick={self(
+								stopPropagation(
+									preventDefault(() => {
+										expandedVersion = true;
+									})
+								)
+							)}
 						>
 							{valueToDisplay}
 						</p>
@@ -422,5 +431,9 @@
 </label>
 
 {#if activeArgumentData[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
-	<div class=" ml-8 h-0 absolute w-11/12 top-0 left-0 visible" id="shadowEl" bind:this={shadowEl}></div>
+	<div
+		class=" ml-8 h-0 absolute w-11/12 top-0 left-0 visible"
+		id="shadowEl"
+		bind:this={shadowEl}
+	></div>
 {/if}

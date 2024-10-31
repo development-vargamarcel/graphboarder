@@ -1,11 +1,11 @@
 <script>
 	import { getRootType } from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
-	export const prefix = '';
+	/** @type {{group: any,prefix: any}} */
+	let { group, prefix } = $props();
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
-	/** @type {{group: any}} */
-	let { group } = $props();
+
 	let showDescription = $state();
 </script>
 

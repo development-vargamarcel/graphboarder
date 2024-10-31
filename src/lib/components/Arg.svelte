@@ -2,23 +2,22 @@
 	import Arg from './Arg.svelte';
 	//!!! ENUM TYPES WILL CREATE SOM PROBLEMS AS OF 5/6/2022
 	import { fade, fly, slide } from 'svelte/transition';
-	export const prefix = '';
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const schemaData = QMSMainWraperContext?.schemaData;
-	import { getRootType } from '$lib/utils/usefulFunctions';
-	import ArgInfoDisplay from '$lib/components/ArgInfoDisplay.svelte';
-	import { circIn, expoIn, expoOut } from 'svelte/easing';
-	import { getContext } from 'svelte';
-
-	/** @type {{index: any, type: any, template: any, predefinedFirstSteps: any, stepsOfFields?: any, groupName: any}} */
+	/** @type {{index: any, type: any, template: any, predefinedFirstSteps: any, stepsOfFields?: any, groupName: any,prefix: any}} */
 	let {
 		index,
 		type,
 		template,
 		predefinedFirstSteps,
 		stepsOfFields = $bindable([]),
-		groupName
+		groupName,
+		prefix
 	} = $props();
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const schemaData = QMSMainWraperContext?.schemaData;
+	import { getRootType } from '$lib/utils/usefulFunctions';
+	import ArgInfoDisplay from '$lib/components/ArgInfoDisplay.svelte';
+	import { circIn, expoIn, expoOut } from 'svelte/easing';
+	import { getContext } from 'svelte';
 
 	console.log({ type });
 	console.log({ predefinedFirstSteps });
@@ -61,7 +60,7 @@
 {#if template == 'default'}<div class="pt-2 text-center text-xs"></div>{/if}
 
 <div
-	class="  pb-0 pl-1 pr-0  rounded-r-sm rounded-l-none shadow-none  space-x-2  normal-case text-xs min-w-max {showExpand
+	class="  pb-0 pl-1 pr-0 rounded-r-sm rounded-l-none shadow-none space-x-2 normal-case text-xs min-w-max {showExpand
 		? ''
 		: ''}"
 >

@@ -4,11 +4,6 @@
 	const activeArgumentsContext = { stepsOfFieldsThisAppliesTo, isControlPanelChild };
 	import { getContext, setContext } from 'svelte';
 	import ActiveArgumentsGroupWraper from '$lib/components/ActiveArgumentsGroupWraper.svelte';
-	setContext(`${prefix}activeArgumentsContext`, activeArgumentsContext);
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-	const schemaData = QMSMainWraperContext?.schemaData;
-	let QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 	interface Props {
 		isControlPanelChild: any;
 		stepsOfFieldsThisAppliesTo: any;
@@ -26,6 +21,11 @@
 		activeArgumentsDataGrouped_Store = QMSWraperContext.activeArgumentsDataGrouped_Store,
 		QMS_info = QMSWraperContext.QMS_info
 	}: Props = $props();
+	setContext(`${prefix}activeArgumentsContext`, activeArgumentsContext);
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+	const schemaData = QMSMainWraperContext?.schemaData;
+	let QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 
 	let activeArgumentsDataGrouped = [];
 

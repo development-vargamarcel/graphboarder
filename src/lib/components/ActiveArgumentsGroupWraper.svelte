@@ -8,15 +8,6 @@
 	import Toggle from './fields/Toggle.svelte';
 	import { writable } from 'svelte/store';
 	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
-
-	let dragDisabled = true;
-	const dispatch = createEventDispatcher();
-	function handleSort(e) {
-		group.group_args = e.detail.items;
-		//console.log('choisesWithId', group.group_args);
-		dragDisabled = true;
-	}
-	const hasGroup_argsNode = group.group_argsNode;
 	/** @type {{group: any, argsInfo: any, update_activeArgumentsDataGrouped: any, activeArgumentsDataGrouped: any, prefix?: string}} */
 	let {
 		group = $bindable(),
@@ -25,6 +16,14 @@
 		activeArgumentsDataGrouped = $bindable(),
 		prefix = ''
 	} = $props();
+	let dragDisabled = true;
+	const dispatch = createEventDispatcher();
+	function handleSort(e) {
+		group.group_args = e.detail.items;
+		//console.log('choisesWithId', group.group_args);
+		dragDisabled = true;
+	}
+	const hasGroup_argsNode = group.group_argsNode;
 
 	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
 	const CPItemContext = getContext(`${prefix}CPItemContext`);
