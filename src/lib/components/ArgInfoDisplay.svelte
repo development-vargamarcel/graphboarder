@@ -6,7 +6,6 @@
 	import { getRootType } from '$lib/utils/usefulFunctions';
 	import { createEventDispatcher, getContext } from 'svelte';
 	const dispatch = createEventDispatcher();
-	console.log({ type });
 
 	/** @type {{expand: any, showExpand: any, index: any, type: any, template: any, stepsOfFields: any, predefinedFirstSteps: any, groupName: any,prefix:any}} */
 	let {
