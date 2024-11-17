@@ -2,7 +2,7 @@
 	import Content from './Content.svelte';
 	import { flip } from 'svelte/animate';
 	import { dndzone } from 'svelte-dnd-action';
-
+	let { a, b, c } = { a: 'a', b: 'b', c: 'c' };
 	/** @type {{nodes: any, node: any}} */
 	let { nodes = $bindable(), node = $bindable() } = $props();
 
