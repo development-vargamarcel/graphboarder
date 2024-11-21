@@ -1,4 +1,13 @@
 <script>
+	let {
+		prefix = '',
+		QMS_info,
+		enableMultiRowSelectionState = true,
+		rowSelectionState,
+		QMSWraperContext = $bindable({}),
+		node
+	} = $props();
+
 	import { run } from 'svelte/legacy';
 
 	import QmsWraper from '$lib/components/QMSWraper.svelte';
@@ -10,14 +19,7 @@
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
 	/** @type {{prefix?: string, QMS_info: any, enableMultiRowSelectionState?: boolean, rowSelectionState: any, QMSWraperContext?: any, node: any}} */
-	let {
-		prefix = '',
-		QMS_info,
-		enableMultiRowSelectionState = true,
-		rowSelectionState,
-		QMSWraperContext = $bindable({}),
-		node
-	} = $props();
+
 	console.log('nooooddeeee', { node });
 	let getManyQMS = $state();
 	run(() => {

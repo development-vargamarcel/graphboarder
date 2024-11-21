@@ -1,4 +1,6 @@
 <script>
+	let { endpointInfo } = $props();
+
 	import { run } from 'svelte/legacy';
 
 	import { page } from '$app/stores';
@@ -13,7 +15,7 @@
 	let endpointid = $page.params.endpointid;
 	console.log({ endpointid });
 	/** @type {{endpointInfo: any}} */
-	let { endpointInfo } = $props();
+
 	let links = [
 		{
 			title: 'Home',

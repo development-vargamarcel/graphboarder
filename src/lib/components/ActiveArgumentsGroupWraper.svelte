@@ -1,4 +1,12 @@
 <script>
+	let {
+		group = $bindable(),
+		argsInfo = $bindable(),
+		update_activeArgumentsDataGrouped = $bindable(),
+		activeArgumentsDataGrouped = $bindable(),
+		prefix = ''
+	} = $props();
+
 	import ActiveArgumentsGroup_addFilterAndSortingButton from '$lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte';
 	import ActiveArgumentsGroup_info from '$lib/components/ActiveArgumentsGroup_info.svelte';
 
@@ -9,13 +17,7 @@
 	import { writable } from 'svelte/store';
 	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
 	/** @type {{group: any, argsInfo: any, update_activeArgumentsDataGrouped: any, activeArgumentsDataGrouped: any, prefix?: string}} */
-	let {
-		group = $bindable(),
-		argsInfo = $bindable(),
-		update_activeArgumentsDataGrouped = $bindable(),
-		activeArgumentsDataGrouped = $bindable(),
-		prefix = ''
-	} = $props();
+
 	let dragDisabled = true;
 	const dispatch = createEventDispatcher();
 	function handleSort(e) {

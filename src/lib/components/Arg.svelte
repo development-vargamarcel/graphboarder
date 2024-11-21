@@ -1,8 +1,4 @@
 <script>
-	import Arg from './Arg.svelte';
-	//!!! ENUM TYPES WILL CREATE SOM PROBLEMS AS OF 5/6/2022
-	import { fade, fly, slide } from 'svelte/transition';
-	/** @type {{index: any, type: any, template: any, predefinedFirstSteps: any, stepsOfFields?: any, groupName: any,prefix: any}} */
 	let {
 		index,
 		type,
@@ -12,6 +8,12 @@
 		groupName,
 		prefix
 	} = $props();
+
+	import Arg from './Arg.svelte';
+	//!!! ENUM TYPES WILL CREATE SOM PROBLEMS AS OF 5/6/2022
+	import { fade, fly, slide } from 'svelte/transition';
+	/** @type {{index: any, type: any, template: any, predefinedFirstSteps: any, stepsOfFields?: any, groupName: any,prefix: any}} */
+
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
 	import { getRootType } from '$lib/utils/usefulFunctions';

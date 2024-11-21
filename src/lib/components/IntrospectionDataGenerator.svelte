@@ -1,4 +1,6 @@
 <script module lang="ts">
+	let { prefix = '', children }: Props = $props();
+
 	export const prerender = true;
 </script>
 
@@ -8,14 +10,13 @@
 	import { endpointsSchemaData } from '$lib/stores/testData/endpointsSchemaData';
 	import { createClient, fetchExchange } from '@urql/core';
 	import { browser } from '$app/environment';
-	import {  queryStore,gql,getContextClient  } from '@urql/svelte';
+	import { queryStore, gql, getContextClient } from '@urql/svelte';
 	import { getContext } from 'svelte';
 	interface Props {
 		prefix?: string;
 		children?: import('svelte').Snippet;
 	}
 
-	let { prefix = '', children }: Props = $props();
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
@@ -31,102 +32,111 @@
 		$schemaData = storedSchemaData;
 	}
 	//setClient(urqlCoreClient);
-  //ds
+	//ds
 	const queryStoreRes = queryStore({
 		client: getContextClient(),
-		query:gql`
-    query IntrospectionQuery {
-      __schema {
-        queryType { name }
-        mutationType { name }
-        subscriptionType { name }
-        types {
-          ...FullType
-        }
-        directives {
-          name
-          description
-          locations
-          args {
-            ...InputValue
-          }
-        }
-      }
-    }
+		query: gql`
+			query IntrospectionQuery {
+				__schema {
+					queryType {
+						name
+					}
+					mutationType {
+						name
+					}
+					subscriptionType {
+						name
+					}
+					types {
+						...FullType
+					}
+					directives {
+						name
+						description
+						locations
+						args {
+							...InputValue
+						}
+					}
+				}
+			}
 
-    fragment FullType on __Type {
-      kind
-      name
-      description
-      fields(includeDeprecated: true) {
-        name
-        description
-        args {
-          ...InputValue
-        }
-        type {
-          ...TypeRef
-        }
-        isDeprecated
-        deprecationReason
-      }
-      inputFields {
-        ...InputValue
-      }
-      interfaces {
-        ...TypeRef
-      }
-      enumValues(includeDeprecated: true) {
-        name
-        description
-        isDeprecated
-        deprecationReason
-      }
-      possibleTypes {
-        ...TypeRef
-      }
-    }
+			fragment FullType on __Type {
+				kind
+				name
+				description
+				fields(includeDeprecated: true) {
+					name
+					description
+					args {
+						...InputValue
+					}
+					type {
+						...TypeRef
+					}
+					isDeprecated
+					deprecationReason
+				}
+				inputFields {
+					...InputValue
+				}
+				interfaces {
+					...TypeRef
+				}
+				enumValues(includeDeprecated: true) {
+					name
+					description
+					isDeprecated
+					deprecationReason
+				}
+				possibleTypes {
+					...TypeRef
+				}
+			}
 
-    fragment InputValue on __InputValue {
-      name
-      description
-      type { ...TypeRef }
-      defaultValue
-    }
+			fragment InputValue on __InputValue {
+				name
+				description
+				type {
+					...TypeRef
+				}
+				defaultValue
+			}
 
-    fragment TypeRef on __Type {
-      kind
-      name
-      ofType {
-        kind
-        name
-        ofType {
-          kind
-          name
-          ofType {
-            kind
-            name
-            ofType {
-              kind
-              name
-              ofType {
-                kind
-                name
-                ofType {
-                  kind
-                  name
-                  ofType {
-                    kind
-                    name
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `});
+			fragment TypeRef on __Type {
+				kind
+				name
+				ofType {
+					kind
+					name
+					ofType {
+						kind
+						name
+						ofType {
+							kind
+							name
+							ofType {
+								kind
+								name
+								ofType {
+									kind
+									name
+									ofType {
+										kind
+										name
+										ofType {
+											kind
+											name
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		`
+	});
 	// if (!storedSchemaData) {
 	// 	query(queryStoreRes);
 	// }
@@ -150,7 +160,7 @@
 		console.log('schemaData', $schemaData);
 	};
 	run(() => {
-		console.log({$queryStoreRes})
+		console.log({ $queryStoreRes });
 	});
 	run(() => {
 		if (!$queryStoreRes.fetching) {

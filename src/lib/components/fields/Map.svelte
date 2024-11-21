@@ -1,4 +1,6 @@
 <script>
+	let { containerEl, dispatchValue, rawValue = $bindable() } = $props();
+
 	import { run } from 'svelte/legacy';
 
 	import {
@@ -9,7 +11,7 @@
 	import { createEventDispatcher, onMount } from 'svelte';
 	let mapboxgl = mapboxglOriginal;
 	/** @type {{containerEl: any, dispatchValue: any, rawValue: any}} */
-	let { containerEl, dispatchValue, rawValue = $bindable() } = $props();
+
 	if (!rawValue && dispatchValue) {
 		rawValue = geojson_transformerREVERSE(dispatchValue);
 	}
@@ -124,7 +126,7 @@
 <div
 	id={mapContainerId}
 	bind:this={mapContainer}
-	class="h-max min-h-[110px]   aspect-video rounded-box"
+	class="h-max min-h-[110px] aspect-video rounded-box"
 ></div>
 
 <style>

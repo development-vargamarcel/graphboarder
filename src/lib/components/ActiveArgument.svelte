@@ -1,4 +1,22 @@
 <script>
+	let {
+		setNotInUseIfNotValid = true,
+		setNotInUseIfNotValidAndENUM = true,
+		parentNode,
+		node,
+		prefix = '',
+		isNot = $bindable(),
+		activeArgumentData = $bindable(),
+		group,
+		activeArgumentsDataGrouped,
+		nodes = $bindable(),
+		originalNodes,
+		type,
+		parentNodeId,
+		availableOperators,
+		startDrag
+	} = $props();
+
 	import { run, stopPropagation, self, preventDefault } from 'svelte/legacy';
 
 	import Type from '$lib/components/Type.svelte';
@@ -23,23 +41,7 @@
 	import SelectModal from './SelectModal.svelte';
 	import ExplorerTable from './ExplorerTable.svelte';
 	import SelectedRowsDisplay from './SelectedRowsDisplay.svelte';
-	let {
-		setNotInUseIfNotValid = true,
-		setNotInUseIfNotValidAndENUM = true,
-		parentNode,
-		node,
-		prefix = '',
-		isNot = $bindable(),
-		activeArgumentData = $bindable(),
-		group,
-		activeArgumentsDataGrouped,
-		nodes = $bindable(),
-		originalNodes,
-		type,
-		parentNodeId,
-		availableOperators,
-		startDrag
-	} = $props();
+
 	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
 	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
 	let dispatch = createEventDispatcher();

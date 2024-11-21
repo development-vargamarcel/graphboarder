@@ -1,12 +1,4 @@
 <script>
-	import { getContext } from 'svelte';
-	import SelectModal from './SelectModal.svelte';
-	import Fuse from 'fuse.js';
-	import Modal from './Modal.svelte';
-	import SelectQMS from './SelectQMS.svelte';
-	import { getDeepField } from '$lib/utils/usefulFunctions';
-
-	/** @type {{nodes: any, parentNodeId: any, parentNode?: any, node: any, availableOperators: any, group: any, type: any, originalNodes: any, prefix?: string, addDefaultFields: any, showSelectQMSModal?: boolean, selectedRowsColValues?: any, field: any}} */
 	let {
 		nodes,
 		parentNodeId,
@@ -22,6 +14,16 @@
 		selectedRowsColValues = [],
 		field
 	} = $props();
+
+	import { getContext } from 'svelte';
+	import SelectModal from './SelectModal.svelte';
+	import Fuse from 'fuse.js';
+	import Modal from './Modal.svelte';
+	import SelectQMS from './SelectQMS.svelte';
+	import { getDeepField } from '$lib/utils/usefulFunctions';
+
+	/** @type {{nodes: any, parentNodeId: any, parentNode?: any, node: any, availableOperators: any, group: any, type: any, originalNodes: any, prefix?: string, addDefaultFields: any, showSelectQMSModal?: boolean, selectedRowsColValues?: any, field: any}} */
+
 	const nodeContext_forDynamicData = getContext(`${prefix}nodeContext_forDynamicData`);
 	let selectedQMS = nodeContext_forDynamicData.selectedQMS;
 	let QMSRows = nodeContext_forDynamicData.QMSRows;

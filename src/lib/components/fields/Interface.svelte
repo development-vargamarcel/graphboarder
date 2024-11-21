@@ -1,4 +1,12 @@
 <script>
+	let {
+		prefix = '',
+		typeInfo = $bindable(),
+		alwaysOn_interfacePicker = false,
+		dispatchValue = $bindable(),
+		rawValue = $bindable(typeExtraData?.defaultValue)
+	} = $props();
+
 	import { run } from 'svelte/legacy';
 
 	import ENUMInterface from './ENUMInterface.svelte';
@@ -18,13 +26,6 @@
 
 	let typeExtraData = $state(endpointInfo.get_typeExtraData(typeInfo));
 	/** @type {{prefix?: string, typeInfo: any, alwaysOn_interfacePicker?: boolean, dispatchValue: any, rawValue?: any}} */
-	let {
-		prefix = '',
-		typeInfo = $bindable(),
-		alwaysOn_interfacePicker = false,
-		dispatchValue = $bindable(),
-		rawValue = $bindable(typeExtraData?.defaultValue)
-	} = $props();
 
 	run(() => {
 		if ($choosenDisplayInterface) {

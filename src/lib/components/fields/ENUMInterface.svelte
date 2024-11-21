@@ -1,8 +1,10 @@
 <script>
+	let { typeInfo, rawValue, dispatchValue } = $props();
+
 	import { createEventDispatcher } from 'svelte';
 	import FilterGroup from '$lib/components/FilterGroup.svelte';
 	/** @type {{typeInfo: any, rawValue: any, dispatchValue: any}} */
-	let { typeInfo, rawValue, dispatchValue } = $props();
+
 	const dispatch = createEventDispatcher();
 </script>
 

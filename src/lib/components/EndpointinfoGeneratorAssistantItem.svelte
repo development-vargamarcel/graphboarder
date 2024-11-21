@@ -1,8 +1,9 @@
 <script>
+	let { type, i, prefix = '' } = $props();
+
 	import { getContext } from 'svelte';
 
 	/** @type {{type: any, i: any, prefix?: string}} */
-	let { type, i, prefix = '' } = $props();
 
 	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);

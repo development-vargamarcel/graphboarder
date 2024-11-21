@@ -1,4 +1,15 @@
 <script lang="ts">
+	let {
+		prefix = '',
+		enableMultiRowSelectionState = true,
+		enableRowSelectionState = true,
+		infiniteHandler,
+		infiniteId,
+		data,
+		cols = [],
+		rowSelectionState = $bindable({})
+	}: Props = $props();
+
 	import { run, stopPropagation } from 'svelte/legacy';
 
 	import { writable } from 'svelte/store';
@@ -51,16 +62,6 @@
 		rowSelectionState?: any;
 	}
 
-	let {
-		prefix = '',
-		enableMultiRowSelectionState = true,
-		enableRowSelectionState = true,
-		infiniteHandler,
-		infiniteId,
-		data,
-		cols = [],
-		rowSelectionState = $bindable({})
-	}: Props = $props();
 	const setRowSelection = (updater) => {
 		if (updater instanceof Function) {
 			rowSelectionState = updater(rowSelectionState);

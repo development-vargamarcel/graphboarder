@@ -1,4 +1,27 @@
 <script>
+	let {
+		prefix = '',
+		extraInfo = {},
+		initialGqlArgObj = {},
+		isOutermostQMSWraper = getContext(`${prefix}QMSWraperContext`) ? false : true,
+		QMSType = 'query',
+		QMSName = `${Math.random()}`,
+		QMS_info = $bindable(schemaData.get_QMS_Field(QMSName, QMSType, schemaData)),
+		QMSWraperContext = $bindable({}),
+		activeArgumentsDataGrouped_StoreInitialValue,
+		activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store(
+			activeArgumentsDataGrouped_StoreInitialValue
+		),
+		tableColsData_StoreInitialValue = $bindable([]),
+		finalGqlArgObj_Store = Create_finalGqlArgObj_Store(
+			activeArgumentsDataGrouped_Store,
+			paginationState
+		),
+		QMSWraperContextGiven,
+		preferGivenQMSWraperContext = true,
+		children
+	} = $props();
+
 	import { run } from 'svelte/legacy';
 
 	import { Create_paginationOptions } from '$lib/stores/pagination/paginationOptions';
@@ -226,28 +249,7 @@
 		console.log('$paginationState_derived', $paginationState_derived);
 	});
 	/** @type {{prefix?: string, extraInfo?: any, initialGqlArgObj?: any, isOutermostQMSWraper?: any, QMSType?: string, QMSName?: any, QMS_info?: any, QMSWraperContext?: any, activeArgumentsDataGrouped_StoreInitialValue: any, activeArgumentsDataGrouped_Store?: any, tableColsData_StoreInitialValue?: any, finalGqlArgObj_Store?: any, QMSWraperContextGiven: any, preferGivenQMSWraperContext?: boolean, children?: import('svelte').Snippet}} */
-	let {
-		prefix = '',
-		extraInfo = {},
-		initialGqlArgObj = {},
-		isOutermostQMSWraper = getContext(`${prefix}QMSWraperContext`) ? false : true,
-		QMSType = 'query',
-		QMSName = `${Math.random()}`,
-		QMS_info = $bindable(schemaData.get_QMS_Field(QMSName, QMSType, schemaData)),
-		QMSWraperContext = $bindable({}),
-		activeArgumentsDataGrouped_StoreInitialValue,
-		activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store(
-		activeArgumentsDataGrouped_StoreInitialValue
-	),
-		tableColsData_StoreInitialValue = $bindable([]),
-		finalGqlArgObj_Store = Create_finalGqlArgObj_Store(
-		activeArgumentsDataGrouped_Store,
-		paginationState
-	),
-		QMSWraperContextGiven,
-		preferGivenQMSWraperContext = true,
-		children
-	} = $props();
+
 	QMSWraperContext = {
 		idColName,
 		returningColumnsLocationQMS_Info,

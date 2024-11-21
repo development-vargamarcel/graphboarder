@@ -1,8 +1,4 @@
 <script>
-	import { getContext, setContext } from 'svelte';
-
-	import ControlPanelItem from './ControlPanelItem.svelte';
-	/** @type {{type: any, prefix?: string, column_stepsOfFields: any, addColumnFromInput: any, dd_relatedRoot: any, QMSName: any, currentQMS_info: any}} */
 	let {
 		type,
 		prefix = '',
@@ -12,6 +8,12 @@
 		QMSName,
 		currentQMS_info
 	} = $props();
+
+	import { getContext, setContext } from 'svelte';
+
+	import ControlPanelItem from './ControlPanelItem.svelte';
+	/** @type {{type: any, prefix?: string, column_stepsOfFields: any, addColumnFromInput: any, dd_relatedRoot: any, QMSName: any, currentQMS_info: any}} */
+
 	const QMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	const { mergedChildren_controlPanel_Store } = QMSWraperContext;
 
