@@ -1,6 +1,7 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import AddColumn from './../../../../lib/components/AddColumn.svelte';
-	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
@@ -37,7 +38,9 @@
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 
-	$: console.log('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
+	run(() => {
+		console.log('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
+	});
 	onDestroy(() => {
 		document.getElementById('my-drawer-3')?.click();
 	});
@@ -51,19 +54,21 @@
 	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData).find((pagType) => {
 		return pagType.name == QMS_info?.dd_paginationType;
 	});
-	let activeArgumentsDataGrouped_Store_IS_SET = false;
-	$: activeArgumentsDataGrouped_Store_IS_SET =
-		$activeArgumentsDataGrouped_Store.length > 0 ? true : false;
+	let activeArgumentsDataGrouped_Store_IS_SET = $state(false);
+	run(() => {
+		activeArgumentsDataGrouped_Store_IS_SET =
+			$activeArgumentsDataGrouped_Store.length > 0 ? true : false;
+	});
 	//
 
 	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], schemaData);
 
-	let queryData;
-	let rows = [];
+	let queryData = $state();
+	let rows = $state([]);
 	let rowsCurrent = [];
 	let loadedF;
 	let completeF;
-	let infiniteId = Math.random();
+	let infiniteId = $state(Math.random());
 	console.log({ infiniteId });
 	function infiniteHandler({ detail: { loaded, complete } }) {
 		loadedF = loaded;
@@ -159,7 +164,9 @@
 		}
 	});
 
-	$: console.log({ queryData });
+	run(() => {
+		console.log({ queryData });
+	});
 	if (scalarFields.length == 0) {
 		queryData = { fetching: false, error: false, data: false };
 	} else {
@@ -173,7 +180,7 @@
 		console.log(data);
 	});
 
-	let column_stepsOfFields = '';
+	let column_stepsOfFields = $state('');
 	const addColumnFromInput = (e) => {
 		if (e.key == 'Enter') {
 			let stepsOfFields = column_stepsOfFields.replace(/\s/g, '').replace(/\./g, '>').split('>');
@@ -191,7 +198,7 @@
 	};
 
 	//Active arguments logic
-	let showQMSBody = false;
+	let showQMSBody = $state(false);
 	let showNonPrettifiedQMSBody = false;
 	import { format } from 'graphql-formatter';
 	import hljs from 'highlight.js/lib/core';
@@ -202,6 +209,14 @@
 	import TypeList from '$lib/components/TypeList.svelte';
 	import CodeEditor from '$lib/components/fields/CodeEditor.svelte';
 	import GraphqlCodeDisplay from '$lib/components/GraphqlCodeDisplay.svelte';
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [prefix]
+	 * @property {import('svelte').Snippet} [children]
+	 */
+
+	/** @type {Props} */
+	let { prefix = '', children } = $props();
 
 	onMount(() => {
 		hljs.registerLanguage('graphql', graphql);
@@ -214,14 +229,14 @@
 <div class=" h-full">
 	<div class="  w-full   px-0 mb-10 ">
 		<div class=" mt-2     space-y-2   pb-2  bg-base-100 rounded-box ">
-			<div class="w-2" />
+			<div class="w-2"></div>
 			<ActiveArguments />
-			<div class="w-2" />
+			<div class="w-2"></div>
 
 			<div class=" w-full p-2">
 				<button
 					class="btn btn-sm btn-primary  w-full"
-					on:click={() => {
+					onclick={() => {
 						let mutationBody = $QMS_bodyPartsUnifier_StoreDerived;
 						if (mutationBody && mutationBody !== '') {
 							runQuery(mutationBody);
@@ -246,7 +261,7 @@
 
 		<button
 			class=" btn btn-xs grow normal-case "
-			on:click={() => {
+			onclick={() => {
 				showQMSBody = !showQMSBody;
 			}}>QMS body</button
 		>
@@ -258,15 +273,15 @@
 		{/if}
 	</div>
 
-	<slot />
+	{@render children?.()}
 	{#if queryData.error}
 		<div class="px-4 mx-auto  mb-2">
 			<div class="alert alert-error shadow-lg ">
 				<div>
 					<button class="btn btn-ghost btn-sm p-0">
-						<!-- svelte-ignore a11y-click-events-have-key-events -->
+						<!-- svelte-ignore a11y_click_events_have_key_events -->
 						<svg
-							on:click={() => {
+							onclick={() => {
 								queryData.error = null;
 							}}
 							xmlns="http://www.w3.org/2000/svg"
@@ -313,5 +328,5 @@
 		</div>
 	{/if}
 
-	<div />
+	<div></div>
 </div>

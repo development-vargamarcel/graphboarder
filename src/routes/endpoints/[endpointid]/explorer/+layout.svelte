@@ -7,11 +7,16 @@
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
 	console.log({ schemaData, QMSMainWraperContext });
-	$: queryFields = $schemaData.queryFields;
-	export let data: LayoutData;
+	let queryFields = $derived($schemaData.queryFields);
+	interface Props {
+		data: LayoutData;
+		children?: import('svelte').Snippet;
+	}
+
+	let { data, children }: Props = $props();
 </script>
 
 {#if schemaData}
 	<QMSWraper QMS_info={queryFields[0]} prefix="" extraInfo={{ isForExplorer: true }}>
-		<slot />
+		{@render children?.()}
 	</QMSWraper>{/if}

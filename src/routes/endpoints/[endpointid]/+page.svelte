@@ -1,8 +1,12 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	export let data: PageData;
 	import { page } from '$app/stores';
-	$: endpointid = $page.params.endpointid;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
+	let endpointid = $derived($page.params.endpointid);
 </script>
 
 <!-- <div>

@@ -1,26 +1,49 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import FilterItem from '$lib/components/FilterItem.svelte';
 	import { createEventDispatcher } from 'svelte';
+
+	let dispatch = createEventDispatcher();
+	let detail;
+	let inputEl;
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} containerEl
+	 * @property {any} id
+	 * @property {any} choises
+	 * @property {any} title
+	 * @property {any} [modalTitle]
+	 * @property {any} type
+	 * @property {any} chosenDefault
+	 * @property {any} chosen
+	 * @property {any} extraData
+	 * @property {any} chosenInputField
+	 * @property {string} [rawValue]
+	 * @property {boolean} [isINPUT_OBJECT]
+	 */
 
-	export let containerEl;
-	export let id;
-	export let choises;
-	export let title;
-	export let modalTitle = title;
-	export let type;
-	export let chosenDefault;
-	export let chosen;
+	/** @type {Props} */
+	let {
+		containerEl,
+		id,
+		choises = $bindable(),
+		title,
+		modalTitle = title,
+		type,
+		chosenDefault,
+		chosen = $bindable(),
+		extraData,
+		chosenInputField = $bindable(),
+		rawValue = '',
+		isINPUT_OBJECT = $bindable(false)
+	} = $props();
 	// if (typeof chosen == 'string') {
 	// 	chosen = [chosen];
 	// }
-	$: console.log('changed', { chosen });
-	export let extraData;
-	let dispatch = createEventDispatcher();
-	let detail;
-	export let chosenInputField;
-	let inputEl;
-	export let rawValue = '';
-	export let isINPUT_OBJECT = false;
+	run(() => {
+		console.log('changed', { chosen });
+	});
 </script>
 
 <div class="w-full">
@@ -52,5 +75,5 @@
 			dispatch('changed', dispatchObject);
 		}}
 	/>
-	<div />
+	<div></div>
 </div>

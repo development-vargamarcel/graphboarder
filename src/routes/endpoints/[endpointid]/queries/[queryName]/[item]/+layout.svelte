@@ -1,19 +1,26 @@
 <script>
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 
 	import Page from '$lib/components/Page.svelte';
+	/**
+	 * @typedef {Object} Props
+	 * @property {import('svelte').Snippet} [children]
+	 */
 
-	let item = $page.params.item;
+	/** @type {Props} */
+	let { children } = $props();
+
+	let item = page.params.item;
 	//console.log({ item });
 </script>
 
 <Page
 	MenuItem={false}
 	CustomId={item}
-	backPath={`/queries/${$page.params.queryName}`}
-	title={$page.params.item}
+	backPath={`/queries/${page.params.queryName}`}
+	title={page.params.item}
 >
 	<div class="p-2">
-		<slot />
+		{@render children?.()}
 	</div>
 </Page>

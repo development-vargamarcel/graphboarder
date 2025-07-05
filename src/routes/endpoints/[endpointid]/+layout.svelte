@@ -1,13 +1,30 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { string_transformer } from '$lib/utils/dataStructureTransformers.js';
 	import type { LayoutData } from './$types';
 
-	export let data: LayoutData;
 	import { page } from '$app/stores';
 	let localStorageEndpoints = getContext('localStorageEndpoints');
-	let endpointConfiguration;
-	let endpointid;
-	$: {
+	let endpointConfiguration = $state();
+	let endpointid = $state();
+	import EndpointsList from '$lib/components/EndpointsList.svelte';
+	import QMSWraper from '$lib/components/QMSWraper.svelte';
+	import SetEndpointConfigurationToContext from '$lib/components/SetEndpointConfigurationToContext.svelte';
+	import MainWraper from '$lib/components/MainWraper.svelte';
+	import Sidebar from '$lib/components/Sidebar.svelte';
+	import { localEndpoints } from '$lib/stores/testData/testEndpoints';
+	import { stringToJs } from '$lib/utils/usefulFunctions';
+	import { getContext } from 'svelte';
+	interface Props {
+		data: LayoutData;
+		children?: import('svelte').Snippet;
+	}
+
+	let { data, children }: Props = $props();
+
+	let forceVisibleSidebar = $state(false);
+	run(() => {
 		endpointid = $page.params.endpointid;
 		if (endpointid) {
 			if (endpointid.startsWith('localEndpoint--')) {
@@ -23,18 +40,10 @@
 				}
 			}
 		}
-	}
-	$: console.log({ endpointid });
-	import EndpointsList from '$lib/components/EndpointsList.svelte';
-	import QMSWraper from '$lib/components/QMSWraper.svelte';
-	import SetEndpointConfigurationToContext from '$lib/components/SetEndpointConfigurationToContext.svelte';
-	import MainWraper from '$lib/components/MainWraper.svelte';
-	import Sidebar from '$lib/components/Sidebar.svelte';
-	import { localEndpoints } from '$lib/stores/testData/testEndpoints';
-	import { stringToJs } from '$lib/utils/usefulFunctions';
-	import { getContext } from 'svelte';
-
-	let forceVisibleSidebar = false;
+	});
+	run(() => {
+		console.log({ endpointid });
+	});
 </script>
 
 {#if endpointid}
@@ -48,7 +57,7 @@
 					<div class=" bg-base-100 min-h-[50px] flex">
 						<label
 							class="btn btn-square btn-ghost  md:hidden"
-							on:click={() => {
+							onclick={() => {
 								forceVisibleSidebar = true;
 							}}
 						>
@@ -65,9 +74,9 @@
 								/></svg
 							>
 						</label>
-						<div />
+						<div></div>
 					</div>
-					<slot />
+					{@render children?.()}
 				</div>
 			</main>
 		</MainWraper>
@@ -81,7 +90,7 @@
 			]}
 		>
 			<SetEndpointConfigurationToContext QMSName="endpoints_by_pk">
-				<slot><!-- optional fallback --></slot>
+				{#if children}{@render children()}{:else}<!-- optional fallback -->{/if}
 			</SetEndpointConfigurationToContext>
 		</QMSWraper>
 	{/if}{/if}

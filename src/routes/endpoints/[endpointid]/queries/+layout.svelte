@@ -2,6 +2,13 @@
 	import { getStores, navigating, page, updated } from '$app/stores';
 
 	import { onDestroy } from 'svelte';
+	/**
+	 * @typedef {Object} Props
+	 * @property {import('svelte').Snippet} [children]
+	 */
+
+	/** @type {Props} */
+	let { children } = $props();
 	//console.log('queries: ', queries);
 
 	let origin = $page.url.origin;
@@ -18,6 +25,6 @@
 
 <div class="w-full pt-2">
 	{#key $page.params.queryName}
-		<slot />
+		{@render children?.()}
 	{/key}
 </div>

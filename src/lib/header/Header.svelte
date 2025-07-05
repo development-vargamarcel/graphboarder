@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import logo from './svelte-logo.svg';
 </script>
 
@@ -15,13 +15,13 @@
 			<path d="M0,0 L1,2 C1.5,3 1.5,3 2,3 L2,0 Z" />
 		</svg>
 		<ul>
-			<li class:active={$page.url.pathname === '/'}>
+			<li class:active={page.url.pathname === '/'}>
 				<a data-sveltekit-prefetch href="/">Home</a>
 			</li>
-			<li class:active={$page.url.pathname === '/about'}>
+			<li class:active={page.url.pathname === '/about'}>
 				<a data-sveltekit-prefetch href="/about">About</a>
 			</li>
-			<li class:active={$page.url.pathname === '/todos'}>
+			<li class:active={page.url.pathname === '/todos'}>
 				<a data-sveltekit-prefetch href="/todos">Todos</a>
 			</li>
 		</ul>

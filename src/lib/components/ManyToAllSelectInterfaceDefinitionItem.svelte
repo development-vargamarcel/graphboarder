@@ -6,19 +6,39 @@
 	import SelectQMS from './SelectQMS.svelte';
 	import { getDeepField } from '$lib/utils/usefulFunctions';
 
-	export let nodes;
-	export let parentNodeId;
-	export let parentNode = nodes[parentNodeId];
-	export let node;
-	export let availableOperators;
-	export let group;
-	export let type;
-	export let originalNodes;
-	export let prefix = '';
-	export let addDefaultFields;
-	export let showSelectQMSModal = false;
-	export let selectedRowsColValues = [];
-	export let field;
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} nodes
+	 * @property {any} parentNodeId
+	 * @property {any} [parentNode]
+	 * @property {any} node
+	 * @property {any} availableOperators
+	 * @property {any} group
+	 * @property {any} type
+	 * @property {any} originalNodes
+	 * @property {string} [prefix]
+	 * @property {any} addDefaultFields
+	 * @property {boolean} [showSelectQMSModal]
+	 * @property {any} [selectedRowsColValues]
+	 * @property {any} field
+	 */
+
+	/** @type {Props} */
+	let {
+		nodes,
+		parentNodeId,
+		parentNode = nodes[parentNodeId],
+		node,
+		availableOperators,
+		group,
+		type,
+		originalNodes,
+		prefix = '',
+		addDefaultFields,
+		showSelectQMSModal = $bindable(false),
+		selectedRowsColValues = [],
+		field
+	} = $props();
 	const nodeContext_forDynamicData = getContext(`${prefix}nodeContext_forDynamicData`);
 	let selectedQMS = nodeContext_forDynamicData.selectedQMS;
 	let QMSRows = nodeContext_forDynamicData.QMSRows;
@@ -161,11 +181,11 @@
 	};
 </script>
 
-<button class="btn btn-xs btn-ghost" on:click={handleClick}
+<button class="btn btn-xs btn-ghost" onclick={handleClick}
 	>{field.dd_displayName}
 	{#if field.dd_NON_NULL}
 		<sup>
-			<i class="text-primary bi bi-asterisk" />
+			<i class="text-primary bi bi-asterisk"></i>
 		</sup>
 	{/if}
 </button>

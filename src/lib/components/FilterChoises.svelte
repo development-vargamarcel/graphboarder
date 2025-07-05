@@ -1,19 +1,37 @@
 <script>
-	export let id;
-	export let choises = [''];
-	export let title = choises[0];
-	export let modalTitle = title;
-	export let type = 'radio';
-	export let chosenDefault;
-	export let chosen = chosenDefault ? JSON.parse(JSON.stringify(chosenDefault)) : [];
+	import { run } from 'svelte/legacy';
+
 	choises.length == 1 ? (type = 'toggle') : '';
 
 	import { createEventDispatcher } from 'svelte';
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} id
+	 * @property {any} [choises]
+	 * @property {any} [title]
+	 * @property {any} [modalTitle]
+	 * @property {string} [type]
+	 * @property {any} chosenDefault
+	 * @property {any} [chosen]
+	 */
+
+	/** @type {Props} */
+	let {
+		id,
+		choises = [''],
+		title = choises[0],
+		modalTitle = title,
+		type = $bindable('radio'),
+		chosenDefault,
+		chosen = $bindable(chosenDefault ? JSON.parse(JSON.stringify(chosenDefault)) : [])
+	} = $props();
 	const dispatch = createEventDispatcher();
-	$: if (chosen || !chosen) {
-		dispatch('filterChanged', { id: id, chosen: chosen });
-		//console.log('filterChanged');
-	}
+	run(() => {
+		if (chosen || !chosen) {
+			dispatch('filterChanged', { id: id, chosen: chosen });
+			//console.log('filterChanged');
+		}
+	});
 </script>
 
 <div class="rounded-box border-2 border-base-300 overflow-hidden pb-3 bg-base-100">

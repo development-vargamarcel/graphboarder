@@ -1,14 +1,27 @@
 <script lang="ts">
-	export let prefix = '';
 	import TanTable from './TanTable.svelte';
 
-	export let enableMultiRowSelectionState = true;
-	export let colsData = [];
-	export let showCheckBox = false;
-	export let rows = [];
-	export let infiniteHandler;
-	export let infiniteId;
-	export let rowSelectionState;
+	interface Props {
+		prefix?: string;
+		enableMultiRowSelectionState?: boolean;
+		colsData?: any;
+		showCheckBox?: boolean;
+		rows?: any;
+		infiniteHandler: any;
+		infiniteId: any;
+		rowSelectionState: any;
+	}
+
+	let {
+		prefix = '',
+		enableMultiRowSelectionState = true,
+		colsData = $bindable([]),
+		showCheckBox = false,
+		rows = $bindable([]),
+		infiniteHandler,
+		infiniteId,
+		rowSelectionState
+	}: Props = $props();
 </script>
 
 {#if rows.length > 0}

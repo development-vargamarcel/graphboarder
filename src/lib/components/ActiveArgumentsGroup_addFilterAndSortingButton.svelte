@@ -1,16 +1,29 @@
 <script>
-	export let group;
-	export let argsInfo;
-	export let update_activeArgumentsDataGrouped;
-	export let activeArgumentsDataGrouped;
-	let showDescription;
-	export let prefix = '';
+	let showDescription = $state();
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
 	import { getContext, setContext } from 'svelte';
 	import Arg from '$lib/components/Arg.svelte';
 	import { getQMSWraperCtxDataGivenControlPanelItem } from '$lib/utils/usefulFunctions';
 	let dragDisabled = true;
-	export let node;
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} group
+	 * @property {any} argsInfo
+	 * @property {any} update_activeArgumentsDataGrouped
+	 * @property {any} activeArgumentsDataGrouped
+	 * @property {string} [prefix]
+	 * @property {any} node
+	 */
+
+	/** @type {Props} */
+	let {
+		group = $bindable(),
+		argsInfo,
+		update_activeArgumentsDataGrouped,
+		activeArgumentsDataGrouped,
+		prefix = '',
+		node
+	} = $props();
 	const hasGroup_argsNode = group.group_argsNode;
 	/////start
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
@@ -56,13 +69,13 @@
 	<div class="font-bold flex">
 		<div class=" ">
 			<div class="dropdown dropdown-start ">
-				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+				<!-- svelte-ignore a11y_label_has_associated_control -->
+				<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 				<label
 					tabindex="0"
 					class="btn btn-sm btn-ghost bi bi-plus-circle text-lg p-1 mr-2 overscroll-contain"
-				/>
-				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+				></label>
+				<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 				<div
 					tabindex="0"
 					class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl overflow-y-auto overscroll-contain  max-h-52 sm:max-h-72 md:max-h-90    max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
@@ -73,7 +86,7 @@
 						{#if hasGroup_argsNode}
 							<button
 								class="btn btn-primary btn-xs mt-4 normal-case font-thin text-base sticky top-0"
-								on:click={() => {
+								onclick={() => {
 									let randomNr = Math.random();
 									group.group_argsNode[`${randomNr}`] = {
 										id: randomNr,
@@ -120,18 +133,18 @@
 			{`(${group?.dd_relatedRoot?.dd_filterOperators?.join(',')})`}
 		{/if}
 		{#if group.group_name !== 'root'}
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<!-- svelte-ignore a11y_click_events_have_key_events -->
 			<i
 				class="bi bi-info-circle text-secondary px-2"
 				title={group.description}
-				on:click={() => {
+				onclick={() => {
 					if (showDescription == group.description) {
 						showDescription = '';
 					} else {
 						showDescription = group.description;
 					}
 				}}
-			/>
+			></i>
 			{#if showDescription == group.description && group.description}
 				<p class="text-xs font-light text-secondary select-none">
 					({group.description})

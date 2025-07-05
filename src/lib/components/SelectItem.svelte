@@ -1,28 +1,45 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import QmsWraper from '$lib/components/QMSWraper.svelte';
 	import { getContext } from 'svelte';
 	import ComponentForLayout from '../../routes/endpoints/[endpointid]/queries/[queryName]/ComponentForLayout.svelte';
-	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
-	export let QMS_info;
-	export let enableMultiRowSelectionState = true;
-	export let rowSelectionState;
-	export let QMSWraperContext = {};
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
-	export let node;
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [prefix]
+	 * @property {any} QMS_info
+	 * @property {boolean} [enableMultiRowSelectionState]
+	 * @property {any} rowSelectionState
+	 * @property {any} [QMSWraperContext]
+	 * @property {any} node
+	 */
+
+	/** @type {Props} */
+	let {
+		prefix = '',
+		QMS_info,
+		enableMultiRowSelectionState = true,
+		rowSelectionState,
+		QMSWraperContext = $bindable({}),
+		node
+	} = $props();
 	console.log('nooooddeeee', { node });
-	let getManyQMS;
-	$: if ($QMSFieldToQMSGetMany_Store.length > 0) {
-		getManyQMS = QMSFieldToQMSGetMany_Store.getObj({
-			nodeOrField: node
-		})?.getMany?.selectedQMS;
-		if (getManyQMS) {
-			console.log({ getManyQMS });
+	let getManyQMS = $state();
+	run(() => {
+		if ($QMSFieldToQMSGetMany_Store.length > 0) {
+			getManyQMS = QMSFieldToQMSGetMany_Store.getObj({
+				nodeOrField: node
+			})?.getMany?.selectedQMS;
+			if (getManyQMS) {
+				console.log({ getManyQMS });
+			}
 		}
-	}
+	});
 </script>
 
 {#key getManyQMS}

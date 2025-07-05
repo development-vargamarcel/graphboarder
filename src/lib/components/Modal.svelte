@@ -1,11 +1,20 @@
 <script>
+	import { run, preventDefault, stopPropagation, self } from 'svelte/legacy';
+
 	import { fly, fade, scale } from 'svelte/transition';
 	import { detectSwipe } from '$lib/actions/detectSwipe.js';
 	import { sineOut, sineIn } from 'svelte/easing';
 	import { portal } from 'svelte-portal';
-	export let modalIdetifier = 'modal';
-	export let showApplyBtn = true;
 	import { createEventDispatcher, onMount } from 'svelte';
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [modalIdetifier]
+	 * @property {boolean} [showApplyBtn]
+	 * @property {import('svelte').Snippet} [children]
+	 */
+
+	/** @type {Props} */
+	let { modalIdetifier = 'modal', showApplyBtn = true, children } = $props();
 	const dispatch = createEventDispatcher();
 	let apply = () => {
 		dispatch('apply');
@@ -13,8 +22,8 @@
 	onMount(() => {
 		dispatch('mounted', { modalIdetifier });
 	});
-	let mainDivIntroEnd = false;
-	let bodyDivIntroEnd = false;
+	let mainDivIntroEnd = $state(false);
+	let bodyDivIntroEnd = $state(false);
 
 	const swipedown = (e) => {
 		const parent = e.target.parentNode;
@@ -23,13 +32,15 @@
 		dispatch('cancel', { modalIdetifier: targetId });
 	};
 
-	let mainDiv;
-	let bodyDiv;
-	let mainDivScrolled = false;
-	$: if (bodyDiv) {
-		mainDiv.scrollTop = 500;
-		mainDivScrolled = true;
-	}
+	let mainDiv = $state();
+	let bodyDiv = $state();
+	let mainDivScrolled = $state(false);
+	run(() => {
+		if (bodyDiv) {
+			mainDiv.scrollTop = 500;
+			mainDivScrolled = true;
+		}
+	});
 	//
 </script>
 
@@ -42,18 +53,18 @@
 	bind:this={mainDiv}
 	in:fade|global={{ delay: 0, duration: 50 }}
 	out:fade|global={{ delay: 0, duration: 50 }}
-	on:introend={() => (mainDivIntroEnd = true)}
-	on:click|self|stopPropagation|preventDefault={() => {
+	onintroend={() => (mainDivIntroEnd = true)}
+	onclick={self(stopPropagation(preventDefault(() => {
 		dispatch('cancel', { modalIdetifier });
-	}}
+	})))}
 >
 	{#if mainDivIntroEnd}
 		<div
 			class="    py-80"
-			on:click|self|stopPropagation|preventDefault={() => {
+			onclick={self(stopPropagation(preventDefault(() => {
 				dispatch('cancel', { modalIdetifier });
-			}}
-		/>
+			})))}
+		></div>
 
 		<div
 			bind:this={bodyDiv}
@@ -70,14 +81,14 @@
 				easing: sineOut
 			}}
 			out:fly|global={{ delay: 0, duration: 100, x: 0, y: 20, opacity: 0, start: 0, easing: sineIn }}
-			on:introend={() => (bodyDivIntroEnd = true)}
+			onintroend={() => (bodyDivIntroEnd = true)}
 		>
 			<div class="sticky top-0  bg-base-100 rounded-xl z-50 ">
-				<div class="my-4 h-2 bg-base-300    rounded-box mx-auto w-12  " />
+				<div class="my-4 h-2 bg-base-300    rounded-box mx-auto w-12  "></div>
 			</div>
 
 			<div class="px-3 pb-80 ">
-				<slot />
+				{@render children?.()}
 			</div>
 		</div>
 	{/if}
@@ -90,11 +101,11 @@
 				<div class=" mx-auto w-11/12    lg:pb-4 ">
 					<button
 						class="btn btn-primary btn-lg    w-full  mx-auto  justify-center normal-case shadow-2xl drop-shadow-2xl "
-						on:click={apply}>Apply</button
+						onclick={apply}>Apply</button
 					>
 				</div>
 			</div>
-			<div class="my-0 mx-auto w-full bg-base-100/100 py-4" />
+			<div class="my-0 mx-auto w-full bg-base-100/100 py-4"></div>
 		</div>{/if}
 </div>
 

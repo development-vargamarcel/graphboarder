@@ -9,12 +9,25 @@
 	import { setContext, getContext, createEventDispatcher } from 'svelte';
 	import { get, writable } from 'svelte/store';
 	import Type from './Type.svelte';
-	export let prefix = '';
-	export let column_stepsOfFields;
-	export let addColumnFromInput;
-	export let dd_relatedRoot;
-	export let QMSName;
-	export let QMS_info;
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [prefix]
+	 * @property {any} column_stepsOfFields
+	 * @property {any} addColumnFromInput
+	 * @property {any} dd_relatedRoot
+	 * @property {any} QMSName
+	 * @property {any} QMS_info
+	 */
+
+	/** @type {Props} */
+	let {
+		prefix = '',
+		column_stepsOfFields,
+		addColumnFromInput,
+		dd_relatedRoot,
+		QMSName,
+		QMS_info
+	} = $props();
 
 	const dispatchEvent = createEventDispatcher();
 	//stepsOfFieldsOBJ
@@ -52,11 +65,11 @@
 </script>
 
 <div class="dropdown grow ">
-	<!-- svelte-ignore a11y-label-has-associated-control -->
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-	<label tabindex="0" class="btn btn-xs bi bi-node-plus-fill text-lg p-1  w-full" />
-	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+	<!-- svelte-ignore a11y_label_has_associated_control -->
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+	<label tabindex="0" class="btn btn-xs bi bi-node-plus-fill text-lg p-1  w-full"></label>
+	<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 	<div
 		tabindex="0"
 		class="dropdown-content menu p-2  bg-base-100 rounded-box ==w-max max-w-screen text-sm shadow-2xl z-[9999] "
@@ -77,7 +90,7 @@
 				<div class="text-center sticky left-0  bg-black= mx-auto ">
 					<button
 						class="btn btn-xs btn-primary w-min "
-						on:click={() => {
+						onclick={() => {
 							let stepsOfFields = [];
 							let tableColData = {
 								title: `col-${Math.floor(Math.random() * 200)},${generateTitleFromStepsOfFields(

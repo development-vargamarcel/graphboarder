@@ -1,4 +1,6 @@
 <script>
+	import { run, stopPropagation } from 'svelte/legacy';
+
 	import {
 		deleteValueAtPath,
 		generateTitleFromStepsOfFields,
@@ -20,15 +22,30 @@
 	import { get_store_value } from 'svelte/internal';
 
 	const dispatch = createEventDispatcher();
-	export let canExpand;
-	export let expand;
-	export let type;
-	export let index;
-	export let showExpand;
-	export let template = 'default';
-	export let stepsOfFields;
 	let { dd_kindsArray, dd_namesArray, dd_displayName, dd_rootName, args } = type;
-	export let prefix = '';
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} canExpand
+	 * @property {any} expand
+	 * @property {any} type
+	 * @property {any} index
+	 * @property {any} showExpand
+	 * @property {string} [template]
+	 * @property {any} stepsOfFields
+	 * @property {string} [prefix]
+	 */
+
+	/** @type {Props} */
+	let {
+		canExpand,
+		expand,
+		type,
+		index,
+		showExpand,
+		template = 'default',
+		stepsOfFields,
+		prefix = ''
+	} = $props();
 	let isSubset = (parentArray, subsetArray) => {
 		return subsetArray.every((el, index) => {
 			return parentArray[index] === el;
@@ -47,8 +64,8 @@
 		false
 	);
 	//getValueAtPath
-	let isSelected;
-	let hasSelected;
+	let isSelected = $state();
+	let hasSelected = $state();
 	if ($stepsOfFieldsOBJ) {
 		stepsOfFieldsOBJ.subscribe((value) => {
 			const valueAtPath = getValueAtPath(value, stepsOfFields);
@@ -68,8 +85,8 @@
 		});
 	}
 	///////
-	let isUsedInSomeColumn = false;
-	let hasQMSarguments = false;
+	let isUsedInSomeColumn = $state(false);
+	let hasQMSarguments = $state(false);
 	if ($stepsOfFieldsOBJFull) {
 		stepsOfFieldsOBJFull.subscribe((value) => {
 			const valueAtPath = getValueAtPath(value, stepsOfFields);
@@ -79,15 +96,15 @@
 		});
 	}
 
-	let showModal = false;
-	let finalGqlArgObj_Store;
-	let finalGqlArgObj_StoreValue;
-	let paginationState_derived;
-	let paginationState_derivedValue;
+	let showModal = $state(false);
+	let finalGqlArgObj_Store = $state();
+	let finalGqlArgObj_StoreValue = $state();
+	let paginationState_derived = $state();
+	let paginationState_derivedValue = $state();
 	let finalGqlArgObjValue;
-	let activeArgumentsQMSWraperContext;
+	let activeArgumentsQMSWraperContext = $state();
 	let QMSarguments;
-	$: canAcceptArguments = canExpand && args?.length > 0 && isUsedInSomeColumn;
+	let canAcceptArguments = $derived(canExpand && args?.length > 0 && isUsedInSomeColumn);
 
 	const mergedChildren_finalGqlArgObj_Store = QMSWraperContext.mergedChildren_finalGqlArgObj_Store;
 	const mergedChildren_QMSWraperCtxData_Store =
@@ -109,49 +126,53 @@
 	// }
 	// //E//move to QMSWraper (outermost if possible)
 
-	$: if (activeArgumentsQMSWraperContext) {
-		if (canAcceptArguments) {
-			mergedChildren_QMSWraperCtxData_Store.addOrReplace({
-				stepsOfFields,
-				...activeArgumentsQMSWraperContext
-			});
+	run(() => {
+		if (activeArgumentsQMSWraperContext) {
+			if (canAcceptArguments) {
+				mergedChildren_QMSWraperCtxData_Store.addOrReplace({
+					stepsOfFields,
+					...activeArgumentsQMSWraperContext
+				});
+			}
+
+			$activeArgumentsDataGrouped_Store = get_store_value(
+				activeArgumentsQMSWraperContext.activeArgumentsDataGrouped_Store
+			);
+
+			finalGqlArgObj_Store = activeArgumentsQMSWraperContext.finalGqlArgObj_Store;
+			finalGqlArgObj_StoreValue = $finalGqlArgObj_Store;
+			paginationState_derived = activeArgumentsQMSWraperContext.paginationState_derived;
+			paginationState_derivedValue = $paginationState_derived;
 		}
+	});
 
-		$activeArgumentsDataGrouped_Store = get_store_value(
-			activeArgumentsQMSWraperContext.activeArgumentsDataGrouped_Store
-		);
-
-		finalGqlArgObj_Store = activeArgumentsQMSWraperContext.finalGqlArgObj_Store;
-		finalGqlArgObj_StoreValue = $finalGqlArgObj_Store;
-		paginationState_derived = activeArgumentsQMSWraperContext.paginationState_derived;
-		paginationState_derivedValue = $paginationState_derived;
-	}
-
-	let currentQMSWraperCtxData;
-	$: if ($mergedChildren_QMSWraperCtxData_Store) {
-		currentQMSWraperCtxData = mergedChildren_QMSWraperCtxData_Store.getObj(stepsOfFields);
-	}
+	let currentQMSWraperCtxData = $state();
+	run(() => {
+		if ($mergedChildren_QMSWraperCtxData_Store) {
+			currentQMSWraperCtxData = mergedChildren_QMSWraperCtxData_Store.getObj(stepsOfFields);
+		}
+	});
 	//$: console.log({ currentQMSWraperCtxData });//!!!This logs multiple times when expected only one log,because $mergedChildren_QMSWraperCtxData_Store is being updated multiple times instead of just onece
-	$: currentQMSArguments = getValueAtPath($mergedChildren_finalGqlArgObj_Store, [
+	let currentQMSArguments = $derived(getValueAtPath($mergedChildren_finalGqlArgObj_Store, [
 		...stepsOfFields,
 		'QMSarguments'
-	]);
+	]));
 </script>
 
 {#if template == 'default'}
 	<div class="flex space-x-2 min-w-max w-full">
 		<div class="flex space-x-2 w-1/3 min-w-max w-full">
 			{#if canExpand}
-				<div class="btn btn-xs p-1 rounded normal-case" on:click={expand}>
+				<div class="btn btn-xs p-1 rounded normal-case" onclick={expand}>
 					{showExpand ? '-' : '+'}
 				</div>
 			{:else}
-				<div class="btn btn-xs p-1 rounded normal-case btn-disabled" on:click={expand}>+</div>
+				<div class="btn btn-xs p-1 rounded normal-case btn-disabled" onclick={expand}>+</div>
 			{/if}
 			<div class="bg-secondary p-1 rounded">{index + 1}</div>
 			<div
 				class="btn btn-xs btn-info normal-case font-light"
-				on:click={() => {
+				onclick={() => {
 					console.log(type);
 					//console.log(dd_namesArray);
 				}}
@@ -162,7 +183,7 @@
 		{#if !canExpand}
 			<div
 				class="btn btn-xs bg-base-200 p-1 rounded"
-				on:click={() => {
+				onclick={() => {
 					console.log(getRootType(null, dd_rootName, schemaData));
 				}}
 			>
@@ -176,7 +197,7 @@
 		{#if canExpand}
 			<div
 				class="btn btn-xs btn-accent normal-case rounded px-2 py-1"
-				on:click={() => {
+				onclick={() => {
 					console.log(getRootType(null, dd_rootName, schemaData));
 				}}
 			>
@@ -192,15 +213,15 @@
 				<div class="bg-secondary p-1 rounded">{dd_kindsArray?.join(' of ')}</div>
 			</div>
 
-			<div class="flex" />
+			<div class="flex"></div>
 		</div>
-		<div class="w-1/8 text-center text-xs" />
+		<div class="w-1/8 text-center text-xs"></div>
 	</div>
 {:else if template == 'columnAddDisplay'}
 	<div
 		class="min-w-max w-full cursor-pointer rounded-box flex text-base select-none hover:text-primary"
 	>
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
 
 		{#if canExpand}
 			<div class="overflow-visible grid grid-col gap-[-10px] h-2 w-6">
@@ -208,8 +229,8 @@
 					class="w-10 duration-100 mx-auto w-min pl-1 {hasSelected
 						? 'text-secondary'
 						: ''} {showExpand ? 'bi-arrow-90deg-down mt-2 ' : 'bi-chevron-expand'}"
-					on:click={expand}
-				/>
+					onclick={expand}
+				></div>
 			</div>
 		{/if}
 		{#if !canExpand}
@@ -219,7 +240,7 @@
 				type="checkbox"
 				class=" checkbox-xs checkbox input-accent mr-1 self-center ml-1"
 				bind:checked={isSelected}
-				on:change={() => {
+				onchange={() => {
 					if (isSelected) {
 						$stepsOfFieldsOBJ = _.merge($stepsOfFieldsOBJ, stepsOFieldsAsQueryFragmentObject);
 						///
@@ -241,10 +262,10 @@
 			</p> -->
 		{/if}
 
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<div
 			class="min-w-max w-full pr-2 text-md duration-100=="
-			on:click={() => {
+			onclick={() => {
 				if (canExpand) {
 					expand();
 				} else {
@@ -262,7 +283,7 @@
 			{dd_displayName}
 			{#if isUsedInSomeColumn}
 				<sup class="text-xs text-accent">
-					<i class="bi bi-check" />
+					<i class="bi bi-check"></i>
 				</sup>
 			{/if}
 
@@ -271,11 +292,11 @@
 					class="btn btn-xs btn-ghost normal-case rounded px-2 {hasQMSarguments
 						? 'text-success'
 						: ''} "
-					on:click|stopPropagation={() => {
+					onclick={stopPropagation(() => {
 						showModal = true;
-					}}
+					})}
 				>
-					<icon class=" {currentQMSArguments ? 'bi-funnel-fill' : 'bi-funnel'} " />
+					<icon class=" {currentQMSArguments ? 'bi-funnel-fill' : 'bi-funnel'} "></icon>
 
 					<!-- activeArgumentsDataGrouped_StoreInitialValue={getValueAtPath(
 							$mergedChildren_activeArgumentsDataGrouped_Store,
@@ -301,7 +322,7 @@
 								}}
 								><div class="  w-full">
 									<div class="mx-auto mt-2 w-full space-y-2 pb-2">
-										<div class="w-2" />
+										<div class="w-2"></div>
 
 										<ActiveArguments
 											stepsOfFieldsThisAppliesTo={stepsOfFields}
@@ -311,7 +332,7 @@
 											])}
 										/>
 
-										<div class="w-2" />
+										<div class="w-2"></div>
 									</div>
 								</div>
 							</Modal>

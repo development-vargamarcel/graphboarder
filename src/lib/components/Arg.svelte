@@ -1,4 +1,5 @@
 <script>
+	import Arg from './Arg.svelte';
 	//!!! ENUM TYPES WILL CREATE SOM PROBLEMS AS OF 5/6/2022
 	import { fade, fly, slide } from 'svelte/transition';
 	export const prefix = '';
@@ -9,12 +10,14 @@
 	import { circIn, expoIn, expoOut } from 'svelte/easing';
 	import { getContext } from 'svelte';
 
-	export let index;
-	export let type;
-	export let template;
-	export let predefinedFirstSteps; //is actually group_name
-	export let stepsOfFields = [];
-	export let groupName;
+	let {
+		index,
+		type,
+		template,
+		predefinedFirstSteps,
+		stepsOfFields = $bindable([]),
+		groupName
+	} = $props();
 
 	console.log({ type });
 	console.log({ predefinedFirstSteps });
@@ -26,13 +29,13 @@
 	let indetifier = Math.random();
 	let { dd_kindsArray, dd_rootName, dd_displayName } = type;
 
-	let showExpand = false;
-	let expandData = {};
+	let showExpand = $state(false);
+	let expandData = $state({});
 	let canExpand = false;
 	if (!dd_kindsArray.includes('SCALAR') && dd_kindsArray.length > 0) {
 		canExpand = true;
 	}
-	let inDuration = 300;
+	let inDuration = $state(300);
 	const expand = () => {
 		//console.log('dd_rootName', dd_rootName);
 		expandData = getRootType($schemaData.rootTypes, dd_rootName, schemaData);
@@ -54,7 +57,7 @@
 	};
 </script>
 
-{#if template == 'default'}<div class="pt-2 text-center text-xs" />{/if}
+{#if template == 'default'}<div class="pt-2 text-center text-xs"></div>{/if}
 
 <div
 	class="  pb-0 pl-1 pr-0  rounded-r-sm rounded-l-none shadow-none  space-x-2  normal-case text-xs min-w-max {showExpand
@@ -77,7 +80,7 @@
 	/>
 
 	{#if showExpand}
-		{#if template == 'default'}<div class="mb-2 text-center text-xs" />{/if}
+		{#if template == 'default'}<div class="mb-2 text-center text-xs"></div>{/if}
 
 		<div
 			class="border-l-2 border-secondary bg-accent/5"
@@ -87,7 +90,7 @@
 			<div class="">
 				{#each expandData.inputFields || expandData.enumValues as arg, index}
 					<div>
-						<svelte:self
+						<Arg
 							{index}
 							type={arg}
 							{template}
@@ -104,5 +107,5 @@
 	{/if}
 </div>
 {#if !showExpand}
-	<div class="pt-2 text-center text-xs" />
+	<div class="pt-2 text-center text-xs"></div>
 {/if}

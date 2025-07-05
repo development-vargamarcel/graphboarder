@@ -1,5 +1,5 @@
 <script>
-	export let stepsOfFields;
+	let { stepsOfFields } = $props();
 	let stepsOfFields_display = stepsOfFields
 		.map((el) => {
 			if (typeof el == 'string') {

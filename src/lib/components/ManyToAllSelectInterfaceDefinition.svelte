@@ -2,20 +2,41 @@
 	import { getContext } from 'svelte';
 	import ManyToAllSelectInterfaceDefinitionItem from './ManyToAllSelectInterfaceDefinitionItem.svelte';
 	import { getDeepField, getRootType } from '$lib/utils/usefulFunctions';
-	export let nodes;
-	export let parentNodeId;
-	export let parentNode = nodes[parentNodeId];
-	export let node;
-	export let availableOperators;
-	export let group;
-	export let type;
-	export let originalNodes;
-	export let prefix = '';
-	export let addDefaultFields;
-	export let showSelectQMSModal = false;
-	export let rowSelectionState = {};
-	export let selectedQMS;
-	export let selectedRowsColValues = [];
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} nodes
+	 * @property {any} parentNodeId
+	 * @property {any} [parentNode]
+	 * @property {any} node
+	 * @property {any} availableOperators
+	 * @property {any} group
+	 * @property {any} type
+	 * @property {any} originalNodes
+	 * @property {string} [prefix]
+	 * @property {any} addDefaultFields
+	 * @property {boolean} [showSelectQMSModal]
+	 * @property {any} [rowSelectionState]
+	 * @property {any} selectedQMS
+	 * @property {any} [selectedRowsColValues]
+	 */
+
+	/** @type {Props} */
+	let {
+		nodes,
+		parentNodeId,
+		parentNode = nodes[parentNodeId],
+		node,
+		availableOperators,
+		group,
+		type,
+		originalNodes,
+		prefix = '',
+		addDefaultFields,
+		showSelectQMSModal = false,
+		rowSelectionState = {},
+		selectedQMS,
+		selectedRowsColValues = []
+	} = $props();
 
 	//
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
