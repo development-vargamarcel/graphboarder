@@ -1,13 +1,13 @@
-<script>
+<script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import AddColumn from './AddColumn.svelte';
-	export let prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 
 	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
 	import { page } from '$app/stores';
 	import Table from '$lib/components/Table.svelte';
-	export let QMSName;
 	let queryName = QMSName;
 	const QMSWraperContext = getContext('QMSWraperContext');
 	const {
@@ -34,7 +34,9 @@
 	const schemaData = QMSMainWraperContext?.schemaData;
 	import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 
-	$: console.log('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
+	run(() => {
+		console.log('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
+	});
 	onDestroy(() => {
 		document.getElementById('my-drawer-3')?.click();
 	});
@@ -49,19 +51,21 @@
 	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData).find((pagType) => {
 		return pagType.name == currentQMS_info.dd_paginationType;
 	});
-	let activeArgumentsDataGrouped_Store_IS_SET = false;
-	$: activeArgumentsDataGrouped_Store_IS_SET =
-		$activeArgumentsDataGrouped_Store.length > 0 ? true : false;
+	let activeArgumentsDataGrouped_Store_IS_SET = $state(false);
+	run(() => {
+		activeArgumentsDataGrouped_Store_IS_SET =
+			$activeArgumentsDataGrouped_Store.length > 0 ? true : false;
+	});
 	//
 
 	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], schemaData);
 
-	let queryData;
-	let rows = [];
+	let queryData = $state();
+	let rows = $state([]);
 	let rowsCurrent = [];
 	let loadedF;
 	let completeF;
-	let infiniteId = Math.random();
+	let infiniteId = $state(Math.random());
 	function infiniteHandler({ detail: { loaded, complete } }) {
 		loadedF = loaded;
 		completeF = complete;
@@ -157,7 +161,9 @@
 		}
 	});
 
-	$: console.log({ queryData });
+	run(() => {
+		console.log({ queryData });
+	});
 	if (scalarFields.length == 0) {
 		queryData = { fetching: false, error: false, data: false };
 	} else {
@@ -171,10 +177,10 @@
 		console.log(data);
 	});
 
-	let column_stepsOfFields = '';
+	let column_stepsOfFields = $state('');
 
 	//Active arguments logic
-	let showQMSBody = false;
+	let showQMSBody = $state(false);
 	let showNonPrettifiedQMSBody = false;
 	import { format } from 'graphql-formatter';
 	import hljs from 'highlight.js/lib/core';
@@ -186,16 +192,23 @@
 	import TypeList from './TypeList.svelte';
 	import CodeEditor from './fields/CodeEditor.svelte';
 	import GraphqlCodeDisplay from './GraphqlCodeDisplay.svelte';
+	interface Props {
+		prefix?: string;
+		QMSName: any;
+		children?: import('svelte').Snippet;
+	}
+
+	let { prefix = '', QMSName, children }: Props = $props();
 
 	onMount(() => {
 		hljs.registerLanguage('graphql', graphql);
 		hljs.highlightAll();
 	});
-	let showModal = false;
+	let showModal = $state(false);
 	let showActiveFilters;
 </script>
 
-<slot><!-- optional fallback --></slot>
+{#if children}{@render children()}{:else}<!-- optional fallback -->{/if}
 
 <!-- <button
 	on:click={() => {
@@ -225,9 +238,9 @@
 				}}
 				><div class="  w-full  ">
 					<div class="mx-auto mt-2  w-full   space-y-2   pb-2  ">
-						<div class="w-2" />
+						<div class="w-2"></div>
 						<ActiveArguments />
-						<div class="w-2" />
+						<div class="w-2"></div>
 					</div>
 				</div>
 			</Modal>
@@ -247,7 +260,7 @@
 	</div>
 	<button
 		class=" btn btn-xs grow normal-case "
-		on:click={() => {
+		onclick={() => {
 			showQMSBody = !showQMSBody;
 		}}>QMS body</button
 	>
@@ -262,19 +275,19 @@
 	{/if}
 
 	<button class="btn btn-xs btn-primary ">
-		<i class="bi bi-plus-circle-fill " />
+		<i class="bi bi-plus-circle-fill "></i>
 	</button>
 </div>
 
-<slot />
+{@render children?.()}
 {#if queryData.error}
 	<div class="px-4 mx-auto  mb-2">
 		<div class="alert alert-error shadow-lg ">
 			<div>
 				<button class="btn btn-ghost btn-sm p-0">
-					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<!-- svelte-ignore a11y_click_events_have_key_events -->
 					<svg
-						on:click={() => {
+						onclick={() => {
 							queryData.error = null;
 						}}
 						xmlns="http://www.w3.org/2000/svg"
@@ -326,4 +339,4 @@
 		}}
 	/>
 </div>
-<div />
+<div></div>

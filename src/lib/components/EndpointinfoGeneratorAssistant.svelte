@@ -1,14 +1,14 @@
-<script>
+<script lang="ts">
 	import EndpointinfoGeneratorAssistantItem from './EndpointinfoGeneratorAssistantItem.svelte';
 
-	export let types = [];
+	let { types = [] } = $props();
 </script>
 
 <div class="overflow-auto overscroll-contain h-[80vh] w-[90vw]">
 	<table class="table table-compact">
 		<thead class=" sticky top-0">
 			<tr>
-				<th />
+				<th></th>
 				<th class="normal-case">displayName</th>
 				<th class="normal-case">rootName</th>
 

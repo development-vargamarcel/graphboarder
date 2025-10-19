@@ -1,12 +1,8 @@
-<script>
+<script lang="ts">
 	import ActiveArgumentsGroup_addFilterAndSortingButton from '$lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte';
 	import ActiveArgumentsGroup_info from '$lib/components/ActiveArgumentsGroup_info.svelte';
 
 	import ActiveArgumentsGroupNormal from '$lib/components/ActiveArgumentsGroupNormal.svelte';
-	export let group;
-	export let argsInfo;
-	export let update_activeArgumentsDataGrouped;
-	export let activeArgumentsDataGrouped;
 	import { createEventDispatcher, getContext, setContext } from 'svelte';
 	import ActiveArgumentsGroupHasFilterOperators from '$lib/components/ActiveArgumentsGroupHasFilterOperators.svelte';
 	import Toggle from './fields/Toggle.svelte';
@@ -21,7 +17,21 @@
 		dragDisabled = true;
 	}
 	const hasGroup_argsNode = group.group_argsNode;
-	export let prefix = '';
+	interface Props {
+		group: any;
+		argsInfo: any;
+		update_activeArgumentsDataGrouped: any;
+		activeArgumentsDataGrouped: any;
+		prefix?: string;
+	}
+
+	let {
+		group = $bindable(),
+		argsInfo = $bindable(),
+		update_activeArgumentsDataGrouped = $bindable(),
+		activeArgumentsDataGrouped = $bindable(),
+		prefix = ''
+	}: Props = $props();
 
 	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
 	const CPItemContext = getContext(`${prefix}CPItemContext`);

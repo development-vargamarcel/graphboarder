@@ -1,4 +1,6 @@
-<script>
+<script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import {
 		filterElFromArr,
 		formatData,
@@ -23,19 +25,10 @@
 
 	import Fuse from 'fuse.js';
 	const dispatch = createEventDispatcher();
-	export let nodes;
-	export let parentNodeId;
-	export let parentNode = nodes[parentNodeId];
-	export let node;
-	export let availableOperators;
-	export let group;
-	export let type;
-	export let originalNodes;
-	let stepsOfNodes = [];
-	let stepsOfFields = [];
-	let stepsOfFieldsFull = [];
+	let stepsOfNodes = $state([]);
+	let stepsOfFields = $state([]);
+	let stepsOfFieldsFull = $state([]);
 	let testName_stepsOFFieldsWasUpdated = false;
-	export let prefix = '';
 	console.log({ node });
 	/////start
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
@@ -116,16 +109,6 @@
 		);
 	}
 
-	$: {
-		stepsOfFieldsFull = stepsOfNodesToStepsOfFields(stepsOfNodes);
-		stepsOfFields = filterElFromArr(stepsOfFieldsFull, ['list', 'bonded']);
-		node.stepsOfFieldsFull = stepsOfFieldsFull;
-		node.stepsOfFields = stepsOfFields;
-		node.stepsOfFieldsMinimal = filterElFromArr(stepsOfFields, ['_and', '_or', '_not']);
-		node.stepsOfNodes = stepsOfNodes;
-		node.stepsOfFieldsStringified = JSON.stringify(stepsOfFields);
-	}
-	export let addDefaultFields;
 
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
@@ -158,35 +141,13 @@
 	};
 	//
 	let labelEl;
-	let shadowEl;
-	let shadowHeight = 20;
-	let shadowWidth = 20;
+	let shadowEl = $state();
+	let shadowHeight = $state(20);
+	let shadowWidth = $state(20);
 
-	let labelElClone;
+	let labelElClone = $state();
 
-	$: if (labelEl) {
-		shadowHeight = labelEl.clientHeight;
-		shadowWidth = labelEl.clientWidth;
-	}
 
-	//$: console.log(shadowEl);
-	$: if (shadowHeight && shadowEl) {
-		if (shadowEl.style.height == 0) {
-			//if (shadowEl.style.height == 0) ensures the bellow runs only once per grab of element to move
-			shadowEl.style.height = `${shadowHeight + 18}px`;
-			shadowEl.style.width = `${shadowWidth}px`;
-
-			//put labelElClone in place of shadowEl
-			// if (labelElClone) {
-			// 	shadowEl.removeChild(labelElClone);
-			// }
-			labelElClone = labelEl.cloneNode(true);
-			labelElClone.classList.remove('dnd-item');
-			labelElClone.classList.add('border-2', 'border-accent');
-
-			shadowEl.appendChild(labelElClone);
-		}
-	}
 	function startDrag(e) {
 		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
 		//e.preventDefault();
@@ -211,38 +172,7 @@
 	let argsInfo = QMS_info?.args;
 	let showModal = false;
 
-	let groupDisplayTitle = '';
-	$: {
-		groupDisplayTitle = '';
-		//if (node?.not) {
-		//	groupDisplayTitle = `${groupDisplayTitle}_not `;
-		//}
-		if (node.dd_displayName) {
-			groupDisplayTitle = `${groupDisplayTitle}${node.dd_displayName}`;
-		}
-
-		if (node?.operator != 'bonded') {
-			if (groupDisplayTitle.trim() != '') {
-				groupDisplayTitle = `${groupDisplayTitle} `;
-			}
-
-			if (node?.operator == 'list') {
-				groupDisplayTitle = `${groupDisplayTitle} (list)`;
-			}
-			if (['_and', '_or'].includes(node?.operator)) {
-				groupDisplayTitle = `${groupDisplayTitle}${node?.operator} (list)`;
-			}
-		}
-		if (groupDisplayTitle.trim() == '' || getPreciseType(groupDisplayTitle) == 'undefined') {
-			if (node?.operator == 'bonded') {
-				groupDisplayTitle = '(item)'; //bonded
-			} else if (node?.operator == '~spread~') {
-				groupDisplayTitle = '(~spread~)'; //~spread~
-			}
-		}
-		groupDisplayTitle = `${groupDisplayTitle}`;
-		//groupDisplayTitle = stepsOfNodes.join('->') + `(${groupDisplayTitle})`;
-	}
+	let groupDisplayTitle = $state('');
 
 	if (node?.addDefaultFields || (node?.isMain && addDefaultFields)) {
 		nodeAddDefaultFields(
@@ -255,7 +185,6 @@
 			stepsOfFields
 		);
 	}
-	export let showSelectModal;
 
 	let showAddModal = false;
 	const getRowSelectionState = (selectedRowsModel) => {
@@ -269,12 +198,39 @@
 		});
 		return rowSelectionState;
 	};
-	let selectedRowsModel = {};
+	let selectedRowsModel = $state({});
 	import ExplorerTable from '$lib/components/ExplorerTable.svelte';
 	import { string_transformer } from '$lib/utils/dataStructureTransformers.ts';
 	import { writable } from 'svelte/store';
 	import AddNodeToControlPanel from './AddNodeToControlPanel.svelte';
 	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
+	interface Props {
+		nodes: any;
+		parentNodeId: any;
+		parentNode?: any;
+		node: any;
+		availableOperators: any;
+		group: any;
+		type: any;
+		originalNodes: any;
+		prefix?: string;
+		addDefaultFields: any;
+		showSelectModal: any;
+	}
+
+	let {
+		nodes = $bindable(),
+		parentNodeId,
+		parentNode = nodes[parentNodeId],
+		node = $bindable(),
+		availableOperators,
+		group,
+		type,
+		originalNodes,
+		prefix = '',
+		addDefaultFields,
+		showSelectModal = $bindable()
+	}: Props = $props();
 
 	let showExplorerTable = true;
 	const fuse = new Fuse($schemaData.queryFields, {
@@ -363,16 +319,10 @@
 		return inputColumnsLocationQMS_Info;
 	});
 	//should work
-
-	$: if (QMSWraperContextForSelectedQMS) {
-		$idColName = QMSWraperContextForSelectedQMS.idColName;
-	}
-	//should work
 	console.log({ node, inputColumnsLocationQMS_Info, inputColumnsLocation });
 	//------------
 
-	let QMSWraperContextForSelectedQMS = {};
-	$: console.log({ QMSWraperContextForSelectedQMS });
+	let QMSWraperContextForSelectedQMS = $state({});
 	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
 	let forceShowSelectAndAddButtons = false;
 	const inputFieldsContainerLocation = endpointInfo.get_inputFieldsContainerLocation(
@@ -386,17 +336,95 @@
 		'inputFields'
 	);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
-	let getManyQMS;
-	$: if ($QMSFieldToQMSGetMany_Store.length > 0) {
-		getManyQMS = QMSFieldToQMSGetMany_Store.getObj({
-			nodeOrField: node
-		})?.getMany?.selectedQMS;
-		if (getManyQMS) {
-			console.log({ getManyQMS });
-		}
-	}
-	let showSelectQMSModal = false;
+	let getManyQMS = $state();
+	let showSelectQMSModal = $state(false);
 	console.log('qqqqqqwwwww', { getManyQMS, showSelectQMSModal });
+	run(() => {
+		stepsOfFieldsFull = stepsOfNodesToStepsOfFields(stepsOfNodes);
+		stepsOfFields = filterElFromArr(stepsOfFieldsFull, ['list', 'bonded']);
+		node.stepsOfFieldsFull = stepsOfFieldsFull;
+		node.stepsOfFields = stepsOfFields;
+		node.stepsOfFieldsMinimal = filterElFromArr(stepsOfFields, ['_and', '_or', '_not']);
+		node.stepsOfNodes = stepsOfNodes;
+		node.stepsOfFieldsStringified = JSON.stringify(stepsOfFields);
+	});
+	run(() => {
+		if (labelEl) {
+			shadowHeight = labelEl.clientHeight;
+			shadowWidth = labelEl.clientWidth;
+		}
+	});
+	//$: console.log(shadowEl);
+	run(() => {
+		if (shadowHeight && shadowEl) {
+			if (shadowEl.style.height == 0) {
+				//if (shadowEl.style.height == 0) ensures the bellow runs only once per grab of element to move
+				shadowEl.style.height = `${shadowHeight + 18}px`;
+				shadowEl.style.width = `${shadowWidth}px`;
+
+				//put labelElClone in place of shadowEl
+				// if (labelElClone) {
+				// 	shadowEl.removeChild(labelElClone);
+				// }
+				labelElClone = labelEl.cloneNode(true);
+				labelElClone.classList.remove('dnd-item');
+				labelElClone.classList.add('border-2', 'border-accent');
+
+				shadowEl.appendChild(labelElClone);
+			}
+		}
+	});
+	run(() => {
+		groupDisplayTitle = '';
+		//if (node?.not) {
+		//	groupDisplayTitle = `${groupDisplayTitle}_not `;
+		//}
+		if (node.dd_displayName) {
+			groupDisplayTitle = `${groupDisplayTitle}${node.dd_displayName}`;
+		}
+
+		if (node?.operator != 'bonded') {
+			if (groupDisplayTitle.trim() != '') {
+				groupDisplayTitle = `${groupDisplayTitle} `;
+			}
+
+			if (node?.operator == 'list') {
+				groupDisplayTitle = `${groupDisplayTitle} (list)`;
+			}
+			if (['_and', '_or'].includes(node?.operator)) {
+				groupDisplayTitle = `${groupDisplayTitle}${node?.operator} (list)`;
+			}
+		}
+		if (groupDisplayTitle.trim() == '' || getPreciseType(groupDisplayTitle) == 'undefined') {
+			if (node?.operator == 'bonded') {
+				groupDisplayTitle = '(item)'; //bonded
+			} else if (node?.operator == '~spread~') {
+				groupDisplayTitle = '(~spread~)'; //~spread~
+			}
+		}
+		groupDisplayTitle = `${groupDisplayTitle}`;
+		//groupDisplayTitle = stepsOfNodes.join('->') + `(${groupDisplayTitle})`;
+	});
+	//should work
+
+	run(() => {
+		if (QMSWraperContextForSelectedQMS) {
+			$idColName = QMSWraperContextForSelectedQMS.idColName;
+		}
+	});
+	run(() => {
+		console.log({ QMSWraperContextForSelectedQMS });
+	});
+	run(() => {
+		if ($QMSFieldToQMSGetMany_Store.length > 0) {
+			getManyQMS = QMSFieldToQMSGetMany_Store.getObj({
+				nodeOrField: node
+			})?.getMany?.selectedQMS;
+			if (getManyQMS) {
+				console.log({ getManyQMS });
+			}
+		}
+	});
 </script>
 
 {#if showSelectModal}
@@ -557,7 +585,7 @@
 
 				<button
 					class="btn btn-accent btn-xs w-full"
-					on:click={() => {
+					onclick={() => {
 						showSelectQMSModal = true;
 					}}
 				>

@@ -1,10 +1,14 @@
-<script>
+<script lang="ts">
 	import { get } from 'svelte/store';
 	import ActiveArgumentsGroupWraper from './ActiveArgumentsGroupWraper.svelte';
 	import { getContext, setContext } from 'svelte';
 	import { getQMSWraperCtxDataGivenControlPanelItem } from '$lib/utils/usefulFunctions';
-	export let prefix = '';
-	export let CPItem;
+	interface Props {
+		prefix?: string;
+		CPItem: any;
+	}
+
+	let { prefix = '', CPItem }: Props = $props();
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 
 	const QMSWraperCtx = getQMSWraperCtxDataGivenControlPanelItem(CPItem, OutermostQMSWraperContext);

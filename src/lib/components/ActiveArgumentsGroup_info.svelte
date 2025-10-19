@@ -1,11 +1,11 @@
-<script>
+<script lang="ts">
 	import { getRootType } from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
 	export const prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
-	export let group;
-	let showDescription;
+	let { group } = $props();
+	let showDescription = $state();
 </script>
 
 {#if !group.group_isRoot}
@@ -23,18 +23,18 @@
 </div>
 
 {#if group.group_name !== 'root'}
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<i
 		class="bi bi-info-circle text-secondary px-2"
 		title={group.description}
-		on:click={() => {
+		onclick={() => {
 			if (showDescription == group.description) {
 				showDescription = '';
 			} else {
 				showDescription = group.description;
 			}
 		}}
-	/>
+	></i>
 	{#if showDescription == group.description && group.description}
 		<p class="text-xs font-light text-secondary select-none">
 			({group.description})

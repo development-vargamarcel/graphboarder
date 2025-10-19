@@ -1,4 +1,6 @@
-<script>
+<script lang="ts">
+	import { run, stopPropagation, self, preventDefault } from 'svelte/legacy';
+
 	import Type from '$lib/components/Type.svelte';
 	import Description from './Description.svelte';
 
@@ -6,11 +8,6 @@
 	import AutoInterface from '$lib/components/fields/AutoInterface.svelte';
 	import { SHADOW_ITEM_MARKER_PROPERTY_NAME } from 'svelte-dnd-action';
 	import { createEventDispatcher, getContext, setContext } from 'svelte';
-	export let setNotInUseIfNotValid = true;
-	export let setNotInUseIfNotValidAndENUM = true;
-	export let parentNode;
-	export let node;
-	export let prefix = '';
 	import Toggle from '$lib/components/fields/Toggle.svelte';
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Modal from './Modal.svelte';
@@ -28,18 +25,44 @@
 	import SelectedRowsDisplay from './SelectedRowsDisplay.svelte';
 	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
 	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
-	export let isNot;
 	let dispatch = createEventDispatcher();
-	export let activeArgumentData;
-	export let group;
-	export let activeArgumentsDataGrouped;
-	//
-	export let nodes;
-	export let originalNodes;
-	export let type;
-	export let parentNodeId;
-	export let availableOperators;
-	export let startDrag;
+	
+	interface Props {
+		setNotInUseIfNotValid?: boolean;
+		setNotInUseIfNotValidAndENUM?: boolean;
+		parentNode: any;
+		node: any;
+		prefix?: string;
+		isNot: any;
+		activeArgumentData: any;
+		group: any;
+		activeArgumentsDataGrouped: any;
+		//
+		nodes: any;
+		originalNodes: any;
+		type: any;
+		parentNodeId: any;
+		availableOperators: any;
+		startDrag: any;
+	}
+
+	let {
+		setNotInUseIfNotValid = true,
+		setNotInUseIfNotValidAndENUM = true,
+		parentNode,
+		node,
+		prefix = '',
+		isNot = $bindable(),
+		activeArgumentData = $bindable(),
+		group,
+		activeArgumentsDataGrouped,
+		nodes = $bindable(),
+		originalNodes,
+		type,
+		parentNodeId,
+		availableOperators,
+		startDrag
+	}: Props = $props();
 	let idColNameOfSelectedRow;
 	//
 	setContext(
@@ -47,31 +70,35 @@
 		writable(activeArgumentData.chosenDisplayInterface || activeArgumentData.dd_displayInterface)
 	);
 	let showDescription = false;
-	let labelEl;
-	let shadowEl;
-	let shadowHeight = 20;
-	let shadowWidth = 20;
+	let labelEl = $state();
+	let shadowEl = $state();
+	let shadowHeight = $state(20);
+	let shadowWidth = $state(20);
 
-	let labelElClone;
+	let labelElClone = $state();
 
-	$: if (labelEl) {
-		shadowHeight = labelEl.clientHeight;
-		shadowWidth = labelEl.clientWidth;
-	}
+	run(() => {
+		if (labelEl) {
+			shadowHeight = labelEl.clientHeight;
+			shadowWidth = labelEl.clientWidth;
+		}
+	});
 
 	//$: console.log(shadowEl);
-	$: if (shadowHeight && shadowEl) {
-		if (shadowEl.style.height == 0) {
-			shadowEl.style.height = `${shadowHeight + 18}px`;
-			shadowEl.style.width = `${shadowWidth}px`;
+	run(() => {
+		if (shadowHeight && shadowEl) {
+			if (shadowEl.style.height == 0) {
+				shadowEl.style.height = `${shadowHeight + 18}px`;
+				shadowEl.style.width = `${shadowWidth}px`;
 
-			labelElClone = labelEl.cloneNode(true);
-			labelElClone.classList.remove('dnd-item');
-			labelElClone.classList.add('border-2', 'border-accent');
+				labelElClone = labelEl.cloneNode(true);
+				labelElClone.classList.remove('dnd-item');
+				labelElClone.classList.add('border-2', 'border-accent');
 
-			shadowEl.appendChild(labelElClone);
+				shadowEl.appendChild(labelElClone);
+			}
 		}
-	}
+	});
 	console.log({ activeArgumentData });
 	let get_valueToDisplay = () => {
 		let value;
@@ -99,9 +126,9 @@
 	};
 	const CPItemContext = getContext(`${prefix}CPItemContext`);
 	const CPItem = CPItemContext?.CPItem;
-	let expandedVersion;
-	let valueToDisplay = undefined;
-	$: {
+	let expandedVersion = $state();
+	let valueToDisplay = $state(undefined);
+	run(() => {
 		if (true || activeArgumentData?.inUse) {
 			valueToDisplay = get_valueToDisplay();
 		}
@@ -111,7 +138,7 @@
 		} else {
 			expandedVersion = true;
 		}
-	}
+	});
 	const outermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	const { mergedChildren_QMSWraperCtxData_Store } = outermostQMSWraperContext;
 
@@ -172,7 +199,7 @@
 	const inUse_toggle = () => {
 		inUse_set(!activeArgumentData.inUse);
 	};
-	let showModal = false;
+	let showModal = $state(false);
 	const mutationVersion = getContext('mutationVersion');
 	const showInputField = getContext('showInputField');
 
@@ -180,16 +207,18 @@
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
 	const nodeRootType = getRootType(null, activeArgumentData.dd_rootName, schemaData);
-	let showSelectModal = false;
+	let showSelectModal = $state(false);
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
-	let selectedQMS;
-	$: if ($QMSFieldToQMSGetMany_Store.length > 0) {
-		selectedQMS = QMSFieldToQMSGetMany_Store.getObj({
-			nodeOrField: node
-		})?.getMany?.selectedQMS;
-	}
+	let selectedQMS = $state();
+	run(() => {
+		if ($QMSFieldToQMSGetMany_Store.length > 0) {
+			selectedQMS = QMSFieldToQMSGetMany_Store.getObj({
+				nodeOrField: node
+			})?.getMany?.selectedQMS;
+		}
+	});
 	const nodeContext_forDynamicData = getContext(`${prefix}nodeContext_forDynamicData`);
 	let selectedRowsColValues = nodeContext_forDynamicData.selectedRowsColValues;
 </script>
@@ -243,7 +272,7 @@
 								type="checkbox"
 								class="toggle toggle-sm"
 								bind:checked={isNot}
-								on:change={() => {
+								onchange={() => {
 									dispatch('contextmenuUsed');
 								}}
 							/>
@@ -258,13 +287,13 @@
 							type="checkbox"
 							class="toggle toggle-xs"
 							checked={activeArgumentData?.inUse}
-							on:change|self|stopPropagation|capture={inUse_toggle}
+							onchangecapture={self(stopPropagation(inUse_toggle))}
 						/>
 					</label>
 				</div>
 				<btn
 					class="btn btn-xs btn-warning flex-1"
-					on:click={() => {
+					onclick={() => {
 						activeArgumentsDataGrouped_Store.delete_activeArgument(
 							activeArgumentData,
 							group.group_name
@@ -272,7 +301,7 @@
 						finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 					}}
 				>
-					<i class="bi bi-trash-fill" />
+					<i class="bi bi-trash-fill"></i>
 				</btn>
 				{#if !CPItemContext}
 					<AddNodeToControlPanel {node} />
@@ -306,10 +335,10 @@
 		</div>
 	</Modal>{/if}
 
-<!-- svelte-ignore a11y-label-has-associated-control -->
+<!-- svelte-ignore a11y_label_has_associated_control -->
 <label
 	use:clickOutside
-	on:click_outside={handleClickOutside}
+	onclick_outside={handleClickOutside}
 	class="   rounded-box {group.group_isRoot ? ' min-w-fit w-min' : 'w-min-fit '}  {!expandedVersion
 		? ' pr-1 '
 		: ' '} 
@@ -331,9 +360,9 @@
 			<input
 				type="checkbox"
 				class="checkbox input-primary hidden"
-				on:change|self={() => {
+				onchange={self(() => {
 					//leave this here,will prevent the click to go trough
-				}}
+				})}
 			/>
 			<div
 				class="   text-xs select-none flex grow flex-nowrap
@@ -352,13 +381,13 @@
 						{isNot ? ' bg-gradient-to-r from-secondary/30 outline-dashed' : 'bg-error/0'} {selectedQMS
 						? 'text-secondary'
 						: ''}"
-					on:click={() => {
+					onclick={() => {
 						showModal = true;
 					}}
-					on:contextmenu|preventDefault|stopPropagation|self={() => {
+					oncontextmenu={self(stopPropagation(preventDefault(() => {
 						showSelectModal = !showSelectModal;
 						expandedVersion = !expandedVersion;
-					}}
+					})))}
 				>
 					<!-- {#if group.group_name == 'root'}
 						{activeArgumentData.stepsOfFields?.join(' > ') + ':'}
@@ -368,7 +397,7 @@
 					{activeArgumentData.stepsOfFields[activeArgumentData.stepsOfFields.length - 1]}
 					{#if activeArgumentData.dd_NON_NULL}
 						<sup>
-							<i class="text-primary bi bi-asterisk" />
+							<i class="text-primary bi bi-asterisk"></i>
 						</sup>
 					{/if}
 					<!-- {#if selectedRowsColValuesProcessed}
@@ -383,9 +412,9 @@
 					{#if !expandedVersion && !$mutationVersion && !$showInputField}
 						<p
 							class="shrink-0 text-base-content text-xs font-light pt-[1px] mx-2"
-							on:click|preventDefault|stopPropagation|self={() => {
+							onclick={self(stopPropagation(preventDefault(() => {
 								expandedVersion = true;
-							}}
+							})))}
 						>
 							{valueToDisplay}
 						</p>
@@ -411,5 +440,5 @@
 </label>
 
 {#if activeArgumentData[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
-	<div class=" ml-8 h-0 absolute w-11/12 top-0 left-0 visible" id="shadowEl" bind:this={shadowEl} />
+	<div class=" ml-8 h-0 absolute w-11/12 top-0 left-0 visible" id="shadowEl" bind:this={shadowEl}></div>
 {/if}

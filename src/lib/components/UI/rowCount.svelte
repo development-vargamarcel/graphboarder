@@ -1,5 +1,6 @@
-<script>
-	export let prefix = '';
+<script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 
@@ -8,11 +9,16 @@
 	import { getDataGivenStepsOfFields } from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
 
-	export let QMS_bodyPart_StoreDerived;
-	export let QMS_info;
+	interface Props {
+		prefix?: string;
+		QMS_bodyPart_StoreDerived: any;
+		QMS_info: any;
+	}
 
-	let countValue;
-	let queryData;
+	let { prefix = '', QMS_bodyPart_StoreDerived, QMS_info }: Props = $props();
+
+	let countValue = $state();
+	let queryData = $state();
 	const runQuery = (queryBody) => {
 		let fetching = true;
 		let error = false;
@@ -32,7 +38,7 @@
 				queryData = { fetching, error, data };
 			});
 	};
-	$: {
+	run(() => {
 		if (queryData?.data) {
 			countValue = getDataGivenStepsOfFields(
 				null,
@@ -42,7 +48,7 @@
 		} else {
 			countValue = '?';
 		}
-	}
+	});
 	QMS_bodyPart_StoreDerived.subscribe((QMS_body) => {
 		if (QMS_body && QMS_body !== '') {
 			runQuery(

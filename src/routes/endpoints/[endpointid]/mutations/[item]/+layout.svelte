@@ -1,15 +1,20 @@
-<script>
-	import { page } from '$app/stores';
+<script lang="ts">
+	import { page } from '$app/state';
 
 	import Page from '$lib/components/Page.svelte';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
 
 	//console.log({ item });
 </script>
 
 <Page
 	MenuItem={true}
-	CustomId={$page.params.item}
-	backPath={`/mutations/${$page.params.queryName}`}
+	CustomId={page.params.item}
+	backPath={`/mutations/${page.params.queryName}`}
 >
-	<slot />
+	{@render children?.()}
 </Page>

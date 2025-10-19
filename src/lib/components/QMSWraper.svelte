@@ -1,4 +1,6 @@
-<script>
+<script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { Create_paginationOptions } from '$lib/stores/pagination/paginationOptions';
 	import { Create_activeArgumentsDataGrouped_Store } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
 	import { Create_finalGqlArgObj_Store } from '$lib/stores/QMSHandling/finalGqlArgObj_Store';
@@ -14,12 +16,9 @@
 		get_nodeFieldsQMS_info,
 		getDeepField
 	} from '$lib/utils/usefulFunctions';
-	export let prefix = '';
-	export let extraInfo = {};
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
-	export let initialGqlArgObj = {};
 	import { get, writable } from 'svelte/store';
 	import { Create_mergedChildren_finalGqlArgObj_Store } from '$lib/stores/QMSHandling/mergedChildren_finalGqlArgObj_Store';
 	//import { Create_mergedChildren_activeArgumentsDataGrouped_Store } from '$lib/stores/QMSHandling/mergedChildren_activeArgumentsDataGrouped_Store';
@@ -27,10 +26,6 @@
 	import { Create_mergedChildren_controlPanel_Store } from '$lib/stores/QMSHandling/mergedChildren_controlPanel_Store';
 	import QMSWraperCtxDataCurrentComputations from './QMSWraperCtxDataCurrentComputations.svelte';
 	import { Create_QMSFieldToQMSGetMany_Store } from '$lib/stores/QMSFieldToQMSGetMany_Store';
-	export let isOutermostQMSWraper = getContext(`${prefix}QMSWraperContext`) ? false : true;
-	export let QMSType = 'query';
-	export let QMSName = `${Math.random()}`;
-	export let QMS_info = schemaData.get_QMS_Field(QMSName, QMSType, schemaData);
 	if (!QMS_info) {
 		QMS_info = schemaData.get_QMS_Field(QMSName, QMSType, schemaData);
 	}
@@ -43,11 +38,6 @@
 		});
 	}
 	console.log({ QMSType, QMSName, QMS_info });
-	export let QMSWraperContext = {};
-	export let activeArgumentsDataGrouped_StoreInitialValue;
-	export let activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store(
-		activeArgumentsDataGrouped_StoreInitialValue
-	);
 	const paginationOptions = Create_paginationOptions();
 	const paginationState = Create_paginationState(
 		undefined,
@@ -64,7 +54,6 @@
 		schemaData
 	);
 
-	export let tableColsData_StoreInitialValue = [];
 	const rowsLocation = endpointInfo.get_rowsLocation(QMS_info, schemaData);
 	const nodeFieldsQMS_info = get_nodeFieldsQMS_info(QMS_info, rowsLocation, schemaData);
 	// let scalarColsData = get_scalarColsData(
@@ -146,10 +135,6 @@
 		tableColsData_StoreInitialValue
 	);
 
-	export let finalGqlArgObj_Store = Create_finalGqlArgObj_Store(
-		activeArgumentsDataGrouped_Store,
-		paginationState
-	);
 	const mergedChildren_finalGqlArgObj_Store = Create_mergedChildren_finalGqlArgObj_Store({});
 	// const mergedChildren_activeArgumentsDataGrouped_Store =
 	// 	Create_mergedChildren_activeArgumentsDataGrouped_Store({});
@@ -157,21 +142,29 @@
 	const mergedChildren_controlPanel_Store = Create_mergedChildren_controlPanel_Store([]);
 	const QMSFieldToQMSGetMany_Store = Create_QMSFieldToQMSGetMany_Store([]);
 
-	$: console.log('$QMSFieldToQMSGetMany_Store ', $QMSFieldToQMSGetMany_Store);
+	run(() => {
+		console.log('$QMSFieldToQMSGetMany_Store ', $QMSFieldToQMSGetMany_Store);
+	});
 	import JSON5 from 'json5';
 
-	$: console.log(
-		'$mergedChildren_finalGqlArgObj_Store',
-		'\n',
-		$mergedChildren_finalGqlArgObj_Store,
-		JSON5.stringify($mergedChildren_finalGqlArgObj_Store, { quote: '"' })
-	);
+	run(() => {
+		console.log(
+			'$mergedChildren_finalGqlArgObj_Store',
+			'\n',
+			$mergedChildren_finalGqlArgObj_Store,
+			JSON5.stringify($mergedChildren_finalGqlArgObj_Store, { quote: '"' })
+		);
+	});
 	// $: console.log(
 	// 	'$mergedChildren_activeArgumentsDataGrouped_Store',
 	// 	$mergedChildren_activeArgumentsDataGrouped_Store
 	// );
-	$: console.log('$mergedChildren_QMSWraperCtxData_Store ', $mergedChildren_QMSWraperCtxData_Store);
-	$: console.log('$mergedChildren_controlPanel_Store ', $mergedChildren_controlPanel_Store);
+	run(() => {
+		console.log('$mergedChildren_QMSWraperCtxData_Store ', $mergedChildren_QMSWraperCtxData_Store);
+	});
+	run(() => {
+		console.log('$mergedChildren_controlPanel_Store ', $mergedChildren_controlPanel_Store);
+	});
 
 	const QMS_bodyPart_StoreDerived = Create_QMS_bodyPart_StoreDerived(
 		finalGqlArgObj_Store,
@@ -226,10 +219,52 @@
 		schemaData
 	)?.dd_displayName;
 
-	$: console.log('$paginationState', $paginationState);
-	$: console.log('$paginationState_derived', $paginationState_derived);
-	export let QMSWraperContextGiven;
-	export let preferGivenQMSWraperContext = true;
+	run(() => {
+		console.log('$paginationState', $paginationState);
+	});
+	run(() => {
+		console.log('$paginationState_derived', $paginationState_derived);
+	});
+	interface Props {
+		prefix?: string;
+		extraInfo?: any;
+		initialGqlArgObj?: any;
+		isOutermostQMSWraper?: any;
+		QMSType?: string;
+		QMSName?: any;
+		QMS_info?: any;
+		QMSWraperContext?: any;
+		activeArgumentsDataGrouped_StoreInitialValue: any;
+		activeArgumentsDataGrouped_Store?: any;
+		tableColsData_StoreInitialValue?: any;
+		finalGqlArgObj_Store?: any;
+		QMSWraperContextGiven: any;
+		preferGivenQMSWraperContext?: boolean;
+		children?: import('svelte').Snippet;
+	}
+
+	let {
+		prefix = '',
+		extraInfo = {},
+		initialGqlArgObj = {},
+		isOutermostQMSWraper = getContext(`${prefix}QMSWraperContext`) ? false : true,
+		QMSType = 'query',
+		QMSName = `${Math.random()}`,
+		QMS_info = $bindable(schemaData.get_QMS_Field(QMSName, QMSType, schemaData)),
+		QMSWraperContext = $bindable({}),
+		activeArgumentsDataGrouped_StoreInitialValue,
+		activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store(
+		activeArgumentsDataGrouped_StoreInitialValue
+	),
+		tableColsData_StoreInitialValue = $bindable([]),
+		finalGqlArgObj_Store = Create_finalGqlArgObj_Store(
+		activeArgumentsDataGrouped_Store,
+		paginationState
+	),
+		QMSWraperContextGiven,
+		preferGivenQMSWraperContext = true,
+		children
+	}: Props = $props();
 	QMSWraperContext = {
 		idColName,
 		returningColumnsLocationQMS_Info,
@@ -271,5 +306,5 @@
 
 {#if QMS_info || (preferGivenQMSWraperContext && QMSWraperContextGiven)}
 	<!-- content here -->
-	<slot><!-- optional fallback --></slot>
+	{#if children}{@render children()}{:else}<!-- optional fallback -->{/if}
 {/if}

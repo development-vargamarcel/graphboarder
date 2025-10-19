@@ -1,11 +1,16 @@
 <script lang="ts">
 	import '../app.postcss';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
 </script>
 
-<header />
+<header></header>
 
-<slot />
-<footer />
+{@render children?.()}
+<footer></footer>
 
 <style>
 </style>

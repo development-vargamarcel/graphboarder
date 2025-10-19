@@ -14,7 +14,12 @@
 	import { localEndpoints, stigifyAll } from '$lib/stores/testData/testEndpoints';
 	import { persisted } from 'svelte-persisted-store';
 
-	export let data: LayoutData;
+	interface Props {
+		data: LayoutData;
+		children?: import('svelte').Snippet;
+	}
+
+	let { data, children }: Props = $props();
 	const endpointInfoProvided = localEndpoints.find((endpoint) => endpoint.id == 'nhost');
 	//console.log('endpointInfoProvided json', stigifyAll(endpointInfoProvided));
 	export const localStorageEndpoints = persisted(
@@ -24,6 +29,6 @@
 	setContext('localStorageEndpoints', localStorageEndpoints);
 </script>
 
-<slot><!-- optional fallback --></slot>
+{#if children}{@render children()}{:else}<!-- optional fallback -->{/if}
 <!-- <MainWraper {endpointInfoProvided}>
 </MainWraper> -->

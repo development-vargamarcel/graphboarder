@@ -6,8 +6,12 @@
 	import prettierPluginTypescript from 'https://unpkg.com/prettier@3.2.5/plugins/typescript.mjs';
 	import prettierPluginGraphql from 'https://unpkg.com/prettier@3.2.5/plugins/graphql.mjs';
 	import prettierPluginEstree from 'https://unpkg.com/prettier@3.2.5/plugins/estree.mjs';
-	export let language = 'typescript';
-	export let value = '';
+	interface Props {
+		language?: string;
+		value?: string;
+	}
+
+	let { language = 'typescript', value = $bindable('') }: Props = $props();
 	const configurations = [
 		{
 			language: 'graphql',
@@ -36,22 +40,22 @@
 		prettify();
 		console.log(value);
 	};
-	let mainContainerEl;
+	let mainContainerEl = $state();
 </script>
 
 <div class="bg-base-300 relative max-h-[90vh] overflow-auto" bind:this={mainContainerEl}>
 	<CodeMirror bind:value lang={chosenConfig.codemirrorLanguage} />
 	<div class="sticky top-1 right-1">
-		<button class="btn btn-xs btn-primary" on:click={handlechange}> format </button>
+		<button class="btn btn-xs btn-primary" onclick={handlechange}> format </button>
 		<button
 			class="btn btn-primary btn-xs normal-case ml-2"
-			on:click={() => {
+			onclick={() => {
 				mainContainerEl.requestFullscreen();
 			}}>fullscreen</button
 		>
 		<button
 			class="btn btn-primary btn-xs normal-case ml-2"
-			on:click={() => {
+			onclick={() => {
 				document.exitFullscreen();
 			}}>exit fullscreen</button
 		>
