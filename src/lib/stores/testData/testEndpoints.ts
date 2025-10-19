@@ -7,7 +7,7 @@ export const localEndpoints = [
 	{
 		id: 'directus',
 		url: 'https://directus-production-c2de.up.railway.app/graphql',
-		isMantained: true,
+		isMantained: false,
 		description: 'offsetBased pagination,rowCount set',
 		headers: {
 			authorization: 'Bearer S4YM_Cd7Uo6laJhQV594l59EGZASSmBw'
@@ -312,7 +312,7 @@ export const localEndpoints = [
 	{
 		id: 'supabase',
 		url: 'https://bdpktzyqszaqnlbushhk.supabase.co/graphql/v1',
-		isMantained: true,
+		isMantained: false,
 		description: 'offset based pagination,no rowCount avalable',
 		headers: { 'apiKey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJkcGt0enlxc3phcW5sYnVzaGhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk1NDg1ODcsImV4cCI6MjAyNTEyNDU4N30.ADkneNGSwCcLgtKSdQuMOd0P5dN6ZZ1FFNnjgQaid44' },
 		pageInfoFieldsLocation: ['pageInfo'],
