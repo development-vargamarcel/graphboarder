@@ -24,6 +24,6 @@
 	setContext('localStorageEndpoints', localStorageEndpoints);
 </script>
 
-<MainWraper {endpointInfoProvided}>
-	<slot><!-- optional fallback --></slot>
-</MainWraper>
+<slot><!-- optional fallback --></slot>
+<!-- <MainWraper {endpointInfoProvided}>
+</MainWraper> -->
