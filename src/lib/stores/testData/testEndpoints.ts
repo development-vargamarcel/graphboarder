@@ -151,10 +151,10 @@ export const localEndpoints = [
 	},
 	{
 		id: 'nhost',
-		url: 'https://vgqkcskomrpikolllkix.hasura.eu-central-1.nhost.run/v1/graphql',
+		url: 'https://mtupwwndtaxgboomfjim.hasura.eu-central-1.nhost.run/v1/graphql',
 		isMantained: true,
 		description: 'offsetBased pagination,rowCount set',
-		headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
+		headers: { 'x-hasura-admin-secret': ',v!)R06aVMCPsY:xL&es$q0PSMYe1g)!' },
 		rowsLocationPossibilities: [
 			{
 				get_Val: (QMS_info, schemaData) => {
@@ -266,10 +266,10 @@ export const localEndpoints = [
 	{
 		id: 'nhostRelay',
 
-		url: 'https://vgqkcskomrpikolllkix.hasura.eu-central-1.nhost.run/v1beta1/relay',
+		url: 'https://mtupwwndtaxgboomfjim.hasura.eu-central-1.nhost.run/v1beta1/relay',
 		isMantained: true,
 		description: 'edgeBased pagination,no rowCount avalable',
-		headers: { 'x-hasura-admin-secret': '3f3e46f190464c7a8dfe19e6c94ced84' },
+		headers: { 'x-hasura-admin-secret': ',v!)R06aVMCPsY:xL&es$q0PSMYe1g)!' },
 		pageInfoFieldsLocation: ['pageInfo'],
 		returningColumnsPossibleLocationsInMutations: [
 			['returning'], []
