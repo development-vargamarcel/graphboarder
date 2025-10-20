@@ -1,11 +1,15 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import Interface from '$lib/components/fields/Interface.svelte';
 
-	let inputEl;
-	let { rawValue = [], dispatchValue = [], typeInfo } = $props();
+	interface Props {
+		rawValue?: any[];
+		dispatchValue?: any[];
+		typeInfo: any;
+		onChanged?: (detail: { chd_dispatchValue: any; chd_rawValue: any }) => void;
+	}
 
-	const dispatch = createEventDispatcher();
+	let inputEl;
+	let { rawValue = [], dispatchValue = [], typeInfo, onChanged }: Props = $props();
 
 	let elements = $state(rawValue.map((el, i) => {
 		return { chd_rawValue: el, chd_dispatchValue: dispatchValue[i] };
@@ -35,7 +39,7 @@
 		let chd_rawValue = elements.map((el) => {
 			return el.chd_rawValue;
 		});
-		dispatch('changed', {
+		onChanged?.({
 			chd_dispatchValue,
 			chd_rawValue
 		});
@@ -49,9 +53,9 @@
 				{typeInfo}
 				rawValue={element.chd_rawValue}
 				dispatchValue={element.chd_dispatchValue}
-				on:changed={(e) => {
-					Object.assign(element, e.detail);
-					changedElement(e);
+				onChanged={(detail) => {
+					Object.assign(element, detail);
+					changedElement(detail);
 				}}
 			/>
 			<button

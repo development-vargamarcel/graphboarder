@@ -7,17 +7,26 @@
 	import { dndzone, SOURCES, TRIGGERS } from 'svelte-dnd-action';
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
 	import { flip } from 'svelte/animate';
-	import { createEventDispatcher, getContext, setContext } from 'svelte';
+	import { getContext, setContext } from 'svelte';
+
+	interface Props {
+		group?: any;
+		argsInfo: any;
+		update_activeArgumentsDataGrouped: any;
+		activeArgumentsDataGrouped: any;
+		onUpdateQuery?: () => void;
+	}
+
 	let {
 		group = $bindable(),
 		argsInfo,
 		update_activeArgumentsDataGrouped,
-		activeArgumentsDataGrouped
-	} = $props();
+		activeArgumentsDataGrouped,
+		onUpdateQuery
+	} = $props<Props>();
 
 	const flipDurationMs = 200;
 	let dragDisabled = $state(true);
-	const dispatch = createEventDispatcher();
 	function handleSort(e) {
 		group.group_args = e.detail.items;
 		//console.log('choisesWithId', group.group_args);
@@ -50,7 +59,7 @@
 		if (source === SOURCES.POINTER) {
 			dragDisabled = true;
 		}
-		dispatch('updateQuery');
+		onUpdateQuery?.();
 	}
 	function startDrag(e) {
 		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
@@ -110,9 +119,9 @@
 				}}
 			>
 				<ActiveArgument
-					on:updateQuery
-					on:inUseChanged={() => {
-						dispatch('updateQuery');
+					onupdateQuery={onUpdateQuery}
+					oninUseChanged={() => {
+						onUpdateQuery?.();
 					}}
 					{activeArgumentData}
 					{group}

@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-
 	let toggleEl = $state();
 	let swapEl = $state();
 	interface Props {
@@ -12,6 +10,7 @@
 		swapOnText: any;
 		swapOffText: any;
 		swapOfftextLinethrough?: any;
+		onChanged?: (detail: any) => void;
 	}
 
 	let {
@@ -22,9 +21,9 @@
 		useSwap = false,
 		swapOnText,
 		swapOffText,
-		swapOfftextLinethrough = swapOnText == swapOffText || !swapOffText
+		swapOfftextLinethrough = swapOnText == swapOffText || !swapOffText,
+		onChanged
 	}: Props = $props();
-	const dispatch = createEventDispatcher();
 </script>
 
 {#if useSwap}
@@ -36,7 +35,7 @@
 			bind:checked={rawValue}
 			onchange={() => {
 				rawValue = swapEl.checked ? true : false;
-				dispatch('changed', {
+				onChanged?.({
 					chd_rawValue: rawValue
 				});
 			}}
@@ -55,7 +54,7 @@
 			bind:checked={rawValue}
 			onchange={() => {
 				rawValue = toggleEl.checked ? true : false;
-				dispatch('changed', {
+				onChanged?.({
 					chd_rawValue: rawValue
 				});
 			}}

@@ -19,7 +19,6 @@
 	import { Create_activeArgumentsDataGrouped_Store } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
 	import QMSWraper from '$lib/components/QMSWraper.svelte';
 	import { get } from 'svelte/store';
-	import { get_store_value } from 'svelte/internal';
 
 	const dispatch = createEventDispatcher();
 	let { dd_kindsArray, dd_namesArray, dd_displayName, dd_rootName, args } = type;
@@ -133,7 +132,7 @@
 				});
 			}
 
-			$activeArgumentsDataGrouped_Store = get_store_value(
+			$activeArgumentsDataGrouped_Store = get(
 				activeArgumentsQMSWraperContext.activeArgumentsDataGrouped_Store
 			);
 
@@ -312,8 +311,7 @@
 							<Modal
 								modalIdetifier={'activeArgumentsDataModal'}
 								showApplyBtn={false}
-								on:cancel={(e) => {
-									let { detail } = e;
+								oncancel={(detail) => {
 									if (detail.modalIdetifier == 'activeArgumentsDataModal') {
 										showModal = false;
 									}

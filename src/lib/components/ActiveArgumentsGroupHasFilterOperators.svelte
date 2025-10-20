@@ -18,12 +18,11 @@
 	//!!! chnage bonded to item
 	import { flip } from 'svelte/animate';
 	import { dndzone, SHADOW_PLACEHOLDER_ITEM_ID } from 'svelte-dnd-action';
-	import { createEventDispatcher, getContext, onDestroy, onMount, setContext } from 'svelte';
+	import { getContext, onDestroy, onMount, setContext } from 'svelte';
 	import ActiveArgument from '$lib/components/ActiveArgument.svelte';
 	import ActiveArgumentsGroup_addFilterAndSortingButtonContent from '$lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte';
 	import Modal from './Modal.svelte';
 	import { nodeAddDefaultFields } from '$lib/utils/usefulFunctions';
-	const dispatch = createEventDispatcher();
 	let stepsOfNodes = $state([]);
 	let stepsOfFields = $state([]);
 	let stepsOfFieldsFull = $state([]);
@@ -171,7 +170,7 @@
 		//console.log(e);
 		nodes = { ...nodes };
 		handleChanged();
-		dispatch('changed');
+		onChanged?.();
 		dragDisabled = true;
 	}
 
@@ -183,7 +182,7 @@
 		//!!! to do: also delete the node from "nodes"
 		nodes = { ...nodes };
 		handleChanged();
-		dispatch('changed');
+		onChanged?.();
 	};
 	//
 	let labelEl = $state();
@@ -264,6 +263,10 @@
 		originalNodes: any;
 		prefix?: string;
 		addDefaultFields: any;
+		onChanged?: () => void;
+		onChildrenStartDrag?: () => void;
+		onupdateQuery?: () => void;
+		ondeleteSubNode?: (detail: any) => void;
 	}
 
 	let {
@@ -276,7 +279,11 @@
 		type,
 		originalNodes,
 		prefix = '',
-		addDefaultFields
+		addDefaultFields,
+		onChanged,
+		onChildrenStartDrag,
+		onupdateQuery,
+		ondeleteSubNode
 	}: Props = $props();
 
 	let selectedRowsColValues = $state([]);
@@ -415,7 +422,7 @@
 	{#if showAddModal}
 		<Modal
 			showApplyBtn={false}
-			on:cancel={() => {
+			oncancel={() => {
 				showAddModal = false;
 			}}
 		/>
@@ -424,7 +431,7 @@
 	{#if showModal}
 		<Modal
 			showApplyBtn={false}
-			on:cancel={() => {
+			oncancel={() => {
 				showModal = false;
 			}}
 		>
@@ -471,7 +478,7 @@
 												node.not = !node.not;
 												operatorChangeHandler();
 												handleChanged();
-												dispatch('changed');
+												onChanged?.();
 											}
 										}))}
 									/>
@@ -510,7 +517,7 @@
 								}
 								operatorChangeHandler();
 								handleChanged();
-								dispatch('changed');
+								onChanged?.();
 							}}
 						>
 							change
@@ -565,24 +572,24 @@
 		</Modal>{/if}
 
 	<SelectModal
-		on:deleteSubNode={(e) => {
-			deleteItem(e);
+		ondeleteSubNode={(detail) => {
+			deleteItem({ detail });
 			//
-			//console.log(e.detail.id, node);
+			//console.log(detail.id, node);
 		}}
 		bind:selectedQMS={getManyQMS}
 		bind:selectedRowsColValues
 		bind:showSelectModal
 		{originalNodes}
-		on:updateQuery
+		onupdateQuery={onupdateQuery}
 		{type}
 		bind:nodes
 		{node}
 		{parentNode}
 		{parentNodeId}
-		on:changed
+		onchanged={onChanged}
 		{availableOperators}
-		on:childrenStartDrag={startDrag}
+		onchildrenStartDrag={onChildrenStartDrag}
 		{group}
 	/>
 
@@ -607,13 +614,13 @@
 							// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
 							e.preventDefault();
 
-							dispatch('childrenStartDrag');
+							onChildrenStartDrag?.();
 						}}
 						ontouchstart={(e) => {
 							// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
 							e.preventDefault();
 
-							dispatch('childrenStartDrag');
+							onChildrenStartDrag?.();
 						}}
 						onkeydown={handleKeyDown}
 						oncontextmenu={stopPropagation(preventDefault(() => {
@@ -774,22 +781,21 @@
 					<ActiveArgument
 						bind:selectedRowsColValues
 						bind:showSelectModal
-						on:updateQuery
+						onupdateQuery={onupdateQuery}
 						bind:nodes
-						on:changed
-						on:childrenStartDrag={startDrag}
+						onchanged={onChanged}
+						onchildrenStartDrag={onChildrenStartDrag}
 						{parentNode}
 						{node}
-						on:contextmenuUsed={() => {
+						oncontextmenuUsed={() => {
 							if (!node?.isMain) {
 								node.not = !node.not;
 								handleChanged();
-								dispatch('changed');
+								onChanged?.();
 							}
 						}}
 						isNot={node.not}
-						on:updateQuery
-						on:inUseChanged={() => {}}
+						oninUseChanged={() => {}}
 						activeArgumentData={node}
 						{group}
 					/>
@@ -829,21 +835,21 @@
 								{#if testName_stepsOFFieldsWasUpdated}
 									{#key stepsOfFields}
 										<ActiveArgumentsGroupHasFilterOperators
-											on:deleteSubNode={(e) => {
-												deleteItem(e);
+											ondeleteSubNode={(detail) => {
+												deleteItem({ detail });
 												//
-												//console.log(e.detail.id, node);
+												//console.log(detail.id, node);
 											}}
 											{originalNodes}
-											on:updateQuery
+											onupdateQuery={onupdateQuery}
 											{type}
 											bind:nodes
 											node={nodes[item.id]}
 											parentNode={node}
 											parentNodeId={node.id}
-											on:changed
+											onChanged={onChanged}
 											{availableOperators}
-											on:childrenStartDrag={startDrag}
+											onChildrenStartDrag={onChildrenStartDrag}
 											{group}
 										/>
 									{/key}

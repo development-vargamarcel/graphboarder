@@ -7,7 +7,7 @@
 	import { writable } from 'svelte/store';
 	import AutoInterface from '$lib/components/fields/AutoInterface.svelte';
 	import { SHADOW_ITEM_MARKER_PROPERTY_NAME } from 'svelte-dnd-action';
-	import { createEventDispatcher, getContext, setContext } from 'svelte';
+	import { getContext, setContext } from 'svelte';
 	import Toggle from '$lib/components/fields/Toggle.svelte';
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Modal from './Modal.svelte';
@@ -25,8 +25,7 @@
 	import SelectedRowsDisplay from './SelectedRowsDisplay.svelte';
 	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
 	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
-	let dispatch = createEventDispatcher();
-	
+
 	interface Props {
 		setNotInUseIfNotValid?: boolean;
 		setNotInUseIfNotValidAndENUM?: boolean;
@@ -44,6 +43,12 @@
 		parentNodeId: any;
 		availableOperators: any;
 		startDrag: any;
+		onchanged?: (detail: any) => void;
+		oninUseChanged?: () => void;
+		oncontextmenuUsed?: () => void;
+		onupdateQuery?: () => void;
+		ondeleteSubNode?: (detail: any) => void;
+		onchildrenStartDrag?: (e: any) => void;
 	}
 
 	let {
@@ -61,7 +66,13 @@
 		type,
 		parentNodeId,
 		availableOperators,
-		startDrag
+		startDrag,
+		onchanged,
+		oninUseChanged,
+		oncontextmenuUsed,
+		onupdateQuery,
+		ondeleteSubNode,
+		onchildrenStartDrag
 	}: Props = $props();
 	let idColNameOfSelectedRow;
 	//
@@ -157,7 +168,7 @@
 		} else if (setNotInUseIfNotValid && isInUse && !isValid) {
 			inUse_set(false);
 		}
-		dispatch('changed', detail);
+		onchanged?.(detail);
 		console.log('activeArgumentsDataGrouped_Store', $activeArgumentsDataGrouped_Store);
 		updateActiveArgument();
 		//finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
@@ -193,7 +204,7 @@
 		activeArgumentData.inUse = inUse;
 		updateActiveArgument();
 
-		dispatch('inUseChanged');
+		oninUseChanged?.();
 		//finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 	};
 	const inUse_toggle = () => {
@@ -224,16 +235,16 @@
 </script>
 
 <SelectModal
-	on:deleteSubNode={(e) => {
-		deleteItem(e);
+	ondeleteSubNode={(detail) => {
+		deleteItem({ detail });
 		//
-		//console.log(e.detail.id, node);
+		//console.log(detail.id, node);
 	}}
 	bind:showSelectModal
-	on:updateQuery
+	onupdateQuery={onupdateQuery}
 	bind:nodes
-	on:changed
-	on:childrenStartDrag={startDrag}
+	onchanged={onchanged}
+	onchildrenStartDrag={onchildrenStartDrag}
 	{originalNodes}
 	{type}
 	{node}
@@ -245,7 +256,7 @@
 {#if showModal}
 	<Modal
 		showApplyBtn={false}
-		on:cancel={() => {
+		oncancel={() => {
 			showModal = false;
 		}}
 	>
@@ -273,7 +284,7 @@
 								class="toggle toggle-sm"
 								bind:checked={isNot}
 								onchange={() => {
-									dispatch('contextmenuUsed');
+									oncontextmenuUsed?.();
 								}}
 							/>
 						</label>
@@ -315,8 +326,8 @@
 				<AutoInterface
 					alwaysOn_interfacePicker
 					typeInfo={activeArgumentData}
-					on:changed={(e) => {
-						handleChanged(e.detail);
+					onchanged={(detail) => {
+						handleChanged(detail);
 					}}
 				/>
 			</div>
@@ -327,8 +338,8 @@
 					type={activeArgumentData}
 					template="default"
 					depth={0}
-					on:colAddRequest={(e) => {
-						//console.log(e);
+					oncolAddRequest={(detail) => {
+						//console.log(detail);
 					}}
 				/>
 			</div>
@@ -428,8 +439,8 @@
 					<div class="pl-1">
 						<AutoInterface
 							typeInfo={activeArgumentData}
-							on:changed={(e) => {
-								handleChanged(e.detail);
+							onchanged={(detail) => {
+								handleChanged(detail);
 							}}
 						/>
 					</div>

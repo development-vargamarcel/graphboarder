@@ -3,14 +3,13 @@
 	import ActiveArgumentsGroup_info from '$lib/components/ActiveArgumentsGroup_info.svelte';
 
 	import ActiveArgumentsGroupNormal from '$lib/components/ActiveArgumentsGroupNormal.svelte';
-	import { createEventDispatcher, getContext, setContext } from 'svelte';
+	import { getContext, setContext } from 'svelte';
 	import ActiveArgumentsGroupHasFilterOperators from '$lib/components/ActiveArgumentsGroupHasFilterOperators.svelte';
 	import Toggle from './fields/Toggle.svelte';
 	import { writable } from 'svelte/store';
 	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
 
 	let dragDisabled = true;
-	const dispatch = createEventDispatcher();
 	function handleSort(e) {
 		group.group_args = e.detail.items;
 		//console.log('choisesWithId', group.group_args);
@@ -23,6 +22,7 @@
 		update_activeArgumentsDataGrouped: any;
 		activeArgumentsDataGrouped: any;
 		prefix?: string;
+		onUpdateQuery?: () => void;
 	}
 
 	let {
@@ -30,7 +30,8 @@
 		argsInfo = $bindable(),
 		update_activeArgumentsDataGrouped = $bindable(),
 		activeArgumentsDataGrouped = $bindable(),
-		prefix = ''
+		prefix = '',
+		onUpdateQuery
 	}: Props = $props();
 
 	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
@@ -54,7 +55,7 @@
 		<ActiveArgumentsGroup_info {group} />
 		{#if !hasGroup_argsNode}
 			<ActiveArgumentsGroup_addFilterAndSortingButton
-				on:updateQuery
+				onUpdateQuery={onUpdateQuery}
 				bind:group
 				bind:argsInfo
 				bind:update_activeArgumentsDataGrouped
@@ -70,8 +71,8 @@
 		<div class=" overflow-x-auto overflow-y-visible">
 			<ActiveArgumentsGroupHasFilterOperators
 				addDefaultFields={true}
-				on:updateQuery={() => {
-					dispatch('updateQuery');
+				onUpdateQuery={() => {
+					onUpdateQuery?.();
 					//console.log({ finalGqlArgObj_fromGroups });
 					group.group_args = Object.values(group.group_argsNode)?.filter((node) => {
 						return !node?.operator;
@@ -88,18 +89,18 @@
 				originalNodes={group.group_argsNode}
 				{group}
 				nodes={group.group_argsNode}
-				on:changed={() => {
+				onChanged={() => {
 					group.group_args = Object.values(group.group_argsNode)?.filter((node) => {
 						return !node?.operator;
 					});
 					update_activeArgumentsDataGrouped(group);
-					dispatch('updateQuery');
+					onUpdateQuery?.();
 				}}
 			/>
 		</div>
 	{:else}
 		<ActiveArgumentsGroupNormal
-			on:updateQuery={() => {
+			onUpdateQuery={() => {
 				update_activeArgumentsDataGrouped(group);
 				finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 			}}

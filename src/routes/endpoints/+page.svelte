@@ -77,7 +77,7 @@
 {/if}
 {#if endpointsToShow == 'localstorage'}
 	{#if showAddEndpoint}
-		<AddEndpointToLocalStorage on:hide={() => (showAddEndpoint = false)} />
+		<AddEndpointToLocalStorage onHide={() => (showAddEndpoint = false)} />
 	{/if}
 	{#if selectedRows.length > 0}
 		<button class="btn btn-sm btn-warning" onclick={deleteSelectedEndpoint}

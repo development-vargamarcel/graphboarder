@@ -61,7 +61,7 @@
 	>
 		<TabContainer
 			{endpointInfo}
-			on:hideSidebar={() => {
+			onhideSidebar={() => {
 				if (forceVisibleSidebar) {
 					forceVisibleSidebar = false;
 				}

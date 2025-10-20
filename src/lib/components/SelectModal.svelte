@@ -429,7 +429,7 @@
 
 {#if showSelectModal}
 	<Modal
-		on:mounted={() => {
+		onmounted={() => {
 			const getReturningFields = (type, matchingField, depth = 0, maxDepth = 2) => {
 				if (depth > maxDepth) {
 					return null;
@@ -516,7 +516,7 @@
 			//console.log({ node, QMSRows });
 		}}
 		showApplyBtn={true}
-		on:apply={() => {
+		onapply={() => {
 			$rowSelectionState = getRowSelectionState(selectedRowsModel);
 			$selectedRowsColValuesProcessed = $selectedRowsColValues?.map((row) => {
 				let idRaw = row[$idColName];
@@ -542,7 +542,7 @@
 			handleChanged();
 			showSelectModal = false;
 		}}
-		on:cancel={() => {
+		oncancel={() => {
 			showSelectModal = false;
 		}}
 	>
@@ -559,9 +559,9 @@
 					bind:QMSWraperContext={QMSWraperContextForSelectedQMS}
 					bind:rowSelectionState={$rowSelectionState}
 					enableMultiRowSelectionState={inputFieldsContainer.dd_kindList}
-					on:rowSelectionChange={(e) => {
-						selectedRowsModel = e.detail;
-						let selectedRowsOriginal = e.detail.rows.map((row) => row.original);
+					onrowSelectionChange={(detail) => {
+						selectedRowsModel = detail;
+						let selectedRowsOriginal = detail.rows.map((row) => row.original);
 
 						const returningColumnsLocation =
 							$endpointInfo.returningColumnsPossibleLocationsInQueriesPerRow.find((item) => {
@@ -577,8 +577,8 @@
 						});
 						//!!every element of 'selectedRowsColValues' must be cheched like so: every element must have all values checked ,if string pass trough string transformer
 					}}
-					on:rowClicked={(e) => {
-						console.log(e.detail);
+					onrowClicked={(detail) => {
+						console.log(detail);
 					}}
 					bind:QMS_info={$selectedQMS}
 				/>

@@ -10,6 +10,9 @@
 		infiniteHandler: any;
 		infiniteId: any;
 		rowSelectionState: any;
+		onHideColumn?: (event: { column: string }) => void;
+		onRowClicked?: (rowData: any) => void;
+		onRowSelectionChange?: (selectionModel: any) => void;
 	}
 
 	let {
@@ -20,7 +23,10 @@
 		rows = $bindable([]),
 		infiniteHandler,
 		infiniteId,
-		rowSelectionState
+		rowSelectionState,
+		onHideColumn,
+		onRowClicked,
+		onRowSelectionChange
 	}: Props = $props();
 </script>
 
@@ -29,12 +35,12 @@
 		{rowSelectionState}
 		{enableMultiRowSelectionState}
 		{prefix}
-		bind:data={rows}	
+		bind:data={rows}
 		bind:cols={colsData}
-		on:hideColumn
+		{onHideColumn}
 		{infiniteHandler}
-		on:rowClicked
-		on:rowSelectionChange
+		{onRowClicked}
+		{onRowSelectionChange}
 	/>
 {:else}
 	no rows

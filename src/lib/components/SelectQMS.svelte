@@ -97,7 +97,7 @@
 		}} -->
 	<Modal
 		showApplyBtn={false}
-		on:cancel={() => {
+		oncancel={() => {
 			showSelectQMSModal = false;
 		}}
 	>
@@ -116,20 +116,20 @@
 					bind:rowSelectionState
 					bind:data={$QMSRows}
 					{columns}
-					on:rowSelectionChange={(e) => {
+					onrowSelectionChange={(detail) => {
 						////
 						const objToAdd = {
 							nodeOrField: node,
 							getMany: {
-								selectedQMS: e.detail.rows.map((row) => row.original)[0],
-								rowSelectionState: e.detail.rowSelectionState
+								selectedQMS: detail.rows.map((row) => row.original)[0],
+								rowSelectionState: detail.rowSelectionState
 							},
 							id: Math.random().toString(36).substr(2, 9)
 						};
 						console.log({ objToAdd });
 						QMSFieldToQMSGetMany_Store.addOrReplaceKeepingOldId(objToAdd);
 						////
-						//	$selectedQMS = e.detail.rows.map((row) => row.original)[0];
+						//	$selectedQMS = detail.rows.map((row) => row.original)[0];
 
 						showSelectQMSModal = false;
 					}}

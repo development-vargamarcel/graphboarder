@@ -3,10 +3,17 @@
 		string_transformer,
 		string_transformerREVERSE
 	} from '$lib/utils/dataStructureTransformers';
-	import { createEventDispatcher, getContext } from 'svelte';
+	import { getContext } from 'svelte';
+
+	interface Props {
+		displayInterface: any;
+		rawValue?: any;
+		dispatchValue?: any;
+		onChanged?: (detail: any) => void;
+	}
 
 	let inputEl = $state();
-	let { displayInterface, rawValue = $bindable(), dispatchValue } = $props();
+	let { displayInterface, rawValue = $bindable(), dispatchValue, onChanged } = $props<Props>();
 	if (!rawValue && dispatchValue) {
 		if (displayInterface != 'number') {
 			rawValue = dispatchValue;
@@ -15,7 +22,6 @@
 		}
 	}
 	console.log('rawValue', rawValue, 'chd_dispatchValue', dispatchValue);
-	const dispatch = createEventDispatcher();
 
 	//let castAs //most of the times as string
 	const mutationVersion = getContext('mutationVersion');
@@ -33,7 +39,7 @@
 			rawValue = undefined;
 		}
 
-		dispatch('changed', {
+		onChanged?.({
 			chd_rawValue: rawValue
 			// chd_dispatchValue:
 			// 	displayInterface == 'number' ? rawValue : string_transformer(rawValue, false)

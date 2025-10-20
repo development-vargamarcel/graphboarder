@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { createEventDispatcher, getContext } from 'svelte';
+	import { getContext } from 'svelte';
 	import FilterItem from '$lib/components/FilterItem.svelte';
 	import { getRootType } from '$lib/utils/usefulFunctions';
-	const dispatch = createEventDispatcher();
 	interface Props {
 		prefix?: string;
 		chosen: any;
 		typeInfo: any;
+		onInterfaceChosen?: (event: { chosen: any }) => void;
 	}
 
-	let { prefix = '', chosen, typeInfo }: Props = $props();
+	let { prefix = '', chosen, typeInfo, onInterfaceChosen }: Props = $props();
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const possible_displayInterfaces = $endpointInfo.typesExtraDataPossibilities.map(
@@ -28,9 +28,9 @@
 		return displayInterface;
 	})}
 	{chosen}
-	on:filterApplied={(e) => {
-		dispatch('interfaceChosen', { chosen: e.detail.chosen });
-		console.log(e.detail);
+	onFilterApplied={(detail) => {
+		onInterfaceChosen?.({ chosen: detail.chosen });
+		console.log(detail);
 	}}
 >
 	{rootType.dd_displayName}

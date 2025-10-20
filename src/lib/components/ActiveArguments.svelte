@@ -2,7 +2,7 @@
 	import { run } from 'svelte/legacy';
 
 	const activeArgumentsContext = { stepsOfFieldsThisAppliesTo, isControlPanelChild };
-	import { createEventDispatcher, each, getContext, setContext } from 'svelte/internal';
+	import { getContext, setContext } from 'svelte';
 	import ActiveArgumentsGroupWraper from '$lib/components/ActiveArgumentsGroupWraper.svelte';
 	setContext(`${prefix}activeArgumentsContext`, activeArgumentsContext);
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
@@ -68,7 +68,7 @@
 <div class="">
 	{#each $activeArgumentsDataGrouped_Store as group}
 		<ActiveArgumentsGroupWraper
-			on:updateQuery={() => {}}
+			onUpdateQuery={() => {}}
 			{update_activeArgumentsDataGrouped}
 			{group}
 			argsInfo={QMS_info?.args}
