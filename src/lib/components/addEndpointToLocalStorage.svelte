@@ -3,6 +3,8 @@
 	import { getContext } from 'svelte';
 	import CodeEditor from './fields/CodeEditor.svelte';
 	import { getSortedAndOrderedEndpoints } from '$lib/utils/usefulFunctions';
+	import * as Card from "$lib/components/ui/card";
+	import { Button } from "$lib/components/ui/button";
 
 	let { onHide } = $props();
 
@@ -34,32 +36,33 @@
 </script>
 
 <div class="w-full p-2 max-h-[80vh] overflow-y-auto">
-	<div class="card w-full  glass mx-auto md:max-w-4xl">
-		<div class="card-body">
-			<h2 class="card-title">Add new Endpoint</h2>
-			<p>To Local Storage</p>
-			<div>
-				<CodeEditor
-					language="javascript"
-					onChanged={handleCodeChanged}
-					rawValue={`{
-		id: 'directus',
-		url: 'https://directus-production-c2de.up.railway.app/graphql',
-		headers: {
-			authorization: 'Bearer S4YM_Cd7Uo6laJhQV594l59EGZASSmBw'
-		},
-	}`}
-				/>
-			</div>
-
-			<div class="card-actions justify-end">
-				<button
-					class="btn btn-error"
-					onclick={() => {
-						onHide?.();
-					}}>hide</button
-				>
-			</div>
-		</div>
-	</div>
+	<Card.Root class="w-full mx-auto md:max-w-4xl border-2">
+		<Card.Header>
+			<Card.Title>Add New Endpoint</Card.Title>
+			<Card.Description>Configure and save a new GraphQL endpoint to local storage</Card.Description>
+		</Card.Header>
+		<Card.Content class="space-y-4">
+			<CodeEditor
+				language="javascript"
+				onChanged={handleCodeChanged}
+				rawValue={`{
+	id: 'directus',
+	url: 'https://directus-production-c2de.up.railway.app/graphql',
+	headers: {
+		authorization: 'Bearer S4YM_Cd7Uo6laJhQV594l59EGZASSmBw'
+	},
+}`}
+			/>
+		</Card.Content>
+		<Card.Footer class="justify-end">
+			<Button
+				variant="destructive"
+				onclick={() => {
+					onHide?.();
+				}}
+			>
+				Close
+			</Button>
+		</Card.Footer>
+	</Card.Root>
 </div>

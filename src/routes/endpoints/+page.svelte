@@ -11,6 +11,9 @@
 	import { getContext, onDestroy, onMount, setContext } from 'svelte';
 	import { persisted } from 'svelte-persisted-store';
 	import { getSortedAndOrderedEndpoints } from '$lib/utils/usefulFunctions';
+	import { Button } from "$lib/components/ui/button";
+	import * as Card from "$lib/components/ui/card";
+	import { Badge } from "$lib/components/ui/badge";
 
 	const localStorageEndpoints = getContext('localStorageEndpoints');
 	let showExplorerTable = true;
@@ -62,11 +65,9 @@
 				if (browser) {
 					window.open(
 						`${page.url.origin}/endpoints/localEndpoint--${rowData.id}`,
-						'_blank' // <- This is what makes it open in a new window.
+						'_blank'
 					);
-					//	window.location = `${page.url.origin}/endpoints/${rowData.id}`;
 				}
-				//goto(`${page.url.origin}/endpoints/${rowData.id}`);
 			}}
 			enableMultiRowSelectionState={false}
 			data={getSortedAndOrderedEndpoints(localEndpoints, true)}
@@ -80,9 +81,11 @@
 		<AddEndpointToLocalStorage onHide={() => (showAddEndpoint = false)} />
 	{/if}
 	{#if selectedRows.length > 0}
-		<button class="btn btn-sm btn-warning" onclick={deleteSelectedEndpoint}
-			>delete selected rows</button
-		>
+		<div class="p-4">
+			<Button variant="destructive" size="sm" onclick={deleteSelectedEndpoint}>
+				Delete {selectedRows.length} selected {selectedRows.length === 1 ? 'row' : 'rows'}
+			</Button>
+		</div>
 	{/if}
 	<div class="mx-auto pl-4 pt-4 h-[50vh] ">
 		{#key $localStorageEndpoints}
@@ -92,11 +95,9 @@
 					if (browser) {
 						window.open(
 							`${page.url.origin}/endpoints/localstorageEndpoint--${rowData.id}`,
-							'_blank' // <- This is what makes it open in a new window.
+							'_blank'
 						);
-						//	window.location = `${page.url.origin}/endpoints/${rowData.id}`;
 					}
-					//goto(`${page.url.origin}/endpoints/${rowData.id}`);
 				}}
 				enableMultiRowSelectionState
 				data={$localStorageEndpoints}
@@ -107,19 +108,26 @@
 {/if}
 {#if endpointsToShow == 'remote'}
 	<div class="w-full p-2">
-		<div class="card w-full glass">
-			<div class="card-body">
-				<h2 class="card-title">Add new Endpoint</h2>
-				<p>To remote db</p>
-				<a href="/endpoints/localEndpoint--nhost/mutations/insert_endpoints_one"
-					>/endpoints/localEndpoint--nhost/mutations/insert_endpoints_one</a
+		<Card.Root class="w-full">
+			<Card.Header>
+				<Card.Title>Add New Endpoint</Card.Title>
+				<Card.Description>Configure endpoint in remote database</Card.Description>
+			</Card.Header>
+			<Card.Content class="space-y-2">
+				<a
+					href="/endpoints/localEndpoint--nhost/mutations/insert_endpoints_one"
+					class="text-sm text-primary hover:underline block"
 				>
-
-				<a href="/endpoints/localEndpoint--nhostRelay/mutations/insert_endpoints_one"
-					>/endpoints/localEndpoint--nhostRelay/mutations/insert_endpoints_one</a
+					/endpoints/localEndpoint--nhost/mutations/insert_endpoints_one
+				</a>
+				<a
+					href="/endpoints/localEndpoint--nhostRelay/mutations/insert_endpoints_one"
+					class="text-sm text-primary hover:underline block"
 				>
-			</div>
-		</div>
+					/endpoints/localEndpoint--nhostRelay/mutations/insert_endpoints_one
+				</a>
+			</Card.Content>
+		</Card.Root>
 	</div>
 
 	<QMSWraper
@@ -137,40 +145,48 @@
 	</QMSWraper>
 {/if}
 
-<div class="fixed bottom-1 right-1 flex space-x-2">
-	<button
-		class="btn btn-xs"
+<div class="fixed bottom-1 right-1 flex gap-1">
+	<Button
+		size="sm"
+		variant={endpointsToShow === 'local' ? 'default' : 'outline'}
 		onclick={() => {
 			endpointsToShow = 'local';
 		}}
 	>
-		local
-	</button>
-	<div class="flex">
-		<button
-			class="btn btn-xs"
+		Local
+		<Badge variant="secondary" class="ml-2">{getSortedAndOrderedEndpoints(localEndpoints, true).length}</Badge>
+	</Button>
+	<div class="flex gap-1">
+		<Button
+			size="sm"
+			variant={endpointsToShow === 'localstorage' ? 'default' : 'outline'}
 			onclick={() => {
 				endpointsToShow = 'localstorage';
 			}}
 		>
-			localstorage
-		</button>
-		<button
-			class="btn btn-xs"
+			LocalStorage
+			{#if $localStorageEndpoints?.length > 0}
+				<Badge variant="secondary" class="ml-2">{$localStorageEndpoints.length}</Badge>
+			{/if}
+		</Button>
+		<Button
+			size="sm"
+			variant="secondary"
 			onclick={() => {
 				endpointsToShow = 'localstorage';
 				showAddEndpoint = true;
 			}}
 		>
 			+
-		</button>
+		</Button>
 	</div>
-	<button
-		class="btn btn-xs"
+	<Button
+		size="sm"
+		variant={endpointsToShow === 'remote' ? 'default' : 'outline'}
 		onclick={() => {
 			endpointsToShow = 'remote';
 		}}
 	>
-		remote
-	</button>
+		Remote
+	</Button>
 </div>
