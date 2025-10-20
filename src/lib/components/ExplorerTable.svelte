@@ -6,8 +6,7 @@
 	import type { ColumnDef, TableOptions } from '@tanstack/table-core/src/types';
 	import { formatData, getTableCellData } from '$lib/utils/usefulFunctions';
 	import ColumnInfo from './ColumnInfo.svelte';
-	import { createEventDispatcher, getContext } from 'svelte';
-	const dispatch = createEventDispatcher();
+	import { getContext } from 'svelte';
 
 	let loadMore = false;
 
@@ -40,7 +39,7 @@
 		}));
 
 		console.log($table.getSelectedRowModel());
-		dispatch('rowSelectionChange', { ...$table.getSelectedRowModel(), rowSelectionState });
+		onRowSelectionChange?.({ ...$table.getSelectedRowModel(), rowSelectionState });
 	};
 
 	console.log({ rowSelectionState });
@@ -55,6 +54,9 @@
 		rowSelectionState?: any;
 		idColName: any;
 		requiredColNames: any;
+		onRowClicked?: (rowData: any) => void;
+		onHideColumn?: (event: { column: string }) => void;
+		onRowSelectionChange?: (selectionModel: any) => void;
 	}
 
 	let {
@@ -67,7 +69,10 @@
 		columns = [],
 		rowSelectionState = $bindable({}),
 		idColName,
-		requiredColNames
+		requiredColNames,
+		onRowClicked,
+		onHideColumn,
+		onRowSelectionChange
 	}: Props = $props();
 	const optionsObj = {
 		data: data,
@@ -165,7 +170,7 @@
 											<div
 												class="w-full pr-2 hover:text-primary cursor-pointer"
 												onclick={() => {
-													dispatch('hideColumn', { column: header.column.columnDef.header });
+													onHideColumn?.({ column: header.column.columnDef.header });
 												}}
 											>
 												hide field
@@ -184,7 +189,7 @@
 				<tr
 					class="bg-base-100 hover:bg-base-300 cursor-pointer hover z-0"
 					onclick={() => {
-						dispatch('rowClicked', row.original);
+						onRowClicked?.(row.original);
 						//goto(`${$page.url.origin}/queries/${$page.params.queryName}/${row.id}`);
 					}}
 				>
