@@ -69,9 +69,9 @@
 		"requirejs": "^2.3.6",
 		"serialize-javascript": "^6.0.1",
 		"svelte-codemirror-editor": "^1.3.0",
-		"svelte-dnd-action": "^0.9.21",
-		"svelte-infinite-loading": "^1.3.8",
+		"svelte-dnd-action": "^0.9.65",
+		"svelte-infinite-loading": "^1.4.0",
 		"svelte-persisted-store": "^0.11.0",
-		"svelte-portal": "^2.2.0"
+		"svelte-portal": "^2.2.1"
 	}
 }
