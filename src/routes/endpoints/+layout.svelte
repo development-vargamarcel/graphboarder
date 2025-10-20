@@ -9,6 +9,7 @@
 	import { getContext, setContext } from 'svelte';
 	import { localEndpoints, stigifyAll } from '$lib/stores/testData/testEndpoints';
 	import { persisted } from 'svelte-persisted-store';
+	import { browser } from '$app/environment';
 
 	//!!Q
 	export const prefix = '';
@@ -25,7 +26,9 @@
 	//console.log('endpointInfoProvided json', stigifyAll(endpointInfoProvided));
 	export const localStorageEndpoints = persisted(
 		'localStorageEndpoints',
-		getSortedAndOrderedEndpoints(stringToJs(localStorage.getItem('endpoints') || []))
+		getSortedAndOrderedEndpoints(
+			stringToJs(browser ? localStorage.getItem('endpoints') || [] : [])
+		)
 	);
 	setContext('localStorageEndpoints', localStorageEndpoints);
 </script>
