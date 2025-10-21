@@ -1,84 +1,56 @@
+type SwipeEventName = 'swipeleft' | 'swiperight' | 'swipeup' | 'swipedown';
+
+interface SwipeEventDetail {}
+
 /**
  * Detect swipe gestures on a node
- * @param {HTMLElement} node
- * @returns {{ destroy: () => void }}
  */
-export function detectSwipe(node) {
-	//console.log('node', node)
-	//console.log('node id', node?.id)
+export function detectSwipe(node: HTMLElement): { destroy: () => void } {
 	// Swipe Up / Down / Left / Right
-	/** @type {number | null} */
-	var initialX = null;
-	/** @type {number | null} */
-	var initialY = null;
-	/** @type {number | null} */
-	var initialTime = null;
+	let initialX: number | null = null;
+	let initialY: number | null = null;
+	let initialTime: number | null = null;
 
-	/** @type {number | null} */
-	var finalX = null;
-	/** @type {number | null} */
-	var finalY = null;
-	/** @type {number | null} */
-	var finalTime = null;
+	let finalTime: number | null = null;
 
-	/** @type {number | null} */
-	var diffX = null;
-	/** @type {number | null} */
-	var diffY = null;
-	var duration = 0;
-	/** @type {number} */
-	var speedX = 0;
-	/** @type {number} */
-	var speedY = 0;
+	let diffX: number | null = null;
+	let diffY: number | null = null;
+	let duration: number = 0;
+	let speedX: number = 0;
+	let speedY: number = 0;
 
-	var minSpeed = 0.1;
-	/**
-	 * @param {TouchEvent} e
-	 */
-	function touchstart(e) {
+	const minSpeed: number = 0.1;
+
+	function touchstart(e: TouchEvent): void {
 		initialTime = e.timeStamp;
-
 		initialX = e.touches[0].clientX;
 		initialY = e.touches[0].clientY;
 	}
-	/**
-	 * @param {TouchEvent} e
-	 */
-	function touchend(e) {
-		//console.log(e)
 
+	function touchend(e: TouchEvent): void {
 		if (diffX === null || diffY === null) {
 			return;
 		}
-		finalTime = e.timeStamp;
 
+		finalTime = e.timeStamp;
 		duration = finalTime - (initialTime || 0);
-		//console.log('initialTime', initialTime)
-		//console.log('finalTime', finalTime)
-		//console.log('duration', duration)
 
 		speedX = Math.abs(diffX / duration);
 		speedY = Math.abs(diffY / duration);
-
-		//finalX = e.touches[0].clientX;
-		//finalY = e.touches[0].clientY;
-
-		//console.log('diffX', diffX)
-		//console.log('diffY', diffY)
 
 		if (Math.abs(diffX) > Math.abs(diffY) && speedX > minSpeed) {
 			// sliding horizontally
 			if (diffX > 0) {
 				// swiped left
 				node.dispatchEvent(
-					new CustomEvent('swipeleft', {
+					new CustomEvent<SwipeEventDetail>('swipeleft', {
 						bubbles: false
 					})
 				);
 			} else {
 				// swiped right
 				node.dispatchEvent(
-					new CustomEvent('swiperight', {
+					new CustomEvent<SwipeEventDetail>('swiperight', {
 						bubbles: false
 					})
 				);
@@ -88,32 +60,31 @@ export function detectSwipe(node) {
 			if (diffY > 0) {
 				// swiped up
 				node.dispatchEvent(
-					new CustomEvent('swipeup', {
+					new CustomEvent<SwipeEventDetail>('swipeup', {
 						bubbles: false
 					})
 				);
 			} else {
 				// swiped down
 				node.dispatchEvent(
-					new CustomEvent('swipedown', {
+					new CustomEvent<SwipeEventDetail>('swipedown', {
 						bubbles: false
 					})
 				);
 			}
 		}
+
 		diffX = null;
 		diffY = null;
 	}
-	/**
-	 * @param {TouchEvent} e
-	 */
-	function touchmove(e) {
+
+	function touchmove(e: TouchEvent): void {
 		if (initialX === null || initialY === null) {
 			return;
 		}
 
-		var currentX = e.touches[0].clientX;
-		var currentY = e.touches[0].clientY;
+		const currentX: number = e.touches[0].clientX;
+		const currentY: number = e.touches[0].clientY;
 
 		diffX = initialX - currentX;
 		diffY = initialY - currentY;
@@ -127,7 +98,7 @@ export function detectSwipe(node) {
 	document.addEventListener('touchstart', touchstart, { capture: true });
 
 	return {
-		destroy() {
+		destroy(): void {
 			document.removeEventListener('touchmove', touchmove, { capture: true });
 			document.removeEventListener('touchend', touchend, { capture: true });
 			document.removeEventListener('touchstart', touchstart, { capture: true });

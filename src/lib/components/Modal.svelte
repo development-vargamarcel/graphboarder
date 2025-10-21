@@ -1,6 +1,6 @@
 <script>
 	import { fly, fade, scale } from 'svelte/transition';
-	import { detectSwipe } from '$lib/actions/detectSwipe.js';
+	import { detectSwipe } from '$lib/actions/detectSwipe';
 	import { sineOut, sineIn } from 'svelte/easing';
 	import { portal } from 'svelte-portal';
 	export let modalIdetifier = 'modal';

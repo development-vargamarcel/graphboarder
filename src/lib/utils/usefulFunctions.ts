@@ -139,7 +139,7 @@ export const build_QMS_bodyPart = (
 	console.log({ listOfSubstrings })
 	//const modifiedString = listOfSubstrings.join('').replaceAll(/novaluehere|"|:/gi, '').slice(1, -1)
 	//const modifiedString = listOfSubstrings.join('').replaceAll(/novaluehere|"|:/gi, '').slice(1, -1)
-	const outsideTextModifier = (text) => {
+	const outsideTextModifier = (text: string): string => {
 		return text.replaceAll(/novaluehere|"|:/gi, '')
 	}
 
@@ -165,7 +165,7 @@ export const smartModifyStringBasedOnBoundries = (
 	if (!inputString.includes(openBoundryChar)) {
 		return inputString
 	}
-	let result = []
+	let result: string[] = []
 	//let splitByOpened=inputString.split('(')
 	const splitByClosed = inputString.split(closeBoundryChar)
 	splitByClosed.forEach((element) => {
@@ -194,7 +194,7 @@ export const smartModifyStringBasedOnBoundries = (
 	return result.join('');
 }
 ///
-function replaceLastOccurrence(str, MaxIndex, REPLACEMENT_STRING) {
+function replaceLastOccurrence(str: string, MaxIndex: number, REPLACEMENT_STRING: string): string {
 	// Find the index of the first occurrence of ":{" after the first character
 	const startIndex = str.indexOf(":{", 1);
 
@@ -217,14 +217,14 @@ function replaceLastOccurrence(str, MaxIndex, REPLACEMENT_STRING) {
 }
 
 
-var replaceBetween = function (string, start, end, what) {
+var replaceBetween = function (string: string, start: number, end: number, what: string): string {
 	return string.substring(0, start) + what + string.substring(end);
 };
-function modifyString(input) {
+function modifyString(input: string): { modifiedSubstring: string; remainingString: string } {
 	// Step 1: Match the first parenthesis and the text inside them
 	const matchParenthesis = input.match(/\(([^)]+)\)/);
-	let remainingString
-	let modifiedSubstring
+	let remainingString: string
+	let modifiedSubstring: string
 	if (!matchParenthesis) {
 		modifiedSubstring = input
 		remainingString = ''
@@ -243,8 +243,8 @@ function modifyString(input) {
 	// Return the original string if no match is found
 	return { modifiedSubstring, remainingString };
 }
-const generateListOfSubstrings = (string) => {
-	const substrings = []
+const generateListOfSubstrings = (string: string): string[] => {
+	const substrings: string[] = []
 	let reachedTheEnd = false
 	while (!reachedTheEnd) {
 		const { modifiedSubstring, remainingString } = modifyString(string)
@@ -273,7 +273,7 @@ const listOfSubstrings = generateListOfSubstrings(inputString)
 //console.log("joined", listOfSubstrings.join(''))
 ///
 export const get_KindsArray = (type: Partial<FieldWithDerivedData>): GraphQLKind[] => {
-	let kinds = [];
+	let kinds: GraphQLKind[] = [];
 
 	if (type?.kind) {
 		kinds.push(type?.kind);
@@ -303,7 +303,7 @@ export const get_KindsArray = (type: Partial<FieldWithDerivedData>): GraphQLKind
 	return kinds;
 };
 export const get_NamesArray = (type: Partial<FieldWithDerivedData>): string[] => {
-	let names = [];
+	let names: string[] = [];
 
 	if (type?.name) {
 		names.push(type?.name);
@@ -357,9 +357,9 @@ export const getFields_Grouped = (
 		node?.dd_rootName || node.parent_node.dd_rootName,
 		schemaData
 	);
-	let scalarFields = [];
-	let non_scalarFields = [];
-	let enumFields = [];
+	let scalarFields: FieldWithDerivedData[] = [];
+	let non_scalarFields: FieldWithDerivedData[] = [];
+	let enumFields: FieldWithDerivedData[] = [];
 
 	let fieldsArray
 	if (node?.args) {
@@ -451,7 +451,7 @@ export const getDataGivenStepsOfFields = (
 	//     return array;
 	// };
 
-	const handleStep = (step, colResultData) => {
+	const handleStep = (step: string, colResultData: unknown): unknown => {
 		//!!! there must be some changes made here because undefined == null (but typeof undefined !== null)
 		//colResultData is undefined
 		if (colResultData == undefined && row_resultData == null) {
@@ -495,7 +495,7 @@ export const getDataGivenStepsOfFields = (
 		}
 		return colResultData;
 	};
-	let colResultData;
+	let colResultData: unknown;
 	stepsOfFields.every((step) => {
 		colResultData = handleStep(step, colResultData);
 		return true
@@ -826,11 +826,14 @@ export const filterElFromArr = <T>(arr: T[], undesiredElements: T[] = []): T[] =
 	});
 };
 
-export const generate_group_gqlArgObj_forHasOperators = (items, group_name, nodes) => {
-	let resultingGqlArgObj
-	let itemsResultingData = []
-	const spreadItemsIfInSpreadContainers = (items) => {
-		const spreadOutItems = []
+export const generate_group_gqlArgObj_forHasOperators = (items: { id: string }[], group_name: string, nodes: Record<string, ContainerData>): {
+	resultingGqlArgObj: Record<string, unknown> | undefined;
+	itemsResultingData: Record<string, unknown>[];
+} => {
+	let resultingGqlArgObj: Record<string, unknown> | undefined
+	let itemsResultingData: Record<string, unknown>[] = []
+	const spreadItemsIfInSpreadContainers = (items: { id: string }[]): { id: string }[] => {
+		const spreadOutItems: { id: string }[] = []
 		items.forEach(item => {
 			if (item?.operator == '~spread~') {
 				const validItemsResult = validItems(item.items, nodes);
@@ -926,7 +929,11 @@ export const generate_group_gqlArgObj_forHasOperators = (items, group_name, node
 	};
 };
 
-export const generate_group_gqlArgObjAndCanRunQuery_forHasOperators = (group) => {
+export const generate_group_gqlArgObjAndCanRunQuery_forHasOperators = (group: ActiveArgumentGroup): {
+	group_gqlArgObj: Record<string, unknown> | undefined;
+	group_gqlArgObj_string: string;
+	group_canRunQuery: boolean;
+} => {
 	let { group_argsNode, group_name, group_hasAllArgs } = group;
 
 	let group_canRunQuery = true;
@@ -976,12 +983,12 @@ export const generate_finalGqlArgObj_fromGroups = (activeArgumentsDataGrouped: A
 	return { finalGqlArgObj, final_canRunQuery };
 };
 
-export const getQMSLinks = (QMSName = 'query', parentURL, endpointInfo, schemaData) => {
+export const getQMSLinks = (QMSName: QMSType = 'query', parentURL: string, endpointInfo: EndpointInfoStore, schemaData: SchemaData): { url: string; title: string }[] => {
 	let $page = get(page);
 	let origin = $page.url.origin;
-	let queryLinks = [];
+	let queryLinks: { url: string; title: string }[] = [];
 	let $schemaData = get(schemaData);
-	const sortIt = (QMSFields) => {
+	const sortIt = (QMSFields: FieldWithDerivedData[]): FieldWithDerivedData[] => {
 		return QMSFields?.sort((a, b) => {
 			let ea = a.dd_rootName;
 			let eb = b.dd_rootName;
@@ -1211,7 +1218,7 @@ export const generateTitleFromStepsOfFields = (stepsOfFields: string[]): string 
 };
 export const sortingFunctionMutipleColumnsGivenArray = (array: [unknown, unknown][]): number => {
 	let maxIndex = array.length - 1;
-	const check = (currentIndex) => {
+	const check = (currentIndex: number): number => {
 		const column = array[currentIndex];
 		if (column[0] < column[1]) {
 			return -1;
@@ -1227,9 +1234,14 @@ export const sortingFunctionMutipleColumnsGivenArray = (array: [unknown, unknown
 	return check(0);
 };
 
-export const nodeAddDefaultFields = (node,
-	prefix = '',
-	group, activeArgumentsDataGrouped_Store, schemaData, endpointInfo) => {
+export const nodeAddDefaultFields = (
+	node: ContainerData,
+	prefix: string = '',
+	group: ActiveArgumentGroup,
+	activeArgumentsDataGrouped_Store: ActiveArgumentsDataGroupedStore,
+	schemaData: SchemaData,
+	endpointInfo: EndpointInfoStore
+): void => {
 
 
 
@@ -1350,7 +1362,7 @@ export const nodeAddDefaultFields = (node,
 }
 
 
-export const stigifyAll = (data) => {
+export const stigifyAll = (data: unknown): string => {
 	return JSON.stringify(data, function (key, value) {
 		if (typeof value === "function") {
 			return "/Function(" + value.toString() + ")/";
@@ -1361,7 +1373,7 @@ export const stigifyAll = (data) => {
 
 
 
-export const parseAll = (json) => {
+export const parseAll = (json: string): unknown => {
 	return JSON.parse(json, function (key, value) {
 		if (typeof value === "string" &&
 			value.startsWith("/Function(") &&
@@ -1374,7 +1386,7 @@ export const parseAll = (json) => {
 }
 
 
-export const stringToJs = (string) => {
+export const stringToJs = (string: unknown): unknown => {
 	if (getPreciseType(string) !== "string") {
 		console.warn(`expectig string but got ${getPreciseType(string)},will use it as is.If object,you do not need this function,maybe this function was run previously.`, { string });
 		return string;
@@ -1385,19 +1397,19 @@ export const stringToJs = (string) => {
 	return new Function(`return ${string}`)();
 };
 
-export const objectToSourceCode = (obj) => {
+export const objectToSourceCode = (obj: Record<string, unknown>): string => {
 	// Check if the input is an object
 	if (typeof obj !== 'object' || obj === null) {
 		throw new Error('Input must be an object');
 	}
 
 	// Helper function to convert functions to strings
-	function functionToString(fn) {
+	function functionToString(fn: Function): string {
 		return fn.toString();
 	}
 
 	// Recursively convert the object to source code
-	function convertObjectToSourceCode(obj) {
+	function convertObjectToSourceCode(obj: unknown): string {
 		if (typeof obj === 'function') {
 			return functionToString(obj);
 		}
@@ -1578,7 +1590,7 @@ export const generate_finalGqlArgObjAndCanRunQuery = (
 	//better set an array?
 }
 
-export const getQMSWraperCtxDataGivenControlPanelItem = (CPItem, OutermostQMSWraperContext) => {
+export const getQMSWraperCtxDataGivenControlPanelItem = (CPItem: { stepsOfFieldsThisAppliesTo: string[] }, OutermostQMSWraperContext: { mergedChildren_QMSWraperCtxData_Store: any }): any => {
 	const { mergedChildren_QMSWraperCtxData_Store } = OutermostQMSWraperContext;
 
 	let mergedChildren_QMSWraperCtxData_Value = get(mergedChildren_QMSWraperCtxData_Store);
@@ -1588,7 +1600,7 @@ export const getQMSWraperCtxDataGivenControlPanelItem = (CPItem, OutermostQMSWra
 	});
 	return QMSWraperCtxData;
 };
-export const getSortedAndOrderedEndpoints = (endpoints, filterOutIfNotMaintaned = false) => {
+export const getSortedAndOrderedEndpoints = (endpoints: { id: number; isMantained?: boolean }[], filterOutIfNotMaintaned: boolean = false): { id: number; isMantained?: boolean }[] => {
 	const sortedEndpoints = endpoints.sort((a, b) => {
 		if (a.id > b.id) {
 			return 1;
