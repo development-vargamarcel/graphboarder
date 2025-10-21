@@ -2,7 +2,9 @@
 
 @import '@fontsource/fira-mono';
 
-@tailwind base;
+@import "tailwindcss";
+
+@plugin "daisyui";
 
 :root {
 	font-family: Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
@@ -112,9 +114,6 @@ button:focus:not(:focus-visible) {
 	}
 }
 
-@tailwind components;
-
-@tailwind utilities;
 /* width */
 ::-webkit-scrollbar {
 	@apply sm:w-[6px] sm:h-[6px]  sm:bg-base-100/5;
