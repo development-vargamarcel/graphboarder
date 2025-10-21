@@ -1,28 +1,49 @@
+/**
+ * Detect swipe gestures on a node
+ * @param {HTMLElement} node
+ * @returns {{ destroy: () => void }}
+ */
 export function detectSwipe(node) {
 	//console.log('node', node)
 	//console.log('node id', node?.id)
 	// Swipe Up / Down / Left / Right
+	/** @type {number | null} */
 	var initialX = null;
+	/** @type {number | null} */
 	var initialY = null;
+	/** @type {number | null} */
 	var initialTime = null;
 
+	/** @type {number | null} */
 	var finalX = null;
+	/** @type {number | null} */
 	var finalY = null;
+	/** @type {number | null} */
 	var finalTime = null;
 
-	var diffX;
-	var diffY;
+	/** @type {number | null} */
+	var diffX = null;
+	/** @type {number | null} */
+	var diffY = null;
 	var duration = 0;
-	var speedX;
-	var speedY;
+	/** @type {number} */
+	var speedX = 0;
+	/** @type {number} */
+	var speedY = 0;
 
 	var minSpeed = 0.1;
+	/**
+	 * @param {TouchEvent} e
+	 */
 	function touchstart(e) {
 		initialTime = e.timeStamp;
 
 		initialX = e.touches[0].clientX;
 		initialY = e.touches[0].clientY;
 	}
+	/**
+	 * @param {TouchEvent} e
+	 */
 	function touchend(e) {
 		//console.log(e)
 
@@ -31,7 +52,7 @@ export function detectSwipe(node) {
 		}
 		finalTime = e.timeStamp;
 
-		duration = finalTime - initialTime;
+		duration = finalTime - (initialTime || 0);
 		//console.log('initialTime', initialTime)
 		//console.log('finalTime', finalTime)
 		//console.log('duration', duration)
@@ -83,6 +104,9 @@ export function detectSwipe(node) {
 		diffX = null;
 		diffY = null;
 	}
+	/**
+	 * @param {TouchEvent} e
+	 */
 	function touchmove(e) {
 		if (initialX === null || initialY === null) {
 			return;

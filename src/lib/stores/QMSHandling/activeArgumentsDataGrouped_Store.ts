@@ -2,18 +2,33 @@ import { argumentCanRunQuery, generate_gqlArgObj, getPreciseType, getRootType } 
 import { json } from '@sveltejs/kit';
 import { get, writable } from 'svelte/store';
 import _ from 'lodash';
+import type {
+	ActiveArgumentsDataGroupedStore,
+	ActiveArgumentGroup,
+	ActiveArgumentData,
+	ContainerData,
+	FieldWithDerivedData,
+	SchemaData,
+	EndpointInfoStore
+} from '$lib/types';
+
 export const Create_activeArgumentsDataGrouped_Store = (
-	initialValue = [],
-	rootGroupArgsVisible = true
-) => {
-	const store = writable(initialValue);
+	initialValue: ActiveArgumentGroup[] = [],
+	rootGroupArgsVisible: boolean = true
+): ActiveArgumentsDataGroupedStore => {
+	const store = writable<ActiveArgumentGroup[]>(initialValue);
 	const { subscribe, set, update } = store;
 
 	return {
 		subscribe,
 		set,
 		update,
-		set_groups: (QMS_info, schemaData, QMSarguments, endpointInfo) => {
+		set_groups: (
+			QMS_info: FieldWithDerivedData,
+			schemaData: SchemaData,
+			QMSarguments: Record<string, unknown> | null,
+			endpointInfo: EndpointInfoStore
+		) => {
 			const QMS_infoRoot = getRootType(null, QMS_info.dd_rootName, schemaData)
 			const argsInfo = QMS_info?.args;
 			console.log({ argsInfo });
@@ -145,7 +160,7 @@ export const Create_activeArgumentsDataGrouped_Store = (
 			addAllRootArgs(activeArgumentsDataGrouped, schemaData, endpointInfo);
 			set(activeArgumentsDataGrouped);
 		},
-		update_groups: (groupNewData) => {
+		update_groups: (groupNewData: ActiveArgumentGroup) => {
 			console.log({ groupNewData });
 			update((activeArgumentsDataGrouped) => {
 				let index = activeArgumentsDataGrouped.findIndex((group) => {
@@ -155,7 +170,7 @@ export const Create_activeArgumentsDataGrouped_Store = (
 				return activeArgumentsDataGrouped;
 			});
 		},
-		update_activeArgument: (activeArgumentData, groupName) => {
+		update_activeArgument: (activeArgumentData: ActiveArgumentData, groupName: string) => {
 			update((activeArgumentsDataGrouped) => {
 				const gqlArgObj = generate_gqlArgObj([activeArgumentData]);
 				const canRunQuery = argumentCanRunQuery(activeArgumentData);
@@ -184,7 +199,7 @@ export const Create_activeArgumentsDataGrouped_Store = (
 				return activeArgumentsDataGrouped;
 			});
 		},
-		delete_activeArgument: (activeArgumentData, groupName) => {
+		delete_activeArgument: (activeArgumentData: ActiveArgumentData, groupName: string) => {
 			update((activeArgumentsDataGrouped) => {
 				let group = activeArgumentsDataGrouped?.filter((group) => {
 					return group.group_name == groupName;
@@ -218,7 +233,7 @@ export const Create_activeArgumentsDataGrouped_Store = (
 				return activeArgumentsDataGrouped;
 			});
 		},
-		get_activeArgument: (stepsOfFields, group_name = 'root') => {
+		get_activeArgument: (stepsOfFields: string[], group_name: string = 'root') => {
 			const storeValue = get(store);
 			return storeValue
 				.find((group) => {
@@ -228,7 +243,12 @@ export const Create_activeArgumentsDataGrouped_Store = (
 					return arg.stepsOfFieldsStringified == JSON.stringify(stepsOfFields);
 				});
 		},
-		add_activeArgument: (newArgumentOrContainerData, groupName, parentContainerId, endpointInfo) => {
+		add_activeArgument: (
+			newArgumentOrContainerData: ActiveArgumentData | ContainerData,
+			groupName: string,
+			parentContainerId: string | null,
+			endpointInfo: EndpointInfoStore
+		) => {
 			update((activeArgumentsDataGrouped) => {
 				return add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(
 					newArgumentOrContainerData,
@@ -241,11 +261,13 @@ export const Create_activeArgumentsDataGrouped_Store = (
 	};
 };
 export const add_activeArgumentOrContainerTo_activeArgumentsDataGrouped = (
-	newArgumentOrContainerData,
-	groupName,
-	parentContainerId,
-	activeArgumentsDataGrouped, endpointInfo, group
-) => {
+	newArgumentOrContainerData: ActiveArgumentData | ContainerData,
+	groupName: string,
+	parentContainerId: string | null,
+	activeArgumentsDataGrouped: ActiveArgumentGroup[],
+	endpointInfo: EndpointInfoStore,
+	group?: ActiveArgumentGroup
+): ActiveArgumentGroup[] => {
 	const dataIsForContainer = newArgumentOrContainerData?.items;
 	console.log({ dataIsForContainer, newArgumentOrContainerData })
 	if (!group) {
@@ -307,7 +329,11 @@ export const add_activeArgumentOrContainerTo_activeArgumentsDataGrouped = (
 	return activeArgumentsDataGrouped;
 };
 
-export const generateContainerData = (stepsOfFields, type, extraData = {}) => {
+export const generateContainerData = (
+	stepsOfFields: string[],
+	type: Partial<FieldWithDerivedData>,
+	extraData: Record<string, unknown> = {}
+): ContainerData => {
 	const dd_displayName = type.dd_displayName;
 
 	if (stepsOfFields[stepsOfFields.length - 1] !== dd_displayName) {
@@ -332,7 +358,12 @@ export const generateContainerData = (stepsOfFields, type, extraData = {}) => {
 	};
 };
 
-export const generateArgData = (stepsOfFields, type, schemaData, extraData = {}) => {
+export const generateArgData = (
+	stepsOfFields: string[],
+	type: Partial<FieldWithDerivedData>,
+	schemaData: SchemaData,
+	extraData: Record<string, unknown> = {}
+): ActiveArgumentData => {
 	const dd_displayName = type.dd_displayName;
 
 	const RootType = getRootType(null, type.dd_rootName, schemaData);
@@ -353,7 +384,11 @@ export const generateArgData = (stepsOfFields, type, schemaData, extraData = {})
 	};
 };
 
-const addAllRootArgs = (activeArgumentsDataGrouped, schemaData, endpointInfo) => {
+const addAllRootArgs = (
+	activeArgumentsDataGrouped: ActiveArgumentGroup[],
+	schemaData: SchemaData,
+	endpointInfo: EndpointInfoStore
+): void => {
 	const group = activeArgumentsDataGrouped.find((group) => {
 		return group.group_name == 'root';
 	});
@@ -377,8 +412,17 @@ const addAllRootArgs = (activeArgumentsDataGrouped, schemaData, endpointInfo) =>
 		);
 	});
 };
-const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGrouped, schemaData, endpointInfo) => {
-	const getGroupGqlArgObj = (object, rootGroupGqlArgObj, group) => {
+const gqlArgObjToActiveArgumentsDataGrouped = (
+	object: Record<string, unknown>,
+	activeArgumentsDataGrouped: ActiveArgumentGroup[],
+	schemaData: SchemaData,
+	endpointInfo: EndpointInfoStore
+): ActiveArgumentGroup[] => {
+	const getGroupGqlArgObj = (
+		object: Record<string, unknown>,
+		rootGroupGqlArgObj: Record<string, unknown>,
+		group: ActiveArgumentGroup
+	): Record<string, unknown> | undefined => {
 		if (!group.group_isRoot) {
 			return object?.[group.group_name];
 		}
@@ -437,7 +481,15 @@ const gqlArgObjToActiveArgumentsDataGrouped = (object, activeArgumentsDataGroupe
 	return activeArgumentsDataGrouped;
 };
 
-const gqlArgObjToActiveArgumentsDataGroupedForHasArgsNode = (gqlArgObj, type, groupName, group, activeArgumentsDataGrouped, schemaData, endpointInfo) => {
+const gqlArgObjToActiveArgumentsDataGroupedForHasArgsNode = (
+	gqlArgObj: Record<string, unknown>,
+	type: Partial<FieldWithDerivedData>,
+	groupName: string,
+	group: ActiveArgumentGroup,
+	activeArgumentsDataGrouped: ActiveArgumentGroup[],
+	schemaData: SchemaData,
+	endpointInfo: EndpointInfoStore
+): void => {
 	let group_argsNode
 	const gqlArgObjTypeOf = getPreciseType(gqlArgObj);
 	const isContainer = type.dd_shouldExpand
