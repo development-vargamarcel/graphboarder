@@ -8,9 +8,27 @@ import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 import { getContext } from 'svelte';
 import { stringToQMSString_transformer, string_transformer } from '$lib/utils/dataStructureTransformers';
 import { spread } from 'svelte/internal';
+import type {
+	GraphQLKind,
+	QMSType,
+	FieldWithDerivedData,
+	RootType,
+	SchemaData,
+	EndpointInfoStore,
+	ActiveArgumentData,
+	ActiveArgumentGroup,
+	ContainerData,
+	GQLArgObj,
+	FinalGQLArgObj,
+	FieldsGrouped,
+	TableColumnData,
+	StepsOfFieldsObject,
+	PaginationStateStore,
+	ActiveArgumentsDataGroupedStore
+} from '$lib/types';
 
 
-export const findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey = (obj) => {
+export const findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey = (obj: unknown): Record<string, unknown> | boolean | null => {
 	//console.log(obj)
 	// Check if the input is an object
 	if (typeof obj !== 'object' || obj === null) {
@@ -30,7 +48,7 @@ export const findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey = (obj) =
 
 }
 
-export const deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments = (obj) => {
+export const deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments = (obj: unknown): Record<string, unknown> | null => {
 	//console.log('ttt', obj)
 	if (getPreciseType(obj) !== 'object' || obj === null) {
 		return null;
@@ -74,7 +92,7 @@ export const deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments = (obj) => {
 // 	}
 // 	return obj
 // }
-export const objectIsEmpty = (obj) => {
+export const objectIsEmpty = (obj: Record<string, unknown>): boolean => {
 	if (Object.keys(obj).length === 0 && obj.constructor === Object) {
 		return true;
 	} else {
@@ -85,7 +103,13 @@ export const objectIsEmpty = (obj) => {
 
 
 
-export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'query', mergedChildren_finalGqlArgObj) => {
+export const build_QMS_bodyPart = (
+	QMS_name: string,
+	QMS_fields: Record<string, unknown>,
+	QMS_args: Record<string, unknown>,
+	QMS_type: QMSType = 'query',
+	mergedChildren_finalGqlArgObj: Record<string, unknown>
+): string | null => {
 	if (Object.keys(QMS_fields).length == 0) {
 		console.error('no cols data,choose at least one field');
 		return null;
@@ -130,7 +154,14 @@ export const build_QMS_bodyPart = (QMS_name, QMS_fields, QMS_args, QMS_type = 'q
 	console.log({ QMS_bodyPart })
 	return QMS_bodyPart
 };
-export const smartModifyStringBasedOnBoundries = (inputString, openBoundryChar = "(", closeBoundryChar = ")", insideTextModifier, outsideTextModifier, deleteBoundriesIfTextInsideIsEmpty = true) => {
+export const smartModifyStringBasedOnBoundries = (
+	inputString: string,
+	openBoundryChar: string = "(",
+	closeBoundryChar: string = ")",
+	insideTextModifier: ((text: string) => string) | undefined,
+	outsideTextModifier: ((text: string) => string) | undefined,
+	deleteBoundriesIfTextInsideIsEmpty: boolean = true
+): string => {
 	if (!inputString.includes(openBoundryChar)) {
 		return inputString
 	}
@@ -241,7 +272,7 @@ const listOfSubstrings = generateListOfSubstrings(inputString)
 //console.log({ listOfSubstrings })
 //console.log("joined", listOfSubstrings.join(''))
 ///
-export const get_KindsArray = (type) => {
+export const get_KindsArray = (type: Partial<FieldWithDerivedData>): GraphQLKind[] => {
 	let kinds = [];
 
 	if (type?.kind) {
@@ -271,7 +302,7 @@ export const get_KindsArray = (type) => {
 
 	return kinds;
 };
-export const get_NamesArray = (type) => {
+export const get_NamesArray = (type: Partial<FieldWithDerivedData>): string[] => {
 	let names = [];
 
 	if (type?.name) {
@@ -295,14 +326,18 @@ export const get_NamesArray = (type) => {
 	return names;
 };
 
-export let get_rootName = (namesArray) => {
+export let get_rootName = (namesArray: string[]): string => {
 	return namesArray[namesArray.length - 1];
 };
 
-export let get_displayName = (namesArray) => {
+export let get_displayName = (namesArray: string[]): string => {
 	return namesArray[0];
 };
-export const getRootType = (rootTypes, RootType_Name, schemaData) => {
+export const getRootType = (
+	rootTypes: RootType[] | null,
+	RootType_Name: string | undefined,
+	schemaData: SchemaData
+): RootType | undefined => {
 	if (!rootTypes) {
 		rootTypes = get(schemaData).rootTypes
 	}
@@ -312,7 +347,11 @@ export const getRootType = (rootTypes, RootType_Name, schemaData) => {
 	})[0];
 };
 
-export const getFields_Grouped = (node, dd_displayNameToExclude = [], schemaData) => {
+export const getFields_Grouped = (
+	node: Partial<FieldWithDerivedData> | RootType,
+	dd_displayNameToExclude: string[] = [],
+	schemaData: SchemaData
+): FieldsGrouped => {
 	const node_rootType = schemaData?.get_rootType(
 		null,
 		node?.dd_rootName || node.parent_node.dd_rootName,
@@ -361,7 +400,10 @@ export const getFields_Grouped = (node, dd_displayNameToExclude = [], schemaData
 };
 
 //colData must become colInfo everywhere,for less ambiguity
-export const getStepsOfFieldsForDataGetter = (colInfo, stepsOfFieldsInput) => {
+export const getStepsOfFieldsForDataGetter = (
+	colInfo: TableColumnData,
+	stepsOfFieldsInput?: string[]
+): string[] => {
 	const stepsOfFieldsOBJ = colInfo?.stepsOfFieldsOBJ
 	const stepsOfFields = colInfo?.stepsOfFields
 	const stepsOfFieldsForDataGetter = colInfo?.stepsOfFieldsForDataGetter
@@ -383,7 +425,11 @@ export const getStepsOfFieldsForDataGetter = (colInfo, stepsOfFieldsInput) => {
 	}
 	return []
 }
-export const getDataGivenStepsOfFields = (colInfo, row_resultData, stepsOfFieldsInput) => {
+export const getDataGivenStepsOfFields = (
+	colInfo: TableColumnData,
+	row_resultData: unknown,
+	stepsOfFieldsInput?: string[]
+): unknown => {
 	//col data is column info like colInfo.stepsOfFields,not the result's column data
 
 	const stepsOfFields = getStepsOfFieldsForDataGetter(colInfo, stepsOfFieldsInput)
@@ -458,7 +504,7 @@ export const getDataGivenStepsOfFields = (colInfo, row_resultData, stepsOfFields
 	return colResultData;
 };
 
-export const getTableCellData = (rowData, colData, index) => {
+export const getTableCellData = (rowData: unknown, colData: TableColumnData, index: number): unknown => {
 	let data;
 	if (rowData) {
 		if (rowData[index] !== undefined) {
@@ -474,7 +520,7 @@ export const getTableCellData = (rowData, colData, index) => {
 	return data;
 };
 
-export const formatData = (data = '', length, alwaysStringyfy = true) => {
+export const formatData = (data: unknown = '', length: number, alwaysStringyfy: boolean = true): string => {
 	let string = '';
 	let resultingString = '';
 
@@ -495,7 +541,7 @@ export const formatData = (data = '', length, alwaysStringyfy = true) => {
 	return resultingString;
 };
 
-export const sortByName = (array) => {
+export const sortByName = <T extends { name?: string }>(array: T[]): T[] => {
 	array?.sort((a, b) => {
 		if (a?.name < b?.name) {
 			return -1;
@@ -511,7 +557,10 @@ export const sortByName = (array) => {
 
 
 
-export const get_displayInterface = (typeInfo, endpointInfo) => {
+export const get_displayInterface = (
+	typeInfo: Partial<FieldWithDerivedData>,
+	endpointInfo: EndpointInfoStore
+): string | null => {
 
 	if (endpointInfo.get_typeExtraData(typeInfo)) {
 		return endpointInfo.get_typeExtraData(typeInfo).displayInterface;
@@ -519,7 +568,7 @@ export const get_displayInterface = (typeInfo, endpointInfo) => {
 	return null;
 };
 
-export const mark_paginationArgs = (args, endpointInfo) => {
+export const mark_paginationArgs = (args: FieldWithDerivedData[], endpointInfo: EndpointInfoStore): void => {
 	const paginationPossibleNames = get(endpointInfo).paginationArgsPossibleNames;
 	const paginationPossibleNamesKeys = Object.keys(paginationPossibleNames);
 	args.forEach((arg) => {
@@ -535,7 +584,11 @@ export const mark_paginationArgs = (args, endpointInfo) => {
 	});
 };
 
-export const get_paginationType = (paginationArgs, endpointInfo, schemaData) => {
+export const get_paginationType = (
+	paginationArgs: FieldWithDerivedData[],
+	endpointInfo: EndpointInfoStore,
+	schemaData: SchemaData
+): string => {
 	const standsForArray = paginationArgs.map((arg) => {
 		return arg.dd_standsFor;
 	});
@@ -547,7 +600,13 @@ export const get_paginationType = (paginationArgs, endpointInfo, schemaData) => 
 	}
 	return 'unknown';
 };
-export const generate_derivedData = (type, rootTypes, isQMSField, endpointInfo, schemaData) => {
+export const generate_derivedData = (
+	type: Partial<FieldWithDerivedData>,
+	rootTypes: RootType[] | null,
+	isQMSField: boolean,
+	endpointInfo: EndpointInfoStore,
+	schemaData: SchemaData
+): FieldWithDerivedData => {
 	//type/field
 	let derivedData = { ...type };
 	derivedData.dd_kindsArray = get_KindsArray(type);
@@ -657,11 +716,11 @@ export const generate_derivedData = (type, rootTypes, isQMSField, endpointInfo, 
 	//console.log(derivedData.dd_StrForFuseComparison)
 	return derivedData;
 };
-const prepareStrForFuseComparison = (str) => {
+const prepareStrForFuseComparison = (str: string): string => {
 	return str.replace(/(?=[A-Z_])/g, ' ').replace(/_/g, ' ').replace(/s|null/g, '').toLowerCase();
 }
 
-export const generate_gqlArgObj = (group_argumentsData) => {
+export const generate_gqlArgObj = (group_argumentsData: ActiveArgumentData[]): GQLArgObj => {
 	// check for group if expects list and treat it accordingly like here --->https://stackoverflow.com/questions/69040911/hasura-order-by-date-with-distinct
 	let gqlArgObj = {};
 	let canRunQuery = true;
@@ -686,7 +745,7 @@ export const generate_gqlArgObj = (group_argumentsData) => {
 		note: 'these are repeated for easy refactoring while keeping the old working: arg_gqlArgObj: gqlArgObj, arg_canRunQuery: canRunQuery, gqlArgObj,canRunQuery'
 	};
 };
-export const gqlArgObjToString = (gqlArgObj) => {
+export const gqlArgObjToString = (gqlArgObj: Record<string, unknown>): string => {
 	const gqlArgObj_string = JSON.stringify(gqlArgObj)
 	if (gqlArgObj_string == '{ }') {
 		return ''
@@ -699,12 +758,16 @@ export const gqlArgObjToString = (gqlArgObj) => {
 		.slice(1, -1);
 	return gqlArgObj_stringModified;
 };
-export const generate_group_gqlArgObjForRoot = (group_argumentsData) => {
+export const generate_group_gqlArgObjForRoot = (group_argumentsData: ActiveArgumentData[]): Record<string, unknown> => {
 	return _.merge({}, ...group_argumentsData.map((arggumentData) => {
 		return arggumentData.gqlArgObj
 	}))
 }
-export const generate_group_gqlArgObj = (group) => {
+export const generate_group_gqlArgObj = (group: ActiveArgumentGroup): {
+	group_gqlArgObj: Record<string, unknown>;
+	group_gqlArgObj_string: string;
+	group_canRunQuery: boolean;
+} => {
 	//if is where/filter (its related_root has filter_operators  ,like __or,__and,_not) handle differently after implementing the new ui
 	let group_gqlArgObj = {};
 
@@ -748,7 +811,7 @@ export const generate_group_gqlArgObj = (group) => {
 };
 
 
-const validItems = (items, nodes) => {
+const validItems = (items: { id: string }[], nodes: Record<string, ContainerData>): { id: string }[] => {
 	return items.filter((item) => {
 		let itemData = nodes[item.id];
 		console.log('itemData.selectedRowsColValues', itemData.selectedRowsColValues)
@@ -757,7 +820,7 @@ const validItems = (items, nodes) => {
 };
 
 //
-export const filterElFromArr = (arr, undesiredElements = []) => {
+export const filterElFromArr = <T>(arr: T[], undesiredElements: T[] = []): T[] => {
 	return arr.filter((el) => {
 		return !undesiredElements.includes(el);
 	});
@@ -901,7 +964,7 @@ export const generate_group_gqlArgObjAndCanRunQuery_forHasOperators = (group) =>
 };
 ////
 
-export const generate_finalGqlArgObj_fromGroups = (activeArgumentsDataGrouped: []) => {
+export const generate_finalGqlArgObj_fromGroups = (activeArgumentsDataGrouped: ActiveArgumentGroup[]): FinalGQLArgObj => {
 	let finalGqlArgObj = {};
 	let final_canRunQuery = activeArgumentsDataGrouped.every((group) => { return group.group_canRunQuery })
 
@@ -975,7 +1038,11 @@ export const getQMSLinks = (QMSName = 'query', parentURL, endpointInfo, schemaDa
 
 ////////////////////////
 
-export const stepsOfFieldsToQueryFragmentObject = (stepsOfFields, excludeFirstStep = true, dataForLastStep = 'novaluehere') => {
+export const stepsOfFieldsToQueryFragmentObject = (
+	stepsOfFields: string[],
+	excludeFirstStep: boolean = true,
+	dataForLastStep: string = 'novaluehere'
+): StepsOfFieldsObject => {
 	let _stepsOfFields = [...stepsOfFields];
 	if (excludeFirstStep) {
 		_stepsOfFields.shift();
@@ -995,7 +1062,7 @@ export const stepsOfFieldsToQueryFragmentObject = (stepsOfFields, excludeFirstSt
 	return queryObject;
 };
 
-export const tableColsDataToQueryFields = (tableColsData) => {
+export const tableColsDataToQueryFields = (tableColsData: TableColumnData[]): StepsOfFieldsObject | string => {
 	if (tableColsData.length == '') {
 		return ``;
 	}
@@ -1014,7 +1081,7 @@ export const tableColsDataToQueryFields = (tableColsData) => {
 	return merged;
 };
 
-export const argumentCanRunQuery = (arg) => {
+export const argumentCanRunQuery = (arg: ActiveArgumentData): boolean => {
 	const {
 		inUse,
 		chd_chosen,
@@ -1046,7 +1113,11 @@ export const argumentCanRunQuery = (arg) => {
 
 //////
 
-export const generateNewArgData = (stepsOfFields, type, extraData = {}) => {
+export const generateNewArgData = (
+	stepsOfFields: string[],
+	type: Partial<FieldWithDerivedData>,
+	extraData: Record<string, unknown> = {}
+): ActiveArgumentData => {
 	let infoToCast = {
 		stepsOfFields,
 		stepsOfFieldsStringified: JSON.stringify(stepsOfFields),
@@ -1057,7 +1128,11 @@ export const generateNewArgData = (stepsOfFields, type, extraData = {}) => {
 	return infoToCast;
 };
 
-export const get_scalarColsData = (currentQMS_info, prefixStepsOfFields = [], schemaData) => {
+export const get_scalarColsData = (
+	currentQMS_info: FieldWithDerivedData | null,
+	prefixStepsOfFields: string[] = [],
+	schemaData: SchemaData
+): TableColumnData[] => {
 	if (!currentQMS_info) {
 		return []
 	}
@@ -1089,7 +1164,11 @@ export const get_scalarColsData = (currentQMS_info, prefixStepsOfFields = [], sc
 	return scalarColsData;
 };
 
-export const get_nodeFieldsQMS_info = (QMS_info, rowsLocation, schemaData) => {
+export const get_nodeFieldsQMS_info = (
+	QMS_info: FieldWithDerivedData,
+	rowsLocation: string[],
+	schemaData: SchemaData
+): FieldWithDerivedData => {
 	if (rowsLocation?.length == 0) {
 		return QMS_info;
 	}
@@ -1116,11 +1195,11 @@ export const get_nodeFieldsQMS_info = (QMS_info, rowsLocation, schemaData) => {
 	return nodeFieldsQMS_info;
 };
 
-export const check_stepsOfFields = (stepsOfFields, schemaData) => {
+export const check_stepsOfFields = (stepsOfFields: string[], schemaData: SchemaData): void => {
 	const currentQMS_info = schemaData.get_QMS_Field(stepsOfFields[0], 'query', schemaData);
 };
 
-export const generateTitleFromStepsOfFields = (stepsOfFields) => {
+export const generateTitleFromStepsOfFields = (stepsOfFields: string[]): string => {
 	const title = stepsOfFields.map((step, index) => {
 		if (stepsOfFields.length - index - 1 == 0) {
 			return `${step}`;
@@ -1130,7 +1209,7 @@ export const generateTitleFromStepsOfFields = (stepsOfFields) => {
 	title.shift();
 	return title.join('');
 };
-export const sortingFunctionMutipleColumnsGivenArray = (array) => {
+export const sortingFunctionMutipleColumnsGivenArray = (array: [unknown, unknown][]): number => {
 	let maxIndex = array.length - 1;
 	const check = (currentIndex) => {
 		const column = array[currentIndex];
@@ -1348,7 +1427,7 @@ export const objectToSourceCode = (obj) => {
 
 	return convertObjectToSourceCode(obj);
 }
-export const hasDeepProperty = (obj, propertyPath) => {
+export const hasDeepProperty = (obj: Record<string, unknown>, propertyPath: string[]): boolean => {
 	let currentObj = obj;
 	for (let i = 0; i < propertyPath.length; i++) {
 		const prop = propertyPath[i];
@@ -1359,7 +1438,12 @@ export const hasDeepProperty = (obj, propertyPath) => {
 	}
 	return true;
 }
-export const getDeepField = (obj, propertyPath, schemaData, fieldsType = 'fields') => {
+export const getDeepField = (
+	obj: Partial<FieldWithDerivedData>,
+	propertyPath: string[],
+	schemaData: SchemaData,
+	fieldsType: 'fields' | 'inputFields' = 'fields'
+): FieldWithDerivedData | null => {
 	console.log({ obj, propertyPath })
 	if (propertyPath.length == 0 || propertyPath[propertyPath.length - 1] == obj.dd_displayName) {//!!!this is a hack,might cause problem dd_displayName is the same in multiple places
 		return obj
@@ -1379,7 +1463,7 @@ export const getDeepField = (obj, propertyPath, schemaData, fieldsType = 'fields
 	return currentObj;
 }
 
-export const passAllObjectValuesThroughStringTransformerAndReturnNewObject = (obj) => {
+export const passAllObjectValuesThroughStringTransformerAndReturnNewObject = (obj: Record<string, unknown>): Record<string, unknown> => {
 	//!!! to do: make this function recursive to handle nested objects and arrays
 
 	let newObj = { ...obj };
@@ -1392,7 +1476,7 @@ export const passAllObjectValuesThroughStringTransformerAndReturnNewObject = (ob
 };
 
 
-export const getValueAtPath = (obj, path) => {
+export const getValueAtPath = (obj: Record<string, unknown>, path: string[]): unknown => {
 	let current = obj;
 
 	for (let i = 0, len = path.length; i < len; i++) {
@@ -1407,12 +1491,12 @@ export const getValueAtPath = (obj, path) => {
 	return current;
 }
 
-export const getPreciseType = (value) => {
+export const getPreciseType = (value: unknown): string => {
 	return Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
 }
 
 
-export const deleteValueAtPath = (obj, path) => {
+export const deleteValueAtPath = (obj: Record<string, unknown>, path: string[]): Record<string, unknown> | void => {
 	if (!obj || !path || path.length === 0) {
 		// Check for valid input
 		console.error('Invalid input');
@@ -1436,7 +1520,12 @@ export const deleteValueAtPath = (obj, path) => {
 	delete currentObj[path[path.length - 1]];
 	return obj;
 }
-export const setValueAtPath = (obj, path, value, addPathIfNotExist = true) => {
+export const setValueAtPath = (
+	obj: Record<string, unknown>,
+	path: string[],
+	value: unknown,
+	addPathIfNotExist: boolean = true
+): Record<string, unknown> | void => {
 	if (!obj || !path || path.length === 0) {
 		// Check for valid input
 		console.error('Invalid input');
@@ -1467,7 +1556,11 @@ export const setValueAtPath = (obj, path, value, addPathIfNotExist = true) => {
 	currentObj[path[path.length - 1]] = value;
 	return obj;
 }
-export const generate_finalGqlArgObjAndCanRunQuery = (activeArgumentsDataGrouped, _paginationState_Store, resetPaginationState = true) => {
+export const generate_finalGqlArgObjAndCanRunQuery = (
+	activeArgumentsDataGrouped: ActiveArgumentGroup[],
+	_paginationState_Store: PaginationStateStore | null,
+	resetPaginationState: boolean = true
+): FinalGQLArgObj => {
 	//reset pagination state too !!!THIS MIGHT TRIGGER 1 EXTRA SERVER REQUEST,seems not from what i saw
 	if (resetPaginationState && _paginationState_Store) {
 		_paginationState_Store.resetToDefault();

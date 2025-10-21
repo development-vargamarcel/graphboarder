@@ -1,46 +1,59 @@
 import { getDataGivenStepsOfFields, setValueAtPath, stepsOfFieldsToQueryFragmentObject } from '$lib/utils/usefulFunctions';
 import { get } from 'svelte/store';
+import type {
+	PaginationTypeInfo,
+	FieldWithDerivedData,
+	PaginationState,
+	PaginationStateStore,
+	EndpointInfoStore,
+	SchemaData,
+	QMSType
+} from '$lib/types';
 
-
-
-export const get_paginationTypes = (endpointInfo, schemaData) => {
+export const get_paginationTypes = (
+	endpointInfo: EndpointInfoStore,
+	schemaData: SchemaData
+): PaginationTypeInfo[] => {
 	return [
 		{
 			name: 'notAvailable',
-			get_rowLimitingArgNames: (paginationArgs) => {
+			get_rowLimitingArgNames: (paginationArgs: FieldWithDerivedData[]) => {
 				return [];
 			},
-			get_initialState: (paginationArgs) => {
+			get_initialState: (paginationArgs: FieldWithDerivedData[]): PaginationState => {
 				console.log('notAvailable');
+				return {};
 			},
-			get_defaultPaginationStateForDynamic: (state) => {
+			get_defaultPaginationStateForDynamic: (state: PaginationState): PaginationState => {
 				return state;
 			},
-			get_dependencyColsData: (QMS_name) => {
+			get_dependencyColsData: (QMS_name: string) => {
 				return [];
 			},
-			get_nextPageState: (state, paginationArgs) => {
+			get_nextPageState: (state: PaginationState, paginationArgs: FieldWithDerivedData[]): PaginationState => {
 				console.log('notAvailable');
+				return state;
 			},
-			get_prevPageState: (state, paginationArgs) => {
+			get_prevPageState: (state: PaginationState, paginationArgs: FieldWithDerivedData[]): PaginationState => {
 				console.log('notAvailable');
+				return state;
 			},
-			isFirstPage: (_paginationState_Store, paginationArgs) => {
+			isFirstPage: (_paginationState_Store: PaginationStateStore, paginationArgs: FieldWithDerivedData[]) => {
 				return true;
 			},
-			check: (standsForArray) => {
+			check: (standsForArray: string[]) => {
 				return standsForArray.length == 0;
 			}
 		},
 		{
 			name: 'offsetBased',
-			get_rowLimitingArgNames: (paginationArgs) => {
+			get_rowLimitingArgNames: (paginationArgs: FieldWithDerivedData[]) => {
 				const limitName = paginationArgs.find((arg) => {
 					return arg.dd_standsFor == 'limit';
 				})?.dd_displayName;
 				return [limitName];
 			},
-			get_initialState: (paginationArgs) => {
+			get_initialState: (paginationArgs: FieldWithDerivedData[]): PaginationState => {
 				const offsetName = paginationArgs.find((arg) => {
 					return arg.dd_standsFor == 'offset';
 				})?.dd_displayName;
@@ -52,10 +65,10 @@ export const get_paginationTypes = (endpointInfo, schemaData) => {
 					[offsetName]: 0
 				};
 			},
-			get_dependencyColsData: (QMS_name) => {
+			get_dependencyColsData: (QMS_name: string) => {
 				return [];
 			},
-			get_defaultPaginationStateForDynamic: (state, paginationArgs) => {
+			get_defaultPaginationStateForDynamic: (state: PaginationState, paginationArgs: FieldWithDerivedData[]): PaginationState => {
 				const offsetName = paginationArgs.find((arg) => {
 					return arg.dd_standsFor == 'offset';
 				})?.dd_displayName;
@@ -63,7 +76,7 @@ export const get_paginationTypes = (endpointInfo, schemaData) => {
 				_state[offsetName] = 0;
 				return _state;
 			},
-			get_nextPageState: (state, paginationArgs) => {
+			get_nextPageState: (state: PaginationState, paginationArgs: FieldWithDerivedData[]): PaginationState => {
 				const offsetName = paginationArgs.find((arg) => {
 					return arg.dd_standsFor == 'offset';
 				})?.dd_displayName;
@@ -74,7 +87,7 @@ export const get_paginationTypes = (endpointInfo, schemaData) => {
 				_state[offsetName] += _state[limitName];
 				return _state;
 			},
-			get_prevPageState: (state, paginationArgs) => {
+			get_prevPageState: (state: PaginationState, paginationArgs: FieldWithDerivedData[]): PaginationState => {
 				const offsetName = paginationArgs.find((arg) => {
 					return arg.dd_standsFor == 'offset';
 				})?.dd_displayName;
@@ -85,19 +98,19 @@ export const get_paginationTypes = (endpointInfo, schemaData) => {
 				_state[offsetName] -= _state[limitName];
 				return _state;
 			},
-			isFirstPage: (_paginationState_Store, paginationArgs) => {
+			isFirstPage: (_paginationState_Store: PaginationStateStore, paginationArgs: FieldWithDerivedData[]) => {
 				const offsetName = paginationArgs.find((arg) => {
 					return arg.dd_standsFor == 'offset';
 				})?.dd_displayName;
 				return !get(_paginationState_Store)?.[offsetName] > 0;
 			},
-			check: (standsForArray) => {
+			check: (standsForArray: string[]) => {
 				return standsForArray.includes('limit') && standsForArray.includes('offset');
 			}
 		},
 		{
 			name: 'edgeBased',
-			get_rowLimitingArgNames: (paginationArgs) => {
+			get_rowLimitingArgNames: (paginationArgs: FieldWithDerivedData[]) => {
 				const firstName = paginationArgs.find((arg) => {
 					return arg.dd_standsFor == 'first';
 				})?.dd_displayName;
@@ -106,7 +119,7 @@ export const get_paginationTypes = (endpointInfo, schemaData) => {
 				})?.dd_displayName;
 				return [firstName, lastName];
 			},
-			get_initialState: (paginationArgs) => {
+			get_initialState: (paginationArgs: FieldWithDerivedData[]): PaginationState => {
 				const firstName = paginationArgs.find((arg) => {
 					return arg.dd_standsFor == 'first';
 				})?.dd_displayName;
@@ -114,7 +127,7 @@ export const get_paginationTypes = (endpointInfo, schemaData) => {
 					[firstName]: 20
 				};
 			},
-			get_defaultPaginationStateForDynamic: (state, paginationArgs) => {
+			get_defaultPaginationStateForDynamic: (state: PaginationState, paginationArgs: FieldWithDerivedData[]): PaginationState => {
 				const afterName = paginationArgs.find((arg) => {
 					return arg.dd_standsFor == 'after';
 				})?.dd_displayName;
@@ -242,7 +255,7 @@ export const get_paginationTypes = (endpointInfo, schemaData) => {
 				const _state = JSON.parse(JSON.stringify(state));
 				return _state;
 			},
-			isFirstPage: (_paginationState_Store, paginationArgs) => {
+			isFirstPage: (_paginationState_Store: PaginationStateStore, paginationArgs: FieldWithDerivedData[]) => {
 				const afterName = paginationArgs.find((arg) => {
 					return arg.dd_standsFor == 'after';
 				})?.dd_displayName;
@@ -253,7 +266,7 @@ export const get_paginationTypes = (endpointInfo, schemaData) => {
 					!get(_paginationState_Store)?.[afterName] && !get(_paginationState_Store)?.[beforeName]
 				);
 			},
-			check: (standsForArray) => {
+			check: (standsForArray: string[]) => {
 				return (
 					standsForArray.includes('first') ||
 					(standsForArray.includes('last') && standsForArray.includes('after')) ||
@@ -263,13 +276,13 @@ export const get_paginationTypes = (endpointInfo, schemaData) => {
 		},
 		{
 			name: 'pageBased',
-			get_rowLimitingArgNames: (paginationArgs) => {
+			get_rowLimitingArgNames: (paginationArgs: FieldWithDerivedData[]) => {
 				const page = paginationArgs.find((arg) => {
 					return arg.dd_standsFor == 'page';
 				})?.dd_displayName;
 				return [page];
 			},
-			get_initialState: (paginationArgs) => {
+			get_initialState: (paginationArgs: FieldWithDerivedData[]): PaginationState => {
 				const pageName = paginationArgs.find((arg) => {
 					return arg.dd_standsFor == 'page';
 				})?.dd_displayName;
@@ -277,10 +290,10 @@ export const get_paginationTypes = (endpointInfo, schemaData) => {
 					[pageName]: 1
 				};
 			},
-			get_dependencyColsData: (QMS_name) => {
+			get_dependencyColsData: (QMS_name: string) => {
 				return [];
 			},
-			get_defaultPaginationStateForDynamic: (state, paginationArgs) => {
+			get_defaultPaginationStateForDynamic: (state: PaginationState, paginationArgs: FieldWithDerivedData[]): PaginationState => {
 				const pageName = paginationArgs.find((arg) => {
 					return arg.dd_standsFor == 'page';
 				})?.dd_displayName;
@@ -288,7 +301,7 @@ export const get_paginationTypes = (endpointInfo, schemaData) => {
 				_state = { ..._state, [pageName]: 1 };
 				return _state;
 			},
-			get_nextPageState: (state, paginationArgs) => {
+			get_nextPageState: (state: PaginationState, paginationArgs: FieldWithDerivedData[]): PaginationState => {
 				const pageName = paginationArgs.find((arg) => {
 					return arg.dd_standsFor == 'page';
 				})?.dd_displayName;
@@ -296,7 +309,7 @@ export const get_paginationTypes = (endpointInfo, schemaData) => {
 				_state[pageName]++;
 				return _state;
 			},
-			get_prevPageState: (state, paginationArgs) => {
+			get_prevPageState: (state: PaginationState, paginationArgs: FieldWithDerivedData[]): PaginationState => {
 				const pageName = paginationArgs.find((arg) => {
 					return arg.dd_standsFor == 'page';
 				})?.dd_displayName;
@@ -304,40 +317,40 @@ export const get_paginationTypes = (endpointInfo, schemaData) => {
 				_state[pageName]--;
 				return _state;
 			},
-			isFirstPage: (_paginationState_Store, paginationArgs) => {
+			isFirstPage: (_paginationState_Store: PaginationStateStore, paginationArgs: FieldWithDerivedData[]) => {
 				let pageName = paginationArgs.find((arg) => {
 					return arg.dd_standsFor == 'page';
 				})?.dd_displayName;
 				return get(_paginationState_Store)?.[pageName] == 1;
 			},
-			check: (standsForArray) => {
+			check: (standsForArray: string[]) => {
 				return standsForArray.includes('page');
 			}
 		},
 		{
 			name: 'unknown',
-			get_rowLimitingArgNames: (paginationArgs) => {
+			get_rowLimitingArgNames: (paginationArgs: FieldWithDerivedData[]) => {
 				return [];
 			},
-			get_initialState: (paginationArgs) => {
+			get_initialState: (paginationArgs: FieldWithDerivedData[]): PaginationState => {
 				console.log('unknown');
 			},
 			get_defaultPaginationStateForDynamic: (state) => {
 				return state;
 			},
-			get_dependencyColsData: (QMS_name) => {
+			get_dependencyColsData: (QMS_name: string) => {
 				return [];
 			},
-			get_nextPageState: (state, paginationArgs) => {
+			get_nextPageState: (state: PaginationState, paginationArgs: FieldWithDerivedData[]): PaginationState => {
 				console.log('unknown');
 			},
-			get_prevPageState: (state, paginationArgs) => {
+			get_prevPageState: (state: PaginationState, paginationArgs: FieldWithDerivedData[]): PaginationState => {
 				console.log('unknown');
 			},
-			isFirstPage: (_paginationState_Store, paginationArgs) => {
+			isFirstPage: (_paginationState_Store: PaginationStateStore, paginationArgs: FieldWithDerivedData[]) => {
 				return true;
 			},
-			check: (standsForArray) => {
+			check: (standsForArray: string[]) => {
 				return standsForArray.length == 0;
 			}
 		}

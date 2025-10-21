@@ -1,12 +1,26 @@
 import { writable } from 'svelte/store';
 import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
+import type {
+	PaginationState,
+	PaginationStateStore,
+	FieldWithDerivedData,
+	EndpointInfoStore,
+	SchemaData,
+	QMSType
+} from '$lib/types';
 
-export const Create_paginationState = (initialValue, paginationArgs, paginationType, endpointInfo, schemaData) => {
+export const Create_paginationState = (
+	initialValue: PaginationState | null,
+	paginationArgs: FieldWithDerivedData[],
+	paginationType: string,
+	endpointInfo: EndpointInfoStore,
+	schemaData: SchemaData
+): PaginationStateStore => {
 	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData).find((pagType) => {
 		return pagType.name == paginationType;
 	});
-	const store = writable(
-		initialValue ? initialValue : paginationTypeInfo?.get_initialState(paginationArgs)
+	const store = writable<PaginationState>(
+		initialValue ? initialValue : paginationTypeInfo?.get_initialState(paginationArgs) || {}
 	);
 	const { subscribe, set, update } = store;
 
@@ -14,7 +28,7 @@ export const Create_paginationState = (initialValue, paginationArgs, paginationT
 		subscribe,
 		set,
 		update,
-		nextPage: (returnedDataBatch_last, QMS_name, QMS_type) => {
+		nextPage: (returnedDataBatch_last: unknown, QMS_name: string, QMS_type: QMSType) => {
 			update((val) => {
 				return paginationTypeInfo.get_nextPageState(
 					val,
@@ -25,7 +39,7 @@ export const Create_paginationState = (initialValue, paginationArgs, paginationT
 				);
 			});
 		},
-		prevPage: (returnedDataBatch_last, QMS_name, QMS_type) => {
+		prevPage: (returnedDataBatch_last: unknown, QMS_name: string, QMS_type: QMSType) => {
 			update((val) => {
 				return paginationTypeInfo.get_prevPageState(
 					val,
