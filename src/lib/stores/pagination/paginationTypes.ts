@@ -60,10 +60,10 @@ export const get_paginationTypes = (
 				const limitName = paginationArgs.find((arg) => {
 					return arg.dd_standsFor == 'limit';
 				})?.dd_displayName;
-				return {
-					[limitName]: 20,
-					[offsetName]: 0
-				};
+				const state: PaginationState = {};
+				if (limitName) state[limitName] = 20;
+				if (offsetName) state[offsetName] = 0;
+				return state;
 			},
 			get_dependencyColsData: (QMS_name: string) => {
 				return [];
@@ -73,7 +73,7 @@ export const get_paginationTypes = (
 					return arg.dd_standsFor == 'offset';
 				})?.dd_displayName;
 				const _state = JSON.parse(JSON.stringify(state));
-				_state[offsetName] = 0;
+				if (offsetName) _state[offsetName] = 0;
 				return _state;
 			},
 			get_nextPageState: (state: PaginationState, paginationArgs: FieldWithDerivedData[]): PaginationState => {
@@ -84,7 +84,9 @@ export const get_paginationTypes = (
 					return arg.dd_standsFor == 'limit';
 				})?.dd_displayName;
 				const _state = JSON.parse(JSON.stringify(state));
-				_state[offsetName] += _state[limitName];
+				if (offsetName && limitName && typeof _state[offsetName] === 'number' && typeof _state[limitName] === 'number') {
+					_state[offsetName] += _state[limitName];
+				}
 				return _state;
 			},
 			get_prevPageState: (state: PaginationState, paginationArgs: FieldWithDerivedData[]): PaginationState => {
@@ -95,14 +97,18 @@ export const get_paginationTypes = (
 					return arg.dd_standsFor == 'limit';
 				})?.dd_displayName;
 				const _state = JSON.parse(JSON.stringify(state));
-				_state[offsetName] -= _state[limitName];
+				if (offsetName && limitName && typeof _state[offsetName] === 'number' && typeof _state[limitName] === 'number') {
+					_state[offsetName] -= _state[limitName];
+				}
 				return _state;
 			},
 			isFirstPage: (_paginationState_Store: PaginationStateStore, paginationArgs: FieldWithDerivedData[]) => {
 				const offsetName = paginationArgs.find((arg) => {
 					return arg.dd_standsFor == 'offset';
 				})?.dd_displayName;
-				return !get(_paginationState_Store)?.[offsetName] > 0;
+				if (!offsetName) return true;
+				const offsetValue = get(_paginationState_Store)?.[offsetName];
+				return !(typeof offsetValue === 'number' && offsetValue > 0);
 			},
 			check: (standsForArray: string[]) => {
 				return standsForArray.includes('limit') && standsForArray.includes('offset');
@@ -123,9 +129,9 @@ export const get_paginationTypes = (
 				const firstName = paginationArgs.find((arg) => {
 					return arg.dd_standsFor == 'first';
 				})?.dd_displayName;
-				return {
-					[firstName]: 20
-				};
+				const state: PaginationState = {};
+				if (firstName) state[firstName] = 20;
+				return state;
 			},
 			get_defaultPaginationStateForDynamic: (state: PaginationState, paginationArgs: FieldWithDerivedData[]): PaginationState => {
 				const afterName = paginationArgs.find((arg) => {
@@ -135,8 +141,8 @@ export const get_paginationTypes = (
 					return arg.dd_standsFor == 'before';
 				})?.dd_displayName;
 				let _state = JSON.parse(JSON.stringify(state));
-				delete _state[afterName];
-				delete _state[beforeName];
+				if (afterName) delete _state[afterName];
+				if (beforeName) delete _state[beforeName];
 				return _state;
 			},
 			get_dependencyColsData: (QMS_name, QMS_type, schemaData) => {

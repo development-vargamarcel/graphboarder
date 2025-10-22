@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Type from '$lib/components/Type.svelte';
 	import Description from './Description.svelte';
 
@@ -6,11 +6,17 @@
 	import AutoInterface from '$lib/components/fields/AutoInterface.svelte';
 	import { SHADOW_ITEM_MARKER_PROPERTY_NAME } from 'svelte-dnd-action';
 	import { createEventDispatcher, getContext, setContext } from 'svelte';
-	export let setNotInUseIfNotValid = true;
-	export let setNotInUseIfNotValidAndENUM = true;
-	export let parentNode;
-	export let node;
-	export let prefix = '';
+	import type {
+		ActiveArgumentData,
+		ActiveArgumentGroup,
+		ContainerData
+	} from '$lib/types/index';
+
+	export let setNotInUseIfNotValid: boolean = true;
+	export let setNotInUseIfNotValidAndENUM: boolean = true;
+	export let parentNode: ContainerData | ActiveArgumentData;
+	export let node: ActiveArgumentData | ContainerData;
+	export let prefix: string = '';
 	import Toggle from '$lib/components/fields/Toggle.svelte';
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Modal from './Modal.svelte';
@@ -28,31 +34,31 @@
 	import SelectedRowsDisplay from './SelectedRowsDisplay.svelte';
 	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
 	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
-	export let isNot;
+	export let isNot: boolean;
 	let dispatch = createEventDispatcher();
-	export let activeArgumentData;
-	export let group;
-	export let activeArgumentsDataGrouped;
+	export let activeArgumentData: ActiveArgumentData;
+	export let group: ActiveArgumentGroup;
+	export let activeArgumentsDataGrouped: ActiveArgumentGroup[];
 	//
-	export let nodes;
-	export let originalNodes;
-	export let type;
-	export let parentNodeId;
-	export let availableOperators;
-	export let startDrag;
-	let idColNameOfSelectedRow;
+	export let nodes: (ActiveArgumentData | ContainerData)[];
+	export let originalNodes: (ActiveArgumentData | ContainerData)[];
+	export let type: string;
+	export let parentNodeId: string;
+	export let availableOperators: string[];
+	export let startDrag: () => void;
+	let idColNameOfSelectedRow: string | undefined;
 	//
 	setContext(
 		'choosenDisplayInterface',
 		writable(activeArgumentData.chosenDisplayInterface || activeArgumentData.dd_displayInterface)
 	);
-	let showDescription = false;
-	let labelEl;
-	let shadowEl;
-	let shadowHeight = 20;
-	let shadowWidth = 20;
+	let showDescription: boolean = false;
+	let labelEl: HTMLLabelElement | undefined;
+	let shadowEl: HTMLDivElement | undefined;
+	let shadowHeight: number = 20;
+	let shadowWidth: number = 20;
 
-	let labelElClone;
+	let labelElClone: Node | undefined;
 
 	$: if (labelEl) {
 		shadowHeight = labelEl.clientHeight;
@@ -73,8 +79,8 @@
 		}
 	}
 	console.log({ activeArgumentData });
-	let get_valueToDisplay = () => {
-		let value;
+	let get_valueToDisplay = (): string | undefined => {
+		let value: string | undefined;
 		if (getPreciseType(activeArgumentData.chd_dispatchValue) == 'number') {
 			value = activeArgumentData.chd_dispatchValue;
 		}
@@ -99,8 +105,8 @@
 	};
 	const CPItemContext = getContext(`${prefix}CPItemContext`);
 	const CPItem = CPItemContext?.CPItem;
-	let expandedVersion;
-	let valueToDisplay = undefined;
+	let expandedVersion: boolean;
+	let valueToDisplay: string | undefined = undefined;
 	$: {
 		if (true || activeArgumentData?.inUse) {
 			valueToDisplay = get_valueToDisplay();
@@ -115,13 +121,13 @@
 	const outermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	const { mergedChildren_QMSWraperCtxData_Store } = outermostQMSWraperContext;
 
-	const handleChanged = (detail) => {
+	const handleChanged = (detail: Partial<ActiveArgumentData>): void => {
 		console.log('detail', detail);
 		Object.assign(activeArgumentData, detail);
 
-		const isValid = argumentCanRunQuery(activeArgumentData);
-		const isInUse = activeArgumentData.inUse;
-		const isENUM = activeArgumentData.dd_displayInterface == 'ENUM';
+		const isValid: boolean = argumentCanRunQuery(activeArgumentData);
+		const isInUse: boolean | undefined = activeArgumentData.inUse;
+		const isENUM: boolean = activeArgumentData.dd_displayInterface == 'ENUM';
 		console.log({ isValid });
 		if (!isInUse && isValid) {
 			inUse_set(true);
@@ -135,13 +141,13 @@
 		updateActiveArgument();
 		//finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 	};
-	const handleClickOutside = () => {
+	const handleClickOutside = (): void => {
 		//
 		//console.log('clicked outside');
 		//expandedVersion = false; //!!! this is causing the expanded version to disappear when you click outside of it,but sometimes,is not desirable like when another modal with choises opens up and if you click on anything that upper modal disappears.
 	};
 
-	const updateActiveArgument = () => {
+	const updateActiveArgument = (): void => {
 		if (!CPItemContext) {
 			activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
 			finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
@@ -162,17 +168,17 @@
 			QMSWraperCtxData_StoreForCPItem.finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj(); //!!!is not enough to rerun query it seems
 		}
 	};
-	const inUse_set = (inUse) => {
+	const inUse_set = (inUse: boolean): void => {
 		activeArgumentData.inUse = inUse;
 		updateActiveArgument();
 
 		dispatch('inUseChanged');
 		//finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 	};
-	const inUse_toggle = () => {
+	const inUse_toggle = (): void => {
 		inUse_set(!activeArgumentData.inUse);
 	};
-	let showModal = false;
+	let showModal: boolean = false;
 	const mutationVersion = getContext('mutationVersion');
 	const showInputField = getContext('showInputField');
 
@@ -180,7 +186,7 @@
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
 	const nodeRootType = getRootType(null, activeArgumentData.dd_rootName, schemaData);
-	let showSelectModal = false;
+	let showSelectModal: boolean = false;
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
