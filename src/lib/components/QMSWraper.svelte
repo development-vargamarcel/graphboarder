@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { Create_paginationOptions } from '$lib/stores/pagination/paginationOptions';
 	import { Create_activeArgumentsDataGrouped_Store } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
 	import { Create_finalGqlArgObj_Store } from '$lib/stores/QMSHandling/finalGqlArgObj_Store';
@@ -14,12 +14,22 @@
 		get_nodeFieldsQMS_info,
 		getDeepField
 	} from '$lib/utils/usefulFunctions';
-	export let prefix = '';
-	export let extraInfo = {};
+	import type {
+		QMSType as QMSTypeType,
+		FieldWithDerivedData,
+		ActiveArgumentGroup,
+		TableColumnData,
+		SchemaData,
+		EndpointInfoStore,
+		PaginationTypeInfo
+	} from '$lib/types/index';
+
+	export let prefix: string = '';
+	export let extraInfo: Record<string, unknown> = {};
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-	const schemaData = QMSMainWraperContext?.schemaData;
-	export let initialGqlArgObj = {};
+	const endpointInfo: EndpointInfoStore = QMSMainWraperContext?.endpointInfo;
+	const schemaData: SchemaData = QMSMainWraperContext?.schemaData;
+	export let initialGqlArgObj: Record<string, unknown> = {};
 	import { get, writable } from 'svelte/store';
 	import { Create_mergedChildren_finalGqlArgObj_Store } from '$lib/stores/QMSHandling/mergedChildren_finalGqlArgObj_Store';
 	//import { Create_mergedChildren_activeArgumentsDataGrouped_Store } from '$lib/stores/QMSHandling/mergedChildren_activeArgumentsDataGrouped_Store';
@@ -27,15 +37,15 @@
 	import { Create_mergedChildren_controlPanel_Store } from '$lib/stores/QMSHandling/mergedChildren_controlPanel_Store';
 	import QMSWraperCtxDataCurrentComputations from './QMSWraperCtxDataCurrentComputations.svelte';
 	import { Create_QMSFieldToQMSGetMany_Store } from '$lib/stores/QMSFieldToQMSGetMany_Store';
-	export let isOutermostQMSWraper = getContext(`${prefix}QMSWraperContext`) ? false : true;
-	export let QMSType = 'query';
-	export let QMSName = `${Math.random()}`;
-	export let QMS_info = schemaData.get_QMS_Field(QMSName, QMSType, schemaData);
+	export let isOutermostQMSWraper: boolean = getContext(`${prefix}QMSWraperContext`) ? false : true;
+	export let QMSType: QMSTypeType = 'query';
+	export let QMSName: string = `${Math.random()}`;
+	export let QMS_info: FieldWithDerivedData | undefined = schemaData.get_QMS_Field(QMSName, QMSType, schemaData);
 	if (!QMS_info) {
 		QMS_info = schemaData.get_QMS_Field(QMSName, QMSType, schemaData);
 	}
-	const dd_paginationType = QMS_info?.dd_paginationType;
-	let paginationTypeInfo;
+	const dd_paginationType: string | undefined = QMS_info?.dd_paginationType;
+	let paginationTypeInfo: PaginationTypeInfo | undefined;
 	if (dd_paginationType) {
 		paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData).find((pagType) => {
 			//console.log({ QMS_info }, { dd_paginationType });
@@ -43,8 +53,8 @@
 		});
 	}
 	console.log({ QMSType, QMSName, QMS_info });
-	export let QMSWraperContext = {};
-	export let activeArgumentsDataGrouped_StoreInitialValue;
+	export let QMSWraperContext: Record<string, unknown> = {};
+	export let activeArgumentsDataGrouped_StoreInitialValue: ActiveArgumentGroup[] | undefined;
 	export let activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store(
 		activeArgumentsDataGrouped_StoreInitialValue
 	);
@@ -64,7 +74,7 @@
 		schemaData
 	);
 
-	export let tableColsData_StoreInitialValue = [];
+	export let tableColsData_StoreInitialValue: TableColumnData[] = [];
 	const rowsLocation = endpointInfo.get_rowsLocation(QMS_info, schemaData);
 	const nodeFieldsQMS_info = get_nodeFieldsQMS_info(QMS_info, rowsLocation, schemaData);
 	// let scalarColsData = get_scalarColsData(

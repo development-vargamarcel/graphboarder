@@ -118,10 +118,13 @@ export interface PaginationState {
 export interface PaginationTypeInfo {
 	name: string;
 	check: (standsForArray: string[]) => boolean;
+	get_rowLimitingArgNames?: (paginationArgs: FieldWithDerivedData[]) => (string | undefined)[];
+	get_dependencyColsData?: (qmsName: string, qmsType: QMSType, schemaData: SchemaData) => unknown[];
 	get_initialState: (paginationArgs: FieldWithDerivedData[]) => PaginationState;
-	get_nextPageState: (currentState: PaginationState, paginationArgs: FieldWithDerivedData[], returnedDataBatch_last: unknown, qmsName: string, qmsType: QMSType) => PaginationState;
-	get_prevPageState: (currentState: PaginationState, paginationArgs: FieldWithDerivedData[], returnedDataBatch_last: unknown, qmsName: string, qmsType: QMSType) => PaginationState;
+	get_nextPageState: (currentState: PaginationState, paginationArgs: FieldWithDerivedData[], returnedDataBatch_last?: unknown, qmsName?: string, qmsType?: QMSType) => PaginationState;
+	get_prevPageState: (currentState: PaginationState, paginationArgs: FieldWithDerivedData[], returnedDataBatch_last?: unknown, qmsName?: string, qmsType?: QMSType) => PaginationState;
 	get_defaultPaginationStateForDynamic: (currentState: PaginationState, paginationArgs: FieldWithDerivedData[]) => PaginationState;
+	isFirstPage?: (paginationStateStore: PaginationStateStore, paginationArgs: FieldWithDerivedData[]) => boolean;
 }
 
 // Column Data Types
