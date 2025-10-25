@@ -6,20 +6,22 @@
 
 <div class="overflow-auto overscroll-contain h-[80vh] w-[90vw]">
 	<table class="table table-compact">
-		<tHead class=" sticky top-0">
-			<th />
-			<th class="normal-case">displayName</th>
-			<th class="normal-case">rootName</th>
+		<thead class=" sticky top-0">
+			<tr>
+				<th />
+				<th class="normal-case">displayName</th>
+				<th class="normal-case">rootName</th>
 
-			<th class="normal-case">L</th>
-			<th class="normal-case">L</th>
-			<th class="normal-case">E</th>
-			<th class="normal-case">E</th>
-		</tHead>
-		<tBody>
+				<th class="normal-case">L</th>
+				<th class="normal-case">L</th>
+				<th class="normal-case">E</th>
+				<th class="normal-case">E</th>
+			</tr>
+		</thead>
+		<tbody>
 			{#each types as type, i}
 				<EndpointinfoGeneratorAssistantItem {type} {i} />
 			{/each}
-		</tBody>
+		</tbody>
 	</table>
 </div>
