@@ -152,8 +152,7 @@ export const Create_activeArgumentsDataGrouped_Store = (
 			//
 			//Handle QMSarguments data if present
 			console.log({ QMSarguments });
-			const storeVal = get(store);
-			if (!storeVal && QMSarguments) {
+			if (QMSarguments) {
 				gqlArgObjToActiveArgumentsDataGrouped(QMSarguments, activeArgumentsDataGrouped, schemaData, endpointInfo);
 			}
 
@@ -460,8 +459,10 @@ const gqlArgObjToActiveArgumentsDataGrouped = (
 				const argType = groupOriginType.args.filter((type) => {
 					return type.dd_displayName == argName;
 				})[0];
+				const argValue = groupGqlArgObj[argName];
 				const argData = generateArgData([argName], argType, schemaData, {
-					chd_dispatchValue: groupGqlArgObj[argName],
+					chd_rawValue: argValue,
+					chd_dispatchValue: argValue,
 					inUse: true
 				});
 
@@ -473,8 +474,45 @@ const gqlArgObjToActiveArgumentsDataGrouped = (
 				);
 			});
 		} else {
+			// Handle non-root groups
+			if (!group.group_argsNode) {
+				// For groups without argsNode structure, we skip for now
+				console.log('Skipping non-root group without argsNode:', groupName);
+				return;
+			}
 
-			//
+			// For groups with argsNode (like "all" group), process all arguments
+			const groupArgNames = Object.keys(groupGqlArgObj);
+			groupArgNames.forEach((argName) => {
+				// Find the argument type from the origin type
+				const argType = groupOriginType.args?.find((type) => {
+					return type.dd_displayName === argName;
+				});
+
+				if (!argType) {
+					console.warn(`Argument type not found for: ${argName}`);
+					return;
+				}
+
+				const argValue = groupGqlArgObj[argName];
+
+				// Create argument data with the value from the query
+				const argData = generateArgData([argName], argType, schemaData, {
+					chd_rawValue: argValue,
+					chd_dispatchValue: argValue,
+					inUse: true
+				});
+
+				// Add the argument to the group
+				add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(
+					argData,
+					groupName,
+					null,
+					activeArgumentsDataGrouped,
+					endpointInfo,
+					group
+				);
+			});
 		}
 		console.log({ groupName, group_isRoot, groupGqlArgObj, groupOriginType });
 	});
