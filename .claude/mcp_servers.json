@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "svelte-mcp": {
+      "url": "https://mcp.svelte.dev/mcp",
+      "transport": "sse",
+      "description": "Svelte MCP server for documentation and API access"
+    }
+  }
+}
