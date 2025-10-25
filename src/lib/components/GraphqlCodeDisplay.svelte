@@ -17,17 +17,15 @@
 	let valueModifiedManually;
 	let lastSyncedValue = value;
 
-	// Try to get context if available
-	let QMSWraperContext;
-	let QMSMainWraperContext;
-	let currentQMS_info;
+	// Get context the same way as ComponentForLayout
+	let QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 
-	try {
-		QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
-		QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	} catch (e) {
-		console.log('GraphqlCodeDisplay: Context not available', e);
-	}
+	console.log('GraphqlCodeDisplay: Contexts retrieved', {
+		prefix,
+		QMSWraperContext: !!QMSWraperContext,
+		QMSMainWraperContext: !!QMSMainWraperContext
+	});
 
 	onMount(() => {
 		hljs.registerLanguage('graphql', graphql);
@@ -53,14 +51,29 @@
 	}
 
 	$: {
+		console.log('GraphqlCodeDisplay: valueModifiedManually changed', { valueModifiedManually, lastSyncedValue, enableSyncToUI });
 		if (valueModifiedManually && valueModifiedManually !== lastSyncedValue) {
 			try {
+				console.log('GraphqlCodeDisplay: Attempting to parse modified query');
 				ast = parse(valueModifiedManually);
 
 				// Sync to UI if enabled and context is available
+				console.log('GraphqlCodeDisplay: Context check', {
+					QMSWraperContext: !!QMSWraperContext,
+					QMSMainWraperContext: !!QMSMainWraperContext,
+					enableSyncToUI
+				});
+
 				if (enableSyncToUI && QMSWraperContext && QMSMainWraperContext) {
+					console.log('GraphqlCodeDisplay: Calling syncQueryToUI');
 					syncQueryToUI(ast);
 					lastSyncedValue = valueModifiedManually;
+				} else {
+					console.warn('GraphqlCodeDisplay: Sync conditions not met', {
+						enableSyncToUI,
+						hasQMSWraperContext: !!QMSWraperContext,
+						hasQMSMainWraperContext: !!QMSMainWraperContext
+					});
 				}
 			} catch (e) {
 				console.error('Error parsing manually modified query:', e);

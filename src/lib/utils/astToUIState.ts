@@ -250,28 +250,31 @@ export const updateStoresFromAST = (
 	tableColsStore: TableColsDataStore,
 	paginationStore: PaginationStateStore
 ): void => {
-	const parsed = parseQueryAST(ast);
+	console.log('updateStoresFromAST: Starting', { ast, qmsInfo });
 
-	console.log('updateStoresFromAST', { parsed, qmsInfo });
+	const parsed = parseQueryAST(ast);
+	console.log('updateStoresFromAST: Parsed query', { parsed });
 
 	// Update table columns
 	if (parsed.fields.length > 0) {
-		// Remove the query name from the beginning of each field path
-		const cleanedFields = parsed.fields
-			.filter((field) => field.stepsOfFields && field.stepsOfFields.length > 1)
-			.map((field) => ({
-				...field,
-				stepsOfFields: field.stepsOfFields!.slice(1),
-				title: field.stepsOfFields!.slice(1).join('.')
-			}));
+		console.log('updateStoresFromAST: Updating table columns', { fields: parsed.fields });
+		// Filter out fields that don't have proper stepsOfFields
+		const cleanedFields = parsed.fields.filter(
+			(field) => field.stepsOfFields && field.stepsOfFields.length > 0
+		);
+		console.log('updateStoresFromAST: Setting cleanedFields', cleanedFields);
 		tableColsStore.set(cleanedFields);
+	} else {
+		console.log('updateStoresFromAST: No fields to update');
 	}
 
 	// Separate pagination and other arguments
 	const { paginationArgs, otherArgs } = separatePaginationArgs(parsed.arguments);
+	console.log('updateStoresFromAST: Separated arguments', { paginationArgs, otherArgs });
 
 	// Update pagination state
 	if (Object.keys(paginationArgs).length > 0) {
+		console.log('updateStoresFromAST: Updating pagination state', paginationArgs);
 		paginationStore.update((state) => ({
 			...state,
 			...paginationArgs
@@ -281,6 +284,9 @@ export const updateStoresFromAST = (
 	// Update arguments store
 	// We need to call set_groups with the extracted arguments
 	if (qmsInfo) {
+		console.log('updateStoresFromAST: Calling set_groups with arguments', otherArgs);
 		activeArgumentsStore.set_groups(qmsInfo, schemaData, otherArgs, endpointInfo);
 	}
+
+	console.log('updateStoresFromAST: Completed');
 };
