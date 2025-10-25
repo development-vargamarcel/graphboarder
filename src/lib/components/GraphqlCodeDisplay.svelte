@@ -3,24 +3,46 @@
 	import CodeEditor from './fields/CodeEditor.svelte';
 	import { format } from 'graphql-formatter';
 	import hljs from 'highlight.js/lib/core';
-	import { onMount } from 'svelte';
+	import { onMount, getContext } from 'svelte';
 	import graphql from 'highlight.js/lib/languages/graphql';
 	import 'highlight.js/styles/base16/solarized-dark.css';
 	import { getPreciseType, objectToSourceCode } from '$lib/utils/usefulFunctions';
+	import { updateStoresFromAST } from '$lib/utils/astToUIState';
+
 	export let showNonPrettifiedQMSBody;
 	export let value;
+	export let enableSyncToUI = true;
+	export let prefix = '';
+
 	let valueModifiedManually;
+	let lastSyncedValue = value;
+
+	// Try to get context if available
+	let QMSWraperContext;
+	let QMSMainWraperContext;
+	let currentQMS_info;
+
+	try {
+		QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
+		QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	} catch (e) {
+		console.log('GraphqlCodeDisplay: Context not available', e);
+	}
+
 	onMount(() => {
 		hljs.registerLanguage('graphql', graphql);
 		hljs.highlightAll();
 	});
+
 	import { parse, print, visit } from 'graphql';
 	import JSON5 from 'json5';
 	import CodeMirrorCustom from './fields/CodeMirrorCustom.svelte';
+
 	let astAsString = '';
 	let astAsString2 = '';
 	let ast;
 	let astPrinted;
+
 	$: ast = parse(value);
 	$: if (ast) {
 		// Extract operation type and name
@@ -29,9 +51,20 @@
 
 		astPrinted = print(ast);
 	}
+
 	$: {
-		if (valueModifiedManually) {
-			ast = parse(valueModifiedManually);
+		if (valueModifiedManually && valueModifiedManually !== lastSyncedValue) {
+			try {
+				ast = parse(valueModifiedManually);
+
+				// Sync to UI if enabled and context is available
+				if (enableSyncToUI && QMSWraperContext && QMSMainWraperContext) {
+					syncQueryToUI(ast);
+					lastSyncedValue = valueModifiedManually;
+				}
+			} catch (e) {
+				console.error('Error parsing manually modified query:', e);
+			}
 		}
 	}
 
@@ -63,6 +96,47 @@
 			//   //   any value: replace this node with the returned value
 			// }
 		},);
+	};
+
+	const syncQueryToUI = (ast) => {
+		try {
+			if (!QMSWraperContext || !QMSMainWraperContext) {
+				console.warn('GraphqlCodeDisplay: Cannot sync to UI - context not available');
+				return;
+			}
+
+			const {
+				activeArgumentsDataGrouped_Store,
+				tableColsData_Store,
+				paginationState,
+				QMSName
+			} = QMSWraperContext;
+
+			const { endpointInfo, schemaData } = QMSMainWraperContext;
+
+			// Get the current QMS info
+			const qmsInfo = schemaData.get_QMS_Field(QMSName, 'query', schemaData);
+
+			if (!qmsInfo) {
+				console.warn('GraphqlCodeDisplay: QMS info not found');
+				return;
+			}
+
+			console.log('GraphqlCodeDisplay: Syncing query to UI', { ast, qmsInfo });
+
+			// Update stores from AST
+			updateStoresFromAST(
+				ast,
+				qmsInfo,
+				schemaData,
+				endpointInfo,
+				activeArgumentsDataGrouped_Store,
+				tableColsData_Store,
+				paginationState
+			);
+		} catch (e) {
+			console.error('GraphqlCodeDisplay: Error syncing query to UI:', e);
+		}
 	};
 	///
 </script>

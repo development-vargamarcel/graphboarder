@@ -344,7 +344,7 @@
 	<p>Loading...</p>
 {/if}
 {#if showQMSBody}
-	<GraphqlCodeDisplay {showNonPrettifiedQMSBody} value={$QMS_bodyPartsUnifier_StoreDerived} />
+	<GraphqlCodeDisplay {showNonPrettifiedQMSBody} {prefix} value={$QMS_bodyPartsUnifier_StoreDerived} />
 {/if}
 
 <div class="md:px-2">
