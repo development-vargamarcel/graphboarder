@@ -2,6 +2,10 @@
 	"name": "auto-gql",
 	"version": "0.0.11",
 	"private": false,
+	"engines": {
+		"node": "20.x",
+		"npm": "10.x"
+	},
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
