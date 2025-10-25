@@ -24,6 +24,7 @@
 	let divEl: HTMLDivElement = null;
 	let editor: monaco.editor.IStandaloneCodeEditor;
 	let Monaco: any;
+	let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
 	const initializeEditor = async () => {
 		self.MonacoEnvironment = {
@@ -61,7 +62,20 @@
 		});
 
 		editor.onDidChangeModelContent(() => {
-			// Handle model content change
+			// Debounce the change event to avoid excessive updates
+			if (debounceTimer) {
+				clearTimeout(debounceTimer);
+			}
+
+			debounceTimer = setTimeout(() => {
+				const editorValue = editor.getValue();
+				const firstCurlyBraces = editorValue.indexOf('{');
+				const lastCurlyBraces = editorValue.lastIndexOf('}');
+				const editorValueCleaned = editorValue.substring(firstCurlyBraces, lastCurlyBraces + 1);
+				dispatch('changed', {
+					chd_rawValue: chosenConfig?.language == 'typescript' ? editorValueCleaned : editorValue
+				});
+			}, 500); // 500ms debounce delay
 		});
 
 		prettify();
