@@ -6,7 +6,7 @@
 	import type { ColumnDef, TableOptions } from '@tanstack/table-core/src/types';
 	import { formatData, getPreciseType, getTableCellData } from '$lib/utils/usefulFunctions';
 	import ColumnInfo from './ColumnInfo.svelte';
-	import { createEventDispatcher, getContext } from 'svelte';
+	import { getContext } from 'svelte';
 	import InfiniteLoading from 'svelte-infinite-loading';
 
 	interface Props {
@@ -18,6 +18,9 @@
 		data: any;
 		cols?: any;
 		rowSelectionState?: any;
+		onRowSelectionChange?: (detail: any) => void;
+		onHideColumn?: (detail: { column: string }) => void;
+		onRowClicked?: (detail: any) => void;
 	}
 
 	let {
@@ -28,10 +31,11 @@
 		infiniteId,
 		data,
 		cols = [],
-		rowSelectionState = $bindable({})
+		rowSelectionState = $bindable({}),
+		onRowSelectionChange,
+		onHideColumn,
+		onRowClicked
 	}: Props = $props();
-
-	const dispatch = createEventDispatcher();
 	let loadMore = $state(false);
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	let QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
@@ -78,7 +82,7 @@
 		}));
 
 		console.log($table.getSelectedRowModel());
-		dispatch('rowSelectionChange', { ...$table.getSelectedRowModel() });
+		onRowSelectionChange?.({ ...$table.getSelectedRowModel() });
 	};
 
 	console.log({ rowSelectionState });
@@ -170,7 +174,7 @@
 											<div
 												class="w-full pr-2 hover:text-primary cursor-pointer"
 												onclick={() => {
-													dispatch('hideColumn', { column: header.column.columnDef.header });
+													onHideColumn?.({ column: header.column.columnDef.header });
 												}}
 											>
 												hide field
@@ -189,7 +193,7 @@
 				<tr
 					class="bg-base-100 hover:bg-base-300 cursor-pointer hover z-0"
 					onclick={() => {
-						dispatch('rowClicked', row.original);
+						onRowClicked?.(row.original);
 						//goto(`${$page.url.origin}/queries/${$page.params.queryName}/${row.id}`);
 					}}
 				>
@@ -244,7 +248,7 @@
 		</div>
 	{/if}
 	{#if $paginationOptions?.infiniteScroll && data?.length > 0 && loadMore}
-		<InfiniteLoading on:infinite={infiniteHandler} identifier={infiniteId} distance={100} />
+		<InfiniteLoading oninfinite={infiniteHandler} identifier={infiniteId} distance={100} />
 	{/if}
 	<div class="h-4"></div>
 </div>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { run } from 'svelte/legacy';
 
-	import { onMount, createEventDispatcher, getContext } from 'svelte';
+	import { onMount, getContext } from 'svelte';
 	import CodeMirror from 'svelte-codemirror-editor';
 	import { javascript } from '@codemirror/lang-javascript';
 	import { graphql } from 'cm6-graphql';
@@ -21,16 +21,17 @@
 		rawValue?: string;
 		value?: string;
 		displayInterface: string;
+		onChanged?: (detail: { chd_rawValue: string }) => void;
 	}
 
 	let {
 		language = 'javascript',
 		rawValue = '{}',
 		value = $bindable(''),
-		displayInterface
+		displayInterface,
+		onChanged
 	}: Props = $props();
 
-	const dispatch = createEventDispatcher();
 	const mutationVersion = getContext('mutationVersion');
 	let divEl: HTMLDivElement = $state(null);
 	let editor: monaco.editor.IStandaloneCodeEditor = $state();
@@ -83,7 +84,7 @@
 				const firstCurlyBraces = editorValue.indexOf('{');
 				const lastCurlyBraces = editorValue.lastIndexOf('}');
 				const editorValueCleaned = editorValue.substring(firstCurlyBraces, lastCurlyBraces + 1);
-				dispatch('changed', {
+				onChanged?.({
 					chd_rawValue: chosenConfig?.language == 'typescript' ? editorValueCleaned : editorValue
 				});
 			}, 500); // 500ms debounce delay
@@ -186,7 +187,7 @@
 				const firstCurlyBraces = editorValue.indexOf('{');
 				const lastCurlyBraces = editorValue.lastIndexOf('}');
 				const editorValueCleaned = editorValue.substring(firstCurlyBraces, lastCurlyBraces + 1);
-				dispatch('changed', {
+				onChanged?.({
 					chd_rawValue: chosenConfig?.language == 'typescript' ? editorValueCleaned : editorValue
 				});
 			}}

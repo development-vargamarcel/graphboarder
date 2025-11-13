@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import FilterGroup from '$lib/components/FilterGroup.svelte';
-	let { typeInfo, rawValue, dispatchValue } = $props();
-	const dispatch = createEventDispatcher();
+	let { typeInfo, rawValue, dispatchValue, onChanged } = $props();
 </script>
 
 <div class="flex flex-col">
@@ -16,7 +14,7 @@
 		chosenDefault={[]}
 		isINPUT_OBJECT={typeInfo?.isINPUT_OBJECT}
 		{rawValue}
-		on:changed
+		{onChanged}
 		id={typeInfo.stepsOfFields}
 		title="choose"
 		type={typeInfo.dd_kindList ? 'checkbox' : 'radio'}

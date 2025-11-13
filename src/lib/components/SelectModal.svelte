@@ -15,7 +15,7 @@
 	//!!! chnage bonded to item
 	import { flip } from 'svelte/animate';
 	import { dndzone, SHADOW_PLACEHOLDER_ITEM_ID } from 'svelte-dnd-action';
-	import { createEventDispatcher, getContext, onDestroy, onMount, setContext } from 'svelte';
+	import { getContext, onDestroy, onMount, setContext } from 'svelte';
 	import ActiveArgument from '$lib/components/ActiveArgument.svelte';
 	import ActiveArgumentsGroup_addFilterAndSortingButtonContent from '$lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte';
 	import Modal from './Modal.svelte';
@@ -24,7 +24,6 @@
 	import SelectQMS from './SelectQMS.svelte';
 
 	import Fuse from 'fuse.js';
-	const dispatch = createEventDispatcher();
 	let stepsOfNodes = $state([]);
 	let stepsOfFields = $state([]);
 	let stepsOfFieldsFull = $state([]);
@@ -125,7 +124,7 @@
 		//console.log(e);
 		nodes = { ...nodes };
 		handleChanged();
-		dispatch('changed');
+		onChanged?.();
 		dragDisabled = true;
 	}
 
@@ -137,7 +136,7 @@
 		//!!! to do: also delete the node from "nodes"
 		nodes = { ...nodes };
 		handleChanged();
-		dispatch('changed');
+		onChanged?.();
 	};
 	//
 	let labelEl;
@@ -207,6 +206,7 @@
 		prefix?: string;
 		addDefaultFields: any;
 		showSelectModal: any;
+		onChanged?: () => void;
 	}
 
 	let {
@@ -220,7 +220,8 @@
 		originalNodes,
 		prefix = '',
 		addDefaultFields,
-		showSelectModal = $bindable()
+		showSelectModal = $bindable(),
+		onChanged
 	}: Props = $props();
 
 	let showExplorerTable = true;
@@ -414,7 +415,7 @@
 
 {#if showSelectModal}
 	<Modal
-		on:mounted={() => {
+		onMounted={() => {
 			$QMSRows = discoverMatchingQMS(node, group, schemaData, fuse);
 
 			// Auto-select if only one match
@@ -423,7 +424,7 @@
 			}
 		}}
 		showApplyBtn={true}
-		on:apply={() => {
+		onApply={() => {
 			$rowSelectionState = getRowSelectionState(selectedRowsModel);
 			$requiredColNames = getRequiredColumnNames(node);
 
@@ -440,7 +441,7 @@
 			handleChanged();
 			showSelectModal = false;
 		}}
-		on:cancel={() => {
+		onCancel={() => {
 			showSelectModal = false;
 		}}
 	>

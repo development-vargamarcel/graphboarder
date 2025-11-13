@@ -1,8 +1,14 @@
-<script>
+<script lang="ts">
 	import { stringToJs } from '$lib/utils/usefulFunctions';
-	import { createEventDispatcher, getContext } from 'svelte';
+	import { getContext } from 'svelte';
 	import CodeEditor from './fields/CodeEditor.svelte';
 	import { getSortedAndOrderedEndpoints } from '$lib/utils/usefulFunctions';
+
+	interface Props {
+		onHide?: () => void;
+	}
+
+	let { onHide }: Props = $props();
 
 	let localStorageEndpoints = getContext('localStorageEndpoints');
 	const handleCodeChanged = (e) => {
@@ -29,7 +35,6 @@
 		localStorageEndpoints.set(getSortedAndOrderedEndpoints($localStorageEndpoints));
 		console.log({ $localStorageEndpoints, indexOfNewEndpointIdInLocalStorage });
 	};
-	const dispatch = createEventDispatcher();
 </script>
 
 <div class="w-full p-2 max-h-[80vh] overflow-y-auto">
@@ -40,7 +45,7 @@
 			<div>
 				<CodeEditor
 					language="javascript"
-					on:changed={handleCodeChanged}
+					onChanged={handleCodeChanged}
 					rawValue={`{
 		id: 'directus',
 		url: 'https://directus-production-c2de.up.railway.app/graphql',
@@ -55,7 +60,7 @@
 				<button
 					class="btn btn-error"
 					onclick={() => {
-						dispatch('hide');
+						onHide?.();
 					}}>hide</button
 				>
 			</div>

@@ -8,7 +8,6 @@
 	import { getContext } from 'svelte';
 	import ExplorerTable from '$lib/components/ExplorerTable.svelte';
 	import TypeList from '$lib/components/TypeList.svelte';
-	import AddColumn from '$lib/components/AddColumn.svelte';
 
 	export const prefix = '';
 
@@ -341,11 +340,11 @@
 			<ExplorerTable
 				bind:data={whatToShow}
 				{columns}
-				on:rowSelectionChange={(e) => {
-					selectedRowsOriginal = e.detail.rows.map((row) => row.original);
+				onRowSelectionChange={(detail) => {
+					selectedRowsOriginal = detail.rows.map((row) => row.original);
 					let columnNames = [];
 					let rowsData;
-					rowsData = e.detail.rows.map((row, i) => {
+					rowsData = detail.rows.map((row, i) => {
 						return row
 							.getVisibleCells()
 							.map((cell) => {

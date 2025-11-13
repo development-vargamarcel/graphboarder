@@ -6,7 +6,7 @@
 		generateTitleFromStepsOfFields,
 		stepsOfFieldsToQueryFragmentObject
 	} from '$lib/utils/usefulFunctions';
-	import { setContext, getContext, createEventDispatcher } from 'svelte';
+	import { setContext, getContext } from 'svelte';
 	import { get, writable } from 'svelte/store';
 	import Type from './Type.svelte';
 	interface Props {
@@ -16,6 +16,7 @@
 		dd_relatedRoot: any;
 		QMSName: any;
 		QMS_info: any;
+		onNewColumnAddRequest?: (detail: any) => void;
 	}
 
 	let {
@@ -24,10 +25,9 @@
 		addColumnFromInput,
 		dd_relatedRoot,
 		QMSName,
-		QMS_info
+		QMS_info,
+		onNewColumnAddRequest
 	}: Props = $props();
-
-	const dispatchEvent = createEventDispatcher();
 	//stepsOfFieldsOBJ
 	setContext(`${prefix}stepsOfFieldsOBJ`, writable({}));
 	const stepsOfFieldsOBJ = getContext(`${prefix}stepsOfFieldsOBJ`);
@@ -98,7 +98,7 @@
 								stepsOfFieldsOBJ: $stepsOfFieldsOBJ,
 								activeArgumentsDataGrouped: $activeArgumentsDataGrouped_Store
 							};
-							dispatchEvent('newColumnAddRequest', tableColData);
+							onNewColumnAddRequest?.(tableColData);
 							$stepsOfFieldsOBJ = {};
 						}}
 					>

@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { createEventDispatcher } from 'svelte';
-	const dispatch = createEventDispatcher();
 	interface Props {
 		title: any;
 		icon: any;

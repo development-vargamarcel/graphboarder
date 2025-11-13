@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { run } from 'svelte/legacy';
 
-	import { createEventDispatcher, each, getContext, setContext } from 'svelte/internal';
+	import { getContext, setContext } from 'svelte';
 	import ActiveArgumentsGroupWraper from '$lib/components/ActiveArgumentsGroupWraper.svelte';
 
 	interface Props {
@@ -11,6 +11,7 @@
 		QMSarguments: any;
 		activeArgumentsDataGrouped_Store: any;
 		QMS_info: any;
+		onUpdateQuery?: () => void;
 	}
 
 	let {
@@ -19,7 +20,8 @@
 		prefix = '',
 		QMSarguments,
 		activeArgumentsDataGrouped_Store = $bindable(),
-		QMS_info = $bindable()
+		QMS_info = $bindable(),
+		onUpdateQuery
 	}: Props = $props();
 
 	const activeArgumentsContext = { stepsOfFieldsThisAppliesTo, isControlPanelChild };
@@ -78,7 +80,7 @@
 <div class="">
 	{#each $activeArgumentsDataGrouped_Store as group}
 		<ActiveArgumentsGroupWraper
-			on:updateQuery={() => {}}
+			{onUpdateQuery}
 			{update_activeArgumentsDataGrouped}
 			{group}
 			argsInfo={QMS_info?.args}

@@ -13,15 +13,13 @@
 	import _ from 'lodash';
 
 	import { stringify } from 'postcss';
-	import { createEventDispatcher, getContext } from 'svelte';
+	import { getContext } from 'svelte';
 	import Modal from '$lib/components/Modal.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	import { Create_activeArgumentsDataGrouped_Store } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
 	import QMSWraper from '$lib/components/QMSWraper.svelte';
 	import { get } from 'svelte/store';
-	import { get_store_value } from 'svelte/internal';
 
-	const dispatch = createEventDispatcher();
 	let { dd_kindsArray, dd_namesArray, dd_displayName, dd_rootName, args } = type;
 	interface Props {
 		canExpand: any;
@@ -133,7 +131,7 @@
 				});
 			}
 
-			$activeArgumentsDataGrouped_Store = get_store_value(
+			$activeArgumentsDataGrouped_Store = get(
 				activeArgumentsQMSWraperContext.activeArgumentsDataGrouped_Store
 			);
 
@@ -312,8 +310,7 @@
 							<Modal
 								modalIdetifier={'activeArgumentsDataModal'}
 								showApplyBtn={false}
-								on:cancel={(e) => {
-									let { detail } = e;
+								onCancel={(detail) => {
 									if (detail.modalIdetifier == 'activeArgumentsDataModal') {
 										showModal = false;
 									}

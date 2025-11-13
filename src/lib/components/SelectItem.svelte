@@ -50,8 +50,6 @@
 			tableColsData_StoreInitialValue={[]}
 		>
 			<ComponentForLayout
-				on:rowClicked
-				on:rowSelectionChange
 				{rowSelectionState}
 				{enableMultiRowSelectionState}
 			/>

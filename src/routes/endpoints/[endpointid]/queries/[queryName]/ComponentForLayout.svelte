@@ -4,12 +4,11 @@
 	import CodeEditor from '$lib/components/fields/CodeEditor.svelte';
 	import AddColumn from './../../../../../lib/components/AddColumn.svelte';
 	import TypeList from './../../../../../lib/components/TypeList.svelte';
+	import Table from '$lib/components/Table.svelte';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
 	import { page } from '$app/stores';
-	import Table from '$lib/components/Table.svelte';
-	const dispatch = createEventDispatcher();
 	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
 	/// if CPContext,QMSWraperContext will be relative to that
 
@@ -34,7 +33,7 @@
 		getRootType,
 		stepsOfFieldsToQueryFragmentObject
 	} from '$lib/utils/usefulFunctions';
-	import { onDestroy, onMount, getContext, createEventDispatcher } from 'svelte';
+	import { onDestroy, onMount, getContext } from 'svelte';
 	import { goto } from '$app/navigation';
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
@@ -220,6 +219,8 @@
 		enableMultiRowSelectionState?: boolean;
 		currentQMS_info?: any;
 		rowSelectionState: any;
+		onRowSelectionChange?: (detail: any) => void;
+		onRowClicked?: (detail: any) => void;
 		children?: import('svelte').Snippet;
 	}
 
@@ -228,6 +229,8 @@
 		enableMultiRowSelectionState = true,
 		currentQMS_info = schemaData.get_QMS_Field(QMSName, 'query', schemaData),
 		rowSelectionState,
+		onRowSelectionChange,
+		onRowClicked,
 		children
 	}: Props = $props();
 
@@ -255,8 +258,7 @@
 		{dd_relatedRoot}
 		{QMSName}
 		{currentQMS_info}
-		on:newColumnAddRequest={(e) => {
-			const tableColData = e.detail;
+		onNewColumnAddRequest={(tableColData) => {
 			console.log('aaaaaaaaa', { tableColData });
 			tableColsData_Store.addColumn(tableColData);
 		}}
@@ -269,8 +271,7 @@
 		{dd_relatedRoot}
 		{QMSName}
 		QMS_info={currentQMS_info}
-		on:newColumnAddRequest={(e) => {
-			const tableColData = e.detail;
+		onNewColumnAddRequest={(tableColData) => {
 			console.log('aaaaaaaaa', { tableColData });
 			tableColsData_Store.addColumn(tableColData);
 		}}
@@ -280,8 +281,7 @@
 			<Modal
 				modalIdetifier={'activeArgumentsDataModal'}
 				showApplyBtn={false}
-				on:cancel={(e) => {
-					let { detail } = e;
+				onCancel={(detail) => {
 					if (detail.modalIdetifier == 'activeArgumentsDataModal') {
 						showModal = false;
 					}
@@ -372,13 +372,10 @@
 		{infiniteHandler}
 		colsData={$tableColsData_Store}
 		{rows}
-		on:addColumnDropdown={() => {
-			//console.log('add column dropdown');
+		onHideColumn={(detail) => {
+			hideColumn({ detail });
 		}}
-		on:hideColumn={(e) => {
-			hideColumn(e);
-		}}
-		on:rowSelectionChange
-		on:rowClicked
+		{onRowSelectionChange}
+		{onRowClicked}
 	/>
 </div>

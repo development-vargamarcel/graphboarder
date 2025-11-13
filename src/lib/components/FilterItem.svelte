@@ -51,15 +51,13 @@
 		chosenInternal = chosen;
 		modalVisible = false;
 	};
-	import { createEventDispatcher } from 'svelte';
-	const dispatch = createEventDispatcher();
 	let applyFilter = () => {
 		if (!shouldToggle) {
 			modalVisible = false;
 			chosen = chosenInternal;
 		}
 		//console.log('filterApplied', { id: id, chosen: chosen, extraData });
-		dispatch('filterApplied', { id: id, chosen: chosen, extraData, choises: choises });
+		onFilterApplied?.({ id: id, chosen: chosen, extraData, choises: choises });
 	};
 
 
@@ -77,6 +75,7 @@
 		defaultMeansNoChange?: boolean;
 		chosen?: any;
 		children?: import('svelte').Snippet;
+		onFilterApplied?: (detail: { id: any; chosen: any; extraData: any; choises: any }) => void;
 	}
 
 	let {
@@ -90,7 +89,8 @@
 		chosenDefault,
 		defaultMeansNoChange = true,
 		chosen = $bindable(chosenDefault ? JSON.parse(JSON.stringify(chosenDefault)) : []),
-		children
+		children,
+		onFilterApplied
 	}: Props = $props();
 	const flipDurationMs = 200;
 	let dragDisabled = $state(true);
@@ -227,7 +227,7 @@
 	{/if}
 </btn>
 {#if modalVisible}
-	<Modal on:apply={applyFilter} on:cancel={hideModal}>
+	<Modal onApply={applyFilter} onCancel={hideModal}>
 		<div class="rounded-box overflow-hidden ">
 			<div class="form-control px-2 mt-2 pt-2">
 				{#if type == 'radio'}

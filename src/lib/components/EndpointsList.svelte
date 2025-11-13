@@ -230,8 +230,7 @@
 			<Modal
 				modalIdetifier={'activeArgumentsDataModal'}
 				showApplyBtn={false}
-				on:cancel={(e) => {
-					let { detail } = e;
+				onCancel={(detail) => {
 					if (detail.modalIdetifier == 'activeArgumentsDataModal') {
 						showModal = false;
 					}

@@ -139,7 +139,7 @@
 						graphqlEndpointURL
 							? 'bg-accent/50'
 							: ''}"
-						on:click={() => {
+						onclick={() => {
 							handleEndpointClick(endpoint);
 						}}
 					>

@@ -173,8 +173,8 @@
 				<CodeEditor
 					rawValue={value}
 					language="graphql"
-					on:changed={(e) => {
-						valueModifiedManually = e.detail.chd_rawValue;
+					onChanged={(detail) => {
+						valueModifiedManually = detail.chd_rawValue;
 					}}
 				/>
 			</div>
