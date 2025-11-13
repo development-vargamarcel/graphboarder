@@ -14,6 +14,13 @@
 		get_nodeFieldsQMS_info,
 		getDeepField
 	} from '$lib/utils/usefulFunctions';
+	import {
+		findReturningColumnsLocation,
+		buildPrefixStepsOfFields,
+		getIdColumnName,
+		getPaginationTypeInfo,
+		mergeColumnData
+	} from '$lib/utils/qmsContextUtils';
 	import type {
 		QMSType as QMSTypeType,
 		FieldWithDerivedData,
@@ -45,13 +52,8 @@
 		QMS_info = schemaData.get_QMS_Field(QMSName, QMSType, schemaData);
 	}
 	const dd_paginationType: string | undefined = QMS_info?.dd_paginationType;
-	let paginationTypeInfo: PaginationTypeInfo | undefined;
-	if (dd_paginationType) {
-		paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData).find((pagType) => {
-			//console.log({ QMS_info }, { dd_paginationType });
-			return pagType.name == dd_paginationType;
-		});
-	}
+	const paginationTypes = get_paginationTypes(endpointInfo, schemaData);
+	let paginationTypeInfo = getPaginationTypeInfo(dd_paginationType, paginationTypes);
 	console.log({ QMSType, QMSName, QMS_info });
 	export let QMSWraperContext: Record<string, unknown> = {};
 	export let activeArgumentsDataGrouped_StoreInitialValue: ActiveArgumentGroup[] | undefined;
@@ -83,34 +85,21 @@
 	// 	schemaData
 	// );
 	console.log({ nodeFieldsQMS_info });
-	let returningColumnsLocationQMS_Info;
-	//!! todo:before getting returningColumnsLocation value,you should check if it is a query or a mutation,and handle it accordingly
-	let returningColumnsLocation;
-	if (QMSType == 'query') {
-		returningColumnsLocation = $endpointInfo.returningColumnsPossibleLocationsInQueriesPerRow.find(
-			(path) => {
-				returningColumnsLocationQMS_Info = getDeepField(
-					nodeFieldsQMS_info,
-					path,
-					schemaData,
-					'fields'
-				);
-				return returningColumnsLocationQMS_Info;
-			}
-		);
-	} else {
-		returningColumnsLocation = $endpointInfo.returningColumnsPossibleLocationsInMutations.find(
-			(path) => {
-				returningColumnsLocationQMS_Info = getDeepField(
-					nodeFieldsQMS_info,
-					path,
-					schemaData,
-					'fields'
-				);
-				return returningColumnsLocationQMS_Info;
-			}
-		);
-	}
+
+	const possibleLocations = QMSType == 'query'
+		? $endpointInfo.returningColumnsPossibleLocationsInQueriesPerRow
+		: $endpointInfo.returningColumnsPossibleLocationsInMutations;
+
+	const returningColumnsResult = findReturningColumnsLocation(
+		nodeFieldsQMS_info,
+		possibleLocations,
+		schemaData,
+		'fields'
+	);
+
+	let returningColumnsLocationQMS_Info = returningColumnsResult?.info;
+	let returningColumnsLocation = returningColumnsResult?.location || [];
+
 	console.log({ returningColumnsLocationQMS_Info, returningColumnsLocation, QMSType });
 	let nodeFieldsQMS_info_Root = schemaData.get_rootType(
 		null,
@@ -118,25 +107,30 @@
 		schemaData
 	);
 
-	let prefixStepsOfFields =
-		QMSType == 'query'
-			? [QMS_info.dd_displayName, ...rowsLocation, ...returningColumnsLocation]
-			: [QMS_info.dd_displayName, ...returningColumnsLocation];
+	let prefixStepsOfFields = buildPrefixStepsOfFields(
+		QMSType,
+		QMS_info.dd_displayName,
+		rowsLocation,
+		returningColumnsLocation
+	);
+
 	let scalarColsData = get_scalarColsData(
 		returningColumnsLocationQMS_Info,
 		prefixStepsOfFields,
 		schemaData
 	);
+
 	const dependencyColsData = paginationTypeInfo?.get_dependencyColsData(
 		QMSName,
 		'query',
 		schemaData
+	) || [];
+
+	tableColsData_StoreInitialValue = mergeColumnData(
+		scalarColsData,
+		tableColsData_StoreInitialValue,
+		dependencyColsData
 	);
-	tableColsData_StoreInitialValue = [
-		...scalarColsData,
-		...tableColsData_StoreInitialValue,
-		...dependencyColsData
-	];
 	console.log({
 		QMSType,
 		QMSName,
@@ -231,10 +225,13 @@
 	const objective = 'getOne';
 	const qmsNameForObjective = endpointInfo.get_qmsNameForObjective(QMS_info, schemaData, objective);
 	console.log({ qmsNameForObjective }, objective);
-	let idColName = endpointInfo.get_idField(
-		returningColumnsLocationQMS_Info || QMS_info,
+
+	let idColName = getIdColumnName(
+		returningColumnsLocationQMS_Info,
+		QMS_info,
+		endpointInfo,
 		schemaData
-	)?.dd_displayName;
+	);
 
 	$: console.log('$paginationState', $paginationState);
 	$: console.log('$paginationState_derived', $paginationState_derived);

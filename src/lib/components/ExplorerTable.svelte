@@ -3,6 +3,7 @@
 	import { createSvelteTable, flexRender, getCoreRowModel } from '@tanstack/svelte-table';
 	import type { ColumnDef, TableOptions } from '@tanstack/table-core/src/types';
 	import { formatData, getTableCellData } from '$lib/utils/usefulFunctions';
+	import { getColumnVisibility, createTableOptions, getColumnFlags } from '$lib/utils/tableUtils';
 	import ColumnInfo from './ColumnInfo.svelte';
 	import { createEventDispatcher, getContext } from 'svelte';
 	const dispatch = createEventDispatcher();
@@ -20,13 +21,6 @@
 	export let columns = [];
 	console.log({ data, columns });
 
-	const getColumnVisibility = (columns) => {
-		let columnVisibility = {};
-		columns.forEach((col) => {
-			col.hidden ? (columnVisibility[col.title] = false) : (columnVisibility[col.title] = true);
-		});
-		return columnVisibility;
-	};
 	let columnVisibility = getColumnVisibility(columns);
 	console.log({ columnVisibility });
 
@@ -52,20 +46,19 @@
 	console.log({ rowSelectionState });
 	export let idColName;
 	export let requiredColNames;
-	const optionsObj = {
-		data: data,
-		columns: columns,
-		getCoreRowModel: getCoreRowModel(),
-		enableMultiRowSelection: enableMultiRowSelectionState,
-		enableRowSelection: enableRowSelectionState,
-		onRowSelectionChange: setRowSelection,
-		enableHiding: true,
-		initialState: { rowSelection: rowSelectionState },
-		state: { columnVisibility, rowSelection: rowSelectionState }
-	};
-	if (idColName) {
-		optionsObj.getRowId = (row) => row?.[idColName];
-	}
+
+	const optionsObj = createTableOptions(
+		data,
+		columns,
+		rowSelectionState,
+		columnVisibility,
+		enableMultiRowSelectionState,
+		enableRowSelectionState,
+		getCoreRowModel,
+		setRowSelection,
+		idColName
+	);
+
 	const options = writable(optionsObj);
 
 	const rerender = () => {
@@ -104,6 +97,7 @@
 					{/if}
 					<th>#</th>
 					{#each headerGroup.headers as header}
+						{@const columnFlags = getColumnFlags(header.column.columnDef.header, idColName, requiredColNames)}
 						<th class="normal-case">
 							<div class="dropdown dropdown-end">
 								<!-- svelte-ignore a11y-label-has-associated-control -->
@@ -111,9 +105,9 @@
 								<label tabindex="0" class="cursor-pointer">
 									<div class="flex space-x-2 hover:text-primary rounded-box">
 										<div
-											class="{idColName == header.column.columnDef.header
+											class="{columnFlags.isIdColumn
 												? ' underline decoration-dotted font-black text-primary'
-												: ''} {requiredColNames == header.column.columnDef.header
+												: ''} {columnFlags.isRequired
 												? ' font-black text-primary'
 												: ''} "
 										>

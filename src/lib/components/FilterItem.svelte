@@ -1,6 +1,13 @@
 <script>
 	import Modal from '$lib/components/Modal.svelte';
 	import { dndzone, SHADOW_ITEM_MARKER_PROPERTY_NAME, SOURCES, TRIGGERS } from 'svelte-dnd-action';
+	import {
+		syncChoiceOrder,
+		getFilterButtonClasses,
+		getFilterDisplayInfo,
+		toggleFilterChoice,
+		createChoisesWithId
+	} from '$lib/utils/filterStateUtils';
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
 	export let extraData;
 	export let id;
@@ -41,21 +48,12 @@
 		} else {
 			//toggle
 			console.log('pre', { chosen });
-
-			if (type == 'radio') {
-				chosen?.length > 0 ? (chosen = undefined) : (chosen = choises[0]);
-				//chosen = [choises[0]];
-			} else {
-				chosen?.length > 0 ? (chosen = undefined) : (chosen = choises);
-			}
-			//chosen.length == 1 ? (chosen = []) : (chosen = choises);
+			chosen = toggleFilterChoice(type, choises, chosen);
 			console.log({ chosen });
 			applyFilter();
 		}
 	};
-	choisesWithId = choises.map((choise) => {
-		return { id: choise, title: choise };
-	});
+	choisesWithId = createChoisesWithId(choises);
 	let hideModal = () => {
 		chosen = chosenPreChange;
 		chosenInternal = chosen;
@@ -88,40 +86,35 @@
 		if (!modalVisible) {
 			chosenInternal = chosen;
 		}
-		if (defaultMeansNoChange && JSON.stringify(chosenDefault) == JSON.stringify(chosen)) {
-			btnExtraClass =
-				'btn-outline btn-neutral bg-primary/10 hover:bg-primary/10 hover:text-base-content ';
-			extraInfoExtraClass = 'border-base-content text-base-content';
-		} else {
-			btnExtraClass = 'btn-primary';
-			extraInfoExtraClass = 'border-primary-content text-primary-content';
-		}
 
-		if (type == 'toggle') {
-			title = chosen;
-		} else {
-			type == 'radio' ? (title = chosen) : (extraInfo = `${chosen.length}`);
-		}
+		const classes = getFilterButtonClasses(chosen, chosenDefault, defaultMeansNoChange, isToggle);
+		btnExtraClass = classes.btnExtraClass;
+		extraInfoExtraClass = classes.extraInfoExtraClass;
+
+		const displayInfo = getFilterDisplayInfo(type, chosen, titlePreChange, isToggle);
+		title = displayInfo.title;
+		extraInfo = displayInfo.extraInfo;
 	} else {
 		//console.log('chosen:', chosen);
 		//console.log('chosenInternal:', chosenInternal);
 		if (!modalVisible) {
 			chosenInternal = chosen;
 		}
-		btnExtraClass =
-			'btn-outline btn-neutral bg-primary/10 hover:bg-primary/10 hover:text-base-content';
+
+		const classes = getFilterButtonClasses(chosen, chosenDefault, defaultMeansNoChange, isToggle);
+		btnExtraClass = classes.btnExtraClass;
+		extraInfoExtraClass = classes.extraInfoExtraClass;
+
 		if (isToggle) {
 			title = titlePreChange;
 		} else if (type == 'radio') {
 			title = titlePreChange;
 		} else {
-			if (defaultMeansNoChange && JSON.stringify(chosenDefault) !== JSON.stringify(chosen)) {
-				btnExtraClass = 'btn-primary';
-				extraInfoExtraClass = 'border-primary-content text-primary-content';
+			const displayInfo = getFilterDisplayInfo(type, chosen, titlePreChange, isToggle);
+			extraInfo = displayInfo.extraInfo;
 
+			if (defaultMeansNoChange && JSON.stringify(chosenDefault) !== JSON.stringify(chosen)) {
 				extraInfo = '0';
-			} else {
-				extraInfo = '';
 			}
 		}
 		if (type !== 'radio') {
@@ -134,14 +127,9 @@
 	let dragDisabled = true;
 
 	const syncOrder = () => {
-		chosenNew = [];
-		choisesNew = [];
-		choisesWithId.forEach((choice) => {
-			if (chosenInternal?.includes(choice.title)) {
-				chosenNew.push(choice.title);
-			}
-			choisesNew.push(choice.title);
-		});
+		const result = syncChoiceOrder(choisesWithId, chosenInternal);
+		chosenNew = result.chosenNew;
+		choisesNew = result.choisesNew;
 		chosenInternal = chosenNew;
 		choises = choisesNew;
 	};
