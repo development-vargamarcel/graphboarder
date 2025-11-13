@@ -1,8 +1,5 @@
 <script lang="ts">
 	import EndpointinfoGeneratorAssistant from './../../../../lib/components/EndpointinfoGeneratorAssistant.svelte';
-	export const prefix = '';
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const schemaData = QMSMainWraperContext?.schemaData; //console.log($schemaData);
 	import Type from '$lib/components/Type.svelte';
 	import Page from '$lib/components/Page.svelte';
 	import { sortingFunctionMutipleColumnsGivenArray } from '$lib/utils/usefulFunctions';
@@ -10,6 +7,11 @@
 	import ExplorerTable from '$lib/components/ExplorerTable.svelte';
 	import TypeList from '$lib/components/TypeList.svelte';
 	import AddColumn from '$lib/components/AddColumn.svelte';
+
+	export const prefix = '';
+
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const schemaData = QMSMainWraperContext?.schemaData; //console.log($schemaData);
 
 	let rootTypes = $schemaData.rootTypes;
 	let queries = $schemaData.queryFields;

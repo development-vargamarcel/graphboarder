@@ -1,16 +1,18 @@
 <script>
+	import { getContext, setContext } from 'svelte';
+	import Arg from '$lib/components/Arg.svelte';
+	import { getQMSWraperCtxDataGivenControlPanelItem } from '$lib/utils/usefulFunctions';
+
 	export let group;
 	export let argsInfo;
 	export let update_activeArgumentsDataGrouped;
 	export let activeArgumentsDataGrouped;
-	let showDescription;
 	export let prefix = '';
-	// notice - fade in works fine but don't add svelte's fade-out (known issue)
-	import { getContext, setContext } from 'svelte';
-	import Arg from '$lib/components/Arg.svelte';
-	import { getQMSWraperCtxDataGivenControlPanelItem } from '$lib/utils/usefulFunctions';
-	let dragDisabled = true;
 	export let node;
+
+	let showDescription;
+	// notice - fade in works fine but don't add svelte's fade-out (known issue)
+	let dragDisabled = true;
 	const hasGroup_argsNode = group.group_argsNode;
 	/////start
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);

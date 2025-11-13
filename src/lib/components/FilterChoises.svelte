@@ -1,4 +1,6 @@
 <script>
+	import { createEventDispatcher } from 'svelte';
+
 	export let id;
 	export let choises = [''];
 	export let title = choises[0];
@@ -6,9 +8,8 @@
 	export let type = 'radio';
 	export let chosenDefault;
 	export let chosen = chosenDefault ? JSON.parse(JSON.stringify(chosenDefault)) : [];
-	choises.length == 1 ? (type = 'toggle') : '';
 
-	import { createEventDispatcher } from 'svelte';
+	choises.length == 1 ? (type = 'toggle') : '';
 	const dispatch = createEventDispatcher();
 	$: if (chosen || !chosen) {
 		dispatch('filterChanged', { id: id, chosen: chosen });

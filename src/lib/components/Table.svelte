@@ -1,7 +1,7 @@
 <script lang="ts">
-	export let prefix = '';
 	import TanTable from './TanTable.svelte';
 
+	export let prefix = '';
 	export let enableMultiRowSelectionState = true;
 	export let colsData = [];
 	export let showCheckBox = false;

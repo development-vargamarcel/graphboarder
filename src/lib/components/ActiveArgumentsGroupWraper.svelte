@@ -1,17 +1,17 @@
 <script>
 	import ActiveArgumentsGroup_addFilterAndSortingButton from '$lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte';
 	import ActiveArgumentsGroup_info from '$lib/components/ActiveArgumentsGroup_info.svelte';
-
 	import ActiveArgumentsGroupNormal from '$lib/components/ActiveArgumentsGroupNormal.svelte';
-	export let group;
-	export let argsInfo;
-	export let update_activeArgumentsDataGrouped;
-	export let activeArgumentsDataGrouped;
 	import { createEventDispatcher, getContext, setContext } from 'svelte';
 	import ActiveArgumentsGroupHasFilterOperators from '$lib/components/ActiveArgumentsGroupHasFilterOperators.svelte';
 	import Toggle from './fields/Toggle.svelte';
 	import { writable } from 'svelte/store';
 	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
+
+	export let group;
+	export let argsInfo;
+	export let update_activeArgumentsDataGrouped;
+	export let activeArgumentsDataGrouped;
 
 	let dragDisabled = true;
 	const dispatch = createEventDispatcher();

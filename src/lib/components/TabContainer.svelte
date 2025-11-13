@@ -3,14 +3,16 @@
 	import TabItem from '$lib/components/TabItem.svelte';
 	import { getQMSLinks } from '$lib/utils/usefulFunctions';
 	import { createEventDispatcher, getContext, onMount } from 'svelte';
+
 	export const prefix = '';
+	export let endpointInfo;
+
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
 	const dispatch = createEventDispatcher();
 	console.log('page', $page);
 	let endpointid = $page.params.endpointid;
 	console.log({ endpointid });
-	export let endpointInfo;
 	let links = [
 		{
 			title: 'Home',
