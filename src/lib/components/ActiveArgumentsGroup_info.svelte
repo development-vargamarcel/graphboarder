@@ -1,10 +1,12 @@
 <script>
 	import { getRootType } from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
+
 	export const prefix = '';
+	export let group;
+
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
-	export let group;
 	let showDescription;
 </script>
 

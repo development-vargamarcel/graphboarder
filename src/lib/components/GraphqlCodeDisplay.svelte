@@ -8,6 +8,9 @@
 	import 'highlight.js/styles/base16/solarized-dark.css';
 	import { getPreciseType, objectToSourceCode } from '$lib/utils/usefulFunctions';
 	import { updateStoresFromAST } from '$lib/utils/astToUIState';
+	import { parse, print, visit } from 'graphql';
+	import JSON5 from 'json5';
+	import CodeMirrorCustom from './fields/CodeMirrorCustom.svelte';
 
 	export let showNonPrettifiedQMSBody;
 	export let value;
@@ -33,10 +36,6 @@
 		hljs.registerLanguage('graphql', graphql);
 		hljs.highlightAll();
 	});
-
-	import { parse, print, visit } from 'graphql';
-	import JSON5 from 'json5';
-	import CodeMirrorCustom from './fields/CodeMirrorCustom.svelte';
 
 	let astAsString = '';
 	let astAsString2 = '';

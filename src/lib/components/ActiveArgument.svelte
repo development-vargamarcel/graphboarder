@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Type from '$lib/components/Type.svelte';
 	import Description from './Description.svelte';
-
 	import { writable } from 'svelte/store';
 	import AutoInterface from '$lib/components/fields/AutoInterface.svelte';
 	import { SHADOW_ITEM_MARKER_PROPERTY_NAME } from 'svelte-dnd-action';
@@ -11,12 +10,6 @@
 		ActiveArgumentGroup,
 		ContainerData
 	} from '$lib/types/index';
-
-	export let setNotInUseIfNotValid: boolean = true;
-	export let setNotInUseIfNotValidAndENUM: boolean = true;
-	export let parentNode: ContainerData | ActiveArgumentData;
-	export let node: ActiveArgumentData | ContainerData;
-	export let prefix: string = '';
 	import Toggle from '$lib/components/fields/Toggle.svelte';
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Modal from './Modal.svelte';
@@ -32,20 +25,27 @@
 	import SelectModal from './SelectModal.svelte';
 	import ExplorerTable from './ExplorerTable.svelte';
 	import SelectedRowsDisplay from './SelectedRowsDisplay.svelte';
-	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
-	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
+
+	export let setNotInUseIfNotValid: boolean = true;
+	export let setNotInUseIfNotValidAndENUM: boolean = true;
+	export let parentNode: ContainerData | ActiveArgumentData;
+	export let node: ActiveArgumentData | ContainerData;
+	export let prefix: string = '';
 	export let isNot: boolean;
-	let dispatch = createEventDispatcher();
 	export let activeArgumentData: ActiveArgumentData;
 	export let group: ActiveArgumentGroup;
 	export let activeArgumentsDataGrouped: ActiveArgumentGroup[];
-	//
 	export let nodes: (ActiveArgumentData | ContainerData)[];
 	export let originalNodes: (ActiveArgumentData | ContainerData)[];
 	export let type: string;
 	export let parentNodeId: string;
 	export let availableOperators: string[];
 	export let startDrag: () => void;
+
+	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
+	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
+	let dispatch = createEventDispatcher();
+	//
 	let idColNameOfSelectedRow: string | undefined;
 	//
 	setContext(

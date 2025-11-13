@@ -1,9 +1,4 @@
 <script>
-	export let prefix = '';
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-
-	const schemaData = QMSMainWraperContext?.schemaData;
 	import {
 		getFields_Grouped,
 		get_scalarColsData,
@@ -11,8 +6,13 @@
 	} from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
 
+	export let prefix = '';
 	export let origin;
 	export let query;
+
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+	const schemaData = QMSMainWraperContext?.schemaData;
 	let queryName = query.name;
 	let queryNameDisplay = queryName;
 	let queryTitleDisplay = '';

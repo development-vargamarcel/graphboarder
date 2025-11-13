@@ -1,12 +1,34 @@
 <script>
-	export let prefix = '';
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-
-	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
 	import { page } from '$app/stores';
 	import Table from '$lib/components/Table.svelte';
+	import {
+		generateTitleFromStepsOfFields,
+		getDataGivenStepsOfFields,
+		getFields_Grouped,
+		getRootType,
+		stringToJs
+	} from '$lib/utils/usefulFunctions';
+	import { onDestroy, onMount, getContext, setContext } from 'svelte';
+	import { goto } from '$app/navigation';
+	import Type from '$lib/components/Type.svelte';
+	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
+	import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
+	import { format } from 'graphql-formatter';
+	import hljs from 'highlight.js/lib/core';
+	import graphql from 'highlight.js/lib/languages/graphql';
+	import 'highlight.js/styles/base16/solarized-dark.css';
+	import RowCount from '$lib/components/UI/rowCount.svelte';
+	import Modal from '$lib/components/Modal.svelte';
+	import { parseAll, stigifyAll } from '$lib/stores/testData/testEndpoints';
+	import MainWraper from './MainWraper.svelte';
+	import Sidebar from './Sidebar.svelte';
+
+	export let prefix = '';
 	export let QMSName;
+
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
 	let queryName = QMSName;
 	const QMSWraperContext = getContext('QMSWraperContext');
 	const {
@@ -19,21 +41,7 @@
 		paginationOptions,
 		paginationState
 	} = QMSWraperContext;
-
-	import {
-		generateTitleFromStepsOfFields,
-		getDataGivenStepsOfFields,
-		getFields_Grouped,
-		getRootType,
-		stringToJs
-	} from '$lib/utils/usefulFunctions';
-	import { onDestroy, onMount, getContext, setContext } from 'svelte';
-	import { goto } from '$app/navigation';
-	import Type from '$lib/components/Type.svelte';
-	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
-
 	const schemaData = QMSMainWraperContext?.schemaData;
-	import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 
 	$: console.log('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
 	onDestroy(() => {
@@ -176,15 +184,6 @@
 	//Active arguments logic
 	let showQMSBody = false;
 	let showNonPrettifiedQMSBody = false;
-	import { format } from 'graphql-formatter';
-	import hljs from 'highlight.js/lib/core';
-	import graphql from 'highlight.js/lib/languages/graphql';
-	import 'highlight.js/styles/base16/solarized-dark.css';
-	import RowCount from '$lib/components/UI/rowCount.svelte';
-	import Modal from '$lib/components/Modal.svelte';
-	import { parseAll, stigifyAll } from '$lib/stores/testData/testEndpoints';
-	import MainWraper from './MainWraper.svelte';
-	import Sidebar from './Sidebar.svelte';
 
 	onMount(() => {
 		hljs.registerLanguage('graphql', graphql);

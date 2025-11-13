@@ -1,17 +1,19 @@
 <script>
 	import ActiveArgument from '$lib/components/ActiveArgument.svelte';
+	import { dndzone, SOURCES, TRIGGERS } from 'svelte-dnd-action';
+	import { flip } from 'svelte/animate';
+	import { createEventDispatcher, getContext, setContext } from 'svelte';
+
 	export let group;
 	export let argsInfo;
 	export let update_activeArgumentsDataGrouped;
 	export let activeArgumentsDataGrouped;
+
 	let showDescription;
 
 	//
 
-	import { dndzone, SOURCES, TRIGGERS } from 'svelte-dnd-action';
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
-	import { flip } from 'svelte/animate';
-	import { createEventDispatcher, getContext, setContext } from 'svelte';
 
 	const flipDurationMs = 200;
 	let dragDisabled = true;

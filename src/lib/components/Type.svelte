@@ -1,21 +1,22 @@
 <script>
-	export const prefix = '';
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
-	const isForExplorer = OutermostQMSWraperContext?.extraInfo?.isForExplorer;
-	const schemaData = QMSMainWraperContext?.schemaData;
 	import { slide } from 'svelte/transition';
-
 	import { getRootType } from '$lib/utils/usefulFunctions';
 	import Arg from '$lib/components/Arg.svelte';
 	import TypeInfoDisplay from '$lib/components/TypeInfoDisplay.svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { getContext } from 'svelte';
+
+	export const prefix = '';
 	export let template;
 	export let index;
 	export let type;
 	export let stepsOfFields;
 	export let isOnMainList = !stepsOfFields;
+
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
+	const isForExplorer = OutermostQMSWraperContext?.extraInfo?.isForExplorer;
+	const schemaData = QMSMainWraperContext?.schemaData;
 	let {
 		dd_kindsArray,
 		dd_namesArray,

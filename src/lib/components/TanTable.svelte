@@ -6,24 +6,23 @@
 	import ColumnInfo from './ColumnInfo.svelte';
 	import { createEventDispatcher, getContext } from 'svelte';
 	import InfiniteLoading from 'svelte-infinite-loading';
-	const dispatch = createEventDispatcher();
+
 	export let prefix = '';
-
-	let loadMore = false;
-
 	export let enableMultiRowSelectionState = true;
 	export let enableRowSelectionState = true;
+	export let infiniteHandler;
+	export let infiniteId;
+	export let data;
+	export let cols = [];
+	export let rowSelectionState = {};
+
+	const dispatch = createEventDispatcher();
+	let loadMore = false;
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	let QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
-
 	let idColName = QMSWraperContext?.idColName;
 	const { paginationOptions } = getContext(`${prefix}QMSWraperContext`);
 
-	export let infiniteHandler;
-	export let infiniteId;
-
-	export let data;
-	export let cols = [];
 	const getColumnVisibility = (cols) => {
 		let columnVisibility = {};
 		cols.forEach((col) => {
@@ -49,7 +48,6 @@
 	$: {
 		columns = getColumns(cols);
 	}
-	export let rowSelectionState = {};
 	const setRowSelection = (updater) => {
 		if (updater instanceof Function) {
 			rowSelectionState = updater(rowSelectionState);

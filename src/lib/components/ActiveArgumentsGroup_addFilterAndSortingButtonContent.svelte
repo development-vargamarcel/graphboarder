@@ -1,15 +1,6 @@
 <script>
 	import Type from '$lib/components/Type.svelte';
-	export let group;
-	export let argsInfo;
-	export let activeArgumentsDataGrouped;
-	export let node;
-	export let prefix = '';
-	export let parent_inputFields;
-	const groupName = group.group_name;
 	import Description from './Description.svelte';
-
-	// notice - fade in works fine but don't add svelte's fade-out (known issue)
 	import { getContext, setContext } from 'svelte';
 	import Arg from '$lib/components/Arg.svelte';
 	import {
@@ -18,6 +9,16 @@
 	} from '$lib/utils/usefulFunctions';
 	import { add_activeArgumentOrContainerTo_activeArgumentsDataGrouped } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
 	import ManyToAllSelectInterfaceDefinition from './ManyToAllSelectInterfaceDefinition.svelte';
+
+	export let group;
+	export let argsInfo;
+	export let activeArgumentsDataGrouped;
+	export let node;
+	export let prefix = '';
+	export let parent_inputFields;
+
+	const groupName = group.group_name;
+	// notice - fade in works fine but don't add svelte's fade-out (known issue)
 	let dragDisabled = true;
 	const hasGroup_argsNode = group.group_argsNode;
 	const mainContainerOperator = group.group_argsNode?.mainContainer?.operator;

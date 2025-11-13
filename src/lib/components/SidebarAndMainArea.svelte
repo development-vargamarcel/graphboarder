@@ -1,9 +1,10 @@
 <script>
 	import { clickOutside } from '$lib/actions/clickOutside';
-
 	import Page from '$lib/Page.svelte';
-	let forceVisibleSidebar = false;
+
 	export let title;
+
+	let forceVisibleSidebar = false;
 </script>
 
 <div class="flex w-full">

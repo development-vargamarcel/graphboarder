@@ -6,9 +6,13 @@
 	import { createEventDispatcher, getContext } from 'svelte';
 
 	export let displayInterface;
-	let inputEl;
 	export let rawValue;
 	export let dispatchValue;
+
+	let inputEl;
+	const dispatch = createEventDispatcher();
+	const mutationVersion = getContext('mutationVersion');
+
 	if (!rawValue && dispatchValue) {
 		if (displayInterface != 'number') {
 			rawValue = dispatchValue;
@@ -17,10 +21,8 @@
 		}
 	}
 	console.log('rawValue', rawValue, 'chd_dispatchValue', dispatchValue);
-	const dispatch = createEventDispatcher();
 
 	//let castAs //most of the times as string
-	const mutationVersion = getContext('mutationVersion');
 </script>
 
 <input

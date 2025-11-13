@@ -3,9 +3,11 @@
 	import { detectSwipe } from '$lib/actions/detectSwipe';
 	import { sineOut, sineIn } from 'svelte/easing';
 	import { portal } from 'svelte-portal';
+	import { createEventDispatcher, onMount } from 'svelte';
+
 	export let modalIdetifier = 'modal';
 	export let showApplyBtn = true;
-	import { createEventDispatcher, onMount } from 'svelte';
+
 	const dispatch = createEventDispatcher();
 	let apply = () => {
 		dispatch('apply');

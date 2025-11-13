@@ -1,20 +1,21 @@
 <script>
 	//!!! ENUM TYPES WILL CREATE SOM PROBLEMS AS OF 5/6/2022
 	import { fade, fly, slide } from 'svelte/transition';
-	export const prefix = '';
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const schemaData = QMSMainWraperContext?.schemaData;
 	import { getRootType } from '$lib/utils/usefulFunctions';
 	import ArgInfoDisplay from '$lib/components/ArgInfoDisplay.svelte';
 	import { circIn, expoIn, expoOut } from 'svelte/easing';
 	import { getContext } from 'svelte';
 
+	export const prefix = '';
 	export let index;
 	export let type;
 	export let template;
 	export let predefinedFirstSteps; //is actually group_name
 	export let stepsOfFields = [];
 	export let groupName;
+
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const schemaData = QMSMainWraperContext?.schemaData;
 
 	console.log({ type });
 	console.log({ predefinedFirstSteps });

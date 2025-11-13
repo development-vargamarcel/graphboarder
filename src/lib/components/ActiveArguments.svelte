@@ -1,18 +1,28 @@
 <script lang="ts">
-	export let isControlPanelChild;
-	export let stepsOfFieldsThisAppliesTo;
-	const activeArgumentsContext = { stepsOfFieldsThisAppliesTo, isControlPanelChild };
 	import { createEventDispatcher, each, getContext, setContext } from 'svelte/internal';
 	import ActiveArgumentsGroupWraper from '$lib/components/ActiveArgumentsGroupWraper.svelte';
+
+	export let isControlPanelChild;
+	export let stepsOfFieldsThisAppliesTo;
 	export let prefix = '';
+	export let QMSarguments;
+	export let activeArgumentsDataGrouped_Store;
+	export let QMS_info;
+
+	const activeArgumentsContext = { stepsOfFieldsThisAppliesTo, isControlPanelChild };
 	setContext(`${prefix}activeArgumentsContext`, activeArgumentsContext);
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
 	let QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
-	export let QMSarguments;
-	export let activeArgumentsDataGrouped_Store = QMSWraperContext.activeArgumentsDataGrouped_Store;
-	export let QMS_info = QMSWraperContext.QMS_info;
+
+	// Set defaults if not provided
+	if (!activeArgumentsDataGrouped_Store) {
+		activeArgumentsDataGrouped_Store = QMSWraperContext.activeArgumentsDataGrouped_Store;
+	}
+	if (!QMS_info) {
+		QMS_info = QMSWraperContext.QMS_info;
+	}
 
 	let activeArgumentsDataGrouped = [];
 
