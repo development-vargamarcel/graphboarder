@@ -6,9 +6,9 @@
 		geojson_transformerREVERSE
 	} from '$lib/utils/dataStructureTransformers';
 	import * as mapboxglOriginal from 'mapbox-gl';
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	let mapboxgl = mapboxglOriginal;
-	let { containerEl, dispatchValue, rawValue = $bindable() } = $props();
+	let { containerEl, dispatchValue, rawValue = $bindable(), onChanged } = $props();
 	if (!rawValue && dispatchValue) {
 		rawValue = geojson_transformerREVERSE(dispatchValue);
 	}
@@ -21,7 +21,6 @@
 	//s
 	let map = $state();
 	let mapContainer = $state();
-	let dispatch = createEventDispatcher();
 	let draw = $state();
 	let location;
 	onMount(() => {
@@ -94,7 +93,7 @@
 				center: Object.values(map.transform._center),
 				zoom: map.transform._zoom
 			};
-			dispatch('changed', {
+			onChanged?.({
 				// chd_dispatchValue: geojson_transformer(dataCopy),
 				chd_rawValue: dataCopy
 			});

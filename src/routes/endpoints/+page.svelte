@@ -39,9 +39,9 @@
 	let endpointsToShow = $state('local');
 	let selectedRows = $state([]);
 
-	const HandleRowSelectionChange = (e) => {
-		console.log(e);
-		selectedRows = e.detail.rows.map((row) => row.original);
+	const HandleRowSelectionChange = (detail) => {
+		console.log(detail);
+		selectedRows = detail.rows.map((row) => row.original);
 	};
 	const deleteSelectedEndpoint = () => {
 		localStorageEndpoints.set(
@@ -58,26 +58,26 @@
 {#if endpointsToShow == 'local'}
 	<div class="mx-auto pl-4 pt-4 h-[50vh] ">
 		<ExplorerTable
-			on:rowClicked={(e) => {
+			onRowClicked={(detail) => {
 				if (browser) {
 					window.open(
-						`${page.url.origin}/endpoints/localEndpoint--${e.detail.id}`,
+						`${page.url.origin}/endpoints/localEndpoint--${detail.id}`,
 						'_blank' // <- This is what makes it open in a new window.
 					);
-					//	window.location = `${page.url.origin}/endpoints/${e.detail.id}`;
+					//	window.location = `${page.url.origin}/endpoints/${detail.id}`;
 				}
-				//goto(`${page.url.origin}/endpoints/${e.detail.id}`);
+				//goto(`${page.url.origin}/endpoints/${detail.id}`);
 			}}
 			enableMultiRowSelectionState={false}
 			data={getSortedAndOrderedEndpoints(localEndpoints, true)}
 			{columns}
-			on:rowSelectionChange={(e) => {}}
+			onRowSelectionChange={(detail) => {}}
 		/>
 	</div>
 {/if}
 {#if endpointsToShow == 'localstorage'}
 	{#if showAddEndpoint}
-		<AddEndpointToLocalStorage on:hide={() => (showAddEndpoint = false)} />
+		<AddEndpointToLocalStorage onHide={() => (showAddEndpoint = false)} />
 	{/if}
 	{#if selectedRows.length > 0}
 		<button class="btn btn-sm btn-warning" onclick={deleteSelectedEndpoint}
@@ -87,21 +87,20 @@
 	<div class="mx-auto pl-4 pt-4 h-[50vh] ">
 		{#key $localStorageEndpoints}
 			<ExplorerTable
-				on:rowSelectionChange={HandleRowSelectionChange}
-				on:rowClicked={(e) => {
+				onRowSelectionChange={HandleRowSelectionChange}
+				onRowClicked={(detail) => {
 					if (browser) {
 						window.open(
-							`${page.url.origin}/endpoints/localstorageEndpoint--${e.detail.id}`,
+							`${page.url.origin}/endpoints/localstorageEndpoint--${detail.id}`,
 							'_blank' // <- This is what makes it open in a new window.
 						);
-						//	window.location = `${page.url.origin}/endpoints/${e.detail.id}`;
+						//	window.location = `${page.url.origin}/endpoints/${detail.id}`;
 					}
-					//goto(`${page.url.origin}/endpoints/${e.detail.id}`);
+					//goto(`${page.url.origin}/endpoints/${detail.id}`);
 				}}
 				enableMultiRowSelectionState
 				data={$localStorageEndpoints}
 				{columns}
-				on:rowSelectionChange={(e) => {}}
 			/>
 		{/key}
 	</div>

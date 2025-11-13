@@ -2,9 +2,7 @@
 	import { run } from 'svelte/legacy';
 
 	import FilterItem from '$lib/components/FilterItem.svelte';
-	import { createEventDispatcher } from 'svelte';
 
-	let dispatch = createEventDispatcher();
 	let detail;
 	let inputEl;
 	interface Props {
@@ -20,6 +18,7 @@
 		chosenInputField: any;
 		rawValue?: string;
 		isINPUT_OBJECT?: boolean;
+		onChanged?: (detail: any) => void;
 	}
 
 	let {
@@ -34,7 +33,8 @@
 		extraData,
 		chosenInputField = $bindable(),
 		rawValue = '',
-		isINPUT_OBJECT = $bindable(false)
+		isINPUT_OBJECT = $bindable(false),
+		onChanged
 	}: Props = $props();
 	// if (typeof chosen == 'string') {
 	// 	chosen = [chosen];
@@ -54,8 +54,7 @@
 		{type}
 		{chosenDefault}
 		{chosen}
-		on:filterApplied={(e) => {
-			let { detail } = e;
+		onFilterApplied={(detail) => {
 			chosenInputField = detail.extraData.inputFields?.filter((el) => {
 				return el.dd_displayName == detail.chosen;
 			})[0];
@@ -70,7 +69,7 @@
 				isINPUT_OBJECT,
 				chosenInputField
 			};
-			dispatch('changed', dispatchObject);
+			onChanged?.(dispatchObject);
 		}}
 	/>
 	<div></div>

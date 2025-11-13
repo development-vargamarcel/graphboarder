@@ -8,14 +8,28 @@
 	import { getContext } from 'svelte';
 
 	export const prefix = '';
+
+	interface Props {
+		index: any;
+		type: any;
+		template: string;
+		predefinedFirstSteps: any;
+		stepsOfFields?: any;
+		groupName: any;
+		onArgAddRequest?: (detail: any) => void;
+		onContainerAddRequest?: (detail: any) => void;
+	}
+
 	let {
 		index,
 		type,
 		template,
 		predefinedFirstSteps,
 		stepsOfFields = $bindable([]),
-		groupName
-	} = $props();
+		groupName,
+		onArgAddRequest,
+		onContainerAddRequest
+	}: Props = $props();
 
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
@@ -66,8 +80,6 @@
 		: ''}"
 >
 	<ArgInfoDisplay
-		on:radioClick
-		on:checkboxClick
 		{predefinedFirstSteps}
 		{template}
 		{expand}
@@ -76,8 +88,8 @@
 		{type}
 		{stepsOfFields}
 		{groupName}
-		on:argAddRequest
-		on:containerAddRequest
+		{onArgAddRequest}
+		{onContainerAddRequest}
 	/>
 
 	{#if showExpand}
@@ -98,8 +110,8 @@
 							{stepsOfFields}
 							predefinedFirstSteps={[]}
 							{groupName}
-							on:argAddRequest
-							on:containerAddRequest
+							{onArgAddRequest}
+							{onContainerAddRequest}
 						/>
 					</div>
 				{/each}

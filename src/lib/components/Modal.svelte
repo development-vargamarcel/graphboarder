@@ -5,22 +5,24 @@
 	import { detectSwipe } from '$lib/actions/detectSwipe';
 	import { sineOut, sineIn } from 'svelte/easing';
 	import { portal } from 'svelte-portal';
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 
 	interface Props {
 		modalIdetifier?: string;
 		showApplyBtn?: boolean;
 		children?: import('svelte').Snippet;
+		onApply?: () => void;
+		onMounted?: (detail: { modalIdetifier: string }) => void;
+		onCancel?: (detail: { modalIdetifier: string }) => void;
 	}
 
-	let { modalIdetifier = 'modal', showApplyBtn = true, children }: Props = $props();
+	let { modalIdetifier = 'modal', showApplyBtn = true, children, onApply, onMounted, onCancel }: Props = $props();
 
-	const dispatch = createEventDispatcher();
 	let apply = () => {
-		dispatch('apply');
+		onApply?.();
 	};
 	onMount(() => {
-		dispatch('mounted', { modalIdetifier });
+		onMounted?.({ modalIdetifier });
 	});
 	let mainDivIntroEnd = $state(false);
 	let bodyDivIntroEnd = $state(false);
@@ -29,7 +31,7 @@
 		const parent = e.target.parentNode;
 		let targetId = e.target?.id;
 		//console.log('modalIdetifiertargetId', modalIdetifier == targetId);
-		dispatch('cancel', { modalIdetifier: targetId });
+		onCancel?.({ modalIdetifier: targetId });
 	};
 
 	let mainDiv = $state();
@@ -55,14 +57,14 @@
 	out:fade|global={{ delay: 0, duration: 50 }}
 	onintroend={() => (mainDivIntroEnd = true)}
 	onclick={self(stopPropagation(preventDefault(() => {
-		dispatch('cancel', { modalIdetifier });
+		onCancel?.({ modalIdetifier });
 	})))}
 >
 	{#if mainDivIntroEnd}
 		<div
 			class="    py-80"
 			onclick={self(stopPropagation(preventDefault(() => {
-				dispatch('cancel', { modalIdetifier });
+				onCancel?.({ modalIdetifier });
 			})))}
 		></div>
 

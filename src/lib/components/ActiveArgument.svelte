@@ -6,7 +6,7 @@
 	import { writable } from 'svelte/store';
 	import AutoInterface from '$lib/components/fields/AutoInterface.svelte';
 	import { SHADOW_ITEM_MARKER_PROPERTY_NAME } from 'svelte-dnd-action';
-	import { createEventDispatcher, getContext, setContext } from 'svelte';
+	import { getContext, setContext } from 'svelte';
 	import type {
 		ActiveArgumentData,
 		ActiveArgumentGroup,
@@ -44,6 +44,12 @@
 		parentNodeId: string;
 		availableOperators: string[];
 		startDrag: () => void;
+		onChanged?: (detail: any) => void;
+		onInUseChanged?: () => void;
+		onContextmenuUsed?: () => void;
+		onUpdateQuery?: () => void;
+		onDeleteSubNode?: (detail: { id: string }) => void;
+		onChildrenStartDrag?: () => void;
 	}
 
 	let {
@@ -61,12 +67,17 @@
 		type,
 		parentNodeId,
 		availableOperators,
-		startDrag
+		startDrag,
+		onChanged,
+		onInUseChanged,
+		onContextmenuUsed,
+		onUpdateQuery,
+		onDeleteSubNode,
+		onChildrenStartDrag
 	}: Props = $props();
 
 	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
 	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
-	let dispatch = createEventDispatcher();
 	//
 	let idColNameOfSelectedRow: string | undefined;
 	//
@@ -162,7 +173,7 @@
 		} else if (setNotInUseIfNotValid && isInUse && !isValid) {
 			inUse_set(false);
 		}
-		dispatch('changed', detail);
+		onChanged?.(detail);
 		console.log('activeArgumentsDataGrouped_Store', $activeArgumentsDataGrouped_Store);
 		updateActiveArgument();
 		//finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
@@ -198,7 +209,7 @@
 		activeArgumentData.inUse = inUse;
 		updateActiveArgument();
 
-		dispatch('inUseChanged');
+		onInUseChanged?.();
 		//finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 	};
 	const inUse_toggle = (): void => {
@@ -229,16 +240,16 @@
 </script>
 
 <SelectModal
-	on:deleteSubNode={(e) => {
-		deleteItem(e);
+	onDeleteSubNode={(detail) => {
+		deleteItem({ detail });
 		//
-		//console.log(e.detail.id, node);
+		//console.log(detail.id, node);
 	}}
 	bind:showSelectModal
-	on:updateQuery
+	{onUpdateQuery}
 	bind:nodes
-	on:changed
-	on:childrenStartDrag={startDrag}
+	{onChanged}
+	onChildrenStartDrag={startDrag}
 	{originalNodes}
 	{type}
 	{node}
@@ -250,7 +261,7 @@
 {#if showModal}
 	<Modal
 		showApplyBtn={false}
-		on:cancel={() => {
+		onCancel={() => {
 			showModal = false;
 		}}
 	>
@@ -278,7 +289,7 @@
 								class="toggle toggle-sm"
 								bind:checked={isNot}
 								onchange={() => {
-									dispatch('contextmenuUsed');
+									onContextmenuUsed?.();
 								}}
 							/>
 						</label>
@@ -320,8 +331,8 @@
 				<AutoInterface
 					alwaysOn_interfacePicker
 					typeInfo={activeArgumentData}
-					on:changed={(e) => {
-						handleChanged(e.detail);
+					onChanged={(detail) => {
+						handleChanged(detail);
 					}}
 				/>
 			</div>
@@ -433,8 +444,8 @@
 					<div class="pl-1">
 						<AutoInterface
 							typeInfo={activeArgumentData}
-							on:changed={(e) => {
-								handleChanged(e.detail);
+							onChanged={(detail) => {
+								handleChanged(detail);
 							}}
 						/>
 					</div>

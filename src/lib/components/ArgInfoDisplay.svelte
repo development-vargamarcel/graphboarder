@@ -4,9 +4,21 @@
 		generateContainerData
 	} from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
 	import { getRootType } from '$lib/utils/usefulFunctions';
-	import { createEventDispatcher, getContext } from 'svelte';
-	const dispatch = createEventDispatcher();
+	import { getContext } from 'svelte';
 	console.log({ type });
+
+	interface Props {
+		expand: any;
+		showExpand: any;
+		index: any;
+		type: any;
+		template: string;
+		stepsOfFields?: any;
+		predefinedFirstSteps?: any;
+		groupName?: any;
+		onArgAddRequest?: (detail: any) => void;
+		onContainerAddRequest?: (detail: any) => void;
+	}
 
 	let {
 		expand,
@@ -16,8 +28,10 @@
 		template,
 		stepsOfFields = $bindable(),
 		predefinedFirstSteps,
-		groupName
-	} = $props();
+		groupName,
+		onArgAddRequest,
+		onContainerAddRequest
+	}: Props = $props();
 	if (stepsOfFields.length == 0 && predefinedFirstSteps) {
 		stepsOfFields = [...predefinedFirstSteps];
 	}
@@ -37,10 +51,10 @@
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
 	const addFilter = () => {
-		dispatch('argAddRequest', generateArgData(stepsOfFields, type, schemaData));
+		onArgAddRequest?.(generateArgData(stepsOfFields, type, schemaData));
 	};
 	const addContainer = () => {
-		dispatch('containerAddRequest', generateContainerData(stepsOfFields, type));
+		onContainerAddRequest?.(generateContainerData(stepsOfFields, type));
 	};
 </script>
 

@@ -2,13 +2,14 @@
 	import ActiveArgument from '$lib/components/ActiveArgument.svelte';
 	import { dndzone, SOURCES, TRIGGERS } from 'svelte-dnd-action';
 	import { flip } from 'svelte/animate';
-	import { createEventDispatcher, getContext, setContext } from 'svelte';
+	import { getContext, setContext } from 'svelte';
 
 	let {
 		group = $bindable(),
 		argsInfo,
 		update_activeArgumentsDataGrouped,
-		activeArgumentsDataGrouped
+		activeArgumentsDataGrouped,
+		onUpdateQuery
 	} = $props();
 
 	let showDescription;
@@ -19,7 +20,6 @@
 
 	const flipDurationMs = 200;
 	let dragDisabled = $state(true);
-	const dispatch = createEventDispatcher();
 	function handleSort(e) {
 		group.group_args = e.detail.items;
 		//console.log('choisesWithId', group.group_args);
@@ -52,7 +52,7 @@
 		if (source === SOURCES.POINTER) {
 			dragDisabled = true;
 		}
-		dispatch('updateQuery');
+		onUpdateQuery?.();
 	}
 	function startDrag(e) {
 		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
@@ -112,9 +112,9 @@
 				}}
 			>
 				<ActiveArgument
-					on:updateQuery
-					on:inUseChanged={() => {
-						dispatch('updateQuery');
+					{onUpdateQuery}
+					onInUseChanged={() => {
+						onUpdateQuery?.();
 					}}
 					{activeArgumentData}
 					{group}

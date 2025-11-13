@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { run } from 'svelte/legacy';
 
-	import { createEventDispatcher } from 'svelte';
-
 	interface Props {
 		id: any;
 		choises?: any;
@@ -11,6 +9,7 @@
 		type?: string;
 		chosenDefault: any;
 		chosen?: any;
+		onFilterChanged?: (detail: { id: any; chosen: any }) => void;
 	}
 
 	let {
@@ -20,14 +19,14 @@
 		modalTitle = title,
 		type = $bindable('radio'),
 		chosenDefault,
-		chosen = $bindable(chosenDefault ? JSON.parse(JSON.stringify(chosenDefault)) : [])
+		chosen = $bindable(chosenDefault ? JSON.parse(JSON.stringify(chosenDefault)) : []),
+		onFilterChanged
 	}: Props = $props();
 
 	choises.length == 1 ? (type = 'toggle') : '';
-	const dispatch = createEventDispatcher();
 	run(() => {
 		if (chosen || !chosen) {
-			dispatch('filterChanged', { id: id, chosen: chosen });
+			onFilterChanged?.({ id: id, chosen: chosen });
 			//console.log('filterChanged');
 		}
 	});

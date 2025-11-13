@@ -9,11 +9,10 @@
 	import Map from '$lib/components/fields/Map.svelte';
 	import Toggle from '$lib/components/fields/Toggle.svelte';
 	import CodeEditor from '$lib/components/fields/CodeEditor.svelte';
-	import { createEventDispatcher, getContext } from 'svelte';
+	import { getContext } from 'svelte';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	import InterfacePicker from './InterfacePicker.svelte';
-	const dispatch = createEventDispatcher();
 	const choosenDisplayInterface = getContext('choosenDisplayInterface');
 
 	let typeExtraData = $state(endpointInfo.get_typeExtraData(typeInfo));
@@ -23,6 +22,7 @@
 		alwaysOn_interfacePicker?: boolean;
 		dispatchValue: any;
 		rawValue?: any;
+		onChanged?: (detail: any) => void;
 	}
 
 	let {
@@ -30,7 +30,8 @@
 		typeInfo = $bindable(),
 		alwaysOn_interfacePicker = false,
 		dispatchValue = $bindable(),
-		rawValue = $bindable(typeExtraData?.defaultValue)
+		rawValue = $bindable(typeExtraData?.defaultValue),
+		onChanged
 	}: Props = $props();
 
 	run(() => {
@@ -66,12 +67,11 @@
 			componentToRender = null;
 		}
 	});
-	const onChangeHandler = (e) => {
-		let { detail } = e;
+	const onChangeHandler = (detail) => {
 		if (detail.chd_rawValue != undefined) {
 			detail.chd_dispatchValue = typeExtraData.use_transformer(detail.chd_rawValue);
 		}
-		dispatch('changed', detail);
+		onChanged?.(detail);
 	};
 </script>
 
@@ -79,8 +79,8 @@
 	<InterfacePicker
 		{typeInfo}
 		chosen={$choosenDisplayInterface}
-		on:interfaceChosen={(e) => {
-			$choosenDisplayInterface = e.detail.chosen;
+		onInterfaceChosen={(detail) => {
+			$choosenDisplayInterface = detail.chosen;
 		}}
 	/>
 {/if}
@@ -92,8 +92,6 @@
 		{rawValue}
 		{dispatchValue}
 		displayInterface={$choosenDisplayInterface}
-		on:changed={(e) => {
-			onChangeHandler(e);
-		}}
+		onChanged={onChangeHandler}
 	/>
 {/if}
