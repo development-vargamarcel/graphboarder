@@ -1,17 +1,15 @@
-<script>
+<script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import Interface from '$lib/components/fields/Interface.svelte';
 
 	let inputEl;
-	export let rawValue = [];
-	export let dispatchValue = [];
-	export let typeInfo;
+	let { rawValue = [], dispatchValue = [], typeInfo } = $props();
 
 	const dispatch = createEventDispatcher();
 
-	let elements = rawValue.map((el, i) => {
+	let elements = $state(rawValue.map((el, i) => {
 		return { chd_rawValue: el, chd_dispatchValue: dispatchValue[i] };
-	});
+	}));
 	console.log(elements);
 	const add = () => {
 		elements.push({ chd_rawValue: null });
@@ -58,12 +56,12 @@
 			/>
 			<button
 				class="btn btn-xs btn-danger"
-				on:click={(e) => {
+				onclick={(e) => {
 					// element.chd_rawValue=element
 					del(element.chd_rawValue);
-				}}><i class="bi bi-trash3-fill" /></button
+				}}><i class="bi bi-trash3-fill"></i></button
 			>
 		</div>
 	{/each}
-	<button class="btn btn-xs btn-primary w-full" on:click={add}>add</button>
+	<button class="btn btn-xs btn-primary w-full" onclick={add}>add</button>
 </div>

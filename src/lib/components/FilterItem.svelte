@@ -1,4 +1,6 @@
-<script>
+<script lang="ts">
+	import { run, preventDefault, stopPropagation } from 'svelte/legacy';
+
 	import Modal from '$lib/components/Modal.svelte';
 	import { dndzone, SHADOW_ITEM_MARKER_PROPERTY_NAME, SOURCES, TRIGGERS } from 'svelte-dnd-action';
 	import {
@@ -8,35 +10,25 @@
 		toggleFilterChoice,
 		createChoisesWithId
 	} from '$lib/utils/filterStateUtils';
-	// notice - fade in works fine but don't add svelte's fade-out (known issue)
-	export let extraData;
-	export let id;
-	export let choises = [''];
-	export let title = choises[0];
-	export let modalTitle = title;
-	export let type = 'radio';
-	export let size = 'xs';
-	export let chosenDefault;
-	export let defaultMeansNoChange = true;
-	export let chosen = chosenDefault ? JSON.parse(JSON.stringify(chosenDefault)) : [];
+	
 	console.log({ chosen });
 
-	let chosenInternal = JSON.parse(JSON.stringify(chosen));
-	let extraInfo = '';
-	let extraInfoExtraClass = '';
-	let btnExtraClass;
-	let titlePreChange = title;
-	let isToggle = false;
+	let chosenInternal = $state(JSON.parse(JSON.stringify(chosen)));
+	let extraInfo = $state('');
+	let extraInfoExtraClass = $state('');
+	let btnExtraClass = $state();
+	let titlePreChange = $state(title);
+	let isToggle = $state(false);
 	if (choises.length == 1) {
 		isToggle = true;
 	}
 	//choises.length == 1 ? (type = 'toggle') : '';
 	let reorder = false;
 	let chosenPreChange;
-	let modalVisible = false;
+	let modalVisible = $state(false);
 	let chosenNew = [];
 	let choisesNew = [];
-	let choisesWithId;
+	let choisesWithId = $state();
 	let shouldToggle = choises.length == 1;
 	let showModalOrToggle = () => {
 		//		if (choises.length > 1) {
@@ -69,62 +61,39 @@
 		//console.log('filterApplied', { id: id, chosen: chosen, extraData });
 		dispatch('filterApplied', { id: id, chosen: chosen, extraData, choises: choises });
 	};
-	$: if (title) {
-		if (type == 'toggle') {
-			title = chosen;
-		} else {
-			type == 'radio' ? (title = chosen) : (extraInfo = `${chosen?.length}`);
-		}
-	}
 
-	$: if (chosen?.length > 0) {
-		if (type !== 'radio') {
-			syncOrder();
-		}
-		//console.log('chosen:', chosen);
-		//console.log('chosenInternal:', chosenInternal);
-		if (!modalVisible) {
-			chosenInternal = chosen;
-		}
-
-		const classes = getFilterButtonClasses(chosen, chosenDefault, defaultMeansNoChange, isToggle);
-		btnExtraClass = classes.btnExtraClass;
-		extraInfoExtraClass = classes.extraInfoExtraClass;
-
-		const displayInfo = getFilterDisplayInfo(type, chosen, titlePreChange, isToggle);
-		title = displayInfo.title;
-		extraInfo = displayInfo.extraInfo;
-	} else {
-		//console.log('chosen:', chosen);
-		//console.log('chosenInternal:', chosenInternal);
-		if (!modalVisible) {
-			chosenInternal = chosen;
-		}
-
-		const classes = getFilterButtonClasses(chosen, chosenDefault, defaultMeansNoChange, isToggle);
-		btnExtraClass = classes.btnExtraClass;
-		extraInfoExtraClass = classes.extraInfoExtraClass;
-
-		if (isToggle) {
-			title = titlePreChange;
-		} else if (type == 'radio') {
-			title = titlePreChange;
-		} else {
-			const displayInfo = getFilterDisplayInfo(type, chosen, titlePreChange, isToggle);
-			extraInfo = displayInfo.extraInfo;
-
-			if (defaultMeansNoChange && JSON.stringify(chosenDefault) !== JSON.stringify(chosen)) {
-				extraInfo = '0';
-			}
-		}
-		if (type !== 'radio') {
-			syncOrder();
-		}
-	}
 
 	import { flip } from 'svelte/animate';
+	interface Props {
+		// notice - fade in works fine but don't add svelte's fade-out (known issue)
+		extraData: any;
+		id: any;
+		choises?: any;
+		title?: any;
+		modalTitle?: any;
+		type?: string;
+		size?: string;
+		chosenDefault: any;
+		defaultMeansNoChange?: boolean;
+		chosen?: any;
+		children?: import('svelte').Snippet;
+	}
+
+	let {
+		extraData,
+		id,
+		choises = $bindable(['']),
+		title = $bindable(choises[0]),
+		modalTitle = title,
+		type = 'radio',
+		size = 'xs',
+		chosenDefault,
+		defaultMeansNoChange = true,
+		chosen = $bindable(chosenDefault ? JSON.parse(JSON.stringify(chosenDefault)) : []),
+		children
+	}: Props = $props();
 	const flipDurationMs = 200;
-	let dragDisabled = true;
+	let dragDisabled = $state(true);
 
 	const syncOrder = () => {
 		const result = syncChoiceOrder(choisesWithId, chosenInternal);
@@ -177,12 +146,67 @@
 		if ((e.key === 'Enter' || e.key === ' ') && dragDisabled) dragDisabled = false;
 	}
 	//
+	run(() => {
+		if (title) {
+			if (type == 'toggle') {
+				title = chosen;
+			} else {
+				type == 'radio' ? (title = chosen) : (extraInfo = `${chosen?.length}`);
+			}
+		}
+	});
+	run(() => {
+		if (chosen?.length > 0) {
+			if (type !== 'radio') {
+				syncOrder();
+			}
+			//console.log('chosen:', chosen);
+			//console.log('chosenInternal:', chosenInternal);
+			if (!modalVisible) {
+				chosenInternal = chosen;
+			}
+
+			const classes = getFilterButtonClasses(chosen, chosenDefault, defaultMeansNoChange, isToggle);
+			btnExtraClass = classes.btnExtraClass;
+			extraInfoExtraClass = classes.extraInfoExtraClass;
+
+			const displayInfo = getFilterDisplayInfo(type, chosen, titlePreChange, isToggle);
+			title = displayInfo.title;
+			extraInfo = displayInfo.extraInfo;
+		} else {
+			//console.log('chosen:', chosen);
+			//console.log('chosenInternal:', chosenInternal);
+			if (!modalVisible) {
+				chosenInternal = chosen;
+			}
+
+			const classes = getFilterButtonClasses(chosen, chosenDefault, defaultMeansNoChange, isToggle);
+			btnExtraClass = classes.btnExtraClass;
+			extraInfoExtraClass = classes.extraInfoExtraClass;
+
+			if (isToggle) {
+				title = titlePreChange;
+			} else if (type == 'radio') {
+				title = titlePreChange;
+			} else {
+				const displayInfo = getFilterDisplayInfo(type, chosen, titlePreChange, isToggle);
+				extraInfo = displayInfo.extraInfo;
+
+				if (defaultMeansNoChange && JSON.stringify(chosenDefault) !== JSON.stringify(chosen)) {
+					extraInfo = '0';
+				}
+			}
+			if (type !== 'radio') {
+				syncOrder();
+			}
+		}
+	});
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
 <btn
 	class="btn  btn-{size} {btnExtraClass}  flex  w-full normal-case"
-	on:click|stopPropagation|preventDefault|capture={showModalOrToggle}
+	onclickcapture={stopPropagation(preventDefault(showModalOrToggle))}
 >
 	{isToggle ? choises[0] : title}
 
@@ -193,13 +217,13 @@
 			<p class=" mx-auto pt-[1px] my-0 p-0 text-xs leading-3 text-primary-content">
 				{extraInfo}
 			</p>
-			<p />
-			<i class="bi bi-chevron-down  mx-auto pt-[1px] my-0 p-0 text-xs leading-3" />
+			<p></p>
+			<i class="bi bi-chevron-down  mx-auto pt-[1px] my-0 p-0 text-xs leading-3"></i>
 		</div>
 	{/if}
 
 	{#if !isToggle && !extraInfo}
-		<i class="bi bi-chevron-down ml-2 text-xs" />
+		<i class="bi bi-chevron-down ml-2 text-xs"></i>
 	{/if}
 </btn>
 {#if modalVisible}
@@ -236,31 +260,31 @@
 							flipDurationMs,
 							transformDraggedElement
 						}}
-						on:consider={handleSort}
-						on:finalize={handleSort}
+						onconsider={handleSort}
+						onfinalize={handleSort}
 						class="rounded-box"
 					>
 						{#each choisesWithId as choice (choice.id)}
 							<div animate:flip={{ duration: flipDurationMs }} class="relative flex">
-								<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+								<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 								<div
 									tabindex={dragDisabled ? 0 : -1}
 									aria-label="drag-handle"
 									class="bi bi-grip-vertical pt-3 px-2"
 									style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
-									on:mousedown={startDrag}
-									on:touchstart={startDrag}
-									on:keydown={handleKeyDown}
-								/>
+									onmousedown={startDrag}
+									ontouchstart={startDrag}
+									onkeydown={handleKeyDown}
+								></div>
 								<div
 									class="w-full"
-									on:mousedown={() => {
+									onmousedown={() => {
 										dragDisabled = true;
 									}}
-									on:touchstart={() => {
+									ontouchstart={() => {
 										dragDisabled = true;
 									}}
-									on:keydown={() => {
+									onkeydown={() => {
 										dragDisabled = true;
 									}}
 								>
@@ -293,12 +317,12 @@
 								{#if choice[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
 									<div
 										class="ml-8 rounded-box mx-2 py-5 border-dotted  border-accent/20 border-2 text-primary absolute w-11/12   top-0 left-0 visible"
-									/>
+									></div>
 								{/if}
 							</div>
 						{/each}
 					</ul>
-					<div class="flex space-x-2 pr-2 mt-10" />
+					<div class="flex space-x-2 pr-2 mt-10"></div>
 				{/if}
 			</div>
 			<div class="alert alert-info shadow-lg py-2 mt-2 text-md  ">
@@ -316,7 +340,7 @@
 						/></svg
 					>
 					<div>
-						<slot />
+						{@render children?.()}
 					</div>
 				</div>
 			</div>

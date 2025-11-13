@@ -1,11 +1,13 @@
-<script>
+<script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { page } from '$app/stores';
 	import TabItem from '$lib/components/TabItem.svelte';
 	import { getQMSLinks } from '$lib/utils/usefulFunctions';
 	import { createEventDispatcher, getContext, onMount } from 'svelte';
 
 	export const prefix = '';
-	export let endpointInfo;
+	let { endpointInfo } = $props();
 
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
@@ -72,10 +74,12 @@
 		get_itemsToShow();
 	});
 
-	$: if ($page.url.pathname) {
-		get_itemsToShow();
-	}
-	let itemsToShow = [];
+	run(() => {
+		if ($page.url.pathname) {
+			get_itemsToShow();
+		}
+	});
+	let itemsToShow = $state([]);
 </script>
 
 <div class="flex h-screen overscroll-contain">
@@ -87,7 +91,7 @@
 		</div>
 		<ul
 			class="flex h-full w-16xxx flex-col  justify-start border-t-[1px] border-base-content border-opacity-5 bg-base-300   pt-1 pb-[25vh] overscroll-contain"
-			on:click={() => {
+			onclick={() => {
 				// if (itemsToShow.length == 0) {
 				// 	dispatch('hideSidebar');
 				// }
@@ -111,7 +115,7 @@
 			<div class="h-[50px] bg-accent">{''}</div>
 			<ul
 				class="space-y-1 px-4 py-4 h-full overflow-y-auto  w-[60vw] md:w-full   overflow-x-auto  bg-base-100  grow pb-[25vh] overscroll-contain"
-				on:click={() => {
+				onclick={() => {
 					dispatch('hideSidebar');
 				}}
 			>
@@ -133,10 +137,10 @@
 
 	<div
 		class="w-[100vw] h-screen  md:hidden "
-		on:click={() => {
+		onclick={() => {
 			dispatch('hideSidebar');
 		}}
-	/>
+	></div>
 </div>
 
 <style>

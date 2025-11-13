@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import {
 		getFields_Grouped,
 		get_scalarColsData,
@@ -6,15 +6,19 @@
 	} from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
 
-	export let prefix = '';
-	export let origin;
-	export let query;
+	interface Props {
+		prefix?: string;
+		origin: any;
+		query: any;
+	}
+
+	let { prefix = '', origin, query }: Props = $props();
 
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
 	let queryName = query.name;
-	let queryNameDisplay = queryName;
+	let queryNameDisplay = $state(queryName);
 	let queryTitleDisplay = '';
 	//let { scalarFields, non_scalarFields } = getFields_Grouped(currentQueryFromRootTypes);
 	let currentQMS_info = schemaData.get_QMS_Field(queryName, 'query', schemaData);

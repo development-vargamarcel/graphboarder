@@ -1,25 +1,37 @@
-<script>
+<script lang="ts">
 	import { getContext, setContext } from 'svelte';
 
 	import ControlPanelItem from './ControlPanelItem.svelte';
-	export let type;
-	export let prefix = '';
-	export let column_stepsOfFields;
-	export let addColumnFromInput;
-	export let dd_relatedRoot;
-	export let QMSName;
-	export let currentQMS_info;
+	interface Props {
+		type: any;
+		prefix?: string;
+		column_stepsOfFields: any;
+		addColumnFromInput: any;
+		dd_relatedRoot: any;
+		QMSName: any;
+		currentQMS_info: any;
+	}
+
+	let {
+		type,
+		prefix = '',
+		column_stepsOfFields,
+		addColumnFromInput,
+		dd_relatedRoot,
+		QMSName,
+		currentQMS_info
+	}: Props = $props();
 	const QMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	const { mergedChildren_controlPanel_Store } = QMSWraperContext;
 
-	let showControlPanel = false;
+	let showControlPanel = $state(false);
 	const controlPanelContext = {};
 	setContext(`${prefix}controlPanelContext`, controlPanelContext);
 </script>
 
 <button
 	class="btn btn-xs w-full"
-	on:click={() => {
+	onclick={() => {
 		showControlPanel = !showControlPanel;
 	}}
 >

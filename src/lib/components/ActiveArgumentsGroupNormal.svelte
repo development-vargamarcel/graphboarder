@@ -1,13 +1,15 @@
-<script>
+<script lang="ts">
 	import ActiveArgument from '$lib/components/ActiveArgument.svelte';
 	import { dndzone, SOURCES, TRIGGERS } from 'svelte-dnd-action';
 	import { flip } from 'svelte/animate';
 	import { createEventDispatcher, getContext, setContext } from 'svelte';
 
-	export let group;
-	export let argsInfo;
-	export let update_activeArgumentsDataGrouped;
-	export let activeArgumentsDataGrouped;
+	let {
+		group = $bindable(),
+		argsInfo,
+		update_activeArgumentsDataGrouped,
+		activeArgumentsDataGrouped
+	} = $props();
 
 	let showDescription;
 
@@ -16,7 +18,7 @@
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
 
 	const flipDurationMs = 200;
-	let dragDisabled = true;
+	let dragDisabled = $state(true);
 	const dispatch = createEventDispatcher();
 	function handleSort(e) {
 		group.group_args = e.detail.items;
@@ -76,36 +78,36 @@
 		transformDraggedElement,
 		type: group.group_name
 	}}
-	on:consider={handleConsider}
-	on:finalize={handleFinalize}
+	onconsider={handleConsider}
+	onfinalize={handleFinalize}
 	class=" pt-2 pr-2 rounded-box"
 >
 	{#each group.group_args as activeArgumentData (activeArgumentData.id)}
 		<div animate:flip={{ duration: flipDurationMs }} class="relative flex">
 			{#if $dndIsOn}
 				<div class="grid   content-center  rounded-full ">
-					<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+					<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 					<div
 						tabindex={dragDisabled ? 0 : -1}
 						aria-label="drag-handle"
 						class="bi bi-grip-vertical ml-2  -mr-1"
 						style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
-						on:mousedown={startDrag}
-						on:touchstart={startDrag}
-						on:keydown={handleKeyDown}
-					/>
+						onmousedown={startDrag}
+						ontouchstart={startDrag}
+						onkeydown={handleKeyDown}
+					></div>
 				</div>
 			{/if}
 
 			<div
 				class="w-full "
-				on:mousedown={() => {
+				onmousedown={() => {
 					dragDisabled = true;
 				}}
-				on:touchstart={() => {
+				ontouchstart={() => {
 					dragDisabled = true;
 				}}
-				on:keydown={() => {
+				onkeydown={() => {
 					dragDisabled = true;
 				}}
 			>

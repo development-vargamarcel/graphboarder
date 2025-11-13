@@ -1,13 +1,18 @@
-<script>
+<script lang="ts">
 	import QMSWraper from '$lib/components/QMSWraper.svelte';
 	import ComponentForLayout from './ComponentForLayout.svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
 
-	let queryName = $page.params.queryName;
+	let { children }: Props = $props();
+
+	let queryName = page.params.queryName;
 	console.log(queryName);
 </script>
 
-<slot />
+{@render children?.()}
 <QMSWraper isOutermostQMSWraper={true} QMSName={queryName}>
 	<ComponentForLayout />
 </QMSWraper>

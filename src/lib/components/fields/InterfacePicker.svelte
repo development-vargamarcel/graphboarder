@@ -1,11 +1,15 @@
-<script>
+<script lang="ts">
 	import { createEventDispatcher, getContext } from 'svelte';
 	import FilterItem from '$lib/components/FilterItem.svelte';
 	import { getRootType } from '$lib/utils/usefulFunctions';
 	const dispatch = createEventDispatcher();
-	export let prefix = '';
-	export let chosen;
-	export let typeInfo;
+	interface Props {
+		prefix?: string;
+		chosen: any;
+		typeInfo: any;
+	}
+
+	let { prefix = '', chosen, typeInfo }: Props = $props();
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const possible_displayInterfaces = $endpointInfo.typesExtraDataPossibilities.map(
@@ -17,7 +21,7 @@
 	const rootType = getRootType(null, typeInfo.dd_rootName, schemaData);
 </script>
 
-<div class="w-full" />
+<div class="w-full"></div>
 <FilterItem
 	title="pick an interface"
 	choises={possible_displayInterfaces.filter((displayInterface) => {

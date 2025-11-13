@@ -1,15 +1,13 @@
-<script>
+<script lang="ts">
 	import {
 		string_transformer,
 		string_transformerREVERSE
 	} from '$lib/utils/dataStructureTransformers';
 	import { createEventDispatcher, getContext } from 'svelte';
 
-	export let displayInterface;
-	export let rawValue;
-	export let dispatchValue;
+	let { displayInterface, rawValue = $bindable(), dispatchValue } = $props();
 
-	let inputEl;
+	let inputEl = $state();
 	const dispatch = createEventDispatcher();
 	const mutationVersion = getContext('mutationVersion');
 
@@ -30,7 +28,7 @@
 	class="input input-primary  {$mutationVersion ? 'input-md' : 'input-xs'} mb-[1px] w-full  mr-2 "
 	bind:this={inputEl}
 	value={rawValue}
-	on:change={() => {
+	onchange={() => {
 		rawValue = inputEl.value;
 
 		if (displayInterface == 'number' && rawValue == '') {

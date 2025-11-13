@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run, stopPropagation } from 'svelte/legacy';
+
 	import { writable } from 'svelte/store';
 	import { createSvelteTable, flexRender, getCoreRowModel } from '@tanstack/svelte-table';
 	import type { ColumnDef, TableOptions } from '@tanstack/table-core/src/types';
@@ -7,24 +9,16 @@
 	import ColumnInfo from './ColumnInfo.svelte';
 	import { createEventDispatcher, getContext } from 'svelte';
 	const dispatch = createEventDispatcher();
-	export let prefix = '';
 
 	let loadMore = false;
 
-	export let enableMultiRowSelectionState = true;
-	export let enableRowSelectionState = true;
 
-	export let infiniteHandler;
-	export let infiniteId;
 
-	export let data = [];
-	export let columns = [];
 	console.log({ data, columns });
 
 	let columnVisibility = getColumnVisibility(columns);
 	console.log({ columnVisibility });
 
-	export let rowSelectionState = {};
 	const setRowSelection = (updater) => {
 		if (updater instanceof Function) {
 			rowSelectionState = updater(rowSelectionState);
@@ -44,8 +38,31 @@
 	};
 
 	console.log({ rowSelectionState });
-	export let idColName;
-	export let requiredColNames;
+	interface Props {
+		prefix?: string;
+		enableMultiRowSelectionState?: boolean;
+		enableRowSelectionState?: boolean;
+		infiniteHandler: any;
+		infiniteId: any;
+		data?: any;
+		columns?: any;
+		rowSelectionState?: any;
+		idColName: any;
+		requiredColNames: any;
+	}
+
+	let {
+		prefix = '',
+		enableMultiRowSelectionState = true,
+		enableRowSelectionState = true,
+		infiniteHandler,
+		infiniteId,
+		data = [],
+		columns = [],
+		rowSelectionState = $bindable({}),
+		idColName,
+		requiredColNames
+	}: Props = $props();
 
 	const optionsObj = createTableOptions(
 		data,
@@ -68,11 +85,15 @@
 		}));
 	};
 	const table = createSvelteTable(options);
-	$: if (data) {
-		console.log({ data }, 'data changed');
-		rerender();
-	}
-	$: console.log({ table }, '$table', $table);
+	run(() => {
+		if (data) {
+			console.log({ data }, 'data changed');
+			rerender();
+		}
+	});
+	run(() => {
+		console.log({ table }, '$table', $table);
+	});
 </script>
 
 <div
@@ -88,7 +109,7 @@
 								<input
 									type="checkbox"
 									class="checkbox"
-									on:click={() => {
+									onclick={() => {
 										$table.toggleAllRowsSelected();
 									}}
 								/>
@@ -100,8 +121,8 @@
 						{@const columnFlags = getColumnFlags(header.column.columnDef.header, idColName, requiredColNames)}
 						<th class="normal-case">
 							<div class="dropdown dropdown-end">
-								<!-- svelte-ignore a11y-label-has-associated-control -->
-								<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+								<!-- svelte-ignore a11y_label_has_associated_control -->
+								<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 								<label tabindex="0" class="cursor-pointer">
 									<div class="flex space-x-2 hover:text-primary rounded-box">
 										<div
@@ -112,15 +133,15 @@
 												: ''} "
 										>
 											{#if !header.isPlaceholder}
-												<svelte:component
-													this={flexRender(header.column.columnDef.header, header.getContext())}
+												{@const SvelteComponent = flexRender(header.column.columnDef.header, header.getContext())}
+												<SvelteComponent
 												/>
 											{/if}
 										</div>
-										<div class="bi bi-chevron-down" />
+										<div class="bi bi-chevron-down"></div>
 									</div>
 								</label>
-								<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+								<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 								<div
 									tabindex="0"
 									class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl"
@@ -134,10 +155,10 @@
 											>
 												<!-- {columnsData[index].stepsOfFields.join(' > ')} -->
 											</div>
-											<!-- svelte-ignore a11y-click-events-have-key-events -->
+											<!-- svelte-ignore a11y_click_events_have_key_events -->
 											<div
 												class="w-full pr-2 hover:text-primary cursor-pointer"
-												on:click={() => {
+												onclick={() => {
 													dispatch('hideColumn', { column: header.column.columnDef.header });
 												}}
 											>
@@ -156,20 +177,20 @@
 			{#each $table.getRowModel().rows as row, i (row.id)}
 				<tr
 					class="bg-base-100 hover:bg-base-300 cursor-pointer hover z-0"
-					on:click={() => {
+					onclick={() => {
 						dispatch('rowClicked', row.original);
 						//goto(`${$page.url.origin}/queries/${$page.params.queryName}/${row.id}`);
 					}}
 				>
 					{#if enableRowSelectionState}
-						<th class="z-0" on:click|stopPropagation={() => {}}>
+						<th class="z-0" onclick={stopPropagation(() => {})}>
 							<label>
 								<input
 									checked={row.getIsSelected()}
 									name="rows"
 									type={row.getCanMultiSelect() ? 'checkbox' : 'radio'}
 									class={row.getCanMultiSelect() ? 'checkbox' : 'radio'}
-									on:change={(e) => {
+									onchange={(e) => {
 										const toggleSelectedHandler = row.getToggleSelectedHandler();
 										toggleSelectedHandler(e);
 
@@ -193,5 +214,5 @@
 		</tbody>
 	</table>
 
-	<div class="h-4" />
+	<div class="h-4"></div>
 </div>

@@ -1,4 +1,6 @@
-<script>
+<script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { stringify } from 'postcss';
 	import CodeEditor from './fields/CodeEditor.svelte';
 	import { format } from 'graphql-formatter';
@@ -12,17 +14,26 @@
 	import JSON5 from 'json5';
 	import CodeMirrorCustom from './fields/CodeMirrorCustom.svelte';
 
-	export let showNonPrettifiedQMSBody;
-	export let value;
-	export let enableSyncToUI = true;
-	export let prefix = '';
+	interface Props {
+		showNonPrettifiedQMSBody: any;
+		value: any;
+		enableSyncToUI?: boolean;
+		prefix?: string;
+	}
 
-	let valueModifiedManually;
-	let lastSyncedValue = value;
+	let {
+		showNonPrettifiedQMSBody = $bindable(),
+		value,
+		enableSyncToUI = true,
+		prefix = ''
+	}: Props = $props();
+
+	let valueModifiedManually = $state();
+	let lastSyncedValue = $state(value);
 
 	// Try to get context if available
-	let QMSWraperContext;
-	let QMSMainWraperContext;
+	let QMSWraperContext = $state();
+	let QMSMainWraperContext = $state();
 	let currentQMS_info;
 
 	try {
@@ -37,42 +48,13 @@
 		hljs.highlightAll();
 	});
 
-	let astAsString = '';
+	let astAsString = $state('');
 	let astAsString2 = '';
-	let ast;
-	let astPrinted;
+	let ast = $state();
+	let astPrinted = $state();
 
-	$: ast = parse(value);
-	$: if (ast) {
-		// Extract operation type and name
-		//const operationType = ast.definitions[0]?.operation;
-		//const operationName = ast.definitions[0]?.name?.value;
 
-		astPrinted = print(ast);
-	}
 
-	$: {
-		if (valueModifiedManually && valueModifiedManually !== lastSyncedValue) {
-			try {
-				ast = parse(valueModifiedManually);
-
-				// Sync to UI if enabled and context is available
-				if (enableSyncToUI && QMSWraperContext && QMSMainWraperContext) {
-					syncQueryToUI(ast);
-					lastSyncedValue = valueModifiedManually;
-				}
-			} catch (e) {
-				console.error('Error parsing manually modified query:', e);
-			}
-		}
-	}
-
-	$: if (getPreciseType(ast) == 'object') {
-		//console.log('qqqwww', value, ast, astAsString);
-		astAsString = JSON5.stringify(ast);
-		//astAsString2 = objectToSourceCode(ast);
-		//console.log('qqqwww2', value, ast, astAsString);
-	}
 
 	///
 	const visitAst = () => {
@@ -138,6 +120,41 @@
 		}
 	};
 	///
+	run(() => {
+		ast = parse(value);
+	});
+	run(() => {
+		if (valueModifiedManually && valueModifiedManually !== lastSyncedValue) {
+			try {
+				ast = parse(valueModifiedManually);
+
+				// Sync to UI if enabled and context is available
+				if (enableSyncToUI && QMSWraperContext && QMSMainWraperContext) {
+					syncQueryToUI(ast);
+					lastSyncedValue = valueModifiedManually;
+				}
+			} catch (e) {
+				console.error('Error parsing manually modified query:', e);
+			}
+		}
+	});
+	run(() => {
+		if (ast) {
+			// Extract operation type and name
+			//const operationType = ast.definitions[0]?.operation;
+			//const operationName = ast.definitions[0]?.name?.value;
+
+			astPrinted = print(ast);
+		}
+	});
+	run(() => {
+		if (getPreciseType(ast) == 'object') {
+			//console.log('qqqwww', value, ast, astAsString);
+			astAsString = JSON5.stringify(ast);
+			//astAsString2 = objectToSourceCode(ast);
+			//console.log('qqqwww2', value, ast, astAsString);
+		}
+	});
 </script>
 
 <div class="mockup-code bg-base text-content my-1 mx-2 px-2 ">
@@ -165,7 +182,7 @@
 				<!-- <CodeMirrorCustom value={`const ast:${astAsString}`} language="typescript" /> -->
 
 				<CodeEditor rawValue={astAsString} language="javascript" />
-				<button class="btn btn-xs btn-primary" on:click={visitAst}> visit ast </button>
+				<button class="btn btn-xs btn-primary" onclick={visitAst}> visit ast </button>
 			</div>
 			{#if astPrinted}
 				<div class="mx-4 mt-2 ">
@@ -177,7 +194,7 @@
 	</div>
 	<button
 		class="btn btn-xs btn-accent mx-atuo absolute top-3 right-4 normal-case"
-		on:click={() => {
+		onclick={() => {
 			showNonPrettifiedQMSBody = !showNonPrettifiedQMSBody;
 		}}
 	>

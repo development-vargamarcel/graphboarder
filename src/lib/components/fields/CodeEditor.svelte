@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { onMount, createEventDispatcher, getContext } from 'svelte';
 	import CodeMirror from 'svelte-codemirror-editor';
 	import { javascript } from '@codemirror/lang-javascript';
@@ -14,15 +16,24 @@
 	import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
 	import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
 
-	export let language: string = 'javascript';
-	export let rawValue: string = '{}';
-	export let value: string = '';
-	export let displayInterface: string;
+	interface Props {
+		language?: string;
+		rawValue?: string;
+		value?: string;
+		displayInterface: string;
+	}
+
+	let {
+		language = 'javascript',
+		rawValue = '{}',
+		value = $bindable(''),
+		displayInterface
+	}: Props = $props();
 
 	const dispatch = createEventDispatcher();
 	const mutationVersion = getContext('mutationVersion');
-	let divEl: HTMLDivElement = null;
-	let editor: monaco.editor.IStandaloneCodeEditor;
+	let divEl: HTMLDivElement = $state(null);
+	let editor: monaco.editor.IStandaloneCodeEditor = $state();
 	let Monaco: any;
 	let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -87,10 +98,6 @@
 
 	onMount(initializeEditor);
 
-	$: {
-		editor?.setValue(language === 'javascript' ? `const data = ${rawValue || '{}'}` : rawValue);
-		prettify();
-	}
 
 	const configurations = [
 		{
@@ -136,7 +143,7 @@
 		}
 	};
 
-	let mainContainerEl: HTMLDivElement;
+	let mainContainerEl: HTMLDivElement = $state();
 
 	document.addEventListener('fullscreenchange', function (e) {
 		if (document.fullscreenElement) {
@@ -157,6 +164,10 @@
 		);
 	};
 	const id = generateId();
+	run(() => {
+		editor?.setValue(language === 'javascript' ? `const data = ${rawValue || '{}'}` : rawValue);
+		prettify();
+	});
 </script>
 
 <div
@@ -165,12 +176,12 @@
 	bind:this={mainContainerEl}
 >
 	<div class="h-full rounded-box overflow-auto">
-		<div bind:this={divEl} class="h-full " />
+		<div bind:this={divEl} class="h-full "></div>
 	</div>
 	<div class="flex flex-row-reverse w-full overflow-x-auto overflow-y-hidden px-10 pb-4 pt-2">
 		<button
 			class="btn btn-primary btn-xs normal-case ml-2"
-			on:click={() => {
+			onclick={() => {
 				const editorValue = editor.getValue();
 				const firstCurlyBraces = editorValue.indexOf('{');
 				const lastCurlyBraces = editorValue.lastIndexOf('}');
@@ -184,7 +195,7 @@
 		</button>
 		<button
 			class="btn btn-primary btn-xs normal-case ml-2"
-			on:click={() => {
+			onclick={() => {
 				editor.setValue(`const data = ${configurationAsString}`);
 			}}
 		>
@@ -192,7 +203,7 @@
 		</button>
 		<button
 			class="btn btn-primary btn-xs normal-case ml-2"
-			on:click={() => {
+			onclick={() => {
 				document.exitFullscreen();
 			}}
 		>
@@ -200,7 +211,7 @@
 		</button>
 		<button
 			class="btn btn-primary btn-xs normal-case ml-2"
-			on:click={() => {
+			onclick={() => {
 				mainContainerEl.requestFullscreen();
 				editor.dispose();
 				setTimeout(initializeEditor, 500);
@@ -208,6 +219,6 @@
 		>
 			Full Screen
 		</button>
-		<button class="btn btn-xs btn-primary" on:click={prettify}>Format</button>
+		<button class="btn btn-xs btn-primary" onclick={prettify}>Format</button>
 	</div>
 </div>

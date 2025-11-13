@@ -1,14 +1,21 @@
-<script context="module" lang="ts">
+<script module lang="ts">
 	export const prerender = true;
 </script>
 
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { endpointsSchemaData } from '$lib/stores/testData/endpointsSchemaData';
 	import { createClient, fetchExchange } from '@urql/core';
 	import { browser } from '$app/environment';
 	import {  queryStore,gql,getContextClient  } from '@urql/svelte';
 	import { getContext } from 'svelte';
-	export let prefix = '';
+	interface Props {
+		prefix?: string;
+		children?: import('svelte').Snippet;
+	}
+
+	let { prefix = '', children }: Props = $props();
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
@@ -128,8 +135,10 @@
 	let mutations = [];
 	let schema = {};
 	let sortingInputValue = '';
-	let sortingArray = [];
-	$: sortingArray = sortingInputValue.split(' ');
+	let sortingArray = $state([]);
+	run(() => {
+		sortingArray = sortingInputValue.split(' ');
+	});
 	$schemaData = {};
 	$schemaData.isReady = false;
 	const handleData = () => {
@@ -140,22 +149,26 @@
 		schemaData.set_fields(endpointInfo);
 		console.log('schemaData', $schemaData);
 	};
-	$:console.log({$queryStoreRes})
-	$: if (!$queryStoreRes.fetching) {
-		if ($queryStoreRes?.data) {
-			console.log($queryStoreRes?.data);
-			handleData();
-		} else if ($queryStoreRes?.error) {
-			console.log($queryStoreRes?.error);
-		} else {
-			console.log('no data');
+	run(() => {
+		console.log({$queryStoreRes})
+	});
+	run(() => {
+		if (!$queryStoreRes.fetching) {
+			if ($queryStoreRes?.data) {
+				console.log($queryStoreRes?.data);
+				handleData();
+			} else if ($queryStoreRes?.error) {
+				console.log($queryStoreRes?.error);
+			} else {
+				console.log('no data');
+			}
 		}
-	}
+	});
 </script>
 
 {#if ($queryStoreRes?.data || storedSchemaData) && $schemaData.isReady}
 	<!-- content here -->
-	<slot><!-- optional fallback --></slot>
+	{#if children}{@render children()}{:else}<!-- optional fallback -->{/if}
 {/if}
 {#if $queryStoreRes?.error}
 	<!-- The button to open modal -->

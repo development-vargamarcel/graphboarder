@@ -4,7 +4,7 @@
 	import { localEndpoints } from '$lib/stores/testData/testEndpoints';
 	import { string_transformer } from '$lib/utils/dataStructureTransformers';
 	import ExplorerTable from '$lib/components/ExplorerTable.svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { browser } from '$app/environment';
 	import AddEndpointToLocalStorage from '$lib/components/addEndpointToLocalStorage.svelte';
 	import { stringToJs } from '$lib/utils/usefulFunctions';
@@ -35,9 +35,9 @@
 		}
 	];
 
-	let showAddEndpoint = false;
-	let endpointsToShow = 'local';
-	let selectedRows = [];
+	let showAddEndpoint = $state(false);
+	let endpointsToShow = $state('local');
+	let selectedRows = $state([]);
 
 	const HandleRowSelectionChange = (e) => {
 		console.log(e);
@@ -61,12 +61,12 @@
 			on:rowClicked={(e) => {
 				if (browser) {
 					window.open(
-						`${$page.url.origin}/endpoints/localEndpoint--${e.detail.id}`,
+						`${page.url.origin}/endpoints/localEndpoint--${e.detail.id}`,
 						'_blank' // <- This is what makes it open in a new window.
 					);
-					//	window.location = `${$page.url.origin}/endpoints/${e.detail.id}`;
+					//	window.location = `${page.url.origin}/endpoints/${e.detail.id}`;
 				}
-				//goto(`${$page.url.origin}/endpoints/${e.detail.id}`);
+				//goto(`${page.url.origin}/endpoints/${e.detail.id}`);
 			}}
 			enableMultiRowSelectionState={false}
 			data={getSortedAndOrderedEndpoints(localEndpoints, true)}
@@ -80,7 +80,7 @@
 		<AddEndpointToLocalStorage on:hide={() => (showAddEndpoint = false)} />
 	{/if}
 	{#if selectedRows.length > 0}
-		<button class="btn btn-sm btn-warning" on:click={deleteSelectedEndpoint}
+		<button class="btn btn-sm btn-warning" onclick={deleteSelectedEndpoint}
 			>delete selected rows</button
 		>
 	{/if}
@@ -91,12 +91,12 @@
 				on:rowClicked={(e) => {
 					if (browser) {
 						window.open(
-							`${$page.url.origin}/endpoints/localstorageEndpoint--${e.detail.id}`,
+							`${page.url.origin}/endpoints/localstorageEndpoint--${e.detail.id}`,
 							'_blank' // <- This is what makes it open in a new window.
 						);
-						//	window.location = `${$page.url.origin}/endpoints/${e.detail.id}`;
+						//	window.location = `${page.url.origin}/endpoints/${e.detail.id}`;
 					}
-					//goto(`${$page.url.origin}/endpoints/${e.detail.id}`);
+					//goto(`${page.url.origin}/endpoints/${e.detail.id}`);
 				}}
 				enableMultiRowSelectionState
 				data={$localStorageEndpoints}
@@ -141,7 +141,7 @@
 <div class="fixed bottom-1 right-1 flex space-x-2">
 	<button
 		class="btn btn-xs"
-		on:click={() => {
+		onclick={() => {
 			endpointsToShow = 'local';
 		}}
 	>
@@ -150,7 +150,7 @@
 	<div class="flex">
 		<button
 			class="btn btn-xs"
-			on:click={() => {
+			onclick={() => {
 				endpointsToShow = 'localstorage';
 			}}
 		>
@@ -158,7 +158,7 @@
 		</button>
 		<button
 			class="btn btn-xs"
-			on:click={() => {
+			onclick={() => {
 				endpointsToShow = 'localstorage';
 				showAddEndpoint = true;
 			}}
@@ -168,7 +168,7 @@
 	</div>
 	<button
 		class="btn btn-xs"
-		on:click={() => {
+		onclick={() => {
 			endpointsToShow = 'remote';
 		}}
 	>

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run, stopPropagation, self, preventDefault } from 'svelte/legacy';
+
 	import Type from '$lib/components/Type.svelte';
 	import Description from './Description.svelte';
 	import { writable } from 'svelte/store';
@@ -26,21 +28,41 @@
 	import ExplorerTable from './ExplorerTable.svelte';
 	import SelectedRowsDisplay from './SelectedRowsDisplay.svelte';
 
-	export let setNotInUseIfNotValid: boolean = true;
-	export let setNotInUseIfNotValidAndENUM: boolean = true;
-	export let parentNode: ContainerData | ActiveArgumentData;
-	export let node: ActiveArgumentData | ContainerData;
-	export let prefix: string = '';
-	export let isNot: boolean;
-	export let activeArgumentData: ActiveArgumentData;
-	export let group: ActiveArgumentGroup;
-	export let activeArgumentsDataGrouped: ActiveArgumentGroup[];
-	export let nodes: (ActiveArgumentData | ContainerData)[];
-	export let originalNodes: (ActiveArgumentData | ContainerData)[];
-	export let type: string;
-	export let parentNodeId: string;
-	export let availableOperators: string[];
-	export let startDrag: () => void;
+	interface Props {
+		setNotInUseIfNotValid?: boolean;
+		setNotInUseIfNotValidAndENUM?: boolean;
+		parentNode: ContainerData | ActiveArgumentData;
+		node: ActiveArgumentData | ContainerData;
+		prefix?: string;
+		isNot: boolean;
+		activeArgumentData: ActiveArgumentData;
+		group: ActiveArgumentGroup;
+		activeArgumentsDataGrouped: ActiveArgumentGroup[];
+		nodes: (ActiveArgumentData | ContainerData)[];
+		originalNodes: (ActiveArgumentData | ContainerData)[];
+		type: string;
+		parentNodeId: string;
+		availableOperators: string[];
+		startDrag: () => void;
+	}
+
+	let {
+		setNotInUseIfNotValid = true,
+		setNotInUseIfNotValidAndENUM = true,
+		parentNode,
+		node,
+		prefix = '',
+		isNot = $bindable(),
+		activeArgumentData = $bindable(),
+		group,
+		activeArgumentsDataGrouped,
+		nodes = $bindable(),
+		originalNodes,
+		type,
+		parentNodeId,
+		availableOperators,
+		startDrag
+	}: Props = $props();
 
 	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
 	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
@@ -53,31 +75,35 @@
 		writable(activeArgumentData.chosenDisplayInterface || activeArgumentData.dd_displayInterface)
 	);
 	let showDescription: boolean = false;
-	let labelEl: HTMLLabelElement | undefined;
-	let shadowEl: HTMLDivElement | undefined;
-	let shadowHeight: number = 20;
-	let shadowWidth: number = 20;
+	let labelEl: HTMLLabelElement | undefined = $state();
+	let shadowEl: HTMLDivElement | undefined = $state();
+	let shadowHeight: number = $state(20);
+	let shadowWidth: number = $state(20);
 
-	let labelElClone: Node | undefined;
+	let labelElClone: Node | undefined = $state();
 
-	$: if (labelEl) {
-		shadowHeight = labelEl.clientHeight;
-		shadowWidth = labelEl.clientWidth;
-	}
+	run(() => {
+		if (labelEl) {
+			shadowHeight = labelEl.clientHeight;
+			shadowWidth = labelEl.clientWidth;
+		}
+	});
 
 	//$: console.log(shadowEl);
-	$: if (shadowHeight && shadowEl) {
-		if (shadowEl.style.height == 0) {
-			shadowEl.style.height = `${shadowHeight + 18}px`;
-			shadowEl.style.width = `${shadowWidth}px`;
+	run(() => {
+		if (shadowHeight && shadowEl) {
+			if (shadowEl.style.height == 0) {
+				shadowEl.style.height = `${shadowHeight + 18}px`;
+				shadowEl.style.width = `${shadowWidth}px`;
 
-			labelElClone = labelEl.cloneNode(true);
-			labelElClone.classList.remove('dnd-item');
-			labelElClone.classList.add('border-2', 'border-accent');
+				labelElClone = labelEl.cloneNode(true);
+				labelElClone.classList.remove('dnd-item');
+				labelElClone.classList.add('border-2', 'border-accent');
 
-			shadowEl.appendChild(labelElClone);
+				shadowEl.appendChild(labelElClone);
+			}
 		}
-	}
+	});
 	console.log({ activeArgumentData });
 	let get_valueToDisplay = (): string | undefined => {
 		let value: string | undefined;
@@ -105,9 +131,9 @@
 	};
 	const CPItemContext = getContext(`${prefix}CPItemContext`);
 	const CPItem = CPItemContext?.CPItem;
-	let expandedVersion: boolean;
-	let valueToDisplay: string | undefined = undefined;
-	$: {
+	let expandedVersion: boolean = $state();
+	let valueToDisplay: string | undefined = $state(undefined);
+	run(() => {
 		if (true || activeArgumentData?.inUse) {
 			valueToDisplay = get_valueToDisplay();
 		}
@@ -117,7 +143,7 @@
 		} else {
 			expandedVersion = true;
 		}
-	}
+	});
 	const outermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	const { mergedChildren_QMSWraperCtxData_Store } = outermostQMSWraperContext;
 
@@ -178,7 +204,7 @@
 	const inUse_toggle = (): void => {
 		inUse_set(!activeArgumentData.inUse);
 	};
-	let showModal: boolean = false;
+	let showModal: boolean = $state(false);
 	const mutationVersion = getContext('mutationVersion');
 	const showInputField = getContext('showInputField');
 
@@ -186,16 +212,18 @@
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
 	const nodeRootType = getRootType(null, activeArgumentData.dd_rootName, schemaData);
-	let showSelectModal: boolean = false;
+	let showSelectModal: boolean = $state(false);
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
-	let selectedQMS;
-	$: if ($QMSFieldToQMSGetMany_Store.length > 0) {
-		selectedQMS = QMSFieldToQMSGetMany_Store.getObj({
-			nodeOrField: node
-		})?.getMany?.selectedQMS;
-	}
+	let selectedQMS = $state();
+	run(() => {
+		if ($QMSFieldToQMSGetMany_Store.length > 0) {
+			selectedQMS = QMSFieldToQMSGetMany_Store.getObj({
+				nodeOrField: node
+			})?.getMany?.selectedQMS;
+		}
+	});
 	const nodeContext_forDynamicData = getContext(`${prefix}nodeContext_forDynamicData`);
 	let selectedRowsColValues = nodeContext_forDynamicData.selectedRowsColValues;
 </script>
@@ -249,7 +277,7 @@
 								type="checkbox"
 								class="toggle toggle-sm"
 								bind:checked={isNot}
-								on:change={() => {
+								onchange={() => {
 									dispatch('contextmenuUsed');
 								}}
 							/>
@@ -264,13 +292,13 @@
 							type="checkbox"
 							class="toggle toggle-xs"
 							checked={activeArgumentData?.inUse}
-							on:change|self|stopPropagation|capture={inUse_toggle}
+							onchangecapture={self(stopPropagation(inUse_toggle))}
 						/>
 					</label>
 				</div>
 				<btn
 					class="btn btn-xs btn-warning flex-1"
-					on:click={() => {
+					onclick={() => {
 						activeArgumentsDataGrouped_Store.delete_activeArgument(
 							activeArgumentData,
 							group.group_name
@@ -278,7 +306,7 @@
 						finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 					}}
 				>
-					<i class="bi bi-trash-fill" />
+					<i class="bi bi-trash-fill"></i>
 				</btn>
 				{#if !CPItemContext}
 					<AddNodeToControlPanel {node} />
@@ -312,10 +340,10 @@
 		</div>
 	</Modal>{/if}
 
-<!-- svelte-ignore a11y-label-has-associated-control -->
+<!-- svelte-ignore a11y_label_has_associated_control -->
 <label
 	use:clickOutside
-	on:click_outside={handleClickOutside}
+	onclick_outside={handleClickOutside}
 	class="   rounded-box {group.group_isRoot ? ' min-w-fit w-min' : 'w-min-fit '}  {!expandedVersion
 		? ' pr-1 '
 		: ' '} 
@@ -337,9 +365,9 @@
 			<input
 				type="checkbox"
 				class="checkbox input-primary hidden"
-				on:change|self={() => {
+				onchange={self(() => {
 					//leave this here,will prevent the click to go trough
-				}}
+				})}
 			/>
 			<div
 				class="   text-xs select-none flex grow flex-nowrap
@@ -358,13 +386,13 @@
 						{isNot ? ' bg-gradient-to-r from-secondary/30 outline-dashed' : 'bg-error/0'} {selectedQMS
 						? 'text-secondary'
 						: ''}"
-					on:click={() => {
+					onclick={() => {
 						showModal = true;
 					}}
-					on:contextmenu|preventDefault|stopPropagation|self={() => {
+					oncontextmenu={self(stopPropagation(preventDefault(() => {
 						showSelectModal = !showSelectModal;
 						expandedVersion = !expandedVersion;
-					}}
+					})))}
 				>
 					<!-- {#if group.group_name == 'root'}
 						{activeArgumentData.stepsOfFields?.join(' > ') + ':'}
@@ -374,7 +402,7 @@
 					{activeArgumentData.stepsOfFields[activeArgumentData.stepsOfFields.length - 1]}
 					{#if activeArgumentData.dd_NON_NULL}
 						<sup>
-							<i class="text-primary bi bi-asterisk" />
+							<i class="text-primary bi bi-asterisk"></i>
 						</sup>
 					{/if}
 					<!-- {#if selectedRowsColValuesProcessed}
@@ -389,9 +417,9 @@
 					{#if !expandedVersion && !$mutationVersion && !$showInputField}
 						<p
 							class="shrink-0 text-base-content text-xs font-light pt-[1px] mx-2"
-							on:click|preventDefault|stopPropagation|self={() => {
+							onclick={self(stopPropagation(preventDefault(() => {
 								expandedVersion = true;
-							}}
+							})))}
 						>
 							{valueToDisplay}
 						</p>
@@ -417,5 +445,5 @@
 </label>
 
 {#if activeArgumentData[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
-	<div class=" ml-8 h-0 absolute w-11/12 top-0 left-0 visible" id="shadowEl" bind:this={shadowEl} />
+	<div class=" ml-8 h-0 absolute w-11/12 top-0 left-0 visible" id="shadowEl" bind:this={shadowEl}></div>
 {/if}

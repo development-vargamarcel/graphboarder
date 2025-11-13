@@ -1,16 +1,29 @@
-<script>
+<script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
-	export let displayInterface;
-	let toggleEl;
-	let swapEl;
-	export let rawValue = true;
-	export let showValue = true;
-	export let otherClases = '';
-	export let useSwap = false;
-	export let swapOnText;
-	export let swapOffText;
-	export let swapOfftextLinethrough = swapOnText == swapOffText || !swapOffText;
+	let toggleEl = $state();
+	let swapEl = $state();
+	interface Props {
+		displayInterface: any;
+		rawValue?: boolean;
+		showValue?: boolean;
+		otherClases?: string;
+		useSwap?: boolean;
+		swapOnText: any;
+		swapOffText: any;
+		swapOfftextLinethrough?: any;
+	}
+
+	let {
+		displayInterface,
+		rawValue = $bindable(true),
+		showValue = true,
+		otherClases = '',
+		useSwap = false,
+		swapOnText,
+		swapOffText,
+		swapOfftextLinethrough = swapOnText == swapOffText || !swapOffText
+	}: Props = $props();
 	const dispatch = createEventDispatcher();
 </script>
 
@@ -21,7 +34,7 @@
 			class=" {otherClases}"
 			bind:this={swapEl}
 			bind:checked={rawValue}
-			on:change={() => {
+			onchange={() => {
 				rawValue = swapEl.checked ? true : false;
 				dispatch('changed', {
 					chd_rawValue: rawValue
@@ -40,14 +53,14 @@
 			class="toggle {otherClases} toggle-primary"
 			bind:this={toggleEl}
 			bind:checked={rawValue}
-			on:change={() => {
+			onchange={() => {
 				rawValue = toggleEl.checked ? true : false;
 				dispatch('changed', {
 					chd_rawValue: rawValue
 				});
 			}}
 		/>
-		<p class="flex grow" />
+		<p class="flex grow"></p>
 		{#if showValue}
 			<p class={rawValue ? 'text-primary' : ''}>{rawValue}</p>
 		{/if}

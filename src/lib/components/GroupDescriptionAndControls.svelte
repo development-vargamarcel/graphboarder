@@ -1,12 +1,16 @@
-<script>
+<script lang="ts">
 	import Toggle from '$lib/components/fields/Toggle.svelte';
 	import { getContext } from 'svelte';
-	export let prefix = '';
 	const dndIsOn = getContext(`${prefix}dndIsOn`);
 	const showInputField = getContext(`${prefix}showInputField`);
 
 	const mutationVersion = getContext(`${prefix}mutationVersion`);
-	export let hasGroup_argsNode;
+	interface Props {
+		prefix?: string;
+		hasGroup_argsNode: any;
+	}
+
+	let { prefix = '', hasGroup_argsNode }: Props = $props();
 </script>
 
 <div class="btn btn-ghost btn-xs w-min flex ml-4 {hasGroup_argsNode ? '' : 'pt-1'}">

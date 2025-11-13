@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Type from '$lib/components/Type.svelte';
 	import Description from './Description.svelte';
 	import { getContext, setContext } from 'svelte';
@@ -10,12 +10,23 @@
 	import { add_activeArgumentOrContainerTo_activeArgumentsDataGrouped } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
 	import ManyToAllSelectInterfaceDefinition from './ManyToAllSelectInterfaceDefinition.svelte';
 
-	export let group;
-	export let argsInfo;
-	export let activeArgumentsDataGrouped;
-	export let node;
-	export let prefix = '';
-	export let parent_inputFields;
+	interface Props {
+		group: any;
+		argsInfo: any;
+		activeArgumentsDataGrouped: any;
+		node: any;
+		prefix?: string;
+		parent_inputFields: any;
+	}
+
+	let {
+		group = $bindable(),
+		argsInfo,
+		activeArgumentsDataGrouped,
+		node,
+		prefix = '',
+		parent_inputFields
+	}: Props = $props();
 
 	const groupName = group.group_name;
 	// notice - fade in works fine but don't add svelte's fade-out (known issue)
@@ -57,7 +68,7 @@
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
 	const nodeRootType = getRootType(null, node.dd_rootName, schemaData);
-	let groupArgsPossibilities;
+	let groupArgsPossibilities = $state();
 	if (group.group_isRoot) {
 		groupArgsPossibilities = rootArgs;
 	} else if (node?.inputFields) {
@@ -85,7 +96,7 @@
 	{#if hasGroup_argsNode}
 		<button
 			class="btn btn-primary btn-xs  normal-case font-thin text-base sticky top-0"
-			on:click={() => {
+			onclick={() => {
 				let randomNr = Math.random();
 				const newContainerData = {
 					...node,

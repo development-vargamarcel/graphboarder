@@ -1,4 +1,5 @@
-<script>
+<script lang="ts">
+	import Type from './Type.svelte';
 	import { slide } from 'svelte/transition';
 	import { getRootType } from '$lib/utils/usefulFunctions';
 	import Arg from '$lib/components/Arg.svelte';
@@ -7,11 +8,6 @@
 	import { getContext } from 'svelte';
 
 	export const prefix = '';
-	export let template;
-	export let index;
-	export let type;
-	export let stepsOfFields;
-	export let isOnMainList = !stepsOfFields;
 
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
@@ -33,13 +29,31 @@
 	} else {
 		stepsOfFields = [...stepsOfFields, dd_displayName];
 	}
-	//stepsOfFields = [...stepsOfFields]; // so each tree will have it's own stepsOfFields
-	export let depth = 0;
-	let inDuration = 300;
+	
+	let inDuration = $state(300);
 
-	export let showExpand = false;
-	let expandData = {};
-	let canExpand = false;
+	interface Props {
+		template: any;
+		index: any;
+		type: any;
+		stepsOfFields: any;
+		isOnMainList?: any;
+		//stepsOfFields = [...stepsOfFields]; // so each tree will have it's own stepsOfFields
+		depth?: number;
+		showExpand?: boolean;
+	}
+
+	let {
+		template,
+		index,
+		type,
+		stepsOfFields = $bindable(),
+		isOnMainList = !stepsOfFields,
+		depth = 0,
+		showExpand = $bindable(false)
+	}: Props = $props();
+	let expandData = $state({});
+	let canExpand = $state(false);
 	if (!dd_kindsArray?.includes('SCALAR') && dd_kindsArray.length > 0) {
 		canExpand = true;
 	}
@@ -80,7 +94,7 @@
 </script>
 
 {#if template == 'default'}
-	<div class="pt-2 text-center text-xs" />
+	<div class="pt-2 text-center text-xs"></div>
 {/if}
 
 <div
@@ -95,7 +109,7 @@
 			in:slide|global={{ duration: inDuration, easing: expoIn }}
 			out:slide|global={{ duration: inDuration, easing: expoOut }}
 		>
-			<div class="mb-2== text-center text-xs" />
+			<div class="mb-2== text-center text-xs"></div>
 
 			{#if type?.args && template == 'default'}
 				<div class="border-l-2 border-secondary bg-accent/5">
@@ -110,7 +124,7 @@
 			<div class="border-l-2 bg-accent/5">
 				<div class="w-min-max w-full">
 					{#each expandData.fields || expandData.inputFields || expandData.enumValues as type, index (index)}
-						<svelte:self {index} {type} {template} {stepsOfFields} {depth} />
+						<Type {index} {type} {template} {stepsOfFields} {depth} />
 					{/each}
 				</div>
 			</div>
@@ -118,5 +132,5 @@
 	{/if}
 </div>
 {#if !showExpand || isOnMainList}
-	<div class="mb-2 text-center text-xs" />
+	<div class="mb-2 text-center text-xs"></div>
 {/if}

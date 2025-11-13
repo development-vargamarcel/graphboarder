@@ -1,4 +1,6 @@
-<script>
+<script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { page } from '$app/stores';
 	import Table from '$lib/components/Table.svelte';
 	import {
@@ -23,8 +25,13 @@
 	import MainWraper from './MainWraper.svelte';
 	import Sidebar from './Sidebar.svelte';
 
-	export let prefix = '';
-	export let QMSName;
+	interface Props {
+		prefix?: string;
+		QMSName: any;
+		children?: import('svelte').Snippet;
+	}
+
+	let { prefix = '', QMSName, children }: Props = $props();
 
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
@@ -43,7 +50,9 @@
 	} = QMSWraperContext;
 	const schemaData = QMSMainWraperContext?.schemaData;
 
-	$: console.log('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
+	run(() => {
+		console.log('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
+	});
 	onDestroy(() => {
 		document.getElementById('my-drawer-3')?.click();
 	});
@@ -58,14 +67,16 @@
 	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData).find((pagType) => {
 		return pagType.name == currentQMS_info.dd_paginationType;
 	});
-	let activeArgumentsDataGrouped_Store_IS_SET = false;
-	$: activeArgumentsDataGrouped_Store_IS_SET =
-		$activeArgumentsDataGrouped_Store.length > 0 ? true : false;
+	let activeArgumentsDataGrouped_Store_IS_SET = $state(false);
+	run(() => {
+		activeArgumentsDataGrouped_Store_IS_SET =
+			$activeArgumentsDataGrouped_Store.length > 0 ? true : false;
+	});
 	//
 
 	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], schemaData);
 
-	let queryData;
+	let queryData = $state();
 	let rows = [];
 	let rowsCurrent = [];
 	let loadedF;
@@ -192,33 +203,35 @@
 	let showModal = false;
 	let showActiveFilters;
 
-	let endpointConfiguration;
+	let endpointConfiguration = $state();
 
-	$: if (queryData?.data) {
-		const configurationText = getDataGivenStepsOfFields(null, queryData, [
-			'data',
-			'endpoints_by_pk',
-			'extraConfig'
-		]);
-		const configTemplate = getDataGivenStepsOfFields(null, queryData, [
-			'data',
-			'endpoints_by_pk',
-			'configuration',
-			'configuration'
-		]);
+	run(() => {
+		if (queryData?.data) {
+			const configurationText = getDataGivenStepsOfFields(null, queryData, [
+				'data',
+				'endpoints_by_pk',
+				'extraConfig'
+			]);
+			const configTemplate = getDataGivenStepsOfFields(null, queryData, [
+				'data',
+				'endpoints_by_pk',
+				'configuration',
+				'configuration'
+			]);
 
-		console.log({ configurationText });
-		console.log({ configTemplate });
+			console.log({ configurationText });
+			console.log({ configTemplate });
 
-		endpointConfiguration = stringToJs(configurationText);
+			endpointConfiguration = stringToJs(configurationText);
 
-		if (configTemplate) {
-			endpointConfiguration = { ...stringToJs(configTemplate), ...endpointConfiguration };
+			if (configTemplate) {
+				endpointConfiguration = { ...stringToJs(configTemplate), ...endpointConfiguration };
+			}
+			console.log({ endpointConfiguration });
 		}
-		console.log({ endpointConfiguration });
-	}
+	});
 
-	let forceVisibleSidebar = false;
+	let forceVisibleSidebar = $state(false);
 </script>
 
 {#if endpointConfiguration}
@@ -231,7 +244,7 @@
 				<div class=" bg-base-100 min-h-[50px] flex">
 					<label
 						class="btn btn-square btn-ghost  md:hidden"
-						on:click={() => {
+						onclick={() => {
 							forceVisibleSidebar = true;
 						}}
 					>
@@ -248,9 +261,9 @@
 							/></svg
 						>
 					</label>
-					<div />
+					<div></div>
 				</div>
-				<slot />
+				{@render children?.()}
 			</div>
 		</main>
 	</MainWraper>

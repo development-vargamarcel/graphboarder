@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import {
 		generateArgData,
 		generateContainerData
@@ -6,16 +6,18 @@
 	import { getRootType } from '$lib/utils/usefulFunctions';
 	import { createEventDispatcher, getContext } from 'svelte';
 	const dispatch = createEventDispatcher();
-	export let expand;
-	export let showExpand;
-	export let index;
-	export let type;
 	console.log({ type });
 
-	export let template;
-	export let stepsOfFields;
-	export let predefinedFirstSteps;
-	export let groupName;
+	let {
+		expand,
+		showExpand,
+		index,
+		type,
+		template,
+		stepsOfFields = $bindable(),
+		predefinedFirstSteps,
+		groupName
+	} = $props();
 	if (stepsOfFields.length == 0 && predefinedFirstSteps) {
 		stepsOfFields = [...predefinedFirstSteps];
 	}
@@ -46,16 +48,16 @@
 	<div class="flex space-x-2">
 		<div class="flex space-x-2 w-1/3">
 			{#if dd_canExpand}
-				<div class="btn btn-xs  p-1 rounded normal-case" on:click={expand}>
+				<div class="btn btn-xs  p-1 rounded normal-case" onclick={expand}>
 					{showExpand ? '-' : '+'}
 				</div>
 			{:else}
-				<div class="btn btn-xs  p-1 rounded normal-case btn-disabled" on:click={expand}>+</div>
+				<div class="btn btn-xs  p-1 rounded normal-case btn-disabled" onclick={expand}>+</div>
 			{/if}
 			<div class="bg-secondary p-1 rounded">{index + 1}</div>
 			<div
 				class="btn btn-xs btn-info normal-case font-light "
-				on:click={() => {
+				onclick={() => {
 					console.log(type);
 					//console.log(dd_namesArray);
 				}}
@@ -71,7 +73,7 @@
 				{#if !dd_canExpand}
 					<div
 						class="btn btn-xs  bg-base-200 p-1 rounded"
-						on:click={() => {
+						onclick={() => {
 							console.log(getRootType(null, dd_rootName, schemaData));
 						}}
 					>
@@ -85,7 +87,7 @@
 				{#if dd_canExpand}
 					<div
 						class="btn btn-xs  bg-base-200  rounded px-2 py-1"
-						on:click={() => {
+						onclick={() => {
 							console.log(getRootType(null, dd_rootName, schemaData));
 						}}
 					>
@@ -100,15 +102,15 @@
 				{/if}
 			</div>
 
-			<div class="flex" />
+			<div class="flex"></div>
 		</div>
-		<div class="w-1/8 text-center text-xs" />
+		<div class="w-1/8 text-center text-xs"></div>
 	</div>
 {:else if template == 'changeArguments'}
-	<!-- svelte-ignore a11y-label-has-associated-control -->
+	<!-- svelte-ignore a11y_label_has_associated_control -->
 	<label
 		class=" cursor-pointer  hover:text-primary px-2 py-2 rounded-box flex text-base min-w-max  w-full active:font-black duration-100 select-none"
-		on:click={() => {
+		onclick={() => {
 			/////
 			if (dd_kindEl == 'INPUT_OBJECT') {
 				addContainer();
@@ -144,12 +146,12 @@
 		<div class="w-10  ">
 			{#if dd_kindEl == 'INPUT_OBJECT'}
 				{#if dd_kindList}
-					<div class="bi bi-card-list mx-auto w-min" />
+					<div class="bi bi-card-list mx-auto w-min"></div>
 				{:else}
-					<div class="bi bi-box mx-auto w-min" />
+					<div class="bi bi-box mx-auto w-min"></div>
 				{/if}
 				{#if showExpand}
-					<div class="bi bi-chevron-down mx-auto w-min" />{/if}
+					<div class="bi bi-chevron-down mx-auto w-min"></div>{/if}
 			{/if}
 		</div>
 

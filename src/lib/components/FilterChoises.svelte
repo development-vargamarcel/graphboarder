@@ -1,20 +1,36 @@
-<script>
+<script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { createEventDispatcher } from 'svelte';
 
-	export let id;
-	export let choises = [''];
-	export let title = choises[0];
-	export let modalTitle = title;
-	export let type = 'radio';
-	export let chosenDefault;
-	export let chosen = chosenDefault ? JSON.parse(JSON.stringify(chosenDefault)) : [];
+	interface Props {
+		id: any;
+		choises?: any;
+		title?: any;
+		modalTitle?: any;
+		type?: string;
+		chosenDefault: any;
+		chosen?: any;
+	}
+
+	let {
+		id,
+		choises = [''],
+		title = choises[0],
+		modalTitle = title,
+		type = $bindable('radio'),
+		chosenDefault,
+		chosen = $bindable(chosenDefault ? JSON.parse(JSON.stringify(chosenDefault)) : [])
+	}: Props = $props();
 
 	choises.length == 1 ? (type = 'toggle') : '';
 	const dispatch = createEventDispatcher();
-	$: if (chosen || !chosen) {
-		dispatch('filterChanged', { id: id, chosen: chosen });
-		//console.log('filterChanged');
-	}
+	run(() => {
+		if (chosen || !chosen) {
+			dispatch('filterChanged', { id: id, chosen: chosen });
+			//console.log('filterChanged');
+		}
+	});
 </script>
 
 <div class="rounded-box border-2 border-base-300 overflow-hidden pb-3 bg-base-100">

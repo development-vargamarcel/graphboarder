@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import Modal from './Modal.svelte';
 	import ExplorerTable from './ExplorerTable.svelte';
 	import { getContext } from 'svelte';
-	export let prefix = '';
-	export let node;
 	const nodeContext_forDynamicData = getContext(`${prefix}nodeContext_forDynamicData`);
 	//let selectedQMS = nodeContext_forDynamicData.selectedQMS;
 	let QMSRows = nodeContext_forDynamicData.QMSRows;
@@ -65,19 +65,29 @@
 	];
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
-	let getManyData;
-	$: if ($QMSFieldToQMSGetMany_Store.length > 0) {
-		getManyData = QMSFieldToQMSGetMany_Store.getObj({
-			nodeOrField: node
-		})?.getMany;
+	let getManyData = $state();
+	let selectedQMS = $state();
+	let rowSelectionState = $state();
+	interface Props {
+		prefix?: string;
+		node: any;
+		showSelectQMSModal: any;
 	}
-	let selectedQMS;
-	let rowSelectionState;
-	$: if (getManyData) {
-		selectedQMS = getManyData.selectedQMS;
-		rowSelectionState = getManyData.rowSelectionState;
-	}
-	export let showSelectQMSModal;
+
+	let { prefix = '', node, showSelectQMSModal = $bindable() }: Props = $props();
+	run(() => {
+		if ($QMSFieldToQMSGetMany_Store.length > 0) {
+			getManyData = QMSFieldToQMSGetMany_Store.getObj({
+				nodeOrField: node
+			})?.getMany;
+		}
+	});
+	run(() => {
+		if (getManyData) {
+			selectedQMS = getManyData.selectedQMS;
+			rowSelectionState = getManyData.rowSelectionState;
+		}
+	});
 </script>
 
 {#if showSelectQMSModal}

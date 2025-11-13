@@ -8,8 +8,13 @@
 	import { browser } from '$app/environment';
 	import { Create_urqlCoreClient } from '$lib/utils/urqlCoreClient';
 	import { setContextClient,Client,fetchExchange } from '@urql/svelte';
-	export let prefix = '';
-	export let endpointInfoProvided = null;
+	interface Props {
+		prefix?: string;
+		endpointInfoProvided?: any;
+		children?: import('svelte').Snippet;
+	}
+
+	let { prefix = '', endpointInfoProvided = null, children }: Props = $props();
 
 	const endpointInfo = create_endpointInfo_Store(endpointInfoProvided);
 	const schemaData = create_schemaData();
@@ -46,5 +51,5 @@
 </script>
 
 <IntrospectionDataGenerator>
-	<slot />
+	{@render children?.()}
 </IntrospectionDataGenerator>
