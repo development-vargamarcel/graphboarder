@@ -20,6 +20,10 @@
 	import ActiveArgumentsGroup_addFilterAndSortingButtonContent from '$lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte';
 	import Modal from './Modal.svelte';
 	import { nodeAddDefaultFields } from '$lib/utils/usefulFunctions';
+	import { stepsOfNodesToStepsOfFields, getUpdatedStepsOfNodes, updateNodeSteps } from '$lib/utils/nodeStepsUtils';
+	import { generateGroupDisplayTitle, getNodeDisplayClasses } from '$lib/utils/displayTitleUtils';
+	import { getShadowDimensions, updateShadowElement, handleDragStart, handleDragKeyDown, transformDraggedElement as transformDraggedElementUtil, handleDndConsider as handleDndConsiderUtil, handleDndFinalize as handleDndFinalizeUtil, handleDeleteItem } from '$lib/utils/dndUtils';
+	import { getRowSelectionState } from '$lib/utils/rowSelectionUtils';
 	const dispatch = createEventDispatcher();
 	export let nodes;
 	export let parentNodeId;
@@ -131,7 +135,8 @@
 		correctQMSWraperContext;
 	const operatorChangeHandler = () => {
 		stepsOfNodes = getUpdatedStepsOfNodes(
-			JSON.parse(JSON.stringify(parentNode?.stepsOfNodes || []))
+			JSON.parse(JSON.stringify(parentNode?.stepsOfNodes || [])),
+			node
 		);
 	};
 	const dndIsOn = getContext('dndIsOn');
@@ -142,52 +147,18 @@
 		$mutationVersion = true;
 	}
 
-	const stepsOfNodesToStepsOfFields = (stepsOfNodes) => {
-		//console.log({ stepsOfNodes });
-		const stepsOfFields = stepsOfNodes
-			.filter((step) => {
-				const [not, displayName, operator] = step;
-				return displayName || operator || not;
-			})
-			.map((step) => {
-				const [not, displayName, operator] = step;
-				const stepMod = [];
-				if (not) {
-					stepMod.push(not);
-				}
-				if (displayName) {
-					stepMod.push(displayName);
-				}
-				if (operator && (operator != 'bonded' || (operator == 'bonded' && displayName == null))) {
-					stepMod.push(operator);
-				}
-
-				return stepMod;
-			})
-			.flat(Infinity);
-		return stepsOfFields;
-	};
-	const getUpdatedStepsOfNodes = (stepsOfNodesParent) => {
-		testName_stepsOFFieldsWasUpdated = true;
-		let stepsOfNodesCopy = JSON.parse(JSON.stringify(stepsOfNodesParent));
-		stepsOfNodesCopy.push([node?.not ? '_not' : undefined, node?.dd_displayName, node?.operator]);
-		return stepsOfNodesCopy;
-	};
-
 	if (!testName_stepsOFFieldsWasUpdated) {
 		stepsOfNodes = getUpdatedStepsOfNodes(
-			JSON.parse(JSON.stringify(parentNode?.stepsOfNodes || []))
+			JSON.parse(JSON.stringify(parentNode?.stepsOfNodes || [])),
+			node
 		);
+		testName_stepsOFFieldsWasUpdated = true;
 	}
 
 	$: {
 		stepsOfFieldsFull = stepsOfNodesToStepsOfFields(stepsOfNodes);
 		stepsOfFields = filterElFromArr(stepsOfFieldsFull, ['list', 'bonded']);
-		node.stepsOfFieldsFull = stepsOfFieldsFull;
-		node.stepsOfFields = stepsOfFields;
-		node.stepsOfFieldsMinimal = filterElFromArr(stepsOfFields, ['_and', '_or', '_not']);
-		node.stepsOfNodes = stepsOfNodes;
-		node.stepsOfFieldsStringified = JSON.stringify(stepsOfFields);
+		updateNodeSteps(node, stepsOfFieldsFull, stepsOfFields, stepsOfNodes, filterElFromArr);
 	}
 	export let addDefaultFields;
 
@@ -198,27 +169,26 @@
 	const flipDurationMs = 500;
 	function handleDndConsider(e) {
 		//console.log('considering', e, nodes);
-		node.items = e.detail.items;
-		dragDisabled = true;
+		const result = handleDndConsiderUtil(e.detail.items);
+		node.items = result.items;
+		dragDisabled = result.dragDisabled;
 	}
 	function handleDndFinalize(e) {
-		node.items = e.detail.items;
-		//console.log(e);
-		nodes = { ...nodes };
-		handleChanged();
-		dispatch('changed');
-		dragDisabled = true;
+		const result = handleDndFinalizeUtil(e.detail.items, () => {
+			nodes = { ...nodes };
+			handleChanged();
+			dispatch('changed');
+		});
+		node.items = result.items;
+		dragDisabled = result.dragDisabled;
 	}
 
 	const deleteItem = (e) => {
-		node.items = node.items.filter((item) => {
-			return item.id !== e.detail.id;
+		node.items = handleDeleteItem(node.items, e.detail.id, () => {
+			nodes = { ...nodes };
+			handleChanged();
+			dispatch('changed');
 		});
-		// nodes[e.detail.id] = undefined;
-		//!!! to do: also delete the node from "nodes"
-		nodes = { ...nodes };
-		handleChanged();
-		dispatch('changed');
 	};
 	//
 	let labelEl;
@@ -229,41 +199,26 @@
 	let labelElClone;
 
 	$: if (labelEl) {
-		shadowHeight = labelEl.clientHeight;
-		shadowWidth = labelEl.clientWidth;
+		const dimensions = getShadowDimensions(labelEl);
+		shadowHeight = dimensions.height;
+		shadowWidth = dimensions.width;
 	}
 
 	//$: console.log(shadowEl);
 	$: if (shadowHeight && shadowEl) {
-		if (shadowEl.style.height == 0) {
-			//if (shadowEl.style.height == 0) ensures the bellow runs only once per grab of element to move
-			shadowEl.style.height = `${shadowHeight + 18}px`;
-			shadowEl.style.width = `${shadowWidth}px`;
-
-			//put labelElClone in place of shadowEl
-			// if (labelElClone) {
-			// 	shadowEl.removeChild(labelElClone);
-			// }
-			labelElClone = labelEl.cloneNode(true);
-			labelElClone.classList.remove('dnd-item');
-			labelElClone.classList.add('border-2', 'border-accent');
-
-			shadowEl.appendChild(labelElClone);
-		}
+		labelElClone = updateShadowElement(shadowEl, labelEl, shadowHeight, shadowWidth);
 	}
+
 	function startDrag(e) {
 		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
 		//e.preventDefault();
-		dragDisabled = false;
+		dragDisabled = handleDragStart(e);
 	}
 	function handleKeyDown(e) {
-		if ((e.key === 'Enter' || e.key === ' ') && dragDisabled) dragDisabled = false;
+		dragDisabled = handleDragKeyDown(e, dragDisabled);
 	}
 	const transformDraggedElement = (draggedEl, data, index) => {
-		draggedEl?.classList.add('bg-accent/25', 'border-2', 'border-accent');
-		draggedEl
-			.querySelector('.dnd-item')
-			?.classList.add('bg-accent/25', 'border-2', 'border-accent');
+		transformDraggedElementUtil(draggedEl);
 	};
 	//
 
@@ -276,35 +231,7 @@
 
 	let groupDisplayTitle = '';
 	$: {
-		groupDisplayTitle = '';
-		//if (node?.not) {
-		//	groupDisplayTitle = `${groupDisplayTitle}_not `;
-		//}
-		if (node.dd_displayName) {
-			groupDisplayTitle = `${groupDisplayTitle}${node.dd_displayName}`;
-		}
-
-		if (node?.operator != 'bonded') {
-			if (groupDisplayTitle.trim() != '') {
-				groupDisplayTitle = `${groupDisplayTitle} `;
-			}
-
-			if (node?.operator == 'list') {
-				groupDisplayTitle = `${groupDisplayTitle} (list)`;
-			}
-			if (['_and', '_or'].includes(node?.operator)) {
-				groupDisplayTitle = `${groupDisplayTitle}${node?.operator} (list)`;
-			}
-		}
-		if (groupDisplayTitle.trim() == '' || getPreciseType(groupDisplayTitle) == 'undefined') {
-			if (node?.operator == 'bonded') {
-				groupDisplayTitle = '(item)'; //bonded
-			} else if (node?.operator == '~spread~') {
-				groupDisplayTitle = '(~spread~)'; //~spread~
-			}
-		}
-		groupDisplayTitle = `${groupDisplayTitle}`;
-		//groupDisplayTitle = stepsOfNodes.join('->') + `(${groupDisplayTitle})`;
+		groupDisplayTitle = generateGroupDisplayTitle(node, getPreciseType);
 	}
 
 	if (node?.addDefaultFields || (node?.isMain && addDefaultFields)) {
@@ -322,17 +249,6 @@
 
 	let showAddModal = false;
 	let rowSelectionState = {};
-	const getRowSelectionState = (selectedRowsModel) => {
-		let rowSelectionState = {};
-		console.log({ selectedRowsModel });
-		if (!selectedRowsModel?.rows) {
-			return rowSelectionState;
-		}
-		selectedRowsModel.rows.forEach((row) => {
-			rowSelectionState[row.id] = true;
-		});
-		return rowSelectionState;
-	};
 	let selectedRowsModel = {};
 	import ExplorerTable from '$lib/components/ExplorerTable.svelte';
 	import { string_transformer } from '$lib/utils/dataStructureTransformers.ts';
