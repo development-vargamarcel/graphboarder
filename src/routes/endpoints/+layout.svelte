@@ -29,6 +29,6 @@
 	setContext('localStorageEndpoints', localStorageEndpoints);
 </script>
 
-{#if children}{@render children()}{:else}<!-- optional fallback -->{/if}
+{@render children?.()}
 <!-- <MainWraper {endpointInfoProvided}>
 </MainWraper> -->
