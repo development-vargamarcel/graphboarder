@@ -313,5 +313,5 @@
 
 {#if QMS_info || (preferGivenQMSWraperContext && QMSWraperContextGiven)}
 	<!-- content here -->
-	{#if children}{@render children()}{:else}<!-- optional fallback -->{/if}
+	{@render children?.()}
 {/if}

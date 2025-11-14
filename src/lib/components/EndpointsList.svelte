@@ -208,7 +208,7 @@
 	let showActiveFilters;
 </script>
 
-{#if children}{@render children()}{:else}<!-- optional fallback -->{/if}
+{@render children?.()}
 
 <!-- <button
 	on:click={() => {

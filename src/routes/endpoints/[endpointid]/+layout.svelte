@@ -90,7 +90,7 @@
 			]}
 		>
 			<SetEndpointConfigurationToContext QMSName="endpoints_by_pk">
-				{#if children}{@render children()}{:else}<!-- optional fallback -->{/if}
+				{@render children?.()}
 			</SetEndpointConfigurationToContext>
 		</QMSWraper>
 	{/if}{/if}

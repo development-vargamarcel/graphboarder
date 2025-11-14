@@ -168,7 +168,7 @@
 
 {#if ($queryStoreRes?.data || storedSchemaData) && $schemaData.isReady}
 	<!-- content here -->
-	{#if children}{@render children()}{:else}<!-- optional fallback -->{/if}
+	{@render children?.()}
 {/if}
 {#if $queryStoreRes?.error}
 	<!-- The button to open modal -->
