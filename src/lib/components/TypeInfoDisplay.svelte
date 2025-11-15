@@ -20,7 +20,6 @@
 	import QMSWraper from '$lib/components/QMSWraper.svelte';
 	import { get } from 'svelte/store';
 
-	let { dd_kindsArray, dd_namesArray, dd_displayName, dd_rootName, args } = type;
 	interface Props {
 		canExpand: any;
 		expand: any;
@@ -42,6 +41,8 @@
 		stepsOfFields,
 		prefix = ''
 	}: Props = $props();
+
+	let { dd_kindsArray, dd_namesArray, dd_displayName, dd_rootName, args } = type;
 	let isSubset = (parentArray, subsetArray) => {
 		return subsetArray.every((el, index) => {
 			return parentArray[index] === el;
@@ -60,37 +61,41 @@
 		false
 	);
 	//getValueAtPath
-	let isSelected = $state();
-	let hasSelected = $state();
-	if ($stepsOfFieldsOBJ) {
-		stepsOfFieldsOBJ.subscribe((value) => {
-			const valueAtPath = getValueAtPath(value, stepsOfFields);
-			const typeAtPath = getPreciseType(valueAtPath);
-			if (typeAtPath == 'undefined') {
-				hasSelected = false;
-				isSelected = false;
-				return null;
-			} else if (typeAtPath == 'string') {
-				hasSelected = true;
-				isSelected = true;
-			} else if (typeAtPath == 'object') {
-				//add "&& canExpand" ?
-				isSelected = false;
-				hasSelected = true;
-			}
-		});
-	}
+	let isSelected = $state(false);
+	let hasSelected = $state(false);
+
+	$effect(() => {
+		if (!$stepsOfFieldsOBJ) {
+			isSelected = false;
+			hasSelected = false;
+			return;
+		}
+		const valueAtPath = getValueAtPath($stepsOfFieldsOBJ, stepsOfFields);
+		const typeAtPath = getPreciseType(valueAtPath);
+		if (typeAtPath == 'undefined') {
+			hasSelected = false;
+			isSelected = false;
+		} else if (typeAtPath == 'string') {
+			hasSelected = true;
+			isSelected = true;
+		} else if (typeAtPath == 'object') {
+			isSelected = false;
+			hasSelected = true;
+		}
+	});
 	///////
-	let isUsedInSomeColumn = $state(false);
-	let hasQMSarguments = $state(false);
-	if ($stepsOfFieldsOBJFull) {
-		stepsOfFieldsOBJFull.subscribe((value) => {
-			const valueAtPath = getValueAtPath(value, stepsOfFields);
-			hasQMSarguments = valueAtPath?.QMSarguments;
-			const typeAtPath = getPreciseType(valueAtPath);
-			isUsedInSomeColumn = typeAtPath != 'undefined';
-		});
-	}
+	let isUsedInSomeColumn = $derived.by(() => {
+		if (!$stepsOfFieldsOBJFull) return false;
+		const valueAtPath = getValueAtPath($stepsOfFieldsOBJFull, stepsOfFields);
+		const typeAtPath = getPreciseType(valueAtPath);
+		return typeAtPath != 'undefined';
+	});
+
+	let hasQMSarguments = $derived.by(() => {
+		if (!$stepsOfFieldsOBJFull) return false;
+		const valueAtPath = getValueAtPath($stepsOfFieldsOBJFull, stepsOfFields);
+		return valueAtPath?.QMSarguments;
+	});
 
 	let showModal = $state(false);
 	let finalGqlArgObj_Store = $state();
@@ -136,9 +141,9 @@
 			);
 
 			finalGqlArgObj_Store = activeArgumentsQMSWraperContext.finalGqlArgObj_Store;
-			finalGqlArgObj_StoreValue = $finalGqlArgObj_Store;
+			finalGqlArgObj_StoreValue = finalGqlArgObj_Store;
 			paginationState_derived = activeArgumentsQMSWraperContext.paginationState_derived;
-			paginationState_derivedValue = $paginationState_derived;
+			paginationState_derivedValue = paginationState_derived;
 		}
 	});
 
