@@ -7,7 +7,7 @@
 	import { circIn, expoIn, expoOut } from 'svelte/easing';
 	import { getContext } from 'svelte';
 
-	export const prefix = '';
+	const prefix = '';
 
 	interface Props {
 		index: any;

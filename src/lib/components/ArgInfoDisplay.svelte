@@ -47,7 +47,7 @@
 		dd_shouldExpand,
 		dd_filterOperators
 	} = type;
-	export const prefix = '';
+	const prefix = '';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
 	const addFilter = () => {

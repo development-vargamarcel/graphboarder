@@ -9,7 +9,7 @@
 	import ExplorerTable from '$lib/components/ExplorerTable.svelte';
 	import TypeList from '$lib/components/TypeList.svelte';
 
-	export const prefix = '';
+	const prefix = '';
 
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData; //console.log($schemaData);
@@ -368,9 +368,6 @@
 							{type}
 							template="default"
 							depth={0}
-							on:colAddRequest={(e) => {
-								//console.log(e);
-							}}
 						/>
 					{/each}
 				{/key}

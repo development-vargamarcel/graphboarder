@@ -320,21 +320,18 @@
 		{infiniteHandler}
 		colsData={$tableColsData_Store}
 		{rows}
-		on:addColumnDropdown={() => {
-			//console.log('add column dropdown');
+		onHideColumn={(detail) => {
+			hideColumn({ detail });
 		}}
-		on:hideColumn={(e) => {
-			hideColumn(e);
-		}}
-		on:rowClicked={(e) => {
+		onRowClicked={(detail) => {
 			if (browser) {
 				window.open(
-					`${$page.url.origin}/endpoints/${e.detail.id}`,
+					`${$page.url.origin}/endpoints/${detail.id}`,
 					'_blank' // <- This is what makes it open in a new window.
 				);
-				//	window.location = `${$page.url.origin}/endpoints/${e.detail.id}`;
+				//	window.location = `${$page.url.origin}/endpoints/${detail.id}`;
 			}
-			//goto(`${$page.url.origin}/endpoints/${e.detail.id}`);
+			//goto(`${$page.url.origin}/endpoints/${detail.id}`);
 		}}
 	/>
 </div>
