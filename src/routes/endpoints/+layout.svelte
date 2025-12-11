@@ -22,10 +22,10 @@
 	let { data, children }: Props = $props();
 	const endpointInfoProvided = localEndpoints.find((endpoint) => endpoint.id == 'nhost');
 	//console.log('endpointInfoProvided json', stigifyAll(endpointInfoProvided));
-	export const localStorageEndpoints = persisted(
-		'localStorageEndpoints',
-		getSortedAndOrderedEndpoints(stringToJs(localStorage.getItem('endpoints') || []))
-	);
+	// Note: persisted() handles localStorage access internally (only in browser),
+	// so we just provide a default value for SSR. The store will hydrate from
+	// localStorage automatically on the client side.
+	export const localStorageEndpoints = persisted('localStorageEndpoints', []);
 	setContext('localStorageEndpoints', localStorageEndpoints);
 </script>
 
