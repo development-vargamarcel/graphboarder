@@ -314,13 +314,9 @@
 				{infiniteHandler}
 				colsData={$tableColsData_Store}
 				{rows}
-				on:addColumnDropdown={() => {
-					//console.log('add column dropdown');
+				onHideColumn={(detail) => {
+					hideColumn({ detail });
 				}}
-				on:hideColumn={(e) => {
-					hideColumn(e);
-				}}
-				on:rowClicked={(e) => {}}
 			/>
 		</div>
 	{/if}

@@ -6,7 +6,7 @@
 	import { getQMSLinks } from '$lib/utils/usefulFunctions';
 	import { getContext, onMount } from 'svelte';
 
-	export const prefix = '';
+	const prefix = '';
 
 	interface Props {
 		endpointInfo: any;

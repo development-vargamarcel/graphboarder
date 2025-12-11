@@ -141,8 +141,7 @@
 				template="changeArguments"
 				{predefinedFirstSteps}
 				groupName={group.group_name}
-				on:argAddRequest={(e) => {
-					let newArgData = e.detail;
+				onArgAddRequest={(newArgData) => {
 					activeArgumentsDataGrouped_Store.add_activeArgument(
 						newArgData,
 						groupName,
@@ -150,8 +149,7 @@
 						endpointInfo
 					);
 				}}
-				on:containerAddRequest={(e) => {
-					let newContainerData = e.detail;
+				onContainerAddRequest={(newContainerData) => {
 					console.log({ newContainerData });
 					let randomNr = Math.random();
 					console.log('group', group);
@@ -215,9 +213,6 @@
 			type={node}
 			template="default"
 			depth={0}
-			on:colAddRequest={(e) => {
-				//console.log(e);
-			}}
 		/>
 	</div>
 </div>

@@ -7,7 +7,7 @@
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { getContext } from 'svelte';
 
-	export const prefix = '';
+	const prefix = '';
 
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);

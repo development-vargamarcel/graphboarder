@@ -16,6 +16,8 @@
 		rowSelectionState: any;
 		QMSWraperContext?: any;
 		node: any;
+		onRowSelectionChange?: (detail: any) => void;
+		onRowClicked?: (detail: any) => void;
 	}
 
 	let {
@@ -24,7 +26,9 @@
 		enableMultiRowSelectionState = true,
 		rowSelectionState,
 		QMSWraperContext = $bindable({}),
-		node
+		node,
+		onRowSelectionChange,
+		onRowClicked
 	}: Props = $props();
 	console.log('nooooddeeee', { node });
 	let getManyQMS = $state();
@@ -52,6 +56,8 @@
 			<ComponentForLayout
 				{rowSelectionState}
 				{enableMultiRowSelectionState}
+				{onRowSelectionChange}
+				{onRowClicked}
 			/>
 		</QmsWraper>{/if}
 {/key}

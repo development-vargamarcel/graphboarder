@@ -20,7 +20,7 @@
 		showValue={false}
 		otherClases="toggle-xs"
 		rawValue={$dndIsOn}
-		on:changed={() => {
+		onChanged={() => {
 			$dndIsOn = !$dndIsOn;
 		}}
 	/>
@@ -32,7 +32,7 @@
 		showValue={false}
 		otherClases="toggle-xs"
 		rawValue={$showInputField}
-		on:changed={() => {
+		onChanged={() => {
 			$showInputField = !$showInputField;
 		}}
 	/>
@@ -44,7 +44,7 @@
 		showValue={false}
 		otherClases="toggle-xs"
 		rawValue={$mutationVersion}
-		on:changed={() => {
+		onChanged={() => {
 			$mutationVersion = !$mutationVersion;
 		}}
 	/>

@@ -343,9 +343,6 @@
 					type={activeArgumentData}
 					template="default"
 					depth={0}
-					on:colAddRequest={(e) => {
-						//console.log(e);
-					}}
 				/>
 			</div>
 		</div>
