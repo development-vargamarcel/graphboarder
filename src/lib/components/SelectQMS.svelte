@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import Modal from './Modal.svelte';
 	import ExplorerTable from './ExplorerTable.svelte';
 	import { getContext } from 'svelte';
@@ -75,14 +73,14 @@
 	}
 
 	let { prefix = '', node, showSelectQMSModal = $bindable() }: Props = $props();
-	run(() => {
+	$effect(() => {
 		if ($QMSFieldToQMSGetMany_Store.length > 0) {
 			getManyData = QMSFieldToQMSGetMany_Store.getObj({
 				nodeOrField: node
 			})?.getMany;
 		}
 	});
-	run(() => {
+	$effect(() => {
 		if (getManyData) {
 			selectedQMS = getManyData.selectedQMS;
 			rowSelectionState = getManyData.rowSelectionState;

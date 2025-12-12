@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run, stopPropagation, self, preventDefault } from 'svelte/legacy';
-
 	import Type from '$lib/components/Type.svelte';
 	import Description from './Description.svelte';
 	import { writable } from 'svelte/store';
@@ -76,11 +74,11 @@
 		onChildrenStartDrag
 	}: Props = $props();
 
-	const { activeArgumentsDataGrouped_Store } = getContext(`${prefix}QMSWraperContext`);
-	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
-	//
+	const QMSWraperContext = getContext<any>(`${prefix}QMSWraperContext`);
+	const { activeArgumentsDataGrouped_Store, finalGqlArgObj_Store } = QMSWraperContext;
+
 	let idColNameOfSelectedRow: string | undefined;
-	//
+
 	setContext(
 		'choosenDisplayInterface',
 		writable(activeArgumentData.chosenDisplayInterface || activeArgumentData.dd_displayInterface)
@@ -93,29 +91,32 @@
 
 	let labelElClone: Node | undefined = $state();
 
-	run(() => {
+	// Update shadow dimensions when labelEl changes
+	$effect(() => {
 		if (labelEl) {
 			shadowHeight = labelEl.clientHeight;
 			shadowWidth = labelEl.clientWidth;
 		}
 	});
 
-	//$: console.log(shadowEl);
-	run(() => {
-		if (shadowHeight && shadowEl) {
-			if (shadowEl.style.height == 0) {
+	// Setup shadow element when dimensions are available
+	$effect(() => {
+		if (shadowHeight && shadowEl && labelEl) {
+			if (shadowEl.style.height === '0px' || shadowEl.style.height === '') {
 				shadowEl.style.height = `${shadowHeight + 18}px`;
 				shadowEl.style.width = `${shadowWidth}px`;
 
-				labelElClone = labelEl.cloneNode(true);
-				labelElClone.classList.remove('dnd-item');
-				labelElClone.classList.add('border-2', 'border-accent');
+				labelElClone = labelEl.cloneNode(true) as Node;
+				(labelElClone as HTMLElement).classList.remove('dnd-item');
+				(labelElClone as HTMLElement).classList.add('border-2', 'border-accent');
 
 				shadowEl.appendChild(labelElClone);
 			}
 		}
 	});
+
 	console.log({ activeArgumentData });
+
 	let get_valueToDisplay = (): string | undefined => {
 		let value: string | undefined;
 		if (getPreciseType(activeArgumentData.chd_dispatchValue) == 'number') {
@@ -140,22 +141,25 @@
 
 		return value;
 	};
-	const CPItemContext = getContext(`${prefix}CPItemContext`);
+
+	const CPItemContext = getContext<any>(`${prefix}CPItemContext`);
 	const CPItem = CPItemContext?.CPItem;
-	let expandedVersion: boolean = $state();
+	let expandedVersion: boolean = $state(!!CPItemContext);
 	let valueToDisplay: string | undefined = $state(undefined);
-	run(() => {
+
+	// Update valueToDisplay and expandedVersion
+	$effect(() => {
 		if (true || activeArgumentData?.inUse) {
 			valueToDisplay = get_valueToDisplay();
 		}
-		// if (valueToDisplay !== undefined ) {
 		if (!CPItemContext) {
 			expandedVersion = false;
 		} else {
 			expandedVersion = true;
 		}
 	});
-	const outermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
+
+	const outermostQMSWraperContext = getContext<any>(`${prefix}OutermostQMSWraperContext`);
 	const { mergedChildren_QMSWraperCtxData_Store } = outermostQMSWraperContext;
 
 	const handleChanged = (detail: Partial<ActiveArgumentData>): void => {
@@ -227,16 +231,50 @@
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
-	let selectedQMS = $state();
-	run(() => {
+	let selectedQMS = $state<any>();
+
+	// Update selectedQMS when store changes
+	$effect(() => {
 		if ($QMSFieldToQMSGetMany_Store.length > 0) {
 			selectedQMS = QMSFieldToQMSGetMany_Store.getObj({
 				nodeOrField: node
 			})?.getMany?.selectedQMS;
 		}
 	});
-	const nodeContext_forDynamicData = getContext(`${prefix}nodeContext_forDynamicData`);
+
+	const nodeContext_forDynamicData = getContext<any>(`${prefix}nodeContext_forDynamicData`);
 	let selectedRowsColValues = nodeContext_forDynamicData.selectedRowsColValues;
+
+	// Event handler helpers
+	const handleCheckboxChange = (e: Event) => {
+		if (e.target === e.currentTarget) {
+			// leave this here, will prevent the click to go through
+		}
+	};
+
+	const handleInUseToggle = (e: Event) => {
+		if (e.target === e.currentTarget) {
+			e.stopPropagation();
+			inUse_toggle();
+		}
+	};
+
+	const handleContextMenu = (e: MouseEvent) => {
+		if (e.target === e.currentTarget) {
+			e.preventDefault();
+			e.stopPropagation();
+			showSelectModal = !showSelectModal;
+			expandedVersion = !expandedVersion;
+		}
+	};
+
+	const handleValueClick = (e: MouseEvent) => {
+		if (e.target === e.currentTarget) {
+			e.preventDefault();
+			e.stopPropagation();
+			expandedVersion = true;
+		}
+	};
 </script>
 
 <SelectModal
@@ -303,7 +341,7 @@
 							type="checkbox"
 							class="toggle toggle-xs"
 							checked={activeArgumentData?.inUse}
-							onchangecapture={self(stopPropagation(inUse_toggle))}
+							onchangecapture={handleInUseToggle}
 						/>
 					</label>
 				</div>
@@ -373,9 +411,7 @@
 			<input
 				type="checkbox"
 				class="checkbox input-primary hidden"
-				onchange={self(() => {
-					//leave this here,will prevent the click to go trough
-				})}
+				onchange={handleCheckboxChange}
 			/>
 			<div
 				class="   text-xs select-none flex grow flex-nowrap
@@ -397,10 +433,7 @@
 					onclick={() => {
 						showModal = true;
 					}}
-					oncontextmenu={self(stopPropagation(preventDefault(() => {
-						showSelectModal = !showSelectModal;
-						expandedVersion = !expandedVersion;
-					})))}
+					oncontextmenu={handleContextMenu}
 				>
 					<!-- {#if group.group_name == 'root'}
 						{activeArgumentData.stepsOfFields?.join(' > ') + ':'}
@@ -425,9 +458,7 @@
 					{#if !expandedVersion && !$mutationVersion && !$showInputField}
 						<p
 							class="shrink-0 text-base-content text-xs font-light pt-[1px] mx-2"
-							onclick={self(stopPropagation(preventDefault(() => {
-								expandedVersion = true;
-							})))}
+							onclick={handleValueClick}
 						>
 							{valueToDisplay}
 						</p>

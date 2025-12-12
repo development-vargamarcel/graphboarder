@@ -3,8 +3,6 @@
 </script>
 
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import { endpointsSchemaData } from '$lib/stores/testData/endpointsSchemaData';
 	import { createClient, fetchExchange } from '@urql/core';
 	import { browser } from '$app/environment';
@@ -136,7 +134,7 @@
 	let schema = {};
 	let sortingInputValue = '';
 	let sortingArray = $state([]);
-	run(() => {
+	$effect(() => {
 		sortingArray = sortingInputValue.split(' ');
 	});
 	$schemaData = {};
@@ -149,10 +147,10 @@
 		schemaData.set_fields(endpointInfo);
 		console.log('schemaData', $schemaData);
 	};
-	run(() => {
+	$effect(() => {
 		console.log({$queryStoreRes})
 	});
-	run(() => {
+	$effect(() => {
 		if (!$queryStoreRes.fetching) {
 			if ($queryStoreRes?.data) {
 				console.log($queryStoreRes?.data);

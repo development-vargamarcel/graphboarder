@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
 
 	import QmsWraper from '$lib/components/QMSWraper.svelte';
 	import { getContext } from 'svelte';
@@ -32,7 +31,7 @@
 	}: Props = $props();
 	console.log('nooooddeeee', { node });
 	let getManyQMS = $state();
-	run(() => {
+	$effect(() => {
 		if ($QMSFieldToQMSGetMany_Store.length > 0) {
 			getManyQMS = QMSFieldToQMSGetMany_Store.getObj({
 				nodeOrField: node

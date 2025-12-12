@@ -11,8 +11,8 @@
 	import Type from './Type.svelte';
 	interface Props {
 		prefix?: string;
-		column_stepsOfFields: any;
-		addColumnFromInput: any;
+		column_stepsOfFields?: any;
+		addColumnFromInput?: any;
 		dd_relatedRoot: any;
 		QMSName: any;
 		QMS_info: any;
@@ -21,43 +21,57 @@
 
 	let {
 		prefix = '',
-		column_stepsOfFields,
+		column_stepsOfFields = $bindable(''),
 		addColumnFromInput,
 		dd_relatedRoot,
 		QMSName,
 		QMS_info,
 		onNewColumnAddRequest
 	}: Props = $props();
-	//stepsOfFieldsOBJ
+
+	// Setup contexts with writable stores
 	setContext(`${prefix}stepsOfFieldsOBJ`, writable({}));
-	const stepsOfFieldsOBJ = getContext(`${prefix}stepsOfFieldsOBJ`);
-	stepsOfFieldsOBJ.subscribe((value) => {
+	const stepsOfFieldsOBJ = getContext<ReturnType<typeof writable<Record<string, any>>>>(`${prefix}stepsOfFieldsOBJ`);
+
+	setContext(`${prefix}stepsOfFieldsOBJFull`, writable({}));
+	const stepsOfFieldsOBJFull = getContext<ReturnType<typeof writable<Record<string, any>>>>(`${prefix}stepsOfFieldsOBJFull`);
+
+	setContext(`${prefix}activeArgumentsDataGrouped_Store`, writable({}));
+	const activeArgumentsDataGrouped_Store = getContext<ReturnType<typeof writable<Record<string, any>>>>(`${prefix}activeArgumentsDataGrouped_Store`);
+
+	const tableColsData_Store = getContext<any>(`${prefix}QMSWraperContext`).tableColsData_Store;
+
+	setContext(`${prefix}StepsOfFieldsSelected`, writable(new Set([])));
+	const StepsOfFieldsSelected = getContext<ReturnType<typeof writable<Set<any>>>>(`${prefix}StepsOfFieldsSelected`);
+
+	// Use $effect for reactive subscriptions - these automatically clean up
+	$effect(() => {
+		const value = $stepsOfFieldsOBJ;
 		console.log('stepsOfFieldsOBJ', value);
 	});
-	setContext(`${prefix}stepsOfFieldsOBJFull`, writable({}));
-	const stepsOfFieldsOBJFull = getContext(`${prefix}stepsOfFieldsOBJFull`);
-	//activeArgumentsDataGrouped_Store
-	setContext(`${prefix}activeArgumentsDataGrouped_Store`, writable({}));
-	const activeArgumentsDataGrouped_Store = getContext(`${prefix}activeArgumentsDataGrouped_Store`);
-	activeArgumentsDataGrouped_Store.subscribe((value) => {
+
+	$effect(() => {
+		const value = $activeArgumentsDataGrouped_Store;
 		console.log('activeArgumentsDataGrouped_Store', value);
 	});
 
-	const tableColsData_Store = getContext(`${prefix}QMSWraperContext`).tableColsData_Store;
-	tableColsData_Store.subscribe((cols) => {
+	$effect(() => {
+		const cols = $tableColsData_Store;
 		$stepsOfFieldsOBJFull = _.merge(
 			{},
-			...cols.map((col) => {
+			...cols.map((col: any) => {
 				return col.stepsOfFieldsOBJ;
 			})
 		);
 	});
-	stepsOfFieldsOBJFull.subscribe((stepsOfFieldsOBJFull) => {
-		console.log({ stepsOfFieldsOBJFull });
+
+	$effect(() => {
+		const value = $stepsOfFieldsOBJFull;
+		console.log({ stepsOfFieldsOBJFull: value });
 	});
-	setContext(`${prefix}StepsOfFieldsSelected`, writable(new Set([])));
-	const StepsOfFieldsSelected = getContext(`${prefix}StepsOfFieldsSelected`);
-	StepsOfFieldsSelected.subscribe((value) => {
+
+	$effect(() => {
+		const value = $StepsOfFieldsSelected;
 		console.log('StepsOfFieldsSelected', value);
 	});
 </script>

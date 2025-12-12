@@ -1,12 +1,9 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import {
 		geojson_transformer,
 		geojson_transformerREVERSE
 	} from '$lib/utils/dataStructureTransformers';
 	import * as mapboxglOriginal from 'mapbox-gl';
-	import { onMount } from 'svelte';
 	let mapboxgl = mapboxglOriginal;
 	let { containerEl, dispatchValue, rawValue = $bindable(), onChanged } = $props();
 	if (!rawValue && dispatchValue) {
@@ -23,7 +20,7 @@
 	let mapContainer = $state();
 	let draw = $state();
 	let location;
-	onMount(() => {
+	$effect(() => {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition((e) => {
 				location = [e.coords.longitude, e.coords.latitude];
@@ -100,7 +97,7 @@
 		}
 	});
 	let mapOnLoadHandler_set = $state(false);
-	run(() => {
+	$effect(() => {
 		if (map && !mapOnLoadHandler_set) {
 			mapOnLoadHandler_set = true;
 			map.on('load', () => {

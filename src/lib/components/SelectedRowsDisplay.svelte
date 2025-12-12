@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import { formatData } from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
 	import ExplorerTable from './ExplorerTable.svelte';
@@ -16,7 +14,7 @@
 
 	let selectedRowsColValues = nodeContext_forDynamicData.selectedRowsColValues;
 	let columns = $state();
-	run(() => {
+	$effect(() => {
 		if ($selectedRowsColValues) {
 			if ($selectedRowsColValues?.length > 0) {
 				columns = Object.keys($selectedRowsColValues[0]).map((columnName) => {

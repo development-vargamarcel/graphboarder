@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import { getContext, setContext } from 'svelte';
 	import ActiveArgumentsGroupWraper from '$lib/components/ActiveArgumentsGroupWraper.svelte';
 
@@ -41,7 +39,7 @@
 
 	let activeArgumentsDataGrouped = [];
 
-	run(() => {
+	$effect(() => {
 		console.log('$activeArgumentsDataGrouped_Store', $activeArgumentsDataGrouped_Store);
 	});
 	const update_activeArgumentsDataGrouped = (groupNewData) => {

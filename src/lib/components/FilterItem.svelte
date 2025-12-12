@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run, preventDefault, stopPropagation } from 'svelte/legacy';
-
 	import Modal from '$lib/components/Modal.svelte';
 	import { dndzone, SHADOW_ITEM_MARKER_PROPERTY_NAME, SOURCES, TRIGGERS } from 'svelte-dnd-action';
 	import {
@@ -146,7 +144,7 @@
 		if ((e.key === 'Enter' || e.key === ' ') && dragDisabled) dragDisabled = false;
 	}
 	//
-	run(() => {
+	$effect(() => {
 		if (title) {
 			if (type == 'toggle') {
 				title = chosen;
@@ -155,7 +153,7 @@
 			}
 		}
 	});
-	run(() => {
+	$effect(() => {
 		if (chosen?.length > 0) {
 			if (type !== 'radio') {
 				syncOrder();
@@ -206,7 +204,7 @@
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <btn
 	class="btn  btn-{size} {btnExtraClass}  flex  w-full normal-case"
-	onclickcapture={stopPropagation(preventDefault(showModalOrToggle))}
+	onclickcapture={(e) => { e.preventDefault(); e.stopPropagation(); showModalOrToggle(); }}
 >
 	{isToggle ? choises[0] : title}
 

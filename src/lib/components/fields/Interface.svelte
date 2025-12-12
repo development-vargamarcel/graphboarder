@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import ENUMInterface from './ENUMInterface.svelte';
 	//TODO: !!!
 	//When choosenDisplayInterface =="ENUM",nothing happens.Handle enum like all other interfaces to solve this.
@@ -34,7 +32,7 @@
 		onChanged
 	}: Props = $props();
 
-	run(() => {
+	$effect(() => {
 		if ($choosenDisplayInterface) {
 			typeExtraData = endpointInfo.get_typeExtraData(typeInfo, $choosenDisplayInterface);
 			typeInfo.chosenDisplayInterface = $choosenDisplayInterface;
@@ -47,7 +45,7 @@
 		}
 	});
 	let componentToRender = $state(Input);
-	run(() => {
+	$effect(() => {
 		if (['text', 'number', 'date', 'datetime-local'].includes($choosenDisplayInterface)) {
 			componentToRender = Input;
 		}

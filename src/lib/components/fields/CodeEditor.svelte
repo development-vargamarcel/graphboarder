@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
-	import { onMount, getContext } from 'svelte';
+	import { getContext } from 'svelte';
 	import CodeMirror from 'svelte-codemirror-editor';
 	import { javascript } from '@codemirror/lang-javascript';
 	import { graphql } from 'cm6-graphql';
@@ -97,7 +95,10 @@
 		};
 	};
 
-	onMount(initializeEditor);
+	$effect(() => {
+		const cleanup = initializeEditor();
+		return cleanup;
+	});
 
 
 	const configurations = [
@@ -165,7 +166,7 @@
 		);
 	};
 	const id = generateId();
-	run(() => {
+	$effect(() => {
 		editor?.setValue(language === 'javascript' ? `const data = ${rawValue || '{}'}` : rawValue);
 		prettify();
 	});

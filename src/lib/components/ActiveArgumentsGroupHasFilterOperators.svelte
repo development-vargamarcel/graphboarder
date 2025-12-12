@@ -1,6 +1,5 @@
 <script lang="ts">
 	import ActiveArgumentsGroupHasFilterOperators from './ActiveArgumentsGroupHasFilterOperators.svelte';
-	import { run, preventDefault, stopPropagation } from 'svelte/legacy';
 
 	import SelectModal from './SelectModal.svelte';
 
@@ -266,7 +265,7 @@
 	let QMSWraperContextForSelectedQMS = {};
 	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
 	let forceShowSelectAndAddButtons = false;
-	run(() => {
+	$effect(() => {
 		if ($QMSFieldToQMSGetMany_Store.length > 0) {
 			getManyQMS = QMSFieldToQMSGetMany_Store.getObj({
 				nodeOrField: node
@@ -276,39 +275,39 @@
 			}
 		}
 	});
-	run(() => {
+	$effect(() => {
 		console.log('nodeContext_forDynamicData.selectedRowsColValues', $selectedRowsColValuesAAA);
 	});
-	run(() => {
+	$effect(() => {
 		console.log(
 			'nodeContext_forDynamicData.selectedRowsColValuesProcessed',
 			$selectedRowsColValuesProcessedAAA
 		);
 	});
-	run(() => {
+	$effect(() => {
 		console.log('nodeContext_forDynamicData.rowSelectionState', $rowSelectionStateAAA);
 	});
-	run(() => {
+	$effect(() => {
 		console.log('nodeContext_forDynamicData.idColName', $idColNameAAA);
 	});
-	run(() => {
+	$effect(() => {
 		console.log('nodeContext_forDynamicData.selectedQMS', $selectedQMSAAA);
 	});
-	run(() => {
+	$effect(() => {
 		console.log('nodeContext_forDynamicData.QMSRows', $QMSRowsAAA);
 	});
-	run(() => {
+	$effect(() => {
 		console.log('nodeContext_forDynamicData.itemColumns', $QMSColumnsAAA);
 	});
-	run(() => {
+	$effect(() => {
 		console.log('nodeContext_forDynamicData.requiredColNames', $requiredColNamesAAA);
 	});
-	run(() => {
+	$effect(() => {
 		stepsOfFieldsFull = stepsOfNodesToStepsOfFields(stepsOfNodes);
 		stepsOfFields = filterElFromArr(stepsOfFieldsFull, ['list', 'bonded']);
 		updateNodeSteps(node, stepsOfFieldsFull, stepsOfFields, stepsOfNodes, filterElFromArr);
 	});
-	run(() => {
+	$effect(() => {
 		if (labelEl) {
 			const dimensions = getShadowDimensions(labelEl);
 			shadowHeight = dimensions.height;
@@ -316,20 +315,20 @@
 		}
 	});
 	//$: console.log(shadowEl);
-	run(() => {
+	$effect(() => {
 		if (shadowHeight && shadowEl) {
 			labelElClone = updateShadowElement(shadowEl, labelEl, shadowHeight, shadowWidth);
 		}
 	});
-	run(() => {
+	$effect(() => {
 		groupDisplayTitle = generateGroupDisplayTitle(node, getPreciseType);
 	});
-	run(() => {
+	$effect(() => {
 		if (QMSWraperContextForSelectedQMS) {
 			idColName = QMSWraperContextForSelectedQMS.idColName;
 		}
 	});
-	run(() => {
+	$effect(() => {
 		console.log({ QMSWraperContextForSelectedQMS });
 	});
 </script>
@@ -389,14 +388,16 @@
 										type="checkbox"
 										class="toggle toggle-sm"
 										checked={node.not}
-										onchange={stopPropagation(preventDefault(() => {
+										onchange={(e) => {
+											e.preventDefault();
+											e.stopPropagation();
 											if (!node?.isMain) {
 												node.not = !node.not;
 												operatorChangeHandler();
 												handleChanged();
 												onChanged?.();
 											}
-										}))}
+										}}
 									/>
 								</label>
 							</div>
@@ -539,9 +540,11 @@
 							onChildrenStartDrag?.();
 						}}
 						onkeydown={handleKeyDown}
-						oncontextmenu={stopPropagation(preventDefault(() => {
+						oncontextmenu={(e) => {
+							e.preventDefault();
+							e.stopPropagation();
 							//
-						}))}
+						}}
 					></div>
 				{/if}
 				<!-- node?.items?.length <= 1 -->
@@ -559,9 +562,11 @@
 						onclick={() => {
 							showModal = true;
 						}}
-						oncontextmenu={stopPropagation(preventDefault(() => {
+						oncontextmenu={(e) => {
+							e.preventDefault();
+							e.stopPropagation();
 							//
-						}))}
+						}}
 					>
 						{groupDisplayTitle}
 						<!-- <sub>{stepsOfFields.join('->')}</sub> -->
@@ -596,9 +601,11 @@
 
 
 "
-		oncontextmenu={stopPropagation(preventDefault(() => {
+		oncontextmenu={(e) => {
+			e.preventDefault();
+			e.stopPropagation();
 			//
-		}))}
+		}}
 		bind:this={labelEl}
 		onmousedown={() => {
 			dragDisabled = true;
@@ -628,9 +635,11 @@
 						onclick={() => {
 							showModal = true;
 						}}
-						oncontextmenu={stopPropagation(preventDefault(() => {
+						oncontextmenu={(e) => {
+							e.preventDefault();
+							e.stopPropagation();
 							showSelectModal = !showSelectModal;
-						}))}
+						}}
 					>
 						{groupDisplayTitle}
 						{#if node.dd_NON_NULL}

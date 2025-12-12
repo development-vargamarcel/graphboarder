@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import EndpointinfoGeneratorAssistant from './../../../../lib/components/EndpointinfoGeneratorAssistant.svelte';
 	import Type from '$lib/components/Type.svelte';
 	import Page from '$lib/components/Page.svelte';
@@ -22,7 +20,7 @@
 	let sortingInputValue = $state('');
 	let sortingArray = $state([]);
 	let caseSensitive = $state(false);
-	run(() => {
+	$effect(() => {
 		sortingArray = sortingInputValue.split(' ');
 	});
 
@@ -177,7 +175,7 @@
 	};
 	let columns = $state([]);
 
-	run(() => {
+	$effect(() => {
 		if (whatToShow.length > 0) {
 			columns = [
 				{

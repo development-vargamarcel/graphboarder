@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { run, stopPropagation } from 'svelte/legacy';
 
 	import { writable } from 'svelte/store';
 	import { Filters, createSvelteTable, flexRender, getCoreRowModel } from '@tanstack/svelte-table';
@@ -64,7 +63,7 @@
 		return columns;
 	};
 	let columns = $state(getColumns(cols));
-	run(() => {
+	$effect(() => {
 		columns = getColumns(cols);
 	});
 	const setRowSelection = (updater) => {
@@ -106,7 +105,7 @@
 	};
 	const table = createSvelteTable(options);
 
-	run(() => {
+	$effect(() => {
 		columns = getColumns(cols);
 
 		options.update((options) => ({
@@ -116,7 +115,7 @@
 		}));
 		console.log({ data, cols });
 	});
-	run(() => {
+	$effect(() => {
 		console.log({ table }, '$table', $table);
 	});
 </script>
@@ -198,7 +197,7 @@
 					}}
 				>
 					{#if enableRowSelectionState}
-						<th class="z-0" onclick={stopPropagation(() => {})}>
+						<th class="z-0" onclick={(e) => { e.stopPropagation(); }}>
 							<label>
 								<input
 									checked={row.getIsSelected()}

@@ -1,11 +1,9 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import { stringify } from 'postcss';
 	import CodeEditor from './fields/CodeEditor.svelte';
 	import { format } from 'graphql-formatter';
 	import hljs from 'highlight.js/lib/core';
-	import { onMount, getContext } from 'svelte';
+	import { getContext } from 'svelte';
 	import graphql from 'highlight.js/lib/languages/graphql';
 	import 'highlight.js/styles/base16/solarized-dark.css';
 	import { getPreciseType, objectToSourceCode } from '$lib/utils/usefulFunctions';
@@ -43,7 +41,7 @@
 		console.log('GraphqlCodeDisplay: Context not available', e);
 	}
 
-	onMount(() => {
+	$effect(() => {
 		hljs.registerLanguage('graphql', graphql);
 		hljs.highlightAll();
 	});
@@ -120,10 +118,10 @@
 		}
 	};
 	///
-	run(() => {
+	$effect(() => {
 		ast = parse(value);
 	});
-	run(() => {
+	$effect(() => {
 		if (valueModifiedManually && valueModifiedManually !== lastSyncedValue) {
 			try {
 				ast = parse(valueModifiedManually);
@@ -138,7 +136,7 @@
 			}
 		}
 	});
-	run(() => {
+	$effect(() => {
 		if (ast) {
 			// Extract operation type and name
 			//const operationType = ast.definitions[0]?.operation;
@@ -147,7 +145,7 @@
 			astPrinted = print(ast);
 		}
 	});
-	run(() => {
+	$effect(() => {
 		if (getPreciseType(ast) == 'object') {
 			//console.log('qqqwww', value, ast, astAsString);
 			astAsString = JSON5.stringify(ast);
