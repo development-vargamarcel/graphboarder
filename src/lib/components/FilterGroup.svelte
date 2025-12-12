@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import FilterItem from '$lib/components/FilterItem.svelte';
 
 	let detail;
@@ -39,7 +37,7 @@
 	// if (typeof chosen == 'string') {
 	// 	chosen = [chosen];
 	// }
-	run(() => {
+	$effect(() => {
 		console.log('changed', { chosen });
 	});
 </script>

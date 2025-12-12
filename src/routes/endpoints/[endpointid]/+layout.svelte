@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import { string_transformer } from '$lib/utils/dataStructureTransformers.js';
 	import type { LayoutData } from './$types';
 
@@ -24,7 +22,7 @@
 	let { data, children }: Props = $props();
 
 	let forceVisibleSidebar = $state(false);
-	run(() => {
+	$effect(() => {
 		endpointid = $page.params.endpointid;
 		if (endpointid) {
 			if (endpointid.startsWith('localEndpoint--')) {
@@ -41,7 +39,7 @@
 			}
 		}
 	});
-	run(() => {
+	$effect(() => {
 		console.log({ endpointid });
 	});
 </script>

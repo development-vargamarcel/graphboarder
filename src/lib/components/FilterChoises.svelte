@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	interface Props {
 		id: any;
 		choises?: any;
@@ -24,7 +22,7 @@
 	}: Props = $props();
 
 	choises.length == 1 ? (type = 'toggle') : '';
-	run(() => {
+	$effect(() => {
 		if (chosen || !chosen) {
 			onFilterChanged?.({ id: id, chosen: chosen });
 			//console.log('filterChanged');

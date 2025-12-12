@@ -1,11 +1,8 @@
 <script lang="ts">
-	import { run, preventDefault, stopPropagation, self } from 'svelte/legacy';
-
 	import { fly, fade, scale } from 'svelte/transition';
 	import { detectSwipe } from '$lib/actions/detectSwipe';
 	import { sineOut, sineIn } from 'svelte/easing';
 	import { portal } from 'svelte-portal';
-	import { onMount } from 'svelte';
 
 	interface Props {
 		modalIdetifier?: string;
@@ -21,29 +18,50 @@
 	let apply = () => {
 		onApply?.();
 	};
-	onMount(() => {
-		onMounted?.({ modalIdetifier });
-	});
+
 	let mainDivIntroEnd = $state(false);
 	let bodyDivIntroEnd = $state(false);
 
-	const swipedown = (e) => {
-		const parent = e.target.parentNode;
-		let targetId = e.target?.id;
-		//console.log('modalIdetifiertargetId', modalIdetifier == targetId);
+	const swipedown = (e: Event) => {
+		const target = e.target as HTMLElement;
+		const parent = target.parentNode;
+		let targetId = target?.id;
 		onCancel?.({ modalIdetifier: targetId });
 	};
 
-	let mainDiv = $state();
-	let bodyDiv = $state();
+	let mainDiv = $state<HTMLDivElement>();
+	let bodyDiv = $state<HTMLDivElement>();
 	let mainDivScrolled = $state(false);
-	run(() => {
-		if (bodyDiv) {
+
+	// Handle scroll when bodyDiv is available
+	$effect(() => {
+		if (bodyDiv && mainDiv) {
 			mainDiv.scrollTop = 500;
 			mainDivScrolled = true;
 		}
 	});
-	//
+
+	// Notify on mount
+	$effect(() => {
+		onMounted?.({ modalIdetifier });
+	});
+
+	// Helper functions for event handling
+	const handleMainDivClick = (e: MouseEvent) => {
+		if (e.target === e.currentTarget) {
+			e.preventDefault();
+			e.stopPropagation();
+			onCancel?.({ modalIdetifier });
+		}
+	};
+
+	const handlePaddingClick = (e: MouseEvent) => {
+		if (e.target === e.currentTarget) {
+			e.preventDefault();
+			e.stopPropagation();
+			onCancel?.({ modalIdetifier });
+		}
+	};
 </script>
 
 <!-- grid grid-cols-1 content-end -->
@@ -56,16 +74,12 @@
 	in:fade|global={{ delay: 0, duration: 50 }}
 	out:fade|global={{ delay: 0, duration: 50 }}
 	onintroend={() => (mainDivIntroEnd = true)}
-	onclick={self(stopPropagation(preventDefault(() => {
-		onCancel?.({ modalIdetifier });
-	})))}
+	onclick={handleMainDivClick}
 >
 	{#if mainDivIntroEnd}
 		<div
 			class="    py-80"
-			onclick={self(stopPropagation(preventDefault(() => {
-				onCancel?.({ modalIdetifier });
-			})))}
+			onclick={handlePaddingClick}
 		></div>
 
 		<div
@@ -79,10 +93,9 @@
 				x: 0,
 				y: 400,
 				opacity: 0,
-				start: 0,
 				easing: sineOut
 			}}
-			out:fly|global={{ delay: 0, duration: 100, x: 0, y: 20, opacity: 0, start: 0, easing: sineIn }}
+			out:fly|global={{ delay: 0, duration: 100, x: 0, y: 20, opacity: 0, easing: sineIn }}
 			onintroend={() => (bodyDivIntroEnd = true)}
 		>
 			<div class="sticky top-0  bg-base-100 rounded-xl z-50 ">

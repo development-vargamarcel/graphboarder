@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 
@@ -38,7 +36,7 @@
 				queryData = { fetching, error, data };
 			});
 	};
-	run(() => {
+	$effect(() => {
 		if (queryData?.data) {
 			countValue = getDataGivenStepsOfFields(
 				null,

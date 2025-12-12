@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import { getContext } from 'svelte';
 	interface Props {
 		prefix?: string;
@@ -16,7 +14,7 @@
 		id: Date.now() + Math.random()
 	};
 	let objIsStarred = $derived(mergedChildren_controlPanel_Store.getObj(currentObject));
-	run(() => {
+	$effect(() => {
 		console.log({ objIsStarred });
 	});
 </script>

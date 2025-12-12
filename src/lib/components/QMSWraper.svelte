@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import { Create_paginationOptions } from '$lib/stores/pagination/paginationOptions';
 	import { Create_activeArgumentsDataGrouped_Store } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
 	import { Create_finalGqlArgObj_Store } from '$lib/stores/QMSHandling/finalGqlArgObj_Store';
@@ -33,7 +31,7 @@
 		PaginationTypeInfo
 	} from '$lib/types/index';
 
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	let QMSMainWraperContext = getContext<any>(`${prefix}QMSMainWraperContext`);
 	const endpointInfo: EndpointInfoStore = QMSMainWraperContext?.endpointInfo;
 	const schemaData: SchemaData = QMSMainWraperContext?.schemaData;
 	import { get, writable } from 'svelte/store';
@@ -146,12 +144,14 @@
 	const mergedChildren_controlPanel_Store = Create_mergedChildren_controlPanel_Store([]);
 	const QMSFieldToQMSGetMany_Store = Create_QMSFieldToQMSGetMany_Store([]);
 
-	run(() => {
-		console.log('$QMSFieldToQMSGetMany_Store ', $QMSFieldToQMSGetMany_Store);
-	});
 	import JSON5 from 'json5';
 
-	run(() => {
+	// Debug effects
+	$effect(() => {
+		console.log('$QMSFieldToQMSGetMany_Store ', $QMSFieldToQMSGetMany_Store);
+	});
+
+	$effect(() => {
 		console.log(
 			'$mergedChildren_finalGqlArgObj_Store',
 			'\n',
@@ -159,14 +159,12 @@
 			JSON5.stringify($mergedChildren_finalGqlArgObj_Store, { quote: '"' })
 		);
 	});
-	// $: console.log(
-	// 	'$mergedChildren_activeArgumentsDataGrouped_Store',
-	// 	$mergedChildren_activeArgumentsDataGrouped_Store
-	// );
-	run(() => {
+
+	$effect(() => {
 		console.log('$mergedChildren_QMSWraperCtxData_Store ', $mergedChildren_QMSWraperCtxData_Store);
 	});
-	run(() => {
+
+	$effect(() => {
 		console.log('$mergedChildren_controlPanel_Store ', $mergedChildren_controlPanel_Store);
 	});
 
@@ -226,10 +224,11 @@
 		schemaData
 	);
 
-	run(() => {
+	$effect(() => {
 		console.log('$paginationState', $paginationState);
 	});
-	run(() => {
+
+	$effect(() => {
 		console.log('$paginationState_derived', $paginationState_derived);
 	});
 	interface Props {

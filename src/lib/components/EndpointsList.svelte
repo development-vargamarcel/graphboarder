@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import AddColumn from './AddColumn.svelte';
 	import { page } from '$app/stores';
 	import Table from '$lib/components/Table.svelte';
@@ -10,7 +8,7 @@
 		getFields_Grouped,
 		getRootType
 	} from '$lib/utils/usefulFunctions';
-	import { onDestroy, onMount, getContext } from 'svelte';
+	import { getContext } from 'svelte';
 	import { goto } from '$app/navigation';
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
@@ -34,11 +32,12 @@
 
 	let { prefix = '', QMSName, children }: Props = $props();
 
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	// Get contexts
+	let QMSMainWraperContext = getContext<any>(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
 	let queryName = QMSName;
-	const QMSWraperContext = getContext('QMSWraperContext');
+	const QMSWraperContext = getContext<any>('QMSWraperContext');
 	const {
 		QMS_bodyPart_StoreDerived_rowsCount = null,
 		activeArgumentsDataGrouped_Store,
@@ -51,67 +50,45 @@
 	} = QMSWraperContext;
 	const schemaData = QMSMainWraperContext?.schemaData;
 
-	run(() => {
-		console.log('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
-	});
-	onDestroy(() => {
-		document.getElementById('my-drawer-3')?.click();
-	});
-
 	let currentQMS_info = schemaData.get_QMS_Field(queryName, 'query', schemaData);
 	let dd_relatedRoot = getRootType(null, currentQMS_info.dd_rootName, schemaData);
 	if (!currentQMS_info) {
 		goto('/queries');
 	}
-	//
-	let activeArgumentsData = [];
-	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData).find((pagType) => {
+
+	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData).find((pagType: any) => {
 		return pagType.name == currentQMS_info.dd_paginationType;
 	});
-	let activeArgumentsDataGrouped_Store_IS_SET = $state(false);
-	run(() => {
-		activeArgumentsDataGrouped_Store_IS_SET =
-			$activeArgumentsDataGrouped_Store.length > 0 ? true : false;
-	});
-	//
 
 	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], schemaData);
 
-	let queryData = $state();
-	let rows = $state([]);
-	let rowsCurrent = [];
-	let loadedF;
-	let completeF;
+	// Reactive state
+	let queryData = $state<{ fetching: boolean; error: any; data: any }>(
+		scalarFields.length == 0
+			? { fetching: false, error: false, data: false }
+			: { fetching: true, error: false, data: false }
+	);
+	let rows = $state<any[]>([]);
+	let rowsCurrent: any[] = [];
+	let loadedF: (() => void) | undefined;
+	let completeF: (() => void) | undefined;
 	let infiniteId = $state(Math.random());
-	function infiniteHandler({ detail: { loaded, complete } }) {
-		loadedF = loaded;
-		completeF = complete;
-		const rowLimitingArgNames = paginationTypeInfo?.get_rowLimitingArgNames(
-			currentQMS_info.dd_paginationArgs
-		);
-		if (
-			rowLimitingArgNames?.some((argName) => {
-				return rows.length / $paginationState?.[argName] >= 1; //means that all previous pages contained nr of items == page items size
-			}) ||
-			paginationTypeInfo?.name == 'pageBased'
-		) {
-			paginationState.nextPage(queryData?.data, queryName, 'query');
-		} else {
-			loaded();
-			complete();
-		}
-		// if (rows.length > 0) {
-		// 	paginationState.nextPage(queryData?.data, queryName, 'query');
-		// }
-	}
-	const runQuery = (queryBody) => {
+	let activeArgumentsDataGrouped_Store_IS_SET = $state(false);
+	let column_stepsOfFields = $state('');
+	let showQMSBody = $state(false);
+	let showNonPrettifiedQMSBody = false;
+	let showModal = $state(false);
+	let showActiveFilters: boolean | undefined;
+
+	// Query execution function
+	const runQuery = (queryBody: string) => {
 		let fetching = true;
-		let error = false;
-		let data = false;
+		let error: any = false;
+		let data: any = false;
 		$urqlCoreClient
 			.query(queryBody)
 			.toPromise()
-			.then((result) => {
+			.then((result: any) => {
 				fetching = false;
 
 				if (result.error) {
@@ -156,15 +133,15 @@
 						0 &&
 						paginationTypeInfo
 							?.get_rowLimitingArgNames(currentQMS_info.dd_paginationArgs)
-							.some((argName) => {
+							.some((argName: string) => {
 								return rowsCurrent?.length == $paginationState?.[argName];
 							})) ||
 					paginationTypeInfo?.name == 'pageBased'
 				) {
-					loadedF && loadedF();
+					loadedF?.();
 					console.log('loadedF ');
 				} else {
-					completeF && completeF();
+					completeF?.();
 					console.log('completeF');
 				}
 
@@ -172,40 +149,66 @@
 				rowsCurrent = [];
 			});
 	};
-	QMS_bodyPartsUnifier_StoreDerived.subscribe((QMS_body) => {
+
+	function infiniteHandler({ detail: { loaded, complete } }: { detail: { loaded: () => void; complete: () => void } }) {
+		loadedF = loaded;
+		completeF = complete;
+		const rowLimitingArgNames = paginationTypeInfo?.get_rowLimitingArgNames(
+			currentQMS_info.dd_paginationArgs
+		);
+		if (
+			rowLimitingArgNames?.some((argName: string) => {
+				return rows.length / $paginationState?.[argName] >= 1;
+			}) ||
+			paginationTypeInfo?.name == 'pageBased'
+		) {
+			paginationState.nextPage(queryData?.data, queryName, 'query');
+		} else {
+			loaded();
+			complete();
+		}
+	}
+
+	const hideColumn = (e: { detail: { column: any } }) => {
+		tableColsData_Store.removeColumn(e.detail.column);
+	};
+
+	// Effects - auto-cleanup on component destruction
+	$effect(() => {
+		console.log('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
+	});
+
+	$effect(() => {
+		activeArgumentsDataGrouped_Store_IS_SET = $activeArgumentsDataGrouped_Store.length > 0;
+	});
+
+	$effect(() => {
+		const QMS_body = $QMS_bodyPartsUnifier_StoreDerived;
 		if (QMS_body && QMS_body !== '') {
 			runQuery(QMS_body);
 		}
 	});
 
-	run(() => {
+	$effect(() => {
 		console.log({ queryData });
 	});
-	if (scalarFields.length == 0) {
-		queryData = { fetching: false, error: false, data: false };
-	} else {
-		queryData = { fetching: true, error: false, data: false };
-	}
 
-	const hideColumn = (e) => {
-		tableColsData_Store.removeColumn(e.detail.column);
-	};
-	tableColsData_Store.subscribe((data) => {
-		console.log(data);
+	$effect(() => {
+		console.log($tableColsData_Store);
 	});
 
-	let column_stepsOfFields = $state('');
+	// Cleanup drawer on destroy
+	$effect(() => {
+		return () => {
+			document.getElementById('my-drawer-3')?.click();
+		};
+	});
 
-	//Active arguments logic
-	let showQMSBody = $state(false);
-	let showNonPrettifiedQMSBody = false;
-
-	onMount(() => {
+	// Initialize hljs on mount
+	$effect(() => {
 		hljs.registerLanguage('graphql', graphql);
 		hljs.highlightAll();
 	});
-	let showModal = $state(false);
-	let showActiveFilters;
 </script>
 
 {@render children?.()}

@@ -1,19 +1,57 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import CodeEditor from '$lib/components/fields/CodeEditor.svelte';
 	import AddColumn from './../../../../../lib/components/AddColumn.svelte';
 	import TypeList from './../../../../../lib/components/TypeList.svelte';
 	import Table from '$lib/components/Table.svelte';
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	import { page } from '$app/stores';
+	import {
+		generateTitleFromStepsOfFields,
+		getDataGivenStepsOfFields,
+		getFields_Grouped,
+		getRootType,
+		stepsOfFieldsToQueryFragmentObject
+	} from '$lib/utils/usefulFunctions';
+	import { getContext } from 'svelte';
+	import { goto } from '$app/navigation';
+	import Type from '$lib/components/Type.svelte';
+	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
+	import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
+	import { format } from 'graphql-formatter';
+	import hljs from 'highlight.js/lib/core';
+	import graphql from 'highlight.js/lib/languages/graphql';
+	import 'highlight.js/styles/base16/solarized-dark.css';
+	import RowCount from '$lib/components/UI/rowCount.svelte';
+	import Modal from '$lib/components/Modal.svelte';
+	import GraphqlCodeDisplay from '$lib/components/GraphqlCodeDisplay.svelte';
+	import ControlPanel from '$lib/components/ControlPanel.svelte';
+
+	interface Props {
+		prefix?: string;
+		enableMultiRowSelectionState?: boolean;
+		currentQMS_info?: any;
+		rowSelectionState?: any;
+		onRowSelectionChange?: (detail: any) => void;
+		onRowClicked?: (detail: any) => void;
+		children?: import('svelte').Snippet;
+	}
+
+	let {
+		prefix = '',
+		enableMultiRowSelectionState = true,
+		currentQMS_info: currentQMS_infoProp,
+		rowSelectionState,
+		onRowSelectionChange,
+		onRowClicked,
+		children
+	}: Props = $props();
+
+	// Get contexts
+	let QMSMainWraperContext = getContext<any>(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
-	import { page } from '$app/stores';
 	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
-	/// if CPContext,QMSWraperContext will be relative to that
 
-	///
-	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
+	const QMSWraperContext = getContext<any>(`${prefix}QMSWraperContext`);
 	const {
 		QMS_bodyPart_StoreDerived_rowsCount,
 		activeArgumentsDataGrouped_Store,
@@ -25,84 +63,51 @@
 		paginationState,
 		QMSName
 	} = QMSWraperContext;
-	console.log({ QMS_bodyPart_StoreDerived_rowsCount }, { QMSWraperContext });
-	import {
-		generateTitleFromStepsOfFields,
-		getDataGivenStepsOfFields,
-		getFields_Grouped,
-		getRootType,
-		stepsOfFieldsToQueryFragmentObject
-	} from '$lib/utils/usefulFunctions';
-	import { onDestroy, onMount, getContext } from 'svelte';
-	import { goto } from '$app/navigation';
-	import Type from '$lib/components/Type.svelte';
-	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
-	import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 
-	run(() => {
-		console.log('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
-	});
-	onDestroy(() => {
-		document.getElementById('my-drawer-3')?.click();
-	});
+	// Initialize currentQMS_info from prop or context
+	let currentQMS_info = currentQMS_infoProp ?? schemaData.get_QMS_Field(QMSName, 'query', schemaData);
+
+	console.log({ QMS_bodyPart_StoreDerived_rowsCount }, { QMSWraperContext });
 
 	let dd_relatedRoot = getRootType(null, currentQMS_info.dd_rootName, schemaData);
 	if (!currentQMS_info) {
 		goto('/queries');
 	}
-	//
-	let activeArgumentsData = [];
+
+	// Pagination setup
 	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData).find((pagType) => {
 		return pagType.name == currentQMS_info.dd_paginationType;
 	});
-	let activeArgumentsDataGrouped_Store_IS_SET = $state(false);
-	run(() => {
-		console.log({
-			QMSWraperContext,
-			$activeArgumentsDataGrouped_Store
-		});
 
-		activeArgumentsDataGrouped_Store_IS_SET =
-			$activeArgumentsDataGrouped_Store.length > 0 ? true : false;
-	});
-	//
 	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], schemaData);
 
-	let queryData = $state();
-	let rows = $state([]);
-	let rowsCurrent = [];
-	let loadedF;
-	let completeF;
+	// Reactive state
+	let queryData = $state<{ fetching: boolean; error: any; data: any }>(
+		scalarFields.length == 0
+			? { fetching: false, error: false, data: false }
+			: { fetching: true, error: false, data: false }
+	);
+	let rows = $state<any[]>([]);
+	let rowsCurrent: any[] = [];
+	let loadedF: (() => void) | undefined;
+	let completeF: (() => void) | undefined;
 	let infiniteId = $state(Math.random());
-	function infiniteHandler({ detail: { loaded, complete } }) {
-		loadedF = loaded;
-		completeF = complete;
-		const rowLimitingArgNames = paginationTypeInfo?.get_rowLimitingArgNames(
-			currentQMS_info.dd_paginationArgs
-		);
-		if (
-			rowLimitingArgNames?.some((argName) => {
-				return rows.length / $paginationState?.[argName] >= 1; //means that all previous pages contained nr of items == page items size
-			}) ||
-			paginationTypeInfo?.name == 'pageBased'
-		) {
-			paginationState.nextPage(queryData?.data, QMSName, 'query');
-		} else {
-			loaded();
-			complete();
-		}
-		// if (rows.length > 0) {
-		// 	paginationState.nextPage(queryData?.data, QMSName, 'query');
-		// }
-	}
-	const runQuery = (queryBody) => {
+	let activeArgumentsDataGrouped_Store_IS_SET = $state(false);
+	let column_stepsOfFields = $state('');
+	let showQMSBody = $state(false);
+	let showNonPrettifiedQMSBody = false;
+	let showModal = $state(false);
+	let showActiveFilters: boolean | undefined;
+
+	// Query execution function
+	const runQuery = (queryBody: string) => {
 		let fetching = true;
-		let error = false;
-		let data = false;
+		let error: any = false;
+		let data: any = false;
 		$urqlCoreClient
 			.query(queryBody)
 			.toPromise()
-			.then((result) => {
+			.then((result: any) => {
 				fetching = false;
 
 				if (result.error) {
@@ -147,15 +152,15 @@
 						0 &&
 						paginationTypeInfo
 							?.get_rowLimitingArgNames(currentQMS_info.dd_paginationArgs)
-							.some((argName) => {
+							.some((argName: string) => {
 								return rowsCurrent?.length == $paginationState?.[argName];
 							})) ||
 					paginationTypeInfo?.name == 'pageBased'
 				) {
-					loadedF && loadedF();
+					loadedF?.();
 					console.log('loadedF ');
 				} else {
-					completeF && completeF();
+					completeF?.();
 					console.log('completeF');
 				}
 
@@ -163,31 +168,32 @@
 				rowsCurrent = [];
 			});
 	};
-	QMS_bodyPartsUnifier_StoreDerived.subscribe((QMS_body) => {
-		if (QMS_body && QMS_body !== '') {
-			runQuery(QMS_body);
-		}
-	});
 
-	run(() => {
-		console.log({ queryData });
-	});
-	if (scalarFields.length == 0) {
-		queryData = { fetching: false, error: false, data: false };
-	} else {
-		queryData = { fetching: true, error: false, data: false };
+	function infiniteHandler({ detail: { loaded, complete } }: { detail: { loaded: () => void; complete: () => void } }) {
+		loadedF = loaded;
+		completeF = complete;
+		const rowLimitingArgNames = paginationTypeInfo?.get_rowLimitingArgNames(
+			currentQMS_info.dd_paginationArgs
+		);
+		if (
+			rowLimitingArgNames?.some((argName: string) => {
+				return rows.length / $paginationState?.[argName] >= 1;
+			}) ||
+			paginationTypeInfo?.name == 'pageBased'
+		) {
+			paginationState.nextPage(queryData?.data, QMSName, 'query');
+		} else {
+			loaded();
+			complete();
+		}
 	}
 
-	const hideColumn = (e) => {
+	const hideColumn = (e: { detail: { column: any } }) => {
 		console.log('hideColumn', e.detail.column);
 		tableColsData_Store.removeColumn(e.detail.column);
 	};
-	tableColsData_Store.subscribe((data) => {
-		console.log(data);
-	});
 
-	let column_stepsOfFields = $state('');
-	const addColumnFromInput = (e) => {
+	const addColumnFromInput = (e: KeyboardEvent) => {
 		if (e.key == 'Enter') {
 			let stepsOfFields = column_stepsOfFields.replace(/\s/g, '').replace(/\./g, '>').split('>');
 			let tableColData = {
@@ -203,43 +209,46 @@
 		}
 	};
 
-	//Active arguments logic
-	let showQMSBody = $state(false);
-	let showNonPrettifiedQMSBody = false;
-	import { format } from 'graphql-formatter';
-	import hljs from 'highlight.js/lib/core';
-	import graphql from 'highlight.js/lib/languages/graphql';
-	import 'highlight.js/styles/base16/solarized-dark.css';
-	import RowCount from '$lib/components/UI/rowCount.svelte';
-	import Modal from '$lib/components/Modal.svelte';
-	import GraphqlCodeDisplay from '$lib/components/GraphqlCodeDisplay.svelte';
-	import ControlPanel from '$lib/components/ControlPanel.svelte';
-	interface Props {
-		prefix?: string;
-		enableMultiRowSelectionState?: boolean;
-		currentQMS_info?: any;
-		rowSelectionState: any;
-		onRowSelectionChange?: (detail: any) => void;
-		onRowClicked?: (detail: any) => void;
-		children?: import('svelte').Snippet;
-	}
+	// Effects - auto-cleanup on component destruction
+	$effect(() => {
+		console.log('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
+	});
 
-	let {
-		prefix = '',
-		enableMultiRowSelectionState = true,
-		currentQMS_info = schemaData.get_QMS_Field(QMSName, 'query', schemaData),
-		rowSelectionState,
-		onRowSelectionChange,
-		onRowClicked,
-		children
-	}: Props = $props();
+	$effect(() => {
+		console.log({
+			QMSWraperContext,
+			activeArgumentsDataGrouped: $activeArgumentsDataGrouped_Store
+		});
+		activeArgumentsDataGrouped_Store_IS_SET = $activeArgumentsDataGrouped_Store.length > 0;
+	});
 
-	onMount(() => {
+	$effect(() => {
+		const QMS_body = $QMS_bodyPartsUnifier_StoreDerived;
+		if (QMS_body && QMS_body !== '') {
+			runQuery(QMS_body);
+		}
+	});
+
+	$effect(() => {
+		console.log({ queryData });
+	});
+
+	$effect(() => {
+		console.log($tableColsData_Store);
+	});
+
+	// Cleanup drawer on destroy
+	$effect(() => {
+		return () => {
+			document.getElementById('my-drawer-3')?.click();
+		};
+	});
+
+	// Initialize hljs on mount
+	$effect(() => {
 		hljs.registerLanguage('graphql', graphql);
 		hljs.highlightAll();
 	});
-	let showModal = $state(false);
-	let showActiveFilters;
 </script>
 
 <!-- <button

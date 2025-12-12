@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import { setValueAtPath } from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
 	interface Props {
@@ -16,13 +14,13 @@
 	/////////////////
 	let QMSarguments = $state();
 	/////////////////
-	run(() => {
+	$effect(() => {
 		if ($finalGqlArgObj_Store && $finalGqlArgObj_Store.final_canRunQuery) {
 			QMSarguments = { ...$finalGqlArgObj_Store.finalGqlArgObj, ...$paginationState_derived };
 		}
 	});
 
-	run(() => {
+	$effect(() => {
 		if (QMSarguments || $paginationState_derived) {
 			mergedChildren_finalGqlArgObj_Store.update((value) => {
 				return setValueAtPath(value, [...stepsOfFields, 'QMSarguments'], QMSarguments);

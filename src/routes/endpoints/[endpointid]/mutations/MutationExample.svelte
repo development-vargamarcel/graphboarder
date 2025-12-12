@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import AddColumn from './../../../../lib/components/AddColumn.svelte';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
@@ -32,17 +30,19 @@
 		getRootType,
 		stepsOfFieldsToQueryFragmentObject
 	} from '$lib/utils/usefulFunctions';
-	import { onDestroy, onMount, getContext } from 'svelte';
+	import { getContext } from 'svelte';
 	import { goto } from '$app/navigation';
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 
-	run(() => {
+	$effect(() => {
 		console.log('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
 	});
-	onDestroy(() => {
-		document.getElementById('my-drawer-3')?.click();
+	$effect(() => {
+		return () => {
+			document.getElementById('my-drawer-3')?.click();
+		};
 	});
 
 	let dd_relatedRoot = getRootType(null, QMS_info.dd_rootName, schemaData);
@@ -55,7 +55,7 @@
 		return pagType.name == QMS_info?.dd_paginationType;
 	});
 	let activeArgumentsDataGrouped_Store_IS_SET = $state(false);
-	run(() => {
+	$effect(() => {
 		activeArgumentsDataGrouped_Store_IS_SET =
 			$activeArgumentsDataGrouped_Store.length > 0 ? true : false;
 	});
@@ -164,7 +164,7 @@
 		}
 	});
 
-	run(() => {
+	$effect(() => {
 		console.log({ queryData });
 	});
 	if (scalarFields.length == 0) {
@@ -216,7 +216,7 @@
 
 	let { prefix = '', children }: Props = $props();
 
-	onMount(() => {
+	$effect(() => {
 		hljs.registerLanguage('graphql', graphql);
 		hljs.highlightAll();
 	});
