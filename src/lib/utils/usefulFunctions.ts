@@ -1496,7 +1496,7 @@ export const getDeepField = (
 	fieldsType: 'fields' | 'inputFields' = 'fields'
 ): FieldWithDerivedData | null => {
 	console.log({ obj, propertyPath })
-	if (propertyPath.length == 0 || propertyPath[propertyPath.length - 1] == obj.dd_displayName) {//!!!this is a hack,might cause problem dd_displayName is the same in multiple places
+	if (propertyPath.length == 0) {
 		return obj
 	}
 	let currentObj = obj;
