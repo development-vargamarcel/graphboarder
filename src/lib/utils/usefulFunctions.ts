@@ -7,7 +7,6 @@ import { page } from '$app/stores';
 import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 import { getContext } from 'svelte';
 import { stringToQMSString_transformer, string_transformer } from '$lib/utils/dataStructureTransformers';
-import { spread } from 'svelte/internal';
 import type {
 	GraphQLKind,
 	QMSType,
@@ -1203,7 +1202,44 @@ export const get_nodeFieldsQMS_info = (
 };
 
 export const check_stepsOfFields = (stepsOfFields: string[], schemaData: SchemaData): void => {
-	const currentQMS_info = schemaData.get_QMS_Field(stepsOfFields[0], 'query', schemaData);
+	if (!stepsOfFields || stepsOfFields.length === 0) return;
+
+	const rootFieldName = stepsOfFields[0];
+	let rootField = schemaData.get_QMS_Field(rootFieldName, 'query', schemaData);
+
+	if (!rootField) {
+		rootField = schemaData.get_QMS_Field(rootFieldName, 'mutation', schemaData);
+	}
+	if (!rootField) {
+		rootField = schemaData.get_QMS_Field(rootFieldName, 'subscription', schemaData);
+	}
+
+	if (!rootField) {
+		throw new Error(`Root field '${rootFieldName}' not found in schema.`);
+	}
+
+	if (stepsOfFields.length === 1) return;
+
+	const remainingSteps = stepsOfFields.slice(1);
+	let currentField = rootField;
+
+	for (let i = 0; i < remainingSteps.length; i++) {
+		const stepName = remainingSteps[i];
+
+		const currentType = schemaData.get_rootType(null, currentField.dd_rootName, schemaData);
+
+		if (!currentType) {
+			throw new Error(`Type '${currentField.dd_rootName}' for field '${currentField.dd_displayName}' not found in schema.`);
+		}
+
+		const nextField = currentType.fields?.find(f => f.dd_displayName === stepName);
+
+		if (!nextField) {
+			throw new Error(`Field '${stepName}' not found in type '${currentType.name}' (field path: ${stepsOfFields.slice(0, i + 2).join(' -> ')}).`);
+		}
+
+		currentField = nextField;
+	}
 };
 
 export const generateTitleFromStepsOfFields = (stepsOfFields: string[]): string => {
