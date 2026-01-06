@@ -250,11 +250,13 @@
 
 	//------------
 	let inputColumnsLocationQMS_Info = $state();
-	//!! todo:before getting inputColumnsLocation value,you should check if it is a query or a mutation,and handle it accordingly
-	let inputColumnsLocation = $endpointInfo.inputColumnsPossibleLocationsInArg.find((path) => {
-		inputColumnsLocationQMS_Info = getDeepField(node, path, schemaData, 'inputFields');
-		return inputColumnsLocationQMS_Info;
-	});
+	let inputColumnsLocation = $state();
+	if (QMSType == 'mutation') {
+		inputColumnsLocation = $endpointInfo.inputColumnsPossibleLocationsInArg.find((path) => {
+			inputColumnsLocationQMS_Info = getDeepField(node, path, schemaData, 'inputFields');
+			return inputColumnsLocationQMS_Info;
+		});
+	}
 	//should work
 	let idColName = $state();
 
