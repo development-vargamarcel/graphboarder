@@ -18,6 +18,9 @@ export function findReturningColumnsLocation(
 	schemaData: any,
 	fieldType: 'fields' | 'inputFields' = 'fields'
 ): { location: string[]; info: any } | null {
+	if (!nodeFieldsQMS_info) {
+		return null;
+	}
 	for (const path of possibleLocations) {
 		const info = getDeepField(nodeFieldsQMS_info, path, schemaData, fieldType);
 		if (info) {

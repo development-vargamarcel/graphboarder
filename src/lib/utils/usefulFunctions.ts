@@ -7,7 +7,6 @@ import { page } from '$app/stores';
 import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 import { getContext } from 'svelte';
 import { stringToQMSString_transformer, string_transformer } from '$lib/utils/dataStructureTransformers';
-import { spread } from 'svelte/internal';
 import type {
 	GraphQLKind,
 	QMSType,
@@ -1136,7 +1135,7 @@ export const generateNewArgData = (
 };
 
 export const get_scalarColsData = (
-	currentQMS_info: FieldWithDerivedData | null,
+	currentQMS_info: FieldWithDerivedData | null | undefined,
 	prefixStepsOfFields: string[] = [],
 	schemaData: SchemaData
 ): TableColumnData[] => {
@@ -1175,30 +1174,33 @@ export const get_nodeFieldsQMS_info = (
 	QMS_info: FieldWithDerivedData,
 	rowsLocation: string[],
 	schemaData: SchemaData
-): FieldWithDerivedData => {
+): FieldWithDerivedData | undefined => {
 	if (rowsLocation?.length == 0) {
 		return QMS_info;
 	}
 
-	let nodeFieldsQMS_info = QMS_info;
+	let nodeFieldsQMS_info: FieldWithDerivedData | undefined = QMS_info;
 	if (!getRootType(null, nodeFieldsQMS_info?.dd_rootName, schemaData)?.fields) {
 		return nodeFieldsQMS_info;
 	}
 
-	rowsLocation.forEach((curr_rowsLocation) => {
+	for (const curr_rowsLocation of rowsLocation) {
 		if (!nodeFieldsQMS_info?.dd_rootName) {
-			return nodeFieldsQMS_info;
+			return undefined;
 		}
-		if (!getRootType(null, nodeFieldsQMS_info.dd_rootName, schemaData)?.fields) {
-			return nodeFieldsQMS_info;
+		const rootType = getRootType(null, nodeFieldsQMS_info.dd_rootName, schemaData);
+		if (!rootType?.fields) {
+			return undefined;
 		}
-		nodeFieldsQMS_info = getRootType(null, nodeFieldsQMS_info.dd_rootName, schemaData).fields.find((field) => {
+		nodeFieldsQMS_info = rootType.fields.find((field) => {
 			return field.dd_displayName == curr_rowsLocation;
 		});
-	});
-	if (!nodeFieldsQMS_info) {//todo:This is improvised,might cause issues
-		return QMS_info;
+
+		if (!nodeFieldsQMS_info) {
+			return undefined;
+		}
 	}
+
 	return nodeFieldsQMS_info;
 };
 
