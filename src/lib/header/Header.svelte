@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import logo from './svelte-logo.svg';
+	import github from './github.svg';
 </script>
 
 <header>
@@ -31,7 +32,9 @@
 	</nav>
 
 	<div class="corner">
-		<!-- TODO put something else here? github link? -->
+		<a href="https://github.com/development-vargamarcel/graphboarder">
+			<img src={github} alt="GitHub" />
+		</a>
 	</div>
 </header>
 
