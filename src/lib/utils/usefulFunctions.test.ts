@@ -6,9 +6,10 @@ import {
 	get_NamesArray,
 	get_rootName,
 	get_displayName,
-	smartModifyStringBasedOnBoundries
+	smartModifyStringBasedOnBoundries,
+	getDeepField
 } from './usefulFunctions';
-import type { FieldWithDerivedData, GraphQLKind } from '$lib/types';
+import type { FieldWithDerivedData, GraphQLKind, SchemaData, RootType } from '$lib/types';
 
 describe('usefulFunctions', () => {
 	beforeEach(() => {
@@ -440,6 +441,128 @@ describe('usefulFunctions', () => {
 			expect(names).toEqual(['Query', 'UserList', 'User']);
 			expect(get_rootName(names)).toBe('User');
 			expect(get_displayName(names)).toBe('Query');
+		});
+	});
+
+	describe('getDeepField', () => {
+		// Mock SchemaData
+		const mockSchemaData: SchemaData = {
+			rootTypes: [],
+			queryFields: [],
+			mutationFields: [],
+			subscriptionFields: [],
+			get_rootType: (rootTypes, rootTypeName, schemaData) => {
+				return schemaData.rootTypes.find((t) => t.name === rootTypeName);
+			},
+			get_QMS_Field: () => undefined
+		};
+
+		// Helper to create a field
+		const createField = (name: string, typeName: string): FieldWithDerivedData => ({
+			name,
+			dd_displayName: name,
+			dd_rootName: typeName, // The type OF the field
+			type: { name: typeName, kind: 'OBJECT' as GraphQLKind }, // Simplified
+			args: [],
+			dd_kindsArray: ['OBJECT' as GraphQLKind],
+			dd_namesArray: [name],
+			dd_relatedRoot: typeName, // Simplified, usually object or string
+			dd_kindEl_NON_NULL: false,
+			dd_kindList: false,
+			dd_kindList_NON_NULL: false,
+			dd_NON_NULL: false,
+			dd_isArg: false,
+			dd_canExpand: true,
+			dd_shouldExpand: true,
+			dd_isQMSField: false,
+			dd_castType: 'string',
+			dd_derivedTypeBorrowed: '',
+			dd_StrForFuseComparison: ''
+		});
+
+		// Helper to create a root type
+		const createRootType = (name: string, fields: FieldWithDerivedData[]): RootType => ({
+			name,
+			kind: 'OBJECT' as GraphQLKind,
+			fields,
+			inputFields: [], // As needed
+			dd_displayName: name, // usually root type name
+			dd_rootName: name,
+			dd_kindsArray: ['OBJECT' as GraphQLKind],
+			dd_namesArray: [name],
+			dd_relatedRoot: name,
+			dd_kindEl_NON_NULL: false,
+			dd_kindList: false,
+			dd_kindList_NON_NULL: false,
+			dd_NON_NULL: false,
+			dd_isArg: false,
+			dd_canExpand: true,
+			dd_shouldExpand: true,
+			dd_isQMSField: false,
+			dd_castType: 'string',
+			dd_derivedTypeBorrowed: '',
+			dd_StrForFuseComparison: ''
+		});
+
+		it('should return the child field when name matches parent field name (reproduction)', () => {
+			// Setup:
+			// "Node" has a field "node" (child).
+
+			const nodeTypeFields: FieldWithDerivedData[] = [];
+			const nodeType = createRootType('Node', nodeTypeFields);
+			mockSchemaData.rootTypes.push(nodeType);
+
+			const childNodeField = createField('node', 'Node');
+			nodeTypeFields.push(childNodeField);
+
+			// The starting object is a field "node" of type "Node".
+			const startField = createField('node', 'Node');
+
+			// We want to access startField.node
+			const path = ['node'];
+
+			// Execute
+			const result = getDeepField(startField, path, mockSchemaData);
+
+			// Verify
+			// The result should be the childNodeField, NOT startField.
+			// They are different objects (though similar content).
+			// I'll add a property to distinguish them.
+			(startField as any)._id = 'parent';
+			(childNodeField as any)._id = 'child';
+
+			expect(result).not.toBeNull();
+			expect((result as any)._id).toBe('child');
+		});
+
+		it('should correctly traverse deep fields', () => {
+			// Setup:
+			// Parent -> Child -> GrandChild
+			const grandChildType = createRootType('GrandChild', []);
+			const childTypeFields: FieldWithDerivedData[] = [];
+			const childType = createRootType('Child', childTypeFields);
+			const parentTypeFields: FieldWithDerivedData[] = [];
+			const parentType = createRootType('Parent', parentTypeFields);
+
+			mockSchemaData.rootTypes.push(grandChildType, childType, parentType);
+
+			const grandChildField = createField('grandChild', 'GrandChild');
+			(grandChildField as any)._id = 'grandChild';
+			childTypeFields.push(grandChildField);
+
+			const childField = createField('child', 'Child');
+			(childField as any)._id = 'child';
+			parentTypeFields.push(childField);
+
+			const startField = createField('root', 'Parent');
+			(startField as any)._id = 'root';
+
+			// Path: ['child', 'grandChild']
+			const path = ['child', 'grandChild'];
+			const result = getDeepField(startField, path, mockSchemaData);
+
+			expect(result).not.toBeNull();
+			expect((result as any)._id).toBe('grandChild');
 		});
 	});
 });
