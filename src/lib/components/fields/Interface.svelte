@@ -1,7 +1,5 @@
 <script lang="ts">
 	import ENUMInterface from './ENUMInterface.svelte';
-	//TODO: !!!
-	//When choosenDisplayInterface =="ENUM",nothing happens.Handle enum like all other interfaces to solve this.
 
 	import Input from '$lib/components/fields/Input.svelte';
 	import Map from '$lib/components/fields/Map.svelte';
@@ -44,26 +42,23 @@
 			}
 		}
 	});
-	let componentToRender = $state(Input);
-	$effect(() => {
+	let componentToRender = $derived.by(() => {
 		if (['text', 'number', 'date', 'datetime-local'].includes($choosenDisplayInterface)) {
-			componentToRender = Input;
+			return Input;
 		}
 		if (['geo'].includes($choosenDisplayInterface)) {
-			componentToRender = Map;
+			return Map;
 		}
 		if (['boolean'].includes($choosenDisplayInterface)) {
-			componentToRender = Toggle;
+			return Toggle;
 		}
 		if (['ENUM'].includes($choosenDisplayInterface)) {
-			componentToRender = ENUMInterface;
+			return ENUMInterface;
 		}
 		if (['codeeditor'].includes($choosenDisplayInterface)) {
-			componentToRender = CodeEditor;
+			return CodeEditor;
 		}
-		if (!$choosenDisplayInterface) {
-			componentToRender = null;
-		}
+		return null;
 	});
 	const onChangeHandler = (detail) => {
 		if (detail.chd_rawValue != undefined) {
