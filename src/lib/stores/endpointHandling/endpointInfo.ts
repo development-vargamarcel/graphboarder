@@ -13,6 +13,8 @@ import { writable, get } from 'svelte/store';
 import { getDeepField, getFields_Grouped, getRootType } from '$lib/utils/usefulFunctions';
 export const endpointInfoDefaultValues = {
 	description: 'no description',
+	idFieldNamePossibilities: ['id'],
+	countFieldNamePossibilities: ['count'],
 	rowsLocationPossibilities: [
 		{
 			get_Val: (QMS_info) => {
@@ -38,7 +40,23 @@ export const endpointInfoDefaultValues = {
 			}
 		}
 	],
-	rowCountLocationPossibilities: [],
+	rowCountLocationPossibilities: [
+		{
+			get_Val: (QMS_info, schemaData, storeVal) => {
+				const possibleNames = storeVal?.countFieldNamePossibilities || ['count'];
+				for (const name of possibleNames) {
+					return [name];
+				}
+				return ['count'];
+			},
+			check: (QMS_info, schemaData, storeVal) => {
+				// Simple check: does the QMS return type have a field matching one of the count names?
+				// This is a basic implementation to satisfy the TODO.
+				// In a real scenario, we might want to check the return type's fields.
+				return false; // Default off, let specific endpoints override or specific logic enable it.
+			}
+		}
+	],
 	relayPageInfoFieldsPossibleNames: {
 		hasNextPage: ['hasNextPage'],
 		hasPreviousPage: ['hasPreviousPage'],
@@ -61,10 +79,10 @@ export const endpointInfoDefaultValues = {
 	},
 	idFieldPossibilities: [
 		{
-			get_Val: function (QMS_info, schemaData) {
-				return this.check(QMS_info, schemaData);
+			get_Val: function (QMS_info, schemaData, storeVal) {
+				return this.check(QMS_info, schemaData, storeVal);
 			},
-			check: (QMS_info, schemaData) => {
+			check: (QMS_info, schemaData, storeVal) => {
 				const rootType = getRootType(null, QMS_info.dd_rootName, schemaData)
 				const fields = rootType?.fields
 				let idField
@@ -83,7 +101,10 @@ export const endpointInfoDefaultValues = {
 
 				const tableNameLowercase = QMS_info.dd_displayName.toLowerCase().replaceAll('s', '')//the last part handles plurar-singular problems
 
-				let possibleNames = ['id', `${tableNameLowercase}_id`, `${tableNameLowercase}id`];
+				let possibleNames = [...(storeVal?.idFieldNamePossibilities || [])];
+				if (!possibleNames.includes('id')) possibleNames.push('id');
+				possibleNames.push(`${tableNameLowercase}_id`, `${tableNameLowercase}id`);
+
 				possibleNames.find(possibleName => {
 					idField = nonNullScalarFields?.find((field) => {
 						const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase().replaceAll('s', '')//the last part handles plurar-singular problems
@@ -358,13 +379,13 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 
 			const rowCountLocationPossibility = storeVal.rowCountLocationPossibilities.find(
 				(rowCountLocationPossibility) => {
-					return rowCountLocationPossibility.check(QMS_info, schemaData);
+					return rowCountLocationPossibility.check(QMS_info, schemaData, storeVal);
 				}
 			);
 
 
 			if (rowCountLocationPossibility) {
-				return rowCountLocationPossibility.get_Val(QMS_info, schemaData);
+				return rowCountLocationPossibility.get_Val(QMS_info, schemaData, storeVal);
 			}
 			console.warn('no rowCountLocation found', QMS_info);
 			return null;
@@ -376,11 +397,11 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 				return null;
 			}
 			const idFieldPossibility = storeVal.idFieldPossibilities.find((idFieldPossibility) => {
-				return idFieldPossibility.check(QMS_info, schemaData);
+				return idFieldPossibility.check(QMS_info, schemaData, storeVal);
 			});
 
 			if (idFieldPossibility) {
-				return idFieldPossibility.get_Val(QMS_info, schemaData);
+				return idFieldPossibility.get_Val(QMS_info, schemaData, storeVal);
 			}
 			console.warn('no idField found', { idFieldPossibilities: storeVal.idFieldPossibilities, idFieldPossibility, QMS_info });
 

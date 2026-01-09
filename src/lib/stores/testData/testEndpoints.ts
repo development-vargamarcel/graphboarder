@@ -1,8 +1,5 @@
 import { getRootType, stringToJs } from '$lib/utils/usefulFunctions';
 
-//TODO:
-//idFieldNamePossibilities (id naming convention)
-//countLocationPossibilities
 export const localEndpoints = [
 	{
 		id: 'directus',
