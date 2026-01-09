@@ -1,7 +1,7 @@
 <script lang="ts">
 
 	import { writable } from 'svelte/store';
-	import { Filters, createSvelteTable, flexRender, getCoreRowModel } from '@tanstack/svelte-table';
+	import { createSvelteTable, flexRender, getCoreRowModel } from '@tanstack/svelte-table';
 	import type { ColumnDef, TableOptions } from '@tanstack/table-core/src/types';
 	import { formatData, getPreciseType, getTableCellData } from '$lib/utils/usefulFunctions';
 	import ColumnInfo from './ColumnInfo.svelte';

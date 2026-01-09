@@ -1,5 +1,13 @@
 <script lang="ts">
+	interface Props {
+		prefix?: string;
+		children?: import('svelte').Snippet;
+	}
+
+	let { prefix = '', children }: Props = $props();
+
 	import AddColumn from './../../../../lib/components/AddColumn.svelte';
+	import { getContext } from 'svelte';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
@@ -30,7 +38,6 @@
 		getRootType,
 		stepsOfFieldsToQueryFragmentObject
 	} from '$lib/utils/usefulFunctions';
-	import { getContext } from 'svelte';
 	import { goto } from '$app/navigation';
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
@@ -209,12 +216,6 @@
 	import TypeList from '$lib/components/TypeList.svelte';
 	import CodeEditor from '$lib/components/fields/CodeEditor.svelte';
 	import GraphqlCodeDisplay from '$lib/components/GraphqlCodeDisplay.svelte';
-	interface Props {
-		prefix?: string;
-		children?: import('svelte').Snippet;
-	}
-
-	let { prefix = '', children }: Props = $props();
 
 	$effect(() => {
 		hljs.registerLanguage('graphql', graphql);
