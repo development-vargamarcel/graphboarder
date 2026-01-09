@@ -1,6 +1,4 @@
 //QMS means QueryOrMutationOrSubscription
-//TODO:
-//create stepsOfFieldscheck,started,named "check_stepsOfFields"
 import _ from 'lodash';
 import { get } from 'svelte/store';
 import { page } from '$app/stores';
@@ -1204,8 +1202,8 @@ export const get_nodeFieldsQMS_info = (
 	return nodeFieldsQMS_info;
 };
 
-export const check_stepsOfFields = (stepsOfFields: string[], schemaData: SchemaData): void => {
-	if (!stepsOfFields || stepsOfFields.length === 0) return;
+export const check_stepsOfFields = (stepsOfFields: string[], schemaData: SchemaData): FieldWithDerivedData | undefined => {
+	if (!stepsOfFields || stepsOfFields.length === 0) return undefined;
 
 	const rootFieldName = stepsOfFields[0];
 	let rootField = schemaData.get_QMS_Field(rootFieldName, 'query', schemaData);
@@ -1221,7 +1219,7 @@ export const check_stepsOfFields = (stepsOfFields: string[], schemaData: SchemaD
 		throw new Error(`Root field '${rootFieldName}' not found in schema.`);
 	}
 
-	if (stepsOfFields.length === 1) return;
+	if (stepsOfFields.length === 1) return rootField;
 
 	const remainingSteps = stepsOfFields.slice(1);
 	let currentField = rootField;
@@ -1243,6 +1241,8 @@ export const check_stepsOfFields = (stepsOfFields: string[], schemaData: SchemaD
 
 		currentField = nextField;
 	}
+
+	return currentField;
 };
 
 export const generateTitleFromStepsOfFields = (stepsOfFields: string[]): string => {
