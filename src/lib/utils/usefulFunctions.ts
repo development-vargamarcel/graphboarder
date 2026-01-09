@@ -1179,7 +1179,7 @@ export const get_nodeFieldsQMS_info = (
 
 	let nodeFieldsQMS_info: FieldWithDerivedData | undefined = QMS_info;
 	if (!getRootType(null, nodeFieldsQMS_info?.dd_rootName, schemaData)?.fields) {
-		return nodeFieldsQMS_info;
+		return undefined;
 	}
 
 	for (const curr_rowsLocation of rowsLocation) {
