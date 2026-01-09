@@ -1495,7 +1495,7 @@ export const getDeepField = (
 	schemaData: SchemaData,
 	fieldsType: 'fields' | 'inputFields' = 'fields'
 ): FieldWithDerivedData | null => {
-	console.log({ obj, propertyPath })
+	//console.log({ obj, propertyPath })
 	if (propertyPath.length == 0) {
 		return obj
 	}
