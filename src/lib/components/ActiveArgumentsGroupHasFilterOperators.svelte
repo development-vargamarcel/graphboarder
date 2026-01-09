@@ -249,19 +249,27 @@
 	let selectedRowsColValues = $state([]);
 
 	//------------
-	let inputColumnsLocationQMS_Info = $state();
-	let inputColumnsLocation = $state();
-	if (QMSType == 'mutation') {
-		inputColumnsLocation = $endpointInfo.inputColumnsPossibleLocationsInArg.find((path) => {
-			inputColumnsLocationQMS_Info = getDeepField(node, path, schemaData, 'inputFields');
-			return inputColumnsLocationQMS_Info;
-		});
-	}
-	//should work
-	let idColName = $state();
+	let inputColumnsCalculation = $derived.by(() => {
+		let info = undefined;
+		let location = undefined;
+		if (
+			QMSType == 'mutation' &&
+			endpointInfo &&
+			$endpointInfo &&
+			$endpointInfo?.inputColumnsPossibleLocationsInArg
+		) {
+			location = $endpointInfo.inputColumnsPossibleLocationsInArg.find((path) => {
+				info = getDeepField(node, path, schemaData, 'inputFields');
+				return info;
+			});
+		}
+		return { location, info };
+	});
 
-	//should work
-	console.log({ node, inputColumnsLocationQMS_Info, inputColumnsLocation });
+	let inputColumnsLocation = $derived(inputColumnsCalculation.location);
+	let inputColumnsLocationQMS_Info = $derived(inputColumnsCalculation.info);
+
+	let idColName = $state();
 	//------------
 
 	let QMSWraperContextForSelectedQMS = {};
