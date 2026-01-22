@@ -10,13 +10,6 @@
 
 	let loadMore = false;
 
-
-
-	console.log({ data, columns });
-
-	let columnVisibility = getColumnVisibility(columns);
-	console.log({ columnVisibility });
-
 	const setRowSelection = (updater) => {
 		if (updater instanceof Function) {
 			rowSelectionState = updater(rowSelectionState);
@@ -35,7 +28,6 @@
 		onRowSelectionChange?.({ ...$table.getSelectedRowModel(), rowSelectionState });
 	};
 
-	console.log({ rowSelectionState });
 	interface Props {
 		prefix?: string;
 		enableMultiRowSelectionState?: boolean;
@@ -67,6 +59,8 @@
 		onHideColumn,
 		onRowClicked
 	}: Props = $props();
+
+	let columnVisibility = getColumnVisibility(columns);
 
 	const optionsObj = createTableOptions(
 		data,
@@ -178,43 +172,59 @@
 			{/each}
 		</thead>
 		<tbody>
-			{#each $table.getRowModel().rows as row, i (row.id)}
-				<tr
-					class="bg-base-100 hover:bg-base-300 cursor-pointer hover z-0"
-					onclick={() => {
-						onRowClicked?.(row.original);
-						//goto(`${$page.url.origin}/queries/${$page.params.queryName}/${row.id}`);
-					}}
-				>
-					{#if enableRowSelectionState}
-						<th class="z-0" onclick={(e) => { e.stopPropagation(); }}>
-							<label>
-								<input
-									checked={row.getIsSelected()}
-									name="rows"
-									type={row.getCanMultiSelect() ? 'checkbox' : 'radio'}
-									class={row.getCanMultiSelect() ? 'checkbox' : 'radio'}
-									onchange={(e) => {
-										const toggleSelectedHandler = row.getToggleSelectedHandler();
-										toggleSelectedHandler(e);
-
-										//console.log($table.getSelectedRowModel());
-									}}
-								/>
-							</label>
-						</th>
-					{/if}
-
-					<td>{parseInt(row.index) + 1}</td>
-
-					{#each row.getVisibleCells() as cell}
-						<td class="break-no">
-							{cell.renderValue()}
-							<!-- <svelte:component this={flexRender(cell.column.columnDef.cell, cell.getContext())} /> -->
-						</td>
-					{/each}
+			{#if $table.getRowModel().rows.length === 0}
+				<tr>
+					<td colspan="100%">
+						<div class="flex flex-col items-center justify-center h-32 text-base-content/50">
+							<div class="bi bi-inbox text-4xl mb-2"></div>
+							<p>No data found</p>
+						</div>
+					</td>
 				</tr>
-			{/each}
+			{:else}
+				{#each $table.getRowModel().rows as row, i (row.id)}
+					<tr
+						class="bg-base-100 hover:bg-base-300 cursor-pointer hover z-0"
+						onclick={() => {
+							onRowClicked?.(row.original);
+							//goto(`${$page.url.origin}/queries/${$page.params.queryName}/${row.id}`);
+						}}
+					>
+						{#if enableRowSelectionState}
+							<th
+								class="z-0"
+								onclick={(e) => {
+									e.stopPropagation();
+								}}
+							>
+								<label>
+									<input
+										checked={row.getIsSelected()}
+										name="rows"
+										type={row.getCanMultiSelect() ? 'checkbox' : 'radio'}
+										class={row.getCanMultiSelect() ? 'checkbox' : 'radio'}
+										onchange={(e) => {
+											const toggleSelectedHandler = row.getToggleSelectedHandler();
+											toggleSelectedHandler(e);
+
+											//console.log($table.getSelectedRowModel());
+										}}
+									/>
+								</label>
+							</th>
+						{/if}
+
+						<td>{parseInt(row.index) + 1}</td>
+
+						{#each row.getVisibleCells() as cell}
+							<td class="break-no">
+								{cell.renderValue()}
+								<!-- <svelte:component this={flexRender(cell.column.columnDef.cell, cell.getContext())} /> -->
+							</td>
+						{/each}
+					</tr>
+				{/each}
+			{/if}
 		</tbody>
 	</table>
 

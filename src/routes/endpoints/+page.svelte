@@ -55,122 +55,104 @@
 	};
 </script>
 
-{#if endpointsToShow == 'local'}
-	<div class="mx-auto pl-4 pt-4 h-[50vh] ">
-		<ExplorerTable
-			onRowClicked={(detail) => {
-				if (browser) {
-					window.open(
-						`${page.url.origin}/endpoints/localEndpoint--${detail.id}`,
-						'_blank' // <- This is what makes it open in a new window.
-					);
-					//	window.location = `${page.url.origin}/endpoints/${detail.id}`;
-				}
-				//goto(`${page.url.origin}/endpoints/${detail.id}`);
-			}}
-			enableMultiRowSelectionState={false}
-			data={getSortedAndOrderedEndpoints(localEndpoints, true)}
-			{columns}
-			onRowSelectionChange={(detail) => {}}
-		/>
-	</div>
-{/if}
-{#if endpointsToShow == 'localstorage'}
-	{#if showAddEndpoint}
-		<AddEndpointToLocalStorage onHide={() => (showAddEndpoint = false)} />
-	{/if}
-	{#if selectedRows.length > 0}
-		<button class="btn btn-sm btn-warning" onclick={deleteSelectedEndpoint}
-			>delete selected rows</button
-		>
-	{/if}
-	<div class="mx-auto pl-4 pt-4 h-[50vh] ">
-		{#key $localStorageEndpoints}
-			<ExplorerTable
-				onRowSelectionChange={HandleRowSelectionChange}
-				onRowClicked={(detail) => {
-					if (browser) {
-						window.open(
-							`${page.url.origin}/endpoints/localstorageEndpoint--${detail.id}`,
-							'_blank' // <- This is what makes it open in a new window.
-						);
-						//	window.location = `${page.url.origin}/endpoints/${detail.id}`;
-					}
-					//goto(`${page.url.origin}/endpoints/${detail.id}`);
-				}}
-				enableMultiRowSelectionState
-				data={$localStorageEndpoints}
-				{columns}
-			/>
-		{/key}
-	</div>
-{/if}
-{#if endpointsToShow == 'remote'}
-	<div class="w-full p-2">
-		<div class="card w-full glass">
-			<div class="card-body">
-				<h2 class="card-title">Add new Endpoint</h2>
-				<p>To remote db</p>
-				<a href="/endpoints/localEndpoint--nhost/mutations/insert_endpoints_one"
-					>/endpoints/localEndpoint--nhost/mutations/insert_endpoints_one</a
-				>
+<div class="p-4">
+    <div role="tablist" class="tabs tabs-lifted mb-4">
+        <button role="tab" class="tab {endpointsToShow === 'local' ? 'tab-active' : ''}" onclick={() => endpointsToShow = 'local'}>Local</button>
+        <button role="tab" class="tab {endpointsToShow === 'localstorage' ? 'tab-active' : ''}" onclick={() => endpointsToShow = 'localstorage'}>Local Storage</button>
+        <button role="tab" class="tab {endpointsToShow === 'remote' ? 'tab-active' : ''}" onclick={() => endpointsToShow = 'remote'}>Remote</button>
+    </div>
 
-				<a href="/endpoints/localEndpoint--nhostRelay/mutations/insert_endpoints_one"
-					>/endpoints/localEndpoint--nhostRelay/mutations/insert_endpoints_one</a
-				>
-			</div>
-		</div>
-	</div>
+    {#if endpointsToShow == 'local'}
+        <div class="mx-auto pl-4 pt-4 h-[50vh] border-base-300 bg-base-100 rounded-box p-6">
+            <ExplorerTable
+                onRowClicked={(detail) => {
+                    if (browser) {
+                        window.open(
+                            `${page.url.origin}/endpoints/localEndpoint--${detail.id}`,
+                            '_blank'
+                        );
+                    }
+                }}
+                enableMultiRowSelectionState={false}
+                data={getSortedAndOrderedEndpoints(localEndpoints, true)}
+                {columns}
+                onRowSelectionChange={(detail) => {}}
+            />
+        </div>
+    {/if}
 
-	<QMSWraper
-		isOutermostQMSWraper={true}
-		QMSName="endpoints"
-		tableColsData_StoreInitialValue={[
-			{ title: 'provider name', stepsOfFields: ['endpoints', 'configuration', 'id'] },
-			{ title: 'provider id', stepsOfFields: ['endpoints', 'configuration', 'id'] },
-			{ title: 'configuration', stepsOfFields: ['endpoints', 'configuration', 'configuration'] }
-		]}
-	>
-		<div class="pt-2">
-			<EndpointsList QMSName="endpoints" />
-		</div>
-	</QMSWraper>
-{/if}
+    {#if endpointsToShow == 'localstorage'}
+        <div class="border-base-300 bg-base-100 rounded-box p-6">
+            <div class="flex justify-between items-center mb-4">
+                 <div class="flex space-x-2">
+                    <button class="btn btn-primary btn-sm" onclick={() => showAddEndpoint = true}>
+                        Add Endpoint
+                    </button>
+                    {#if selectedRows.length > 0}
+                        <button class="btn btn-sm btn-warning" onclick={deleteSelectedEndpoint}>
+                            Delete Selected ({selectedRows.length})
+                        </button>
+                    {/if}
+                 </div>
+            </div>
 
-<div class="fixed bottom-1 right-1 flex space-x-2">
-	<button
-		class="btn btn-xs"
-		onclick={() => {
-			endpointsToShow = 'local';
-		}}
-	>
-		local
-	</button>
-	<div class="flex">
-		<button
-			class="btn btn-xs"
-			onclick={() => {
-				endpointsToShow = 'localstorage';
-			}}
-		>
-			localstorage
-		</button>
-		<button
-			class="btn btn-xs"
-			onclick={() => {
-				endpointsToShow = 'localstorage';
-				showAddEndpoint = true;
-			}}
-		>
-			+
-		</button>
-	</div>
-	<button
-		class="btn btn-xs"
-		onclick={() => {
-			endpointsToShow = 'remote';
-		}}
-	>
-		remote
-	</button>
+            {#if showAddEndpoint}
+                <AddEndpointToLocalStorage onHide={() => (showAddEndpoint = false)} />
+            {/if}
+
+            <div class="mx-auto pt-4 h-[50vh]">
+                {#key $localStorageEndpoints}
+                    <ExplorerTable
+                        onRowSelectionChange={HandleRowSelectionChange}
+                        onRowClicked={(detail) => {
+                            if (browser) {
+                                window.open(
+                                    `${page.url.origin}/endpoints/localstorageEndpoint--${detail.id}`,
+                                    '_blank'
+                                );
+                            }
+                        }}
+                        enableMultiRowSelectionState
+                        data={$localStorageEndpoints}
+                        {columns}
+                    />
+                {/key}
+            </div>
+        </div>
+    {/if}
+
+    {#if endpointsToShow == 'remote'}
+        <div class="border-base-300 bg-base-100 rounded-box p-6">
+            <div class="w-full mb-4">
+                <div class="card w-full glass">
+                    <div class="card-body">
+                        <h2 class="card-title">Add new Endpoint</h2>
+                        <p>To remote db</p>
+                        <div class="flex flex-col space-y-2">
+                            <a class="btn btn-outline btn-sm justify-start" href="/endpoints/localEndpoint--nhost/mutations/insert_endpoints_one">
+                                /endpoints/localEndpoint--nhost/mutations/insert_endpoints_one
+                            </a>
+                            <a class="btn btn-outline btn-sm justify-start" href="/endpoints/localEndpoint--nhostRelay/mutations/insert_endpoints_one">
+                                /endpoints/localEndpoint--nhostRelay/mutations/insert_endpoints_one
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <QMSWraper
+                isOutermostQMSWraper={true}
+                QMSName="endpoints"
+                tableColsData_StoreInitialValue={[
+                    { title: 'provider name', stepsOfFields: ['endpoints', 'configuration', 'id'] },
+                    { title: 'provider id', stepsOfFields: ['endpoints', 'configuration', 'id'] },
+                    { title: 'configuration', stepsOfFields: ['endpoints', 'configuration', 'configuration'] }
+                ]}
+            >
+                <div class="pt-2">
+                    <EndpointsList QMSName="endpoints" />
+                </div>
+            </QMSWraper>
+        </div>
+    {/if}
 </div>
