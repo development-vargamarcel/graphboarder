@@ -7,7 +7,9 @@
 	let elements = $state(rawValue.map((el, i) => {
 		return { chd_rawValue: el, chd_dispatchValue: dispatchValue[i] };
 	}));
-	console.log(elements);
+	$effect(() => {
+		console.log(elements);
+	});
 	const add = () => {
 		elements.push({ chd_rawValue: null });
 		elements = elements;

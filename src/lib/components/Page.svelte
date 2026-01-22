@@ -7,11 +7,11 @@
 	import { goto } from '$app/navigation';
 	import { showTabs } from '$lib/stores/showTabs';
 	interface Props {
-		backPath: any;
-		CustomId: any;
-		MenuItem: any;
+		backPath?: any;
+		CustomId?: any;
+		MenuItem?: any;
 		RememberScroll?: boolean;
-		title: any;
+		title?: any;
 		children?: import('svelte').Snippet;
 	}
 

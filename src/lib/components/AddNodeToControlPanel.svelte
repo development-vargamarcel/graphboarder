@@ -21,6 +21,8 @@
 
 <button
 	class="flex btn btn-xs "
+	aria-label={objIsStarred ? 'Remove from control panel' : 'Add to control panel'}
+	title={objIsStarred ? 'Remove from control panel' : 'Add to control panel'}
 	onclick={() => {
 		if (objIsStarred) {
 			mergedChildren_controlPanel_Store.delete(currentObject);

@@ -68,24 +68,30 @@
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
 	const nodeRootType = getRootType(null, node.dd_rootName, schemaData);
-	let groupArgsPossibilities = $state();
-	if (group.group_isRoot) {
-		groupArgsPossibilities = rootArgs;
-	} else if (node?.inputFields) {
-		groupArgsPossibilities = node?.inputFields;
-	} else if (parent_inputFields) {
-		groupArgsPossibilities = parent_inputFields;
-	} else {
-		groupArgsPossibilities = getRootType(null, group.dd_rootName, schemaData).inputFields;
-	}
-	if (!groupArgsPossibilities) {
-		groupArgsPossibilities = node?.args;
-	}
+	let groupArgsPossibilities = $derived.by(() => {
+		let possibilities;
+		if (group.group_isRoot) {
+			possibilities = rootArgs;
+		} else if (node?.inputFields) {
+			possibilities = node?.inputFields;
+		} else if (parent_inputFields) {
+			possibilities = parent_inputFields;
+		} else {
+			possibilities = getRootType(null, group.dd_rootName, schemaData).inputFields;
+		}
+		if (!possibilities) {
+			possibilities = node?.args;
+		}
+		return possibilities;
+	});
+
 	let baseFilterOperators = ['_and', '_or', '_not']; //!!!this might create problem if there is some nonBase operator with the same name as one of these
 	// groupArgsPossibilities = groupArgsPossibilities.filter((arg) => {
 	// 	return !baseFilterOperators.includes(arg.dd_displayName);
 	// });
-	console.log({ groupArgsPossibilities, node });
+	$effect(() => {
+		console.log({ groupArgsPossibilities, node });
+	});
 	let predefinedFirstSteps = group.group_isRoot ? [] : [group.group_name];
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 </script>

@@ -345,7 +345,7 @@
 						/>
 					</label>
 				</div>
-				<btn
+				<button
 					class="btn btn-xs btn-warning flex-1"
 					onclick={() => {
 						activeArgumentsDataGrouped_Store.delete_activeArgument(
@@ -356,7 +356,7 @@
 					}}
 				>
 					<i class="bi bi-trash-fill"></i>
-				</btn>
+				</button>
 				{#if !CPItemContext}
 					<AddNodeToControlPanel {node} />
 				{/if}

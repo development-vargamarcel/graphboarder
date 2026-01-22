@@ -9,7 +9,7 @@
 		rows?: any;
 		infiniteHandler: any;
 		infiniteId: any;
-		rowSelectionState: any;
+		rowSelectionState?: any;
 		onRowSelectionChange?: (detail: any) => void;
 		onHideColumn?: (detail: { column: string }) => void;
 		onRowClicked?: (detail: any) => void;
@@ -23,7 +23,7 @@
 		rows = $bindable([]),
 		infiniteHandler,
 		infiniteId,
-		rowSelectionState,
+		rowSelectionState = {},
 		onRowSelectionChange,
 		onHideColumn,
 		onRowClicked

@@ -62,14 +62,14 @@
 	<div class="flex space-x-2">
 		<div class="flex space-x-2 w-1/3">
 			{#if dd_canExpand}
-				<div class="btn btn-xs  p-1 rounded normal-case" onclick={expand}>
+				<button class="btn btn-xs  p-1 rounded normal-case" onclick={expand}>
 					{showExpand ? '-' : '+'}
-				</div>
+				</button>
 			{:else}
-				<div class="btn btn-xs  p-1 rounded normal-case btn-disabled" onclick={expand}>+</div>
+				<button class="btn btn-xs  p-1 rounded normal-case btn-disabled" onclick={expand}>+</button>
 			{/if}
 			<div class="bg-secondary p-1 rounded">{index + 1}</div>
-			<div
+			<button
 				class="btn btn-xs btn-info normal-case font-light "
 				onclick={() => {
 					console.log(type);
@@ -77,7 +77,7 @@
 				}}
 			>
 				{dd_displayName}
-			</div>
+			</button>
 		</div>
 
 		<div class="w-1/2 ">
@@ -85,7 +85,7 @@
 				<div class="bg-secondary p-1 rounded ">{dd_kindsArray.join(' of ')}</div>
 
 				{#if !dd_canExpand}
-					<div
+					<button
 						class="btn btn-xs  bg-base-200 p-1 rounded"
 						onclick={() => {
 							console.log(getRootType(null, dd_rootName, schemaData));
@@ -96,10 +96,10 @@
 						{:else}
 							{dd_namesArray[dd_namesArray.length - 1]}
 						{/if}
-					</div>
+					</button>
 				{/if}
 				{#if dd_canExpand}
-					<div
+					<button
 						class="btn btn-xs  bg-base-200  rounded px-2 py-1"
 						onclick={() => {
 							console.log(getRootType(null, dd_rootName, schemaData));
@@ -112,7 +112,7 @@
 						{:else}
 							{'same'}
 						{/if}
-					</div>
+					</button>
 				{/if}
 			</div>
 
@@ -121,6 +121,8 @@
 		<div class="w-1/8 text-center text-xs"></div>
 	</div>
 {:else if template == 'changeArguments'}
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 	<!-- svelte-ignore a11y_label_has_associated_control -->
 	<label
 		class=" cursor-pointer  hover:text-primary px-2 py-2 rounded-box flex text-base min-w-max  w-full active:font-black duration-100 select-none"

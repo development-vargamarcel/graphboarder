@@ -15,6 +15,7 @@
 	MenuItem={true}
 	CustomId={page.params.item}
 	backPath={`/mutations/${page.params.queryName}`}
+	title={page.params.item}
 >
 	{@render children?.()}
 </Page>

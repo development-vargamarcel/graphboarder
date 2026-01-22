@@ -338,6 +338,10 @@
 			<ExplorerTable
 				bind:data={whatToShow}
 				{columns}
+				infiniteId={0}
+				infiniteHandler={() => {}}
+				idColName={undefined}
+				requiredColNames={undefined}
 				onRowSelectionChange={(detail) => {
 					selectedRowsOriginal = detail.rows.map((row) => row.original);
 					let columnNames = [];
@@ -366,6 +370,7 @@
 							{type}
 							template="default"
 							depth={0}
+							stepsOfFields={[]}
 						/>
 					{/each}
 				{/key}

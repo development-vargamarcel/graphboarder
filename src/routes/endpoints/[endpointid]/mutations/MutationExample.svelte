@@ -70,13 +70,15 @@
 
 	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], schemaData);
 
-	let queryData = $state();
+	let queryData: any = $state({});
 	let rows = $state([]);
 	let rowsCurrent = [];
 	let loadedF;
 	let completeF;
 	let infiniteId = $state(Math.random());
-	console.log({ infiniteId });
+	$effect(() => {
+		console.log({ infiniteId });
+	});
 	function infiniteHandler({ detail: { loaded, complete } }) {
 		loadedF = loaded;
 		completeF = complete;
