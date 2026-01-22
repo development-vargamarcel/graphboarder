@@ -313,7 +313,9 @@
 	) : null;
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext || {};
 
-	console.log('qqqqqqwwwww', { getManyQMS, showSelectQMSModal });
+	$effect(() => {
+		console.log('qqqqqqwwwww', { getManyQMS, showSelectQMSModal });
+	});
 
 	// Effects
 	$effect(() => {

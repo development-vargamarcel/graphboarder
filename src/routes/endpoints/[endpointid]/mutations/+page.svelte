@@ -7,7 +7,7 @@
 	let input = $state();
 </script>
 
-<Page MenuItem={true} CustomId="fdsfds" backPath={`/`}>
+<Page MenuItem={true} CustomId="fdsfds" backPath={`/`} title="Mutations">
 	<div class="overflow-auto h-full">
 		<input
 			class="input input-xs w-32 m-5"

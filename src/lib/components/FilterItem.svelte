@@ -202,7 +202,7 @@
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-<btn
+<button
 	class="btn  btn-{size} {btnExtraClass}  flex  w-full normal-case"
 	onclickcapture={(e) => { e.preventDefault(); e.stopPropagation(); showModalOrToggle(); }}
 >
@@ -223,7 +223,7 @@
 	{#if !isToggle && !extraInfo}
 		<i class="bi bi-chevron-down ml-2 text-xs"></i>
 	{/if}
-</btn>
+</button>
 {#if modalVisible}
 	<Modal onApply={applyFilter} onCancel={hideModal}>
 		<div class="rounded-box overflow-hidden ">

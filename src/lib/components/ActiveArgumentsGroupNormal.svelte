@@ -88,6 +88,7 @@
 				<div class="grid   content-center  rounded-full ">
 					<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 					<div
+						role="button"
 						tabindex={dragDisabled ? 0 : -1}
 						aria-label="drag-handle"
 						class="bi bi-grip-vertical ml-2  -mr-1"

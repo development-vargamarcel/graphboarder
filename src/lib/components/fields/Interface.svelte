@@ -26,18 +26,24 @@
 		typeInfo = $bindable(),
 		alwaysOn_interfacePicker = false,
 		dispatchValue = $bindable(),
-		rawValue = $bindable(typeExtraData?.defaultValue),
+		rawValue = $bindable(),
 		onChanged
 	}: Props = $props();
+
+	$effect(() => {
+		if (rawValue === undefined && typeExtraData?.defaultValue !== undefined) {
+			rawValue = typeExtraData.defaultValue;
+		}
+	});
 
 	$effect(() => {
 		if ($choosenDisplayInterface) {
 			typeExtraData = endpointInfo.get_typeExtraData(typeInfo, $choosenDisplayInterface);
 			typeInfo.chosenDisplayInterface = $choosenDisplayInterface;
-			if (typeof rawValue == undefined) {
+			if (typeof rawValue == 'undefined') {
 				rawValue = typeExtraData.defaultValue;
 			}
-			if (typeof dispatchValue == undefined) {
+			if (typeof dispatchValue == 'undefined') {
 				dispatchValue = typeExtraData.use_transformer(typeExtraData.defaultValue);
 			}
 		}
