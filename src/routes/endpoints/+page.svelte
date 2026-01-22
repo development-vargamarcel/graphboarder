@@ -63,7 +63,7 @@
     </div>
 
     {#if endpointsToShow == 'local'}
-        <div class="mx-auto pl-4 pt-4 h-[50vh] border-base-300 bg-base-100 rounded-box p-6">
+        <div class="mx-auto h-[50vh] border-base-300 bg-base-100 rounded-box p-2 md:p-6">
             <ExplorerTable
                 onRowClicked={(detail) => {
                     if (browser) {
@@ -82,7 +82,7 @@
     {/if}
 
     {#if endpointsToShow == 'localstorage'}
-        <div class="border-base-300 bg-base-100 rounded-box p-6">
+        <div class="border-base-300 bg-base-100 rounded-box p-2 md:p-6">
             <div class="flex justify-between items-center mb-4">
                  <div class="flex space-x-2">
                     <button class="btn btn-primary btn-sm" onclick={() => showAddEndpoint = true}>
@@ -122,7 +122,7 @@
     {/if}
 
     {#if endpointsToShow == 'remote'}
-        <div class="border-base-300 bg-base-100 rounded-box p-6">
+        <div class="border-base-300 bg-base-100 rounded-box p-2 md:p-6">
             <div class="w-full mb-4">
                 <div class="card w-full glass">
                     <div class="card-body">

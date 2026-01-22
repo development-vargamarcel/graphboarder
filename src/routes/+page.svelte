@@ -5,8 +5,8 @@
 	<title>Home</title>
 </svelte:head>
 
-<main class="pt-20">
-	<div class="card w-[90vw] bg-base-100 shadow-xl mx-auto">
+<main class="pt-20 p-4">
+	<div class="card w-full max-w-lg bg-base-100 shadow-xl mx-auto">
 		<div class="card-body ">
 			<h2 class="card-title text-base-content">GraphQL Endpoint Explorer</h2>
 			<p class="text-accent">Select a demonstration endpoint or connect your own GraphQL API to begin exploring and visualizing your data.</p>
