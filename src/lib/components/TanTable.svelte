@@ -28,7 +28,7 @@
 		enableRowSelectionState = true,
 		infiniteHandler,
 		infiniteId,
-		data,
+		data = $bindable(),
 		cols = [],
 		rowSelectionState = $bindable({}),
 		onRowSelectionChange,
