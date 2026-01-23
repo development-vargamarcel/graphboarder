@@ -24,6 +24,10 @@
 	import Modal from '$lib/components/Modal.svelte';
 	import GraphqlCodeDisplay from '$lib/components/GraphqlCodeDisplay.svelte';
 	import ControlPanel from '$lib/components/ControlPanel.svelte';
+	import { addToHistory } from '$lib/stores/queryHistory';
+	import QueryHistory from '$lib/components/QueryHistory.svelte';
+	import { updateStoresFromAST } from '$lib/utils/astToUIState';
+	import { parse } from 'graphql';
 
 	interface Props {
 		prefix?: string;
@@ -98,6 +102,7 @@
 	let showNonPrettifiedQMSBody = false;
 	let showModal = $state(false);
 	let showActiveFilters: boolean | undefined;
+	let showHistory = $state(false);
 
 	// Query execution function
 	const runQuery = (queryBody: string) => {
@@ -126,6 +131,16 @@
 				if (rowsCurrent && !Array.isArray(rowsCurrent)) {
 					rowsCurrent = [rowsCurrent];
 				}
+
+				if (result.data) {
+					addToHistory({
+						query: queryBody,
+						endpointId: endpointInfo.id,
+						operationName: QMSName,
+						rowsCount: rowsCurrent?.length || 0
+					});
+				}
+
 				if ($paginationOptions.infiniteScroll) {
 					if (
 						paginationTypeInfo?.isFirstPage(paginationState, currentQMS_info.dd_paginationArgs) &&
@@ -206,6 +221,25 @@
 
 			tableColsData_Store.addColumn(tableColData);
 			column_stepsOfFields = '';
+		}
+	};
+
+	const restoreQuery = (item: any) => {
+		try {
+			const ast = parse(item.query);
+			updateStoresFromAST(
+				ast,
+				currentQMS_info,
+				schemaData,
+				endpointInfo,
+				activeArgumentsDataGrouped_Store,
+				tableColsData_Store,
+				paginationState
+			);
+			showHistory = false;
+		} catch (e) {
+			console.error('Failed to restore query', e);
+			alert('Failed to restore query: ' + (e as Error).message);
 		}
 	};
 
@@ -332,22 +366,33 @@
 			/>
 		</div>
 	{/if}
-	<button class="btn btn-xs btn-primary ">
+	<button class="btn btn-xs btn-primary " aria-label="Add Column">
 		<i class="bi bi-plus-circle-fill "></i>
+	</button>
+	<button
+		class="btn btn-xs btn-secondary"
+		onclick={() => {
+			showHistory = true;
+		}}
+	>
+		History
 	</button>
 </div>
 
 {@render children?.()}
 {#if queryData.error}
-	<div class="px-4 mx-auto  mb-2">
-		<div class="alert alert-error shadow-lg ">
-			<div>
-				<button class="btn btn-ghost btn-sm p-0">
-					<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<div class="px-4 mx-auto mb-2">
+		<div class="alert alert-error shadow-lg flex flex-col items-start">
+			<div class="flex justify-between w-full">
+				<span class="font-bold">Error</span>
+				<button
+					class="btn btn-ghost btn-sm p-0"
+					aria-label="Dismiss error"
+					onclick={() => {
+						queryData.error = null;
+					}}
+				>
 					<svg
-						onclick={() => {
-							queryData.error = null;
-						}}
 						xmlns="http://www.w3.org/2000/svg"
 						class="stroke-current flex-shrink-0 h-6 w-6"
 						fill="none"
@@ -356,12 +401,21 @@
 							stroke-linecap="round"
 							stroke-linejoin="round"
 							stroke-width="2"
-							d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+							d="M6 18L18 6M6 6l12 12"
 						/></svg
 					>
 				</button>
-
-				<span class="max-h-20 overflow-auto">{queryData.error}</span>
+			</div>
+			<div class="max-h-60 overflow-auto w-full">
+				{#if typeof queryData.error === 'string' && queryData.error.trim().startsWith('{')}
+					<pre class="text-xs bg-base-100/20 p-2 rounded">{JSON.stringify(
+							JSON.parse(queryData.error),
+							null,
+							2
+						)}</pre>
+				{:else}
+					<span>{queryData.error}</span>
+				{/if}
 			</div>
 		</div>
 	</div>
@@ -371,6 +425,10 @@
 {/if}
 {#if showQMSBody}
 	<GraphqlCodeDisplay {showNonPrettifiedQMSBody} {prefix} value={$QMS_bodyPartsUnifier_StoreDerived} />
+{/if}
+
+{#if showHistory}
+	<QueryHistory onRestore={restoreQuery} onClose={() => (showHistory = false)} />
 {/if}
 
 <div class="md:px-2">
