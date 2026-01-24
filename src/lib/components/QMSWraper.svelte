@@ -1,3 +1,8 @@
+<!--
+	@component
+	QMSWraper (Query/Mutation/Subscription Wrapper) establishes the context for a specific GraphQL operation.
+	It handles argument state, pagination, column selection, and query generation.
+-->
 <script lang="ts">
 	import { Create_paginationOptions } from '$lib/stores/pagination/paginationOptions';
 	import { Create_activeArgumentsDataGrouped_Store } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';

@@ -450,6 +450,14 @@ export const getStepsOfFieldsForDataGetter = (
 	return []
 }
 
+/**
+ * Traverses a result object using a path of field names (steps) to retrieve a nested value.
+ * Handles arrays by mapping over them or taking the first element depending on context.
+ * @param colInfo - Column metadata containing the path (stepsOfFields).
+ * @param row_resultData - The data object to traverse.
+ * @param stepsOfFieldsInput - Optional override for the path.
+ * @returns The value found at the end of the path.
+ */
 export const getDataGivenStepsOfFields = (
 	colInfo: TableColumnData,
 	row_resultData: unknown,
@@ -1228,6 +1236,12 @@ export const get_nodeFieldsQMS_info = (
 	return nodeFieldsQMS_info;
 };
 
+/**
+ * Verifies that a path of fields (stepsOfFields) exists in the schema.
+ * @param stepsOfFields - The path of field names.
+ * @param schemaData - The schema data.
+ * @returns The field definition of the last step if valid, otherwise throws an error.
+ */
 export const check_stepsOfFields = (stepsOfFields: string[], schemaData: SchemaData): FieldWithDerivedData | undefined => {
 	if (!stepsOfFields || stepsOfFields.length === 0) return undefined;
 
@@ -1518,6 +1532,14 @@ export const hasDeepProperty = (obj: Record<string, unknown>, propertyPath: stri
 	}
 	return true;
 }
+/**
+ * Traverses the GraphQL schema structure to find a nested field definition.
+ * @param obj - The starting field or type definition.
+ * @param propertyPath - Array of field names representing the path.
+ * @param schemaData - The schema data store.
+ * @param fieldsType - Whether to look in 'fields' or 'inputFields'.
+ * @returns The found field definition or null.
+ */
 export const getDeepField = (
 	obj: Partial<FieldWithDerivedData>,
 	propertyPath: string[],
@@ -1668,7 +1690,7 @@ export const getQMSWraperCtxDataGivenControlPanelItem = (CPItem: { stepsOfFields
 	});
 	return QMSWraperCtxData;
 };
-export const getSortedAndOrderedEndpoints = (endpoints: { id: number; isMantained?: boolean }[], filterOutIfNotMaintaned: boolean = false): { id: number; isMantained?: boolean }[] => {
+export const getSortedAndOrderedEndpoints = (endpoints: { id: number | string; isMantained?: boolean }[], filterOutIfNotMaintaned: boolean = false): { id: number | string; isMantained?: boolean }[] => {
 	const sortedEndpoints = endpoints.sort((a, b) => {
 		if (a.id > b.id) {
 			return 1;

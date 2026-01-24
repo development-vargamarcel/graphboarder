@@ -36,6 +36,8 @@
 	}} -->
 
 <div
+	role="button"
+	tabindex="0"
 	class="w-full h-screen  {forceVisibleSidebar
 		? 'visible '
 		: ' invisible'} fixed left-0  z-50  md:z-0 md:visible md:static flex  "
@@ -43,6 +45,13 @@
 	onclick={() => {
 		if (forceVisibleSidebar) {
 			forceVisibleSidebar = false;
+		}
+	}}
+	onkeydown={(e) => {
+		if (e.key === 'Enter' || e.key === ' ') {
+			if (forceVisibleSidebar) {
+				forceVisibleSidebar = false;
+			}
 		}
 	}}
 >
@@ -53,8 +62,8 @@
 {#if forceVisibleSidebar}
 	<div
 		class=" bg-base-100/50 fixed top-0 z-50 md:hidden h-screen w-screen"
-		in:fade|global={{ duration: 300, opacity: 1 }}
-		out:fade|global={{ duration: 300, opacity: 1 }}
+		in:fade|global={{ duration: 300 }}
+		out:fade|global={{ duration: 300 }}
 	></div>
 	<div
 		class="md:hidden fixed top-0 z-50"
