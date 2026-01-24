@@ -156,7 +156,16 @@
 	});
 </script>
 
-<div class="mockup-code bg-base text-content my-1 mx-2 px-2 ">
+<div class="mockup-code bg-base text-content my-1 mx-2 px-2 relative group">
+	<button
+		class="btn btn-xs btn-ghost absolute top-3 right-40 opacity-0 group-hover:opacity-100 transition-opacity"
+		aria-label="Copy to Clipboard"
+		onclick={() => {
+			navigator.clipboard.writeText(value);
+		}}
+	>
+		<i class="bi bi-clipboard"></i> Copy
+	</button>
 	<div class="max-h-[50vh] overflow-y-auto">
 		{#if showNonPrettifiedQMSBody}
 			<code class="px-10">{value}</code>

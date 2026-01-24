@@ -15,7 +15,7 @@
 	}
 
 	let { prefix = '', children }: Props = $props();
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	let QMSMainWraperContext = getContext<any>(`${prefix}QMSMainWraperContext`);
 	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;

@@ -399,7 +399,7 @@ export const getFields_Grouped = (
 	} else if (node_rootType?.inputFields) {
 		fieldsArray = node_rootType?.inputFields
 	} else if (node_rootType?.enumValues) {
-		fieldsArray = node?.enumValues
+		fieldsArray = (node as any)?.enumValues
 	}
 
 
@@ -685,8 +685,8 @@ export const generate_derivedData = (
 		const baseFilterOperatorNames = ['_and', '_or', '_not', 'and', 'or', 'not']
 		let dd_baseFilterOperators: string[] | undefined = []
 		let dd_nonBaseFilterOperators: string[] | undefined = []
-		if (type?.inputFields) {
-			type.inputFields
+		if ((type as any)?.inputFields) {
+			(type as any).inputFields
 				.forEach(inputField => {
 					if (baseFilterOperatorNames.includes(inputField.name)) {
 						dd_baseFilterOperators?.push(inputField.name)
@@ -722,15 +722,15 @@ export const generate_derivedData = (
 	////////// others
 	if (derivedData?.dd_baseFilterOperators) {
 		let defaultdisplayInterface = get_displayInterface(derivedData, endpointInfo);
-		if (type?.inputFields !== undefined) {
-			type.inputFields.forEach((inputField) => {
+		if ((type as any)?.inputFields !== undefined) {
+			(type as any).inputFields.forEach((inputField) => {
 				Object.assign(inputField, { dd_displayInterface: defaultdisplayInterface });
 			});
 		}
 	}
 	if (derivedData.args) {
-		mark_paginationArgs(derivedData.args, endpointInfo);
-		derivedData.dd_paginationArgs = derivedData.args.filter((arg) => {
+		mark_paginationArgs(derivedData.args as any, endpointInfo);
+		derivedData.dd_paginationArgs = (derivedData.args as any).filter((arg) => {
 			return arg.dd_isPaginationArg;
 		});
 		derivedData.dd_paginationType = get_paginationType(derivedData.dd_paginationArgs, endpointInfo, schemaData);
