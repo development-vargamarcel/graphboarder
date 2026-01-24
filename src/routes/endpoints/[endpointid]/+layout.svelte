@@ -3,9 +3,9 @@
 	import type { LayoutData } from './$types';
 
 	import { page } from '$app/stores';
-	let localStorageEndpoints = getContext('localStorageEndpoints');
+	let localStorageEndpoints = getContext('localStorageEndpoints') as any;
 	let endpointConfiguration = $state();
-	let endpointid = $state();
+	let endpointid = $state<string>();
 	import EndpointsList from '$lib/components/EndpointsList.svelte';
 	import QMSWraper from '$lib/components/QMSWraper.svelte';
 	import SetEndpointConfigurationToContext from '$lib/components/SetEndpointConfigurationToContext.svelte';
@@ -14,6 +14,8 @@
 	import { localEndpoints } from '$lib/stores/testData/testEndpoints';
 	import { stringToJs } from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
+	import { Logger } from '$lib/utils/logger';
+
 	interface Props {
 		data: LayoutData;
 		children?: import('svelte').Snippet;
@@ -40,7 +42,7 @@
 		}
 	});
 	$effect(() => {
-		console.log({ endpointid });
+		Logger.debug({ endpointid });
 	});
 </script>
 
@@ -53,8 +55,9 @@
 				</div>
 				<div class="flex flex-col w-full md:w-[65vw]   grow h-screen">
 					<div class=" bg-base-100 min-h-[50px] flex">
-						<label
+						<button
 							class="btn btn-square btn-ghost  md:hidden"
+							aria-label="Toggle Sidebar"
 							onclick={() => {
 								forceVisibleSidebar = true;
 							}}
@@ -71,7 +74,7 @@
 									d="M4 6h16M4 12h16M4 18h16"
 								/></svg
 							>
-						</label>
+						</button>
 						<div></div>
 					</div>
 					{@render children?.()}

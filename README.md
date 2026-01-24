@@ -99,6 +99,23 @@ Inside your component (e.g., `MyArticlesComponent.svelte`), you can access the s
 
 This project uses Svelte 5 Runes (`$state`, `$derived`, `$props`). Ensure your environment supports it.
 
+### Type Safety & Context
+
+To improve Developer Experience (DX) and type safety, use the provided context interfaces when accessing `MainWraper` or `QMSWraper` contexts.
+
+```typescript
+import { getContext } from 'svelte';
+import type { QMSMainWraperContext, QMSWraperContext } from 'auto-gql'; // or '$lib/types/index'
+
+// Accessing MainWraper context
+let mainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+const endpointInfo = mainWraperContext?.endpointInfo; // EndpointInfoStore
+const schemaData = mainWraperContext?.schemaData; // Readable<SchemaData>
+
+// Accessing QMSWraper context
+const qmsContext = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+```
+
 ### Running Tests
 
 ```bash

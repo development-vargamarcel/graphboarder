@@ -2,9 +2,10 @@
 	import MutationExample from './MutationExample.svelte';
 	import QMSWraper from '$lib/components/QMSWraper.svelte';
 	import Page from '$lib/components/Page.svelte';
+	import { Logger } from '$lib/utils/logger';
 
-	let QMSName = $state();
-	let input = $state();
+	let QMSName = $state<string>();
+	let input = $state<HTMLInputElement>();
 </script>
 
 <Page MenuItem={true} CustomId="fdsfds" backPath={`/`} title="Mutations">
@@ -14,9 +15,11 @@
 			type="text"
 			bind:this={input}
 			onchange={(e) => {
-				QMSName = input.value;
-				console.log(QMSName);
-				console.log(input.value);
+				if (input) {
+					QMSName = input.value;
+					Logger.debug(QMSName);
+					Logger.debug(input.value);
+				}
 			}}
 		/>
 		{#key QMSName}

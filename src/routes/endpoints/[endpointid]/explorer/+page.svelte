@@ -6,17 +6,19 @@
 	import { getContext } from 'svelte';
 	import ExplorerTable from '$lib/components/ExplorerTable.svelte';
 	import TypeList from '$lib/components/TypeList.svelte';
+	import type { QMSMainWraperContext } from '$lib/types/index';
+	import { Logger } from '$lib/utils/logger';
 
 	const prefix = '';
 
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const schemaData = QMSMainWraperContext?.schemaData; //console.log($schemaData);
+	let mainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const schemaData = mainWraperContext?.schemaData; //console.log($schemaData);
 
 	let rootTypes = $schemaData.rootTypes;
 	let queries = $schemaData.queryFields;
 	let mutations = $schemaData.mutationFields;
 	let whatToShow = $state([]);
-	let whatToShowLastUsed = $state();
+	let whatToShowLastUsed = $state<() => void>();
 	let sortingInputValue = $state('');
 	let sortingArray = $state([]);
 	let caseSensitive = $state(false);
@@ -64,7 +66,7 @@
 		});
 	};
 	const showRootTypes = () => {
-		//console.log(rootTypes);
+		//Logger.debug(rootTypes);
 		whatToShow = rootTypes?.sort((a, b) => {
 			let ea = a.dd_rootName;
 			let eb = b.dd_rootName;
@@ -81,7 +83,7 @@
 
 	const showQueries = () => {
 		if (queries) {
-			//console.log(queries);
+			//Logger.debug(queries);
 			whatToShow = queries?.sort((a, b) => {
 				let ea = a.dd_rootName;
 				let eb = b.dd_rootName;
@@ -250,8 +252,8 @@
 	const toggleTable = () => {
 		showTable = !showTable;
 	};
-	let csvData = $state();
-	let selectedRowsOriginal = $state();
+	let csvData = $state<string>('');
+	let selectedRowsOriginal = $state<any[]>([]);
 </script>
 
 <Page MenuItem={true}>
@@ -300,7 +302,7 @@
 				<button
 					class="btn btn-xs btn-primary"
 					onclick={() => {
-						console.log(selectedRowsOriginal);
+						Logger.debug(selectedRowsOriginal);
 						if (selectedRowsOriginal.length == 0) {
 							return alert('no rows selected');
 						}

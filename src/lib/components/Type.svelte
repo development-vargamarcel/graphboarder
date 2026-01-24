@@ -6,31 +6,15 @@
 	import TypeInfoDisplay from '$lib/components/TypeInfoDisplay.svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { getContext } from 'svelte';
+	import type { QMSMainWraperContext } from '$lib/types/index';
+	import { get } from 'svelte/store';
 
 	const prefix = '';
 
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	let mainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	const isForExplorer = OutermostQMSWraperContext?.extraInfo?.isForExplorer;
-	const schemaData = QMSMainWraperContext?.schemaData;
-	let {
-		dd_kindsArray,
-		dd_namesArray,
-		dd_rootName,
-		dd_displayName,
-		dd_kindEl,
-		dd_kindEl_NON_NULL,
-		dd_kindList,
-		dd_kindList_NON_NULL,
-		dd_NON_NULL
-	} = type;
-	if (!stepsOfFields) {
-		stepsOfFields = [dd_displayName];
-	} else {
-		stepsOfFields = [...stepsOfFields, dd_displayName];
-	}
-	
-	let inDuration = $state(300);
+	const schemaData = mainWraperContext?.schemaData;
 
 	interface Props {
 		template: any;
@@ -52,6 +36,26 @@
 		depth = 0,
 		showExpand = $bindable(false)
 	}: Props = $props();
+
+	let {
+		dd_kindsArray,
+		dd_namesArray,
+		dd_rootName,
+		dd_displayName,
+		dd_kindEl,
+		dd_kindEl_NON_NULL,
+		dd_kindList,
+		dd_kindList_NON_NULL,
+		dd_NON_NULL
+	} = type;
+
+	if (!stepsOfFields) {
+		stepsOfFields = [dd_displayName];
+	} else {
+		stepsOfFields = [...stepsOfFields, dd_displayName];
+	}
+
+	let inDuration = $state(300);
 	let expandData = $state({});
 	let canExpand = $state(false);
 	if (!dd_kindsArray?.includes('SCALAR') && dd_kindsArray.length > 0) {
@@ -60,7 +64,7 @@
 
 	const expand = () => {
 		//console.log('dd_rootName', dd_rootName);
-		expandData = getRootType($schemaData.rootTypes, dd_rootName, schemaData);
+		expandData = getRootType(get(schemaData).rootTypes, dd_rootName, get(schemaData));
 		if (expandData) {
 			// if (!showExpand) {
 			// 	stepsOfFields.push(dd_displayName);
@@ -88,9 +92,11 @@
 		}
 	};
 
-	if (canExpand && isOnMainList && !isForExplorer) {
-		expand();
-	}
+	$effect(() => {
+		if (canExpand && isOnMainList && !isForExplorer) {
+			expand();
+		}
+	});
 </script>
 
 {#if template == 'default'}

@@ -28,7 +28,9 @@
 		TableColumnData,
 		SchemaData,
 		EndpointInfoStore,
-		PaginationTypeInfo
+		PaginationTypeInfo,
+		QMSMainWraperContext as QMSMainWraperContextType,
+		QMSWraperContext as QMSWraperContextType
 	} from '$lib/types/index';
 	import { get, writable } from 'svelte/store';
 	import { Create_mergedChildren_finalGqlArgObj_Store } from '$lib/stores/QMSHandling/mergedChildren_finalGqlArgObj_Store';
@@ -79,7 +81,7 @@
 	}: Props = $props();
 
 	// Move logic after props destructuring to avoid TDZ
-	let QMSMainWraperContext = getContext<any>(`${prefix}QMSMainWraperContext`);
+	let QMSMainWraperContext = getContext<QMSMainWraperContextType>(`${prefix}QMSMainWraperContext`);
 	const endpointInfo: EndpointInfoStore = QMSMainWraperContext?.endpointInfo;
 	const schemaData: SchemaData = QMSMainWraperContext?.schemaData;
 
@@ -104,7 +106,7 @@
 
 	// Calculate defaults that depend on other props/context
 	if (isOutermostQMSWraper === undefined) {
-		isOutermostQMSWraper = getContext(`${prefix}QMSWraperContext`) ? false : true;
+		isOutermostQMSWraper = getContext<QMSWraperContextType>(`${prefix}QMSWraperContext`) ? false : true;
 	}
 
 	if (!QMS_info && schemaData) {
@@ -315,9 +317,9 @@
         if (preferGivenQMSWraperContext && QMSWraperContextGiven) {
             QMSWraperContext = QMSWraperContextGiven;
         }
-        setContext(`${prefix}QMSWraperContext`, QMSWraperContext);
+        setContext<QMSWraperContextType>(`${prefix}QMSWraperContext`, QMSWraperContext as QMSWraperContextType);
         if (isOutermostQMSWraper) {
-            setContext(`${prefix}OutermostQMSWraperContext`, QMSWraperContext);
+            setContext<QMSWraperContextType>(`${prefix}OutermostQMSWraperContext`, QMSWraperContext as QMSWraperContextType);
         }
     }
 </script>
