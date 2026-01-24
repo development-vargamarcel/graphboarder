@@ -1,22 +1,23 @@
 <script lang="ts">
 	import { getContext, setContext } from 'svelte';
 	import ActiveArgumentsGroupWraper from '$lib/components/ActiveArgumentsGroupWraper.svelte';
+	import { Logger } from '$lib/utils/logger';
 
 	interface Props {
-		isControlPanelChild: any;
-		stepsOfFieldsThisAppliesTo: any;
+		isControlPanelChild?: any;
+		stepsOfFieldsThisAppliesTo?: any;
 		prefix?: string;
-		QMSarguments: any;
-		activeArgumentsDataGrouped_Store: any;
-		QMS_info: any;
+		QMSarguments?: any;
+		activeArgumentsDataGrouped_Store?: any;
+		QMS_info?: any;
 		onUpdateQuery?: () => void;
 	}
 
 	let {
-		isControlPanelChild,
-		stepsOfFieldsThisAppliesTo,
+		isControlPanelChild = undefined,
+		stepsOfFieldsThisAppliesTo = undefined,
 		prefix = '',
-		QMSarguments,
+		QMSarguments = undefined,
 		activeArgumentsDataGrouped_Store = $bindable(),
 		QMS_info = $bindable(),
 		onUpdateQuery
@@ -40,16 +41,16 @@
 	let activeArgumentsDataGrouped = [];
 
 	$effect(() => {
-		console.log('$activeArgumentsDataGrouped_Store', $activeArgumentsDataGrouped_Store);
+		Logger.debug('$activeArgumentsDataGrouped_Store', $activeArgumentsDataGrouped_Store);
 	});
 	const update_activeArgumentsDataGrouped = (groupNewData) => {
-		console.log({ groupNewData });
+		Logger.debug({ groupNewData });
 		activeArgumentsDataGrouped_Store.update_groups(groupNewData);
 	};
 	if ($activeArgumentsDataGrouped_Store.length == 0) {
 		activeArgumentsDataGrouped_Store.set_groups(QMS_info, schemaData, QMSarguments, endpointInfo);
 	}
-	console.log({ QMS_info });
+	Logger.debug({ QMS_info });
 	let showDescription = null;
 </script>
 

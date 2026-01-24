@@ -8,15 +8,19 @@
 
 	import AddColumn from './../../../../lib/components/AddColumn.svelte';
 	import { getContext } from 'svelte';
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-	const schemaData = QMSMainWraperContext?.schemaData;
+	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
+	import { Logger } from '$lib/utils/logger';
+	import { get } from 'svelte/store';
 
-	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
+	let mainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = mainWraperContext?.endpointInfo;
+	const schemaData = mainWraperContext?.schemaData;
+
+	const urqlCoreClient = mainWraperContext?.urqlCoreClient;
 	import { page } from '$app/stores';
 	import Table from '$lib/components/Table.svelte';
 
-	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
+	const qmsContext = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
 	const {
 		QMS_bodyPart_StoreDerived_rowsCount = null,
 		activeArgumentsDataGrouped_Store,
@@ -29,8 +33,8 @@
 		QMS_info,
 		QMSType,
 		QMSName
-	} = QMSWraperContext;
-	console.log({ QMS_info });
+	} = qmsContext;
+	Logger.debug({ QMS_info });
 	import {
 		generateTitleFromStepsOfFields,
 		getDataGivenStepsOfFields,
@@ -44,7 +48,7 @@
 	import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 
 	$effect(() => {
-		console.log('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
+		Logger.debug('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
 	});
 	$effect(() => {
 		return () => {
@@ -52,13 +56,13 @@
 		};
 	});
 
-	let dd_relatedRoot = getRootType(null, QMS_info.dd_rootName, schemaData);
+	let dd_relatedRoot = getRootType(null, QMS_info.dd_rootName, get(schemaData));
 	if (!QMS_info) {
 		//	goto('/queries');
 	}
 	//
 	let activeArgumentsData = [];
-	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData).find((pagType) => {
+	const paginationTypeInfo = get_paginationTypes(endpointInfo, get(schemaData)).find((pagType) => {
 		return pagType.name == QMS_info?.dd_paginationType;
 	});
 	let activeArgumentsDataGrouped_Store_IS_SET = $state(false);
@@ -68,16 +72,16 @@
 	});
 	//
 
-	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], schemaData);
+	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], get(schemaData));
 
 	let queryData: any = $state({});
 	let rows = $state([]);
-	let rowsCurrent = [];
+	let rowsCurrent: any = [];
 	let loadedF;
 	let completeF;
 	let infiniteId = $state(Math.random());
 	$effect(() => {
-		console.log({ infiniteId });
+		Logger.debug({ infiniteId });
 	});
 	function infiniteHandler({ detail: { loaded, complete } }) {
 		loadedF = loaded;
@@ -87,7 +91,7 @@
 		);
 		if (
 			rowLimitingArgNames?.some((argName) => {
-				return rows.length / $paginationState?.[argName] >= 1; //means that all previous pages contained nr of items == page items size
+				return rows.length / ($paginationState?.[argName] as number) >= 1; //means that all previous pages contained nr of items == page items size
 			}) ||
 			paginationTypeInfo?.name == 'pageBased'
 		) {
@@ -119,9 +123,9 @@
 				queryData = { fetching, error, data };
 				let stepsOfFieldsInput = [
 					QMS_info.dd_displayName,
-					...endpointInfo.get_rowsLocation(QMS_info, schemaData)
+					...endpointInfo.get_rowsLocation(QMS_info, get(schemaData))
 				];
-				console.log({ stepsOfFieldsInput }, QMS_info.dd_displayName);
+				Logger.debug({ stepsOfFieldsInput }, QMS_info.dd_displayName);
 				rowsCurrent = getDataGivenStepsOfFields(undefined, queryData.data, stepsOfFieldsInput);
 				if (rowsCurrent && !Array.isArray(rowsCurrent)) {
 					rowsCurrent = [rowsCurrent];
@@ -157,13 +161,13 @@
 					paginationTypeInfo?.name == 'pageBased'
 				) {
 					loadedF && loadedF();
-					console.log('loadedF ');
+					Logger.debug('loadedF ');
 				} else {
 					completeF && completeF();
-					console.log('completeF');
+					Logger.debug('completeF');
 				}
 
-				console.log({ rows }, { rowsCurrent });
+				Logger.debug({ rows }, { rowsCurrent });
 				rowsCurrent = [];
 			});
 	};
@@ -174,7 +178,7 @@
 	});
 
 	$effect(() => {
-		console.log({ queryData });
+		Logger.debug({ queryData });
 	});
 	if (scalarFields.length == 0) {
 		queryData = { fetching: false, error: false, data: false };
@@ -186,7 +190,7 @@
 		tableColsData_Store.removeColumn(e.detail.column);
 	};
 	tableColsData_Store.subscribe((data) => {
-		console.log(data);
+		Logger.debug(data);
 	});
 
 	let column_stepsOfFields = $state('');
@@ -278,12 +282,14 @@
 		<div class="px-4 mx-auto  mb-2">
 			<div class="alert alert-error shadow-lg ">
 				<div>
-					<button class="btn btn-ghost btn-sm p-0">
-						<!-- svelte-ignore a11y_click_events_have_key_events -->
+					<button
+						class="btn btn-ghost btn-sm p-0"
+						aria-label="Clear Error"
+						onclick={() => {
+							queryData.error = null;
+						}}
+					>
 						<svg
-							onclick={() => {
-								queryData.error = null;
-							}}
 							xmlns="http://www.w3.org/2000/svg"
 							class="stroke-current flex-shrink-0 h-6 w-6"
 							fill="none"

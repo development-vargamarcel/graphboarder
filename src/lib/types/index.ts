@@ -409,3 +409,36 @@ export interface AvailableEndpoint extends EndpointConfiguration {
 	description: string;
 	isMantained?: boolean;
 }
+
+// Context Types
+import type { Readable } from 'svelte/store';
+
+export interface QMSMainWraperContext {
+	endpointInfo: EndpointInfoStore;
+	schemaData: Readable<SchemaData>;
+	urqlCoreClient: any;
+}
+
+export interface QMSWraperContext {
+	idColName: string;
+	returningColumnsLocationQMS_Info: FieldWithDerivedData | undefined;
+	rowsLocation: string[];
+	returningColumnsLocation: string[];
+	QMS_info: FieldWithDerivedData | undefined;
+	QMSType: QMSType;
+	QMSName: string;
+	activeArgumentsDataGrouped_Store: ActiveArgumentsDataGroupedStore;
+	tableColsData_Store: TableColsDataStore;
+	finalGqlArgObj_Store: any;
+	QMS_bodyPart_StoreDerived: any;
+	QMS_bodyPart_StoreDerived_rowsCount: any;
+	QMS_bodyPartsUnifier_StoreDerived: any;
+	paginationOptions: any;
+	paginationState: PaginationStateStore;
+	paginationState_derived: any;
+	mergedChildren_finalGqlArgObj_Store: any;
+	mergedChildren_QMSWraperCtxData_Store: any;
+	mergedChildren_controlPanel_Store: any;
+	QMSFieldToQMSGetMany_Store: any;
+	extraInfo: Record<string, unknown>;
+}

@@ -2,11 +2,14 @@
 	import QMSWraper from '$lib/components/QMSWraper.svelte';
 	import { getContext } from 'svelte';
 	import type { LayoutData } from './$types';
+	import { Logger } from '$lib/utils/logger';
+	import type { QMSMainWraperContext } from '$lib/types/index';
+
 	const prefix = '';
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-	const schemaData = QMSMainWraperContext?.schemaData;
-	console.log({ schemaData, QMSMainWraperContext });
+	let mainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = mainWraperContext?.endpointInfo;
+	const schemaData = mainWraperContext?.schemaData;
+	Logger.debug({ schemaData, mainWraperContext });
 	let queryFields = $derived($schemaData.queryFields);
 	interface Props {
 		data: LayoutData;

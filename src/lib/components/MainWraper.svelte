@@ -9,6 +9,7 @@
 	import { Create_urqlCoreClient } from '$lib/utils/urqlCoreClient';
 	import { setContextClient,Client,fetchExchange } from '@urql/svelte';
 	import { Logger } from '$lib/utils/logger';
+	import type { QMSMainWraperContext } from '$lib/types/index';
 
 	/**
 	 * Props for the MainWraper component.
@@ -60,7 +61,7 @@
 	urqlCoreClient.set(client);
 
 	setContextClient(client);
-	setContext(`${prefix}QMSMainWraperContext`, {
+	setContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`, {
 		endpointInfo: endpointInfo,
 		schemaData: schemaData,
 		urqlCoreClient: urqlCoreClient

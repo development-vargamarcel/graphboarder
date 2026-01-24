@@ -207,7 +207,7 @@
 				{:else}
 					{dd_namesArray?.[0]}
 				{/if}
-			</div>
+			</button>
 		{/if}
 		<div class="w-1/2">
 			<div class="flex">
@@ -265,8 +265,26 @@
 			</p> -->
 		{/if}
 
-		<button
-			class="min-w-max w-full pr-2 text-md duration-100== text-left bg-transparent border-0 p-0"
+		<div
+			class="min-w-max w-full pr-2 text-md duration-100 text-left bg-transparent border-0 p-0"
+			role="button"
+			tabindex="0"
+			onkeydown={(e) => {
+				if (e.key === 'Enter') {
+					if (canExpand) {
+						expand();
+					} else {
+						let tableColData = {
+							title: `col-${Math.floor(Math.random() * 200)},${generateTitleFromStepsOfFields(
+								stepsOfFields
+							)} `,
+							stepsOfFields: stepsOfFields,
+							stepsOfFieldsOBJ: stepsOfFieldsToQueryFragmentObject(stepsOfFields, false)
+						};
+						tableColsData_Store.addColumn(tableColData);
+					}
+				}
+			}}
 			onclick={() => {
 				if (canExpand) {
 					expand();

@@ -115,7 +115,6 @@ export const endpointInfoDefaultValues = {
 					});
 					return idField
 				});
-				//console.log({ nonNullScalarFields, idField })
 				if (idField) {
 					return idField
 				}
@@ -446,7 +445,6 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			if (typesExtraDataPossibility) {
 				return typesExtraDataPossibility.get_Val(typeInfo);
 			}
-			//console.warn('no typeExtraData found');
 			return null;
 		},
 		get_tableName: (QMS_info: any, schemaData: any) => {
