@@ -16,8 +16,8 @@
 
 	let { endpointInfo, onHideSidebar }: Props = $props();
 
-	let QMSMainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
-	const schemaData = QMSMainWraperContext?.schemaData;
+	// let QMSMainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const schemaData = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`)?.schemaData;
 	Logger.debug('page', $page);
 	let endpointid = $page.params.endpointid;
 	Logger.debug({ endpointid });

@@ -64,7 +64,7 @@
 
 	const expand = () => {
 		//console.log('dd_rootName', dd_rootName);
-		expandData = getRootType(get(schemaData).rootTypes, dd_rootName, get(schemaData));
+		expandData = getRootType($schemaData.rootTypes, dd_rootName, $schemaData);
 		if (expandData) {
 			// if (!showExpand) {
 			// 	stepsOfFields.push(dd_displayName);

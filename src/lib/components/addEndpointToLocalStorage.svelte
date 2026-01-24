@@ -46,6 +46,7 @@
 			<p>To Local Storage</p>
 			<div>
 				<CodeEditor
+					displayInterface="codeeditor"
 					language="javascript"
 					onChanged={handleCodeChanged}
 					rawValue={`{

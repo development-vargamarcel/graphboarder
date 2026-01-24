@@ -56,15 +56,15 @@
 		};
 	});
 
-	let dd_relatedRoot = getRootType(null, QMS_info.dd_rootName, get(schemaData));
+	let dd_relatedRoot = $derived(getRootType(null, QMS_info.dd_rootName, $schemaData));
 	if (!QMS_info) {
 		//	goto('/queries');
 	}
 	//
 	let activeArgumentsData = [];
-	const paginationTypeInfo = get_paginationTypes(endpointInfo, get(schemaData)).find((pagType) => {
+	let paginationTypeInfo = $derived(get_paginationTypes(endpointInfo, $schemaData).find((pagType) => {
 		return pagType.name == QMS_info?.dd_paginationType;
-	});
+	}));
 	let activeArgumentsDataGrouped_Store_IS_SET = $state(false);
 	$effect(() => {
 		activeArgumentsDataGrouped_Store_IS_SET =
@@ -72,7 +72,7 @@
 	});
 	//
 
-	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], get(schemaData));
+	let scalarFields = $derived(getFields_Grouped(dd_relatedRoot, [], $schemaData)?.scalarFields || []);
 
 	let queryData: any = $state({});
 	let rows = $state([]);
@@ -123,7 +123,7 @@
 				queryData = { fetching, error, data };
 				let stepsOfFieldsInput = [
 					QMS_info.dd_displayName,
-					...endpointInfo.get_rowsLocation(QMS_info, get(schemaData))
+					...endpointInfo.get_rowsLocation(QMS_info, $schemaData)
 				];
 				Logger.debug({ stepsOfFieldsInput }, QMS_info.dd_displayName);
 				rowsCurrent = getDataGivenStepsOfFields(undefined, queryData.data, stepsOfFieldsInput);

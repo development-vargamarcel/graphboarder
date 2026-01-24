@@ -16,9 +16,6 @@
 		onclick={() => {
 			forceVisibleSidebar = false;
 		}}
-		onclick_outside={() => {
-			forceVisibleSidebar = false;
-		}}
 	>
 		{@render sidebar?.()}
 	</div>
