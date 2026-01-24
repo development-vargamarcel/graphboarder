@@ -38,28 +38,34 @@
 		selectedRowsColValues = [],
 		field
 	}: Props = $props();
-	const nodeContext_forDynamicData = getContext(`${prefix}nodeContext_forDynamicData`);
+
+	import type { QMSMainWraperContext } from '$lib/types/index';
+
+	const nodeContext_forDynamicData: any = getContext(`${prefix}nodeContext_forDynamicData`);
 	let selectedQMS = nodeContext_forDynamicData.selectedQMS;
 	let QMSRows = nodeContext_forDynamicData.QMSRows;
 	let rowSelectionState = nodeContext_forDynamicData.rowSelectionState;
 	//
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+	let QMSMainWraperContext_M2A = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = QMSMainWraperContext_M2A?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
 	//
-	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext: any = getContext(`${prefix}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
-	const inputFieldsContainerLocation = endpointInfo.get_inputFieldsContainerLocation(
+	let inputFieldsContainerLocation = $derived(endpointInfo.get_inputFieldsContainerLocation(
 		field,
 		schemaData
-	);
-	const inputFieldsContainer = getDeepField(
+	));
+	let inputFieldsContainer = $derived(getDeepField(
 		field,
 		inputFieldsContainerLocation,
 		schemaData,
 		'inputFields'
-	);
-	Logger.debug({ inputFieldsContainerLocation, inputFieldsContainer });
+	));
+
+	$effect(() => {
+		Logger.debug({ inputFieldsContainerLocation, inputFieldsContainer });
+	});
 	// $: if ($selectedQMS) {
 	// 	// Logger.debug(
 	// 	// 	{ field, node, nodes },

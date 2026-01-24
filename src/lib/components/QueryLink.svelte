@@ -14,37 +14,43 @@
 
 	let { prefix = '', origin, query }: Props = $props();
 
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	import type { QMSMainWraperContext } from '$lib/types/index';
+
+	let QMSMainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
-	let queryName = query.name;
-	let queryNameDisplay = $state(queryName);
+	let queryName = $derived(query.name);
 	let queryTitleDisplay = '';
-	//let { scalarFields, non_scalarFields } = getFields_Grouped(currentQueryFromRootTypes);
-	let currentQMS_info = schemaData.get_QMS_Field(queryName, 'query', schemaData);
-	const rowsLocation = $endpointInfo.rowsLocation;
-	const nodeFieldsQMS_info = get_nodeFieldsQMS_info(currentQMS_info, rowsLocation, schemaData);
-	let scalarFields = get_scalarColsData(
+
+	let currentQMS_info = $derived(schemaData.get_QMS_Field(queryName, 'query', schemaData));
+	let rowsLocation = $derived($endpointInfo.rowsLocation || []); // Default to empty array if undefined
+	let nodeFieldsQMS_info = $derived(get_nodeFieldsQMS_info(currentQMS_info, rowsLocation, schemaData as any));
+	let scalarFields = $derived(get_scalarColsData(
 		nodeFieldsQMS_info,
 		[currentQMS_info.dd_displayName, ...rowsLocation],
-		schemaData
-	);
+		schemaData as any
+	));
 
-	let mandatoryArgs = query?.args?.filter((arg) => {
+	let mandatoryArgs = $derived(query?.args?.filter((arg) => {
 		return arg.dd_NON_NULL;
-	});
-	let ID_Args = query?.args?.filter((arg) => {
+	}));
+	let ID_Args = $derived(query?.args?.filter((arg) => {
 		return arg.dd_rootName == 'ID';
+	}));
+
+	let queryNameDisplay = $derived.by(() => {
+		let display = queryName;
+		if (mandatoryArgs?.length > 0) {
+			display = `${display} (${mandatoryArgs.length}) `;
+		}
+		if (ID_Args?.length > 0) {
+			display = `${display} <${ID_Args.length}> `;
+		}
+		if (scalarFields.length == 0) {
+			display = display + ' (no scalar)';
+		}
+		return display;
 	});
-	if (mandatoryArgs?.length > 0) {
-		queryNameDisplay = `${queryNameDisplay} (${mandatoryArgs.length}) `;
-	}
-	if (ID_Args?.length > 0) {
-		queryNameDisplay = `${queryNameDisplay} <${ID_Args.length}> `;
-	}
-	if (scalarFields.length == 0) {
-		queryNameDisplay = queryNameDisplay + ' (no scalar)';
-	}
 </script>
 
 <a title={queryTitleDisplay} href="{origin}/queries/{queryName}" class="block w-full h-full p-2"

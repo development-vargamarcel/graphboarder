@@ -5,9 +5,15 @@
 	let inputEl;
 	let { rawValue = [], dispatchValue = [], typeInfo, onChanged } = $props();
 
-	let elements = $state(rawValue.map((el, i) => {
-		return { chd_rawValue: el, chd_dispatchValue: dispatchValue[i] };
-	}));
+	let elements = $state<{ chd_rawValue: any; chd_dispatchValue: any }[]>([]);
+
+	$effect(() => {
+		if (elements.length === 0 && rawValue.length > 0) {
+			elements = rawValue.map((el: any, i: number) => {
+				return { chd_rawValue: el, chd_dispatchValue: dispatchValue[i] };
+			});
+		}
+	});
 	$effect(() => {
 		Logger.debug(elements);
 	});
@@ -56,6 +62,7 @@
 			/>
 			<button
 				class="btn btn-xs btn-danger"
+				aria-label="Delete item"
 				onclick={(e) => {
 					// element.chd_rawValue=element
 					del(element.chd_rawValue);

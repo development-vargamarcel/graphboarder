@@ -10,16 +10,18 @@
 		onInterfaceChosen?: (detail: { chosen: string }) => void;
 	}
 
+	import type { QMSMainWraperContext } from '$lib/types/index';
+
 	let { prefix = '', chosen, typeInfo, onInterfaceChosen }: Props = $props();
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-	const possible_displayInterfaces = $endpointInfo.typesExtraDataPossibilities.map(
-		(possibility) => {
+	let QMSMainWraperContext_IP = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = QMSMainWraperContext_IP?.endpointInfo;
+	let possible_displayInterfaces = $derived($endpointInfo.typesExtraDataPossibilities.map(
+		(possibility: any) => {
 			return possibility.get_Val()?.displayInterface;
 		}
-	);
+	));
 	const schemaData = QMSMainWraperContext?.schemaData;
-	const rootType = getRootType(null, typeInfo.dd_rootName, schemaData);
+	let rootType = $derived(getRootType(null, typeInfo.dd_rootName, schemaData));
 </script>
 
 <div class="w-full"></div>

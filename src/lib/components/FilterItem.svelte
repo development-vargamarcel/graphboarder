@@ -267,6 +267,7 @@
 							<div animate:flip={{ duration: flipDurationMs }} class="relative flex">
 								<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 								<div
+									role="button"
 									tabindex={dragDisabled ? 0 : -1}
 									aria-label="drag-handle"
 									class="bi bi-grip-vertical pt-3 px-2"
@@ -276,6 +277,9 @@
 									onkeydown={handleKeyDown}
 								></div>
 								<div
+									role="button"
+									tabindex="0"
+									aria-label="Drag item content"
 									class="w-full"
 									onmousedown={() => {
 										dragDisabled = true;

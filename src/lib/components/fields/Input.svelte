@@ -11,14 +11,18 @@
 	let inputEl = $state();
 	const mutationVersion = getContext('mutationVersion');
 
-	if (!rawValue && dispatchValue) {
-		if (displayInterface != 'number') {
-			rawValue = dispatchValue;
-		} else {
-			rawValue = string_transformerREVERSE(dispatchValue, false);
+	$effect(() => {
+		if (!rawValue && dispatchValue) {
+			if (displayInterface != 'number') {
+				rawValue = dispatchValue;
+			} else {
+				rawValue = string_transformerREVERSE(dispatchValue, false);
+			}
 		}
-	}
-	Logger.debug('rawValue', rawValue, 'chd_dispatchValue', dispatchValue);
+	});
+	$effect(() => {
+		Logger.debug('rawValue', rawValue, 'chd_dispatchValue', dispatchValue);
+	});
 
 	//let castAs //most of the times as string
 </script>
