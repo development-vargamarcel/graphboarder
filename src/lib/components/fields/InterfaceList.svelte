@@ -5,10 +5,11 @@
 	let inputEl;
 	let { rawValue = [], dispatchValue = [], typeInfo, onChanged } = $props();
 
-	let elements = $state(rawValue.map((el, i) => {
-		return { chd_rawValue: el, chd_dispatchValue: dispatchValue[i] };
-	}));
+	let elements = $state([]);
 	$effect(() => {
+		elements = rawValue.map((el, i) => {
+			return { chd_rawValue: el, chd_dispatchValue: dispatchValue[i] };
+		});
 		Logger.debug(elements);
 	});
 	const add = () => {
@@ -56,6 +57,7 @@
 			/>
 			<button
 				class="btn btn-xs btn-danger"
+				aria-label="delete"
 				onclick={(e) => {
 					// element.chd_rawValue=element
 					del(element.chd_rawValue);

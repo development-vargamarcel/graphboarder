@@ -9,6 +9,7 @@ A powerful Svelte 5 library for auto-generating GraphQL UIs, handling complex qu
 - **Pagination:** Built-in support for various pagination strategies (limit/offset, cursor-based, etc.).
 - **Svelte 5 Support:** Built using the latest Svelte 5 Runes syntax for optimal performance and DX.
 - **Headless & Customizable:** Provides the logic and stores, giving you full control over the UI components.
+- **Built-in Logging:** Includes a configurable logger for debugging.
 
 ## Installation
 
@@ -35,6 +36,7 @@ Wrap your application or the part that needs GraphQL access with `MainWraper`. T
 
 <MainWraper endpointInfoProvided={endpointInfo}>
   <!-- Your app content here -->
+  <!-- In Svelte 5, children are passed as a snippet -->
   <slot />
 </MainWraper>
 ```
@@ -87,6 +89,17 @@ Inside your component (e.g., `MyArticlesComponent.svelte`), you can access the s
 <div>
   <!-- Build your UI here -->
 </div>
+```
+
+## Logging
+
+You can configure the logging level to debug issues or suppress output.
+
+```typescript
+import { Logger, LogLevel } from 'auto-gql';
+
+// Set log level to INFO (suppresses DEBUG logs)
+Logger.setLevel(LogLevel.INFO);
 ```
 
 ## Terminology

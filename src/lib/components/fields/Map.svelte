@@ -7,9 +7,11 @@
 	import { Logger } from '$lib/utils/logger';
 	let mapboxgl = mapboxglOriginal;
 	let { containerEl, dispatchValue, rawValue = $bindable(), onChanged } = $props();
-	if (!rawValue && dispatchValue) {
-		rawValue = geojson_transformerREVERSE(dispatchValue);
-	}
+	$effect(() => {
+		if (!rawValue && dispatchValue) {
+			rawValue = geojson_transformerREVERSE(dispatchValue);
+		}
+	});
 	const generateUniqueId = () => {
 		return (
 			Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)

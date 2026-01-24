@@ -49,17 +49,19 @@
 	//
 	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
-	const inputFieldsContainerLocation = endpointInfo.get_inputFieldsContainerLocation(
+	let inputFieldsContainerLocation = $derived(endpointInfo.get_inputFieldsContainerLocation(
 		field,
 		schemaData
-	);
-	const inputFieldsContainer = getDeepField(
+	));
+	let inputFieldsContainer = $derived(getDeepField(
 		field,
 		inputFieldsContainerLocation,
 		schemaData,
 		'inputFields'
-	);
-	Logger.debug({ inputFieldsContainerLocation, inputFieldsContainer });
+	));
+	$effect(() => {
+		Logger.debug({ inputFieldsContainerLocation, inputFieldsContainer });
+	});
 	// $: if ($selectedQMS) {
 	// 	// Logger.debug(
 	// 	// 	{ field, node, nodes },

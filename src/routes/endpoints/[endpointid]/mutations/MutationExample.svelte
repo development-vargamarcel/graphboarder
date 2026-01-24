@@ -13,8 +13,8 @@
 	import { get } from 'svelte/store';
 
 	let mainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = mainWraperContext?.endpointInfo;
-	const schemaData = mainWraperContext?.schemaData;
+	let endpointInfo = $derived(mainWraperContext?.endpointInfo);
+	let schemaData = $derived(mainWraperContext?.schemaData);
 
 	const urqlCoreClient = mainWraperContext?.urqlCoreClient;
 	import { page } from '$app/stores';
@@ -34,7 +34,9 @@
 		QMSType,
 		QMSName
 	} = qmsContext;
-	Logger.debug({ QMS_info });
+	$effect(() => {
+		Logger.debug({ QMS_info });
+	});
 	import {
 		generateTitleFromStepsOfFields,
 		getDataGivenStepsOfFields,
