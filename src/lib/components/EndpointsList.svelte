@@ -51,17 +51,17 @@
 	} = qmsContext;
 	const schemaData = context?.schemaData;
 
-	let currentQMS_info = (schemaData as any).get_QMS_Field(queryName, 'query', schemaData);
-	let dd_relatedRoot = getRootType(null, currentQMS_info.dd_rootName, schemaData);
+	let currentQMS_info = (schemaData as any).get_QMS_Field(queryName, 'query', schemaData as any);
+	let dd_relatedRoot = getRootType(null, currentQMS_info.dd_rootName, schemaData as any);
 	if (!currentQMS_info) {
 		goto('/queries');
 	}
 
-	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData).find((pagType: any) => {
+	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData as any).find((pagType: any) => {
 		return pagType.name == currentQMS_info.dd_paginationType;
 	});
 
-	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], schemaData);
+	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], schemaData as any);
 
 	// Reactive state
 	let queryData = $state<{ fetching: boolean; error: any; data: any }>(
@@ -101,7 +101,7 @@
 				queryData = { fetching, error, data };
 				let stepsOfFieldsInput = [
 					currentQMS_info.dd_displayName,
-					...endpointInfo.get_rowsLocation(currentQMS_info, schemaData)
+					...endpointInfo.get_rowsLocation(currentQMS_info, schemaData as any)
 				];
 				Logger.debug({ stepsOfFieldsInput }, currentQMS_info.dd_displayName);
 				rowsCurrent = getDataGivenStepsOfFields(undefined, queryData.data, stepsOfFieldsInput) as any[];
@@ -159,7 +159,7 @@
 		);
 		if (
 			rowLimitingArgNames?.some((argName: string) => {
-				return rows.length / $paginationState?.[argName] >= 1;
+				return rows.length / ($paginationState?.[argName] as number) >= 1;
 			}) ||
 			paginationTypeInfo?.name == 'pageBased'
 		) {
