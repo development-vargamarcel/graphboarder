@@ -4,6 +4,7 @@
 	import CodeEditor from './fields/CodeEditor.svelte';
 	import { getSortedAndOrderedEndpoints } from '$lib/utils/usefulFunctions';
 	import { Logger } from '$lib/utils/logger';
+	import type { Writable } from 'svelte/store';
 
 	interface Props {
 		onHide?: () => void;
@@ -11,7 +12,7 @@
 
 	let { onHide }: Props = $props();
 
-	let localStorageEndpoints = getContext('localStorageEndpoints');
+	let localStorageEndpoints = getContext('localStorageEndpoints') as Writable<any[]>;
 	const handleCodeChanged = (e) => {
 		const newConfigurationString = e.detail.chd_rawValue;
 		Logger.debug(newConfigurationString);

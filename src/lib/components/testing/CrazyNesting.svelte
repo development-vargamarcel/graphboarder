@@ -25,15 +25,17 @@
 		}
 	});
 
-	for (let i = 5; i < 17; i++) {
-		nodes[`node${i}`] = { id: `node${i}`, name: `item ${i}` };
-	}
+	$effect(() => {
+		for (let i = 5; i < 17; i++) {
+			nodes[`node${i}`] = { id: `node${i}`, name: `item ${i}` };
+		}
 
-	nodes['node10'].color = 'steelblue';
-	nodes['node11'].color = 'steelblue';
-	nodes['node14'].color = 'orange';
-	nodes['node15'].color = 'orange';
-	nodes['node6'].color = 'forestgreen';
+		nodes['node10'].color = 'steelblue';
+		nodes['node11'].color = 'steelblue';
+		nodes['node14'].color = 'orange';
+		nodes['node15'].color = 'orange';
+		nodes['node6'].color = 'forestgreen';
+	});
 </script>
 
 <h3>Try dragging node2 into node3 and then node4 into node2</h3>

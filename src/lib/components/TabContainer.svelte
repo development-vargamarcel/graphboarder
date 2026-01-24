@@ -5,6 +5,7 @@
 	import { getQMSLinks } from '$lib/utils/usefulFunctions';
 	import { getContext, onMount } from 'svelte';
 	import { Logger } from '$lib/utils/logger';
+	import type { QMSMainWraperContext } from '$lib/types/index';
 
 	const prefix = '';
 
@@ -15,7 +16,7 @@
 
 	let { endpointInfo, onHideSidebar }: Props = $props();
 
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	let QMSMainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
 	Logger.debug('page', $page);
 	let endpointid = $page.params.endpointid;

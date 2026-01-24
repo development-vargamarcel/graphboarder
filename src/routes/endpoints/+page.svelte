@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import EndpointsList from '$lib/components/EndpointsList.svelte';
 	import QMSWraper from '$lib/components/QMSWraper.svelte';
 	import { localEndpoints } from '$lib/stores/testData/testEndpoints';
@@ -11,8 +11,9 @@
 	import { getContext, onDestroy, onMount, setContext } from 'svelte';
 	import { persisted } from 'svelte-persisted-store';
 	import { getSortedAndOrderedEndpoints } from '$lib/utils/usefulFunctions';
+	import type { Writable } from 'svelte/store';
 
-	const localStorageEndpoints = getContext('localStorageEndpoints');
+	const localStorageEndpoints = getContext('localStorageEndpoints') as Writable<any[]>;
 	let showExplorerTable = true;
 	let columns = [
 		{
@@ -40,7 +41,7 @@
 	let selectedRows = $state([]);
 
 	const HandleRowSelectionChange = (detail) => {
-		console.log(detail);
+		//console.log(detail);
 		selectedRows = detail.rows.map((row) => row.original);
 	};
 	const deleteSelectedEndpoint = () => {
@@ -89,9 +90,13 @@
                     }
                 }}
                 enableMultiRowSelectionState={false}
-                data={getSortedAndOrderedEndpoints(localEndpoints, true)}
+                data={getSortedAndOrderedEndpoints(localEndpoints, true) as any}
                 {columns}
                 onRowSelectionChange={(detail) => {}}
+                infiniteId={0}
+                infiniteHandler={() => {}}
+                idColName="id"
+                requiredColNames={[]}
             />
         </div>
     {/if}
@@ -127,9 +132,13 @@
                                 );
                             }
                         }}
-                        enableMultiRowSelectionState
+                        enableMultiRowSelectionState={true}
                         data={$localStorageEndpoints}
                         {columns}
+                        infiniteId={0}
+                        infiniteHandler={() => {}}
+                        idColName="id"
+                        requiredColNames={[]}
                     />
                 {/key}
             </div>

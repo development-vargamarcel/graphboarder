@@ -1,10 +1,12 @@
 <script lang="ts">
 	import MainWraper from '$lib/components/MainWraper.svelte';
 	import type { LayoutData } from './$types';
+	import type { QMSMainWraperContext } from '$lib/types/index';
+
 	//!!Q
 	export const prefix = '';
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const schemaData = QMSMainWraperContext?.schemaData;
+	// let QMSMainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	// const schemaData = QMSMainWraperContext?.schemaData;
 	import {
 		getRootType,
 		getSortedAndOrderedEndpoints,
