@@ -6,7 +6,7 @@
 
 	let { prefix = '', children }: Props = $props();
 
-	import AddColumn from './AddColumn.svelte';
+	import AddColumn from '$lib/components/AddColumn.svelte';
 	import { getContext } from 'svelte';
 	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 	import { Logger } from '$lib/utils/logger';

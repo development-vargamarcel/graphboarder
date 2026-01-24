@@ -23,13 +23,13 @@
 	let queryNameDisplay = $state(queryName);
 	let queryTitleDisplay = '';
 	//let { scalarFields, non_scalarFields } = getFields_Grouped(currentQueryFromRootTypes);
-	let currentQMS_info = get(schemaData).get_QMS_Field(queryName, 'query', get(schemaData));
-	const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_info, get(schemaData));
-	const nodeFieldsQMS_info = get_nodeFieldsQMS_info(currentQMS_info, rowsLocation, get(schemaData));
+	let currentQMS_info = (get(schemaData) as any).get_QMS_Field(queryName, 'query', get(schemaData));
+	const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_info, get(schemaData) as any);
+	const nodeFieldsQMS_info = get_nodeFieldsQMS_info(currentQMS_info, rowsLocation, get(schemaData) as any);
 	let scalarFields = get_scalarColsData(
 		nodeFieldsQMS_info,
 		[currentQMS_info.dd_displayName, ...rowsLocation],
-		get(schemaData)
+		get(schemaData) as any
 	);
 
 	let mandatoryArgs = query?.args?.filter((arg) => {
