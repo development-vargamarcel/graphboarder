@@ -214,8 +214,8 @@ export const get_paginationTypes = (
 				let currentQMS_info = schemaData.get_QMS_Field(QMS_name, QMS_type, schemaData);
 				const pageInfoFieldsLocation = endpointInfoVal.pageInfoFieldsLocation;
 				const rowsLocation = endpointInfoVal.rowsLocationPossibilities.find((rowsLocation) => {
-					return rowsLocation.check(currentQMS_info);
-				}).rowsLocation;
+					return rowsLocation.check(currentQMS_info, schemaData);
+				}).get_Val(currentQMS_info, schemaData);
 
 				const relayPageInfoFieldsNames = endpointInfo.get_relayPageInfoFieldsNames(currentQMS_info, pageInfoFieldsLocation, schemaData)
 				const relayCursorFieldName = endpointInfo.get_relayCursorFieldName(currentQMS_info, rowsLocation, schemaData)
@@ -245,7 +245,7 @@ export const get_paginationTypes = (
 					let rows = getDataGivenStepsOfFields(undefined, returnedDataBatch_last, [
 						currentQMS_info.dd_displayName,
 						...rowsLocation
-					]);
+					]) as any[];
 					let lastRow = rows[rows.length - 1];
 					console.log({ lastRow });
 					_state[afterName] = `'${getDataGivenStepsOfFields(
@@ -340,6 +340,7 @@ export const get_paginationTypes = (
 			},
 			get_initialState: (paginationArgs: FieldWithDerivedData[]): PaginationState => {
 				console.log('unknown');
+				return {};
 			},
 			get_defaultPaginationStateForDynamic: (state) => {
 				return state;
@@ -349,9 +350,11 @@ export const get_paginationTypes = (
 			},
 			get_nextPageState: (state: PaginationState, paginationArgs: FieldWithDerivedData[]): PaginationState => {
 				console.log('unknown');
+				return state;
 			},
 			get_prevPageState: (state: PaginationState, paginationArgs: FieldWithDerivedData[]): PaginationState => {
 				console.log('unknown');
+				return state;
 			},
 			isFirstPage: (_paginationState_Store: PaginationStateStore, paginationArgs: FieldWithDerivedData[]) => {
 				return true;

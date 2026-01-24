@@ -281,7 +281,7 @@ const inputString = ":{textBefore:{1dadas,2dasda,(inside parentheses1{iside1:'as
  * @param type - The GraphQL type definition.
  * @returns An array of GraphQLKind strings.
  */
-export const get_KindsArray = (type: Partial<FieldWithDerivedData>): GraphQLKind[] => {
+export const get_KindsArray = (type: Partial<FieldWithDerivedData> | any): GraphQLKind[] => {
 	let kinds: GraphQLKind[] = [];
 
 	if (type?.kind) {

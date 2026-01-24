@@ -43,11 +43,11 @@
 	let QMSRows = nodeContext_forDynamicData.QMSRows;
 	let rowSelectionState = nodeContext_forDynamicData.rowSelectionState;
 	//
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-	const schemaData = QMSMainWraperContext?.schemaData;
+	let context = getContext<any>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = context?.endpointInfo;
+	const schemaData = context?.schemaData;
 	//
-	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<any>(`${prefix}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
 	let inputFieldsContainerLocation = $derived(endpointInfo.get_inputFieldsContainerLocation(
 		field,
