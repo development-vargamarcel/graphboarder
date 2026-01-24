@@ -28,6 +28,9 @@
 	import QueryHistory from '$lib/components/QueryHistory.svelte';
 	import { updateStoresFromAST } from '$lib/utils/astToUIState';
 	import { parse } from 'graphql';
+	import LoadingSpinner from '$lib/components/UI/LoadingSpinner.svelte';
+	import EmptyState from '$lib/components/UI/EmptyState.svelte';
+	import { downloadCSV } from '$lib/utils/exportUtils';
 
 	interface Props {
 		prefix?: string;
@@ -243,6 +246,21 @@
 		}
 	};
 
+	const getErrorMessage = (error: any) => {
+		if (typeof error === 'object') return JSON.stringify(error, null, 2);
+		if (typeof error === 'string') {
+			try {
+				if (error.trim().startsWith('{') || error.trim().startsWith('[')) {
+					return JSON.stringify(JSON.parse(error), null, 2);
+				}
+			} catch (e) {
+				// ignore
+			}
+			return error;
+		}
+		return String(error);
+	};
+
 	// Effects - auto-cleanup on component destruction
 	$effect(() => {
 		console.log('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
@@ -377,6 +395,17 @@
 	>
 		History
 	</button>
+	<button
+		class="btn btn-xs btn-accent"
+		onclick={() => {
+			if (rows.length > 0) {
+				downloadCSV(rows, `${QMSName}-export.csv`);
+			}
+		}}
+		disabled={rows.length === 0}
+	>
+		Export CSV
+	</button>
 </div>
 
 {@render children?.()}
@@ -407,21 +436,15 @@
 				</button>
 			</div>
 			<div class="max-h-60 overflow-auto w-full">
-				{#if typeof queryData.error === 'string' && queryData.error.trim().startsWith('{')}
-					<pre class="text-xs bg-base-100/20 p-2 rounded">{JSON.stringify(
-							JSON.parse(queryData.error),
-							null,
-							2
-						)}</pre>
-				{:else}
-					<span>{queryData.error}</span>
-				{/if}
+				<pre class="text-xs bg-base-100/20 p-2 rounded whitespace-pre-wrap">{getErrorMessage(
+					queryData.error
+				)}</pre>
 			</div>
 		</div>
 	</div>
 {/if}
 {#if queryData.fetching}
-	<p>Loading...</p>
+	<LoadingSpinner size="loading-lg" />
 {/if}
 {#if showQMSBody}
 	<GraphqlCodeDisplay {showNonPrettifiedQMSBody} {prefix} value={$QMS_bodyPartsUnifier_StoreDerived} />
@@ -432,17 +455,23 @@
 {/if}
 
 <div class="md:px-2">
-	<Table
-		{rowSelectionState}
-		{enableMultiRowSelectionState}
-		{infiniteId}
-		{infiniteHandler}
-		colsData={$tableColsData_Store}
-		{rows}
-		onHideColumn={(detail) => {
-			hideColumn({ detail });
-		}}
-		{onRowSelectionChange}
-		{onRowClicked}
-	/>
+	{#if !queryData.fetching}
+		{#if rows.length === 0 && !queryData.error}
+			<EmptyState message="No data found" />
+		{:else}
+			<Table
+				{rowSelectionState}
+				{enableMultiRowSelectionState}
+				{infiniteId}
+				{infiniteHandler}
+				colsData={$tableColsData_Store}
+				{rows}
+				onHideColumn={(detail) => {
+					hideColumn({ detail });
+				}}
+				{onRowSelectionChange}
+				{onRowClicked}
+			/>
+		{/if}
+	{/if}
 </div>
