@@ -57,9 +57,24 @@
 
 <div class="p-4">
     <div role="tablist" class="tabs tabs-lifted mb-4">
-        <button role="tab" class="tab {endpointsToShow === 'local' ? 'tab-active' : ''}" onclick={() => endpointsToShow = 'local'}>Local</button>
-        <button role="tab" class="tab {endpointsToShow === 'localstorage' ? 'tab-active' : ''}" onclick={() => endpointsToShow = 'localstorage'}>Local Storage</button>
-        <button role="tab" class="tab {endpointsToShow === 'remote' ? 'tab-active' : ''}" onclick={() => endpointsToShow = 'remote'}>Remote</button>
+        <button
+            role="tab"
+            class="tab {endpointsToShow === 'local' ? 'tab-active' : ''}"
+            aria-selected={endpointsToShow === 'local'}
+            onclick={() => endpointsToShow = 'local'}
+        >Local</button>
+        <button
+            role="tab"
+            class="tab {endpointsToShow === 'localstorage' ? 'tab-active' : ''}"
+            aria-selected={endpointsToShow === 'localstorage'}
+            onclick={() => endpointsToShow = 'localstorage'}
+        >Local Storage</button>
+        <button
+            role="tab"
+            class="tab {endpointsToShow === 'remote' ? 'tab-active' : ''}"
+            aria-selected={endpointsToShow === 'remote'}
+            onclick={() => endpointsToShow = 'remote'}
+        >Remote</button>
     </div>
 
     {#if endpointsToShow == 'local'}
