@@ -9,6 +9,7 @@
 	} from '$lib/utils/usefulFunctions';
 	import { add_activeArgumentOrContainerTo_activeArgumentsDataGrouped } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
 	import ManyToAllSelectInterfaceDefinition from './ManyToAllSelectInterfaceDefinition.svelte';
+	import { Logger } from '$lib/utils/logger';
 
 	interface Props {
 		group: any;
@@ -90,7 +91,7 @@
 	// 	return !baseFilterOperators.includes(arg.dd_displayName);
 	// });
 	$effect(() => {
-		console.log({ groupArgsPossibilities, node });
+		Logger.debug({ groupArgsPossibilities, node });
 	});
 	let predefinedFirstSteps = group.group_isRoot ? [] : [group.group_name];
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
@@ -156,9 +157,9 @@
 					);
 				}}
 				onContainerAddRequest={(newContainerData) => {
-					console.log({ newContainerData });
+					Logger.debug({ newContainerData });
 					let randomNr = Math.random();
-					console.log('group', group);
+					Logger.debug('group', group);
 					let newContainerDataRootType = getRootType(
 						null,
 						newContainerData.dd_rootName,

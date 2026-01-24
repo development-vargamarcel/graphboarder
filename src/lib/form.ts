@@ -63,7 +63,8 @@ export function enhance(
 			} else if (error) {
 				error({ data, form, error: null, response });
 			} else {
-				console.error(await response.text());
+				const errorText = await response.text();
+				console.error('Enhance form error:', errorText);
 			}
 		} catch (e: any) {
 			if (error) {

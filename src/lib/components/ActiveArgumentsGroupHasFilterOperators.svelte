@@ -105,7 +105,7 @@
 	/////end
 
 	const { finalGqlArgObj_Store, QMS_info, activeArgumentsDataGrouped_Store, QMSType } =
-		correctQMSWraperContext;
+		$derived(correctQMSWraperContext);
 	const operatorChangeHandler = () => {
 		stepsOfNodes = getUpdatedStepsOfNodes(
 			JSON.parse(JSON.stringify(parentNode?.stepsOfNodes || [])),
@@ -120,13 +120,15 @@
 		$mutationVersion = true;
 	}
 
-	if (!testName_stepsOFFieldsWasUpdated) {
-		stepsOfNodes = getUpdatedStepsOfNodes(
-			JSON.parse(JSON.stringify(parentNode?.stepsOfNodes || [])),
-			node
-		);
-		testName_stepsOFFieldsWasUpdated = true;
-	}
+	$effect(() => {
+		if (!testName_stepsOFFieldsWasUpdated) {
+			stepsOfNodes = getUpdatedStepsOfNodes(
+				JSON.parse(JSON.stringify(parentNode?.stepsOfNodes || [])),
+				node
+			);
+			testName_stepsOFFieldsWasUpdated = true;
+		}
+	});
 
 
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
@@ -449,7 +451,6 @@
 						>
 							change
 						</button>
-						<!-- svelte-ignore a11y_click_events_have_key_events -->
 						<button
 							class="btn btn-xs btn-warning  mb-6 flex-1"
 							onclick={() => {
@@ -595,6 +596,8 @@
 	{/if}
 
 	<div
+		role="button"
+		tabindex="0"
 		class="  w-min-max w-max transition-all duration-500
 	
 	

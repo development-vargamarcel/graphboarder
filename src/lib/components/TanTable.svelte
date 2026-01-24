@@ -62,10 +62,7 @@
 		});
 		return columns;
 	};
-	let columns = $state(getColumns(cols));
-	$effect(() => {
-		columns = getColumns(cols);
-	});
+	let columns = $derived(getColumns(cols));
 	const setRowSelection = (updater) => {
 		if (updater instanceof Function) {
 			rowSelectionState = updater(rowSelectionState);
@@ -169,15 +166,14 @@
 												<ColumnInfo stepsOfFields={header.column.columnDef.stepsOfFields} />
 												<!-- {colsData[index].stepsOfFields.join(' > ')} -->
 											</div>
-											<!-- svelte-ignore a11y_click_events_have_key_events -->
-											<div
-												class="w-full pr-2 hover:text-primary cursor-pointer"
+											<button
+												class="w-full pr-2 hover:text-primary cursor-pointer text-left bg-transparent border-0 p-0"
 												onclick={() => {
 													onHideColumn?.({ column: header.column.columnDef.header });
 												}}
 											>
 												hide field
-											</div>
+											</button>
 										</div>
 									</div>
 								</div>

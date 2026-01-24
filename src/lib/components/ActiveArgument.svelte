@@ -25,6 +25,7 @@
 	import SelectModal from './SelectModal.svelte';
 	import ExplorerTable from './ExplorerTable.svelte';
 	import SelectedRowsDisplay from './SelectedRowsDisplay.svelte';
+	import { Logger } from '$lib/utils/logger';
 
 	interface Props {
 		setNotInUseIfNotValid?: boolean;
@@ -115,7 +116,7 @@
 		}
 	});
 
-	console.log({ activeArgumentData });
+	Logger.debug({ activeArgumentData });
 
 	let get_valueToDisplay = (): string | undefined => {
 		let value: string | undefined;
@@ -163,13 +164,13 @@
 	const { mergedChildren_QMSWraperCtxData_Store } = outermostQMSWraperContext;
 
 	const handleChanged = (detail: Partial<ActiveArgumentData>): void => {
-		console.log('detail', detail);
+		Logger.debug('detail', detail);
 		Object.assign(activeArgumentData, detail);
 
 		const isValid: boolean = argumentCanRunQuery(activeArgumentData);
 		const isInUse: boolean | undefined = activeArgumentData.inUse;
 		const isENUM: boolean = activeArgumentData.dd_displayInterface == 'ENUM';
-		console.log({ isValid });
+		Logger.debug({ isValid });
 		if (!isInUse && isValid) {
 			inUse_set(true);
 		} else if (setNotInUseIfNotValidAndENUM && isInUse && isENUM && !isValid) {
@@ -178,13 +179,13 @@
 			inUse_set(false);
 		}
 		onChanged?.(detail);
-		console.log('activeArgumentsDataGrouped_Store', $activeArgumentsDataGrouped_Store);
+		Logger.debug('activeArgumentsDataGrouped_Store', $activeArgumentsDataGrouped_Store);
 		updateActiveArgument();
 		//finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 	};
 	const handleClickOutside = (): void => {
 		//
-		//console.log('clicked outside');
+		//Logger.debug('clicked outside');
 		//expandedVersion = false; //!!! this is causing the expanded version to disappear when you click outside of it,but sometimes,is not desirable like when another modal with choises opens up and if you click on anything that upper modal disappears.
 	};
 
@@ -281,7 +282,7 @@
 	onDeleteSubNode={(detail) => {
 		deleteItem({ detail });
 		//
-		//console.log(detail.id, node);
+		//Logger.debug(detail.id, node);
 	}}
 	bind:showSelectModal
 	{onUpdateQuery}

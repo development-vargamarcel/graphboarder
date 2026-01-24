@@ -162,14 +162,16 @@
 	<div class="flex space-x-2 min-w-max w-full">
 		<div class="flex space-x-2 w-1/3 min-w-max w-full">
 			{#if canExpand}
-				<div class="btn btn-xs p-1 rounded normal-case" onclick={expand}>
+				<button class="btn btn-xs p-1 rounded normal-case" onclick={expand}>
 					{showExpand ? '-' : '+'}
-				</div>
+				</button>
 			{:else}
-				<div class="btn btn-xs p-1 rounded normal-case btn-disabled" onclick={expand}>+</div>
+				<button class="btn btn-xs p-1 rounded normal-case btn-disabled" onclick={expand}
+					>+</button
+				>
 			{/if}
 			<div class="bg-secondary p-1 rounded">{index + 1}</div>
-			<div
+			<button
 				class="btn btn-xs btn-info normal-case font-light"
 				onclick={() => {
 					console.log(type);
@@ -177,10 +179,10 @@
 				}}
 			>
 				{dd_displayName}
-			</div>
+			</button>
 		</div>
 		{#if !canExpand}
-			<div
+			<button
 				class="btn btn-xs bg-base-200 p-1 rounded"
 				onclick={() => {
 					console.log(getRootType(null, dd_rootName, schemaData));
@@ -191,10 +193,10 @@
 				{:else}
 					{dd_namesArray[dd_namesArray.length - 1]}
 				{/if}
-			</div>
+			</button>
 		{/if}
 		{#if canExpand}
-			<div
+			<button
 				class="btn btn-xs btn-accent normal-case rounded px-2 py-1"
 				onclick={() => {
 					console.log(getRootType(null, dd_rootName, schemaData));
@@ -224,6 +226,8 @@
 
 		{#if canExpand}
 			<div class="overflow-visible grid grid-col gap-[-10px] h-2 w-6">
+				<!-- svelte-ignore a11y_click_events_have_key_events -->
+				<!-- svelte-ignore a11y_no_static_element_interactions -->
 				<div
 					class="w-10 duration-100 mx-auto w-min pl-1 {hasSelected
 						? 'text-secondary'
@@ -261,9 +265,8 @@
 			</p> -->
 		{/if}
 
-		<!-- svelte-ignore a11y_click_events_have_key_events -->
-		<div
-			class="min-w-max w-full pr-2 text-md duration-100=="
+		<button
+			class="min-w-max w-full pr-2 text-md duration-100== text-left bg-transparent border-0 p-0"
 			onclick={() => {
 				if (canExpand) {
 					expand();

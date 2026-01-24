@@ -9,6 +9,7 @@
 	import { setContext, getContext } from 'svelte';
 	import { get, writable } from 'svelte/store';
 	import Type from './Type.svelte';
+	import { Logger } from '$lib/utils/logger';
 	interface Props {
 		prefix?: string;
 		column_stepsOfFields?: any;
@@ -47,12 +48,12 @@
 	// Use $effect for reactive subscriptions - these automatically clean up
 	$effect(() => {
 		const value = $stepsOfFieldsOBJ;
-		console.log('stepsOfFieldsOBJ', value);
+		Logger.debug('stepsOfFieldsOBJ', value);
 	});
 
 	$effect(() => {
 		const value = $activeArgumentsDataGrouped_Store;
-		console.log('activeArgumentsDataGrouped_Store', value);
+		Logger.debug('activeArgumentsDataGrouped_Store', value);
 	});
 
 	$effect(() => {
@@ -67,12 +68,12 @@
 
 	$effect(() => {
 		const value = $stepsOfFieldsOBJFull;
-		console.log({ stepsOfFieldsOBJFull: value });
+		Logger.debug({ stepsOfFieldsOBJFull: value });
 	});
 
 	$effect(() => {
 		const value = $StepsOfFieldsSelected;
-		console.log('StepsOfFieldsSelected', value);
+		Logger.debug('StepsOfFieldsSelected', value);
 	});
 </script>
 

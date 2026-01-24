@@ -3,6 +3,7 @@
 	import QmsWraper from '$lib/components/QMSWraper.svelte';
 	import { getContext } from 'svelte';
 	import ComponentForLayout from '../../routes/endpoints/[endpointid]/queries/[queryName]/ComponentForLayout.svelte';
+	import { Logger } from '$lib/utils/logger';
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
@@ -29,7 +30,7 @@
 		onRowSelectionChange,
 		onRowClicked
 	}: Props = $props();
-	console.log('nooooddeeee', { node });
+	Logger.debug('nooooddeeee', { node });
 	let getManyQMS = $state();
 	$effect(() => {
 		if ($QMSFieldToQMSGetMany_Store.length > 0) {
@@ -37,7 +38,7 @@
 				nodeOrField: node
 			})?.getMany?.selectedQMS;
 			if (getManyQMS) {
-				console.log({ getManyQMS });
+				Logger.debug({ getManyQMS });
 			}
 		}
 	});

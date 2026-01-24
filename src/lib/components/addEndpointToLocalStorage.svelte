@@ -3,6 +3,7 @@
 	import { getContext } from 'svelte';
 	import CodeEditor from './fields/CodeEditor.svelte';
 	import { getSortedAndOrderedEndpoints } from '$lib/utils/usefulFunctions';
+	import { Logger } from '$lib/utils/logger';
 
 	interface Props {
 		onHide?: () => void;
@@ -13,7 +14,7 @@
 	let localStorageEndpoints = getContext('localStorageEndpoints');
 	const handleCodeChanged = (e) => {
 		const newConfigurationString = e.detail.chd_rawValue;
-		console.log(newConfigurationString);
+		Logger.debug(newConfigurationString);
 		const newConfigurationJs = stringToJs(newConfigurationString);
 		let indexOfNewEndpointIdInLocalStorage;
 		if ($localStorageEndpoints?.length > 0) {
@@ -21,7 +22,7 @@
 				(endpoint) => endpoint.id == newConfigurationJs.id
 			);
 		}
-		console.log({
+		Logger.debug({
 			newConfigurationString,
 			newConfigurationJs,
 			$localStorageEndpoints,
@@ -33,7 +34,7 @@
 			$localStorageEndpoints.push(newConfigurationJs);
 		}
 		localStorageEndpoints.set(getSortedAndOrderedEndpoints($localStorageEndpoints));
-		console.log({ $localStorageEndpoints, indexOfNewEndpointIdInLocalStorage });
+		Logger.debug({ $localStorageEndpoints, indexOfNewEndpointIdInLocalStorage });
 	};
 </script>
 

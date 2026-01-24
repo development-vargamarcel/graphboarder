@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import CodeMirror from 'svelte-codemirror-editor';
+	import { Logger } from '$lib/utils/logger';
 	import { javascript } from '@codemirror/lang-javascript';
 	import { graphql } from 'cm6-graphql';
 	import * as prettier from 'prettier/standalone';
@@ -141,7 +142,7 @@
 		if (callback) {
 			callback(value);
 		} else {
-			console.info('callback not defined');
+			Logger.info('callback not defined');
 		}
 	};
 
@@ -150,14 +151,14 @@
 	document.addEventListener('fullscreenchange', function (e) {
 		if (document.fullscreenElement) {
 			// Full-screen mode entered
-			//console.log('Entered full-screen mode');
+			//Logger.debug('Entered full-screen mode');
 		} else {
 			if (e.target.id == id) {
 				editor.dispose();
 				setTimeout(initializeEditor, 500);
 			}
 			// Full-screen mode exited
-			//console.log('Exited full-screen mode', e);
+			//Logger.debug('Exited full-screen mode', e);
 		}
 	});
 	const generateId: () => string = () => {

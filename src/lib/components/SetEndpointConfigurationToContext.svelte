@@ -242,7 +242,7 @@
 			</div>
 			<div class="flex flex-col w-full md:w-[65vw]   grow h-screen">
 				<div class=" bg-base-100 min-h-[50px] flex">
-					<label
+					<button
 						class="btn btn-square btn-ghost  md:hidden"
 						onclick={() => {
 							forceVisibleSidebar = true;
@@ -260,7 +260,7 @@
 								d="M4 6h16M4 12h16M4 18h16"
 							/></svg
 						>
-					</label>
+					</button>
 					<div></div>
 				</div>
 				{@render children?.()}

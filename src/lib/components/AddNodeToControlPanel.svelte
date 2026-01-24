@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
+	import { Logger } from '$lib/utils/logger';
 	interface Props {
 		prefix?: string;
 		node: any;
@@ -15,7 +16,7 @@
 	};
 	let objIsStarred = $derived(mergedChildren_controlPanel_Store.getObj(currentObject));
 	$effect(() => {
-		console.log({ objIsStarred });
+		Logger.debug({ objIsStarred });
 	});
 </script>
 

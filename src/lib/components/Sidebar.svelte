@@ -4,6 +4,7 @@
 	import TabContainer from '$lib/components/TabContainer.svelte';
 	import { getContext } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
+	import { Logger } from '$lib/utils/logger';
 
 	interface Props {
 		forceVisibleSidebar?: boolean;
@@ -23,7 +24,7 @@
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 
 	$effect(() => {
-		console.log({ forceVisibleSidebar });
+		Logger.debug({ forceVisibleSidebar });
 	});
 </script>
 
