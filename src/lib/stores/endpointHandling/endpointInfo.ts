@@ -11,20 +11,23 @@ import {
 } from '$lib/utils/dataStructureTransformers';
 import { writable, get } from 'svelte/store';
 import { getDeepField, getFields_Grouped, getRootType } from '$lib/utils/usefulFunctions';
+import { Logger } from '$lib/utils/logger';
+import type { EndpointConfiguration, FieldWithDerivedData, SchemaData } from '$lib/types';
+
 export const endpointInfoDefaultValues = {
 	description: 'no description',
 	idFieldNamePossibilities: ['id'],
 	countFieldNamePossibilities: ['count'],
 	rowsLocationPossibilities: [
 		{
-			get_Val: (QMS_info) => {
+			get_Val: (QMS_info: any) => {
 				return ['edges'];
 			},
-			check: (QMS_info, schemaData) => {
+			check: (QMS_info: any, schemaData: any) => {
 				const QMS_infoRootType = getRootType(null, QMS_info.dd_rootName, schemaData);
-				console.log({ QMS_infoRootType, QMS_info })
+				Logger.debug({ QMS_infoRootType, QMS_info })
 				if (!QMS_infoRootType?.fields) {
-					console.error('QMS_infoRootType.fields is undefined');
+					Logger.error('QMS_infoRootType.fields is undefined');
 					return false;
 				}
 				return QMS_infoRootType.fields.find((field) => field.dd_displayName === 'edges')
@@ -32,24 +35,24 @@ export const endpointInfoDefaultValues = {
 		}
 		,
 		{
-			get_Val: (QMS_info) => {
+			get_Val: (QMS_info: any) => {
 				return [];
 			},
-			check: (QMS_info) => {
+			check: (QMS_info: any) => {
 				return true;
 			}
 		}
 	],
 	rowCountLocationPossibilities: [
 		{
-			get_Val: (QMS_info, schemaData, storeVal) => {
+			get_Val: (QMS_info: any, schemaData: any, storeVal: any) => {
 				const possibleNames = storeVal?.countFieldNamePossibilities || ['count'];
 				for (const name of possibleNames) {
 					return [name];
 				}
 				return ['count'];
 			},
-			check: (QMS_info, schemaData, storeVal) => {
+			check: (QMS_info: any, schemaData: any, storeVal: any) => {
 				// Simple check: does the QMS return type have a field matching one of the count names?
 				// This is a basic implementation to satisfy the TODO.
 				// In a real scenario, we might want to check the return type's fields.
@@ -79,10 +82,10 @@ export const endpointInfoDefaultValues = {
 	},
 	idFieldPossibilities: [
 		{
-			get_Val: function (QMS_info, schemaData, storeVal) {
+			get_Val: function (QMS_info: any, schemaData: any, storeVal: any) {
 				return this.check(QMS_info, schemaData, storeVal);
 			},
-			check: (QMS_info, schemaData, storeVal) => {
+			check: (QMS_info: any, schemaData: any, storeVal: any) => {
 				const rootType = getRootType(null, QMS_info.dd_rootName, schemaData)
 				const fields = rootType?.fields
 				let idField
@@ -90,11 +93,11 @@ export const endpointInfoDefaultValues = {
 					scalarFields,
 					non_scalarFields,
 					enumFields
-				} = getFields_Grouped(rootType, [], schemaData)
+				} = getFields_Grouped(rootType!, [], schemaData)
 				const nonNullScalarFields = scalarFields.filter((field) => {
 					return field.dd_NON_NULL
 				})
-				console.log({ nonNullScalarFields })
+				Logger.debug({ nonNullScalarFields })
 				if (nonNullScalarFields.length == 1) {
 					return nonNullScalarFields[0]
 				}
@@ -144,12 +147,12 @@ export const endpointInfoDefaultValues = {
 					return fieldDisplayNameLowercase.includes('id');
 				});
 				if (idFields.length > 1) {
-					console.info('private key could be a conbination of these columns:', { idFields })
+					Logger.info('private key could be a conbination of these columns:', { idFields })
 				}
 				if (idFields.length == 1) {
 					return idFields[0]
 				}
-				console.warn('id field is one of these', { nonNullScalarFields })
+				Logger.warn('id field is one of these', { nonNullScalarFields })
 
 			}
 		}
@@ -158,9 +161,9 @@ export const endpointInfoDefaultValues = {
 
 		{
 			get_Val: () => {
-				return { displayInterface: 'codeeditor', defaultValue: '{}', use_transformerREVERSE: (val) => { return val }, use_transformer: string_transformer };
+				return { displayInterface: 'codeeditor', defaultValue: '{}', use_transformerREVERSE: (val: any) => { return val }, use_transformer: string_transformer };
 			},
-			check: function (dd_rootName, dd_displayName, typeObj) {
+			check: function (dd_rootName: string, dd_displayName: string, typeObj: any) {
 				if (!dd_rootName) {
 					return null
 				}
@@ -173,7 +176,7 @@ export const endpointInfoDefaultValues = {
 			get_Val: () => {
 				return { displayInterface: 'text', defaultValue: ' ', use_transformerREVERSE: string_transformerREVERSE, use_transformer: string_transformer };
 			},
-			check: function (dd_rootName, dd_displayName, typeObj) {
+			check: function (dd_rootName: string, dd_displayName: string, typeObj: any) {
 				if (!dd_rootName) {
 					return null
 				}
@@ -188,7 +191,7 @@ export const endpointInfoDefaultValues = {
 			get_Val: () => {
 				return { displayInterface: 'datetime-local', defaultValue: ISO8601_transformerGETDEFAULTVAl(), use_transformerREVERSE: ISO8601_transformerREVERSE, use_transformer: ISO8601_transformer };
 			},
-			check: function (dd_rootName, dd_displayName, typeObj) {
+			check: function (dd_rootName: string, dd_displayName: string, typeObj: any) {
 				if (!dd_rootName) {
 					return null
 				}
@@ -207,10 +210,10 @@ export const endpointInfoDefaultValues = {
 			get_Val: () => {
 				return {
 					displayInterface: 'number', defaultValue: 0,
-					use_transformerREVERSE: (val) => { return val }, use_transformer: number_transformer
+					use_transformerREVERSE: (val: any) => { return val }, use_transformer: number_transformer
 				};
 			},
-			check: function (dd_rootName, dd_displayName, typeObj) {
+			check: function (dd_rootName: string, dd_displayName: string, typeObj: any) {
 				if (!dd_rootName) {
 					return null
 				}
@@ -225,7 +228,7 @@ export const endpointInfoDefaultValues = {
 			get_Val: () => {
 				return { displayInterface: 'geo', defaultValue: undefined, use_transformerREVERSE: geojson_transformerREVERSE, use_transformer: geojson_transformer };
 			},
-			check: function (dd_rootName, dd_displayName, typeObj) {
+			check: function (dd_rootName: string, dd_displayName: string, typeObj: any) {
 				if (!dd_rootName) {
 					return null
 				}
@@ -238,9 +241,9 @@ export const endpointInfoDefaultValues = {
 		},
 		{
 			get_Val: () => {
-				return { displayInterface: 'boolean', defaultValue: true, use_transformerREVERSE: (val) => { return val }, use_transformer: boolean_transformer };
+				return { displayInterface: 'boolean', defaultValue: true, use_transformerREVERSE: (val: any) => { return val }, use_transformer: boolean_transformer };
 			},
-			check: function (dd_rootName, dd_displayName, typeObj) {
+			check: function (dd_rootName: string, dd_displayName: string, typeObj: any) {
 				if (!dd_rootName) {
 					return null
 				}
@@ -252,9 +255,9 @@ export const endpointInfoDefaultValues = {
 			}
 		}, {
 			get_Val: () => {
-				return { displayInterface: 'ENUM', defaultValue: [], use_transformerREVERSE: (val) => { return val }, use_transformer: (val) => { return val } };
+				return { displayInterface: 'ENUM', defaultValue: [], use_transformerREVERSE: (val: any) => { return val }, use_transformer: (val: any) => { return val } };
 			},
-			check: function (dd_rootName, dd_displayName, typeObj) {
+			check: function (dd_rootName: string, dd_displayName: string, typeObj: any) {
 				if (!dd_rootName) {
 					return null
 				}
@@ -264,9 +267,9 @@ export const endpointInfoDefaultValues = {
 		}
 		, {
 			get_Val: () => {
-				return { displayInterface: null, defaultValue: null, use_transformerREVERSE: (val) => { return val }, use_transformer: (val) => { return val } };
+				return { displayInterface: null, defaultValue: null, use_transformerREVERSE: (val: any) => { return val }, use_transformer: (val: any) => { return val } };
 			},
-			check: function (dd_rootName, dd_displayName, typeObj) {
+			check: function (dd_rootName: string, dd_displayName: string, typeObj: any) {
 				//	console.warn('no typesExtraDataPossibility found,using the default one')
 				return true
 			}
@@ -274,11 +277,11 @@ export const endpointInfoDefaultValues = {
 	],
 	idDecoderPossibilities: [
 		{
-			get_Val: (QMS_info, schemaData, id) => {
+			get_Val: (QMS_info: any, schemaData: any, id: any) => {
 				return id
 
 			},
-			check: (QMS_info, schemaData) => { return true }
+			check: (QMS_info: any, schemaData: any) => { return true }
 		},
 	],
 	returningColumnsPossibleLocationsInMutations: [[]
@@ -295,25 +298,31 @@ export const endpointInfoDefaultValues = {
 
 
 
-
+/**
+ * Creates the endpoint info store with configuration and helper methods to inspect the schema.
+ * @param endpointConfiguration - The initial configuration for the endpoint.
+ * @returns A writable store enriched with helper methods.
+ */
 export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 
 
-	const store = writable({ ...endpointInfoDefaultValues, ...endpointConfiguration });
+	const store = writable<EndpointConfiguration>({ ...endpointInfoDefaultValues, ...endpointConfiguration });
 
-	const get_fieldsNames = (currentQMS_info, fieldsLocation, schemaData, FieldsPossibleNamesName) => {
+	const get_fieldsNames = (currentQMS_info: any, fieldsLocation: any, schemaData: any, FieldsPossibleNamesName: any) => {
 		//do not move this function,needs "store" to be defined
-		const storeVal = get(store);
+		const storeVal = get(store) as any;
 		if (!storeVal || !storeVal?.[FieldsPossibleNamesName]) {
 			return null;
 		}
-		const fieldsNames = {}
+		const fieldsNames: any = {}
 		const QMSInfo = getDeepField(currentQMS_info, fieldsLocation, schemaData, 'fields')
+		if (!QMSInfo) return null;
 		const QMSInfoROOT = getRootType(null, QMSInfo.dd_rootName, schemaData)
-		const QMSInfoROOTFieldNames = QMSInfoROOT.fields.map(field => field.dd_displayName)
+		if (!QMSInfoROOT?.fields) return null;
+		const QMSInfoROOTFieldNames = QMSInfoROOT.fields.map((field: any) => field.dd_displayName)
 
 		for (const [name, possibilities] of Object.entries(storeVal[FieldsPossibleNamesName])) {
-			fieldsNames[name] = possibilities.find(possibility => QMSInfoROOTFieldNames.includes(possibility))
+			fieldsNames[name] = (possibilities as any[]).find(possibility => QMSInfoROOTFieldNames.includes(possibility))
 		}
 		return fieldsNames
 	}
@@ -323,12 +332,12 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 		get_thisContext: function () {
 			return this
 		},
-		smartSet: (newEndpoint) => {
+		smartSet: (newEndpoint: any) => {
 			store.set({ ...endpointInfoDefaultValues, ...newEndpoint });
 		},
-		get_inputFieldsContainerLocation: function (QMS_info, schemaData) {
+		get_inputFieldsContainerLocation: function (QMS_info: any, schemaData: any) {
 			const storeVal = get(store);
-			if (!storeVal?.inputColumnsPossibleLocationsInArg?.length > 0) {
+			if (!storeVal?.inputColumnsPossibleLocationsInArg?.length) {
 				return [];
 			}
 
@@ -354,9 +363,9 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			}
 			return [];
 		},
-		get_rowsLocation: function (QMS_info, schemaData) {
+		get_rowsLocation: function (QMS_info: any, schemaData: any) {
 			const storeVal = get(store);
-			if (!storeVal?.rowsLocationPossibilities?.length > 0) {
+			if (!storeVal?.rowsLocationPossibilities?.length) {
 				return [];
 			}
 
@@ -370,10 +379,10 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			}
 			return [];
 		},
-		get_rowCountLocation: function (QMS_info, schemaData) {
-			console.log({ schemaData })
+		get_rowCountLocation: function (QMS_info: any, schemaData: any) {
+			Logger.debug({ schemaData })
 			const storeVal = get(store);
-			if (!storeVal || !storeVal?.rowCountLocationPossibilities?.length > 0) {
+			if (!storeVal || !storeVal?.rowCountLocationPossibilities?.length) {
 				return null;
 			}
 
@@ -387,13 +396,13 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			if (rowCountLocationPossibility) {
 				return rowCountLocationPossibility.get_Val(QMS_info, schemaData, storeVal);
 			}
-			console.warn('no rowCountLocation found', QMS_info);
+			Logger.warn('no rowCountLocation found', QMS_info);
 			return null;
 		},
-		get_idField: (QMS_info, schemaData) => {
+		get_idField: (QMS_info: any, schemaData: any) => {
 			const storeVal = get(store);
-			if (!storeVal || !storeVal?.idFieldPossibilities?.length > 0) {
-				console.warn('no idFieldPossibilities found or endpointInfo value is null/undefined');
+			if (!storeVal || !storeVal?.idFieldPossibilities?.length) {
+				Logger.warn('no idFieldPossibilities found or endpointInfo value is null/undefined');
 				return null;
 			}
 			const idFieldPossibility = storeVal.idFieldPossibilities.find((idFieldPossibility) => {
@@ -403,14 +412,14 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			if (idFieldPossibility) {
 				return idFieldPossibility.get_Val(QMS_info, schemaData, storeVal);
 			}
-			console.warn('no idField found', { idFieldPossibilities: storeVal.idFieldPossibilities, idFieldPossibility, QMS_info });
+			Logger.warn('no idField found', { idFieldPossibilities: storeVal.idFieldPossibilities, idFieldPossibility, QMS_info });
 
 			return null;
 		},
-		get_typeExtraData: (typeInfo, choosenDisplayInterface) => {
+		get_typeExtraData: (typeInfo: any, choosenDisplayInterface: any) => {
 			//!!!maybe is a good approach to make available  entire typeInfo (QMS_info) to 'check' and 'get_Val'
 			const storeVal = get(store);
-			if (!storeVal || !storeVal?.typesExtraDataPossibilities?.length > 0) {
+			if (!storeVal || !storeVal?.typesExtraDataPossibilities?.length) {
 				return null;
 			}
 			let typesExtraDataPossibility
@@ -440,9 +449,9 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			//console.warn('no typeExtraData found');
 			return null;
 		},
-		get_tableName: (QMS_info, schemaData) => {
+		get_tableName: (QMS_info: any, schemaData: any) => {
 			const storeVal = get(store);
-			if (!storeVal || !storeVal?.tableNamePossibilities?.length > 0) {
+			if (!storeVal || !storeVal?.tableNamePossibilities?.length) {
 				return null;
 			}
 			const tableNamePossibility = storeVal.tableNamePossibilities.find((tableNamePossibility) => {
@@ -452,19 +461,19 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			if (tableNamePossibility) {
 				return tableNamePossibility.get_Val(QMS_info, schemaData);
 			}
-			console.warn('no tableName found');
+			Logger.warn('no tableName found');
 
 			return null;
 		},
-		get_qmsNameForObjective: function (QMS_info, schemaData, qmsObjective) {
+		get_qmsNameForObjective: function (QMS_info: any, schemaData: any, qmsObjective: any) {
 			const thisContext = this
 			const tableName = this.get_tableName(QMS_info, schemaData);
 			if (!tableName) {
-				console.warn('no qmsNameForObjective found because tableName is null');
+				Logger.warn('no qmsNameForObjective found because tableName is null');
 				return null
 			}
 			const storeVal = get(store);
-			if (!storeVal || !storeVal?.qmsNameForObjectivePossibilities?.length > 0) {
+			if (!storeVal || !storeVal?.qmsNameForObjectivePossibilities?.length) {
 				return null;
 			}
 			const qmsNameForObjectivePossibility = storeVal.qmsNameForObjectivePossibilities.find((qmsNameForObjectivePossibility) => {
@@ -474,14 +483,14 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			if (qmsNameForObjectivePossibility) {
 				return qmsNameForObjectivePossibility.get_Val({ QMS_info, schemaData, thisContext, tableName, qmsObjective });
 			}
-			console.warn('no qmsNameForObjective found');
+			Logger.warn('no qmsNameForObjective found');
 
 			return null;
 
 		},
-		get_decodedId: (QMS_info, schemaData, id) => {
+		get_decodedId: (QMS_info: any, schemaData: any, id: any) => {
 			const storeVal = get(store);
-			if (!storeVal || !storeVal?.idDecoderPossibilities?.length > 0) {
+			if (!storeVal || !storeVal?.idDecoderPossibilities?.length) {
 				return null;
 			}
 			const idDecoderPossibility = storeVal.idDecoderPossibilities.find((idDecoderPossibility) => {
@@ -491,13 +500,13 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			if (idDecoderPossibility) {
 				return idDecoderPossibility.get_Val(QMS_info, schemaData, id);
 			}
-			console.warn('no idDecoder found');
+			Logger.warn('no idDecoder found');
 
 			return null;
 		}
 
 		,
-		get_relayPageInfoFieldsNames: (currentQMS_info, pageInfoFieldsLocation, schemaData) => {
+		get_relayPageInfoFieldsNames: (currentQMS_info: any, pageInfoFieldsLocation: any, schemaData: any) => {
 			const storeVal = get(store);
 			if (!storeVal || !storeVal?.relayPageInfoFieldsPossibleNames) {
 				return null;
@@ -506,7 +515,7 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 
 		}
 		,
-		get_relayCursorFieldName: (currentQMS_info, rowsLocation, schemaData) => {
+		get_relayCursorFieldName: (currentQMS_info: any, rowsLocation: any, schemaData: any) => {
 			const storeVal = get(store);
 			if (!storeVal || !storeVal?.relayCursorPossibleNames) {
 				return null;

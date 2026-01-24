@@ -1,13 +1,26 @@
 // Core GraphQL Types
+
+/**
+ * Represents the kind of a GraphQL type.
+ */
 export type GraphQLKind = 'SCALAR' | 'OBJECT' | 'INTERFACE' | 'UNION' | 'ENUM' | 'INPUT_OBJECT' | 'LIST' | 'NON_NULL';
 
+/**
+ * Represents the type of a QMS operation (Query, Mutation, Subscription).
+ */
 export type QMSType = 'query' | 'mutation' | 'subscription';
 
+/**
+ * Represents a named GraphQL type.
+ */
 export interface GraphQLNamedType {
 	name: string;
 	kind: GraphQLKind;
 }
 
+/**
+ * Represents a GraphQL type definition, potentially nested.
+ */
 export interface GraphQLType {
 	name?: string;
 	kind?: GraphQLKind;
@@ -15,6 +28,9 @@ export interface GraphQLType {
 	ofType?: GraphQLType;
 }
 
+/**
+ * Represents a field in a GraphQL type.
+ */
 export interface GraphQLField {
 	name: string;
 	description?: string;
@@ -24,6 +40,9 @@ export interface GraphQLField {
 	deprecationReason?: string;
 }
 
+/**
+ * Represents an argument for a GraphQL field.
+ */
 export interface GraphQLArgument {
 	name: string;
 	description?: string;
@@ -31,6 +50,9 @@ export interface GraphQLArgument {
 	defaultValue?: unknown;
 }
 
+/**
+ * Represents an input field in a GraphQL input object.
+ */
 export interface GraphQLInputField {
 	name: string;
 	description?: string;
@@ -38,6 +60,9 @@ export interface GraphQLInputField {
 	defaultValue?: unknown;
 }
 
+/**
+ * Represents a value in a GraphQL Enum.
+ */
 export interface GraphQLEnumValue {
 	name: string;
 	description?: string;
@@ -46,6 +71,10 @@ export interface GraphQLEnumValue {
 }
 
 // Derived Data Types (prefixed with dd_)
+
+/**
+ * Interface containing derived data calculated for easier UI handling.
+ */
 export interface DerivedData {
 	dd_kindsArray: GraphQLKind[];
 	dd_namesArray: string[];
@@ -75,6 +104,9 @@ export interface DerivedData {
 	dd_StrForFuseComparison: string;
 }
 
+/**
+ * Represents a root type in the schema, enriched with derived data.
+ */
 export interface RootType extends GraphQLNamedType, Partial<DerivedData> {
 	fields?: FieldWithDerivedData[];
 	inputFields?: InputFieldWithDerivedData[];
@@ -84,11 +116,21 @@ export interface RootType extends GraphQLNamedType, Partial<DerivedData> {
 	description?: string;
 }
 
+/**
+ * Represents a field enriched with derived data.
+ */
 export interface FieldWithDerivedData extends GraphQLField, DerivedData {}
 
+/**
+ * Represents an input field enriched with derived data.
+ */
 export interface InputFieldWithDerivedData extends GraphQLInputField, DerivedData {}
 
 // Schema Data Types
+
+/**
+ * Holds the parsed schema data including root types and fields for operations.
+ */
 export interface SchemaData {
 	rootTypes: RootType[];
 	queryFields: FieldWithDerivedData[];
@@ -99,8 +141,15 @@ export interface SchemaData {
 }
 
 // Display Interface Types
+
+/**
+ * types of interfaces available for displaying data.
+ */
 export type DisplayInterface = 'text' | 'number' | 'datetime-local' | 'geo' | 'boolean' | 'ENUM' | 'codeeditor' | null;
 
+/**
+ * Extra data associated with a type for display purposes.
+ */
 export interface TypeExtraData {
 	displayInterface: DisplayInterface;
 	defaultValue: unknown;
@@ -109,12 +158,22 @@ export interface TypeExtraData {
 }
 
 // Pagination Types
+
+/**
+ * Represents different pagination strategies/keywords.
+ */
 export type PaginationStand = 'limit' | 'offset' | 'first' | 'last' | 'after' | 'before' | 'from' | 'page';
 
+/**
+ * Represents the current state of pagination.
+ */
 export interface PaginationState {
 	[key: string]: unknown;
 }
 
+/**
+ * Info and logic for a specific pagination type.
+ */
 export interface PaginationTypeInfo {
 	name: string;
 	check: (standsForArray: string[]) => boolean;
@@ -128,10 +187,17 @@ export interface PaginationTypeInfo {
 }
 
 // Column Data Types
+
+/**
+ * Represents nested fields selection for a query.
+ */
 export interface StepsOfFieldsObject {
 	[key: string]: StepsOfFieldsObject | string;
 }
 
+/**
+ * Data defining a table column and how to fetch its data.
+ */
 export interface TableColumnData {
 	title: string;
 	stepsOfFields?: string[];
@@ -140,6 +206,10 @@ export interface TableColumnData {
 }
 
 // Active Argument Types
+
+/**
+ * Represents an argument currently being used/configured in the UI.
+ */
 export interface ActiveArgumentData extends Partial<FieldWithDerivedData> {
 	id: string;
 	stepsOfFields: string[];
@@ -156,6 +226,9 @@ export interface ActiveArgumentData extends Partial<FieldWithDerivedData> {
 	selectedRowsColValues?: Record<string, unknown>[];
 }
 
+/**
+ * Represents a container for arguments (e.g. for filters like AND/OR).
+ */
 export interface ContainerData extends ActiveArgumentData {
 	operator: 'bonded' | 'list' | '_and' | '_or' | '_not' | 'and' | 'or' | 'not' | '~spread~';
 	items: ContainerItem[];
@@ -167,6 +240,9 @@ export interface ContainerItem {
 	id: string;
 }
 
+/**
+ * Represents a group of active arguments.
+ */
 export interface ActiveArgumentGroup {
 	originType: FieldWithDerivedData;
 	group_name: string;
@@ -181,6 +257,7 @@ export interface ActiveArgumentGroup {
 }
 
 // Endpoint Configuration Types
+
 export interface RowsLocationPossibility {
 	get_Val: (qmsInfo: FieldWithDerivedData, schemaData?: SchemaData) => string[];
 	check: (qmsInfo: FieldWithDerivedData, schemaData: SchemaData) => boolean;
@@ -201,6 +278,9 @@ export interface IdDecoderPossibility {
 	check: (qmsInfo: FieldWithDerivedData, schemaData: SchemaData) => boolean;
 }
 
+/**
+ * Configuration options for an endpoint, including heuristics for identifying fields.
+ */
 export interface EndpointConfiguration {
 	url?: string;
 	description?: string;
@@ -237,6 +317,10 @@ export interface QMSObjectiveParams {
 }
 
 // Store Types
+
+/**
+ * Svelte store for endpoint info.
+ */
 export interface EndpointInfoStore {
 	subscribe: (run: (value: EndpointConfiguration) => void) => () => void;
 	set: (value: EndpointConfiguration) => void;
@@ -255,6 +339,9 @@ export interface EndpointInfoStore {
 	get_relayCursorFieldName: (currentQmsInfo: FieldWithDerivedData, rowsLocation: string[], schemaData: SchemaData) => Record<string, string> | null;
 }
 
+/**
+ * Svelte store for managing active arguments grouped by type.
+ */
 export interface ActiveArgumentsDataGroupedStore {
 	subscribe: (run: (value: ActiveArgumentGroup[]) => void) => () => void;
 	set: (value: ActiveArgumentGroup[]) => void;
@@ -267,6 +354,9 @@ export interface ActiveArgumentsDataGroupedStore {
 	add_activeArgument: (newArgumentOrContainerData: ActiveArgumentData | ContainerData, groupName: string, parentContainerId: string | null, endpointInfo: EndpointInfoStore) => void;
 }
 
+/**
+ * Svelte store for table column data.
+ */
 export interface TableColsDataStore {
 	subscribe: (run: (value: TableColumnData[]) => void) => () => void;
 	set: (value: TableColumnData[]) => void;
@@ -276,6 +366,9 @@ export interface TableColsDataStore {
 	removeColumn: (colToRemoveData_title: string) => void;
 }
 
+/**
+ * Svelte store for pagination state.
+ */
 export interface PaginationStateStore {
 	subscribe: (run: (value: PaginationState) => void) => () => void;
 	set: (value: PaginationState) => void;
@@ -286,6 +379,7 @@ export interface PaginationStateStore {
 }
 
 // GQL Argument Object Types
+
 export interface GQLArgObj {
 	arg_gqlArgObj: Record<string, unknown>;
 	arg_canRunQuery: boolean;
@@ -300,6 +394,7 @@ export interface FinalGQLArgObj {
 }
 
 // Fields Grouped Types
+
 export interface FieldsGrouped {
 	scalarFields: FieldWithDerivedData[];
 	non_scalarFields: FieldWithDerivedData[];
@@ -307,6 +402,7 @@ export interface FieldsGrouped {
 }
 
 // Available Endpoints
+
 export interface AvailableEndpoint extends EndpointConfiguration {
 	id: string;
 	url: string;

@@ -8,13 +8,29 @@
 	import { browser } from '$app/environment';
 	import { Create_urqlCoreClient } from '$lib/utils/urqlCoreClient';
 	import { setContextClient,Client,fetchExchange } from '@urql/svelte';
+	import { Logger } from '$lib/utils/logger';
+
+	/**
+	 * Props for the MainWraper component.
+	 */
 	interface Props {
+		/**
+		 * A prefix string to namespace the context, allowing multiple MainWrapers to coexist.
+		 */
 		prefix?: string;
+		/**
+		 * Initial configuration for the GraphQL endpoint (url, headers, etc.).
+		 */
 		endpointInfoProvided?: any;
+		/**
+		 * The content to render inside the wrapper.
+		 */
 		children?: import('svelte').Snippet;
 	}
 
 	let { prefix = '', endpointInfoProvided = null, children }: Props = $props();
+
+	Logger.debug('MainWraper initializing', { prefix, endpointInfoProvided });
 
 	const endpointInfo = create_endpointInfo_Store(endpointInfoProvided);
 	const schemaData = create_schemaData();
@@ -34,7 +50,8 @@
 			return $endpointInfo?.headers;
 		}
 		if (browser) {
-			return JSON.parse(localStorage.getItem('headers'));
+			const headers = localStorage.getItem('headers');
+			return headers ? JSON.parse(headers) : {};
 		} else {
 			return {};
 		}
@@ -48,6 +65,8 @@
 		schemaData: schemaData,
 		urqlCoreClient: urqlCoreClient
 	});
+
+	Logger.info('MainWraper initialized and context set', { prefix });
 </script>
 
 <IntrospectionDataGenerator>
