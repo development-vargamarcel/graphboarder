@@ -222,7 +222,7 @@
 	};
 	let showModal: boolean = $state(false);
 	const mutationVersion = getContext('mutationVersion');
-	const showInputField = getContext('showInputField');
+	const showInputField: any = getContext('showInputField');
 
 	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);

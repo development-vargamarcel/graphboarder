@@ -103,7 +103,7 @@
 					...endpointInfo.get_rowsLocation(currentQMS_info, schemaData)
 				];
 				Logger.debug({ stepsOfFieldsInput }, currentQMS_info.dd_displayName);
-				rowsCurrent = getDataGivenStepsOfFields(undefined, queryData.data, stepsOfFieldsInput);
+				rowsCurrent = getDataGivenStepsOfFields(undefined, queryData.data, stepsOfFieldsInput) as any[];
 				if (rowsCurrent && !Array.isArray(rowsCurrent)) {
 					rowsCurrent = [rowsCurrent];
 				}

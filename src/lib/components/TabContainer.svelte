@@ -106,7 +106,7 @@
 					icon={link.icon}
 					hasFill={link.hasFill}
 					urlIsRoute={link.urlIsRoute}
-					target={link?.target}
+					target={(link as any)?.target}
 				/>
 			{/each}
 		</ul>
