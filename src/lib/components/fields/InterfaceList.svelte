@@ -5,7 +5,7 @@
 	let inputEl;
 	let { rawValue = [], dispatchValue = [], typeInfo, onChanged } = $props();
 
-	let elements = $state(rawValue.map((el, i) => {
+	let elements = $derived(rawValue.map((el, i) => {
 		return { chd_rawValue: el, chd_dispatchValue: dispatchValue[i] };
 	}));
 	$effect(() => {

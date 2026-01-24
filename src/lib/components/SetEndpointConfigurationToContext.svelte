@@ -9,6 +9,7 @@
 		stringToJs
 	} from '$lib/utils/usefulFunctions';
 	import { getContext, setContext } from 'svelte';
+	import { get } from 'svelte/store';
 	import { goto } from '$app/navigation';
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
@@ -31,12 +32,14 @@
 
 	let { prefix = '', QMSName, children }: Props = $props();
 
+	import type { QMSMainWraperContext, QMSWraperContext as QMSWraperContextType } from '$lib/types/index';
+
 	// Get contexts
-	let QMSMainWraperContext = getContext<any>(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
-	let queryName = QMSName;
-	const QMSWraperContext = getContext<any>('QMSWraperContext');
+	let QMSMainWraperContext_Value = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = QMSMainWraperContext_Value?.endpointInfo;
+	const urqlCoreClient = QMSMainWraperContext_Value?.urqlCoreClient;
+	let queryName = $state(QMSName);
+	const QMSWraperContext = getContext<QMSWraperContextType>('QMSWraperContext');
 	const {
 		QMS_bodyPart_StoreDerived_rowsCount = null,
 		activeArgumentsDataGrouped_Store,
@@ -49,17 +52,17 @@
 	} = QMSWraperContext;
 	const schemaData = QMSMainWraperContext?.schemaData;
 
-	let currentQMS_info = schemaData.get_QMS_Field(queryName, 'query', schemaData);
-	let dd_relatedRoot = getRootType(null, currentQMS_info.dd_rootName, schemaData);
+	let currentQMS_info = get(schemaData).get_QMS_Field(queryName, 'query', get(schemaData));
+	let dd_relatedRoot = getRootType(null, currentQMS_info.dd_rootName, get(schemaData));
 	if (!currentQMS_info) {
 		goto('/queries');
 	}
 
-	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData).find((pagType: any) => {
+	const paginationTypeInfo = get_paginationTypes(endpointInfo, get(schemaData)).find((pagType: any) => {
 		return pagType.name == currentQMS_info.dd_paginationType;
 	});
 
-	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], schemaData);
+	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], get(schemaData));
 
 	// Reactive state
 	let queryData = $state<{ fetching: boolean; error: any; data: any }>(
@@ -101,7 +104,7 @@
 				queryData = { fetching, error, data };
 				let stepsOfFieldsInput = [
 					currentQMS_info.dd_displayName,
-					...endpointInfo.get_rowsLocation(currentQMS_info, schemaData)
+					...endpointInfo.get_rowsLocation(currentQMS_info, get(schemaData))
 				];
 				console.log({ stepsOfFieldsInput }, currentQMS_info.dd_displayName);
 				rowsCurrent = getDataGivenStepsOfFields(undefined, queryData.data, stepsOfFieldsInput);

@@ -8,11 +8,13 @@
 		prefix?: string;
 	}
 
+	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
+
 	let { type, i, prefix = '' }: Props = $props();
 
-	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const schemaData = QMSMainWraperContext?.schemaData;
+	const QMSWraperContext_Value = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+	let QMSMainWraperContext_Value = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const schemaData = QMSMainWraperContext_Value?.schemaData;
 </script>
 
 <tr>

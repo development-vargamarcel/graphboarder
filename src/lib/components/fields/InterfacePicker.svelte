@@ -10,16 +10,19 @@
 		onInterfaceChosen?: (detail: { chosen: string }) => void;
 	}
 
+	import type { QMSMainWraperContext } from '$lib/types/index';
+	import { get } from 'svelte/store';
+
 	let { prefix = '', chosen, typeInfo, onInterfaceChosen }: Props = $props();
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-	const possible_displayInterfaces = $endpointInfo.typesExtraDataPossibilities.map(
+	let QMSMainWraperContext_Value = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = QMSMainWraperContext_Value?.endpointInfo;
+	const possible_displayInterfaces = $derived($endpointInfo.typesExtraDataPossibilities.map(
 		(possibility) => {
 			return possibility.get_Val()?.displayInterface;
 		}
-	);
-	const schemaData = QMSMainWraperContext?.schemaData;
-	const rootType = getRootType(null, typeInfo.dd_rootName, schemaData);
+	));
+	const schemaData = QMSMainWraperContext_Value?.schemaData;
+	const rootType = $derived(getRootType(null, typeInfo.dd_rootName, get(schemaData)));
 </script>
 
 <div class="w-full"></div>

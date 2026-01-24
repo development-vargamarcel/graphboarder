@@ -1668,7 +1668,7 @@ export const getQMSWraperCtxDataGivenControlPanelItem = (CPItem: { stepsOfFields
 	});
 	return QMSWraperCtxData;
 };
-export const getSortedAndOrderedEndpoints = (endpoints: { id: number; isMantained?: boolean }[], filterOutIfNotMaintaned: boolean = false): { id: number; isMantained?: boolean }[] => {
+export const getSortedAndOrderedEndpoints = (endpoints: { id: number | string; isMantained?: boolean }[], filterOutIfNotMaintaned: boolean = false): { id: number | string; isMantained?: boolean }[] => {
 	const sortedEndpoints = endpoints.sort((a, b) => {
 		if (a.id > b.id) {
 			return 1;

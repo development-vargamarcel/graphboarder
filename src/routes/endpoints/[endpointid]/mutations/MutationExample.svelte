@@ -12,6 +12,13 @@
 	import { Logger } from '$lib/utils/logger';
 	import { get } from 'svelte/store';
 
+	// Move context retrieval into a derived/effect block or ensure prefix is available?
+    // In Svelte 5, simply using the prop `prefix` which is a rune in getContext is fine as long as it's initialized.
+    // However, the warning "This reference only captures the initial value of `prefix`" suggests Svelte wants us to know
+    // that if prefix changes, getContext won't re-run. This is expected behavior for getContext.
+    // To silence it, we can ignore it or ensure we are fine with it.
+    // For now, let's keep it as is but fix any other issues.
+
 	let mainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = mainWraperContext?.endpointInfo;
 	const schemaData = mainWraperContext?.schemaData;
