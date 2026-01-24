@@ -5,6 +5,7 @@ import { page } from '$app/stores';
 import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 import { getContext } from 'svelte';
 import { stringToQMSString_transformer, string_transformer } from '$lib/utils/dataStructureTransformers';
+import { Logger } from '$lib/utils/logger';
 import type {
 	GraphQLKind,
 	QMSType,
@@ -25,8 +26,12 @@ import type {
 } from '$lib/types';
 
 
+/**
+ * Recursively finds a nested child object that has multiple keys or if the last key is 'QMSarguments'.
+ * @param obj - The object to search within.
+ * @returns The found object, true if 'QMSarguments' is the only key, or null if not found.
+ */
 export const findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey = (obj: unknown): Record<string, unknown> | boolean | null => {
-	//console.log(obj)
 	// Check if the input is an object
 	if (typeof obj !== 'object' || obj === null) {
 		return null;
@@ -34,7 +39,7 @@ export const findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey = (obj: u
 	const objectKeys = Object.keys(obj)
 	const objectKeysLength = objectKeys.length
 	if (objectKeysLength > 1) {
-		return obj
+		return obj as Record<string, unknown>
 	}
 	if (obj.hasOwnProperty("QMSarguments") && objectKeysLength == 1) {
 		return true
@@ -42,53 +47,44 @@ export const findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey = (obj: u
 	if (objectKeysLength == 1) {
 		return findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey(obj[objectKeys[0]])
 	}
-
+    return null;
 }
 
+/**
+ * Removes nested objects if they contain only one key and that key is 'QMSarguments'.
+ * @param obj - The object to modify.
+ * @returns The modified object or null.
+ */
 export const deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments = (obj: unknown): Record<string, unknown> | null => {
-	//console.log('ttt', obj)
 	if (getPreciseType(obj) !== 'object' || obj === null) {
 		return null;
 	}
-	///
-	console.log({ obj })
-	///
-	for (const key in obj) {
+	Logger.debug('deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments', { obj });
 
-		const keys = Object.keys(obj[key])
+	for (const key in obj as Record<string, any>) {
+        const typedObj = obj as Record<string, any>;
+		const keys = Object.keys(typedObj[key])
 		const numberOfKeys = keys.length
-		if (numberOfKeys == 1 && obj[key][keys[0]] == 'QMSarguments') {
-			delete obj[key]
-			return
+		if (numberOfKeys == 1 && typedObj[key][keys[0]] == 'QMSarguments') {
+			delete typedObj[key]
+			return typedObj
 		}
-		const result = findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey(obj[key])
-		//console.log('yyresult', obj[key], result, getPreciseType(result) == 'object')
+		const result = findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey(typedObj[key])
 		if (result === true) {
-			//console.log('to delete', obj[key])
-			delete obj[key]
+			delete typedObj[key]
 		}
 		if (getPreciseType(result) == 'object') {
-			deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments(obj[key])
+			deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments(typedObj[key])
 		}
 	}
-	return obj
+	return obj as Record<string, unknown>
 }
 
-// function removeObjIfContainsOnlyQMSarguments(obj) {
-// 	for (let key in obj) {
-// 		if (typeof obj[key] === 'object' && obj[key] !== null) {
-// 			// Recursively call the function for nested objects
-// 			removeObjIfContainsOnlyQMSarguments(obj[key]);
-
-// 			// Check if the current object has only one key and that key is 'QMSarguments'
-// 			if (Object.keys(obj[key]).length === 1 && Object.keys(obj[key])[0] === 'QMSarguments') {
-// 				// Delete the object with key 'QMSarguments'
-// 				delete obj[key];
-// 			}
-// 		}
-// 	}
-// 	return obj
-// }
+/**
+ * Checks if an object is empty.
+ * @param obj - The object to check.
+ * @returns True if the object is empty, false otherwise.
+ */
 export const objectIsEmpty = (obj: Record<string, unknown>): boolean => {
 	if (Object.keys(obj).length === 0 && obj.constructor === Object) {
 		return true;
@@ -97,9 +93,15 @@ export const objectIsEmpty = (obj: Record<string, unknown>): boolean => {
 	}
 }
 
-
-
-
+/**
+ * Builds the body part of a QMS query string.
+ * @param QMS_name - The name of the query/mutation/subscription.
+ * @param QMS_fields - The fields to select.
+ * @param QMS_args - The arguments for the operation.
+ * @param QMS_type - The type of operation (query, mutation, subscription).
+ * @param mergedChildren_finalGqlArgObj - Merged arguments from children.
+ * @returns The generated QMS body string or null if invalid.
+ */
 export const build_QMS_bodyPart = (
 	QMS_name: string,
 	QMS_fields: Record<string, unknown>,
@@ -108,34 +110,28 @@ export const build_QMS_bodyPart = (
 	mergedChildren_finalGqlArgObj: Record<string, unknown>
 ): string | null => {
 	if (Object.keys(QMS_fields).length == 0) {
-		console.error('no cols data,choose at least one field');
+		Logger.error('no cols data,choose at least one field');
 		return null;
 	}
 	if (Object.keys(QMS_args).length == 0) {
-		console.info('no args chosen');
+		Logger.info('no args chosen');
 	}
 
-	console.log('qqqqqqqqqq', { QMS_args }, { QMS_fields }, { mergedChildren_finalGqlArgObj })
+	Logger.debug('build_QMS_bodyPart inputs', { QMS_args, QMS_fields, mergedChildren_finalGqlArgObj })
 	const QMSarguments = { [QMS_name]: { QMSarguments: QMS_args } }
 	const fullObject = JSON.parse(JSON.stringify(deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments(_.mergeWith({}, QMSarguments, mergedChildren_finalGqlArgObj, QMS_fields))
 	))
-	// if (QMS_args && fullObject[QMS_name]) {
-	// 	fullObject[QMS_name].QMSarguments = QMS_args
-	// }
-	//.replaceAll('\"QMSarguments\":','')
-	// console.log('wwwwwwwww', { fullObject })
 
 	const inputString = JSON.stringify(fullObject, function (key, value) {
 		if (key === "QMSarguments") {
-			console.log('QMSarguments', { value }, JSON.stringify(value))
+			// Logger.debug('QMSarguments', { value }, JSON.stringify(value))
 			return "(" + JSON.stringify(value) + ")";
 		}
 		return value;
 	}).replaceAll('\"QMSarguments\":', '')
 	const listOfSubstrings = generateListOfSubstrings(inputString)
-	console.log({ listOfSubstrings })
-	//const modifiedString = listOfSubstrings.join('').replaceAll(/novaluehere|"|:/gi, '').slice(1, -1)
-	//const modifiedString = listOfSubstrings.join('').replaceAll(/novaluehere|"|:/gi, '').slice(1, -1)
+	// Logger.debug({ listOfSubstrings })
+
 	const outsideTextModifier = (text: string): string => {
 		return text.replaceAll(/novaluehere|"|:/gi, '')
 	}
@@ -143,14 +139,24 @@ export const build_QMS_bodyPart = (
 
 	const modifiedString = smartModifyStringBasedOnBoundries(listOfSubstrings.join(''), '(', ')', stringToQMSString_transformer, outsideTextModifier);
 
-	console.log({ modifiedString })
+	Logger.debug({ modifiedString })
 	const QMS_bodyPart = modifiedString.slice(1, -1)
 
 
-	//const QMS_bodyPart_FINAL = QMS_bodyPart.replaceAll(/novaluehere|"|:/gi, '').slice(1, -1)
-	console.log({ QMS_bodyPart })
+	// Logger.debug({ QMS_bodyPart })
 	return QMS_bodyPart
 };
+
+/**
+ * Modifies a string based on boundary characters (e.g., parentheses), applying different transformations to inside and outside text.
+ * @param inputString - The input string.
+ * @param openBoundryChar - The starting boundary character.
+ * @param closeBoundryChar - The ending boundary character.
+ * @param insideTextModifier - Function to modify text inside boundaries.
+ * @param outsideTextModifier - Function to modify text outside boundaries.
+ * @param deleteBoundriesIfTextInsideIsEmpty - Whether to remove boundaries if the inside text is empty.
+ * @returns The modified string.
+ */
 export const smartModifyStringBasedOnBoundries = (
 	inputString: string,
 	openBoundryChar: string = "(",
@@ -170,13 +176,13 @@ export const smartModifyStringBasedOnBoundries = (
 		let outsidePart = splitByOpen[0]
 		let insidePart = splitByOpen[1]
 		if (outsidePart) {
-			if (getPreciseType(outsideTextModifier) === 'function') {
+			if (getPreciseType(outsideTextModifier) === 'function' && outsideTextModifier) {
 				outsidePart = outsideTextModifier(outsidePart)
 			}
 			result.push(outsidePart)
 		}
 		if (insidePart) {
-			if (getPreciseType(insideTextModifier) === 'function') {
+			if (getPreciseType(insideTextModifier) === 'function' && insideTextModifier) {
 				insidePart = insideTextModifier(insidePart)
 			}
 			if (deleteBoundriesIfTextInsideIsEmpty && insidePart == '') {
@@ -228,13 +234,13 @@ function modifyString(input: string): { modifiedSubstring: string; remainingStri
 		return { modifiedSubstring, remainingString }
 	}
 	const parenhtesisLength = matchParenthesis[0].length
-	const parenhtesisStart = matchParenthesis.index
+	const parenhtesisStart = matchParenthesis.index || 0
 	const parenhtesisEnd = parenhtesisStart + parenhtesisLength
 
 	//delete matched parenthesis and it's content from string
 	input = replaceBetween(input, parenhtesisStart, parenhtesisEnd, '')
 	//console.log({ matchParenthesis }, matchParenthesis.index)
-	input = replaceLastOccurrence(input, matchParenthesis.index, matchParenthesis[0] + ":{")
+	input = replaceLastOccurrence(input, matchParenthesis.index || 0, matchParenthesis[0] + ":{")
 	modifiedSubstring = input.substring(0, parenhtesisEnd)
 	remainingString = input.substring(parenhtesisEnd, input.length)
 	// Return the original string if no match is found
@@ -258,17 +264,23 @@ const inputString2 = "query QMS_name{ authUserRoles:{ createdAt,id,role,userId,(
 
 // Example usage: 
 const inputString = ":{textBefore:{1dadas,2dasda,(inside parentheses1{iside1:'asd1'}),3dasds :{ textBefore2:{4dadas,5dasda,(inside parentheses2,inside2:'asd2'),6dasds :{";
-const modifiedResult = modifyString(inputString);
+// const modifiedResult = modifyString(inputString); // Debugging
 
 //console.log(modifiedResult);
 //console.log(replaceLastOccurrence("abc:{def:{ghi:{jkl", 10, "(fdsfds):{"));
 //console.log('-------------------------------')
 //console.log(inputString)
-const listOfSubstrings = generateListOfSubstrings(inputString)
+// const listOfSubstrings = generateListOfSubstrings(inputString) // Debugging
 //console.log(inputString)
 //console.log({ listOfSubstrings })
 //console.log("joined", listOfSubstrings.join(''))
 ///
+
+/**
+ * Extracts all GraphQL kinds from a type definition, drilling down through nested types.
+ * @param type - The GraphQL type definition.
+ * @returns An array of GraphQLKind strings.
+ */
 export const get_KindsArray = (type: Partial<FieldWithDerivedData>): GraphQLKind[] => {
 	let kinds: GraphQLKind[] = [];
 
@@ -299,6 +311,12 @@ export const get_KindsArray = (type: Partial<FieldWithDerivedData>): GraphQLKind
 
 	return kinds;
 };
+
+/**
+ * Extracts all names from a type definition, drilling down through nested types.
+ * @param type - The GraphQL type definition.
+ * @returns An array of name strings.
+ */
 export const get_NamesArray = (type: Partial<FieldWithDerivedData>): string[] => {
 	let names: string[] = [];
 
@@ -330,6 +348,14 @@ export let get_rootName = (namesArray: string[]): string => {
 export let get_displayName = (namesArray: string[]): string => {
 	return namesArray[0];
 };
+
+/**
+ * Retrieves a root type definition from the schema data.
+ * @param rootTypes - The list of root types (optional if schemaData is provided).
+ * @param RootType_Name - The name of the root type to retrieve.
+ * @param schemaData - The schema data store.
+ * @returns The found RootType or undefined.
+ */
 export const getRootType = (
 	rootTypes: RootType[] | null,
 	RootType_Name: string | undefined,
@@ -344,6 +370,13 @@ export const getRootType = (
 	})[0];
 };
 
+/**
+ * Groups fields of a type into scalar, non-scalar, and enum fields.
+ * @param node - The node (type or field) to inspect.
+ * @param dd_displayNameToExclude - List of display names to exclude.
+ * @param schemaData - The schema data.
+ * @returns An object containing arrays of grouped fields.
+ */
 export const getFields_Grouped = (
 	node: Partial<FieldWithDerivedData> | RootType,
 	dd_displayNameToExclude: string[] = [],
@@ -351,12 +384,12 @@ export const getFields_Grouped = (
 ): FieldsGrouped => {
 	const node_rootType = schemaData?.get_rootType(
 		null,
-		node?.dd_rootName || node.parent_node.dd_rootName,
+		node?.dd_rootName || (node as any).parent_node?.dd_rootName,
 		schemaData
 	);
 	let scalarFields: FieldWithDerivedData[] = [];
 	let non_scalarFields: FieldWithDerivedData[] = [];
-	let enumFields: FieldWithDerivedData[] = [];
+	let enumFields: (RootType & FieldWithDerivedData)[] = [];
 
 	let fieldsArray
 	if (node?.args) {
@@ -370,9 +403,9 @@ export const getFields_Grouped = (
 	}
 
 
-	fieldsArray?.filter((field) => {
+	fieldsArray?.filter((field: any) => {
 		return !dd_displayNameToExclude.includes(field.dd_displayName)
-	}).forEach((field) => {
+	}).forEach((field: any) => {
 		if (get_KindsArray(field).includes('ENUM')) {
 			enumFields.push({ ...schemaData.get_rootType(null, field.dd_rootName, schemaData), ...field });
 		} else
@@ -382,12 +415,6 @@ export const getFields_Grouped = (
 				non_scalarFields.push(field);
 			}
 	});
-	// console.log('wwwww', {
-	// 	node, node_rootType, fieldsArray, scalarFields,
-	// 	non_scalarFields,
-	// 	enumFields
-	// })
-
 
 	return {
 		scalarFields,
@@ -422,6 +449,7 @@ export const getStepsOfFieldsForDataGetter = (
 	}
 	return []
 }
+
 export const getDataGivenStepsOfFields = (
 	colInfo: TableColumnData,
 	row_resultData: unknown,
@@ -433,20 +461,6 @@ export const getDataGivenStepsOfFields = (
 	if (stepsOfFields.length == 0) {
 		return row_resultData
 	}
-	// const handleArray = (array, element) => {
-	//     console.log('aaaa', { array })
-	//     array = array.map((subElement) => {
-	//         if (subElement?.[element] !== undefined) {
-	//             return subElement[element];
-	//         }
-	//         if (Array.isArray(subElement) && subElement.length > 0) {
-	//             return handleArray(subElement, element);
-	//         }
-	//         return []
-	//         // return subElement[element]
-	//     });
-	//     return array;
-	// };
 
 	const handleStep = (step: string, colResultData: unknown): unknown => {
 		//!!! there must be some changes made here because undefined == null (but typeof undefined !== null)
@@ -455,13 +469,13 @@ export const getDataGivenStepsOfFields = (
 			return null
 		}
 		if (colResultData == undefined && Array.isArray(row_resultData)) {
-			return row_resultData[0];
+			return (row_resultData as any[])[0];
 		}
 		if (colResultData !== undefined && colResultData == null) {
 			return null
 		}
-		if (colResultData == undefined && row_resultData?.[step] !== undefined) {//!!! this must be changed  colResultData == undefined must become typeof colResultData == undefined,for now this change causes some problems,dig deeper next time
-			return row_resultData[step];
+		if (colResultData == undefined && (row_resultData as any)?.[step] !== undefined) {//!!! this must be changed  colResultData == undefined must become typeof colResultData == undefined,for now this change causes some problems,dig deeper next time
+			return (row_resultData as any)[step];
 		}
 		if (colResultData == undefined) {
 			return row_resultData
@@ -487,8 +501,8 @@ export const getDataGivenStepsOfFields = (
 			}
 		}
 
-		if (colResultData && colResultData?.[step] !== undefined) {
-			return colResultData[step];
+		if (colResultData && (colResultData as any)?.[step] !== undefined) {
+			return (colResultData as any)[step];
 		}
 		return colResultData;
 	};
@@ -504,9 +518,9 @@ export const getDataGivenStepsOfFields = (
 export const getTableCellData = (rowData: unknown, colData: TableColumnData, index: number): unknown => {
 	let data;
 	if (rowData) {
-		if (rowData[index] !== undefined) {
+		if ((rowData as any)[index] !== undefined) {
 			//rowData[index] //Not good,causes problems when two or more fields share fields,because in the results they will have data under the same column
-			data = getDataGivenStepsOfFields(colData, rowData[index]);
+			data = getDataGivenStepsOfFields(colData, (rowData as any)[index]);
 		} else {
 			data = getDataGivenStepsOfFields(colData, rowData);
 		}
@@ -540,10 +554,10 @@ export const formatData = (data: unknown = '', length: number, alwaysStringyfy: 
 
 export const sortByName = <T extends { name?: string }>(array: T[]): T[] => {
 	array?.sort((a, b) => {
-		if (a?.name < b?.name) {
+		if ((a?.name || '') < (b?.name || '')) {
 			return -1;
 		}
-		if (a?.name > b?.name) {
+		if ((a?.name || '') > (b?.name || '')) {
 			return 1;
 		}
 		return 0;
@@ -560,13 +574,14 @@ export const get_displayInterface = (
 ): string | null => {
 
 	if (endpointInfo.get_typeExtraData(typeInfo)) {
-		return endpointInfo.get_typeExtraData(typeInfo).displayInterface;
+		return endpointInfo.get_typeExtraData(typeInfo)?.displayInterface || null;
 	}
 	return null;
 };
 
 export const mark_paginationArgs = (args: FieldWithDerivedData[], endpointInfo: EndpointInfoStore): void => {
 	const paginationPossibleNames = get(endpointInfo).paginationArgsPossibleNames;
+    if (!paginationPossibleNames) return;
 	const paginationPossibleNamesKeys = Object.keys(paginationPossibleNames);
 	args.forEach((arg) => {
 		let matchingKey = paginationPossibleNamesKeys.find((key) => {
@@ -587,7 +602,7 @@ export const get_paginationType = (
 	schemaData: SchemaData
 ): string => {
 	const standsForArray = paginationArgs.map((arg) => {
-		return arg.dd_standsFor;
+		return arg.dd_standsFor || '';
 	});
 	const paginationType = get_paginationTypes(endpointInfo, schemaData).find((paginationType) => {
 		return paginationType.check(standsForArray);
@@ -597,6 +612,16 @@ export const get_paginationType = (
 	}
 	return 'unknown';
 };
+
+/**
+ * Generates derived data for a field, enriching it with useful metadata for the UI.
+ * @param type - The original field/type data.
+ * @param rootTypes - List of root types.
+ * @param isQMSField - Whether it is a top-level QMS field.
+ * @param endpointInfo - Endpoint configuration.
+ * @param schemaData - Schema data.
+ * @returns The enriched FieldWithDerivedData.
+ */
 export const generate_derivedData = (
 	type: Partial<FieldWithDerivedData>,
 	rootTypes: RootType[] | null,
@@ -605,12 +630,12 @@ export const generate_derivedData = (
 	schemaData: SchemaData
 ): FieldWithDerivedData => {
 	//type/field
-	let derivedData = { ...type };
+	let derivedData: FieldWithDerivedData = { ...type } as FieldWithDerivedData;
 	derivedData.dd_kindsArray = get_KindsArray(type);
 	derivedData.dd_namesArray = get_NamesArray(type);
 	derivedData.dd_rootName = get_rootName(derivedData.dd_namesArray);
 	derivedData.dd_displayName = get_displayName(derivedData.dd_namesArray);
-	derivedData.dd_relatedRoot = getRootType(rootTypes, derivedData.dd_rootName, schemaData);
+	derivedData.dd_relatedRoot = getRootType(rootTypes, derivedData.dd_rootName, schemaData) || '';
 
 
 	derivedData.dd_kindEl = undefined;
@@ -634,14 +659,14 @@ export const generate_derivedData = (
 		}
 	});
 
-	let displayInterface = get_displayInterface(derivedData, endpointInfo);
+	let displayInterface = get_displayInterface(derivedData, endpointInfo) as any;
 
-	if (['text', undefined].includes(derivedData.dd_displayInterface)) {
+	if (['text', undefined].includes(derivedData.dd_displayInterface as any)) {
 		derivedData.dd_displayInterface = displayInterface;
 	}
 
 	derivedData.dd_isArg = !type?.args;
-	derivedData.dd_relatedRoot_inputFields_allScalar = derivedData.dd_relatedRoot?.inputFields?.every(
+	derivedData.dd_relatedRoot_inputFields_allScalar = (derivedData.dd_relatedRoot as RootType)?.inputFields?.every(
 		(field) => {
 			return get_KindsArray(field).includes('SCALAR');
 		}
@@ -650,24 +675,24 @@ export const generate_derivedData = (
 		!derivedData.dd_kindsArray?.includes('SCALAR') && derivedData.dd_kindsArray.length > 0;
 	if (derivedData.dd_isArg) {
 		const baseFilterOperatorNames = ['_and', '_or', '_not', 'and', 'or', 'not']
-		let dd_baseFilterOperators = []
-		let dd_nonBaseFilterOperators = []
+		let dd_baseFilterOperators: string[] | undefined = []
+		let dd_nonBaseFilterOperators: string[] | undefined = []
 		if (type?.inputFields) {
 			type.inputFields
 				.forEach(inputField => {
 					if (baseFilterOperatorNames.includes(inputField.name)) {
-						dd_baseFilterOperators.push(inputField.name)
+						dd_baseFilterOperators?.push(inputField.name)
 						return inputField.name
 					}
 					if (inputField.name.startsWith('_')) {
-						dd_nonBaseFilterOperators.push(inputField.name)
+						dd_nonBaseFilterOperators?.push(inputField.name)
 					}
 				});
 
-			if (!dd_baseFilterOperators?.length > 0) {
+			if (!(dd_baseFilterOperators?.length > 0)) {
 				dd_baseFilterOperators = undefined;
 			}
-			if (!dd_nonBaseFilterOperators?.length > 0) {
+			if (!(dd_nonBaseFilterOperators?.length > 0)) {
 				dd_nonBaseFilterOperators = undefined;
 			}
 			derivedData.dd_baseFilterOperators = dd_baseFilterOperators
@@ -677,11 +702,11 @@ export const generate_derivedData = (
 
 		derivedData.dd_isRootArg = !(
 			derivedData.dd_canExpand &&
-			!derivedData?.dd_relatedRoot?.enumValues
+			!(derivedData?.dd_relatedRoot as RootType)?.enumValues
 		);
 	}
 
-	derivedData.dd_shouldExpand = derivedData.dd_canExpand && !derivedData.dd_relatedRoot?.enumValues;
+	derivedData.dd_shouldExpand = derivedData.dd_canExpand && !(derivedData.dd_relatedRoot as RootType)?.enumValues;
 	derivedData.dd_isQMSField = isQMSField ? true : false;
 
 	derivedData.dd_castType = 'implement this.possible values:string,number,graphqlGeoJson...'; //example of why:date can be expected as timestamptz ("2016-07-20T17:30:15+05:30"),but must be casted as string
@@ -719,7 +744,7 @@ const prepareStrForFuseComparison = (str: string): string => {
 
 export const generate_gqlArgObj = (group_argumentsData: ActiveArgumentData[]): GQLArgObj => {
 	// check for group if expects list and treat it accordingly like here --->https://stackoverflow.com/questions/69040911/hasura-order-by-date-with-distinct
-	let gqlArgObj = {};
+	let gqlArgObj: Record<string, any> = {};
 	let canRunQuery = true;
 	group_argumentsData.every((argData) => {
 		let _argumentCanRunQuery = argumentCanRunQuery(argData)
@@ -742,6 +767,7 @@ export const generate_gqlArgObj = (group_argumentsData: ActiveArgumentData[]): G
 		note: 'these are repeated for easy refactoring while keeping the old working: arg_gqlArgObj: gqlArgObj, arg_canRunQuery: canRunQuery, gqlArgObj,canRunQuery'
 	};
 };
+
 export const gqlArgObjToString = (gqlArgObj: Record<string, unknown>): string => {
 	const gqlArgObj_string = JSON.stringify(gqlArgObj)
 	if (gqlArgObj_string == '{ }') {
@@ -778,9 +804,9 @@ export const generate_group_gqlArgObj = (group: ActiveArgumentGroup): {
 		if (group.group_isRoot) {
 			//console.log('root group handled');
 			group_gqlArgObj = generate_group_gqlArgObjForRoot(group_argumentsData)
-			console.log({ group_gqlArgObj, group_argumentsData })
+			Logger.debug({ group_gqlArgObj, group_argumentsData })
 		} else {
-			console.error('Uncomment code for handling non root group');
+			Logger.error('Uncomment code for handling non root group');
 			// //console.log('NON root group handled');
 			// if (group.dd_kindList) {
 			// 	let list = [];
@@ -811,7 +837,7 @@ export const generate_group_gqlArgObj = (group: ActiveArgumentGroup): {
 const validItems = (items: { id: string }[], nodes: Record<string, ContainerData>): { id: string }[] => {
 	return items.filter((item) => {
 		let itemData = nodes[item.id];
-		console.log('itemData.selectedRowsColValues', itemData.selectedRowsColValues)
+		Logger.debug('itemData.selectedRowsColValues', itemData.selectedRowsColValues)
 		return itemData.inUse || (itemData.operator && validItems(itemData.items, nodes).length > 0 || itemData.selectedRowsColValues);
 	});
 };
@@ -832,8 +858,8 @@ export const generate_group_gqlArgObj_forHasOperators = (items: { id: string }[]
 	const spreadItemsIfInSpreadContainers = (items: { id: string }[]): { id: string }[] => {
 		const spreadOutItems: { id: string }[] = []
 		items.forEach(item => {
-			if (item?.operator == '~spread~') {
-				const validItemsResult = validItems(item.items, nodes);
+			if (nodes[item.id]?.operator == '~spread~') {
+				const validItemsResult = validItems(nodes[item.id].items, nodes);
 				spreadOutItems.push(...validItemsResult)
 			} else {
 				spreadOutItems.push(item)
@@ -843,17 +869,17 @@ export const generate_group_gqlArgObj_forHasOperators = (items: { id: string }[]
 	}
 
 	const spreadOutItems = spreadItemsIfInSpreadContainers(items)
-	console.log({ items, spreadOutItems })
+	Logger.debug({ items, spreadOutItems })
 	spreadOutItems.forEach((item) => {
 		let itemData = nodes[item.id];
 		const isContainer = itemData.hasOwnProperty('items')
-		const nodeStep = itemData?.stepsOfNodes[itemData?.stepsOfNodes.length - 1]
+		const nodeStep = itemData?.stepsOfNodes?.[(itemData?.stepsOfNodes?.length || 0) - 1] as any
 		const nodeStepClean = filterElFromArr(nodeStep, [null, undefined, 'bonded', 'list'])
-		console.log({ nodeStep }, { nodeStepClean })
+		Logger.debug({ nodeStep }, { nodeStepClean })
 
 		const operator = itemData.operator
 		let itemObj = {};
-		let itemObjCurr = itemObj
+		let itemObjCurr: any = itemObj
 		const displayName = itemData?.dd_displayName
 		let dataToAssign
 
@@ -866,7 +892,7 @@ export const generate_group_gqlArgObj_forHasOperators = (items: { id: string }[]
 			} else {
 				dataToAssign = gqlArgObjForItems
 			}
-			console.log('vvvvvvv', gqlArgObjForItems, dataToAssign)
+			Logger.debug('vvvvvvv', gqlArgObjForItems, dataToAssign)
 		} else {
 			dataToAssign = nodes[item.id]?.gqlArgObj
 		}
@@ -880,14 +906,14 @@ export const generate_group_gqlArgObj_forHasOperators = (items: { id: string }[]
 
 			}
 		}
-		resultingGqlArgObj = setValueAtPath({}, nodeStepClean, dataToAssign, true)
+		resultingGqlArgObj = setValueAtPath({}, nodeStepClean, dataToAssign, true) || undefined
 		let itemObjectTestCurr = setValueAtPath({}, nodeStepClean, dataToAssign, true)
 		let itemObjectTest2 = 'not set'
 		if (resultingGqlArgObj == undefined) {
 			let itemObjectTest2 = 'set'
 			//itemObjectTest2 = dataToAssign
-			resultingGqlArgObj = dataToAssign
-			itemObjectTestCurr = dataToAssign
+			resultingGqlArgObj = dataToAssign as any
+			itemObjectTestCurr = dataToAssign as any
 		}
 
 		if (isContainer) {
@@ -908,17 +934,17 @@ export const generate_group_gqlArgObj_forHasOperators = (items: { id: string }[]
 				itemObjCurr['_not'] = dataToAssign;
 				itemObjCurr = itemObjCurr['_not'];
 			} else {
-				itemObj = dataToAssign
+				itemObj = dataToAssign as any
 			}
 		}
 
-		console.log(nodeStepClean, { itemObj }, { resultingGqlArgObj }, { itemObjectTest2 }, { itemObjectTestCurr }, { dataToAssign }, 'itemData.selectedRowsColValues', itemData.selectedRowsColValues)
+		Logger.debug(nodeStepClean, { itemObj }, { resultingGqlArgObj }, { itemObjectTest2 }, { itemObjectTestCurr }, { dataToAssign }, 'itemData.selectedRowsColValues', itemData.selectedRowsColValues)
 
 
 
 		itemsResultingData.push(itemObj)
 
-		console.log({ itemsResultingData, dataToAssign, itemData })
+		Logger.debug({ itemsResultingData, dataToAssign, itemData })
 	});
 	return {
 		resultingGqlArgObj,
@@ -935,7 +961,7 @@ export const generate_group_gqlArgObjAndCanRunQuery_forHasOperators = (group: Ac
 
 	let group_canRunQuery = true;
 	let nodes = JSON.parse(JSON.stringify(group_argsNode));
-	let nodesArray = Object.values(nodes);
+	let nodesArray: any[] = Object.values(nodes);
 	let mainContainer = nodesArray.filter((node) => {
 		return node.isMain;
 	})[0];
@@ -945,7 +971,7 @@ export const generate_group_gqlArgObjAndCanRunQuery_forHasOperators = (group: Ac
 		group_name,
 		nodes
 	)
-	console.log({ generate_group_gqlArgObj_forHasOperatorsRESULT })
+	Logger.debug({ generate_group_gqlArgObj_forHasOperatorsRESULT })
 
 	let group_argumentsData = group.group_args.filter((arg) => {
 		return arg.inUse;
@@ -955,11 +981,11 @@ export const generate_group_gqlArgObjAndCanRunQuery_forHasOperators = (group: Ac
 	});
 	let group_gqlArgObj
 	if (group_hasAllArgs) {
-		group_gqlArgObj = generate_group_gqlArgObj_forHasOperatorsRESULT.resultingGqlArgObj?.[mainContainer.dd_displayName]
+		group_gqlArgObj = (generate_group_gqlArgObj_forHasOperatorsRESULT.resultingGqlArgObj as any)?.[mainContainer.dd_displayName]
 	} else {
 		group_gqlArgObj = generate_group_gqlArgObj_forHasOperatorsRESULT.resultingGqlArgObj
 	}
-	let group_gqlArgObj_string = gqlArgObjToString(group_gqlArgObj);
+	let group_gqlArgObj_string = gqlArgObjToString(group_gqlArgObj || {});
 	return {
 		group_gqlArgObj,
 		group_gqlArgObj_string,
@@ -973,7 +999,7 @@ export const generate_finalGqlArgObj_fromGroups = (activeArgumentsDataGrouped: A
 	let final_canRunQuery = activeArgumentsDataGrouped.every((group) => { return group.group_canRunQuery })
 
 	activeArgumentsDataGrouped.forEach((group) => {
-		console.log({ group })
+		Logger.debug({ group })
 		Object.assign(finalGqlArgObj, group.group_gqlArgObj);
 	});
 
@@ -1001,22 +1027,22 @@ export const getQMSLinks = (QMSName: QMSType = 'query', parentURL: string, endpo
 		});
 	}
 
-	queryLinks = sortIt($schemaData?.[`${QMSName}Fields`])?.map((query) => {
+	queryLinks = sortIt((($schemaData as any)?.[`${QMSName}Fields`]) as FieldWithDerivedData[])?.map((query) => {
 		let queryName = query.name;
 		let queryNameDisplay = queryName;
 		let queryTitleDisplay = '';
 		let currentQueryFromRootTypes = getRootType(null, query.dd_rootName, schemaData);
 		let currentQMS_info = schemaData.get_QMS_Field(queryName, QMSName, schemaData);
 		let endpointInfoVal = get(endpointInfo);
-		const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_info, schemaData);
-		const nodeFieldsQMS_info = get_nodeFieldsQMS_info(currentQMS_info, rowsLocation, schemaData);
+		const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_info as FieldWithDerivedData, schemaData);
+		const nodeFieldsQMS_info = get_nodeFieldsQMS_info(currentQMS_info as FieldWithDerivedData, rowsLocation, schemaData);
 		let scalarFields = get_scalarColsData(nodeFieldsQMS_info, [
-			currentQMS_info.dd_displayName,
+			(currentQMS_info as FieldWithDerivedData).dd_displayName,
 			...rowsLocation
 		], schemaData);
 
 		let currentQuery_fields_SCALAR_names = scalarFields.map((field) => {
-			return field.name;
+			return field.title; // title used to be name? get_scalarColsData returns TableColumnData which has title
 		});
 
 		let mandatoryArgs = query?.args?.filter((arg) => {
@@ -1053,7 +1079,7 @@ export const stepsOfFieldsToQueryFragmentObject = (
 
 	}
 	let _stepsOfFields_length = _stepsOfFields.length;
-	let queryObject = {};
+	let queryObject: any = {};
 	let queryObjectCurrLevel = queryObject;
 	_stepsOfFields.forEach((fieldName, index) => {
 		if (_stepsOfFields_length == index + 1) {
@@ -1067,7 +1093,7 @@ export const stepsOfFieldsToQueryFragmentObject = (
 };
 
 export const tableColsDataToQueryFields = (tableColsData: TableColumnData[]): StepsOfFieldsObject | string => {
-	if (tableColsData.length == '') {
+	if (tableColsData.length == 0) {
 		return ``;
 	}
 	const queryFragmentsObjects = tableColsData
@@ -1095,7 +1121,7 @@ export const argumentCanRunQuery = (arg: ActiveArgumentData): boolean => {
 		dd_kindList,
 		dd_kindList_NON_NULL
 	} = arg;
-	console.log('argumentCanRunQuery', { arg })
+	Logger.debug('argumentCanRunQuery', { arg })
 	let argFinalValue = chd_dispatchValue;
 	if (!inUse) {
 		return true;
@@ -1106,7 +1132,7 @@ export const argumentCanRunQuery = (arg: ActiveArgumentData): boolean => {
 	if (dd_kindList_NON_NULL && argFinalValue == null) {
 		return false;
 	}
-	if (dd_kindEl && (argFinalValue == undefined || argFinalValue.length == 0)) {
+	if (dd_kindEl && (argFinalValue == undefined || (Array.isArray(argFinalValue) && argFinalValue.length == 0))) {
 		return false;
 	}
 	if (chd_dispatchValue == undefined) {
@@ -1128,7 +1154,7 @@ export const generateNewArgData = (
 		id: `${JSON.stringify(stepsOfFields)}${Math.random()}`,
 		...type,
 		...extraData
-	};
+	} as ActiveArgumentData;
 	return infoToCast;
 };
 
@@ -1145,7 +1171,7 @@ export const get_scalarColsData = (
 		keep_currentQMS_info_dd_displayName = false;
 	}
 	let dd_relatedRoot = getRootType(null, currentQMS_info.dd_rootName, schemaData);
-	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], schemaData);
+	let { scalarFields } = getFields_Grouped(dd_relatedRoot as RootType, [], schemaData);
 	let currentQuery_fields_SCALAR_names = scalarFields.map((field) => {
 		return field.name;
 	});
@@ -1153,7 +1179,7 @@ export const get_scalarColsData = (
 	let scalarColsData = currentQuery_fields_SCALAR_names.map((name) => {
 		let stepsOfFields;
 		if (keep_currentQMS_info_dd_displayName) {
-			stepsOfFields = [...prefixStepsOfFields, currentQMS_info.dd_displayName, name];
+			stepsOfFields = [...prefixStepsOfFields, currentQMS_info!.dd_displayName, name];
 		} else {
 			stepsOfFields = [...prefixStepsOfFields, name];
 		}
@@ -1284,13 +1310,13 @@ export const nodeAddDefaultFields = (
 
 
 
-	console.log({ node });
+	Logger.debug({ node });
 	const node_rootType = schemaData.get_rootType(
 		null,
-		node?.dd_rootName || node.parent_node.dd_rootName,
+		node?.dd_rootName || node.parent_node?.dd_rootName,
 		schemaData
 	);
-	console.log({ node_rootType });
+	Logger.debug({ node_rootType });
 	const group_argsNode = group.group_argsNode;
 
 	const dd_displayNameToExclude = [
@@ -1298,7 +1324,7 @@ export const nodeAddDefaultFields = (
 			return group_argsNode?.[item.id]?.dd_displayName;
 		}), '_and', '_or', '_not', 'and', 'or', 'not'
 	];
-	console.log({ dd_displayNameToExclude });
+	Logger.debug({ dd_displayNameToExclude });
 
 	let fields_Grouped = getFields_Grouped(
 		node,
@@ -1308,14 +1334,14 @@ export const nodeAddDefaultFields = (
 	let non_scalarFields = fields_Grouped.non_scalarFields
 	let enumFields = fields_Grouped.enumFields
 
-	console.log({ group, node, node_rootType, dd_displayNameToExclude, fields_Grouped });
+	Logger.debug({ group, node, node_rootType, dd_displayNameToExclude, fields_Grouped });
 
-	console.log({ scalarFields });
-	console.log({ enumFields });
+	Logger.debug({ scalarFields });
+	Logger.debug({ enumFields });
 
 	[...scalarFields, ...enumFields].forEach((element) => {
 		let stepsOfFields = [
-			group.group_name || node.dd_displayName || node.parent_node.dd_displayName,
+			group.group_name || node.dd_displayName || node.parent_node?.dd_displayName,
 			element.dd_displayName
 		];
 		let newArgData = {
@@ -1324,7 +1350,7 @@ export const nodeAddDefaultFields = (
 			id: `${JSON.stringify(stepsOfFields)}${Math.random()}`,
 			...element
 		};
-		activeArgumentsDataGrouped_Store.add_activeArgument(newArgData, group.group_name, node?.id, endpointInfo);
+		activeArgumentsDataGrouped_Store.add_activeArgument(newArgData as any, group.group_name, node?.id, endpointInfo);
 	});
 
 	let baseFilterOperators = ['_and', '_or', '_not', 'and', 'or', 'not']; //!!!this might create problem if there is some nonBase operator with the same name as one of these
@@ -1335,7 +1361,7 @@ export const nodeAddDefaultFields = (
 		})
 		?.forEach((element) => {
 			let stepsOfFields = [
-				group.group_name || node.dd_displayName || node.parent_node.dd_displayName,
+				group.group_name || node.dd_displayName || node.parent_node?.dd_displayName,
 				element.dd_displayName
 			];
 			// if (stepsOfFields[stepsOfFields.length - 1] !== element.dd_displayName) {
@@ -1348,9 +1374,9 @@ export const nodeAddDefaultFields = (
 				id: `${JSON.stringify(stepsOfFields)}${Math.random()}`,
 				...element
 			};
-			console.log({ newContainerData });
+			Logger.debug({ newContainerData });
 			let randomNr = Math.random();
-			console.log('group', group);
+			Logger.debug('group', group);
 			let newContainerDataRootType = schemaData.get_rootType(
 				null,
 				newContainerData.dd_rootName,
@@ -1378,26 +1404,28 @@ export const nodeAddDefaultFields = (
 				operator = 'bonded';
 			}
 
-			group.group_argsNode[`${randomNr}`] = {
-				items: [],
-				...newContainerData,
-				inputFields: newContainerDataRootType?.inputFields,
-				id: randomNr,
-				operator,
-				not: false,
-				isMain: false,
-			};
-			console.log({ newContainerDataRootType });
-			console.log({ newContainerData });
+			if (group.group_argsNode) {
+				group.group_argsNode[`${randomNr}`] = {
+					items: [],
+					...newContainerData,
+					inputFields: newContainerDataRootType?.inputFields,
+					id: `${randomNr}`,
+					operator,
+					not: false,
+					isMain: false,
+				} as any;
+			}
+			Logger.debug({ newContainerDataRootType });
+			Logger.debug({ newContainerData });
 			if (node?.items) {
-				node.items.push({ id: randomNr });
-			} else {
-				group.group_argsNode['mainContainer'].items.push({ id: randomNr });
+				node.items.push({ id: `${randomNr}` });
+			} else if (group.group_argsNode) {
+				group.group_argsNode['mainContainer'].items.push({ id: `${randomNr}` });
 			}
 		});
 	activeArgumentsDataGrouped_Store.update((data) => { return data })//force update
 
-	node.addDefaultFields = false;
+	node.addDefaultFields = false; // Note: addDefaultFields is not in ContainerData type, assuming it's dynamic
 }
 
 
@@ -1427,13 +1455,14 @@ export const parseAll = (json: string): unknown => {
 
 export const stringToJs = (string: unknown): unknown => {
 	if (getPreciseType(string) !== "string") {
-		console.warn(`expectig string but got ${getPreciseType(string)},will use it as is.If object,you do not need this function,maybe this function was run previously.`, { string });
+		Logger.warn(`expectig string but got ${getPreciseType(string)},will use it as is.If object,you do not need this function,maybe this function was run previously.`, { string });
 		return string;
 	}
-	if (string.includes('/Function') && string.includes(')/')) {
-		return parseAll(string);
+	const str = string as string;
+	if (str.includes('/Function') && str.includes(')/')) {
+		return parseAll(str);
 	}
-	return new Function(`return ${string}`)();
+	return new Function(`return ${str}`)();
 };
 
 export const objectToSourceCode = (obj: Record<string, unknown>): string => {
@@ -1460,7 +1489,7 @@ export const objectToSourceCode = (obj: Record<string, unknown>): string => {
 		if (typeof obj === 'object') {
 			return (
 				'{' +
-				Object.entries(obj)
+				Object.entries(obj as any)
 					.map(([key, value]) => {
 						if (key.includes('-')) {
 							key = `'${key}'`
@@ -1479,7 +1508,7 @@ export const objectToSourceCode = (obj: Record<string, unknown>): string => {
 	return convertObjectToSourceCode(obj);
 }
 export const hasDeepProperty = (obj: Record<string, unknown>, propertyPath: string[]): boolean => {
-	let currentObj = obj;
+	let currentObj: any = obj;
 	for (let i = 0; i < propertyPath.length; i++) {
 		const prop = propertyPath[i];
 		if (!currentObj.hasOwnProperty(prop)) {
@@ -1497,9 +1526,9 @@ export const getDeepField = (
 ): FieldWithDerivedData | null => {
 	//console.log({ obj, propertyPath })
 	if (propertyPath.length == 0) {
-		return obj
+		return obj as FieldWithDerivedData
 	}
-	let currentObj = obj;
+	let currentObj = obj as FieldWithDerivedData;
 	for (let i = 0; i < propertyPath.length; i++) {
 		const prop = propertyPath[i];
 		const currentObjRootType = schemaData.get_rootType(null, currentObj?.dd_rootName, schemaData)
@@ -1520,7 +1549,7 @@ export const passAllObjectValuesThroughStringTransformerAndReturnNewObject = (ob
 	let newObj = { ...obj };
 	Object.keys(obj).forEach((key) => {
 		if (typeof obj[key] == 'string') {
-			newObj[key] = string_transformer(obj[key]);
+			newObj[key] = string_transformer(obj[key] as string);
 		}
 	});
 	return newObj;
@@ -1528,7 +1557,7 @@ export const passAllObjectValuesThroughStringTransformerAndReturnNewObject = (ob
 
 
 export const getValueAtPath = (obj: Record<string, unknown>, path: string[]): unknown => {
-	let current = obj;
+	let current: any = obj;
 
 	for (let i = 0, len = path.length; i < len; i++) {
 		current = current?.[path[i]];
@@ -1550,18 +1579,18 @@ export const getPreciseType = (value: unknown): string => {
 export const deleteValueAtPath = (obj: Record<string, unknown>, path: string[]): Record<string, unknown> | void => {
 	if (!obj || !path || path.length === 0) {
 		// Check for valid input
-		console.error('Invalid input');
+		Logger.error('Invalid input');
 		return;
 	}
 
-	let currentObj = obj;
+	let currentObj: any = obj;
 
 	for (let i = 0; i < path.length - 1; i++) {
 		// Traverse the object to the specified path
 		//if (currentObj?.[path[i]] === undefined) {
 		if (currentObj[path[i]] === undefined) {
 			// If the path does not exist, return
-			console.error('Path does not exist');
+			Logger.error('Path does not exist');
 			return;
 		}
 		currentObj = currentObj[path[i]];
@@ -1579,11 +1608,11 @@ export const setValueAtPath = (
 ): Record<string, unknown> | void => {
 	if (!obj || !path || path.length === 0) {
 		// Check for valid input
-		console.error('Invalid input');
+		Logger.error('Invalid input');
 		return;
 	}
 
-	let currentObj = obj;
+	let currentObj: any = obj;
 
 	for (let i = 0; i < path.length - 1; i++) {
 		// Traverse the object to the specified path
@@ -1591,12 +1620,12 @@ export const setValueAtPath = (
 		if (currentObj[path[i]] === undefined) {
 			if (addPathIfNotExist) {
 				// If the path does not exist, add it
-				console.info('Path does not exist,adding it');
+				Logger.info('Path does not exist,adding it');
 				currentObj[path[i]] = {}
 			}
 			if (!addPathIfNotExist) {
 				// If the path does not exist, return
-				console.error('Path does not exist');
+				Logger.error('Path does not exist');
 				return;
 			}
 		}
@@ -1617,7 +1646,7 @@ export const generate_finalGqlArgObjAndCanRunQuery = (
 		_paginationState_Store.resetToDefault();
 	}
 	//
-	console.log('regenerate_groupsAndfinalGqlArgObj RUN');
+	Logger.debug('regenerate_groupsAndfinalGqlArgObj RUN');
 	const groups_gqlArgObj = activeArgumentsDataGrouped.map((group) => {
 		if (group.group_argsNode) {
 			return generate_group_gqlArgObjAndCanRunQuery_forHasOperators(group);
@@ -1634,7 +1663,7 @@ export const getQMSWraperCtxDataGivenControlPanelItem = (CPItem: { stepsOfFields
 
 	let mergedChildren_QMSWraperCtxData_Value = get(mergedChildren_QMSWraperCtxData_Store);
 
-	const QMSWraperCtxData = mergedChildren_QMSWraperCtxData_Value.find((currCtx) => {
+	const QMSWraperCtxData = mergedChildren_QMSWraperCtxData_Value.find((currCtx: any) => {
 		return currCtx.stepsOfFields.join() == CPItem.stepsOfFieldsThisAppliesTo.join();
 	});
 	return QMSWraperCtxData;

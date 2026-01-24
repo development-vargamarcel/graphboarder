@@ -1,112 +1,116 @@
-# This is in beta,there will be more info soon.
+# Auto-GQL (GraphBoarder)
 
+A powerful Svelte 5 library for auto-generating GraphQL UIs, handling complex queries, filtering, sorting, and pagination with ease.
 
-- [x] Pagination
-- [x] Infinitely advanced filtering
-- [x] Infinitely advanced sorting
-- [x] Main interfaces (map,ENUM picker,date picker...)
-- [x] Companion library (auto-gql) 
+## Features
 
+- **Automatic UI Generation:** Generates tables, forms, and filters based on your GraphQL schema.
+- **Advanced Filtering & Sorting:** Supports infinitely nested filtering and sorting.
+- **Pagination:** Built-in support for various pagination strategies (limit/offset, cursor-based, etc.).
+- **Svelte 5 Support:** Built using the latest Svelte 5 Runes syntax for optimal performance and DX.
+- **Headless & Customizable:** Provides the logic and stores, giving you full control over the UI components.
 
+## Installation
 
-For now please take a look bellow
+```bash
+npm install auto-gql
+```
+
+## Getting Started
+
+### 1. Wrap your application
+
+Wrap your application or the part that needs GraphQL access with `MainWraper`. This handles the GraphQL client initialization and context setup.
+
+```svelte
+<script>
+  import { MainWraper } from 'auto-gql';
+
+  const endpointInfo = {
+    url: 'https://rickandmortyapi.com/graphql',
+    // You can add headers here if needed
+    headers: {}
+  };
+</script>
+
+<MainWraper endpointInfoProvided={endpointInfo}>
+  <!-- Your app content here -->
+  <slot />
+</MainWraper>
+```
+
+### 2. Create a Query Wrapper
+
+Use `QMSWraper` (Query/Mutation/Subscription Wrapper) to define a specific operation context.
+
+```svelte
+<script>
+  import { QMSWraper } from 'auto-gql';
+  import MyArticlesComponent from './MyArticlesComponent.svelte';
+
+  const queryName = 'characters';
+  const columns = [
+    { title: 'ID', stepsOfFields: ['characters', 'id'] },
+    { title: 'Name', stepsOfFields: ['characters', 'name'] },
+    { title: 'Status', stepsOfFields: ['characters', 'status'] }
+  ];
+</script>
+
+<QMSWraper
+  QMSName={queryName}
+  QMSType="query"
+  tableColsData_StoreInitialValue={columns}
+>
+  <MyArticlesComponent />
+</QMSWraper>
+```
+
+### 3. Consume Data in Components
+
+Inside your component (e.g., `MyArticlesComponent.svelte`), you can access the stores provided by `QMSWraper`.
+
+```svelte
+<script>
+  import { getContext } from 'svelte';
+
+  // Note: The context key might be prefixed if you provided a prefix to MainWraper
+  const context = getContext('QMSWraperContext');
+  const { QMS_bodyPartsUnifier_StoreDerived } = context;
+
+  // In Svelte 5, you can use $derived or $effect to react to store changes
+  $effect(() => {
+    console.log('Query Body:', $QMS_bodyPartsUnifier_StoreDerived);
+    // You can now execute this query using your preferred method or the built-in client
+  });
+</script>
+
+<div>
+  <!-- Build your UI here -->
+</div>
+```
 
 ## Terminology
 
-QMS means Query/Mutation/Subscription
-QMS_body is the payload
+- **QMS:** Query, Mutation, or Subscription.
+- **QMSWraper:** The component that establishes the context for a specific GraphQL operation.
+- **MainWraper:** The top-level component that sets up the GraphQL client and schema introspection.
 
-## Install
+## Development
 
-```bash
-npm i auto-gql
-```
+This project uses Svelte 5 Runes (`$state`, `$derived`, `$props`). Ensure your environment supports it.
 
-## How To Use
-
-Wrap everything in MainWraper component
+### Running Tests
 
 ```bash
-<MainWraper endpointInfoProvided={{url:'https://rickandmortyapi.com/graphql'}}>
-  #as many <QMSWraper> </QMSWraper> as you like
-  </MainWraper>
-
-  # or you can omit endpointInfoProvided and instead do the bellow (inside MainWraper or inside it's parent),this can be usefull for example when implementing an endpoint picker:
-  endpointInfo.smartSet({url:'https://rickandmortyapi.com/graphql'})
-  setContext('endpointInfo', endpointInfo);
+npm test
 ```
 
-Every QMS must be wraped in QMSWraper component
+### Building
 
 ```bash
-const queryName = 'articles'
-const columns=[{title:'id',stepsOfFields:['aticles','id']},{title:'author name',stepsOfFields:['aticles','author','name']}]
-<QMSWraper QMSName={queryName} tableColsData_StoreInitialValue={columns}>
-  # Do your magic here
-  </QMSWraper>
+npm run build
 ```
 
-Now use the stores present in the context
+## License
 
-```bash
-	const QMS_bodyPartsUnifier_StoreDerived = getContext('QMS_bodyPartsUnifier_StoreDerived');
-
-	QMS_bodyPartsUnifier_StoreDerived.subscribe((QMS_body) => {
-    console.log({QMS_body})
-  runQuery(QMS_body);
-	});
-```
-
-```bash
-# next page request example
-const paginationState = getContext(`paginationState`);
-
-let lastBatchOfDataFetched=queryData?.data
-const QMS_name = 'articles'
-const QMS_type='query'
-paginationState.nextPage(lastBatchOfDataFetched, queryName, QMS_type);
-```
-
-```bash
-# add column example
-const tableColsData_Store = getContext('tableColsData_Store');
-const new_tableColData={title:'summary',stepsOfFields:['articles','summary']}
-tableColsData_Store.addColumn(new_tableColData)
-```
-
-**Also you can get the entire QMSWraperContext,containing everything you need.**
-
-```
-const QMSWraperContext= getContext(`${prefix}QMSWraperContext`);
-
-```
-
-# A simple complete example
-
-```bash
-# MyArticles.svelte
-<script>
-const QMS_bodyPartsUnifier_StoreDerived = getContext('QMS_bodyPartsUnifier_StoreDerived');
-
-QMS_bodyPartsUnifier_StoreDerived.subscribe((QMS_body) => {
-  console.log({QMS_body})
-  ///runQuery(QMS_body);
-});
-</script>
-```
-
-```bash
-<script>
-import MyArticles from '$lib/MyArticles.svelte'
-const queryName = 'articles'
-const columns=[{title:'id',stepsOfFields:['aticles','id']},{title:'author name',stepsOfFields:['aticles','author','name']}]
-</script>
-
-
-<MainWraper endpointInfoProvided={{url:'https://rickandmortyapi.com/graphql'}}>
-<QMSWraper QMSName={queryName} tableColsData_StoreInitialValue={columns}>
-  <MyArticles/>
-  </QMSWraper>
-  </MainWraper>
-
-```
+MIT
