@@ -2,6 +2,7 @@
 	import { getContext } from 'svelte';
 	import FilterItem from '$lib/components/FilterItem.svelte';
 	import { getRootType } from '$lib/utils/usefulFunctions';
+	import { Logger } from '$lib/utils/logger';
 	interface Props {
 		prefix?: string;
 		chosen: any;
@@ -30,7 +31,7 @@
 	{chosen}
 	onFilterApplied={(detail) => {
 		onInterfaceChosen?.({ chosen: detail.chosen });
-		console.log(detail);
+		Logger.debug(detail);
 	}}
 >
 	{rootType.dd_displayName}

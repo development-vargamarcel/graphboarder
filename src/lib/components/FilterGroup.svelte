@@ -1,5 +1,6 @@
 <script lang="ts">
 	import FilterItem from '$lib/components/FilterItem.svelte';
+	import { Logger } from '$lib/utils/logger';
 
 	let detail;
 	let inputEl;
@@ -38,7 +39,7 @@
 	// 	chosen = [chosen];
 	// }
 	$effect(() => {
-		console.log('changed', { chosen });
+		Logger.debug('changed', { chosen });
 	});
 </script>
 
@@ -60,7 +61,7 @@
 			isINPUT_OBJECT = detail.extraData.dd_displayInterface == 'INPUT_OBJECT';
 			choises = detail.choises;
 			chosen = detail.chosen;
-			//console.log('changed', { detail });
+			//Logger.debug('changed', { detail });
 			const dispatchObject = {
 				// chd_dispatchValue: chosen,
 				chd_rawValue: chosen,

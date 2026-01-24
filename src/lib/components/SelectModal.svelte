@@ -25,6 +25,7 @@
 	import { writable } from 'svelte/store';
 	import AddNodeToControlPanel from './AddNodeToControlPanel.svelte';
 	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
+	import { Logger } from '$lib/utils/logger';
 	import { createQMSSearchInstance, discoverMatchingQMS, getReturningFields } from '$lib/utils/searchUtils';
 	import { getRowSelectionState, processSelectedRowsColValues, getRequiredColumnNames } from '$lib/utils/rowSelectionUtils';
 
@@ -76,7 +77,7 @@
 	let showSelectQMSModal = $state(false);
 	let dragDisabled = true;
 
-	console.log({ node });
+	Logger.debug({ node });
 
 	// Context setup - must be after props declaration
 	const OutermostQMSWraperContext = getContext<any>(`${prefix}OutermostQMSWraperContext`);
@@ -297,7 +298,7 @@
 		return inputColumnsLocationQMS_Info;
 	}) : undefined;
 
-	console.log({ node, inputColumnsLocationQMS_Info, inputColumnsLocation });
+	Logger.debug({ node, inputColumnsLocationQMS_Info, inputColumnsLocation });
 
 	let activeArgumentsContext = getContext<any>(`${prefix}activeArgumentsContext`);
 	let forceShowSelectAndAddButtons = false;
@@ -314,7 +315,7 @@
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext || {};
 
 	$effect(() => {
-		console.log('qqqqqqwwwww', { getManyQMS, showSelectQMSModal });
+		Logger.debug('qqqqqqwwwww', { getManyQMS, showSelectQMSModal });
 	});
 
 	// Effects
@@ -386,7 +387,7 @@
 	});
 
 	$effect(() => {
-		console.log({ QMSWraperContextForSelectedQMS });
+		Logger.debug({ QMSWraperContextForSelectedQMS });
 	});
 
 	$effect(() => {
@@ -395,7 +396,7 @@
 				nodeOrField: node
 			})?.getMany?.selectedQMS;
 			if (getManyQMS) {
-				console.log({ getManyQMS });
+				Logger.debug({ getManyQMS });
 			}
 		}
 	});
@@ -466,7 +467,7 @@
 									return hasDeepProperty(selectedRowsOriginal[0], item);
 								});
 
-							console.log({ returningColumnsLocation });
+							Logger.debug({ returningColumnsLocation });
 							if (selectedRowsColValues) {
 								$selectedRowsColValues = selectedRowsOriginal.map((row: any) => {
 									return getDataGivenStepsOfFields(null as any, row, returningColumnsLocation);
@@ -474,7 +475,7 @@
 							}
 						}}
 						onRowClicked={(detail: any) => {
-							console.log(detail);
+							Logger.debug(detail);
 						}}
 						bind:QMS_info={$selectedQMS}
 					/>

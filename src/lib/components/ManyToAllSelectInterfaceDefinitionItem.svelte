@@ -5,6 +5,7 @@
 	import Modal from './Modal.svelte';
 	import SelectQMS from './SelectQMS.svelte';
 	import { getDeepField } from '$lib/utils/usefulFunctions';
+	import { Logger } from '$lib/utils/logger';
 
 	interface Props {
 		nodes: any;
@@ -58,9 +59,9 @@
 		schemaData,
 		'inputFields'
 	);
-	console.log({ inputFieldsContainerLocation, inputFieldsContainer });
+	Logger.debug({ inputFieldsContainerLocation, inputFieldsContainer });
 	// $: if ($selectedQMS) {
-	// 	// console.log(
+	// 	// Logger.debug(
 	// 	// 	{ field, node, nodes },
 	// 	// 	nodes[node.id],
 	// 	// 	schemaData.get_rootType(null, field.dd_rootName, schemaData)
@@ -70,7 +71,7 @@
 	// 		getMany: { selectedQMS: $selectedQMS, rowSelectionState: $rowSelectionState },
 	// 		id: Math.random().toString(36).substr(2, 9)
 	// 	};
-	// 	console.log({ objToAdd });
+	// 	Logger.debug({ objToAdd });
 	// 	QMSFieldToQMSGetMany_Store.addOrReplaceKeepingOldId(objToAdd);
 	// }
 
@@ -125,7 +126,7 @@
 		if (myField) {
 			const myFieldRoot = schemaData.get_rootType(null, myField.dd_rootName, schemaData);
 			const myFieldSubfields = myFieldRoot.fields;
-			console.log('aaaaaa', {
+			Logger.debug('aaaaaa', {
 				myField,
 				myFieldRoot,
 				myFieldSubfields
@@ -133,7 +134,7 @@
 			$QMSRows = $schemaData.queryFields.filter((item) => {
 				return item.dd_kindList && item.dd_rootName == myField.dd_rootName;
 			});
-			console.log({ QMSRows });
+			Logger.debug({ QMSRows });
 			if ($QMSRows.length == 1) {
 				$selectedQMS = $QMSRows[0];
 
@@ -157,7 +158,7 @@
 				return;
 			}
 		}
-		//	console.log({ node, QMSRows });
+		//	Logger.debug({ node, QMSRows });
 		$QMSRows = fuse
 			.search(
 				`${node?.dd_rootName?.replaceAll('_', ' ')} | ${node?.dd_displayName?.replaceAll(

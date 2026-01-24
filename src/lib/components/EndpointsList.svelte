@@ -13,9 +13,9 @@
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
-	import { format } from 'graphql-formatter';
 	import hljs from 'highlight.js/lib/core';
 	import graphql from 'highlight.js/lib/languages/graphql';
+	import { Logger } from '$lib/utils/logger';
 	import 'highlight.js/styles/base16/solarized-dark.css';
 	import RowCount from '$lib/components/UI/rowCount.svelte';
 	import Modal from '$lib/components/Modal.svelte';
@@ -175,7 +175,7 @@
 
 	// Effects - auto-cleanup on component destruction
 	$effect(() => {
-		console.log('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
+		Logger.debug('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
 	});
 
 	$effect(() => {
@@ -190,11 +190,11 @@
 	});
 
 	$effect(() => {
-		console.log({ queryData });
+		Logger.debug({ queryData });
 	});
 
 	$effect(() => {
-		console.log($tableColsData_Store);
+		Logger.debug($tableColsData_Store);
 	});
 
 	// Cleanup drawer on destroy

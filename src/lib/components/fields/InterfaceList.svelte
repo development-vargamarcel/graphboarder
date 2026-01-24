@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Interface from '$lib/components/fields/Interface.svelte';
+	import { Logger } from '$lib/utils/logger';
 
 	let inputEl;
 	let { rawValue = [], dispatchValue = [], typeInfo, onChanged } = $props();
@@ -8,12 +9,12 @@
 		return { chd_rawValue: el, chd_dispatchValue: dispatchValue[i] };
 	}));
 	$effect(() => {
-		console.log(elements);
+		Logger.debug(elements);
 	});
 	const add = () => {
 		elements.push({ chd_rawValue: null });
 		elements = elements;
-		console.log(elements);
+		Logger.debug(elements);
 	};
 	const del = (chd_rawValue) => {
 		//chd_rawValue will be the identifier  //!!! as side effect, if multiple elements share the same chd_rawValue, they will all be deleted
@@ -21,10 +22,10 @@
 			return el.chd_rawValue !== chd_rawValue;
 		});
 		dispatchChanges();
-		console.log(elements);
+		Logger.debug(elements);
 	};
 	const changedElement = (e) => {
-		console.log(elements);
+		Logger.debug(elements);
 		dispatchChanges();
 	};
 	const dispatchChanges = () => {

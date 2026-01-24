@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Modal from '$lib/components/Modal.svelte';
 	import { dndzone, SHADOW_ITEM_MARKER_PROPERTY_NAME, SOURCES, TRIGGERS } from 'svelte-dnd-action';
+	import { Logger } from '$lib/utils/logger';
 	import {
 		syncChoiceOrder,
 		getFilterButtonClasses,
@@ -9,7 +10,7 @@
 		createChoisesWithId
 	} from '$lib/utils/filterStateUtils';
 	
-	console.log({ chosen });
+	Logger.debug({ chosen });
 
 	let chosenInternal = $state(JSON.parse(JSON.stringify(chosen)));
 	let extraInfo = $state('');
@@ -37,9 +38,9 @@
 			titlePreChange = title;
 		} else {
 			//toggle
-			console.log('pre', { chosen });
+			Logger.debug('pre', { chosen });
 			chosen = toggleFilterChoice(type, choises, chosen);
-			console.log({ chosen });
+			Logger.debug({ chosen });
 			applyFilter();
 		}
 	};
@@ -54,7 +55,7 @@
 			modalVisible = false;
 			chosen = chosenInternal;
 		}
-		//console.log('filterApplied', { id: id, chosen: chosen, extraData });
+		//Logger.debug('filterApplied', { id: id, chosen: chosen, extraData });
 		onFilterApplied?.({ id: id, chosen: chosen, extraData, choises: choises });
 	};
 
@@ -103,7 +104,7 @@
 
 	function handleSort(e) {
 		choisesWithId = e.detail.items;
-		//console.log('choisesWithId', choisesWithId);
+		//Logger.debug('choisesWithId', choisesWithId);
 		syncOrder();
 
 		dragDisabled = true;
@@ -158,8 +159,8 @@
 			if (type !== 'radio') {
 				syncOrder();
 			}
-			//console.log('chosen:', chosen);
-			//console.log('chosenInternal:', chosenInternal);
+			//Logger.debug('chosen:', chosen);
+			//Logger.debug('chosenInternal:', chosenInternal);
 			if (!modalVisible) {
 				chosenInternal = chosen;
 			}
@@ -172,8 +173,8 @@
 			title = displayInfo.title;
 			extraInfo = displayInfo.extraInfo;
 		} else {
-			//console.log('chosen:', chosen);
-			//console.log('chosenInternal:', chosenInternal);
+			//Logger.debug('chosen:', chosen);
+			//Logger.debug('chosenInternal:', chosenInternal);
 			if (!modalVisible) {
 				chosenInternal = chosen;
 			}

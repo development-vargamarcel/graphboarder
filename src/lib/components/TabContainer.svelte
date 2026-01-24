@@ -4,6 +4,7 @@
 	import TabItem from '$lib/components/TabItem.svelte';
 	import { getQMSLinks } from '$lib/utils/usefulFunctions';
 	import { getContext, onMount } from 'svelte';
+	import { Logger } from '$lib/utils/logger';
 
 	const prefix = '';
 
@@ -16,9 +17,9 @@
 
 	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
-	console.log('page', $page);
+	Logger.debug('page', $page);
 	let endpointid = $page.params.endpointid;
-	console.log({ endpointid });
+	Logger.debug({ endpointid });
 	let links = [
 		{
 			title: 'Home',

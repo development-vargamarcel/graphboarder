@@ -4,6 +4,7 @@
 		string_transformerREVERSE
 	} from '$lib/utils/dataStructureTransformers';
 	import { getContext } from 'svelte';
+	import { Logger } from '$lib/utils/logger';
 
 	let { displayInterface, rawValue = $bindable(), dispatchValue, onChanged } = $props();
 
@@ -17,7 +18,7 @@
 			rawValue = string_transformerREVERSE(dispatchValue, false);
 		}
 	}
-	console.log('rawValue', rawValue, 'chd_dispatchValue', dispatchValue);
+	Logger.debug('rawValue', rawValue, 'chd_dispatchValue', dispatchValue);
 
 	//let castAs //most of the times as string
 </script>

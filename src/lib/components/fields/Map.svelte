@@ -4,6 +4,7 @@
 		geojson_transformerREVERSE
 	} from '$lib/utils/dataStructureTransformers';
 	import * as mapboxglOriginal from 'mapbox-gl';
+	import { Logger } from '$lib/utils/logger';
 	let mapboxgl = mapboxglOriginal;
 	let { containerEl, dispatchValue, rawValue = $bindable(), onChanged } = $props();
 	if (!rawValue && dispatchValue) {
@@ -35,7 +36,7 @@
 		}
 
 		if (containerEl) {
-			//console.log('containerEl', containerEl);
+			//Logger.debug('containerEl', containerEl);
 			// mapContainer.style.width = `${containerEl.clientWidth - 60}px`;
 			// mapContainer.style.height = `${containerEl.clientHeight - 60}px`;
 		} else {
@@ -102,10 +103,10 @@
 			mapOnLoadHandler_set = true;
 			map.on('load', () => {
 				if (rawValue) {
-					console.log('rawValue in map', rawValue);
+					Logger.debug('rawValue in map', rawValue);
 					if (draw) {
 						rawValue.features.forEach((feature) => {
-							//console.log('feature added');
+							//Logger.debug('feature added');
 							draw.add(feature);
 						});
 					}

@@ -2,6 +2,7 @@
 	import { getContext } from 'svelte';
 	import ManyToAllSelectInterfaceDefinitionItem from './ManyToAllSelectInterfaceDefinitionItem.svelte';
 	import { getDeepField, getRootType } from '$lib/utils/usefulFunctions';
+	import { Logger } from '$lib/utils/logger';
 	interface Props {
 		nodes: any;
 		parentNodeId: any;
@@ -55,7 +56,7 @@
 	);
 	const inputFieldsContainerRoot = getRootType(null, inputFieldsContainer.dd_rootName, schemaData);
 	const inputFields = inputFieldsContainerRoot?.inputFields || [];
-	console.log({ inputFieldsContainer, inputFieldsContainerRoot, inputFields });
+	Logger.debug({ inputFieldsContainer, inputFieldsContainerRoot, inputFields });
 </script>
 
 <div class="flex space-x-2">
