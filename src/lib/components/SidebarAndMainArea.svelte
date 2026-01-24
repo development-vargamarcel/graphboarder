@@ -13,8 +13,13 @@
 			? 'visible '
 			: ' invisible'} fixed left-0 top-0 z-50 lg:z-0 lg:visible lg:static bg-base-200 overflow-y-auto"
 		use:clickOutside
+		role="button"
+		tabindex="0"
 		onclick={() => {
 			forceVisibleSidebar = false;
+		}}
+		onkeydown={(e) => {
+			if (e.key === 'Escape') forceVisibleSidebar = false;
 		}}
 		onclick_outside={() => {
 			forceVisibleSidebar = false;

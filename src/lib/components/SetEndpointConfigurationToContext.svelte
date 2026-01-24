@@ -35,7 +35,7 @@
 	import type { QMSMainWraperContext, QMSWraperContext as QMSWraperContextType } from '$lib/types/index';
 
 	// Get contexts
-	let QMSMainWraperContext_Value = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const QMSMainWraperContext_Value = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext_Value?.endpointInfo;
 	const urqlCoreClient = QMSMainWraperContext_Value?.urqlCoreClient;
 	let queryName = $state(QMSName);
@@ -50,7 +50,7 @@
 		paginationOptions,
 		paginationState
 	} = QMSWraperContext;
-	const schemaData = QMSMainWraperContext?.schemaData;
+	const schemaData = QMSMainWraperContext_Value?.schemaData;
 
 	let currentQMS_info = get(schemaData).get_QMS_Field(queryName, 'query', get(schemaData));
 	let dd_relatedRoot = getRootType(null, currentQMS_info.dd_rootName, get(schemaData));

@@ -142,8 +142,13 @@
 
 	<div
 		class="w-[100vw] h-screen  md:hidden "
+		role="button"
+		tabindex="0"
 		onclick={() => {
 			onHideSidebar?.();
+		}}
+		onkeydown={(e) => {
+			if (e.key === 'Escape') onHideSidebar?.();
 		}}
 	></div>
 </div>
