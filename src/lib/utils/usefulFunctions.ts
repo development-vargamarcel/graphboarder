@@ -137,7 +137,7 @@ export const build_QMS_bodyPart = (
 	}
 
 
-	const modifiedString = smartModifyStringBasedOnBoundries(listOfSubstrings.join(''), '(', ')', stringToQMSString_transformer, outsideTextModifier);
+	const modifiedString = smartModifyStringBasedOnBoundries(listOfSubstrings.join(''), '(', ')', stringToQMSString_transformer as any, outsideTextModifier);
 
 	Logger.debug({ modifiedString })
 	const QMS_bodyPart = modifiedString.slice(1, -1)
@@ -317,7 +317,7 @@ export const get_KindsArray = (type: Partial<FieldWithDerivedData> | any): Graph
  * @param type - The GraphQL type definition.
  * @returns An array of name strings.
  */
-export const get_NamesArray = (type: Partial<FieldWithDerivedData>): string[] => {
+export const get_NamesArray = (type: Partial<FieldWithDerivedData> | any): string[] => {
 	let names: string[] = [];
 
 	if (type?.name) {
@@ -362,7 +362,7 @@ export const getRootType = (
 	schemaData: SchemaData
 ): RootType | undefined => {
 	if (!rootTypes) {
-		rootTypes = get(schemaData).rootTypes
+		rootTypes = schemaData.rootTypes;
 	}
 
 	return rootTypes.filter((type) => {
@@ -392,8 +392,8 @@ export const getFields_Grouped = (
 	let enumFields: (RootType & FieldWithDerivedData)[] = [];
 
 	let fieldsArray
-	if (node?.args) {
-		fieldsArray = node?.args
+	if ((node as any)?.args) {
+		fieldsArray = (node as any)?.args
 	} else if (node_rootType?.fields) {
 		fieldsArray = node_rootType?.fields
 	} else if (node_rootType?.inputFields) {

@@ -207,8 +207,8 @@
         Logger.debug({ nodeFieldsQMS_info });
 
         const possibleLocations = QMSType == 'query'
-            ? get(endpointInfo).returningColumnsPossibleLocationsInQueriesPerRow
-            : get(endpointInfo).returningColumnsPossibleLocationsInMutations;
+			? (get(endpointInfo) as any).returningColumnsPossibleLocationsInQueriesPerRow
+			: (get(endpointInfo) as any).returningColumnsPossibleLocationsInMutations;
 
         const returningColumnsResult = findReturningColumnsLocation(
             nodeFieldsQMS_info,
