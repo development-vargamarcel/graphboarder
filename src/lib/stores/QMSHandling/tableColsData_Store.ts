@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store';
+import { Logger } from '$lib/utils/logger';
 import type { TableColumnData, TableColsDataStore, PaginationStateStore } from '$lib/types';
 
 export const Create_tableColsData_Store = (
@@ -15,7 +16,7 @@ export const Create_tableColsData_Store = (
 		addColumns: (newCollsData: TableColumnData[]) => {
 			_paginationState_Store.resetToDefault();
 			update((storeData) => {
-				console.log('qwerrt', { storeData });
+				Logger.debug('qwerrt', { storeData });
 				return [...storeData, ...newCollsData];
 			});
 		},
@@ -23,7 +24,7 @@ export const Create_tableColsData_Store = (
 		addColumn: (newCollData: TableColumnData) => {
 			_paginationState_Store.resetToDefault();
 			update((storeData) => {
-				console.log('qwerrt', { storeData });
+				Logger.debug('qwerrt', { storeData });
 				return [...storeData, newCollData];
 			});
 		},

@@ -102,7 +102,7 @@
 					currentQMS_info.dd_displayName,
 					...endpointInfo.get_rowsLocation(currentQMS_info, schemaData)
 				];
-				console.log({ stepsOfFieldsInput }, currentQMS_info.dd_displayName);
+				Logger.debug({ stepsOfFieldsInput }, currentQMS_info.dd_displayName);
 				rowsCurrent = getDataGivenStepsOfFields(undefined, queryData.data, stepsOfFieldsInput);
 				if (rowsCurrent && !Array.isArray(rowsCurrent)) {
 					rowsCurrent = [rowsCurrent];
@@ -139,13 +139,13 @@
 					paginationTypeInfo?.name == 'pageBased'
 				) {
 					loadedF?.();
-					console.log('loadedF ');
+					Logger.debug('loadedF ');
 				} else {
 					completeF?.();
-					console.log('completeF');
+					Logger.debug('completeF');
 				}
 
-				console.log({ rows }, { rowsCurrent });
+				Logger.debug({ rows }, { rowsCurrent });
 				rowsCurrent = [];
 			});
 	};

@@ -8,6 +8,7 @@
 	import { browser } from '$app/environment';
 	import {  queryStore,gql,getContextClient  } from '@urql/svelte';
 	import { getContext } from 'svelte';
+	import { Logger } from '$lib/utils/logger';
 	interface Props {
 		prefix?: string;
 		children?: import('svelte').Snippet;
@@ -19,7 +20,7 @@
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
 
-	console.log({ endpointInfo }, $endpointInfo);
+	Logger.debug({ endpointInfo }, $endpointInfo);
 	const endpointInfoUrl = $endpointInfo?.Url;
 	const getStoredSchemaData = (endpointInfoUrl) => {
 		return endpointsSchemaData.find((item) => item.url === endpointInfoUrl);
@@ -140,25 +141,25 @@
 	$schemaData = {};
 	$schemaData.isReady = false;
 	const handleData = () => {
-		console.log('handledata run');
+		Logger.debug('handledata run');
 		schema = $queryStoreRes?.data?.__schema;
-		console.log('ppppp', endpointInfo, schema);
+		Logger.debug('ppppp', endpointInfo, schema);
 		$schemaData.schema = schema;
 		schemaData.set_fields(endpointInfo);
-		console.log('schemaData', $schemaData);
+		Logger.debug('schemaData', $schemaData);
 	};
 	$effect(() => {
-		console.log({$queryStoreRes})
+		Logger.debug({$queryStoreRes})
 	});
 	$effect(() => {
 		if (!$queryStoreRes.fetching) {
 			if ($queryStoreRes?.data) {
-				console.log($queryStoreRes?.data);
+				Logger.debug($queryStoreRes?.data);
 				handleData();
 			} else if ($queryStoreRes?.error) {
-				console.log($queryStoreRes?.error);
+				Logger.debug($queryStoreRes?.error);
 			} else {
-				console.log('no data');
+				Logger.debug('no data');
 			}
 		}
 	});

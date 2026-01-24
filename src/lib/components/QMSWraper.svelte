@@ -45,20 +45,65 @@
 	 * Props for QMSWraper.
 	 */
 	interface Props {
+		/**
+		 * A prefix string to namespace the context.
+		 */
 		prefix?: string;
+		/**
+		 * Extra information to store in the context.
+		 */
 		extraInfo?: Record<string, unknown>;
+		/**
+		 * Initial arguments for the GraphQL query.
+		 */
 		initialGqlArgObj?: Record<string, unknown>;
+		/**
+		 * Whether this wrapper is the outermost one. Defaults to true if no parent QMSWraperContext is found.
+		 */
 		isOutermostQMSWraper?: boolean;
+		/**
+		 * The type of operation: 'query', 'mutation', or 'subscription'.
+		 */
 		QMSType?: QMSTypeType;
+		/**
+		 * The name of the root field for the operation (e.g. 'users', 'insert_users').
+		 */
 		QMSName?: string;
+		/**
+		 * The schema information for the field. If not provided, it will be looked up using QMSName and QMSType.
+		 */
 		QMS_info?: FieldWithDerivedData | undefined;
+		/**
+		 * The context object created by this wrapper. Can be bound to to access internal state from parent.
+		 */
 		QMSWraperContext?: Record<string, unknown>;
+		/**
+		 * Initial value for the active arguments store.
+		 */
 		activeArgumentsDataGrouped_StoreInitialValue?: ActiveArgumentGroup[] | undefined;
+		/**
+		 * A store for active arguments. If provided, it will be used instead of creating a new one.
+		 */
 		activeArgumentsDataGrouped_Store?: any;
+		/**
+		 * Initial columns for the table.
+		 */
 		tableColsData_StoreInitialValue?: TableColumnData[];
+		/**
+		 * A store for the final GraphQL argument object.
+		 */
 		finalGqlArgObj_Store?: any;
+		/**
+		 * A context object provided from outside.
+		 */
 		QMSWraperContextGiven?: any;
+		/**
+		 * Whether to prefer the given context over creating a new one.
+		 */
 		preferGivenQMSWraperContext?: boolean;
+		/**
+		 * The content to render inside the wrapper.
+		 */
 		children?: import('svelte').Snippet;
 	}
 

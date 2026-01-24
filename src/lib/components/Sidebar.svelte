@@ -5,6 +5,7 @@
 	import { getContext } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
 	import { Logger } from '$lib/utils/logger';
+	import type { QMSMainWraperContext } from '$lib/types/index';
 
 	interface Props {
 		forceVisibleSidebar?: boolean;
@@ -20,8 +21,8 @@
 		prefix = ''
 	}: Props = $props();
 
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+	let QMSMainWraperContext_Value = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = QMSMainWraperContext_Value?.endpointInfo;
 
 	$effect(() => {
 		Logger.debug({ forceVisibleSidebar });

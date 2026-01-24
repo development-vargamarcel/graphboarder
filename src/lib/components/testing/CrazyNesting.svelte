@@ -1,7 +1,7 @@
 <script>
 	import Content from './Content.svelte';
 
-	let nodes = $state({
+	let initialNodes = {
 		node1: {
 			name: 'node 1',
 			items: [{ id: 'node2' }, { id: 'node3' }, { id: 'node4' }],
@@ -23,17 +23,19 @@
 			id: 'node4',
 			color: 'salmon'
 		}
-	});
+	};
 
 	for (let i = 5; i < 17; i++) {
-		nodes[`node${i}`] = { id: `node${i}`, name: `item ${i}` };
+		initialNodes[`node${i}`] = { id: `node${i}`, name: `item ${i}` };
 	}
 
-	nodes['node10'].color = 'steelblue';
-	nodes['node11'].color = 'steelblue';
-	nodes['node14'].color = 'orange';
-	nodes['node15'].color = 'orange';
-	nodes['node6'].color = 'forestgreen';
+	initialNodes['node10'].color = 'steelblue';
+	initialNodes['node11'].color = 'steelblue';
+	initialNodes['node14'].color = 'orange';
+	initialNodes['node15'].color = 'orange';
+	initialNodes['node6'].color = 'forestgreen';
+
+	let nodes = $state(initialNodes);
 </script>
 
 <h3>Try dragging node2 into node3 and then node4 into node2</h3>

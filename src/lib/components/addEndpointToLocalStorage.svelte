@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { stringToJs } from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
+	import type { Writable } from 'svelte/store';
 	import CodeEditor from './fields/CodeEditor.svelte';
 	import { getSortedAndOrderedEndpoints } from '$lib/utils/usefulFunctions';
 	import { Logger } from '$lib/utils/logger';
@@ -11,7 +12,7 @@
 
 	let { onHide }: Props = $props();
 
-	let localStorageEndpoints = getContext('localStorageEndpoints');
+	let localStorageEndpoints = getContext<Writable<any[]>>('localStorageEndpoints');
 	const handleCodeChanged = (e) => {
 		const newConfigurationString = e.detail.chd_rawValue;
 		Logger.debug(newConfigurationString);
@@ -19,7 +20,7 @@
 		let indexOfNewEndpointIdInLocalStorage;
 		if ($localStorageEndpoints?.length > 0) {
 			indexOfNewEndpointIdInLocalStorage = $localStorageEndpoints.findIndex(
-				(endpoint) => endpoint.id == newConfigurationJs.id
+				(endpoint) => endpoint.id == (newConfigurationJs as any).id
 			);
 		}
 		Logger.debug({
