@@ -19,7 +19,7 @@
 		language?: string;
 		rawValue?: string;
 		value?: string;
-		displayInterface: string;
+		displayInterface?: string;
 		onChanged?: (detail: { chd_rawValue: string }) => void;
 	}
 

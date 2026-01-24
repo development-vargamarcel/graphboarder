@@ -6,6 +6,7 @@
 	import { getContext } from 'svelte';
 	import graphql from 'highlight.js/lib/languages/graphql';
 	import 'highlight.js/styles/base16/solarized-dark.css';
+	import { Logger } from '$lib/utils/logger';
 	import { getPreciseType, objectToSourceCode } from '$lib/utils/usefulFunctions';
 	import { updateStoresFromAST } from '$lib/utils/astToUIState';
 	import { parse, print, visit } from 'graphql';
@@ -38,7 +39,7 @@
 		QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 		QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
 	} catch (e) {
-		console.log('GraphqlCodeDisplay: Context not available', e);
+		Logger.debug('GraphqlCodeDisplay: Context not available', e);
 	}
 
 	$effect(() => {
@@ -58,7 +59,7 @@
 	const visitAst = () => {
 		const editedAST = visit(ast, {
 			enter(node, key, parent, path, ancestors) {
-				console.log(JSON.parse(JSON.stringify({ node, key, parent, path, ancestors })));
+				Logger.debug(JSON.parse(JSON.stringify({ node, key, parent, path, ancestors })));
 				// @return
 				//   undefined: no action
 				//   false: skip visiting this node
@@ -80,7 +81,7 @@
 	const syncQueryToUI = (ast) => {
 		try {
 			if (!QMSWraperContext || !QMSMainWraperContext) {
-				console.warn('GraphqlCodeDisplay: Cannot sync to UI - context not available');
+				Logger.warn('GraphqlCodeDisplay: Cannot sync to UI - context not available');
 				return;
 			}
 
@@ -97,11 +98,11 @@
 			const qmsInfo = schemaData.get_QMS_Field(QMSName, 'query', schemaData);
 
 			if (!qmsInfo) {
-				console.warn('GraphqlCodeDisplay: QMS info not found');
+				Logger.warn('GraphqlCodeDisplay: QMS info not found');
 				return;
 			}
 
-			console.log('GraphqlCodeDisplay: Syncing query to UI', { ast, qmsInfo });
+			Logger.debug('GraphqlCodeDisplay: Syncing query to UI', { ast, qmsInfo });
 
 			// Update stores from AST
 			updateStoresFromAST(
@@ -114,7 +115,7 @@
 				paginationState
 			);
 		} catch (e) {
-			console.error('GraphqlCodeDisplay: Error syncing query to UI:', e);
+			Logger.error('GraphqlCodeDisplay: Error syncing query to UI:', e);
 		}
 	};
 	///
@@ -132,7 +133,7 @@
 					lastSyncedValue = valueModifiedManually;
 				}
 			} catch (e) {
-				console.error('Error parsing manually modified query:', e);
+				Logger.error('Error parsing manually modified query:', e);
 			}
 		}
 	});
@@ -147,10 +148,10 @@
 	});
 	$effect(() => {
 		if (getPreciseType(ast) == 'object') {
-			//console.log('qqqwww', value, ast, astAsString);
+			//Logger.debug('qqqwww', value, ast, astAsString);
 			astAsString = JSON5.stringify(ast);
 			//astAsString2 = objectToSourceCode(ast);
-			//console.log('qqqwww2', value, ast, astAsString);
+			//Logger.debug('qqqwww2', value, ast, astAsString);
 		}
 	});
 </script>

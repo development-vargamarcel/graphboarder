@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { clickOutside } from '$lib/actions/clickOutside';
-	import Page from '$lib/Page.svelte';
+	import Page from '$lib/components/Page.svelte';
 
 	let { title, sidebar, main } = $props();
 

@@ -1,6 +1,7 @@
 import { argumentCanRunQuery, generate_gqlArgObj, getPreciseType, getRootType } from '$lib/utils/usefulFunctions';
 import { json } from '@sveltejs/kit';
 import { get, writable } from 'svelte/store';
+import { Logger } from '$lib/utils/logger';
 import _ from 'lodash';
 import type {
 	ActiveArgumentsDataGroupedStore,
@@ -31,7 +32,7 @@ export const Create_activeArgumentsDataGrouped_Store = (
 		) => {
 			const QMS_infoRoot = getRootType(null, QMS_info.dd_rootName, schemaData)
 			const argsInfo = QMS_info?.args;
-			console.log({ argsInfo });
+			Logger.debug({ argsInfo });
 			//handle generating activeArgumentsDataGrouped
 			const activeArgumentsDataGrouped = [];
 			const hasRootArgs = argsInfo?.find((el) => {
@@ -42,7 +43,7 @@ export const Create_activeArgumentsDataGrouped_Store = (
 
 			////-------- all encompassing group !!!put this first to have it overriden by other groups,or last for opposite result
 			const addAllArgsGroup = () => {
-				console.log('ppppp', QMS_info, QMS_infoRoot)
+				Logger.debug('ppppp', QMS_info, QMS_infoRoot)
 				const newGroupData = {
 					originType: QMS_info,
 
@@ -151,7 +152,7 @@ export const Create_activeArgumentsDataGrouped_Store = (
 			});
 			//
 			//Handle QMSarguments data if present
-			console.log({ QMSarguments });
+			Logger.debug({ QMSarguments });
 			if (QMSarguments) {
 				gqlArgObjToActiveArgumentsDataGrouped(QMSarguments, activeArgumentsDataGrouped, schemaData, endpointInfo);
 			}
@@ -160,7 +161,7 @@ export const Create_activeArgumentsDataGrouped_Store = (
 			set(activeArgumentsDataGrouped);
 		},
 		update_groups: (groupNewData: ActiveArgumentGroup) => {
-			console.log({ groupNewData });
+			Logger.debug({ groupNewData });
 			update((activeArgumentsDataGrouped) => {
 				let index = activeArgumentsDataGrouped.findIndex((group) => {
 					return group.group_name == groupNewData.group_name;
@@ -177,20 +178,20 @@ export const Create_activeArgumentsDataGrouped_Store = (
 				const group = activeArgumentsDataGrouped?.find((group) => {
 					return group.group_name == groupName;
 				});
-				console.log('ppppp group', group);
+				Logger.debug('ppppp group', group);
 				const activeArgument = group.group_args?.find((arg) => {
 					return arg.id == activeArgumentData.id;
 				});
 				const activeArgumentNode = group?.group_argsNode?.[activeArgumentData.id];
 				if (!activeArgument && !activeArgumentNode) {
-					console.log('nothing updated');
+					Logger.debug('nothing updated');
 				}
 				if (activeArgumentNode) {
-					console.log('updated activeArgumentNode', activeArgumentNode);
+					Logger.debug('updated activeArgumentNode', activeArgumentNode);
 					Object.assign(activeArgumentNode, activeArgumentData);
 				}
 				if (activeArgument) {
-					console.log('updated activeArgument', activeArgument);
+					Logger.debug('updated activeArgument', activeArgument);
 
 					Object.assign(activeArgument, activeArgumentData);
 				}
@@ -268,15 +269,15 @@ export const add_activeArgumentOrContainerTo_activeArgumentsDataGrouped = (
 	group?: ActiveArgumentGroup
 ): ActiveArgumentGroup[] => {
 	const dataIsForContainer = newArgumentOrContainerData?.items;
-	console.log({ dataIsForContainer, newArgumentOrContainerData })
+	Logger.debug({ dataIsForContainer, newArgumentOrContainerData })
 	if (!group) {
 		group = activeArgumentsDataGrouped?.find((currGroup) => {
-			console.log('currGroup', currGroup, currGroup.group_name, groupName, currGroup.group_name == groupName, currGroup.group_name === groupName);
+			Logger.debug('currGroup', currGroup, currGroup.group_name, groupName, currGroup.group_name == groupName, currGroup.group_name === groupName);
 			return currGroup.group_name == groupName;
 		})
 	}
 	if (!group) {
-		console.warn('group not found', { groupName, newArgumentOrContainerData })
+		Logger.warn('group not found', { groupName, newArgumentOrContainerData })
 		return activeArgumentsDataGrouped
 	}
 	; (function () {
@@ -321,7 +322,7 @@ export const add_activeArgumentOrContainerTo_activeArgumentsDataGrouped = (
 			) {
 				group.group_args.push(newArgumentOrContainerData);
 			} else {
-				console.log('already added');
+				Logger.debug('already added');
 			}
 		}
 	}
@@ -392,7 +393,7 @@ const addAllRootArgs = (
 		return group.group_name == 'root';
 	});
 	if (!group) {
-		console.log('no root group');
+		Logger.debug('no root group');
 		return
 	}
 	const groupName = group.group_name;
@@ -402,7 +403,7 @@ const addAllRootArgs = (
 	});
 	groupArgs.forEach((argType, i) => {
 		const argData = generateArgData([argType.dd_displayName], argType, schemaData);
-		console.log({ argData });
+		Logger.debug({ argData });
 		add_activeArgumentOrContainerTo_activeArgumentsDataGrouped(
 			argData,
 			groupName,
@@ -477,7 +478,7 @@ const gqlArgObjToActiveArgumentsDataGrouped = (
 			// Handle non-root groups
 			if (!group.group_argsNode) {
 				// For groups without argsNode structure, we skip for now
-				console.log('Skipping non-root group without argsNode:', groupName);
+				Logger.debug('Skipping non-root group without argsNode:', groupName);
 				return;
 			}
 
@@ -490,7 +491,7 @@ const gqlArgObjToActiveArgumentsDataGrouped = (
 				});
 
 				if (!argType) {
-					console.warn(`Argument type not found for: ${argName}`);
+					Logger.warn(`Argument type not found for: ${argName}`);
 					return;
 				}
 
@@ -514,7 +515,7 @@ const gqlArgObjToActiveArgumentsDataGrouped = (
 				);
 			});
 		}
-		console.log({ groupName, group_isRoot, groupGqlArgObj, groupOriginType });
+		Logger.debug({ groupName, group_isRoot, groupGqlArgObj, groupOriginType });
 	});
 	return activeArgumentsDataGrouped;
 };

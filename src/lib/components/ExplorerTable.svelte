@@ -6,6 +6,7 @@
 	import { formatData, getTableCellData } from '$lib/utils/usefulFunctions';
 	import { getColumnVisibility, createTableOptions, getColumnFlags } from '$lib/utils/tableUtils';
 	import ColumnInfo from './ColumnInfo.svelte';
+	import { Logger } from '$lib/utils/logger';
 	import { getContext } from 'svelte';
 
 	let loadMore = false;
@@ -24,7 +25,7 @@
 			}
 		}));
 
-		console.log($table.getSelectedRowModel());
+		Logger.debug($table.getSelectedRowModel());
 		onRowSelectionChange?.({ ...$table.getSelectedRowModel(), rowSelectionState });
 	};
 
@@ -32,13 +33,13 @@
 		prefix?: string;
 		enableMultiRowSelectionState?: boolean;
 		enableRowSelectionState?: boolean;
-		infiniteHandler: any;
-		infiniteId: any;
+		infiniteHandler?: any;
+		infiniteId?: any;
 		data?: any;
 		columns?: any;
 		rowSelectionState?: any;
-		idColName: any;
-		requiredColNames: any;
+		idColName?: any;
+		requiredColNames?: any;
 		onRowSelectionChange?: (detail: any) => void;
 		onHideColumn?: (detail: { column: string }) => void;
 		onRowClicked?: (detail: any) => void;
@@ -48,13 +49,13 @@
 		prefix = '',
 		enableMultiRowSelectionState = true,
 		enableRowSelectionState = true,
-		infiniteHandler,
-		infiniteId,
+		infiniteHandler = undefined,
+		infiniteId = undefined,
 		data = $bindable([]),
 		columns = [],
 		rowSelectionState = $bindable({}),
-		idColName,
-		requiredColNames,
+		idColName = undefined,
+		requiredColNames = undefined,
 		onRowSelectionChange,
 		onHideColumn,
 		onRowClicked
@@ -85,12 +86,12 @@
 	const table = createSvelteTable(options);
 	$effect(() => {
 		if (data) {
-			console.log({ data }, 'data changed');
+			Logger.debug({ data }, 'data changed');
 			rerender();
 		}
 	});
 	$effect(() => {
-		console.log({ table }, '$table', $table);
+		Logger.debug({ table }, '$table', $table);
 	});
 </script>
 
@@ -206,7 +207,7 @@
 											const toggleSelectedHandler = row.getToggleSelectedHandler();
 											toggleSelectedHandler(e);
 
-											//console.log($table.getSelectedRowModel());
+											//Logger.debug($table.getSelectedRowModel());
 										}}
 									/>
 								</label>
