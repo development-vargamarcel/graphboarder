@@ -56,15 +56,19 @@
 		};
 	});
 
-	let dd_relatedRoot = getRootType(null, QMS_info.dd_rootName, get(schemaData));
-	if (!QMS_info) {
-		//	goto('/queries');
-	}
+	let dd_relatedRoot = $derived(getRootType(null, QMS_info.dd_rootName, get(schemaData)));
+	$effect(() => {
+		if (!QMS_info) {
+			//	goto('/queries');
+		}
+	});
+
 	//
 	let activeArgumentsData = [];
-	const paginationTypeInfo = get_paginationTypes(endpointInfo, get(schemaData)).find((pagType) => {
+	let paginationTypeInfo = $derived(get_paginationTypes(endpointInfo, get(schemaData)).find((pagType) => {
 		return pagType.name == QMS_info?.dd_paginationType;
-	});
+	}));
+
 	let activeArgumentsDataGrouped_Store_IS_SET = $state(false);
 	$effect(() => {
 		activeArgumentsDataGrouped_Store_IS_SET =
@@ -72,7 +76,7 @@
 	});
 	//
 
-	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], get(schemaData));
+	let scalarFields = $derived(getFields_Grouped(dd_relatedRoot, [], get(schemaData)).scalarFields);
 
 	let queryData: any = $state({});
 	let rows = $state([]);
@@ -171,7 +175,8 @@
 				rowsCurrent = [];
 			});
 	};
-	QMS_bodyPartsUnifier_StoreDerived.subscribe((QMS_body) => {
+	$effect(() => {
+		const QMS_body = $QMS_bodyPartsUnifier_StoreDerived;
 		if (QMS_body && QMS_body !== '') {
 			//runQuery(QMS_body);
 		}
@@ -180,17 +185,21 @@
 	$effect(() => {
 		Logger.debug({ queryData });
 	});
-	if (scalarFields.length == 0) {
-		queryData = { fetching: false, error: false, data: false };
-	} else {
-		queryData = { fetching: true, error: false, data: false };
-	}
+
+	$effect(() => {
+		if (scalarFields.length == 0) {
+			queryData = { fetching: false, error: false, data: false };
+		} else {
+			queryData = { fetching: true, error: false, data: false };
+		}
+	});
 
 	const hideColumn = (e) => {
 		tableColsData_Store.removeColumn(e.detail.column);
 	};
-	tableColsData_Store.subscribe((data) => {
-		Logger.debug(data);
+
+	$effect(() => {
+		Logger.debug($tableColsData_Store);
 	});
 
 	let column_stepsOfFields = $state('');

@@ -1,3 +1,8 @@
+<!--
+	@component
+	The MainWraper component initializes the GraphQL client and schema data for a specific endpoint.
+	It sets up the context for child components to access endpoint information and the URQL client.
+-->
 <script lang="ts">
 	import { create_endpointInfo_Store } from '$lib/stores/endpointHandling/endpointInfo';
 	import IntrospectionDataGenerator from '$lib/components/IntrospectionDataGenerator.svelte';
@@ -35,6 +40,12 @@
 
 	const endpointInfo = create_endpointInfo_Store(endpointInfoProvided);
 	const schemaData = create_schemaData();
+
+	$effect(() => {
+		if (!$endpointInfo?.url) {
+			Logger.error('MainWraper: No URL provided in endpoint info. Please check your configuration.', { endpointInfoProvided });
+		}
+	});
 
 	let client = new Client({
 		url: $endpointInfo.url,

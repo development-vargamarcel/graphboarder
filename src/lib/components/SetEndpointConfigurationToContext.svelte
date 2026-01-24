@@ -35,7 +35,7 @@
 	let QMSMainWraperContext = getContext<any>(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
-	let queryName = QMSName;
+	let queryName = $derived(QMSName);
 	const QMSWraperContext = getContext<any>('QMSWraperContext');
 	const {
 		QMS_bodyPart_StoreDerived_rowsCount = null,
@@ -49,24 +49,30 @@
 	} = QMSWraperContext;
 	const schemaData = QMSMainWraperContext?.schemaData;
 
-	let currentQMS_info = schemaData.get_QMS_Field(queryName, 'query', schemaData);
-	let dd_relatedRoot = getRootType(null, currentQMS_info.dd_rootName, schemaData);
-	if (!currentQMS_info) {
-		goto('/queries');
-	}
+	let currentQMS_info = $derived(schemaData.get_QMS_Field(queryName, 'query', schemaData));
+	let dd_relatedRoot = $derived(getRootType(null, currentQMS_info.dd_rootName, schemaData));
 
-	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData).find((pagType: any) => {
-		return pagType.name == currentQMS_info.dd_paginationType;
+	$effect(() => {
+		if (!currentQMS_info) {
+			goto('/queries');
+		}
 	});
 
-	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], schemaData);
+	let paginationTypeInfo = $derived(get_paginationTypes(endpointInfo, schemaData).find((pagType: any) => {
+		return pagType.name == currentQMS_info.dd_paginationType;
+	}));
+
+	let scalarFields = $derived(getFields_Grouped(dd_relatedRoot, [], schemaData).scalarFields);
 
 	// Reactive state
-	let queryData = $state<{ fetching: boolean; error: any; data: any }>(
-		scalarFields.length == 0
-			? { fetching: false, error: false, data: false }
-			: { fetching: true, error: false, data: false }
-	);
+	let queryData = $state<{ fetching: boolean; error: any; data: any }>({ fetching: true, error: false, data: false });
+
+	$effect(() => {
+		if (scalarFields.length == 0) {
+			queryData = { fetching: false, error: false, data: false };
+		}
+	});
+
 	let rows = $state<any[]>([]);
 	let rowsCurrent: any[] = [];
 	let loadedF: (() => void) | undefined;
@@ -104,7 +110,7 @@
 					...endpointInfo.get_rowsLocation(currentQMS_info, schemaData)
 				];
 				console.log({ stepsOfFieldsInput }, currentQMS_info.dd_displayName);
-				rowsCurrent = getDataGivenStepsOfFields(undefined, queryData.data, stepsOfFieldsInput);
+				rowsCurrent = getDataGivenStepsOfFields(undefined, queryData.data, stepsOfFieldsInput) as any[];
 				if (rowsCurrent && !Array.isArray(rowsCurrent)) {
 					rowsCurrent = [rowsCurrent];
 				}
@@ -214,7 +220,7 @@
 			endpointConfiguration = stringToJs(configurationText);
 
 			if (configTemplate) {
-				endpointConfiguration = { ...stringToJs(configTemplate), ...endpointConfiguration };
+				endpointConfiguration = { ...(stringToJs(configTemplate) as object), ...endpointConfiguration };
 			}
 			console.log({ endpointConfiguration });
 		}

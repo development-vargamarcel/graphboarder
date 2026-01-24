@@ -9,6 +9,8 @@
 
 <div class="flex w-full">
 	<div
+		role="button"
+		tabindex="0"
 		class="w-[30vh]  h-[100vh]  {forceVisibleSidebar
 			? 'visible '
 			: ' invisible'} fixed left-0 top-0 z-50 lg:z-0 lg:visible lg:static bg-base-200 overflow-y-auto"
@@ -16,8 +18,15 @@
 		onclick={() => {
 			forceVisibleSidebar = false;
 		}}
-		onclick_outside={() => {
-			forceVisibleSidebar = false;
+		onkeydown={(e) => {
+			if (e.key === 'Enter' || e.key === ' ') {
+				forceVisibleSidebar = false;
+			}
+		}}
+		{...{
+			onclick_outside: () => {
+				forceVisibleSidebar = false;
+			}
 		}}
 	>
 		{@render sidebar?.()}
@@ -26,9 +35,9 @@
 	<Page MenuItem={true}>
 		<div class="w-full navbar bg-base-300">
 			<div class="flex-none lg:hidden">
-				<label
-					for="my-drawer-3"
+				<button
 					class="btn btn-square btn-ghost"
+					aria-label="Toggle Sidebar"
 					onclick={() => {
 						forceVisibleSidebar = !forceVisibleSidebar;
 					}}
@@ -45,7 +54,7 @@
 							d="M4 6h16M4 12h16M4 18h16"
 						/></svg
 					>
-				</label>
+				</button>
 			</div>
 			<div class="flex-1 px-2 mx-2">{title}</div>
 			<div class="flex-none block">
