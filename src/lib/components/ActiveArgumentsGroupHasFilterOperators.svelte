@@ -448,7 +448,7 @@
 						parentNodeId={node.id}
 						{onUpdateQuery}
 						bind:group
-						bind:argsInfo
+						argsInfo={argsInfo}
 						{nodes}
 						{node}
 					/>
@@ -462,7 +462,7 @@
 			//
 			//console.log(detail.id, node);
 		}}
-		bind:selectedQMS={getManyQMS}
+		selectedQMS={getManyQMS}
 		bind:selectedRowsColValues
 		bind:showSelectModal
 		{originalNodes}

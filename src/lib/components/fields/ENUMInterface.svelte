@@ -1,12 +1,13 @@
 <script lang="ts">
 	import FilterGroup from '$lib/components/FilterGroup.svelte';
 	let { typeInfo, rawValue, dispatchValue, onChanged } = $props();
+    let containerEl: HTMLElement;
 </script>
 
-<div class="flex flex-col">
+<div class="flex flex-col" bind:this={containerEl}>
 	<FilterGroup
 		extraData={typeInfo}
-		choises={typeInfo.enumValues.map((enumValue) => {
+		choises={typeInfo.enumValues.map((enumValue: any) => {
 			return enumValue.name;
 		})}
 		chosen={dispatchValue}
@@ -18,5 +19,6 @@
 		id={typeInfo.stepsOfFields}
 		title="choose"
 		type={typeInfo.dd_kindList ? 'checkbox' : 'radio'}
+        containerEl={containerEl}
 	/>
 </div>

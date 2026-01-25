@@ -39,7 +39,7 @@
 		field
 	}: Props = $props();
 	const nodeContext_forDynamicData = getContext<any>(`${prefix}nodeContext_forDynamicData`);
-	let selectedQMS = nodeContext_forDynamicData.selectedQMS;
+	let selectedQMS = nodeContext_forDynamicData?.selectedQMS;
 	let QMSRows = nodeContext_forDynamicData.QMSRows;
 	let rowSelectionState = nodeContext_forDynamicData.rowSelectionState;
 	//

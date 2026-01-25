@@ -99,7 +99,7 @@
 	let hasQMSarguments = $derived.by(() => {
 		if (!$stepsOfFieldsOBJFull) return false;
 		const valueAtPath = getValueAtPath($stepsOfFieldsOBJFull, stepsOfFields);
-		return valueAtPath?.QMSarguments;
+		return (valueAtPath as any)?.QMSarguments;
 	});
 
 	let showModal = $state(false);

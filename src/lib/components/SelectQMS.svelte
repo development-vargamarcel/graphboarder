@@ -72,9 +72,9 @@
 	];
 	const OutermostQMSWraperContext = getContext<any>(`${prefix}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
-	let getManyData = $state();
-	let selectedQMS = $state();
-	let rowSelectionState = $state();
+	let getManyData = $state<any>();
+	let selectedQMS = $state<any>();
+	let rowSelectionState = $state<any>();
 	$effect(() => {
 		if ($QMSFieldToQMSGetMany_Store.length > 0) {
 			getManyData = QMSFieldToQMSGetMany_Store.getObj({

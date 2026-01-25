@@ -27,10 +27,11 @@
 		onRowClicked
 	}: Props = $props();
 
-	let mainWraperCtx = getContext(`${prefix}QMSMainWraperContext`);
+	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = mainWraperCtx?.endpointInfo;
 	const schemaData = mainWraperCtx?.schemaData;
-	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
 	Logger.debug('nooooddeeee', { node });
 	let getManyQMS = $state();

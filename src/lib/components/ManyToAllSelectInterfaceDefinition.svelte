@@ -38,11 +38,12 @@
 	}: Props = $props();
 
 	//
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
+	let QMSMainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
 	//
-	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
 	const inputFieldsContainerLocation = endpointInfo.get_inputFieldsContainerLocation(
 		node,

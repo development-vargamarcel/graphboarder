@@ -463,7 +463,7 @@
 					<SelectItem
 						{node}
 						bind:QMSWraperContext={QMSWraperContextForSelectedQMS}
-						bind:rowSelectionState={$rowSelectionState}
+						rowSelectionState={$rowSelectionState}
 						enableMultiRowSelectionState={inputFieldsContainer?.dd_kindList}
 						onRowSelectionChange={(detail: any) => {
 							selectedRowsModel = detail;
@@ -484,7 +484,7 @@
 						onRowClicked={(detail: any) => {
 							Logger.debug(detail);
 						}}
-						bind:QMS_info={$selectedQMS}
+						QMS_info={$selectedQMS}
 					/>
 				{/if}
 

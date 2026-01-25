@@ -23,7 +23,7 @@
 		rows = $bindable([]),
 		infiniteHandler,
 		infiniteId,
-		rowSelectionState = {},
+		rowSelectionState = $bindable({}),
 		onRowSelectionChange,
 		onHideColumn,
 		onRowClicked

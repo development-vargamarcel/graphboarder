@@ -31,13 +31,14 @@
 	let lastSyncedValue = $state(value);
 
 	// Try to get context if available
-	let qmsWraperCtx = $state();
-	let mainWraperCtx = $state();
+	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
+	let qmsWraperCtx = $state<QMSWraperContext>();
+	let mainWraperCtx = $state<QMSMainWraperContext>();
 	let currentQMS_info;
 
 	try {
-		qmsWraperCtx = getContext(`${prefix}QMSWraperContext`);
-		mainWraperCtx = getContext(`${prefix}QMSMainWraperContext`);
+		qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+		mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	} catch (e) {
 		Logger.debug('GraphqlCodeDisplay: Context not available', e);
 	}

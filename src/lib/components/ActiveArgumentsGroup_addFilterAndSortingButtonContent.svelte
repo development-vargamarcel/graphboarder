@@ -42,6 +42,7 @@
 	const hasGroup_argsNode = group.group_argsNode;
 	const mainContainerOperator = group.group_argsNode?.mainContainer?.operator;
 	/////start
+	import type { QMSWraperContext, QMSMainWraperContext } from '$lib/types/index';
 	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
 
     const nodeContext = getContext<any>(`${prefix}nodeContext`);
@@ -75,7 +76,7 @@
 		return arg.dd_isRootArg;
 	}));
 
-    let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
+    let activeArgumentsContext = getContext<any>(`${prefix}activeArgumentsContext`);
 	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	const schemaData = mainWraperCtx?.schemaData;
 	const nodeRootType = getRootType(null, node.dd_rootName, schemaData);

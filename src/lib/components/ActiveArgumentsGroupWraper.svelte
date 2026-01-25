@@ -62,9 +62,9 @@
 			<ActiveArgumentsGroup_addFilterAndSortingButton
 				{onUpdateQuery}
 				bind:group
-				bind:argsInfo
-				bind:update_activeArgumentsDataGrouped
-				bind:activeArgumentsDataGrouped
+				argsInfo={argsInfo}
+				update_activeArgumentsDataGrouped={update_activeArgumentsDataGrouped}
+				activeArgumentsDataGrouped={activeArgumentsDataGrouped}
 				node={group.group_argsNode?.mainContainer}
 			/>
 		{/if}
@@ -112,9 +112,9 @@
 				finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 			}}
 			bind:group
-			bind:argsInfo
-			bind:update_activeArgumentsDataGrouped
-			bind:activeArgumentsDataGrouped
+			argsInfo={argsInfo}
+			update_activeArgumentsDataGrouped={update_activeArgumentsDataGrouped}
+			activeArgumentsDataGrouped={activeArgumentsDataGrouped}
 		/>
 	{/if}
 </div>
