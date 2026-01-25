@@ -21,7 +21,7 @@ export enum LogLevel {
  * Logger.debug('My message', { some: 'data' });
  * ```
  */
-class LoggerService {
+export class LoggerService {
     private level: LogLevel = LogLevel.DEBUG;
 
     constructor() {

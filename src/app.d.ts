@@ -39,6 +39,11 @@ declare namespace App {
 // Extend global window object for browser-side types if needed
 declare global {
 	// Example: const __APP_VERSION__: string
+	namespace svelteHTML {
+		interface HTMLAttributes<T> {
+			'onclick_outside'?: (event: CustomEvent) => void;
+		}
+	}
 }
 
 export {};
