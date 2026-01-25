@@ -299,7 +299,7 @@ export const localEndpoints = [
 		idDecoderPossibilities: [
 			{
 				get_Val: (QMS_info, schemaData, id) => {
-					let array = stringToJs(atob(id))
+					let array = stringToJs(atob(id)) as any[];
 					return array[array.length - 1]
 				},
 				check: (QMS_info, schemaData) => { return true }

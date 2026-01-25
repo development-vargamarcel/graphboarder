@@ -1,9 +1,11 @@
 <script lang="ts">
 	import TanTable from './TanTable.svelte';
+	import { downloadCSV, convertArrayToCSV } from '$lib/utils/exportUtils';
 
 	interface Props {
 		prefix?: string;
 		enableMultiRowSelectionState?: boolean;
+		enableExport?: boolean;
 		colsData?: any;
 		showCheckBox?: boolean;
 		rows?: any;
@@ -18,6 +20,7 @@
 	let {
 		prefix = '',
 		enableMultiRowSelectionState = true,
+		enableExport = true,
 		colsData = $bindable([]),
 		showCheckBox = false,
 		rows = $bindable([]),
@@ -31,12 +34,27 @@
 </script>
 
 {#if rows.length > 0}
+	{#if enableExport}
+		<div class="flex justify-end mb-2">
+			<button
+				class="btn btn-sm btn-outline gap-2"
+				onclick={() => {
+					if (rows && rows.length > 0) {
+						downloadCSV(convertArrayToCSV(rows), 'export.csv');
+					}
+				}}
+			>
+				<i class="bi bi-download"></i>
+				Export CSV
+			</button>
+		</div>
+	{/if}
 	<TanTable
 		{rowSelectionState}
 		{enableMultiRowSelectionState}
 		{prefix}
 		bind:data={rows}
-		bind:cols={colsData}
+		cols={colsData}
 		{onHideColumn}
 		{infiniteHandler}
 		{onRowClicked}

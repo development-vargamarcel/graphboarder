@@ -1,4 +1,4 @@
-<script module>
+<script module lang="ts">
 	declare var MapboxDraw: any;
 </script>
 

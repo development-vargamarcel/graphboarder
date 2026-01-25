@@ -54,7 +54,9 @@
 		<button
 			class="btn btn-primary btn-xs normal-case ml-2"
 			onclick={() => {
-				mainContainerEl.requestFullscreen();
+				if(mainContainerEl.requestFullscreen) {
+					mainContainerEl.requestFullscreen();
+				}
 			}}>fullscreen</button
 		>
 		<button

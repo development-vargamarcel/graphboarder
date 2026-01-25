@@ -121,9 +121,18 @@
 					onInUseChanged={() => {
 						onUpdateQuery?.();
 					}}
+					bind:isNot={activeArgumentData.not}
 					{activeArgumentData}
 					{group}
 					{activeArgumentsDataGrouped}
+					parentNode={group}
+					node={activeArgumentData}
+					nodes={group.group_args}
+					type="activeArgument"
+					parentNodeId={group.group_name}
+					originalNodes={group.group_args}
+					availableOperators={[]}
+					startDrag={startDrag}
 				/>
 			</div>
 		</div>

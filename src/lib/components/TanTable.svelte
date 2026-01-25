@@ -58,10 +58,10 @@
     });
 
 	const getColumns = (cols: any[]) => {
-		let columns = cols.map((col) => {
+		let columns = cols.map((col, index) => {
 			return {
 				...col,
-				accessorFn: (row: any) => getTableCellData(row, col),
+				accessorFn: (row: any) => getTableCellData(row, col, index),
 				header: col.title,
 				footer: col.title,
 				enableHiding: true

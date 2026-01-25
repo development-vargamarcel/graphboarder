@@ -122,7 +122,17 @@
 				</div>
 
 				{#if dd_relatedRoot?.fields}
-					<Type type={QMS_info} template="columnAddDisplay" depth={0} isOnMainList={true} />
+					<Type
+						type={QMS_info}
+						template="columnAddDisplay"
+						depth={0}
+						isOnMainList={true}
+						index={0}
+						stepsOfFields={[]}
+						canExpand={false}
+						expand={() => {}}
+						showExpand={false}
+					/>
 					<!-- <TypeList
 						types={dd_relatedRoot.fields}
 						template="columnAddDisplay"

@@ -47,7 +47,8 @@
 	const endpointInfo = context?.endpointInfo;
 	const schemaData = context?.schemaData;
 	//
-	const OutermostQMSWraperContext = getContext<any>(`${prefix}OutermostQMSWraperContext`);
+	import type { QMSWraperContext } from '$lib/types/index';
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
 	let inputFieldsContainerLocation = $derived(endpointInfo.get_inputFieldsContainerLocation(
 		field,

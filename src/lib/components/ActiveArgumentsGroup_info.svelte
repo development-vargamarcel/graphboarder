@@ -26,10 +26,20 @@
 </div>
 
 {#if group.group_name !== 'root'}
-	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<i
 		class="bi bi-info-circle text-secondary px-2"
 		title={group.description}
+		role="button"
+		tabindex="0"
+		onkeydown={(e) => {
+			if (e.key === 'Enter' || e.key === ' ') {
+				if (showDescription == group.description) {
+					showDescription = '';
+				} else {
+					showDescription = group.description;
+				}
+			}
+		}}
 		onclick={() => {
 			if (showDescription == group.description) {
 				showDescription = '';

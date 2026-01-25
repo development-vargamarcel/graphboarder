@@ -84,7 +84,7 @@
 	};
 
 	const QMSWraperContext = getContext<any>(`${prefix}QMSWraperContext`);
-	const { activeArgumentsDataGrouped_Store, finalGqlArgObj_Store } = QMSWraperContext;
+	const { activeArgumentsDataGrouped_Store, finalGqlArgObj_Store } = QMSWraperContext || {};
 
 	let idColNameOfSelectedRow: string | undefined;
 
@@ -187,7 +187,7 @@
 			inUse_set(false);
 		}
 		onChanged?.(detail);
-		Logger.debug('activeArgumentsDataGrouped_Store', $activeArgumentsDataGrouped_Store);
+		// Logger.debug('activeArgumentsDataGrouped_Store', activeArgumentsDataGrouped_Store);
 		updateActiveArgument();
 		//finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 	};

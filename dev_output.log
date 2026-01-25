@@ -14,3 +14,318 @@ Forced re-optimization of dependencies
 
   ➜  Local:   http://localhost:5173/
   ➜  Network: use --host to expose
+7:48:30 PM [vite-plugin-svelte] src/lib/components/MainWraper.svelte:40:48 This reference only captures the initial value of `endpointInfoProvided`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/MainWraper.svelte:93:37 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/MainWraper.svelte:99:57 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/EndpointsList.svelte:37:51 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/EndpointsList.svelte:40:17 This reference only captures the initial value of `QMSName`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/QMSWraper.svelte:147:18 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/SetEndpointConfigurationToContext.svelte:16:51 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/SetEndpointConfigurationToContext.svelte:24:52 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/Sidebar.svelte:25:51 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/IntrospectionDataGenerator.svelte:22:67 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/AddColumn.svelte:34:15 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/AddColumn.svelte:35:90 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/AddColumn.svelte:37:15 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/AddColumn.svelte:38:94 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/AddColumn.svelte:40:15 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/AddColumn.svelte:41:106 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/AddColumn.svelte:43:48 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/AddColumn.svelte:45:15 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/AddColumn.svelte:46:84 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/GraphqlCodeDisplay.svelte:33:30 This reference only captures the initial value of `value`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/GraphqlCodeDisplay.svelte:44:49 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/GraphqlCodeDisplay.svelte:45:54 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/ActiveArguments.svelte:27:34 This reference only captures the initial value of `stepsOfFieldsThisAppliesTo`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/ActiveArguments.svelte:27:62 This reference only captures the initial value of `isControlPanelChild`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/ActiveArguments.svelte:28:15 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/ActiveArguments.svelte:29:57 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/ActiveArguments.svelte:32:52 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:30 PM [vite-plugin-svelte] src/lib/components/ActiveArguments.svelte:52:68 This reference only captures the initial value of `QMSarguments`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:31 PM [vite-plugin-svelte] src/lib/components/UI/rowCount.svelte:13:35 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:31 PM [vite-plugin-svelte] src/lib/components/UI/rowCount.svelte:51:1 This reference only captures the initial value of `QMS_bodyPart_StoreDerived`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:31 PM [vite-plugin-svelte] src/lib/components/QMSWraperCtxDataCurrentComputations.svelte:18:67 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:31 PM [vite-plugin-svelte] src/lib/components/TabContainer.svelte:53:67 This reference only captures the initial value of `endpointInfo`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:31 PM [vite-plugin-svelte] src/lib/components/TabContainer.svelte:62:72 This reference only captures the initial value of `endpointInfo`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:31 PM [vite-plugin-svelte] src/lib/components/TabContainer.svelte:159:1 Unused CSS selector ".shadowTop"
+https://svelte.dev/e/css_unused_selector
+7:48:31 PM [vite-plugin-svelte] src/lib/components/TanTable.svelte:41:57 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:31 PM [vite-plugin-svelte] src/lib/components/TanTable.svelte:42:52 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:31 PM [vite-plugin-svelte] src/lib/components/TanTable.svelte:97:11 This reference only captures the initial value of `columns`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:31 PM [vite-plugin-svelte] src/lib/components/TanTable.svelte:99:27 This reference only captures the initial value of `enableMultiRowSelectionState`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:31 PM [vite-plugin-svelte] src/lib/components/TanTable.svelte:100:22 This reference only captures the initial value of `enableRowSelectionState`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:31 PM [vite-plugin-svelte] src/lib/components/TanTable.svelte:104:11 This reference only captures the initial value of `columnVisibility`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:31 PM [vite-plugin-svelte] src/lib/components/TypeInfoDisplay.svelte:57:54 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:31 PM [vite-plugin-svelte] src/lib/components/TypeInfoDisplay.svelte:58:57 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:31 PM [vite-plugin-svelte] src/lib/components/TypeInfoDisplay.svelte:61:71 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:31 PM [vite-plugin-svelte] src/lib/components/TypeInfoDisplay.svelte:62:75 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:31 PM [vite-plugin-svelte] src/lib/components/TypeInfoDisplay.svelte:65:2 This reference only captures the initial value of `stepsOfFields`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:31 PM [vite-plugin-svelte] src/lib/components/TypeInfoDisplay.svelte:118:69 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:31 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupWraper.svelte:40:54 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:31 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupWraper.svelte:43:42 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:31 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupWraper.svelte:55:49 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/ColumnInfo.svelte:3:29 This reference only captures the initial value of `stepsOfFields`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/GroupDescriptionAndControls.svelte:13:50 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/GroupDescriptionAndControls.svelte:14:57 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/GroupDescriptionAndControls.svelte:15:58 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte:30:67 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte:33:43 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte:37:42 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte:38:37 This reference only captures the initial value of `node`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte:39:16 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte:53:60 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte:69:60 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:76:67 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:108:15 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:111:43 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:115:42 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:117:16 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:132:42 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:149:5 This reference only captures the initial value of `QMSType`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:164:51 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:215:23 This reference only captures the initial value of `QMS_info`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:220:48 This reference only captures the initial value of `addDefaultFields`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:223:3 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:225:3 This reference only captures the initial value of `activeArgumentsDataGrouped_Store`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:32 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:263:49 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ActiveArgument.svelte:86:45 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ActiveArgument.svelte:154:42 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ActiveArgument.svelte:171:54 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ActiveArgument.svelte:235:44 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ActiveArgument.svelte:236:34 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ActiveArgument.svelte:239:54 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ActiveArgument.svelte:253:55 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/SelectModal.svelte:90:67 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/SelectModal.svelte:92:43 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/SelectModal.svelte:96:42 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/SelectModal.svelte:98:16 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/SelectModal.svelte:112:42 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/SelectModal.svelte:120:5 This reference only captures the initial value of `QMSType`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/SelectModal.svelte:124:57 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/SelectModal.svelte:168:29 This reference only captures the initial value of `parentNode`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/SelectModal.svelte:216:48 This reference only captures the initial value of `addDefaultFields`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/SelectModal.svelte:219:3 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/SelectModal.svelte:220:3 This reference only captures the initial value of `group`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/SelectModal.svelte:221:3 This reference only captures the initial value of `activeArgumentsDataGrouped_Store`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/SelectModal.svelte:229:55 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/SelectModal.svelte:297:6 This reference only captures the initial value of `activeArgumentsDataGrouped_Store`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/SelectModal.svelte:310:49 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/AddNodeToControlPanel.svelte:10:44 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/AddNodeToControlPanel.svelte:11:61 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/AddNodeToControlPanel.svelte:14:10 This reference only captures the initial value of `node`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ManyToAllSelectInterfaceDefinition.svelte:46:67 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ManyToAllSelectInterfaceDefinition.svelte:49:2 This reference only captures the initial value of `node`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ManyToAllSelectInterfaceDefinition.svelte:53:2 This reference only captures the initial value of `node`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/SelectedRowsDisplay.svelte:11:55 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte:45:67 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte:47:43 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte:51:42 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte:52:37 This reference only captures the initial value of `node`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte:53:16 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte:68:60 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte:77:52 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte:78:57 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte:80:40 This reference only captures the initial value of `node`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ExplorerTable.svelte:68:2 This reference only captures the initial value of `columns`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ExplorerTable.svelte:70:2 This reference only captures the initial value of `columnVisibility`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ExplorerTable.svelte:71:2 This reference only captures the initial value of `enableMultiRowSelectionState`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ExplorerTable.svelte:72:2 This reference only captures the initial value of `enableRowSelectionState`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:33 PM [vite-plugin-svelte] src/lib/components/ExplorerTable.svelte:75:2 This reference only captures the initial value of `idColName`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+/*! 🌼 daisyUI 5.5.14 */
+7:48:34 PM [vite-plugin-svelte] src/lib/components/Description.svelte:22:57 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:34 PM [vite-plugin-svelte] src/lib/components/Description.svelte:24:40 This reference only captures the initial value of `QMSInfo`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:34 PM [vite-plugin-svelte] src/lib/components/Description.svelte:25:35 This reference only captures the initial value of `QMSInfo`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:34 PM [vite] Pre-transform error: /app/src/lib/components/SelectItem.svelte:30:37 Identifier 'QMSWraperContext' has already been declared
+https://svelte.dev/e/js_parse_error
+7:48:34 PM [vite-plugin-svelte] src/lib/components/SelectQMS.svelte:14:55 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:34 PM [vite-plugin-svelte] src/lib/components/ManyToAllSelectInterfaceDefinitionItem.svelte:41:55 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:34 PM [vite-plugin-svelte] src/lib/components/ManyToAllSelectInterfaceDefinitionItem.svelte:46:34 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:34 PM [vite-plugin-svelte] src/lib/components/ManyToAllSelectInterfaceDefinitionItem.svelte:51:67 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:34 PM [vite-plugin-svelte] src/lib/components/fields/Interface.svelte:32:57 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:34 PM [vite-plugin-svelte] src/lib/components/fields/ENUMInterface.svelte:4:8 `containerEl` is updated, but is not declared with `$state(...)`. Changing its value will not correctly trigger updates
+https://svelte.dev/e/non_reactive_update
+7:48:34 PM [vite-plugin-svelte] src/lib/components/fields/InterfacePicker.svelte:16:57 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:34 PM [vite] Internal server error: /app/src/lib/components/SelectItem.svelte:30:37 Identifier 'QMSWraperContext' has already been declared
+https://svelte.dev/e/js_parse_error
+  Plugin: vite-plugin-svelte
+  File: /app/src/lib/components/SelectItem.svelte:30:37
+   28 |    }: Props = $props();
+   29 |
+   30 |    import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
+                                               ^
+   31 |    let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+   32 |    const endpointInfo = mainWraperCtx?.endpointInfo;
+7:48:44 PM [vite-plugin-svelte] src/routes/endpoints/[endpointid]/queries/[queryName]/ComponentForLayout.svelte:39:57 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:44 PM [vite-plugin-svelte] src/routes/endpoints/[endpointid]/queries/[queryName]/ComponentForLayout.svelte:42:17 This reference only captures the initial value of `QMSName`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:44 PM [vite-plugin-svelte] src/routes/endpoints/[endpointid]/queries/[queryName]/ComponentForLayout.svelte:43:54 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:44 PM [vite-plugin-svelte] src/lib/components/ControlPanel.svelte:29:57 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:44 PM [vite-plugin-svelte] src/lib/components/ControlPanel.svelte:34:15 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:44 PM [vite-plugin-svelte] src/lib/components/ControlPanelItem.svelte:14:67 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:44 PM [vite-plugin-svelte] src/lib/components/ControlPanelItem.svelte:16:63 This reference only captures the initial value of `CPItem`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:44 PM [vite-plugin-svelte] src/lib/components/ControlPanelItem.svelte:19:25 This reference only captures the initial value of `CPItem`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:44 PM [vite-plugin-svelte] src/lib/components/ControlPanelItem.svelte:20:15 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:48:44 PM [vite] Internal server error: /app/src/lib/components/SelectItem.svelte:30:37 Identifier 'QMSWraperContext' has already been declared
+https://svelte.dev/e/js_parse_error
+  Plugin: vite-plugin-svelte
+  File: /app/src/lib/components/SelectItem.svelte:30:37
+   28 |    }: Props = $props();
+   29 |
+   30 |    import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
+                                               ^
+   31 |    let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+   32 |    const endpointInfo = mainWraperCtx?.endpointInfo;
+7:49:45 PM [vite-plugin-svelte] src/lib/components/SelectItem.svelte:31:57 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:49:45 PM [vite-plugin-svelte] src/lib/components/SelectItem.svelte:34:71 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:49:45 PM [vite-plugin-svelte] src/lib/components/SelectItem.svelte:36:31 This reference only captures the initial value of `node`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+7:53:05 PM [vite] page reload .svelte-kit/generated/client/nodes/0.js
+7:53:05 PM [vite] page reload .svelte-kit/generated/client/nodes/1.js
+7:53:05 PM [vite] page reload .svelte-kit/generated/client/nodes/2.js
+7:53:05 PM [vite] page reload .svelte-kit/generated/client/nodes/3.js
+7:53:05 PM [vite] page reload .svelte-kit/generated/client/nodes/4.js
+7:53:05 PM [vite] page reload .svelte-kit/generated/client/nodes/5.js
+7:53:05 PM [vite] page reload .svelte-kit/generated/client/nodes/11.js
+7:53:05 PM [vite] page reload .svelte-kit/generated/client/nodes/12.js
+7:53:05 PM [vite] page reload .svelte-kit/generated/client/nodes/18.js
+7:53:05 PM [vite] page reload .svelte-kit/generated/client/nodes/23.js
+7:53:05 PM [vite] page reload .svelte-kit/generated/client/app.js
+7:53:05 PM [vite] page reload .svelte-kit/generated/client/matchers.js
+7:53:05 PM [vite] page reload .svelte-kit/generated/server/internal.js
+7:53:05 PM [vite] page reload .svelte-kit/generated/root.js
+7:56:28 PM [vite] hmr update /src/lib/components/ActiveArgumentsGroupNormal.svelte, /src/app.postcss
+7:56:34 PM [vite] page reload check_output.txt

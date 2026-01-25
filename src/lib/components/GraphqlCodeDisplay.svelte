@@ -9,6 +9,8 @@
 	import { Logger } from '$lib/utils/logger';
 	import { getPreciseType, objectToSourceCode } from '$lib/utils/usefulFunctions';
 	import { updateStoresFromAST } from '$lib/utils/astToUIState';
+	import { generateCurlCommand } from '$lib/utils/curlUtils';
+	import { get } from 'svelte/store';
 	import { parse, print, visit } from 'graphql';
 	import JSON5 from 'json5';
 	import CodeMirrorCustom from './fields/CodeMirrorCustom.svelte';
@@ -37,6 +39,8 @@
 	let currentQMS_info;
 
 	try {
+		// Suppress duplicate identifier if getContext was already imported and used previously in this scope (which it was, up top)
+		// But here we are assigning to vars.
 		qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
 		mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	} catch (e) {
@@ -53,6 +57,7 @@
 	let ast = $state();
 	let astPrinted = $state();
 	let isCopied = $state(false);
+	let isCurlCopied = $state(false);
 
 	///
 	const visitAst = () => {
@@ -156,21 +161,42 @@
 </script>
 
 <div class="mockup-code bg-base text-content my-1 mx-2 px-2 relative group">
-	<button
-		class="btn btn-xs btn-ghost absolute top-3 right-40 transition-opacity"
-		aria-label="Copy to Clipboard"
-		onclick={() => {
-			navigator.clipboard.writeText(value);
-			isCopied = true;
-			setTimeout(() => (isCopied = false), 2000);
-		}}
-	>
-		{#if isCopied}
-			<i class="bi bi-check"></i> Copied!
-		{:else}
-			<i class="bi bi-clipboard"></i> Copy
-		{/if}
-	</button>
+	<div class="absolute top-3 right-40 flex space-x-2">
+		<button
+			class="btn btn-xs btn-ghost transition-opacity"
+			aria-label="Copy to Clipboard"
+			onclick={() => {
+				navigator.clipboard.writeText(value);
+				isCopied = true;
+				setTimeout(() => (isCopied = false), 2000);
+			}}
+		>
+			{#if isCopied}
+				<i class="bi bi-check"></i> Copied!
+			{:else}
+				<i class="bi bi-clipboard"></i> Copy
+			{/if}
+		</button>
+		<button
+			class="btn btn-xs btn-ghost transition-opacity"
+			aria-label="Copy as cURL"
+			onclick={() => {
+				if (mainWraperCtx?.endpointInfo) {
+					const info = get(mainWraperCtx.endpointInfo);
+					const curl = generateCurlCommand(info.url, value, {}, info.headers || {});
+					navigator.clipboard.writeText(curl);
+					isCurlCopied = true;
+					setTimeout(() => (isCurlCopied = false), 2000);
+				}
+			}}
+		>
+			{#if isCurlCopied}
+				<i class="bi bi-check"></i> cURL Copied!
+			{:else}
+				<i class="bi bi-terminal"></i> Copy as cURL
+			{/if}
+		</button>
+	</div>
 	<div class="max-h-[50vh] overflow-y-auto">
 		{#if showNonPrettifiedQMSBody}
 			<code class="px-10">{value}</code>

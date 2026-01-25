@@ -70,7 +70,8 @@
 			enableHiding: true
 		}
 	];
-	const OutermostQMSWraperContext = getContext<any>(`${prefix}OutermostQMSWraperContext`);
+	import type { QMSWraperContext } from '$lib/types/index';
+	//const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
 	let getManyData = $state<any>();
 	let selectedQMS = $state<any>();
