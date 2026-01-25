@@ -2,6 +2,7 @@
 	import { getContext, setContext } from 'svelte';
 	import Arg from '$lib/components/Arg.svelte';
 	import { getQMSWraperCtxDataGivenControlPanelItem } from '$lib/utils/usefulFunctions';
+    import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 
 	interface Props {
 		group: any;
@@ -10,6 +11,7 @@
 		activeArgumentsDataGrouped: any;
 		prefix?: string;
 		node: any;
+        onUpdateQuery?: () => void;
 	}
 
 	let {
@@ -18,7 +20,8 @@
 		update_activeArgumentsDataGrouped,
 		activeArgumentsDataGrouped,
 		prefix = '',
-		node
+		node,
+        onUpdateQuery
 	}: Props = $props();
 
 	let showDescription = $state();
@@ -26,42 +29,46 @@
 	let dragDisabled = true;
 	const hasGroup_argsNode = group.group_argsNode;
 	/////start
-	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
-	let pathIsInCP = false;
-	const nodeContext = getContext(`${prefix}nodeContext`);
-	if (nodeContext) {
-		pathIsInCP = nodeContext?.pathIsInCP;
-	}
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+
+    // Context logic - using derived to avoid stale values if context was dynamic (though context is usually stable)
+    const nodeContext = getContext<any>(`${prefix}nodeContext`);
+    let pathIsInCP = $derived(nodeContext?.pathIsInCP || false);
+
 	let nodeIsInCP = false;
-	const CPItemContext = getContext(`${prefix}CPItemContext`);
+	const CPItemContext = getContext<any>(`${prefix}CPItemContext`);
 	if (CPItemContext?.CPItem.nodeId == node.id) {
 		setContext(`${prefix}nodeContext`, { pathIsInCP: true });
 		nodeIsInCP = true;
 	}
 	const isCPChild = CPItemContext ? true : false;
-	const visibleInCP = pathIsInCP || nodeIsInCP;
-	const visible = visibleInCP || !CPItemContext || node.isMain;
-	let correctQMSWraperContext;
+	let visibleInCP = $derived(pathIsInCP || nodeIsInCP);
+	let visible = $derived(visibleInCP || !CPItemContext || node.isMain);
+
+	let correctQMSWraperContext: QMSWraperContext;
 	if (isCPChild) {
 		correctQMSWraperContext = getQMSWraperCtxDataGivenControlPanelItem(
 			CPItemContext?.CPItem,
 			OutermostQMSWraperContext
 		);
 	} else {
-		correctQMSWraperContext = getContext(`${prefix}QMSWraperContext`);
+		correctQMSWraperContext = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
 	}
-	const { finalGqlArgObj_Store, QMS_info, activeArgumentsDataGrouped_Store } =
-		correctQMSWraperContext;
-	/////end
-	let rootArgs = argsInfo.filter((arg) => {
-		return arg.dd_isRootArg;
-	});
 
-	let groupArgsPossibilities = group.group_isRoot
+    let activeArgumentsDataGrouped_Store = $derived(correctQMSWraperContext?.activeArgumentsDataGrouped_Store);
+
+	/////end
+	let rootArgs = $derived(argsInfo.filter((arg: any) => {
+		return arg.dd_isRootArg;
+	}));
+
+	let groupArgsPossibilities = $derived(group.group_isRoot
 		? rootArgs
-		: group.dd_relatedRoot.inputFields || group.inputFields || group.args;
-	let predefinedFirstSteps = group.group_isRoot ? [] : [group.group_name];
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+		: group.dd_relatedRoot.inputFields || group.inputFields || group.args);
+
+    let predefinedFirstSteps = $derived(group.group_isRoot ? [] : [group.group_name]);
+
+    let QMSMainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 </script>
 
@@ -109,12 +116,14 @@
 								{predefinedFirstSteps}
 								groupName={group.group_name}
 								onArgAddRequest={(newArgData) => {
-									activeArgumentsDataGrouped_Store.add_activeArgument(
-										newArgData,
-										group.group_name,
-										undefined,
-										endpointInfo
-									);
+                                    if ($activeArgumentsDataGrouped_Store) {
+                                        activeArgumentsDataGrouped_Store.add_activeArgument(
+                                            newArgData,
+                                            group.group_name,
+                                            undefined,
+                                            endpointInfo
+                                        );
+                                    }
 								}}
 							/>
 						{/each}
@@ -133,6 +142,7 @@
 		{/if}
 		{#if group.group_name !== 'root'}
 			<!-- svelte-ignore a11y_click_events_have_key_events -->
+            <!-- svelte-ignore a11y_no_static_element_interactions -->
 			<i
 				class="bi bi-info-circle text-secondary px-2"
 				title={group.description}

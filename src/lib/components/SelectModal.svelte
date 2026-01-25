@@ -28,6 +28,7 @@
 	import { Logger } from '$lib/utils/logger';
 	import { createQMSSearchInstance, discoverMatchingQMS, getReturningFields } from '$lib/utils/searchUtils';
 	import { getRowSelectionState, processSelectedRowsColValues, getRequiredColumnNames } from '$lib/utils/rowSelectionUtils';
+    import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 
 	interface Props {
 		nodes: any;
@@ -43,6 +44,8 @@
 		showSelectModal: any;
 		onChanged?: () => void;
 		onChildrenStartDrag?: (e?: any) => void;
+        onUpdateQuery?: () => void;
+        onDeleteSubNode?: (detail: { id: string }) => void;
 	}
 
 	let {
@@ -57,7 +60,10 @@
 		prefix = '',
 		addDefaultFields,
 		showSelectModal = $bindable(),
-		onChanged
+		onChanged,
+        onUpdateQuery,
+        onChildrenStartDrag,
+        onDeleteSubNode
 	}: Props = $props();
 
 	// State declarations
@@ -81,12 +87,11 @@
 	Logger.debug({ node });
 
 	// Context setup - must be after props declaration
-	const OutermostQMSWraperContext = getContext<any>(`${prefix}OutermostQMSWraperContext`);
-	let pathIsInCP = false;
-	const nodeContext = getContext<any>(`${prefix}nodeContext`);
-	if (nodeContext) {
-		pathIsInCP = nodeContext?.pathIsInCP;
-	}
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+
+    const nodeContext = getContext<any>(`${prefix}nodeContext`);
+    let pathIsInCP = $derived(nodeContext?.pathIsInCP || false);
+
 	let nodeIsInCP = false;
 	const CPItemContext = getContext<any>(`${prefix}CPItemContext`);
 	if (CPItemContext?.CPItem?.nodeId == node?.id) {
@@ -94,20 +99,21 @@
 		nodeIsInCP = true;
 	}
 	const isCPChild = CPItemContext ? true : false;
-	const visibleInCP = pathIsInCP || nodeIsInCP;
-	const visible = visibleInCP || !CPItemContext || node?.isMain;
-	let correctQMSWraperContext: any = '';
+	let visibleInCP = $derived(pathIsInCP || nodeIsInCP);
+	let visible = $derived(visibleInCP || !CPItemContext || node?.isMain);
+
+    let correctQMSWraperContext: any = '';
 	if (isCPChild) {
 		correctQMSWraperContext = getQMSWraperCtxDataGivenControlPanelItem(
 			CPItemContext?.CPItem,
 			OutermostQMSWraperContext
 		);
 	} else {
-		correctQMSWraperContext = getContext<any>(`${prefix}QMSWraperContext`);
+		correctQMSWraperContext = getContext(`${prefix}QMSWraperContext`);
 	}
 
 	const { finalGqlArgObj_Store, QMS_info, activeArgumentsDataGrouped_Store, QMSType } =
-		correctQMSWraperContext || {};
+		$derived(correctQMSWraperContext || {});
 
 	const dndIsOn = getContext<any>('dndIsOn');
 	const mutationVersion = getContext<any>('mutationVersion');
@@ -115,7 +121,7 @@
 		$mutationVersion = true;
 	}
 
-	let QMSMainWraperContext = getContext<any>(`${prefix}QMSMainWraperContext`);
+	let QMSMainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
 
@@ -204,7 +210,7 @@
 		finalGqlArgObj_Store?.regenerate_groupsAndfinalGqlArgObj();
 	};
 
-	let argsInfo = QMS_info?.args;
+	let argsInfo = $derived(QMS_info?.args);
 	let showModal = false;
 
 	if (node?.addDefaultFields || (node?.isMain && addDefaultFields)) {

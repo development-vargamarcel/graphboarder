@@ -3,6 +3,8 @@
 	import FilterItem from '$lib/components/FilterItem.svelte';
 	import { getRootType } from '$lib/utils/usefulFunctions';
 	import { Logger } from '$lib/utils/logger';
+    import type { QMSMainWraperContext } from '$lib/types/index';
+
 	interface Props {
 		prefix?: string;
 		chosen: any;
@@ -11,10 +13,10 @@
 	}
 
 	let { prefix = '', chosen, typeInfo, onInterfaceChosen }: Props = $props();
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	let QMSMainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	let possible_displayInterfaces = $derived($endpointInfo.typesExtraDataPossibilities.map(
-		(possibility) => {
+		(possibility: any) => {
 			return possibility.get_Val()?.displayInterface;
 		}
 	));
@@ -25,7 +27,7 @@
 <div class="w-full"></div>
 <FilterItem
 	title="pick an interface"
-	choises={possible_displayInterfaces.filter((displayInterface) => {
+	choises={possible_displayInterfaces.filter((displayInterface: any) => {
 		return displayInterface;
 	})}
 	{chosen}
@@ -34,5 +36,5 @@
 		Logger.debug(detail);
 	}}
 >
-	{rootType.dd_displayName}
+	{rootType?.dd_displayName}
 </FilterItem>

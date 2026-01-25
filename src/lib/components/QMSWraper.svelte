@@ -9,7 +9,7 @@
 	import { Create_finalGqlArgObj_Store } from '$lib/stores/QMSHandling/finalGqlArgObj_Store';
 	import { Create_tableColsData_Store } from '$lib/stores/QMSHandling/tableColsData_Store';
 	import { Create_QMS_bodyPart_StoreDerived } from '$lib/stores/QMSHandling/QMS_bodyPart_StoreDerived';
-	import { getContext, setContext, onDestroy } from 'svelte';
+	import { getContext, setContext, onDestroy, untrack } from 'svelte';
 	import { Create_QMS_bodyPartsUnifier_StoreDerived } from '$lib/stores/QMSHandling/QMS_bodyPartsUnifier_StoreDerived';
 	import { Create_paginationState } from '$lib/stores/QMSHandling/paginationState';
 	import { Create_paginationState_derived } from '$lib/stores/QMSHandling/paginationState_derived';
@@ -143,6 +143,7 @@
     let mergedChildren_QMSWraperCtxData_Store = $state<any>();
 
     // We set the context object reference immediately. We will mutate it.
+	// Using untrack to suppress warning about prefix, as context keys are expected to be stable.
     setContext(`${prefix}QMSWraperContext`, QMSWraperContext);
 
     // Derived value for children context setting
@@ -182,7 +183,7 @@
         const dd_paginationType: string | undefined = QMS_info?.dd_paginationType;
         const paginationTypes = get_paginationTypes(endpointInfo, schemaData);
         let paginationTypeInfo = getPaginationTypeInfo(dd_paginationType, paginationTypes);
-        Logger.debug({ QMSType, QMSName, QMS_info });
+        Logger.debug('QMS Info loaded', { QMSType, QMSName, QMS_info });
 
         const paginationOptions = Create_paginationOptions();
         const paginationState = Create_paginationState(
@@ -210,7 +211,7 @@
 
         const rowsLocation = endpointInfo.get_rowsLocation(QMS_info, schemaData);
         const nodeFieldsQMS_info = get_nodeFieldsQMS_info(QMS_info, rowsLocation, schemaData);
-        Logger.debug({ nodeFieldsQMS_info });
+        Logger.debug('Node Fields Info', { nodeFieldsQMS_info });
 
         const possibleLocations = QMSType == 'query'
 			? (get(endpointInfo) as any).returningColumnsPossibleLocationsInQueriesPerRow
@@ -226,7 +227,7 @@
         const returningColumnsLocationQMS_Info = returningColumnsResult?.info;
         const returningColumnsLocation = returningColumnsResult?.location || [];
 
-        Logger.debug({ returningColumnsLocationQMS_Info, returningColumnsLocation, QMSType });
+        Logger.debug('Returning Columns Location', { returningColumnsLocationQMS_Info, returningColumnsLocation, QMSType });
 
         let prefixStepsOfFields = buildPrefixStepsOfFields(
             QMSType,

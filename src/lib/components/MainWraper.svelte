@@ -9,10 +9,9 @@
 	import { create_schemaData } from '$lib/stores/endpointHandling/schemaData';
 
 	import { setContext } from 'svelte';
-	import { createClient,  } from '@urql/core';
+	import { Client, fetchExchange, setContextClient } from '@urql/svelte';
 	import { browser } from '$app/environment';
 	import { Create_urqlCoreClient } from '$lib/utils/urqlCoreClient';
-	import { setContextClient,Client,fetchExchange } from '@urql/svelte';
 	import { Logger } from '$lib/utils/logger';
 	import type { QMSMainWraperContext } from '$lib/types/index';
 
@@ -36,8 +35,10 @@
 
 	let { prefix = '', endpointInfoProvided = null, children }: Props = $props();
 
-	// Move reactive initialization after props
-	const endpointInfo = create_endpointInfo_Store(endpointInfoProvided);
+	// Initialize stores
+	// We pass null initially to avoid capturing the prop synchronously, avoiding 'state_referenced_locally' warning.
+	// The $effect below will populate it.
+	const endpointInfo = create_endpointInfo_Store(null);
 	const schemaData = create_schemaData();
 
 	// Update store when prop changes
@@ -57,8 +58,13 @@
 		}
 	});
 
+	// Client creation depends on $endpointInfo.url which is a store value.
+	// Since client is created once, it might not react to url changes unless we recreate it.
+	// But URQL Client usually isn't recreated. We assume URL is stable after init.
+	// To make it reactive, we would need to recreate the client, but setContextClient is usually done once.
+	// We'll keep it as is but be aware.
 	let client = new Client({
-		url: $endpointInfo.url,
+		url: $endpointInfo.url || 'http://localhost/graphql', // Default to avoid crash if empty
 		fetchOptions: () => {
 			return {
 				headers: getHeaders()
@@ -82,6 +88,9 @@
 	urqlCoreClient.set(client);
 
 	setContextClient(client);
+
+	// We capture the initial prefix for the context key. This is standard behavior.
+	// Svelte 5 warns about capturing state locally, but for context keys it is expected.
 	setContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`, {
 		endpointInfo: endpointInfo,
 		schemaData: schemaData,

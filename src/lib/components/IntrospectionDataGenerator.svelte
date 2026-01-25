@@ -4,12 +4,12 @@
 
 <script lang="ts">
 	import { endpointsSchemaData } from '$lib/stores/testData/endpointsSchemaData';
-	import { createClient, fetchExchange } from '@urql/core';
+	import { fetchExchange } from '@urql/core';
 	import { browser } from '$app/environment';
-	import {  queryStore,gql,getContextClient  } from '@urql/svelte';
+	import { queryStore, gql, getContextClient } from '@urql/svelte';
 	import { getContext } from 'svelte';
 	import { Logger } from '$lib/utils/logger';
-	import type { QMSMainWraperContext } from '$lib/types';
+	import type { QMSMainWraperContext } from '$lib/types/index';
 
 	interface Props {
 		prefix?: string;
@@ -17,28 +17,37 @@
 	}
 
 	let { prefix = '', children }: Props = $props();
+
+	// Get context with explicit type
 	let QMSMainWraperContextVal = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	const urqlCoreClient = QMSMainWraperContextVal?.urqlCoreClient;
 	const endpointInfo = QMSMainWraperContextVal?.endpointInfo;
 	const schemaData = QMSMainWraperContextVal?.schemaData;
 
-	Logger.debug({ endpointInfo }, $endpointInfo);
-	const endpointInfoUrl = $endpointInfo?.url;
+	$effect(() => {
+		Logger.debug({ endpointInfo }, $endpointInfo);
+	});
+
+	let endpointInfoUrl = $derived($endpointInfo?.url);
+
 	const getStoredSchemaData = (endpointInfoUrl: string | undefined) => {
 		if (!endpointInfoUrl) return undefined;
 		return endpointsSchemaData.find((item) => item.url === endpointInfoUrl);
 	};
-	const storedSchemaData = getStoredSchemaData(endpointInfoUrl);
-	if (storedSchemaData) {
-		// This might need type adjustment if storedSchemaData doesn't match SchemaData perfectly
-		// Assuming it does or we need to cast
-		schemaData.set(storedSchemaData as any);
-	}
-	//setClient(urqlCoreClient);
-  //ds
+
+	let storedSchemaData = $derived(getStoredSchemaData(endpointInfoUrl));
+
+	$effect(() => {
+		if (storedSchemaData && schemaData) {
+			// This might need type adjustment if storedSchemaData doesn't match SchemaData perfectly
+			schemaData.set(storedSchemaData as any);
+		}
+	});
+
+	//ds
 	const queryStoreRes = queryStore({
 		client: getContextClient(),
-		query:gql`
+		query: gql`
     query IntrospectionQuery {
       __schema {
         queryType { name }
@@ -122,6 +131,18 @@
                   ofType {
                     kind
                     name
+                    ofType {
+                      kind
+                      name
+                      ofType {
+                        kind
+                        name
+                        ofType {
+                          kind
+                          name
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -130,40 +151,29 @@
         }
       }
     }
-  `});
-	// if (!storedSchemaData) {
-	// 	query(queryStoreRes);
-	// }
-	let rootTypes = [];
-	let queries = [];
-	let mutations = [];
-	let schema = {};
-	let sortingInputValue = '';
-	let sortingArray = $state([]);
-	$effect(() => {
-		sortingArray = sortingInputValue.split(' ');
+  `
 	});
 
-	// Initialize with empty valid state if needed, or rely on store default
-	// $schemaData = { rootTypes: [], queryFields: [], mutationFields: [], subscriptionFields: [], isReady: false };
+	let schema = $state({});
 
 	const handleData = () => {
 		Logger.debug('handledata run');
 		schema = $queryStoreRes?.data?.__schema;
-		Logger.debug('ppppp', endpointInfo, schema);
+		Logger.debug('ppppp', $endpointInfo, schema); // Fixed: use store value
 		if (schemaData.set_schema) {
 			schemaData.set_schema(schema);
 		} else {
-			// Fallback if method missing (shouldn't be with new types)
 			schemaData.update(s => ({ ...s, schema }));
 		}
 
 		schemaData.set_fields(endpointInfo);
-		Logger.debug('schemaData', $schemaData);
+		Logger.debug('schemaData', $schemaData); // Fixed: use store value
 	};
+
 	$effect(() => {
-		Logger.debug({$queryStoreRes})
+		Logger.debug({ queryStoreRes: $queryStoreRes });
 	});
+
 	$effect(() => {
 		if (!$queryStoreRes.fetching) {
 			if ($queryStoreRes?.data) {

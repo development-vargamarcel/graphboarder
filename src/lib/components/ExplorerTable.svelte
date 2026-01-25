@@ -11,13 +11,13 @@
 
 	let loadMore = false;
 
-	const setRowSelection = (updater) => {
+	const setRowSelection = (updater: any) => {
 		if (updater instanceof Function) {
 			rowSelectionState = updater(rowSelectionState);
 		} else {
 			rowSelectionState = updater;
 		}
-		options.update((old) => ({
+		options.update((old: any) => ({
 			...old,
 			state: {
 				...old.state,
@@ -35,8 +35,8 @@
 		enableRowSelectionState?: boolean;
 		infiniteHandler?: any;
 		infiniteId?: any;
-		data?: any;
-		columns?: any;
+		data?: any[];
+		columns?: any[];
 		rowSelectionState?: any;
 		idColName?: any;
 		requiredColNames?: any;
@@ -61,13 +61,13 @@
 		onRowClicked
 	}: Props = $props();
 
-	let columnVisibility = getColumnVisibility(columns);
+	let columnVisibility = $derived(getColumnVisibility(columns));
 
 	const optionsObj = createTableOptions(
 		data,
 		columns,
 		rowSelectionState,
-		columnVisibility,
+		columnVisibility, // This might need to be reactive in createTableOptions logic or options update
 		enableMultiRowSelectionState,
 		enableRowSelectionState,
 		getCoreRowModel,
@@ -78,13 +78,14 @@
 	const options = writable(optionsObj);
 
 	const rerender = () => {
-		options.update((options) => ({
+		options.update((options: any) => ({
 			...options,
 			data: data
 		}));
 	};
 	const table = createSvelteTable(options);
-	$effect(() => {
+
+    $effect(() => {
 		if (data) {
 			Logger.debug({ data }, 'data changed');
 			rerender();
@@ -157,7 +158,10 @@
 											<button
 												class="w-full pr-2 hover:text-primary cursor-pointer text-left bg-transparent border-0 p-0"
 												onclick={() => {
-													onHideColumn?.({ column: header.column.columnDef.header });
+                                                    const headerVal = header.column.columnDef.header;
+                                                    if (typeof headerVal === 'string') {
+													    onHideColumn?.({ column: headerVal });
+                                                    }
 												}}
 											>
 												hide field
@@ -214,7 +218,7 @@
 							</th>
 						{/if}
 
-						<td>{parseInt(row.index) + 1}</td>
+						<td>{parseInt(row.index as any) + 1}</td>
 
 						{#each row.getVisibleCells() as cell}
 							<td class="break-no">

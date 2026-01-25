@@ -17,6 +17,7 @@
 	import { Create_activeArgumentsDataGrouped_Store } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
 	import QMSWraper from '$lib/components/QMSWraper.svelte';
 	import { get, type Writable } from 'svelte/store';
+    import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 
 	interface Props {
 		canExpand: any;
@@ -40,15 +41,21 @@
 		prefix = ''
 	}: Props = $props();
 
-	let { dd_kindsArray, dd_namesArray, dd_displayName, dd_rootName, args } = type;
-	let isSubset = (parentArray, subsetArray) => {
-		return subsetArray.every((el, index) => {
+    // Use derived to react to type changes
+	let dd_kindsArray = $derived(type.dd_kindsArray);
+    let dd_namesArray = $derived(type.dd_namesArray);
+    let dd_displayName = $derived(type.dd_displayName);
+    let dd_rootName = $derived(type.dd_rootName);
+    let args = $derived(type.args);
+
+	let isSubset = (parentArray: any, subsetArray: any) => {
+		return subsetArray.every((el: any, index: any) => {
 			return parentArray[index] === el;
 		});
 	};
 
-	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	const QMSWraperContext = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+	let QMSMainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	const schemaData = QMSMainWraperContext?.schemaData;
 	const tableColsData_Store = QMSWraperContext?.tableColsData_Store;
 	const stepsOfFieldsOBJ = getContext<Writable<Record<string, any>>>(`${prefix}stepsOfFieldsOBJ`);
@@ -96,12 +103,12 @@
 	});
 
 	let showModal = $state(false);
-	let finalGqlArgObj_Store = $state();
+	let finalGqlArgObj_Store = $state<any>();
 	let finalGqlArgObj_StoreValue = $state();
 	let paginationState_derived = $state();
 	let paginationState_derivedValue = $state();
 	let finalGqlArgObjValue;
-	let activeArgumentsQMSWraperContext = $state();
+	let activeArgumentsQMSWraperContext = $state<any>();
 	let QMSarguments;
 	let canAcceptArguments = $derived(canExpand && args?.length > 0 && isUsedInSomeColumn);
 

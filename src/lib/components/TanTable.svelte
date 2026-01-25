@@ -7,15 +7,16 @@
 	import ColumnInfo from './ColumnInfo.svelte';
 	import { getContext } from 'svelte';
 	import InfiniteLoading from 'svelte-infinite-loading';
+    import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 
 	interface Props {
 		prefix?: string;
 		enableMultiRowSelectionState?: boolean;
 		enableRowSelectionState?: boolean;
-		infiniteHandler: any;
-		infiniteId: any;
-		data: any;
-		cols?: any;
+		infiniteHandler?: any;
+		infiniteId?: any;
+		data?: any[];
+		cols?: any[];
 		rowSelectionState?: any;
 		onRowSelectionChange?: (detail: any) => void;
 		onHideColumn?: (detail: { column: string }) => void;
@@ -28,33 +29,39 @@
 		enableRowSelectionState = true,
 		infiniteHandler,
 		infiniteId,
-		data = $bindable(),
+		data = $bindable([]),
 		cols = [],
 		rowSelectionState = $bindable({}),
 		onRowSelectionChange,
 		onHideColumn,
 		onRowClicked
 	}: Props = $props();
-	let loadMore = $state(false);
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	let QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
-	let idColName = QMSWraperContext?.idColName;
-	const { paginationOptions } = getContext(`${prefix}QMSWraperContext`);
 
-	const getColumnVisibility = (cols) => {
-		let columnVisibility = {};
+    let loadMore = $state(false);
+	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	let QMSWraperContext = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+	let idColName = $derived(QMSWraperContext?.idColName);
+	const paginationOptions = $derived(QMSWraperContext?.paginationOptions);
+
+	const getColumnVisibility = (cols: any[]) => {
+		let columnVisibility: any = {};
 		cols.forEach((col) => {
 			col.hidden ? (columnVisibility[col.title] = false) : (columnVisibility[col.title] = true);
 		});
 		return columnVisibility;
 	};
-	let columnVisibility = getColumnVisibility(cols);
-	console.log({ columnVisibility });
-	const getColumns = (cols) => {
+
+    let columnVisibility = $derived(getColumnVisibility(cols));
+
+    $effect(() => {
+        console.log({ columnVisibility });
+    });
+
+	const getColumns = (cols: any[]) => {
 		let columns = cols.map((col) => {
 			return {
 				...col,
-				accessorFn: (row) => getTableCellData(row, col),
+				accessorFn: (row: any) => getTableCellData(row, col),
 				header: col.title,
 				footer: col.title,
 				enableHiding: true
@@ -62,8 +69,10 @@
 		});
 		return columns;
 	};
-	let columns = $derived(getColumns(cols));
-	const setRowSelection = (updater) => {
+
+    let columns = $derived(getColumns(cols));
+
+    const setRowSelection = (updater: any) => {
 		if (updater instanceof Function) {
 			rowSelectionState = updater(rowSelectionState);
 		} else {
@@ -82,9 +91,10 @@
 	};
 
 	console.log({ rowSelectionState });
-	const options = writable<TableOptions<Person>>({
+
+    const options = writable<TableOptions<any>>({
 		data: data,
-		columns: columns,
+		columns: columns, // Initial value
 		getCoreRowModel: getCoreRowModel(),
 		enableMultiRowSelection: enableMultiRowSelectionState,
 		enableRowSelection: enableRowSelectionState,
@@ -92,9 +102,10 @@
 		enableHiding: true,
 		initialState: { rowSelection: rowSelectionState },
 		state: { columnVisibility, rowSelection: rowSelectionState },
-		getRowId: (row) => row?.[idColName]
+		getRowId: (row) => row?.[idColName!]
 	});
-	const rerender = () => {
+
+    const rerender = () => {
 		options.update((options) => ({
 			...options,
 			data: data
@@ -103,16 +114,20 @@
 	const table = createSvelteTable(options);
 
 	$effect(() => {
-		columns = getColumns(cols);
-
+		// Update options when derived values change
 		options.update((options) => ({
 			...options,
 			data: data,
-			columns: columns
+			columns: columns,
+            state: {
+                ...options.state,
+                columnVisibility: columnVisibility
+            }
 		}));
 		console.log({ data, cols });
 	});
-	$effect(() => {
+
+    $effect(() => {
 		console.log({ table }, '$table', $table);
 	});
 </script>
@@ -163,13 +178,16 @@
 											<div
 												class="w-full pr-2 hover:text-primary cursor-pointer max-w-xs md:max-w-sm overflow-x-auto"
 											>
-												<ColumnInfo stepsOfFields={header.column.columnDef.stepsOfFields} />
+												<ColumnInfo stepsOfFields={(header.column.columnDef as any).stepsOfFields} />
 												<!-- {colsData[index].stepsOfFields.join(' > ')} -->
 											</div>
 											<button
 												class="w-full pr-2 hover:text-primary cursor-pointer text-left bg-transparent border-0 p-0"
 												onclick={() => {
-													onHideColumn?.({ column: header.column.columnDef.header });
+                                                    const headerVal = header.column.columnDef.header;
+                                                    if (typeof headerVal === 'string') {
+													    onHideColumn?.({ column: headerVal });
+                                                    }
 												}}
 											>
 												hide field
@@ -211,14 +229,14 @@
 						</th>
 					{/if}
 
-					<td>{parseInt(row.index) + 1}</td>
+					<td>{parseInt(row.index as any) + 1}</td>
 
 					{#each row.getVisibleCells() as cell}
-						<td class="break-no" title={cell.renderValue()}>
+						<td class="break-no" title={cell.renderValue() as string}>
 							<!-- {cell.renderValue()} -->
 							{formatData(cell.renderValue(), 40, true)}
 							{#if getPreciseType(cell.renderValue()) == 'array'}
-								<sup>{cell.renderValue().length}</sup>
+								<sup>{(cell.renderValue() as any[]).length}</sup>
 							{/if}
 							<!-- <svelte:component this={flexRender(cell.column.columnDef.cell, cell.getContext())} /> -->
 						</td>

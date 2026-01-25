@@ -9,10 +9,14 @@
 	}
 
 	let { prefix = '', QMSWraperCtxDataCurrent }: Props = $props();
+
 	/////////////////
-	const { finalGqlArgObj_Store, stepsOfFields, paginationState_derived } = QMSWraperCtxDataCurrent;
+	let finalGqlArgObj_Store = $derived(QMSWraperCtxDataCurrent?.finalGqlArgObj_Store);
+	let stepsOfFields = $derived(QMSWraperCtxDataCurrent?.stepsOfFields);
+	let paginationState_derived = $derived(QMSWraperCtxDataCurrent?.paginationState_derived);
+
 	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
-	const { mergedChildren_finalGqlArgObj_Store } = OutermostQMSWraperContext;
+	const mergedChildren_finalGqlArgObj_Store = OutermostQMSWraperContext?.mergedChildren_finalGqlArgObj_Store;
 	/////////////////
 	let QMSarguments = $state();
 	/////////////////
@@ -24,7 +28,7 @@
 
 	$effect(() => {
 		if (QMSarguments || $paginationState_derived) {
-			mergedChildren_finalGqlArgObj_Store.update((value) => {
+			mergedChildren_finalGqlArgObj_Store.update((value: any) => {
 				return setValueAtPath(value, [...stepsOfFields, 'QMSarguments'], QMSarguments);
 			});
 		}

@@ -6,13 +6,13 @@
 	import TypeInfoDisplay from '$lib/components/TypeInfoDisplay.svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { getContext } from 'svelte';
-	import type { QMSMainWraperContext } from '$lib/types/index';
+	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 	import { get } from 'svelte/store';
 
 	const prefix = '';
 
 	let mainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
-	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
 	const isForExplorer = OutermostQMSWraperContext?.extraInfo?.isForExplorer;
 	const schemaData = mainWraperContext?.schemaData;
 
@@ -37,48 +37,36 @@
 		showExpand = $bindable(false)
 	}: Props = $props();
 
-	let {
-		dd_kindsArray,
-		dd_namesArray,
-		dd_rootName,
-		dd_displayName,
-		dd_kindEl,
-		dd_kindEl_NON_NULL,
-		dd_kindList,
-		dd_kindList_NON_NULL,
-		dd_NON_NULL
-	} = type;
+    // Use derived values to react to prop changes
+	let dd_kindsArray = $derived(type.dd_kindsArray);
+    let dd_rootName = $derived(type.dd_rootName);
+    let dd_displayName = $derived(type.dd_displayName);
 
-	if (!stepsOfFields) {
-		stepsOfFields = [dd_displayName];
-	} else {
-		stepsOfFields = [...stepsOfFields, dd_displayName];
-	}
+    $effect(() => {
+        if (!stepsOfFields) {
+            stepsOfFields = [dd_displayName];
+        } else {
+            // Check if last element is already current displayName to avoid duplicates if effect runs multiple times
+            if (stepsOfFields[stepsOfFields.length - 1] !== dd_displayName) {
+                 stepsOfFields = [...stepsOfFields, dd_displayName];
+            }
+        }
+    });
 
 	let inDuration = $state(300);
-	let expandData = $state({});
-	let canExpand = $state(false);
-	if (!dd_kindsArray?.includes('SCALAR') && dd_kindsArray.length > 0) {
-		canExpand = true;
-	}
+	let expandData = $state<any>({});
+	let canExpand = $derived(!dd_kindsArray?.includes('SCALAR') && dd_kindsArray?.length > 0);
 
 	const expand = () => {
 		//console.log('dd_rootName', dd_rootName);
 		expandData = getRootType(get(schemaData).rootTypes, dd_rootName, get(schemaData));
 		if (expandData) {
-			// if (!showExpand) {
-			// 	stepsOfFields.push(dd_displayName);
-			// } else {
-			// 	// does the trick if you hide one by one from last one
-			// 	stepsOfFields.splice(-1);
-			// }
-
 			showExpand = !showExpand;
 			//console.log('expandData', expandData);
 			let typeLen =
 				expandData?.fields?.length ||
 				expandData?.inputFields?.length ||
-				expandData?.enumValues?.length;
+				expandData?.enumValues?.length || 0;
 
 			let argLen = 0;
 			if (type?.args) {
@@ -121,7 +109,7 @@
 				<div class="border-l-2 border-secondary bg-accent/5">
 					<div class="">
 						{#each type?.args as arg, index}
-							<Arg {index} type={arg} {template} />
+							<Arg {index} type={arg} {template} predefinedFirstSteps={[]} groupName={undefined} />
 						{/each}
 					</div>
 				</div>
@@ -129,7 +117,7 @@
 
 			<div class="border-l-2 bg-accent/5">
 				<div class="w-min-max w-full">
-					{#each expandData.fields || expandData.inputFields || expandData.enumValues as type, index (index)}
+					{#each expandData.fields || expandData.inputFields || expandData.enumValues || [] as type, index (index)}
 						<Type {index} {type} {template} {stepsOfFields} {depth} />
 					{/each}
 				</div>

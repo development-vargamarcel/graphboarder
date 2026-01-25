@@ -35,28 +35,25 @@ describe('Modal Component', () => {
 		it('should accept mounted event listener', () => {
 			const mounted = vi.fn();
 			const { component } = render(Modal, {
-				props: { modalIdetifier: 'test-modal' }
+				props: { modalIdetifier: 'test-modal', onMounted: mounted }
 			});
-
-			component.$on('mounted', mounted);
+			// In Svelte 5, onMounted prop callback should be called if implemented in component
 			expect(component).toBeTruthy();
 		});
 
 		it('should accept apply event listener', () => {
 			const apply = vi.fn();
-			const { component } = render(Modal);
-
-			component.$on('apply', apply);
+			const { component } = render(Modal, {
+                props: { onApply: apply }
+            });
 			expect(component).toBeTruthy();
 		});
 
 		it('should accept cancel event listener', () => {
 			const cancel = vi.fn();
 			const { component } = render(Modal, {
-				props: { modalIdetifier: 'test-modal' }
+				props: { modalIdetifier: 'test-modal', onCancel: cancel }
 			});
-
-			component.$on('cancel', cancel);
 			expect(component).toBeTruthy();
 		});
 	});
@@ -74,11 +71,11 @@ describe('Modal Component', () => {
 		});
 
 		it('should handle prop updates', async () => {
-			const { component } = render(Modal, {
+			const { component, rerender } = render(Modal, {
 				props: { showApplyBtn: true }
 			});
 
-			await component.$set({ showApplyBtn: false });
+			await rerender({ showApplyBtn: false });
 			expect(component).toBeTruthy();
 		});
 	});
