@@ -48,6 +48,11 @@ export interface GraphQLArgument {
 	description?: string;
 	type: GraphQLType;
 	defaultValue?: unknown;
+	dd_NON_NULL?: boolean;
+	dd_rootName?: string;
+	dd_displayName?: string;
+	dd_kindList?: boolean;
+	dd_isRootArg?: boolean;
 }
 
 /**
@@ -234,6 +239,8 @@ export interface ContainerData extends ActiveArgumentData {
 	items: ContainerItem[];
 	isMain?: boolean;
 	stepsOfNodes?: unknown[];
+	parent_node?: ContainerData;
+	addDefaultFields?: boolean;
 }
 
 export interface ContainerItem {

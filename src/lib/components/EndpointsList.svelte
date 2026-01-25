@@ -33,7 +33,7 @@
 
 	let { prefix = '', QMSName, children }: Props = $props();
 
-	// Get contexts
+	// Get contexts - ensuring prefix is defined
 	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = context?.endpointInfo;
 	const urqlCoreClient = context?.urqlCoreClient;

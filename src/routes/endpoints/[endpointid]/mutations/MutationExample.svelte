@@ -12,6 +12,7 @@
 	import { Logger } from '$lib/utils/logger';
 	import { get } from 'svelte/store';
 
+	// Initialization after props
 	let mainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	let endpointInfo = $derived(mainWraperContext?.endpointInfo);
 	let schemaData = $derived(mainWraperContext?.schemaData);

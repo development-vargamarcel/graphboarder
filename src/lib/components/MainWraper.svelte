@@ -36,10 +36,11 @@
 
 	let { prefix = '', endpointInfoProvided = null, children }: Props = $props();
 
-	Logger.debug('MainWraper initializing', { prefix, endpointInfoProvided });
-
+	// Move reactive initialization after props
 	const endpointInfo = create_endpointInfo_Store(endpointInfoProvided);
 	const schemaData = create_schemaData();
+
+	Logger.debug('MainWraper initializing', { prefix, endpointInfoProvided });
 
 	$effect(() => {
 		if (!$endpointInfo?.url) {

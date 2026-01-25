@@ -900,7 +900,7 @@ export const generate_group_gqlArgObj_forHasOperators = (items: { id: string }[]
 			} else {
 				dataToAssign = gqlArgObjForItems
 			}
-			Logger.debug('vvvvvvv', gqlArgObjForItems, dataToAssign)
+			Logger.debug('vvvvvvv', { gqlArgObjForItems, dataToAssign })
 		} else {
 			dataToAssign = nodes[item.id]?.gqlArgObj
 		}
@@ -946,7 +946,7 @@ export const generate_group_gqlArgObj_forHasOperators = (items: { id: string }[]
 			}
 		}
 
-		Logger.debug(nodeStepClean, { itemObj }, { resultingGqlArgObj }, { itemObjectTest2 }, { itemObjectTestCurr }, { dataToAssign }, 'itemData.selectedRowsColValues', itemData.selectedRowsColValues)
+		Logger.debug('itemsResultingData loop', { nodeStepClean, itemObj, resultingGqlArgObj, itemObjectTest2, itemObjectTestCurr, dataToAssign, selectedRowsColValues: itemData.selectedRowsColValues })
 
 
 
@@ -1018,7 +1018,7 @@ export const getQMSLinks = (QMSName: QMSType = 'query', parentURL: string, endpo
 	let $page = get(page);
 	let origin = $page.url.origin;
 	let queryLinks: { url: string; title: string }[] = [];
-	let $schemaData = get(schemaData);
+	let $schemaData = get(schemaData as any); // Cast to any as Readable<SchemaData> compatibility issues persisted
 	const sortIt = (QMSFields: FieldWithDerivedData[]): FieldWithDerivedData[] => {
 		return QMSFields?.sort((a, b) => {
 			let ea = a.dd_rootName;
@@ -1680,15 +1680,25 @@ export const generate_finalGqlArgObjAndCanRunQuery = (
 	//better set an array?
 }
 
+/**
+ * Retrieves the QMSWraper context data for a given control panel item.
+ * @param CPItem - The control panel item.
+ * @param OutermostQMSWraperContext - The context of the outermost QMS wrapper.
+ * @returns The found context data or undefined.
+ */
 export const getQMSWraperCtxDataGivenControlPanelItem = (CPItem: { stepsOfFieldsThisAppliesTo: string[] }, OutermostQMSWraperContext: { mergedChildren_QMSWraperCtxData_Store: any }): any => {
 	const { mergedChildren_QMSWraperCtxData_Store } = OutermostQMSWraperContext;
 
 	let mergedChildren_QMSWraperCtxData_Value = get(mergedChildren_QMSWraperCtxData_Store);
 
-	const QMSWraperCtxData = mergedChildren_QMSWraperCtxData_Value.find((currCtx: any) => {
-		return currCtx.stepsOfFields.join() == CPItem.stepsOfFieldsThisAppliesTo.join();
-	});
-	return QMSWraperCtxData;
+	// Assuming mergedChildren_QMSWraperCtxData_Value is an array
+	if (Array.isArray(mergedChildren_QMSWraperCtxData_Value)) {
+		const QMSWraperCtxData = mergedChildren_QMSWraperCtxData_Value.find((currCtx: any) => {
+			return currCtx.stepsOfFields.join() == CPItem.stepsOfFieldsThisAppliesTo.join();
+		});
+		return QMSWraperCtxData;
+	}
+	return undefined;
 };
 export const getSortedAndOrderedEndpoints = (endpoints: { id: number | string; isMantained?: boolean }[], filterOutIfNotMaintaned: boolean = false): { id: number | string; isMantained?: boolean }[] => {
 	const sortedEndpoints = endpoints.sort((a, b) => {

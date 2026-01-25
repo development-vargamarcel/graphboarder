@@ -17,6 +17,7 @@
 
 	let { endpointInfo, onHideSidebar }: Props = $props();
 
+	// Ensure prefix is defined or passed
 	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	const schemaData = context?.schemaData;
 	Logger.debug('page', $page);

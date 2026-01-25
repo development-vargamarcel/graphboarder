@@ -12,6 +12,7 @@
 
 	let { type, i, prefix = '' }: Props = $props();
 
+	// Initialization after props
 	const qmsContext = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
 	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	const schemaData = context?.schemaData;

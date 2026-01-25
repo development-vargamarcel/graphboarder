@@ -22,21 +22,21 @@ export const create_schemaData = () => {
 			let new_rootTypes = sortByName([...schema.types]);
 			if (withDerivedData) {
 				new_rootTypes.forEach((el) => {
-					Object.assign(el, generate_derivedData(el, new_rootTypes, false, endpointInfo));
+					Object.assign(el, generate_derivedData(el, new_rootTypes, false, endpointInfo, storeValue));
 					el?.args?.forEach((arg) => {
-						Object.assign(arg, generate_derivedData(arg, new_rootTypes, false, endpointInfo));
+						Object.assign(arg, generate_derivedData(arg, new_rootTypes, false, endpointInfo, storeValue));
 					});
 					el?.fields?.forEach((field) => {
-						Object.assign(field, generate_derivedData(field, new_rootTypes, false, endpointInfo));
+						Object.assign(field, generate_derivedData(field, new_rootTypes, false, endpointInfo, storeValue));
 						field?.args?.forEach((arg) => {
-							Object.assign(arg, generate_derivedData(arg, new_rootTypes, false, endpointInfo));
+							Object.assign(arg, generate_derivedData(arg, new_rootTypes, false, endpointInfo, storeValue));
 						});
 					});
 					el?.inputFields?.forEach((inputField) => {
-						Object.assign(inputField, generate_derivedData(inputField, new_rootTypes, false, endpointInfo));
+						Object.assign(inputField, generate_derivedData(inputField, new_rootTypes, false, endpointInfo, storeValue));
 					});
 					el?.enumValues?.forEach((enumValue) => {
-						Object.assign(enumValue, generate_derivedData(enumValue, new_rootTypes, false, endpointInfo));
+						Object.assign(enumValue, generate_derivedData(enumValue, new_rootTypes, false, endpointInfo, storeValue));
 					});
 
 				});
@@ -74,21 +74,21 @@ export const create_schemaData = () => {
 
 				if (withDerivedData) {
 					new_QMS_Fields?.forEach((el) => {
-						Object.assign(el, generate_derivedData(el, rootTypes, isQMSField, endpointInfo));
+						Object.assign(el, generate_derivedData(el, rootTypes, isQMSField, endpointInfo, storeValue));
 						el?.args?.forEach((arg) => {
-							Object.assign(arg, generate_derivedData(arg, rootTypes, 'is QMS sub-field', endpointInfo));
+							Object.assign(arg, generate_derivedData(arg, rootTypes, false, endpointInfo, storeValue));
 						});
 						el?.fields?.forEach((field) => {
-							Object.assign(field, generate_derivedData(field, rootTypes, 'is QMS sub-field', endpointInfo));
+							Object.assign(field, generate_derivedData(field, rootTypes, false, endpointInfo, storeValue));
 							field?.args?.forEach((arg) => {
-								Object.assign(arg, generate_derivedData(arg, rootTypes, 'is QMS sub-field', endpointInfo));
+								Object.assign(arg, generate_derivedData(arg, rootTypes, false, endpointInfo, storeValue));
 							});
 						});
 						el?.inputFields?.forEach((inputField) => {
-							Object.assign(inputField, generate_derivedData(inputField, 'is QMS sub-field', rootTypes, endpointInfo));
+							Object.assign(inputField, generate_derivedData(inputField, rootTypes, false, endpointInfo, storeValue));
 						});
 						el?.enumValues?.forEach((enumValue) => {
-							Object.assign(enumValue, generate_derivedData(enumValue, 'is QMS sub-field', rootTypes, endpointInfo));
+							Object.assign(enumValue, generate_derivedData(enumValue, rootTypes, false, endpointInfo, storeValue));
 						});
 
 

@@ -12,7 +12,7 @@
 	import { Logger } from '$lib/utils/logger';
 	import { get } from 'svelte/store';
 
-	// Get contexts
+	// Get contexts - ensuring prefix is available
 	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	let endpointInfo = $derived(context?.endpointInfo);
 	let schemaData = $derived(context?.schemaData);

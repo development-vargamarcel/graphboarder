@@ -2,7 +2,7 @@
 
 	import { writable } from 'svelte/store';
 	import { createSvelteTable, flexRender, getCoreRowModel } from '@tanstack/svelte-table';
-	import type { ColumnDef, TableOptions } from '@tanstack/table-core/src/types';
+	import type { ColumnDef, TableOptions } from '@tanstack/table-core';
 	import { formatData, getTableCellData } from '$lib/utils/usefulFunctions';
 	import { getColumnVisibility, createTableOptions, getColumnFlags } from '$lib/utils/tableUtils';
 	import ColumnInfo from './ColumnInfo.svelte';
