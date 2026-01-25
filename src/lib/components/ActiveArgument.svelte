@@ -42,7 +42,7 @@
 		type: string;
 		parentNodeId: string;
 		availableOperators: string[];
-		startDrag: () => void;
+		startDrag: (e?: any) => void;
 		onChanged?: (detail: any) => void;
 		onInUseChanged?: () => void;
 		onContextmenuUsed?: () => void;
@@ -74,6 +74,10 @@
 		onDeleteSubNode,
 		onChildrenStartDrag
 	}: Props = $props();
+
+	const deleteItem = (arg: { detail: { id: string } }) => {
+		onDeleteSubNode?.(arg.detail);
+	};
 
 	const QMSWraperContext = getContext<any>(`${prefix}QMSWraperContext`);
 	const { activeArgumentsDataGrouped_Store, finalGqlArgObj_Store } = QMSWraperContext;
@@ -121,17 +125,17 @@
 	let get_valueToDisplay = (): string | undefined => {
 		let value: string | undefined;
 		if (getPreciseType(activeArgumentData.chd_dispatchValue) == 'number') {
-			value = activeArgumentData.chd_dispatchValue;
+			value = String(activeArgumentData.chd_dispatchValue);
 		}
 		if (activeArgumentData.dd_displayInterface == 'ENUM') {
-			let chd_dispatchValue = activeArgumentData.chd_dispatchValue;
+			let chd_dispatchValue = activeArgumentData.chd_dispatchValue as string;
 			value = chd_dispatchValue?.length > 0 ? chd_dispatchValue : undefined;
 		} else {
 			if (Array.isArray(activeArgumentData.chd_dispatchValue)) {
 				value = activeArgumentData.chd_dispatchValue.join(', ');
 			} else if (typeof activeArgumentData.chd_dispatchValue == 'string') {
 				value = string_transformerREVERSE(
-					activeArgumentData.chd_dispatchValue || activeArgumentData.defaultValue
+					(activeArgumentData.chd_dispatchValue || activeArgumentData.defaultValue) as string
 				);
 			}
 		}
@@ -348,6 +352,7 @@
 				</div>
 				<button
 					class="btn btn-xs btn-warning flex-1"
+					aria-label="Delete"
 					onclick={() => {
 						activeArgumentsDataGrouped_Store.delete_activeArgument(
 							activeArgumentData,
@@ -362,7 +367,7 @@
 					<AddNodeToControlPanel {node} />
 				{/if}
 				{#if CPItemContext}
-					<GroupDescriptionAndControls />
+					<GroupDescriptionAndControls hasGroup_argsNode={!!group.group_argsNode} />
 				{/if}
 			</div>
 
@@ -380,6 +385,7 @@
 				<Type
 					index={0}
 					type={activeArgumentData}
+					stepsOfFields={activeArgumentData.stepsOfFields}
 					template="default"
 					depth={0}
 				/>
@@ -457,8 +463,8 @@
 								"
 				>
 					{#if !expandedVersion && !$mutationVersion && !$showInputField}
-						<p
-							class="shrink-0 text-base-content text-xs font-light pt-[1px] mx-2"
+						<div
+							class="shrink-0 text-base-content text-xs font-light pt-[1px] mx-2 cursor-pointer"
 							onclick={handleValueClick}
 							role="button"
 							tabindex="0"
@@ -469,7 +475,7 @@
 							}}
 						>
 							{valueToDisplay}
-						</p>
+						</div>
 					{/if}
 				</div>
 			</div>

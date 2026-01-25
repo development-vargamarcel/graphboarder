@@ -42,6 +42,7 @@
 		addDefaultFields?: any;
 		showSelectModal: any;
 		onChanged?: () => void;
+		onChildrenStartDrag?: (e?: any) => void;
 	}
 
 	let {

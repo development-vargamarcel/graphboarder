@@ -4,7 +4,7 @@
 	import Interface from '$lib/components/fields/Interface.svelte';
 	import { getContext } from 'svelte';
 	import { getPreciseType } from '$lib/utils/usefulFunctions';
-	let { typeInfo, alwaysOn_interfacePicker } = $props();
+	let { typeInfo, alwaysOn_interfacePicker = false, onChanged } = $props();
 	const choosenDisplayInterface = getContext('choosenDisplayInterface');
 	const expectsInterfaceList = typeInfo.dd_kindList && $choosenDisplayInterface != 'ENUM';
 	let rawValue =
@@ -15,7 +15,7 @@
 </script>
 
 {#if expectsInterfaceList}
-	<InterfaceList {alwaysOn_interfacePicker} {typeInfo} {rawValue} {dispatchValue} on:changed />
+	<InterfaceList {alwaysOn_interfacePicker} {typeInfo} {rawValue} {dispatchValue} {onChanged} />
 {:else}
-	<Interface {alwaysOn_interfacePicker} {typeInfo} {rawValue} {dispatchValue} on:changed />
+	<Interface {alwaysOn_interfacePicker} {typeInfo} {rawValue} {dispatchValue} {onChanged} />
 {/if}

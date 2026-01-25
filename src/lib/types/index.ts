@@ -245,6 +245,7 @@ export interface ActiveArgumentData extends Partial<FieldWithDerivedData> {
 	enumValues?: GraphQLEnumValue[];
 	selectedRowsColValues?: Record<string, unknown>[];
 	chosenDisplayInterface?: DisplayInterface;
+	defaultValue?: unknown;
 }
 
 /**

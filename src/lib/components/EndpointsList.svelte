@@ -83,6 +83,7 @@
 
 	// Query execution function
 	const runQuery = (queryBody: string) => {
+		Logger.info('Starting Query Execution', { queryBody });
 		let fetching = true;
 		let error: any = false;
 		let data: any = false;
@@ -94,9 +95,11 @@
 
 				if (result.error) {
 					error = result.error.message;
+					Logger.error('Query execution failed', result.error);
 				}
 				if (result.data) {
 					data = result.data;
+					Logger.info('Query execution successful', { dataCount: Array.isArray(data) ? data.length : 1 });
 				}
 				queryData = { fetching, error, data };
 				let stepsOfFieldsInput = [
@@ -277,7 +280,7 @@
 		</div>
 	{/if}
 
-	<button class="btn btn-xs btn-primary ">
+	<button class="btn btn-xs btn-primary " aria-label="Add">
 		<i class="bi bi-plus-circle-fill "></i>
 	</button>
 </div>
@@ -287,12 +290,14 @@
 	<div class="px-4 mx-auto  mb-2">
 		<div class="alert alert-error shadow-lg ">
 			<div>
-				<button class="btn btn-ghost btn-sm p-0">
-					<!-- svelte-ignore a11y_click_events_have_key_events -->
+				<button
+					class="btn btn-ghost btn-sm p-0"
+					onclick={() => {
+						queryData.error = null;
+					}}
+					aria-label="Dismiss error"
+				>
 					<svg
-						onclick={() => {
-							queryData.error = null;
-						}}
 						xmlns="http://www.w3.org/2000/svg"
 						class="stroke-current flex-shrink-0 h-6 w-6"
 						fill="none"

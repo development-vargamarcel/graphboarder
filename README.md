@@ -103,7 +103,7 @@ Inside your component (e.g., `MyArticlesComponent.svelte`), you can access the s
 
 ## Logging
 
-You can configure the logging level to debug issues or suppress output.
+Auto-GQL includes a robust logging system to help debug query execution and context issues.
 
 ```typescript
 import { Logger, LogLevel } from 'auto-gql';
@@ -115,6 +115,11 @@ Logger.setLevel(LogLevel.INFO);
 Logger.debug('This is a debug message');
 Logger.error('Something went wrong', { details: '...' });
 ```
+
+Logs are automatically generated for:
+- Initialization of wrappers.
+- Query execution start, success, and failure.
+- Fetch requests (via URQL).
 
 ## Advanced Configuration
 
@@ -171,6 +176,10 @@ npm test
 ```bash
 npm run build
 ```
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development instructions.
 
 ## License
 

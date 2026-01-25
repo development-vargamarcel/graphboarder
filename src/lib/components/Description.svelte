@@ -4,8 +4,8 @@
 	interface Props {
 		setNotInUseIfNotValid?: boolean;
 		setNotInUseIfNotValidAndENUM?: boolean;
-		parentNode: any;
-		node: any;
+		parentNode?: any;
+		node?: any;
 		prefix?: string;
 		QMSInfo: any;
 	}
