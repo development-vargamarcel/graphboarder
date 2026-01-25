@@ -13,7 +13,7 @@
 		getRootType,
 		hasDeepProperty,
 		passAllObjectValuesThroughStringTransformerAndReturnNewObject
-	} from './../utils/usefulFunctions.ts';
+	} from './../utils/usefulFunctions';
 	//!!! chnage bonded to item
 	import { flip } from 'svelte/animate';
 	import { dndzone, SHADOW_PLACEHOLDER_ITEM_ID } from 'svelte-dnd-action';
@@ -26,6 +26,48 @@
 	import { generateGroupDisplayTitle, getNodeDisplayClasses } from '$lib/utils/displayTitleUtils';
 	import { getShadowDimensions, updateShadowElement, handleDragStart, handleDragKeyDown, transformDraggedElement as transformDraggedElementUtil, handleDndConsider as handleDndConsiderUtil, handleDndFinalize as handleDndFinalizeUtil, handleDeleteItem } from '$lib/utils/dndUtils';
 	import { getRowSelectionState } from '$lib/utils/rowSelectionUtils';
+	import ExplorerTable from '$lib/components/ExplorerTable.svelte';
+	import { string_transformer } from '$lib/utils/dataStructureTransformers';
+	import { writable, type Writable } from 'svelte/store';
+	import AddNodeToControlPanel from './AddNodeToControlPanel.svelte';
+	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
+	import ManyToAllSelectInterfaceDefinition from './ManyToAllSelectInterfaceDefinition.svelte';
+	import SelectedRowsDisplay from './SelectedRowsDisplay.svelte';
+
+	interface Props {
+		nodes: any;
+		parentNodeId: any;
+		parentNode?: any;
+		node: any;
+		availableOperators: any;
+		group: any;
+		type: any;
+		originalNodes: any;
+		prefix?: string;
+		addDefaultFields: any;
+		onChanged?: () => void;
+		onUpdateQuery?: () => void;
+		onChildrenStartDrag?: () => void;
+		onDeleteSubNode?: (detail: { id: string }) => void;
+	}
+
+	let {
+		nodes = $bindable(),
+		parentNodeId,
+		parentNode = nodes[parentNodeId],
+		node = $bindable(),
+		availableOperators,
+		group = $bindable(),
+		type,
+		originalNodes,
+		prefix = '',
+		addDefaultFields,
+		onChanged,
+		onUpdateQuery,
+		onChildrenStartDrag,
+		onDeleteSubNode
+	}: Props = $props();
+
 	let stepsOfNodes = $state([]);
 	let stepsOfFields = $state([]);
 	let stepsOfFieldsFull = $state([]);
@@ -35,7 +77,7 @@
 	let getManyQMS = $state();
 	///
 
-	let nodeContext_forDynamicData = {};
+	let nodeContext_forDynamicData: any = {};
 	if (node.nodeContext_forDynamicData) {
 		nodeContext_forDynamicData = node.nodeContext_forDynamicData;
 	} else {
@@ -80,12 +122,12 @@
 	/////start
 
 	let pathIsInCP = false;
-	const nodeContext = getContext(`${prefix}nodeContext`);
+	const nodeContext = getContext<any>(`${prefix}nodeContext`);
 	if (nodeContext) {
 		pathIsInCP = nodeContext?.pathIsInCP;
 	}
 	let nodeIsInCP = $state(false);
-	const CPItemContext = getContext(`${prefix}CPItemContext`);
+	const CPItemContext = getContext<any>(`${prefix}CPItemContext`);
 	if (CPItemContext?.CPItem.nodeId == node.id) {
 		setContext(`${prefix}nodeContext`, { pathIsInCP: true });
 		nodeIsInCP = true;
@@ -93,7 +135,7 @@
 	const isCPChild = CPItemContext ? true : false;
 	const visibleInCP = pathIsInCP || nodeIsInCP;
 	const visible = visibleInCP || !CPItemContext || node.isMain;
-	let correctQMSWraperContext = '';
+	let correctQMSWraperContext: any = '';
 	if (isCPChild) {
 		correctQMSWraperContext = getQMSWraperCtxDataGivenControlPanelItem(
 			CPItemContext?.CPItem,
@@ -112,10 +154,10 @@
 			node
 		);
 	};
-	const dndIsOn = getContext('dndIsOn');
-	const showInputField = getContext('showInputField');
+	const dndIsOn = getContext<Writable<boolean>>('dndIsOn');
+	const showInputField = getContext<Writable<boolean>>('showInputField');
 
-	const mutationVersion = getContext('mutationVersion');
+	const mutationVersion = getContext<Writable<boolean>>('mutationVersion');
 	if (QMSType == 'mutation') {
 		$mutationVersion = true;
 	}
@@ -207,46 +249,6 @@
 	let showAddModal = $state(false);
 	let rowSelectionState = {};
 	let selectedRowsModel = {};
-	import ExplorerTable from '$lib/components/ExplorerTable.svelte';
-	import { string_transformer } from '$lib/utils/dataStructureTransformers.ts';
-	import { writable } from 'svelte/store';
-	import AddNodeToControlPanel from './AddNodeToControlPanel.svelte';
-	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
-	import ManyToAllSelectInterfaceDefinition from './ManyToAllSelectInterfaceDefinition.svelte';
-	import SelectedRowsDisplay from './SelectedRowsDisplay.svelte';
-	interface Props {
-		nodes: any;
-		parentNodeId: any;
-		parentNode?: any;
-		node: any;
-		availableOperators: any;
-		group: any;
-		type: any;
-		originalNodes: any;
-		prefix?: string;
-		addDefaultFields: any;
-		onChanged?: () => void;
-		onUpdateQuery?: () => void;
-		onChildrenStartDrag?: () => void;
-		onDeleteSubNode?: (detail: { id: string }) => void;
-	}
-
-	let {
-		nodes = $bindable(),
-		parentNodeId,
-		parentNode = nodes[parentNodeId],
-		node = $bindable(),
-		availableOperators,
-		group = $bindable(),
-		type,
-		originalNodes,
-		prefix = '',
-		addDefaultFields,
-		onChanged,
-		onUpdateQuery,
-		onChildrenStartDrag,
-		onDeleteSubNode
-	}: Props = $props();
 
 	let selectedRowsColValues = $state([]);
 

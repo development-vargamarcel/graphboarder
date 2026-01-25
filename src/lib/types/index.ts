@@ -283,6 +283,7 @@ export interface IdDecoderPossibility {
  */
 export interface EndpointConfiguration {
 	url?: string;
+	headers?: Record<string, string>;
 	description?: string;
 	id?: string;
 	isMantained?: boolean;

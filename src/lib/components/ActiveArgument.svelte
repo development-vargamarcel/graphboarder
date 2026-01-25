@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Type from '$lib/components/Type.svelte';
 	import Description from './Description.svelte';
-	import { writable } from 'svelte/store';
+	import { writable, type Writable } from 'svelte/store';
 	import AutoInterface from '$lib/components/fields/AutoInterface.svelte';
 	import { SHADOW_ITEM_MARKER_PROPERTY_NAME } from 'svelte-dnd-action';
 	import { getContext, setContext } from 'svelte';
@@ -221,8 +221,8 @@
 		inUse_set(!activeArgumentData.inUse);
 	};
 	let showModal: boolean = $state(false);
-	const mutationVersion = getContext('mutationVersion');
-	const showInputField = getContext('showInputField') as any;
+	const mutationVersion = getContext<Writable<boolean>>('mutationVersion');
+	const showInputField = getContext<Writable<boolean>>('showInputField');
 
 	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
 	let context = getContext<any>(`${prefix}QMSMainWraperContext`);
@@ -460,6 +460,13 @@
 						<p
 							class="shrink-0 text-base-content text-xs font-light pt-[1px] mx-2"
 							onclick={handleValueClick}
+							role="button"
+							tabindex="0"
+							onkeydown={(e) => {
+								if (e.key === 'Enter' || e.key === ' ') {
+									handleValueClick(e as unknown as MouseEvent);
+								}
+							}}
 						>
 							{valueToDisplay}
 						</p>

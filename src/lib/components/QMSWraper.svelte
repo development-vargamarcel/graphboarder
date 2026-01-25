@@ -135,6 +135,8 @@
 	const endpointInfo: EndpointInfoStore = QMSMainWraperContext?.endpointInfo;
 	const schemaData: SchemaData = QMSMainWraperContext?.schemaData;
 
+    Logger.debug('QMSWraper initialized', { QMSName, QMSType });
+
     // Hoist Store Declarations
     let tableColsData_Store: any;
     let QMS_bodyPart_StoreDerived: any;

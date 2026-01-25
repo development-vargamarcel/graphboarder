@@ -6,12 +6,9 @@
 	import Toggle from '$lib/components/fields/Toggle.svelte';
 	import CodeEditor from '$lib/components/fields/CodeEditor.svelte';
 	import { getContext } from 'svelte';
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+	import type { Writable } from 'svelte/store';
 	import InterfacePicker from './InterfacePicker.svelte';
-	const choosenDisplayInterface = getContext('choosenDisplayInterface');
 
-	let typeExtraData = $state(endpointInfo.get_typeExtraData(typeInfo));
 	interface Props {
 		prefix?: string;
 		typeInfo: any;
@@ -29,6 +26,12 @@
 		rawValue = $bindable(),
 		onChanged
 	}: Props = $props();
+
+	let QMSMainWraperContext = getContext<any>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+	const choosenDisplayInterface = getContext<Writable<string>>('choosenDisplayInterface');
+
+	let typeExtraData = $state(endpointInfo.get_typeExtraData(typeInfo));
 
 	$effect(() => {
 		if (rawValue === undefined && typeExtraData?.defaultValue !== undefined) {
