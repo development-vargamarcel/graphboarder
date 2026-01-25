@@ -728,7 +728,7 @@
 								{#if testName_stepsOFFieldsWasUpdated}
 									{#key stepsOfFields}
 										<ActiveArgumentsGroupHasFilterOperators
-											onDeleteSubNode={(detail) => {
+											onDeleteSubNode={(detail: any) => {
 												deleteItem({ detail });
 												//
 												//console.log(detail.id, node);

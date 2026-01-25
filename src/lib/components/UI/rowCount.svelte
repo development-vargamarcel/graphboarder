@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getDataGivenStepsOfFields } from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
+	import type { QMSMainWraperContext } from '$lib/types/index';
 
 	interface Props {
 		prefix?: string;
@@ -10,7 +11,7 @@
 
 	let { prefix = '', QMS_bodyPart_StoreDerived, QMS_info }: Props = $props();
 
-	let mainWraperCtx = getContext(`${prefix}QMSMainWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = mainWraperCtx?.endpointInfo;
 
 	const urqlCoreClient = mainWraperCtx?.urqlCoreClient;

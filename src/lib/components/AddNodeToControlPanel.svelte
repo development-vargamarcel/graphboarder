@@ -7,8 +7,9 @@
 	}
 
 	let { prefix = '', node }: Props = $props();
-	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
-	const { mergedChildren_controlPanel_Store } = getContext(`${prefix}OutermostQMSWraperContext`);
+	let activeArgumentsContext = getContext<any>(`${prefix}activeArgumentsContext`);
+	const OutermostQMSWraperContext = getContext<any>(`${prefix}OutermostQMSWraperContext`);
+	const mergedChildren_controlPanel_Store = OutermostQMSWraperContext?.mergedChildren_controlPanel_Store;
 	let currentObject = {
 		stepsOfFieldsThisAppliesTo: activeArgumentsContext?.stepsOfFieldsThisAppliesTo,
 		nodeId: node.id,

@@ -118,7 +118,7 @@
 					{/if}
 					<th>#</th>
 					{#each headerGroup.headers as header}
-						{@const columnFlags = getColumnFlags(header.column.columnDef.header, idColName, requiredColNames)}
+						{@const columnFlags = getColumnFlags(header.column.columnDef.header as string, idColName, requiredColNames)}
 						<th class="normal-case">
 							<div class="dropdown dropdown-end">
 								<!-- svelte-ignore a11y_label_has_associated_control -->
@@ -178,7 +178,7 @@
 		<tbody>
 			{#if $table.getRowModel().rows.length === 0}
 				<tr>
-					<td colspan="100%">
+					<td colspan={100}>
 						<div class="flex flex-col items-center justify-center h-32 text-base-content/50">
 							<div class="bi bi-inbox text-4xl mb-2"></div>
 							<p>No data found</p>

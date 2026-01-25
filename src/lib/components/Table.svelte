@@ -40,7 +40,7 @@
 				class="btn btn-sm btn-outline gap-2"
 				onclick={() => {
 					if (rows && rows.length > 0) {
-						downloadCSV(convertArrayToCSV(rows), 'export.csv');
+						downloadCSV(rows, 'export.csv');
 					}
 				}}
 			>

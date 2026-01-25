@@ -149,14 +149,14 @@
 			$QMSRows = fuse
 				.search(`${myField.dd_StrForFuseComparison}`)
 				.map((item) => item.item)
-				.filter((item) => item.dd_kindList);
+				.filter((item) => (item as any).dd_kindList);
 			if ($QMSRows.length > 0) {
 				return;
 			}
 			$QMSRows = fuse
 				.search(`${myField.dd_rootName}`)
 				.map((item) => item.item)
-				.filter((item) => item.dd_kindList);
+				.filter((item) => (item as any).dd_kindList);
 			if ($QMSRows.length > 0) {
 				return;
 			}
@@ -171,7 +171,7 @@
 				)}`
 			)
 			.map((item) => item.item)
-			.filter((item) => item.dd_kindList);
+			.filter((item) => (item as any).dd_kindList);
 		if ($QMSRows.length > 0) {
 			return;
 		}
