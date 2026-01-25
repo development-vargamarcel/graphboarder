@@ -9,6 +9,7 @@ import type {
 	ContainerData,
 	FieldWithDerivedData,
 	SchemaDataStore,
+    SchemaData,
 	EndpointInfoStore
 } from '$lib/types';
 
@@ -25,7 +26,7 @@ export const Create_activeArgumentsDataGrouped_Store = (
 		update,
 		set_groups: (
 			QMS_info: FieldWithDerivedData,
-			schemaData: SchemaDataStore,
+			schemaData: SchemaDataStore | SchemaData,
 			QMSarguments: Record<string, unknown> | null,
 			endpointInfo: EndpointInfoStore
 		) => {
@@ -274,7 +275,7 @@ export const add_activeArgumentOrContainerTo_activeArgumentsDataGrouped = (
 	Logger.debug({ dataIsForContainer, newArgumentOrContainerData })
 	if (!group) {
 		group = activeArgumentsDataGrouped?.find((currGroup) => {
-			Logger.debug('currGroup', currGroup, currGroup.group_name, groupName, currGroup.group_name == groupName, currGroup.group_name === groupName);
+			Logger.debug('currGroup', { currGroup, groupName, comparison: currGroup.group_name == groupName });
 			return currGroup.group_name == groupName;
 		})
 	}
@@ -364,7 +365,7 @@ export const generateContainerData = (
 export const generateArgData = (
 	stepsOfFields: string[],
 	type: Partial<FieldWithDerivedData>,
-	schemaData: SchemaDataStore,
+	schemaData: SchemaDataStore | SchemaData,
 	extraData: Record<string, unknown> = {}
 ): ActiveArgumentData => {
 	const dd_displayName = type.dd_displayName!;
@@ -389,7 +390,7 @@ export const generateArgData = (
 
 const addAllRootArgs = (
 	activeArgumentsDataGrouped: ActiveArgumentGroup[],
-	schemaData: SchemaDataStore,
+	schemaData: SchemaDataStore | SchemaData,
 	endpointInfo: EndpointInfoStore
 ): void => {
 	const group = activeArgumentsDataGrouped.find((group) => {
@@ -419,7 +420,7 @@ const addAllRootArgs = (
 const gqlArgObjToActiveArgumentsDataGrouped = (
 	object: Record<string, unknown>,
 	activeArgumentsDataGrouped: ActiveArgumentGroup[],
-	schemaData: SchemaDataStore,
+	schemaData: SchemaDataStore | SchemaData,
 	endpointInfo: EndpointInfoStore
 ): ActiveArgumentGroup[] => {
 	const getGroupGqlArgObj = (
@@ -531,17 +532,16 @@ const gqlArgObjToActiveArgumentsDataGroupedForHasArgsNode = (
 	groupName: string,
 	group: ActiveArgumentGroup,
 	activeArgumentsDataGrouped: ActiveArgumentGroup[],
-	schemaData: SchemaDataStore,
+	schemaData: SchemaDataStore | SchemaData,
 	endpointInfo: EndpointInfoStore
 ): void => {
-	let group_argsNode
-	const gqlArgObjTypeOf = getPreciseType(gqlArgObj);
+	let group_argsNode;
 	const isContainer = type.dd_shouldExpand
 		; (function () {//handle containers only
 			if (!isContainer) {
 				return
 			}
-			if (gqlArgObjTypeOf == 'array') {
+			if (Array.isArray(gqlArgObj)) {
 				(gqlArgObj as any[]).forEach(element => {
 				});
 			}

@@ -5,7 +5,7 @@ import {
 } from '$lib/utils/usefulFunctions';
 import { derived, get } from 'svelte/store';
 import _ from 'lodash';
-import type { QMSType, StepsOfFieldsObject, TableColumnData } from '$lib/types';
+import type { FinalGQLArgObj, QMSType, StepsOfFieldsObject, TableColumnData } from '$lib/types';
 
 export const Create_QMS_bodyPart_StoreDerived = (
 	finalGqlArgObj_Store: any,
@@ -28,9 +28,10 @@ export const Create_QMS_bodyPart_StoreDerived = (
 				// 	$finalGqlArgObj_Store?.finalGqlArgObj || {},
 				// 	paginationState,
 				// );
+                const finalGqlArgObj = ($finalGqlArgObj_Store as FinalGQLArgObj)?.finalGqlArgObj || {};
 				const merged = _.merge({}, initialGqlArgObj || {},
 					paginationState,
-					$finalGqlArgObj_Store?.finalGqlArgObj || {},
+					finalGqlArgObj,
 
 				);
 				return merged;
@@ -46,7 +47,7 @@ export const Create_QMS_bodyPart_StoreDerived = (
 					QMS_name,
 					fieldsObj as Record<string, unknown>,
 					get_QMS_args(),
-					QMS_type, $mergedChildren_finalGqlArgObj_Store
+					QMS_type, $mergedChildren_finalGqlArgObj_Store as Record<string, unknown>
 				)
 			);
 		}

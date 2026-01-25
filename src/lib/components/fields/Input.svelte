@@ -36,7 +36,7 @@
 		onChanged
 	}: Props = $props();
 
-	let inputEl = $state();
+	let inputEl = $state<HTMLInputElement>();
 	const mutationVersion = getContext<Writable<boolean>>('mutationVersion');
 
 	$effect(() => {
@@ -59,7 +59,7 @@
 	bind:this={inputEl}
 	value={rawValue}
 	onchange={() => {
-		rawValue = inputEl.value;
+		rawValue = inputEl!.value;
 
 		if (displayInterface == 'number' && rawValue == '') {
 			rawValue = undefined;

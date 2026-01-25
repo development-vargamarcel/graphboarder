@@ -47,7 +47,9 @@
 		}
 	});
 
-	Logger.debug('MainWraper initializing', { prefix, endpointInfoProvided });
+	$effect(() => {
+		Logger.debug('MainWraper initializing', { prefix, endpointInfoProvided });
+	});
 
 	$effect(() => {
 		if (!$endpointInfo?.url) {

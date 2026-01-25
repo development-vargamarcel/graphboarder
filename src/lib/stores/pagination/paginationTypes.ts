@@ -1,4 +1,4 @@
-import { getDataGivenStepsOfFields, setValueAtPath, stepsOfFieldsToQueryFragmentObject } from '$lib/utils/usefulFunctions';
+import { getDataGivenStepsOfFields, setValueAtPath, stepsOfFieldsToQueryFragmentObject, get_QMS_Field } from '$lib/utils/usefulFunctions';
 import { get } from 'svelte/store';
 import type {
 	PaginationTypeInfo,
@@ -7,12 +7,13 @@ import type {
 	PaginationStateStore,
 	EndpointInfoStore,
 	SchemaDataStore,
+    SchemaData,
 	QMSType
 } from '$lib/types';
 
 export const get_paginationTypes = (
 	endpointInfo: EndpointInfoStore,
-	schemaData: SchemaDataStore
+	schemaData: SchemaDataStore | SchemaData
 ): PaginationTypeInfo[] => {
 	return [
 		{
@@ -145,12 +146,12 @@ export const get_paginationTypes = (
 				if (beforeName) delete _state[beforeName];
 				return _state;
 			},
-			get_dependencyColsData: (QMS_name: string, QMS_type: QMSType, schemaData: SchemaDataStore) => {
+			get_dependencyColsData: (QMS_name: string, QMS_type: QMSType, schemaData: SchemaDataStore | SchemaData) => {
 				//using 'pageInfo' for getting next page cursor,'nextPage' is not a standard,some use another name like 'endCursor' { title: 'nextPageCursor', stepsOfFields: [QMS_name, 'pageInfo', 'nextPage'] }
 				const dependencyColsData = [];
 				const endpointInfoVal = get(endpointInfo);
 				const pageInfoFieldsLocation = endpointInfoVal.pageInfoFieldsLocation;
-				let currentQMS_info = schemaData.get_QMS_Field(QMS_name, QMS_type, schemaData);
+				let currentQMS_info = get_QMS_Field(QMS_name, QMS_type, schemaData);
 				if (!currentQMS_info) return [];
 				const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_info, schemaData);
 
@@ -212,7 +213,7 @@ export const get_paginationTypes = (
 			},
 			get_nextPageState: (state, paginationArgs, returnedDataBatch_last, QMS_name, QMS_type) => {
 				const endpointInfoVal = get(endpointInfo);
-				let currentQMS_info = schemaData.get_QMS_Field(QMS_name, QMS_type, schemaData);
+				let currentQMS_info = get_QMS_Field(QMS_name, QMS_type, schemaData);
 				if (!currentQMS_info) return state;
 				const pageInfoFieldsLocation = endpointInfoVal.pageInfoFieldsLocation;
 				const rowsLocationPossibilitiy = endpointInfoVal.rowsLocationPossibilities?.find((rowsLocation) => {

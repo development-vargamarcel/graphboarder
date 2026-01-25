@@ -36,56 +36,48 @@ class LoggerService {
         this.level = level;
     }
 
-    private formatMessage(level: string, message: unknown, context?: unknown): any[] {
+    private formatMessage(level: string, ...args: unknown[]): any[] {
         const timestamp = new Date().toISOString();
-        const args = [`[${timestamp}] [${level}]`, message];
-        if (context) {
-            args.push(context);
-        }
-        return args;
+        return [`[${timestamp}] [${level}]`, ...args];
     }
 
     /**
      * Logs a debug message.
-     * @param message - The message to log.
-     * @param context - Optional additional data to log.
+     * @param args - The arguments to log.
      */
-    debug(message: unknown, context?: unknown) {
+    debug(...args: unknown[]) {
         if (this.level <= LogLevel.DEBUG) {
-            console.debug(...this.formatMessage('DEBUG', message, context));
+            console.debug(...this.formatMessage('DEBUG', ...args));
         }
     }
 
     /**
      * Logs an info message.
-     * @param message - The message to log.
-     * @param context - Optional additional data to log.
+     * @param args - The arguments to log.
      */
-    info(message: unknown, context?: unknown) {
+    info(...args: unknown[]) {
         if (this.level <= LogLevel.INFO) {
-            console.info(...this.formatMessage('INFO', message, context));
+            console.info(...this.formatMessage('INFO', ...args));
         }
     }
 
     /**
      * Logs a warning message.
-     * @param message - The message to log.
-     * @param context - Optional additional data to log.
+     * @param args - The arguments to log.
      */
-    warn(message: unknown, context?: unknown) {
+    warn(...args: unknown[]) {
         if (this.level <= LogLevel.WARN) {
-            console.warn(...this.formatMessage('WARN', message, context));
+            console.warn(...this.formatMessage('WARN', ...args));
         }
     }
 
     /**
      * Logs an error message.
-     * @param message - The message to log.
-     * @param context - Optional additional data to log.
+     * @param args - The arguments to log.
      */
-    error(message: unknown, context?: unknown) {
+    error(...args: unknown[]) {
         if (this.level <= LogLevel.ERROR) {
-            console.error(...this.formatMessage('ERROR', message, context));
+            console.error(...this.formatMessage('ERROR', ...args));
         }
     }
 }

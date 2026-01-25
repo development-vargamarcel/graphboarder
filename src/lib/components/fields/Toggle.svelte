@@ -1,6 +1,6 @@
 <script lang="ts">
-	let toggleEl = $state();
-	let swapEl = $state();
+	let toggleEl = $state<HTMLInputElement>();
+	let swapEl = $state<HTMLInputElement>();
 	interface Props {
 		displayInterface: any;
 		rawValue?: boolean;
@@ -34,7 +34,7 @@
 			bind:this={swapEl}
 			bind:checked={rawValue}
 			onchange={() => {
-				rawValue = swapEl.checked ? true : false;
+				rawValue = swapEl!.checked ? true : false;
 				onChanged?.({
 					chd_rawValue: rawValue
 				});
@@ -53,7 +53,7 @@
 			bind:this={toggleEl}
 			bind:checked={rawValue}
 			onchange={() => {
-				rawValue = toggleEl.checked ? true : false;
+				rawValue = toggleEl!.checked ? true : false;
 				onChanged?.({
 					chd_rawValue: rawValue
 				});

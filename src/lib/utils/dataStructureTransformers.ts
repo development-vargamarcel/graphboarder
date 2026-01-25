@@ -54,7 +54,7 @@ export const ISO8601_transformer = (value: string): string | unknown => {
 };
 export const ISO8601_transformerREVERSE = (value: unknown): string => {
 	// Convert ISO 8601 string to Date object
-	const dateObject = new Date(string_transformerREVERSE(value, true));
+	const dateObject = new Date(string_transformerREVERSE(value, true) as string);
 	// Extract individual components
 	const year = dateObject.getFullYear().toString().padStart(4, '0');
 	const preMonth = dateObject.getMonth() + 1; // Months are zero-indexed

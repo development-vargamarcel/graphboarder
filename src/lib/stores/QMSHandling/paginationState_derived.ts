@@ -2,17 +2,21 @@
 
 import { derived, get } from 'svelte/store';
 import { get_paginationTypes } from '../pagination/paginationTypes';
+import type { PaginationStateStore, FieldWithDerivedData, EndpointInfoStore, SchemaData, SchemaDataStore } from '$lib/types';
+
 export const Create_paginationState_derived = (
-	_paginationState_Store,
-	paginationArgs,
-	paginationType, endpointInfo, schemaData
+	_paginationState_Store: PaginationStateStore,
+	paginationArgs: FieldWithDerivedData[],
+	paginationType: string,
+	endpointInfo: EndpointInfoStore,
+	schemaData: SchemaDataStore | SchemaData
 ) => {
 	return {
 		...derived([_paginationState_Store], ([$_paginationState_Store], set) => {
 			if (
 				!get_paginationTypes(endpointInfo, schemaData).find((pagType) => {
 					return pagType.name == paginationType;
-				})
+				})!
 					.isFirstPage(_paginationState_Store, paginationArgs)
 			) {
 				set($_paginationState_Store);
