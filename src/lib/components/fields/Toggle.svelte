@@ -7,8 +7,8 @@
 		showValue?: boolean;
 		otherClases?: string;
 		useSwap?: boolean;
-		swapOnText: any;
-		swapOffText: any;
+		swapOnText?: any;
+		swapOffText?: any;
 		swapOfftextLinethrough?: any;
 		onChanged?: (detail: { chd_rawValue: boolean }) => void;
 	}
@@ -19,8 +19,8 @@
 		showValue = true,
 		otherClases = '',
 		useSwap = false,
-		swapOnText,
-		swapOffText,
+		swapOnText = 'On',
+		swapOffText = 'Off',
 		swapOfftextLinethrough = swapOnText == swapOffText || !swapOffText,
 		onChanged
 	}: Props = $props();

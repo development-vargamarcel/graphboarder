@@ -4,11 +4,7 @@
 	import { getContext } from 'svelte';
 	import ComponentForLayout from '../../routes/endpoints/[endpointid]/queries/[queryName]/ComponentForLayout.svelte';
 	import { Logger } from '$lib/utils/logger';
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-	const schemaData = QMSMainWraperContext?.schemaData;
-	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
-	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
+
 	interface Props {
 		prefix?: string;
 		QMS_info: any;
@@ -30,6 +26,12 @@
 		onRowSelectionChange,
 		onRowClicked
 	}: Props = $props();
+
+	let mainWraperCtx = getContext(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = mainWraperCtx?.endpointInfo;
+	const schemaData = mainWraperCtx?.schemaData;
+	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
+	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
 	Logger.debug('nooooddeeee', { node });
 	let getManyQMS = $state();
 	$effect(() => {

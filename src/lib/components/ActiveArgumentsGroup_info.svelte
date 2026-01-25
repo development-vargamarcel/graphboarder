@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { getRootType } from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
+	import type { QMSMainWraperContext } from '$lib/types/index';
 
 	export const prefix = '';
 	let { group } = $props();
 
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const schemaData = QMSMainWraperContext?.schemaData;
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const schemaData = mainWraperCtx?.schemaData;
 	let showDescription = $state();
 </script>
 

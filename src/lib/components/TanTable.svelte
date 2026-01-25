@@ -38,10 +38,10 @@
 	}: Props = $props();
 
     let loadMore = $state(false);
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	let QMSWraperContext = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
-	let idColName = $derived(QMSWraperContext?.idColName);
-	const paginationOptions = $derived(QMSWraperContext?.paginationOptions);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+	let idColName = $derived(qmsWraperCtx?.idColName);
+	const paginationOptions = $derived(qmsWraperCtx?.paginationOptions);
 
 	const getColumnVisibility = (cols: any[]) => {
 		let columnVisibility: any = {};
@@ -261,7 +261,7 @@
 		</div>
 	{/if}
 	{#if $paginationOptions?.infiniteScroll && data?.length > 0 && loadMore}
-		<InfiniteLoading oninfinite={infiniteHandler} identifier={infiniteId} distance={100} />
+		<InfiniteLoading on:infinite={infiniteHandler} identifier={infiniteId} distance={100} />
 	{/if}
 	<div class="h-4"></div>
 </div>

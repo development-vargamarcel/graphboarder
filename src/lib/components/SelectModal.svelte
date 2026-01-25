@@ -121,9 +121,9 @@
 		$mutationVersion = true;
 	}
 
-	let QMSMainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-	const schemaData = QMSMainWraperContext?.schemaData;
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = mainWraperCtx?.endpointInfo;
+	const schemaData = mainWraperCtx?.schemaData;
 
 	const stepsOfNodesToStepsOfFields = (stepsOfNodes: any[]): string[] => {
 		const stepsOfFields = stepsOfNodes

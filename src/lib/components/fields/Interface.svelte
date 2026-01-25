@@ -29,8 +29,8 @@
 		onChanged
 	}: Props = $props();
 
-	let QMSMainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = mainWraperCtx?.endpointInfo;
 	const choosenDisplayInterface = getContext<Writable<string>>('choosenDisplayInterface');
 
 	let typeExtraData = $state(endpointInfo?.get_typeExtraData?.(typeInfo));

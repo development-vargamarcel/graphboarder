@@ -1,9 +1,7 @@
 <script lang="ts">
-	import CodeEditor from '$lib/components/fields/CodeEditor.svelte';
-	import AddColumn from './../../../../../lib/components/AddColumn.svelte';
-	import TypeList from './../../../../../lib/components/TypeList.svelte';
-	import Table from '$lib/components/Table.svelte';
+	import AddColumn from '$lib/components/AddColumn.svelte';
 	import { page } from '$app/stores';
+	import Table from '$lib/components/Table.svelte';
 	import {
 		generateTitleFromStepsOfFields,
 		getDataGivenStepsOfFields,
@@ -13,80 +11,59 @@
 	} from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
 	import { goto } from '$app/navigation';
+	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
-	import { format } from 'graphql-formatter';
 	import hljs from 'highlight.js/lib/core';
 	import graphql from 'highlight.js/lib/languages/graphql';
+	import { Logger } from '$lib/utils/logger';
 	import 'highlight.js/styles/base16/solarized-dark.css';
 	import RowCount from '$lib/components/UI/rowCount.svelte';
 	import Modal from '$lib/components/Modal.svelte';
+	import { browser } from '$app/environment';
+	import TypeList from '$lib/components/TypeList.svelte';
+	import CodeEditor from '$lib/components/fields/CodeEditor.svelte';
 	import GraphqlCodeDisplay from '$lib/components/GraphqlCodeDisplay.svelte';
 	import ControlPanel from '$lib/components/ControlPanel.svelte';
-	import { addToHistory } from '$lib/stores/queryHistory';
-	import QueryHistory from '$lib/components/QueryHistory.svelte';
-	import { updateStoresFromAST } from '$lib/utils/astToUIState';
-	import { parse } from 'graphql';
-	import LoadingSpinner from '$lib/components/UI/LoadingSpinner.svelte';
-	import EmptyState from '$lib/components/UI/EmptyState.svelte';
-	import { downloadCSV } from '$lib/utils/exportUtils';
 
 	interface Props {
 		prefix?: string;
-		enableMultiRowSelectionState?: boolean;
-		currentQMS_info?: any;
-		rowSelectionState?: any;
-		onRowSelectionChange?: (detail: any) => void;
-		onRowClicked?: (detail: any) => void;
+		QMSName: any;
 		children?: import('svelte').Snippet;
 	}
 
-	let {
-		prefix = '',
-		enableMultiRowSelectionState = true,
-		currentQMS_info: currentQMS_infoProp,
-		rowSelectionState,
-		onRowSelectionChange,
-		onRowClicked,
-		children
-	}: Props = $props();
+	let { prefix = '', QMSName, children }: Props = $props();
 
-	// Get contexts
-	let QMSMainWraperContext = getContext<any>(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-	const schemaData = QMSMainWraperContext?.schemaData;
-	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
-
-	const QMSWraperContext = getContext<any>(`${prefix}QMSWraperContext`);
+	// Get contexts - ensuring prefix is defined
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = mainWraperCtx?.endpointInfo;
+	const urqlCoreClient = mainWraperCtx?.urqlCoreClient;
+	let queryName = QMSName;
+	const qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
 	const {
-		QMS_bodyPart_StoreDerived_rowsCount,
+		QMS_bodyPart_StoreDerived_rowsCount = null,
 		activeArgumentsDataGrouped_Store,
 		tableColsData_Store,
 		finalGqlArgObj_Store,
 		QMS_bodyPart_StoreDerived,
 		QMS_bodyPartsUnifier_StoreDerived,
 		paginationOptions,
-		paginationState,
-		QMSName
-	} = QMSWraperContext;
+		paginationState
+	} = qmsWraperCtx;
+	const schemaData = mainWraperCtx?.schemaData;
 
-	// Initialize currentQMS_info from prop or context
-	let currentQMS_info = currentQMS_infoProp ?? schemaData.get_QMS_Field(QMSName, 'query', schemaData);
-
-	console.log({ QMS_bodyPart_StoreDerived_rowsCount }, { QMSWraperContext });
-
-	let dd_relatedRoot = getRootType(null, currentQMS_info.dd_rootName, schemaData);
+	let currentQMS_info = (schemaData as any).get_QMS_Field(queryName, 'query', schemaData as any);
+	let dd_relatedRoot = getRootType(null, currentQMS_info.dd_rootName, schemaData as any);
 	if (!currentQMS_info) {
 		goto('/queries');
 	}
 
-	// Pagination setup
-	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData).find((pagType) => {
+	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData as any).find((pagType: any) => {
 		return pagType.name == currentQMS_info.dd_paginationType;
 	});
 
-	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], schemaData);
+	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], schemaData as any);
 
 	// Reactive state
 	let queryData = $state<{ fetching: boolean; error: any; data: any }>(
@@ -105,10 +82,10 @@
 	let showNonPrettifiedQMSBody = false;
 	let showModal = $state(false);
 	let showActiveFilters: boolean | undefined;
-	let showHistory = $state(false);
 
 	// Query execution function
 	const runQuery = (queryBody: string) => {
+		Logger.info('Starting Query Execution', { queryBody });
 		let fetching = true;
 		let error: any = false;
 		let data: any = false;
@@ -120,30 +97,22 @@
 
 				if (result.error) {
 					error = result.error.message;
+					Logger.error('Query execution failed', result.error);
 				}
 				if (result.data) {
 					data = result.data;
+					Logger.info('Query execution successful', { dataCount: Array.isArray(data) ? data.length : 1 });
 				}
 				queryData = { fetching, error, data };
 				let stepsOfFieldsInput = [
 					currentQMS_info.dd_displayName,
-					...endpointInfo.get_rowsLocation(currentQMS_info, schemaData)
+					...endpointInfo.get_rowsLocation(currentQMS_info, schemaData as any)
 				];
-				console.log({ stepsOfFieldsInput }, currentQMS_info.dd_displayName);
-				rowsCurrent = getDataGivenStepsOfFields(undefined, queryData.data, stepsOfFieldsInput);
+				Logger.debug({ stepsOfFieldsInput }, currentQMS_info.dd_displayName);
+				rowsCurrent = getDataGivenStepsOfFields(undefined, queryData.data, stepsOfFieldsInput) as any[];
 				if (rowsCurrent && !Array.isArray(rowsCurrent)) {
 					rowsCurrent = [rowsCurrent];
 				}
-
-				if (result.data) {
-					addToHistory({
-						query: queryBody,
-						endpointId: endpointInfo.id,
-						operationName: QMSName,
-						rowsCount: rowsCurrent?.length || 0
-					});
-				}
-
 				if ($paginationOptions.infiniteScroll) {
 					if (
 						paginationTypeInfo?.isFirstPage(paginationState, currentQMS_info.dd_paginationArgs) &&
@@ -176,13 +145,13 @@
 					paginationTypeInfo?.name == 'pageBased'
 				) {
 					loadedF?.();
-					console.log('loadedF ');
+					Logger.debug('loadedF ');
 				} else {
 					completeF?.();
-					console.log('completeF');
+					Logger.debug('completeF');
 				}
 
-				console.log({ rows }, { rowsCurrent });
+				Logger.debug({ rows }, { rowsCurrent });
 				rowsCurrent = [];
 			});
 	};
@@ -195,11 +164,11 @@
 		);
 		if (
 			rowLimitingArgNames?.some((argName: string) => {
-				return rows.length / $paginationState?.[argName] >= 1;
+				return rows.length / ($paginationState?.[argName] as number) >= 1;
 			}) ||
 			paginationTypeInfo?.name == 'pageBased'
 		) {
-			paginationState.nextPage(queryData?.data, QMSName, 'query');
+			paginationState.nextPage(queryData?.data, queryName, 'query');
 		} else {
 			loaded();
 			complete();
@@ -207,70 +176,15 @@
 	}
 
 	const hideColumn = (e: { detail: { column: any } }) => {
-		console.log('hideColumn', e.detail.column);
 		tableColsData_Store.removeColumn(e.detail.column);
-	};
-
-	const addColumnFromInput = (e: KeyboardEvent) => {
-		if (e.key == 'Enter') {
-			let stepsOfFields = column_stepsOfFields.replace(/\s/g, '').replace(/\./g, '>').split('>');
-			let tableColData = {
-				title: `col-${Math.floor(Math.random() * 200)},${generateTitleFromStepsOfFields(
-					stepsOfFields
-				)}`,
-				stepsOfFields: [QMSName, ...stepsOfFields],
-				stepsOfFieldsOBJ: stepsOfFieldsToQueryFragmentObject([QMSName, ...stepsOfFields], false)
-			};
-
-			tableColsData_Store.addColumn(tableColData);
-			column_stepsOfFields = '';
-		}
-	};
-
-	const restoreQuery = (item: any) => {
-		try {
-			const ast = parse(item.query);
-			updateStoresFromAST(
-				ast,
-				currentQMS_info,
-				schemaData,
-				endpointInfo,
-				activeArgumentsDataGrouped_Store,
-				tableColsData_Store,
-				paginationState
-			);
-			showHistory = false;
-		} catch (e) {
-			console.error('Failed to restore query', e);
-			alert('Failed to restore query: ' + (e as Error).message);
-		}
-	};
-
-	const getErrorMessage = (error: any) => {
-		if (typeof error === 'object') return JSON.stringify(error, null, 2);
-		if (typeof error === 'string') {
-			try {
-				if (error.trim().startsWith('{') || error.trim().startsWith('[')) {
-					return JSON.stringify(JSON.parse(error), null, 2);
-				}
-			} catch (e) {
-				// ignore
-			}
-			return error;
-		}
-		return String(error);
 	};
 
 	// Effects - auto-cleanup on component destruction
 	$effect(() => {
-		console.log('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
+		Logger.debug('$QMS_bodyPartsUnifier_StoreDerived', $QMS_bodyPartsUnifier_StoreDerived);
 	});
 
 	$effect(() => {
-		console.log({
-			QMSWraperContext,
-			activeArgumentsDataGrouped: $activeArgumentsDataGrouped_Store
-		});
 		activeArgumentsDataGrouped_Store_IS_SET = $activeArgumentsDataGrouped_Store.length > 0;
 	});
 
@@ -282,11 +196,11 @@
 	});
 
 	$effect(() => {
-		console.log({ queryData });
+		Logger.debug({ queryData });
 	});
 
 	$effect(() => {
-		console.log($tableColsData_Store);
+		Logger.debug($tableColsData_Store);
 	});
 
 	// Cleanup drawer on destroy
@@ -301,7 +215,12 @@
 		hljs.registerLanguage('graphql', graphql);
 		hljs.highlightAll();
 	});
+    const addColumnFromInput = (e: any) => {
+        // ...
+    }
 </script>
+
+{@render children?.()}
 
 <!-- <button
 	on:click={() => {
@@ -311,33 +230,26 @@
 	next page
 </button> -->
 <!-- main -->
-<div class="p-2">
-	<ControlPanel
-		type={currentQMS_info}
-		bind:column_stepsOfFields
-		{addColumnFromInput}
-		{dd_relatedRoot}
-		{QMSName}
-		{currentQMS_info}
-		onNewColumnAddRequest={(tableColData) => {
-			console.log('aaaaaaaaa', { tableColData });
-			tableColsData_Store.addColumn(tableColData);
-		}}
-	/>
-</div>
-<div class="flex space-x-2 mx-2">
+<div class="flex space-x-2 mx-2 z-50">
 	<AddColumn
 		bind:column_stepsOfFields
 		{addColumnFromInput}
 		{dd_relatedRoot}
-		{QMSName}
+		QMSName={queryName}
 		QMS_info={currentQMS_info}
-		onNewColumnAddRequest={(tableColData) => {
-			console.log('aaaaaaaaa', { tableColData });
-			tableColsData_Store.addColumn(tableColData);
-		}}
+        onNewColumnAddRequest={(tableColData: any) => {
+            tableColsData_Store.addColumn(tableColData);
+        }}
 	/>
 	<div class="grow==">
+		<ControlPanel
+			type="query"
+			{column_stepsOfFields}
+			{addColumnFromInput}
+			{dd_relatedRoot}
+			QMSName={queryName}
+			{currentQMS_info}
+		/>
 		{#if showModal}
 			<Modal
 				modalIdetifier={'activeArgumentsDataModal'}
@@ -384,42 +296,23 @@
 			/>
 		</div>
 	{/if}
-	<button class="btn btn-xs btn-primary " aria-label="Add Column">
+
+	<button class="btn btn-xs btn-primary " aria-label="Add">
 		<i class="bi bi-plus-circle-fill "></i>
-	</button>
-	<button
-		class="btn btn-xs btn-secondary"
-		onclick={() => {
-			showHistory = true;
-		}}
-	>
-		History
-	</button>
-	<button
-		class="btn btn-xs btn-accent"
-		onclick={() => {
-			if (rows.length > 0) {
-				downloadCSV(rows, `${QMSName}-export.csv`);
-			}
-		}}
-		disabled={rows.length === 0}
-	>
-		Export CSV
 	</button>
 </div>
 
 {@render children?.()}
 {#if queryData.error}
-	<div class="px-4 mx-auto mb-2">
-		<div class="alert alert-error shadow-lg flex flex-col items-start">
-			<div class="flex justify-between w-full">
-				<span class="font-bold">Error</span>
+	<div class="px-4 mx-auto  mb-2">
+		<div class="alert alert-error shadow-lg ">
+			<div>
 				<button
 					class="btn btn-ghost btn-sm p-0"
-					aria-label="Dismiss error"
 					onclick={() => {
 						queryData.error = null;
 					}}
+					aria-label="Dismiss error"
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -430,48 +323,42 @@
 							stroke-linecap="round"
 							stroke-linejoin="round"
 							stroke-width="2"
-							d="M6 18L18 6M6 6l12 12"
+							d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
 						/></svg
 					>
 				</button>
-			</div>
-			<div class="max-h-60 overflow-auto w-full">
-				<pre class="text-xs bg-base-100/20 p-2 rounded whitespace-pre-wrap">{getErrorMessage(
-					queryData.error
-				)}</pre>
+
+				<span class="max-h-20 overflow-auto">{queryData.error}</span>
 			</div>
 		</div>
 	</div>
 {/if}
 {#if queryData.fetching}
-	<LoadingSpinner size="loading-lg" />
+	<p>Loading...</p>
 {/if}
 {#if showQMSBody}
-	<GraphqlCodeDisplay {showNonPrettifiedQMSBody} {prefix} value={$QMS_bodyPartsUnifier_StoreDerived} />
-{/if}
-
-{#if showHistory}
-	<QueryHistory onRestore={restoreQuery} onClose={() => (showHistory = false)} />
+	<GraphqlCodeDisplay {showNonPrettifiedQMSBody} value={$QMS_bodyPartsUnifier_StoreDerived} />
 {/if}
 
 <div class="md:px-2">
-	{#if !queryData.fetching}
-		{#if rows.length === 0 && !queryData.error}
-			<EmptyState message="No data found" />
-		{:else}
-			<Table
-				{rowSelectionState}
-				{enableMultiRowSelectionState}
-				{infiniteId}
-				{infiniteHandler}
-				colsData={$tableColsData_Store}
-				{rows}
-				onHideColumn={(detail) => {
-					hideColumn({ detail });
-				}}
-				{onRowSelectionChange}
-				{onRowClicked}
-			/>
-		{/if}
-	{/if}
+	<Table
+		{infiniteId}
+		{infiniteHandler}
+		colsData={$tableColsData_Store}
+		{rows}
+		onHideColumn={(detail) => {
+			hideColumn({ detail });
+		}}
+		onRowClicked={(detail) => {
+			if (browser) {
+				window.open(
+					`${$page.url.origin}/endpoints/${detail.id}`,
+					'_blank' // <- This is what makes it open in a new window.
+				);
+				//	window.location = `${$page.url.origin}/endpoints/${detail.id}`;
+			}
+			//goto(`${$page.url.origin}/endpoints/${detail.id}`);
+		}}
+	/>
 </div>
+<div></div>

@@ -76,8 +76,8 @@
 	}));
 
     let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
-	let QMSMainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
-	const schemaData = QMSMainWraperContext?.schemaData;
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const schemaData = mainWraperCtx?.schemaData;
 	const nodeRootType = getRootType(null, node.dd_rootName, schemaData);
 
     let groupArgsPossibilities = $derived.by(() => {
@@ -105,7 +105,7 @@
 		Logger.debug({ groupArgsPossibilities, node });
 	});
 	let predefinedFirstSteps = $derived(group.group_isRoot ? [] : [group.group_name]);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+	const endpointInfo = mainWraperCtx?.endpointInfo;
 </script>
 
 <div

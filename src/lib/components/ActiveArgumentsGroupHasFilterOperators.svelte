@@ -224,8 +224,7 @@
 			group,
 			activeArgumentsDataGrouped_Store,
 			schemaData,
-			endpointInfo,
-			stepsOfFields
+			endpointInfo
 		);
 	}
 	let showSelectModal = $state(false);
@@ -338,8 +337,7 @@
 								group,
 								activeArgumentsDataGrouped_Store,
 								schemaData,
-								endpointInfo,
-								stepsOfFields
+								endpointInfo
 							);
 						}}
 					>
@@ -383,8 +381,7 @@
 									group,
 									activeArgumentsDataGrouped_Store,
 									schemaData,
-									endpointInfo,
-									stepsOfFields
+									endpointInfo
 								);
 							}}
 						>

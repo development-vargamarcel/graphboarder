@@ -37,8 +37,8 @@
 
     const hasGroup_argsNode = $derived(group.group_argsNode);
 
-	const QMSWraperContext = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
-    const finalGqlArgObj_Store = QMSWraperContext?.finalGqlArgObj_Store;
+	const qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+    const finalGqlArgObj_Store = qmsWraperCtx?.finalGqlArgObj_Store;
 
 	const CPItemContext = getContext<any>(`${prefix}CPItemContext`);
 
@@ -101,8 +101,8 @@
 					update_activeArgumentsDataGrouped(group);
 					onUpdateQuery?.();
 				}}
-                parentNodeId={null} // Add missing prop with default
-                availableOperators={[]} // Add missing prop with default
+                parentNodeId={null}
+                availableOperators={[]}
 			/>
 		</div>
 	{:else}

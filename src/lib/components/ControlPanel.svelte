@@ -26,8 +26,8 @@
         hasGroup_argsNode
 	}: Props = $props();
 
-    const QMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
-	const mergedChildren_controlPanel_Store = QMSWraperContext?.mergedChildren_controlPanel_Store;
+    const qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+	const mergedChildren_controlPanel_Store = qmsWraperCtx?.mergedChildren_controlPanel_Store;
 
 	let showControlPanel = $state(false);
 	const controlPanelContext = {};

@@ -54,10 +54,10 @@
 		});
 	};
 
-	const QMSWraperContext = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
-	let QMSMainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
-	const schemaData = QMSMainWraperContext?.schemaData;
-	const tableColsData_Store = QMSWraperContext?.tableColsData_Store;
+	const qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const schemaData = mainWraperCtx?.schemaData;
+	const tableColsData_Store = qmsWraperCtx?.tableColsData_Store;
 	const stepsOfFieldsOBJ = getContext<Writable<Record<string, any>>>(`${prefix}stepsOfFieldsOBJ`);
 	const stepsOfFieldsOBJFull = getContext<Writable<Record<string, any>>>(`${prefix}stepsOfFieldsOBJFull`);
 
@@ -112,9 +112,9 @@
 	let QMSarguments;
 	let canAcceptArguments = $derived(canExpand && args?.length > 0 && isUsedInSomeColumn);
 
-	const mergedChildren_finalGqlArgObj_Store = QMSWraperContext.mergedChildren_finalGqlArgObj_Store;
+	const mergedChildren_finalGqlArgObj_Store = qmsWraperCtx.mergedChildren_finalGqlArgObj_Store;
 	const mergedChildren_QMSWraperCtxData_Store =
-		QMSWraperContext.mergedChildren_QMSWraperCtxData_Store;
+		qmsWraperCtx.mergedChildren_QMSWraperCtxData_Store;
 	let activeArgumentsDataGrouped_Store = getContext<Writable<any>>(`${prefix}activeArgumentsDataGrouped_Store`);
 
 	// //S//move to QMSWraper (outermost if possible)

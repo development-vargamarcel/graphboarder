@@ -31,13 +31,13 @@
 	let lastSyncedValue = $state(value);
 
 	// Try to get context if available
-	let QMSWraperContext = $state();
-	let QMSMainWraperContext = $state();
+	let qmsWraperCtx = $state();
+	let mainWraperCtx = $state();
 	let currentQMS_info;
 
 	try {
-		QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
-		QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+		qmsWraperCtx = getContext(`${prefix}QMSWraperContext`);
+		mainWraperCtx = getContext(`${prefix}QMSMainWraperContext`);
 	} catch (e) {
 		Logger.debug('GraphqlCodeDisplay: Context not available', e);
 	}
@@ -78,7 +78,7 @@
 
 	const syncQueryToUI = (ast) => {
 		try {
-			if (!QMSWraperContext || !QMSMainWraperContext) {
+			if (!qmsWraperCtx || !mainWraperCtx) {
 				Logger.warn('GraphqlCodeDisplay: Cannot sync to UI - context not available');
 				return;
 			}
@@ -88,9 +88,9 @@
 				tableColsData_Store,
 				paginationState,
 				QMSName
-			} = QMSWraperContext;
+			} = qmsWraperCtx;
 
-			const { endpointInfo, schemaData } = QMSMainWraperContext;
+			const { endpointInfo, schemaData } = mainWraperCtx;
 
 			// Get the current QMS info
 			const qmsInfo = schemaData.get_QMS_Field(QMSName, 'query', schemaData);
@@ -126,7 +126,7 @@
 				ast = parse(valueModifiedManually);
 
 				// Sync to UI if enabled and context is available
-				if (enableSyncToUI && QMSWraperContext && QMSMainWraperContext) {
+				if (enableSyncToUI && qmsWraperCtx && mainWraperCtx) {
 					syncQueryToUI(ast);
 					lastSyncedValue = valueModifiedManually;
 				}

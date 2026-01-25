@@ -45,8 +45,8 @@
     });
 
 	const prefix = '';
-	let QMSMainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
-	let schemaData = $derived(QMSMainWraperContext?.schemaData);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let schemaData = $derived(mainWraperCtx?.schemaData);
 
 	const addFilter = () => {
 		onArgAddRequest?.(generateArgData(stepsOfFields, type, schemaData));

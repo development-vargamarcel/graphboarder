@@ -11,7 +11,6 @@
 		activeArgumentsDataGrouped: any;
 		prefix?: string;
 		node: any;
-        onUpdateQuery?: () => void;
 	}
 
 	let {
@@ -20,8 +19,7 @@
 		update_activeArgumentsDataGrouped,
 		activeArgumentsDataGrouped,
 		prefix = '',
-		node,
-        onUpdateQuery
+		node
 	}: Props = $props();
 
 	let showDescription = $state();
@@ -68,8 +66,8 @@
 
     let predefinedFirstSteps = $derived(group.group_isRoot ? [] : [group.group_name]);
 
-    let QMSMainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+    let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = mainWraperCtx?.endpointInfo;
 </script>
 
 <div class="bg-base-100  rounded-box">

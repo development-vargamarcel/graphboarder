@@ -33,8 +33,8 @@
 		onContainerAddRequest
 	}: Props = $props();
 
-	let QMSMainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
-	const schemaData = QMSMainWraperContext?.schemaData;
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const schemaData = mainWraperCtx?.schemaData;
 
     $effect(() => {
         Logger.debug({ type });

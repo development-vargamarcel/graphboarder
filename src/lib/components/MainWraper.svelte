@@ -36,12 +36,11 @@
 	let { prefix = '', endpointInfoProvided = null, children }: Props = $props();
 
 	// Initialize stores
-	// We pass null initially to avoid capturing the prop synchronously, avoiding 'state_referenced_locally' warning.
-	// The $effect below will populate it.
-	const endpointInfo = create_endpointInfo_Store(null);
+	// Initialize with the provided prop value immediately so the client has the correct URL on startup.
+	const endpointInfo = create_endpointInfo_Store(endpointInfoProvided);
 	const schemaData = create_schemaData();
 
-	// Update store when prop changes
+	// Update store when prop changes (for reactivity if the prop updates later)
 	$effect(() => {
 		if (endpointInfoProvided) {
 			endpointInfo.smartSet(endpointInfoProvided);

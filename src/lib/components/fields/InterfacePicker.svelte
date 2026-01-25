@@ -13,14 +13,14 @@
 	}
 
 	let { prefix = '', chosen, typeInfo, onInterfaceChosen }: Props = $props();
-	let QMSMainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = mainWraperCtx?.endpointInfo;
 	let possible_displayInterfaces = $derived($endpointInfo.typesExtraDataPossibilities.map(
 		(possibility: any) => {
 			return possibility.get_Val()?.displayInterface;
 		}
 	));
-	const schemaData = QMSMainWraperContext?.schemaData;
+	const schemaData = mainWraperCtx?.schemaData;
 	let rootType = $derived(getRootType(null, typeInfo.dd_rootName, schemaData));
 </script>
 
