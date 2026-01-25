@@ -2,9 +2,13 @@
 	import CodeMirror from 'svelte-codemirror-editor';
 	import { javascript } from '@codemirror/lang-javascript';
 	import { graphql } from 'cm6-graphql';
+	// @ts-ignore
 	import * as prettier from 'https://unpkg.com/prettier@3.2.5/standalone.mjs';
+	// @ts-ignore
 	import prettierPluginTypescript from 'https://unpkg.com/prettier@3.2.5/plugins/typescript.mjs';
+	// @ts-ignore
 	import prettierPluginGraphql from 'https://unpkg.com/prettier@3.2.5/plugins/graphql.mjs';
+	// @ts-ignore
 	import prettierPluginEstree from 'https://unpkg.com/prettier@3.2.5/plugins/estree.mjs';
 	interface Props {
 		language?: string;

@@ -1,5 +1,4 @@
 import { argumentCanRunQuery, generate_gqlArgObj, getPreciseType, getRootType } from '$lib/utils/usefulFunctions';
-import { json } from '@sveltejs/kit';
 import { get, writable } from 'svelte/store';
 import { Logger } from '$lib/utils/logger';
 import _ from 'lodash';
@@ -9,7 +8,8 @@ import type {
 	ActiveArgumentData,
 	ContainerData,
 	FieldWithDerivedData,
-	SchemaData,
+	SchemaDataStore,
+    SchemaData,
 	EndpointInfoStore
 } from '$lib/types';
 
@@ -26,7 +26,7 @@ export const Create_activeArgumentsDataGrouped_Store = (
 		update,
 		set_groups: (
 			QMS_info: FieldWithDerivedData,
-			schemaData: SchemaData,
+			schemaData: SchemaDataStore | SchemaData,
 			QMSarguments: Record<string, unknown> | null,
 			endpointInfo: EndpointInfoStore
 		) => {
@@ -34,7 +34,7 @@ export const Create_activeArgumentsDataGrouped_Store = (
 			const argsInfo = QMS_info?.args;
 			Logger.debug({ argsInfo });
 			//handle generating activeArgumentsDataGrouped
-			const activeArgumentsDataGrouped = [];
+			const activeArgumentsDataGrouped: ActiveArgumentGroup[] = [];
 			const hasRootArgs = argsInfo?.find((el) => {
 				return el.dd_isRootArg;
 			});
@@ -44,7 +44,7 @@ export const Create_activeArgumentsDataGrouped_Store = (
 			////-------- all encompassing group !!!put this first to have it overriden by other groups,or last for opposite result
 			const addAllArgsGroup = () => {
 				Logger.debug('ppppp', QMS_info, QMS_infoRoot)
-				const newGroupData = {
+				const newGroupData: ActiveArgumentGroup = {
 					originType: QMS_info,
 
 					group_name: 'all',
@@ -52,16 +52,18 @@ export const Create_activeArgumentsDataGrouped_Store = (
 					group_isRoot: false,
 					// group_info: el,
 					...QMS_info,
-					group_args: []
-				};
-				newGroupData.group_argsNode = {
-					mainContainer: {
-						...QMS_info,
-						operator: 'bonded',
-						isMain: true,
-						not: false,
-						items: [],
-						id: 'mainContainer'
+					group_args: [],
+					group_argsNode: {
+						mainContainer: {
+							...QMS_info,
+							operator: 'bonded',
+							isMain: true,
+							not: false,
+							items: [],
+							id: 'mainContainer',
+							stepsOfFields: [],
+							stepsOfFieldsStringified: '[]'
+						} as ContainerData
 					}
 				};
 				activeArgumentsDataGrouped.push(newGroupData);
@@ -70,7 +72,7 @@ export const Create_activeArgumentsDataGrouped_Store = (
 			//////////////////////////----------Smart groups
 			const addSmartGroups = () => {
 				if (hasRootArgs) {
-					const rootGroup = {
+					const rootGroup: ActiveArgumentGroup = {
 						originType: QMS_info,
 						group_name: 'root',
 						group_isRoot: true,
@@ -82,28 +84,30 @@ export const Create_activeArgumentsDataGrouped_Store = (
 
 				argsInfo?.forEach((el) => {
 					if (!el.dd_isRootArg) {
-						const newGroupData = {
+						const newGroupData: ActiveArgumentGroup = {
 							originType: QMS_info,
 
 							group_name: el.dd_displayName,
 							group_isRoot: false,
 							// group_info: el,
 							...el,
-							group_args: []
+							group_args: [],
+							group_argsNode: {
+								mainContainer: {
+									...el,
+									operator: 'bonded',
+									isMain: true,
+									not: false,
+									items: [],
+									id: 'mainContainer',
+									stepsOfFields: [],
+									stepsOfFieldsStringified: '[]'
+								} as ContainerData
+							}
 						};
 
 						const hasFilterOperators =
-							getRootType(null, el.dd_rootName, schemaData)?.dd_baseFilterOperators?.length > 0;
-						newGroupData.group_argsNode = {
-							mainContainer: {
-								...el,
-								operator: 'bonded',
-								isMain: true,
-								not: false,
-								items: [],
-								id: 'mainContainer'
-							}
-						};
+							getRootType(null, el.dd_rootName, schemaData)?.dd_baseFilterOperators?.length ?? 0 > 0;
 
 						// if (hasFilterOperators) {
 						// 	newGroupData.group_argsNode = {
@@ -119,17 +123,8 @@ export const Create_activeArgumentsDataGrouped_Store = (
 						// }
 
 						const expectsList = el.dd_kindList;
-						if (expectsList) {
-							newGroupData.group_argsNode = {
-								mainContainer: {
-									...el,
-									operator: 'list',
-									isMain: true,
-									not: false,
-									items: [],
-									id: 'mainContainer'
-								}
-							};
+						if (expectsList && newGroupData.group_argsNode) {
+							newGroupData.group_argsNode.mainContainer.operator = 'list';
 						}
 
 						activeArgumentsDataGrouped.push(newGroupData);
@@ -143,13 +138,18 @@ export const Create_activeArgumentsDataGrouped_Store = (
 
 
 			//filter out duplicate groups:
-			const seenGroupNames = [];
-			activeArgumentsDataGrouped.forEach((group, index) => {
-				if (seenGroupNames.includes(group.group_name)) {
-					activeArgumentsDataGrouped.splice(index, 1);
+			const seenGroupNames: string[] = [];
+			const uniqueGroups: ActiveArgumentGroup[] = [];
+			activeArgumentsDataGrouped.forEach((group) => {
+				if (!seenGroupNames.includes(group.group_name)) {
+					uniqueGroups.push(group);
+					seenGroupNames.push(group.group_name);
 				}
-				seenGroupNames.push(group.group_name);
 			});
+			// Replace with filtered list
+			activeArgumentsDataGrouped.length = 0;
+			activeArgumentsDataGrouped.push(...uniqueGroups);
+
 			//
 			//Handle QMSarguments data if present
 			Logger.debug({ QMSarguments });
@@ -179,7 +179,7 @@ export const Create_activeArgumentsDataGrouped_Store = (
 					return group.group_name == groupName;
 				});
 				Logger.debug('ppppp group', group);
-				const activeArgument = group.group_args?.find((arg) => {
+				const activeArgument = group?.group_args?.find((arg) => {
 					return arg.id == activeArgumentData.id;
 				});
 				const activeArgumentNode = group?.group_argsNode?.[activeArgumentData.id];
@@ -201,9 +201,11 @@ export const Create_activeArgumentsDataGrouped_Store = (
 		},
 		delete_activeArgument: (activeArgumentData: ActiveArgumentData, groupName: string) => {
 			update((activeArgumentsDataGrouped) => {
-				let group = activeArgumentsDataGrouped?.filter((group) => {
+				let group = activeArgumentsDataGrouped?.find((group) => {
 					return group.group_name == groupName;
-				})[0];
+				});
+				if (!group) return activeArgumentsDataGrouped;
+
 				const activeArgumentIndex = group.group_args?.findIndex((arg) => {
 					return arg.id == activeArgumentData.id;
 				});
@@ -211,24 +213,25 @@ export const Create_activeArgumentsDataGrouped_Store = (
 					let containers = Object.values(group.group_argsNode).filter((container) => {
 						return container?.items;
 					});
-					let argumentParentContainerId = containers.find((container) => {
+					let argumentParentContainer = containers.find((container) => {
 						return container.items.find((item) => {
 							return item.id == activeArgumentData.id;
 						});
-					}).id;
-					if (argumentParentContainerId) {
-						group.group_argsNode[argumentParentContainerId].items = group.group_argsNode[
-							argumentParentContainerId
-						].items.filter((item) => {
+					});
+
+					if (argumentParentContainer) {
+						argumentParentContainer.items = argumentParentContainer.items.filter((item) => {
 							return item.id != activeArgumentData.id;
 						});
 					}
 
-					if (activeArgumentIndex) {
+					if (activeArgumentIndex !== undefined && activeArgumentIndex !== -1) {
 						group.group_args.splice(activeArgumentIndex, 1);
 					}
 				} else {
-					group.group_args.splice(activeArgumentIndex, 1);
+					if (activeArgumentIndex !== undefined && activeArgumentIndex !== -1) {
+						group.group_args.splice(activeArgumentIndex, 1);
+					}
 				}
 				return activeArgumentsDataGrouped;
 			});
@@ -268,11 +271,11 @@ export const add_activeArgumentOrContainerTo_activeArgumentsDataGrouped = (
 	endpointInfo: EndpointInfoStore,
 	group?: ActiveArgumentGroup
 ): ActiveArgumentGroup[] => {
-	const dataIsForContainer = newArgumentOrContainerData?.items;
+	const dataIsForContainer = (newArgumentOrContainerData as ContainerData)?.items;
 	Logger.debug({ dataIsForContainer, newArgumentOrContainerData })
 	if (!group) {
 		group = activeArgumentsDataGrouped?.find((currGroup) => {
-			Logger.debug('currGroup', currGroup, currGroup.group_name, groupName, currGroup.group_name == groupName, currGroup.group_name === groupName);
+			Logger.debug('currGroup', { currGroup, groupName, comparison: currGroup.group_name == groupName });
 			return currGroup.group_name == groupName;
 		})
 	}
@@ -303,15 +306,15 @@ export const add_activeArgumentOrContainerTo_activeArgumentsDataGrouped = (
 	{
 		if (group.group_argsNode) {
 			//to prevent --> Uncaught TypeError: Converting circular structure to JSON
-			newArgumentOrContainerData.dd_relatedRoot =
+			(newArgumentOrContainerData as any).dd_relatedRoot =
 				'overwritten to evade error: Uncaught TypeError: Converting circular structure to JSON';
 			newArgumentOrContainerData.not = false;
-			group.group_argsNode[newArgumentOrContainerData.id] = newArgumentOrContainerData;
+			group.group_argsNode[newArgumentOrContainerData.id] = newArgumentOrContainerData as ContainerData;
 
 			if (parentContainerId) {
-				group.group_argsNode[parentContainerId].items.push(newArgumentOrContainerData);
+				group.group_argsNode[parentContainerId].items.push(newArgumentOrContainerData as any);
 			} else {
-				group.group_argsNode.mainContainer.items.push(newArgumentOrContainerData);
+				group.group_argsNode.mainContainer.items.push(newArgumentOrContainerData as any);
 			}
 			group.group_args.push(newArgumentOrContainerData);
 		} else {
@@ -334,13 +337,13 @@ export const generateContainerData = (
 	type: Partial<FieldWithDerivedData>,
 	extraData: Record<string, unknown> = {}
 ): ContainerData => {
-	const dd_displayName = type.dd_displayName;
+	const dd_displayName = type.dd_displayName!;
 
 	if (stepsOfFields[stepsOfFields.length - 1] !== dd_displayName) {
 		stepsOfFields.push(dd_displayName); //take care might caus eproblems
 	}
 
-	const lastDefiningData = {}
+	const lastDefiningData: any = {}
 	if (type && type.dd_kindList) {
 		lastDefiningData.operator = 'list'
 	}
@@ -352,19 +355,20 @@ export const generateContainerData = (
 		stepsOfFields,
 		stepsOfFieldsStringified: JSON.stringify(stepsOfFields),
 		id: `qqqqqq${Math.random()}`,
+		operator: lastDefiningData.operator,
 		...type,
 		...extraData,
 		...lastDefiningData
-	};
+	} as ContainerData;
 };
 
 export const generateArgData = (
 	stepsOfFields: string[],
 	type: Partial<FieldWithDerivedData>,
-	schemaData: SchemaData,
+	schemaData: SchemaDataStore | SchemaData,
 	extraData: Record<string, unknown> = {}
 ): ActiveArgumentData => {
-	const dd_displayName = type.dd_displayName;
+	const dd_displayName = type.dd_displayName!;
 
 	const RootType = getRootType(null, type.dd_rootName, schemaData);
 	const inputFields = RootType?.inputFields;
@@ -386,7 +390,7 @@ export const generateArgData = (
 
 const addAllRootArgs = (
 	activeArgumentsDataGrouped: ActiveArgumentGroup[],
-	schemaData: SchemaData,
+	schemaData: SchemaDataStore | SchemaData,
 	endpointInfo: EndpointInfoStore
 ): void => {
 	const group = activeArgumentsDataGrouped.find((group) => {
@@ -398,6 +402,7 @@ const addAllRootArgs = (
 	}
 	const groupName = group.group_name;
 	const groupOriginType = group.originType;
+	if (!groupOriginType.args) return;
 	const groupArgs = groupOriginType.args.filter((arg) => {
 		return arg.dd_isRootArg;
 	});
@@ -415,7 +420,7 @@ const addAllRootArgs = (
 const gqlArgObjToActiveArgumentsDataGrouped = (
 	object: Record<string, unknown>,
 	activeArgumentsDataGrouped: ActiveArgumentGroup[],
-	schemaData: SchemaData,
+	schemaData: SchemaDataStore | SchemaData,
 	endpointInfo: EndpointInfoStore
 ): ActiveArgumentGroup[] => {
 	const getGroupGqlArgObj = (
@@ -424,7 +429,7 @@ const gqlArgObjToActiveArgumentsDataGrouped = (
 		group: ActiveArgumentGroup
 	): Record<string, unknown> | undefined => {
 		if (!group.group_isRoot) {
-			return object?.[group.group_name];
+			return object?.[group.group_name] as Record<string, unknown> | undefined;
 		}
 		return rootGroupGqlArgObj;
 	};
@@ -435,7 +440,7 @@ const gqlArgObjToActiveArgumentsDataGrouped = (
 		}
 	});
 
-	const rootGroupGqlArgObj = {};
+	const rootGroupGqlArgObj: Record<string, unknown> = {};
 	Object.keys(object).forEach((key) => {
 		if (!nonRootGroupNames.includes(key)) {
 			rootGroupGqlArgObj[key] = object[key];
@@ -457,9 +462,10 @@ const gqlArgObjToActiveArgumentsDataGrouped = (
 			const groupArgNames = Object.keys(groupGqlArgObj);
 			//!!!this block should work correctly,you will see some errors only because root group is not handled correctly in generating gqlArgObj after ui changes,test it and see,it only handles one argument even if u set multiple.
 			groupArgNames.forEach((argName, i) => {
-				const argType = groupOriginType.args.filter((type) => {
+				const argType = groupOriginType.args?.filter((type) => {
 					return type.dd_displayName == argName;
 				})[0];
+				if (!argType) return;
 				const argValue = groupGqlArgObj[argName];
 				const argData = generateArgData([argName], argType, schemaData, {
 					chd_rawValue: argValue,
@@ -526,21 +532,18 @@ const gqlArgObjToActiveArgumentsDataGroupedForHasArgsNode = (
 	groupName: string,
 	group: ActiveArgumentGroup,
 	activeArgumentsDataGrouped: ActiveArgumentGroup[],
-	schemaData: SchemaData,
+	schemaData: SchemaDataStore | SchemaData,
 	endpointInfo: EndpointInfoStore
 ): void => {
-	let group_argsNode
-	const gqlArgObjTypeOf = getPreciseType(gqlArgObj);
+	let group_argsNode;
 	const isContainer = type.dd_shouldExpand
 		; (function () {//handle containers only
 			if (!isContainer) {
 				return
 			}
-			if (gqlArgObjTypeOf == 'array') {
-
-				gqlArgObj.forEach(element => {
+			if (Array.isArray(gqlArgObj)) {
+				(gqlArgObj as any[]).forEach(element => {
 				});
-
 			}
 
 		})()

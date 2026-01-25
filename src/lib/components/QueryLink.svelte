@@ -16,6 +16,7 @@
 
 	let { prefix = '', origin, query }: Props = $props();
 
+	// Initialization after props
 	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = context?.endpointInfo;
 	const schemaData = context?.schemaData;

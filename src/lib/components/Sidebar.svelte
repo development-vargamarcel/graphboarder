@@ -21,6 +21,7 @@
 		prefix = ''
 	}: Props = $props();
 
+	// Initialization after props
 	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	let endpointInfo = $derived(context?.endpointInfo);
 

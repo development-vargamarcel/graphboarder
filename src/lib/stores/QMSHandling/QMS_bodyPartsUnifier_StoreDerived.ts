@@ -1,14 +1,14 @@
 import { derived } from 'svelte/store';
 
 export const Create_QMS_bodyPartsUnifier_StoreDerived = (
-	_QMS_bodyPart_StoreDerived_array: Array,
+	_QMS_bodyPart_StoreDerived_array: Array<any>,
 	QMS_type = 'query',
 	QMS_name = 'QMS_name'
 ) => {
 	return derived(_QMS_bodyPart_StoreDerived_array, ($stores) => {
-		const storesReduced = $stores.reduce((prevVal, currVal) => {
+		const storesReduced = $stores.reduce((prevVal: string, currVal: string) => {
 			if (!currVal) {
-				return '';
+				return prevVal;
 			}
 			return prevVal + currVal;
 		}, '');

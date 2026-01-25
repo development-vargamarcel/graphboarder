@@ -1,16 +1,18 @@
 <script lang="ts">
 	import Toggle from '$lib/components/fields/Toggle.svelte';
 	import { getContext } from 'svelte';
-	const dndIsOn = getContext(`${prefix}dndIsOn`);
-	const showInputField = getContext(`${prefix}showInputField`);
+	import type { Writable } from 'svelte/store';
 
-	const mutationVersion = getContext(`${prefix}mutationVersion`);
 	interface Props {
 		prefix?: string;
 		hasGroup_argsNode: any;
 	}
 
 	let { prefix = '', hasGroup_argsNode }: Props = $props();
+
+	const dndIsOn = getContext<Writable<boolean>>(`${prefix}dndIsOn`);
+	const showInputField = getContext<Writable<boolean>>(`${prefix}showInputField`);
+	const mutationVersion = getContext<Writable<boolean>>(`${prefix}mutationVersion`);
 </script>
 
 <div class="btn btn-ghost btn-xs w-min flex ml-4 {hasGroup_argsNode ? '' : 'pt-1'}">

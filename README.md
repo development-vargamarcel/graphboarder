@@ -29,14 +29,18 @@ Wrap your application or the part that needs GraphQL access with `MainWraper`. T
 
   const endpointInfo = {
     url: 'https://rickandmortyapi.com/graphql',
-    // You can add headers here if needed
-    headers: {}
+    // Optional headers
+    headers: {
+      // 'Authorization': 'Bearer ...'
+    },
+    // Optional heuristics for identifying fields (see EndpointConfiguration)
+    idFieldNamePossibilities: ['id', '_id'],
+    countFieldNamePossibilities: ['count', 'totalCount']
   };
 </script>
 
 <MainWraper endpointInfoProvided={endpointInfo}>
   <!-- Your app content here -->
-  <!-- In Svelte 5, children are passed as a snippet -->
   <slot />
 </MainWraper>
 ```
@@ -51,6 +55,7 @@ Use `QMSWraper` (Query/Mutation/Subscription Wrapper) to define a specific opera
   import MyArticlesComponent from './MyArticlesComponent.svelte';
 
   const queryName = 'characters';
+  // Define initial columns if you want to preload data or customize display
   const columns = [
     { title: 'ID', stepsOfFields: ['characters', 'id'] },
     { title: 'Name', stepsOfFields: ['characters', 'name'] },
@@ -72,22 +77,27 @@ Use `QMSWraper` (Query/Mutation/Subscription Wrapper) to define a specific opera
 Inside your component (e.g., `MyArticlesComponent.svelte`), you can access the stores provided by `QMSWraper`.
 
 ```svelte
-<script>
+<script lang="ts">
   import { getContext } from 'svelte';
+  import type { QMSWraperContext } from 'auto-gql';
 
-  // Note: The context key might be prefixed if you provided a prefix to MainWraper
-  const context = getContext('QMSWraperContext');
-  const { QMS_bodyPartsUnifier_StoreDerived } = context;
+  // Access the context provided by QMSWraper
+  const context = getContext<QMSWraperContext>('QMSWraperContext');
 
-  // In Svelte 5, you can use $derived or $effect to react to store changes
+  // Destructure the stores you need
+  // QMS_bodyPartsUnifier_StoreDerived contains the constructed GraphQL query body
+  // paginationState contains current pagination info
+  const { QMS_bodyPartsUnifier_StoreDerived, paginationState } = context;
+
+  // React to changes using Svelte 5 runes
   $effect(() => {
-    console.log('Query Body:', $QMS_bodyPartsUnifier_StoreDerived);
-    // You can now execute this query using your preferred method or the built-in client
+    console.log('Current Query Body:', $QMS_bodyPartsUnifier_StoreDerived);
   });
 </script>
 
 <div>
-  <!-- Build your UI here -->
+  <!-- Build your UI here using the stores -->
+  <pre>{JSON.stringify($paginationState, null, 2)}</pre>
 </div>
 ```
 
@@ -100,7 +110,28 @@ import { Logger, LogLevel } from 'auto-gql';
 
 // Set log level to INFO (suppresses DEBUG logs)
 Logger.setLevel(LogLevel.INFO);
+
+// Usage
+Logger.debug('This is a debug message');
+Logger.error('Something went wrong', { details: '...' });
 ```
+
+## Advanced Configuration
+
+### EndpointInfo
+
+The `endpointInfo` object passed to `MainWraper` controls how Auto-GQL interprets your schema. You can customize heuristics for finding:
+
+- **Rows Location:** Where the list of items is in the response (e.g., `edges`, `nodes`).
+- **Row Count:** Where the total count is found.
+- **IDs:** How to identify the ID field.
+- **Pagination:** Which arguments control pagination (limit, offset, cursor).
+
+See `EndpointConfiguration` interface in the codebase for full options.
+
+### Active Arguments
+
+`activeArgumentsDataGrouped_Store` manages the state of arguments (filters, sorting, etc.). You can access it from `QMSWraperContext` to build custom filter UIs.
 
 ## Terminology
 
@@ -110,7 +141,7 @@ Logger.setLevel(LogLevel.INFO);
 
 ## Development
 
-This project uses Svelte 5 Runes (`$state`, `$derived`, `$props`). Ensure your environment supports it.
+This project uses Svelte 5 Runes (`$state`, `$derived`, `$props`).
 
 ### Type Safety & Context
 
@@ -118,7 +149,7 @@ To improve Developer Experience (DX) and type safety, use the provided context i
 
 ```typescript
 import { getContext } from 'svelte';
-import type { QMSMainWraperContext, QMSWraperContext } from 'auto-gql'; // or '$lib/types/index'
+import type { QMSMainWraperContext, QMSWraperContext } from 'auto-gql';
 
 // Accessing MainWraper context
 let mainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);

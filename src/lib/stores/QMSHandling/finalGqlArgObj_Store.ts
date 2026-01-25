@@ -5,10 +5,11 @@ import {
 	generate_group_gqlArgObj,
 } from '$lib/utils/usefulFunctions';
 import { writable, get } from 'svelte/store';
+import type { ActiveArgumentsDataGroupedStore, ActiveArgumentGroup } from '$lib/types';
 
 export const Create_finalGqlArgObj_Store = (
-	_activeArgumentsDataGrouped_Store,
-	_paginationState_Store
+	_activeArgumentsDataGrouped_Store: ActiveArgumentsDataGroupedStore,
+	_paginationState_Store: any
 ) => {
 	//rewrite,make it so that it always regenerates al groups when running without needing 'group'.
 	const store = writable({});
@@ -19,7 +20,7 @@ export const Create_finalGqlArgObj_Store = (
 		set,
 		update,
 		regenerate_groupsAndfinalGqlArgObj: () => {
-			const activeArgumentsDataGrouped = get(_activeArgumentsDataGrouped_Store);
+			const activeArgumentsDataGrouped = get(_activeArgumentsDataGrouped_Store) as ActiveArgumentGroup[];
 			const finalGqlArgObjAndCanRunQuery = generate_finalGqlArgObjAndCanRunQuery(activeArgumentsDataGrouped, _paginationState_Store, true)
 			if (finalGqlArgObjAndCanRunQuery.final_canRunQuery) {
 				set(finalGqlArgObjAndCanRunQuery);

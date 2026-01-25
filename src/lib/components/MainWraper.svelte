@@ -36,10 +36,20 @@
 
 	let { prefix = '', endpointInfoProvided = null, children }: Props = $props();
 
-	Logger.debug('MainWraper initializing', { prefix, endpointInfoProvided });
-
+	// Move reactive initialization after props
 	const endpointInfo = create_endpointInfo_Store(endpointInfoProvided);
 	const schemaData = create_schemaData();
+
+	// Update store when prop changes
+	$effect(() => {
+		if (endpointInfoProvided) {
+			endpointInfo.smartSet(endpointInfoProvided);
+		}
+	});
+
+	$effect(() => {
+		Logger.debug('MainWraper initializing', { prefix, endpointInfoProvided });
+	});
 
 	$effect(() => {
 		if (!$endpointInfo?.url) {
@@ -81,6 +91,6 @@
 	Logger.info('MainWraper initialized and context set', { prefix });
 </script>
 
-<IntrospectionDataGenerator>
+<IntrospectionDataGenerator {prefix}>
 	{@render children?.()}
 </IntrospectionDataGenerator>

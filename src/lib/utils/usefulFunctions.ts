@@ -12,6 +12,7 @@ import type {
 	FieldWithDerivedData,
 	RootType,
 	SchemaData,
+	SchemaDataStore,
 	EndpointInfoStore,
 	ActiveArgumentData,
 	ActiveArgumentGroup,
@@ -45,7 +46,7 @@ export const findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey = (obj: u
 		return true
 	}
 	if (objectKeysLength == 1) {
-		return findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey(obj[objectKeys[0]])
+		return findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey((obj as any)[objectKeys[0]])
 	}
     return null;
 }
@@ -353,16 +354,21 @@ export let get_displayName = (namesArray: string[]): string => {
  * Retrieves a root type definition from the schema data.
  * @param rootTypes - The list of root types (optional if schemaData is provided).
  * @param RootType_Name - The name of the root type to retrieve.
- * @param schemaData - The schema data store.
+ * @param schemaData - The schema data store or value.
  * @returns The found RootType or undefined.
  */
 export const getRootType = (
 	rootTypes: RootType[] | null,
 	RootType_Name: string | undefined,
-	schemaData: SchemaData
+	schemaData: SchemaDataStore | SchemaData
 ): RootType | undefined => {
 	if (!rootTypes) {
-		rootTypes = schemaData.rootTypes;
+		// Handle both store and value
+        if ('subscribe' in schemaData) {
+		    rootTypes = get(schemaData).rootTypes;
+        } else {
+            rootTypes = schemaData.rootTypes;
+        }
 	}
 
 	return rootTypes.filter((type) => {
@@ -371,21 +377,54 @@ export const getRootType = (
 };
 
 /**
+ * Retrieves a field from the schema data.
+ * @param name - The name of the field to retrieve.
+ * @param _QMS_ - The type of operation (query, mutation, subscription).
+ * @param schemaData - The schema data store or value.
+ * @returns The found FieldWithDerivedData or undefined.
+ */
+export const get_QMS_Field = (
+	name: string,
+	_QMS_: QMSType,
+	schemaData: SchemaDataStore | SchemaData
+): FieldWithDerivedData | undefined => {
+	let storeValue: SchemaData;
+	if ('subscribe' in schemaData) {
+		storeValue = get(schemaData);
+	} else {
+		storeValue = schemaData;
+	}
+
+	const key = `${_QMS_}Fields` as keyof SchemaData;
+	const list = storeValue[key] as any[];
+
+	const QMSField = list?.filter((field: any) => {
+		return field.name == name;
+	})[0];
+
+	if (!QMSField) {
+		// console.info({ QMSField }, name, { storeValue }, list)
+	}
+	return QMSField;
+};
+
+/**
  * Groups fields of a type into scalar, non-scalar, and enum fields.
  * @param node - The node (type or field) to inspect.
  * @param dd_displayNameToExclude - List of display names to exclude.
- * @param schemaData - The schema data.
+ * @param schemaData - The schema data store or value.
  * @returns An object containing arrays of grouped fields.
  */
 export const getFields_Grouped = (
 	node: Partial<FieldWithDerivedData> | RootType,
 	dd_displayNameToExclude: string[] = [],
-	schemaData: SchemaData
+	schemaData: SchemaDataStore | SchemaData
 ): FieldsGrouped => {
-	const node_rootType = schemaData?.get_rootType(
-		null,
-		node?.dd_rootName || (node as any).parent_node?.dd_rootName,
-		schemaData
+	// Helper to handle both store and value for recursive calls
+    const getRootTypeHelper = (rtName: string | undefined) => getRootType(null, rtName, schemaData);
+
+	const node_rootType = getRootTypeHelper(
+		node?.dd_rootName || (node as any).parent_node?.dd_rootName
 	);
 	let scalarFields: FieldWithDerivedData[] = [];
 	let non_scalarFields: FieldWithDerivedData[] = [];
@@ -407,7 +446,7 @@ export const getFields_Grouped = (
 		return !dd_displayNameToExclude.includes(field.dd_displayName)
 	}).forEach((field: any) => {
 		if (get_KindsArray(field).includes('ENUM')) {
-			enumFields.push({ ...schemaData.get_rootType(null, field.dd_rootName, schemaData), ...field });
+			enumFields.push({ ...getRootTypeHelper(field.dd_rootName), ...field } as any);
 		} else
 			if (get_KindsArray(field).includes('SCALAR')) {
 				scalarFields.push(field);
@@ -459,13 +498,13 @@ export const getStepsOfFieldsForDataGetter = (
  * @returns The value found at the end of the path.
  */
 export const getDataGivenStepsOfFields = (
-	colInfo: TableColumnData,
+	colInfo: TableColumnData | undefined,
 	row_resultData: unknown,
 	stepsOfFieldsInput?: string[]
 ): unknown => {
 	//col data is column info like colInfo.stepsOfFields,not the result's column data
 
-	const stepsOfFields = getStepsOfFieldsForDataGetter(colInfo, stepsOfFieldsInput)
+	const stepsOfFields = colInfo ? getStepsOfFieldsForDataGetter(colInfo, stepsOfFieldsInput) : (stepsOfFieldsInput || []);
 	if (stepsOfFields.length == 0) {
 		return row_resultData
 	}
@@ -607,7 +646,7 @@ export const mark_paginationArgs = (args: FieldWithDerivedData[], endpointInfo: 
 export const get_paginationType = (
 	paginationArgs: FieldWithDerivedData[],
 	endpointInfo: EndpointInfoStore,
-	schemaData: SchemaData
+	schemaData: SchemaDataStore | SchemaData
 ): string => {
 	const standsForArray = paginationArgs.map((arg) => {
 		return arg.dd_standsFor || '';
@@ -627,7 +666,7 @@ export const get_paginationType = (
  * @param rootTypes - List of root types.
  * @param isQMSField - Whether it is a top-level QMS field.
  * @param endpointInfo - Endpoint configuration.
- * @param schemaData - Schema data.
+ * @param schemaData - Schema data store or value.
  * @returns The enriched FieldWithDerivedData.
  */
 export const generate_derivedData = (
@@ -635,7 +674,7 @@ export const generate_derivedData = (
 	rootTypes: RootType[] | null,
 	isQMSField: boolean,
 	endpointInfo: EndpointInfoStore,
-	schemaData: SchemaData
+	schemaData: SchemaDataStore | SchemaData
 ): FieldWithDerivedData => {
 	//type/field
 	let derivedData: FieldWithDerivedData = { ...type } as FieldWithDerivedData;
@@ -687,7 +726,7 @@ export const generate_derivedData = (
 		let dd_nonBaseFilterOperators: string[] | undefined = []
 		if ((type as any)?.inputFields) {
 			(type as any).inputFields
-				.forEach(inputField => {
+				.forEach((inputField: any) => {
 					if (baseFilterOperatorNames.includes(inputField.name)) {
 						dd_baseFilterOperators?.push(inputField.name)
 						return inputField.name
@@ -723,14 +762,14 @@ export const generate_derivedData = (
 	if (derivedData?.dd_baseFilterOperators) {
 		let defaultdisplayInterface = get_displayInterface(derivedData, endpointInfo);
 		if ((type as any)?.inputFields !== undefined) {
-			(type as any).inputFields.forEach((inputField) => {
+			(type as any).inputFields.forEach((inputField: any) => {
 				Object.assign(inputField, { dd_displayInterface: defaultdisplayInterface });
 			});
 		}
 	}
 	if (derivedData.args) {
 		mark_paginationArgs(derivedData.args as any, endpointInfo);
-		derivedData.dd_paginationArgs = (derivedData.args as any).filter((arg) => {
+		derivedData.dd_paginationArgs = (derivedData.args as any).filter((arg: any) => {
 			return arg.dd_isPaginationArg;
 		});
 		derivedData.dd_paginationType = get_paginationType(derivedData.dd_paginationArgs, endpointInfo, schemaData);
@@ -900,7 +939,7 @@ export const generate_group_gqlArgObj_forHasOperators = (items: { id: string }[]
 			} else {
 				dataToAssign = gqlArgObjForItems
 			}
-			Logger.debug('vvvvvvv', gqlArgObjForItems, dataToAssign)
+			Logger.debug('vvvvvvv', { gqlArgObjForItems, dataToAssign })
 		} else {
 			dataToAssign = nodes[item.id]?.gqlArgObj
 		}
@@ -946,7 +985,7 @@ export const generate_group_gqlArgObj_forHasOperators = (items: { id: string }[]
 			}
 		}
 
-		Logger.debug(nodeStepClean, { itemObj }, { resultingGqlArgObj }, { itemObjectTest2 }, { itemObjectTestCurr }, { dataToAssign }, 'itemData.selectedRowsColValues', itemData.selectedRowsColValues)
+		Logger.debug('itemsResultingData loop', { nodeStepClean, itemObj, resultingGqlArgObj, itemObjectTest2, itemObjectTestCurr, dataToAssign, selectedRowsColValues: itemData.selectedRowsColValues })
 
 
 
@@ -1002,7 +1041,7 @@ export const generate_group_gqlArgObjAndCanRunQuery_forHasOperators = (group: Ac
 };
 ////
 
-export const generate_finalGqlArgObj_fromGroups = (activeArgumentsDataGrouped: ActiveArgumentGroup[]): FinalGQLArgObj => {
+export const generate_finalGqlArgObj_fromGroups = (activeArgumentsDataGrouped: { group_gqlArgObj?: Record<string, unknown>; group_canRunQuery?: boolean }[]): FinalGQLArgObj => {
 	let finalGqlArgObj = {};
 	let final_canRunQuery = activeArgumentsDataGrouped.every((group) => { return group.group_canRunQuery })
 
@@ -1014,7 +1053,7 @@ export const generate_finalGqlArgObj_fromGroups = (activeArgumentsDataGrouped: A
 	return { finalGqlArgObj, final_canRunQuery };
 };
 
-export const getQMSLinks = (QMSName: QMSType = 'query', parentURL: string, endpointInfo: EndpointInfoStore, schemaData: SchemaData): { url: string; title: string }[] => {
+export const getQMSLinks = (QMSName: QMSType = 'query', parentURL: string, endpointInfo: EndpointInfoStore, schemaData: SchemaDataStore): { url: string; title: string }[] => {
 	let $page = get(page);
 	let origin = $page.url.origin;
 	let queryLinks: { url: string; title: string }[] = [];
@@ -1040,7 +1079,7 @@ export const getQMSLinks = (QMSName: QMSType = 'query', parentURL: string, endpo
 		let queryNameDisplay = queryName;
 		let queryTitleDisplay = '';
 		let currentQueryFromRootTypes = getRootType(null, query.dd_rootName, schemaData);
-		let currentQMS_info = schemaData.get_QMS_Field(queryName, QMSName, schemaData);
+		let currentQMS_info = get_QMS_Field(queryName, QMSName, schemaData);
 		let endpointInfoVal = get(endpointInfo);
 		const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_info as FieldWithDerivedData, schemaData);
 		const nodeFieldsQMS_info = get_nodeFieldsQMS_info(currentQMS_info as FieldWithDerivedData, rowsLocation, schemaData);
@@ -1169,7 +1208,7 @@ export const generateNewArgData = (
 export const get_scalarColsData = (
 	currentQMS_info: FieldWithDerivedData | null | undefined,
 	prefixStepsOfFields: string[] = [],
-	schemaData: SchemaData
+	schemaData: SchemaDataStore | SchemaData
 ): TableColumnData[] => {
 	if (!currentQMS_info) {
 		return []
@@ -1205,7 +1244,7 @@ export const get_scalarColsData = (
 export const get_nodeFieldsQMS_info = (
 	QMS_info: FieldWithDerivedData,
 	rowsLocation: string[],
-	schemaData: SchemaData
+	schemaData: SchemaDataStore | SchemaData
 ): FieldWithDerivedData | undefined => {
 	if (rowsLocation?.length == 0) {
 		return QMS_info;
@@ -1242,17 +1281,17 @@ export const get_nodeFieldsQMS_info = (
  * @param schemaData - The schema data.
  * @returns The field definition of the last step if valid, otherwise throws an error.
  */
-export const check_stepsOfFields = (stepsOfFields: string[], schemaData: SchemaData): FieldWithDerivedData | undefined => {
+export const check_stepsOfFields = (stepsOfFields: string[], schemaData: SchemaDataStore | SchemaData): FieldWithDerivedData | undefined => {
 	if (!stepsOfFields || stepsOfFields.length === 0) return undefined;
 
 	const rootFieldName = stepsOfFields[0];
-	let rootField = schemaData.get_QMS_Field(rootFieldName, 'query', schemaData);
+	let rootField = get_QMS_Field(rootFieldName, 'query', schemaData);
 
 	if (!rootField) {
-		rootField = schemaData.get_QMS_Field(rootFieldName, 'mutation', schemaData);
+		rootField = get_QMS_Field(rootFieldName, 'mutation', schemaData);
 	}
 	if (!rootField) {
-		rootField = schemaData.get_QMS_Field(rootFieldName, 'subscription', schemaData);
+		rootField = get_QMS_Field(rootFieldName, 'subscription', schemaData);
 	}
 
 	if (!rootField) {
@@ -1267,7 +1306,7 @@ export const check_stepsOfFields = (stepsOfFields: string[], schemaData: SchemaD
 	for (let i = 0; i < remainingSteps.length; i++) {
 		const stepName = remainingSteps[i];
 
-		const currentType = schemaData.get_rootType(null, currentField.dd_rootName, schemaData);
+		const currentType = getRootType(null, currentField.dd_rootName, schemaData);
 
 		if (!currentType) {
 			throw new Error(`Type '${currentField.dd_rootName}' for field '${currentField.dd_displayName}' not found in schema.`);
@@ -1318,14 +1357,14 @@ export const nodeAddDefaultFields = (
 	prefix: string = '',
 	group: ActiveArgumentGroup,
 	activeArgumentsDataGrouped_Store: ActiveArgumentsDataGroupedStore,
-	schemaData: SchemaData,
+	schemaData: SchemaDataStore | SchemaData,
 	endpointInfo: EndpointInfoStore
 ): void => {
 
 
 
 	Logger.debug({ node });
-	const node_rootType = schemaData.get_rootType(
+	const node_rootType = getRootType(
 		null,
 		node?.dd_rootName || node.parent_node?.dd_rootName,
 		schemaData
@@ -1391,13 +1430,13 @@ export const nodeAddDefaultFields = (
 			Logger.debug({ newContainerData });
 			let randomNr = Math.random();
 			Logger.debug('group', group);
-			let newContainerDataRootType = schemaData.get_rootType(
+			let newContainerDataRootType = getRootType(
 				null,
 				newContainerData.dd_rootName,
 				schemaData
 			);
 			let hasBaseFilterOperators = newContainerDataRootType?.dd_baseFilterOperators;
-			let NODEhasBaseFilterOperators = schemaData.get_rootType(
+			let NODEhasBaseFilterOperators = getRootType(
 				null,
 				node.dd_rootName,
 				schemaData
@@ -1536,14 +1575,14 @@ export const hasDeepProperty = (obj: Record<string, unknown>, propertyPath: stri
  * Traverses the GraphQL schema structure to find a nested field definition.
  * @param obj - The starting field or type definition.
  * @param propertyPath - Array of field names representing the path.
- * @param schemaData - The schema data store.
+ * @param schemaData - The schema data store or value.
  * @param fieldsType - Whether to look in 'fields' or 'inputFields'.
  * @returns The found field definition or null.
  */
 export const getDeepField = (
 	obj: Partial<FieldWithDerivedData>,
 	propertyPath: string[],
-	schemaData: SchemaData,
+	schemaData: SchemaDataStore | SchemaData,
 	fieldsType: 'fields' | 'inputFields' = 'fields'
 ): FieldWithDerivedData | null => {
 	//console.log({ obj, propertyPath })
@@ -1553,7 +1592,7 @@ export const getDeepField = (
 	let currentObj = obj as FieldWithDerivedData;
 	for (let i = 0; i < propertyPath.length; i++) {
 		const prop = propertyPath[i];
-		const currentObjRootType = schemaData.get_rootType(null, currentObj?.dd_rootName, schemaData)
+		const currentObjRootType = getRootType(null, currentObj?.dd_rootName, schemaData)
 		const currentObjRootTypeFields = currentObjRootType?.[fieldsType]
 		const nextObj = currentObjRootTypeFields?.find((field) => { return field.dd_displayName == prop })
 
@@ -1680,15 +1719,25 @@ export const generate_finalGqlArgObjAndCanRunQuery = (
 	//better set an array?
 }
 
+/**
+ * Retrieves the QMSWraper context data for a given control panel item.
+ * @param CPItem - The control panel item.
+ * @param OutermostQMSWraperContext - The context of the outermost QMS wrapper.
+ * @returns The found context data or undefined.
+ */
 export const getQMSWraperCtxDataGivenControlPanelItem = (CPItem: { stepsOfFieldsThisAppliesTo: string[] }, OutermostQMSWraperContext: { mergedChildren_QMSWraperCtxData_Store: any }): any => {
 	const { mergedChildren_QMSWraperCtxData_Store } = OutermostQMSWraperContext;
 
 	let mergedChildren_QMSWraperCtxData_Value = get(mergedChildren_QMSWraperCtxData_Store);
 
-	const QMSWraperCtxData = mergedChildren_QMSWraperCtxData_Value.find((currCtx: any) => {
-		return currCtx.stepsOfFields.join() == CPItem.stepsOfFieldsThisAppliesTo.join();
-	});
-	return QMSWraperCtxData;
+	// Assuming mergedChildren_QMSWraperCtxData_Value is an array
+	if (Array.isArray(mergedChildren_QMSWraperCtxData_Value)) {
+		const QMSWraperCtxData = mergedChildren_QMSWraperCtxData_Value.find((currCtx: any) => {
+			return currCtx.stepsOfFields.join() == CPItem.stepsOfFieldsThisAppliesTo.join();
+		});
+		return QMSWraperCtxData;
+	}
+	return undefined;
 };
 export const getSortedAndOrderedEndpoints = (endpoints: { id: number | string; isMantained?: boolean }[], filterOutIfNotMaintaned: boolean = false): { id: number | string; isMantained?: boolean }[] => {
 	const sortedEndpoints = endpoints.sort((a, b) => {

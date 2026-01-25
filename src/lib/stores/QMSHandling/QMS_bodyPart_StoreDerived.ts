@@ -5,14 +5,15 @@ import {
 } from '$lib/utils/usefulFunctions';
 import { derived, get } from 'svelte/store';
 import _ from 'lodash';
+import type { FinalGQLArgObj, QMSType, StepsOfFieldsObject, TableColumnData } from '$lib/types';
 
 export const Create_QMS_bodyPart_StoreDerived = (
-	finalGqlArgObj_Store,
-	tableColsData_Store,
-	QMS_type = 'query',
+	finalGqlArgObj_Store: any,
+	tableColsData_Store: any,
+	QMS_type: QMSType = 'query',
 	QMS_name: string,
-	paginationOptions_Store,
-	paginationState_derived_Store, mergedChildren_finalGqlArgObj_Store, initialGqlArgObj = {}
+	paginationOptions_Store: any,
+	paginationState_derived_Store: any, mergedChildren_finalGqlArgObj_Store: any, initialGqlArgObj: Record<string, unknown> = {}
 ) => {
 	return derived(
 		[finalGqlArgObj_Store, tableColsData_Store, paginationState_derived_Store, mergedChildren_finalGqlArgObj_Store],
@@ -27,21 +28,26 @@ export const Create_QMS_bodyPart_StoreDerived = (
 				// 	$finalGqlArgObj_Store?.finalGqlArgObj || {},
 				// 	paginationState,
 				// );
+                const finalGqlArgObj = ($finalGqlArgObj_Store as FinalGQLArgObj)?.finalGqlArgObj || {};
 				const merged = _.merge({}, initialGqlArgObj || {},
 					paginationState,
-					$finalGqlArgObj_Store?.finalGqlArgObj || {},
+					finalGqlArgObj,
 
 				);
 				return merged;
 			}
 
 			console.log('$mergedChildren_finalGqlArgObj_Store', $mergedChildren_finalGqlArgObj_Store)
+
+			const fields = tableColsDataToQueryFields($tableColsData_Store as TableColumnData[]);
+			const fieldsObj = typeof fields === 'string' ? {} : fields;
+
 			set(
 				build_QMS_bodyPart(
 					QMS_name,
-					tableColsDataToQueryFields($tableColsData_Store),
+					fieldsObj as Record<string, unknown>,
 					get_QMS_args(),
-					QMS_type, $mergedChildren_finalGqlArgObj_Store
+					QMS_type, $mergedChildren_finalGqlArgObj_Store as Record<string, unknown>
 				)
 			);
 		}

@@ -12,7 +12,7 @@
 	import { Logger } from '$lib/utils/logger';
 	import { get } from 'svelte/store';
 
-	// Get contexts
+	// Get contexts - ensuring prefix is available
 	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	let endpointInfo = $derived(context?.endpointInfo);
 	let schemaData = $derived(context?.schemaData);
@@ -49,8 +49,8 @@
 
 	let queryName = $derived(QMSName);
 
-	let currentQMS_info = $derived(get(schemaData).get_QMS_Field(queryName, 'query', get(schemaData)));
-	let dd_relatedRoot = $derived(getRootType(null, currentQMS_info.dd_rootName, get(schemaData)));
+	let currentQMS_info = $derived(schemaData.get_QMS_Field(queryName, 'query', schemaData));
+	let dd_relatedRoot = $derived(getRootType(null, currentQMS_info.dd_rootName, schemaData));
 
 	$effect(() => {
 		if (!currentQMS_info) {
@@ -73,7 +73,7 @@
 
 	//
 	let activeArgumentsData = [];
-	let paginationTypeInfo = $derived(get_paginationTypes(endpointInfo, get(schemaData)).find((pagType) => {
+	let paginationTypeInfo = $derived(get_paginationTypes(endpointInfo, schemaData).find((pagType) => {
 		return pagType.name == QMS_info?.dd_paginationType;
 	}));
 
@@ -84,7 +84,7 @@
 	});
 	//
 
-	let scalarFields = $derived(getFields_Grouped(dd_relatedRoot, [], get(schemaData)).scalarFields);
+	let scalarFields = $derived(getFields_Grouped(dd_relatedRoot, [], schemaData).scalarFields);
 
 	let queryData: any = $state({});
 	let rows = $state([]);
@@ -135,7 +135,7 @@
 				queryData = { fetching, error, data };
 				let stepsOfFieldsInput = [
 					QMS_info.dd_displayName,
-					...endpointInfo.get_rowsLocation(QMS_info, get(schemaData))
+					...endpointInfo.get_rowsLocation(QMS_info, schemaData)
 				];
 				Logger.debug({ stepsOfFieldsInput }, QMS_info.dd_displayName);
 				rowsCurrent = getDataGivenStepsOfFields(undefined, queryData.data, stepsOfFieldsInput);

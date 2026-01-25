@@ -6,6 +6,7 @@ import type {
 	FieldWithDerivedData,
 	EndpointInfoStore,
 	SchemaData,
+    SchemaDataStore,
 	QMSType
 } from '$lib/types';
 
@@ -14,7 +15,7 @@ export const Create_paginationState = (
 	paginationArgs: FieldWithDerivedData[],
 	paginationType: string,
 	endpointInfo: EndpointInfoStore,
-	schemaData: SchemaData
+	schemaData: SchemaDataStore | SchemaData
 ): PaginationStateStore => {
 	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData).find((pagType) => {
 		return pagType.name == paginationType;

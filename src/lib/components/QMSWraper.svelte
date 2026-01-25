@@ -32,6 +32,7 @@
 		ActiveArgumentGroup,
 		TableColumnData,
 		SchemaData,
+        SchemaDataStore,
 		EndpointInfoStore,
 		PaginationTypeInfo,
 		QMSMainWraperContext as QMSMainWraperContextType,
@@ -130,64 +131,68 @@
 		children
 	}: Props = $props();
 
-	// Move logic after props destructuring to avoid TDZ
-	let QMSMainWraperContext = getContext<QMSMainWraperContextType>(`${prefix}QMSMainWraperContext`);
-	const endpointInfo: EndpointInfoStore = QMSMainWraperContext?.endpointInfo;
-	const schemaData: SchemaData = QMSMainWraperContext?.schemaData;
+    // Use derived for context to ensure we get the latest if context somehow changes (unlikely for prefix)
+	let QMSMainWraperContext = $derived(getContext<QMSMainWraperContextType>(`${prefix}QMSMainWraperContext`));
 
-    // Hoist Store Declarations
-    let tableColsData_Store: any;
-    let QMS_bodyPart_StoreDerived: any;
-    let QMS_bodyPart_StoreDerived_rowsCount: any = null;
-    let QMS_bodyPartsUnifier_StoreDerived: any;
-    let paginationOptions: any;
-    let paginationState: any;
-    let paginationState_derived: any;
-    let mergedChildren_finalGqlArgObj_Store: any;
-    let mergedChildren_QMSWraperCtxData_Store: any = writable([]);
-    let mergedChildren_controlPanel_Store: any;
-    let QMSFieldToQMSGetMany_Store: any;
+    // Calculate defaults that depend on other props/context
+	let calculated_isOutermostQMSWraper = $derived.by(() => {
+        if (isOutermostQMSWraper !== undefined) return isOutermostQMSWraper;
+        return getContext<QMSWraperContextType>(`${prefix}QMSWraperContext`) ? false : true;
+    });
 
-    let idColName: any;
-    let returningColumnsLocationQMS_Info: any;
-    let rowsLocation: any;
-    let returningColumnsLocation: any;
+    let mergedChildren_QMSWraperCtxData_Store = $state<any>();
 
+    // We set the context object reference immediately. We will mutate it.
+    setContext(`${prefix}QMSWraperContext`, QMSWraperContext);
 
-	// Calculate defaults that depend on other props/context
-	if (isOutermostQMSWraper === undefined) {
-		isOutermostQMSWraper = getContext<QMSWraperContextType>(`${prefix}QMSWraperContext`) ? false : true;
-	}
+    // Derived value for children context setting
+    $effect(() => {
+        if (calculated_isOutermostQMSWraper) {
+             setContext(`${prefix}OutermostQMSWraperContext`, QMSWraperContext);
+        }
+    })
 
-	if (!QMS_info && schemaData) {
-		QMS_info = schemaData.get_QMS_Field(QMSName, QMSType, schemaData);
-	}
+    // Main Logic Effect
+    $effect(() => {
+        const endpointInfo: EndpointInfoStore = QMSMainWraperContext?.endpointInfo;
+	    const schemaData: SchemaDataStore = QMSMainWraperContext?.schemaData;
 
-	if (!activeArgumentsDataGrouped_Store) {
-		activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store(
-			activeArgumentsDataGrouped_StoreInitialValue
-		);
-	}
+        if (preferGivenQMSWraperContext && QMSWraperContextGiven) {
+            Object.assign(QMSWraperContext, QMSWraperContextGiven);
+            return;
+        }
 
-	// Logic from original file, but safe now
-	if (!QMS_info) {
-		Logger.warn(`QMS_info not found for ${QMSName} ${QMSType}`);
-        // Maybe handle error?
-	} else {
+        // QMS_info resolution
+        if (!QMS_info && schemaData) {
+            QMS_info = schemaData.get_QMS_Field(QMSName, QMSType, schemaData);
+        }
+
+        if (!QMS_info) {
+            Logger.warn(`QMS_info not found for ${QMSName} ${QMSType}`);
+            return;
+        }
+
+        let current_activeArgumentsDataGrouped_Store = activeArgumentsDataGrouped_Store;
+        if (!current_activeArgumentsDataGrouped_Store) {
+            current_activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store(
+                activeArgumentsDataGrouped_StoreInitialValue
+            );
+        }
+
         const dd_paginationType: string | undefined = QMS_info?.dd_paginationType;
         const paginationTypes = get_paginationTypes(endpointInfo, schemaData);
         let paginationTypeInfo = getPaginationTypeInfo(dd_paginationType, paginationTypes);
         Logger.debug({ QMSType, QMSName, QMS_info });
 
-        paginationOptions = Create_paginationOptions();
-        paginationState = Create_paginationState(
+        const paginationOptions = Create_paginationOptions();
+        const paginationState = Create_paginationState(
             undefined,
             QMS_info.dd_paginationArgs,
             QMS_info.dd_paginationType,
             endpointInfo,
             schemaData
         );
-        paginationState_derived = Create_paginationState_derived(
+        const paginationState_derived = Create_paginationState_derived(
             paginationState,
             QMS_info.dd_paginationArgs,
             QMS_info.dd_paginationType,
@@ -195,14 +200,15 @@
             schemaData
         );
 
-        if (!finalGqlArgObj_Store) {
-             finalGqlArgObj_Store = Create_finalGqlArgObj_Store(
-                activeArgumentsDataGrouped_Store,
+        let current_finalGqlArgObj_Store = finalGqlArgObj_Store;
+        if (!current_finalGqlArgObj_Store) {
+             current_finalGqlArgObj_Store = Create_finalGqlArgObj_Store(
+                current_activeArgumentsDataGrouped_Store,
                 paginationState
             );
         }
 
-        rowsLocation = endpointInfo.get_rowsLocation(QMS_info, schemaData);
+        const rowsLocation = endpointInfo.get_rowsLocation(QMS_info, schemaData);
         const nodeFieldsQMS_info = get_nodeFieldsQMS_info(QMS_info, rowsLocation, schemaData);
         Logger.debug({ nodeFieldsQMS_info });
 
@@ -217,8 +223,8 @@
             'fields'
         );
 
-        returningColumnsLocationQMS_Info = returningColumnsResult?.info;
-        returningColumnsLocation = returningColumnsResult?.location || [];
+        const returningColumnsLocationQMS_Info = returningColumnsResult?.info;
+        const returningColumnsLocation = returningColumnsResult?.location || [];
 
         Logger.debug({ returningColumnsLocationQMS_Info, returningColumnsLocation, QMSType });
 
@@ -241,52 +247,40 @@
             schemaData
         ) || [];
 
-        tableColsData_StoreInitialValue = mergeColumnData(
+        const current_tableColsData_StoreInitialValue = mergeColumnData(
             scalarColsData,
             tableColsData_StoreInitialValue,
             dependencyColsData
         );
-        Logger.debug({
-            QMSType,
-            QMSName,
-            QMS_info,
-            // schemaData,
-            nodeFieldsQMS_info,
-            // nodeFieldsQMS_info_Root,
-            returningColumnsLocation,
-            returningColumnsLocationQMS_Info,
-            prefixStepsOfFields,
-            scalarColsData,
-            dependencyColsData,
-            tableColsData_StoreInitialValue
-        });
-        tableColsData_Store = Create_tableColsData_Store(
+
+        const tableColsData_Store = Create_tableColsData_Store(
             paginationState,
-            tableColsData_StoreInitialValue
+            current_tableColsData_StoreInitialValue
         );
 
-        mergedChildren_finalGqlArgObj_Store = Create_mergedChildren_finalGqlArgObj_Store({});
+        const mergedChildren_finalGqlArgObj_Store = Create_mergedChildren_finalGqlArgObj_Store({});
         mergedChildren_QMSWraperCtxData_Store = Create_mergedChildren_QMSWraperCtxData_Store([]);
-        mergedChildren_controlPanel_Store = Create_mergedChildren_controlPanel_Store([]);
-        QMSFieldToQMSGetMany_Store = Create_QMSFieldToQMSGetMany_Store([]);
+        const mergedChildren_controlPanel_Store = Create_mergedChildren_controlPanel_Store([]);
+        const QMSFieldToQMSGetMany_Store = Create_QMSFieldToQMSGetMany_Store([]);
 
-        // Debug logging using manual subscribe to avoid $ syntax issues in block or conditional effects
-        // Using a helper to log on change
-        const logStore = (name: string, store: any) => {
-            if (store) {
-                 const unsub = store.subscribe((val: any) => Logger.debug(name, val));
-                 onDestroy(unsub);
-            }
-        };
+        // Debug logging
+        const storesToLog = [
+            { name: '$QMSFieldToQMSGetMany_Store', store: QMSFieldToQMSGetMany_Store },
+            { name: '$mergedChildren_finalGqlArgObj_Store', store: mergedChildren_finalGqlArgObj_Store },
+            { name: '$mergedChildren_QMSWraperCtxData_Store', store: mergedChildren_QMSWraperCtxData_Store },
+            { name: '$mergedChildren_controlPanel_Store', store: mergedChildren_controlPanel_Store },
+            { name: '$paginationState', store: paginationState },
+            { name: '$paginationState_derived', store: paginationState_derived }
+        ];
 
-        logStore('$QMSFieldToQMSGetMany_Store', QMSFieldToQMSGetMany_Store);
-        logStore('$mergedChildren_finalGqlArgObj_Store', mergedChildren_finalGqlArgObj_Store);
-        logStore('$mergedChildren_QMSWraperCtxData_Store', mergedChildren_QMSWraperCtxData_Store);
-        logStore('$mergedChildren_controlPanel_Store', mergedChildren_controlPanel_Store);
+        const unsubs = storesToLog.map(({name, store}) => {
+             if (store) return store.subscribe((val: any) => Logger.debug(name, val));
+             return () => {};
+        });
 
 
-        QMS_bodyPart_StoreDerived = Create_QMS_bodyPart_StoreDerived(
-            finalGqlArgObj_Store,
+        const QMS_bodyPart_StoreDerived = Create_QMS_bodyPart_StoreDerived(
+            current_finalGqlArgObj_Store,
             tableColsData_Store,
             QMSType,
             QMSName,
@@ -296,22 +290,21 @@
             initialGqlArgObj
         );
 
-        QMS_bodyPartsUnifier_StoreDerived = Create_QMS_bodyPartsUnifier_StoreDerived(
+        const QMS_bodyPartsUnifier_StoreDerived = Create_QMS_bodyPartsUnifier_StoreDerived(
             [QMS_bodyPart_StoreDerived],
             QMSType
         );
         Logger.debug('QMS_bodyPartsUnifier_StoreDerived', QMS_bodyPartsUnifier_StoreDerived);
 
-        // Logger.debug(schemaData);
+        let QMS_bodyPart_StoreDerived_rowsCount = null;
         const rowCountLocation = endpointInfo.get_rowCountLocation(QMS_info, schemaData);
-        Logger.debug({ rowCountLocation }, get(endpointInfo));
         if (rowCountLocation) {
             const tableColsData_Store_rowsCount = writable([
                 { stepsOfFields: rowCountLocation, title: 'count' }
             ]);
 
             QMS_bodyPart_StoreDerived_rowsCount = Create_QMS_bodyPart_StoreDerived(
-                finalGqlArgObj_Store,
+                current_finalGqlArgObj_Store,
                 tableColsData_Store_rowsCount,
                 QMSType,
                 rowCountLocation[0],
@@ -323,24 +316,19 @@
         }
 
         const tableName = endpointInfo.get_tableName(QMS_info, schemaData);
-        Logger.debug({ tableName });
         const thisContext = endpointInfo.get_thisContext();
-        Logger.debug({ thisContext });
         const objective = 'getOne';
         const qmsNameForObjective = endpointInfo.get_qmsNameForObjective(QMS_info, schemaData, objective);
-        Logger.debug({ qmsNameForObjective }, objective);
 
-        idColName = getIdColumnName(
+        const idColName = getIdColumnName(
             returningColumnsLocationQMS_Info,
             QMS_info,
             endpointInfo,
             schemaData
         );
 
-        logStore('$paginationState', paginationState);
-        logStore('$paginationState_derived', paginationState_derived);
-
-        QMSWraperContext = {
+        // Update the context object
+        Object.assign(QMSWraperContext, {
             idColName,
             returningColumnsLocationQMS_Info,
             rowsLocation,
@@ -348,9 +336,9 @@
             QMS_info,
             QMSType,
             QMSName,
-            activeArgumentsDataGrouped_Store,
+            activeArgumentsDataGrouped_Store: current_activeArgumentsDataGrouped_Store,
             tableColsData_Store,
-            finalGqlArgObj_Store,
+            finalGqlArgObj_Store: current_finalGqlArgObj_Store,
             QMS_bodyPart_StoreDerived,
             QMS_bodyPart_StoreDerived_rowsCount,
             QMS_bodyPartsUnifier_StoreDerived,
@@ -362,19 +350,16 @@
             mergedChildren_controlPanel_Store,
             QMSFieldToQMSGetMany_Store,
             extraInfo
-        };
+        });
 
-        if (preferGivenQMSWraperContext && QMSWraperContextGiven) {
-            QMSWraperContext = QMSWraperContextGiven;
-        }
-        setContext<QMSWraperContextType>(`${prefix}QMSWraperContext`, QMSWraperContext as QMSWraperContextType);
-        if (isOutermostQMSWraper) {
-            setContext<QMSWraperContextType>(`${prefix}OutermostQMSWraperContext`, QMSWraperContext as QMSWraperContextType);
-        }
-    }
+        return () => {
+            unsubs.forEach(unsub => unsub());
+        };
+    });
+
 </script>
 
-{#if isOutermostQMSWraper && $mergedChildren_QMSWraperCtxData_Store}
+{#if calculated_isOutermostQMSWraper && $mergedChildren_QMSWraperCtxData_Store}
 	{#each $mergedChildren_QMSWraperCtxData_Store as QMSWraperCtxDataCurrent (QMSWraperCtxDataCurrent.stepsOfFields.join())}
 		<QMSWraperCtxDataCurrentComputations {QMSWraperCtxDataCurrent} />
 	{/each}

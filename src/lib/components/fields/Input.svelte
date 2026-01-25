@@ -4,12 +4,40 @@
 		string_transformerREVERSE
 	} from '$lib/utils/dataStructureTransformers';
 	import { getContext } from 'svelte';
+	import type { Writable } from 'svelte/store';
 	import { Logger } from '$lib/utils/logger';
 
-	let { displayInterface, rawValue = $bindable(), dispatchValue, onChanged } = $props();
+	/**
+	 * Props for the Input component.
+	 */
+	interface Props {
+		/**
+		 * The HTML input type (e.g., 'text', 'number').
+		 */
+		displayInterface: string;
+		/**
+		 * The current value of the input. Bindable.
+		 */
+		rawValue?: any;
+		/**
+		 * The value to display if rawValue is undefined initially.
+		 */
+		dispatchValue?: any;
+		/**
+		 * Callback fired when the input value changes.
+		 */
+		onChanged?: (detail: { chd_rawValue: any }) => void;
+	}
 
-	let inputEl = $state();
-	const mutationVersion = getContext('mutationVersion');
+	let {
+		displayInterface,
+		rawValue = $bindable(),
+		dispatchValue,
+		onChanged
+	}: Props = $props();
+
+	let inputEl = $state<HTMLInputElement>();
+	const mutationVersion = getContext<Writable<boolean>>('mutationVersion');
 
 	$effect(() => {
 		if (!rawValue && dispatchValue) {
@@ -31,7 +59,7 @@
 	bind:this={inputEl}
 	value={rawValue}
 	onchange={() => {
-		rawValue = inputEl.value;
+		rawValue = inputEl!.value;
 
 		if (displayInterface == 'number' && rawValue == '') {
 			rawValue = undefined;

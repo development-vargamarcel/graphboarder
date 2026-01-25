@@ -48,6 +48,11 @@ export interface GraphQLArgument {
 	description?: string;
 	type: GraphQLType;
 	defaultValue?: unknown;
+	dd_NON_NULL?: boolean;
+	dd_rootName?: string;
+	dd_displayName?: string;
+	dd_kindList?: boolean;
+	dd_isRootArg?: boolean;
 }
 
 /**
@@ -127,6 +132,7 @@ export interface FieldWithDerivedData extends GraphQLField, DerivedData {}
 export interface InputFieldWithDerivedData extends GraphQLInputField, DerivedData {}
 
 // Schema Data Types
+import type { Readable } from 'svelte/store';
 
 /**
  * Holds the parsed schema data including root types and fields for operations.
@@ -136,8 +142,22 @@ export interface SchemaData {
 	queryFields: FieldWithDerivedData[];
 	mutationFields: FieldWithDerivedData[];
 	subscriptionFields: FieldWithDerivedData[];
-	get_rootType: (rootTypes: RootType[] | null, rootTypeName: string, schemaData: SchemaData) => RootType | undefined;
-	get_QMS_Field: (qmsName: string, qmsType: QMSType, schemaData: SchemaData) => FieldWithDerivedData | undefined;
+	schema?: any;
+	isReady?: boolean;
+}
+
+/**
+ * Svelte store for Schema Data with helper methods.
+ */
+export interface SchemaDataStore extends Readable<SchemaData> {
+	set: (value: SchemaData) => void;
+	update: (updater: (value: SchemaData) => SchemaData) => void;
+	set_schema: (schema: any) => void;
+	set_rootTypes: (withDerivedData: boolean, set_storeVal: boolean, endpointInfo: EndpointInfoStore) => RootType[];
+	set_QMSFields: (withDerivedData: boolean, set_storeVal: boolean, QMS: string[], endpointInfo: EndpointInfoStore) => Record<string, FieldWithDerivedData[]>;
+	set_fields: (endpointInfo: EndpointInfoStore) => void;
+	get_rootType: (rootTypes: RootType[] | null, rootTypeName: string, schemaData: SchemaDataStore | SchemaData) => RootType | undefined;
+	get_QMS_Field: (qmsName: string, qmsType: QMSType, schemaData: SchemaDataStore | SchemaData) => FieldWithDerivedData | undefined;
 }
 
 // Display Interface Types
@@ -178,7 +198,7 @@ export interface PaginationTypeInfo {
 	name: string;
 	check: (standsForArray: string[]) => boolean;
 	get_rowLimitingArgNames?: (paginationArgs: FieldWithDerivedData[]) => (string | undefined)[];
-	get_dependencyColsData?: (qmsName: string, qmsType: QMSType, schemaData: SchemaData) => unknown[];
+	get_dependencyColsData?: (qmsName: string, qmsType: QMSType, schemaData: SchemaDataStore | SchemaData) => unknown[];
 	get_initialState: (paginationArgs: FieldWithDerivedData[]) => PaginationState;
 	get_nextPageState: (currentState: PaginationState, paginationArgs: FieldWithDerivedData[], returnedDataBatch_last?: unknown, qmsName?: string, qmsType?: QMSType) => PaginationState;
 	get_prevPageState: (currentState: PaginationState, paginationArgs: FieldWithDerivedData[], returnedDataBatch_last?: unknown, qmsName?: string, qmsType?: QMSType) => PaginationState;
@@ -224,6 +244,7 @@ export interface ActiveArgumentData extends Partial<FieldWithDerivedData> {
 	inputFields?: InputFieldWithDerivedData[];
 	enumValues?: GraphQLEnumValue[];
 	selectedRowsColValues?: Record<string, unknown>[];
+	chosenDisplayInterface?: DisplayInterface;
 }
 
 /**
@@ -234,6 +255,8 @@ export interface ContainerData extends ActiveArgumentData {
 	items: ContainerItem[];
 	isMain?: boolean;
 	stepsOfNodes?: unknown[];
+	parent_node?: ContainerData;
+	addDefaultFields?: boolean;
 }
 
 export interface ContainerItem {
@@ -259,13 +282,18 @@ export interface ActiveArgumentGroup {
 // Endpoint Configuration Types
 
 export interface RowsLocationPossibility {
-	get_Val: (qmsInfo: FieldWithDerivedData, schemaData?: SchemaData) => string[];
-	check: (qmsInfo: FieldWithDerivedData, schemaData: SchemaData) => boolean;
+	get_Val: (qmsInfo: FieldWithDerivedData, schemaData?: SchemaDataStore | SchemaData) => string[];
+	check: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData) => boolean;
+}
+
+export interface RowCountLocationPossibility {
+	get_Val: (qmsInfo: FieldWithDerivedData, schemaData?: SchemaDataStore | SchemaData, storeVal?: any) => string[];
+	check: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData, storeVal?: any) => boolean;
 }
 
 export interface IdFieldPossibility {
-	get_Val: (qmsInfo: FieldWithDerivedData, schemaData: SchemaData) => FieldWithDerivedData | undefined;
-	check: (qmsInfo: FieldWithDerivedData, schemaData: SchemaData) => boolean | FieldWithDerivedData | undefined;
+	get_Val: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData, storeVal?: any) => FieldWithDerivedData | undefined;
+	check: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData, storeVal?: any) => boolean | FieldWithDerivedData | undefined;
 }
 
 export interface TypeExtraDataPossibility {
@@ -274,8 +302,8 @@ export interface TypeExtraDataPossibility {
 }
 
 export interface IdDecoderPossibility {
-	get_Val: (qmsInfo: FieldWithDerivedData, schemaData: SchemaData, id: string) => string;
-	check: (qmsInfo: FieldWithDerivedData, schemaData: SchemaData) => boolean;
+	get_Val: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData, id: string) => string;
+	check: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData) => boolean;
 }
 
 /**
@@ -283,11 +311,12 @@ export interface IdDecoderPossibility {
  */
 export interface EndpointConfiguration {
 	url?: string;
+	headers?: Record<string, string>;
 	description?: string;
 	id?: string;
 	isMantained?: boolean;
 	rowsLocationPossibilities?: RowsLocationPossibility[];
-	rowCountLocationPossibilities?: RowsLocationPossibility[];
+	rowCountLocationPossibilities?: RowCountLocationPossibility[];
 	relayPageInfoFieldsPossibleNames?: Record<string, string[]>;
 	relayCursorPossibleNames?: Record<string, string[]>;
 	paginationArgsPossibleNames?: Record<string, string[]>;
@@ -299,8 +328,8 @@ export interface EndpointConfiguration {
 	inputColumnsPossibleLocationsInArg?: string[][];
 	pageInfoFieldsLocation?: string[];
 	tableNamePossibilities?: {
-		get_Val: (qmsInfo: FieldWithDerivedData, schemaData: SchemaData) => string | null;
-		check: (qmsInfo: FieldWithDerivedData, schemaData: SchemaData) => boolean;
+		get_Val: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData) => string | null;
+		check: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData) => boolean;
 	}[];
 	qmsNameForObjectivePossibilities?: {
 		get_Val: (params: QMSObjectiveParams) => string | null;
@@ -310,7 +339,7 @@ export interface EndpointConfiguration {
 
 export interface QMSObjectiveParams {
 	QMS_info: FieldWithDerivedData;
-	schemaData: SchemaData;
+	schemaData: SchemaDataStore | SchemaData;
 	thisContext: EndpointInfoStore;
 	tableName: string;
 	qmsObjective: string;
@@ -327,16 +356,16 @@ export interface EndpointInfoStore {
 	update: (updater: (value: EndpointConfiguration) => EndpointConfiguration) => void;
 	get_thisContext: () => EndpointInfoStore;
 	smartSet: (newEndpoint: EndpointConfiguration) => void;
-	get_inputFieldsContainerLocation: (qmsInfo: FieldWithDerivedData, schemaData: SchemaData) => string[];
-	get_rowsLocation: (qmsInfo: FieldWithDerivedData, schemaData: SchemaData) => string[];
-	get_rowCountLocation: (qmsInfo: FieldWithDerivedData, schemaData: SchemaData) => string[] | null;
-	get_idField: (qmsInfo: FieldWithDerivedData, schemaData: SchemaData) => FieldWithDerivedData | null;
+	get_inputFieldsContainerLocation: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData) => string[];
+	get_rowsLocation: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData) => string[];
+	get_rowCountLocation: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData) => string[] | null;
+	get_idField: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData) => FieldWithDerivedData | null;
 	get_typeExtraData: (typeInfo: Partial<FieldWithDerivedData>, choosenDisplayInterface?: DisplayInterface) => TypeExtraData | null;
-	get_tableName: (qmsInfo: FieldWithDerivedData, schemaData: SchemaData) => string | null;
-	get_qmsNameForObjective: (qmsInfo: FieldWithDerivedData, schemaData: SchemaData, qmsObjective: string) => string | null;
-	get_decodedId: (qmsInfo: FieldWithDerivedData, schemaData: SchemaData, id: string) => string | null;
-	get_relayPageInfoFieldsNames: (currentQmsInfo: FieldWithDerivedData, pageInfoFieldsLocation: string[], schemaData: SchemaData) => Record<string, string> | null;
-	get_relayCursorFieldName: (currentQmsInfo: FieldWithDerivedData, rowsLocation: string[], schemaData: SchemaData) => Record<string, string> | null;
+	get_tableName: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData) => string | null;
+	get_qmsNameForObjective: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData, qmsObjective: string) => string | null;
+	get_decodedId: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData, id: string) => string | null;
+	get_relayPageInfoFieldsNames: (currentQmsInfo: FieldWithDerivedData, pageInfoFieldsLocation: string[], schemaData: SchemaDataStore | SchemaData) => Record<string, string> | null;
+	get_relayCursorFieldName: (currentQmsInfo: FieldWithDerivedData, rowsLocation: string[], schemaData: SchemaDataStore | SchemaData) => Record<string, string> | null;
 }
 
 /**
@@ -346,7 +375,7 @@ export interface ActiveArgumentsDataGroupedStore {
 	subscribe: (run: (value: ActiveArgumentGroup[]) => void) => () => void;
 	set: (value: ActiveArgumentGroup[]) => void;
 	update: (updater: (value: ActiveArgumentGroup[]) => ActiveArgumentGroup[]) => void;
-	set_groups: (qmsInfo: FieldWithDerivedData, schemaData: SchemaData, qmsArguments: Record<string, unknown> | null, endpointInfo: EndpointInfoStore) => void;
+	set_groups: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData, qmsArguments: Record<string, unknown> | null, endpointInfo: EndpointInfoStore) => void;
 	update_groups: (groupNewData: ActiveArgumentGroup) => void;
 	update_activeArgument: (activeArgumentData: ActiveArgumentData, groupName: string) => void;
 	delete_activeArgument: (activeArgumentData: ActiveArgumentData, groupName: string) => void;
@@ -411,11 +440,10 @@ export interface AvailableEndpoint extends EndpointConfiguration {
 }
 
 // Context Types
-import type { Readable } from 'svelte/store';
 
 export interface QMSMainWraperContext {
 	endpointInfo: EndpointInfoStore;
-	schemaData: Readable<SchemaData>;
+	schemaData: SchemaDataStore;
 	urqlCoreClient: any;
 }
 
