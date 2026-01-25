@@ -299,7 +299,7 @@ export const localEndpoints = [
 		idDecoderPossibilities: [
 			{
 				get_Val: (QMS_info, schemaData, id) => {
-					let array = stringToJs(atob(id))
+					let array = stringToJs(atob(id)) as any[];
 					return array[array.length - 1]
 				},
 				check: (QMS_info, schemaData) => { return true }
@@ -819,10 +819,12 @@ export const parseAll = (json) => {
 	});
 }
 
+import { writable } from 'svelte/store';
+
 // test.forEach(element => {
 // 	console.log(stigifyAll(element))
 // });
 // if (typeof document != undefined) {
 // 	console.log('TEST ENDPOINTS', parseAll(stigifyAll(test)), typeof document)
 // }
-//export const testEndpoints_Store = writable(test);
+export const testEndpoints_Store = writable(localEndpoints);

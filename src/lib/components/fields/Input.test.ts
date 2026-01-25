@@ -3,24 +3,6 @@ import { render, fireEvent } from '@testing-library/svelte';
 import { writable } from 'svelte/store';
 import Input from './Input.svelte';
 
-// Create a wrapper component that provides context
-const createTestContext = (mutationVersion = false) => {
-	return `
-		<script>
-			import { setContext } from 'svelte';
-			import { writable } from 'svelte/store';
-			import Input from './Input.svelte';
-
-			setContext('mutationVersion', writable(${mutationVersion}));
-			export let displayInterface;
-			export let rawValue;
-			export let dispatchValue;
-		</script>
-
-		<Input {displayInterface} {rawValue} {dispatchValue} on:changed />
-	`;
-};
-
 describe('Input Component', () => {
 	describe('Rendering', () => {
 		it('should render input element', () => {
@@ -131,12 +113,10 @@ describe('Input Component', () => {
 	describe('Event Dispatching', () => {
 		it('should dispatch changed event on input change', async () => {
 			const changed = vi.fn();
-			const { container, component } = render(Input, {
-				props: { displayInterface: 'text', rawValue: 'initial' },
+			const { container } = render(Input, {
+				props: { displayInterface: 'text', rawValue: 'initial', onChanged: changed },
 				context: new Map([['mutationVersion', writable(false)]])
 			});
-
-			component.$on('changed', changed);
 
 			const input = container.querySelector('input') as HTMLInputElement;
 			input.value = 'new value';
@@ -147,12 +127,10 @@ describe('Input Component', () => {
 
 		it('should include chd_rawValue in event detail', async () => {
 			const changed = vi.fn();
-			const { container, component } = render(Input, {
-				props: { displayInterface: 'text', rawValue: 'initial' },
+			const { container } = render(Input, {
+				props: { displayInterface: 'text', rawValue: 'initial', onChanged: changed },
 				context: new Map([['mutationVersion', writable(false)]])
 			});
-
-			component.$on('changed', changed);
 
 			const input = container.querySelector('input') as HTMLInputElement;
 			input.value = 'new value';
@@ -160,21 +138,17 @@ describe('Input Component', () => {
 
 			expect(changed).toHaveBeenCalledWith(
 				expect.objectContaining({
-					detail: expect.objectContaining({
-						chd_rawValue: 'new value'
-					})
+					chd_rawValue: 'new value'
 				})
 			);
 		});
 
 		it('should set rawValue to undefined when number input is cleared', async () => {
 			const changed = vi.fn();
-			const { container, component } = render(Input, {
-				props: { displayInterface: 'number', rawValue: 42 },
+			const { container } = render(Input, {
+				props: { displayInterface: 'number', rawValue: 42, onChanged: changed },
 				context: new Map([['mutationVersion', writable(false)]])
 			});
-
-			component.$on('changed', changed);
 
 			const input = container.querySelector('input') as HTMLInputElement;
 			input.value = '';
@@ -182,21 +156,17 @@ describe('Input Component', () => {
 
 			expect(changed).toHaveBeenCalledWith(
 				expect.objectContaining({
-					detail: expect.objectContaining({
-						chd_rawValue: undefined
-					})
+					chd_rawValue: undefined
 				})
 			);
 		});
 
 		it('should handle multiple change events', async () => {
 			const changed = vi.fn();
-			const { container, component } = render(Input, {
-				props: { displayInterface: 'text', rawValue: '' },
+			const { container } = render(Input, {
+				props: { displayInterface: 'text', rawValue: '', onChanged: changed },
 				context: new Map([['mutationVersion', writable(false)]])
 			});
-
-			component.$on('changed', changed);
 
 			const input = container.querySelector('input') as HTMLInputElement;
 
@@ -299,7 +269,7 @@ describe('Input Component', () => {
 		});
 
 		it('should update when rawValue prop changes', async () => {
-			const { container, component } = render(Input, {
+			const { container, rerender } = render(Input, {
 				props: { displayInterface: 'text', rawValue: 'initial' },
 				context: new Map([['mutationVersion', writable(false)]])
 			});
@@ -307,7 +277,7 @@ describe('Input Component', () => {
 			const input = container.querySelector('input') as HTMLInputElement;
 			expect(input.value).toBe('initial');
 
-			await component.$set({ rawValue: 'updated' });
+			await rerender({ rawValue: 'updated' });
 			expect(input.value).toBe('updated');
 		});
 	});

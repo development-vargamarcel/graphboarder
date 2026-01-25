@@ -75,11 +75,17 @@
 	out:fade|global={{ delay: 0, duration: 50 }}
 	onintroend={() => (mainDivIntroEnd = true)}
 	onclick={handleMainDivClick}
+	role="button"
+	tabindex="0"
+	onkeydown={(e) => { if(e.key === 'Enter' || e.key === ' ') handleMainDivClick(e); }}
 >
 	{#if mainDivIntroEnd}
 		<div
 			class="    py-80"
 			onclick={handlePaddingClick}
+			role="button"
+			tabindex="0"
+			onkeydown={(e) => { if(e.key === 'Enter' || e.key === ' ') handlePaddingClick(e); }}
 		></div>
 
 		<div

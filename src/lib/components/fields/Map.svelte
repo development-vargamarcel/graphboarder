@@ -1,3 +1,7 @@
+<script module lang="ts">
+	declare var MapboxDraw: any;
+</script>
+
 <script lang="ts">
 	import {
 		geojson_transformer,
@@ -19,9 +23,9 @@
 	};
 	const mapContainerId = generateUniqueId();
 	//s
-	let map = $state();
-	let mapContainer = $state();
-	let draw = $state();
+	let map = $state<any>();
+	let mapContainer = $state<any>();
+	let draw = $state<any>();
 	let location;
 	$effect(() => {
 		if (navigator.geolocation) {

@@ -17,6 +17,7 @@
 	import { Create_activeArgumentsDataGrouped_Store } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
 	import QMSWraper from '$lib/components/QMSWraper.svelte';
 	import { get, type Writable } from 'svelte/store';
+    import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 
 	interface Props {
 		canExpand: any;
@@ -40,17 +41,23 @@
 		prefix = ''
 	}: Props = $props();
 
-	let { dd_kindsArray, dd_namesArray, dd_displayName, dd_rootName, args } = type;
-	let isSubset = (parentArray, subsetArray) => {
-		return subsetArray.every((el, index) => {
+    // Use derived to react to type changes
+	let dd_kindsArray = $derived(type.dd_kindsArray);
+    let dd_namesArray = $derived(type.dd_namesArray);
+    let dd_displayName = $derived(type.dd_displayName);
+    let dd_rootName = $derived(type.dd_rootName);
+    let args = $derived(type.args);
+
+	let isSubset = (parentArray: any, subsetArray: any) => {
+		return subsetArray.every((el: any, index: any) => {
 			return parentArray[index] === el;
 		});
 	};
 
-	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const schemaData = QMSMainWraperContext?.schemaData;
-	const tableColsData_Store = QMSWraperContext?.tableColsData_Store;
+	const qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const schemaData = mainWraperCtx?.schemaData;
+	const tableColsData_Store = qmsWraperCtx?.tableColsData_Store;
 	const stepsOfFieldsOBJ = getContext<Writable<Record<string, any>>>(`${prefix}stepsOfFieldsOBJ`);
 	const stepsOfFieldsOBJFull = getContext<Writable<Record<string, any>>>(`${prefix}stepsOfFieldsOBJFull`);
 
@@ -92,22 +99,22 @@
 	let hasQMSarguments = $derived.by(() => {
 		if (!$stepsOfFieldsOBJFull) return false;
 		const valueAtPath = getValueAtPath($stepsOfFieldsOBJFull, stepsOfFields);
-		return valueAtPath?.QMSarguments;
+		return (valueAtPath as any)?.QMSarguments;
 	});
 
 	let showModal = $state(false);
-	let finalGqlArgObj_Store = $state();
+	let finalGqlArgObj_Store = $state<any>();
 	let finalGqlArgObj_StoreValue = $state();
 	let paginationState_derived = $state();
 	let paginationState_derivedValue = $state();
 	let finalGqlArgObjValue;
-	let activeArgumentsQMSWraperContext = $state();
+	let activeArgumentsQMSWraperContext = $state<any>();
 	let QMSarguments;
 	let canAcceptArguments = $derived(canExpand && args?.length > 0 && isUsedInSomeColumn);
 
-	const mergedChildren_finalGqlArgObj_Store = QMSWraperContext.mergedChildren_finalGqlArgObj_Store;
+	const mergedChildren_finalGqlArgObj_Store = qmsWraperCtx.mergedChildren_finalGqlArgObj_Store;
 	const mergedChildren_QMSWraperCtxData_Store =
-		QMSWraperContext.mergedChildren_QMSWraperCtxData_Store;
+		qmsWraperCtx.mergedChildren_QMSWraperCtxData_Store;
 	let activeArgumentsDataGrouped_Store = getContext<Writable<any>>(`${prefix}activeArgumentsDataGrouped_Store`);
 
 	// //S//move to QMSWraper (outermost if possible)

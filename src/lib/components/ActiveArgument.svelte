@@ -49,6 +49,8 @@
 		onUpdateQuery?: () => void;
 		onDeleteSubNode?: (detail: { id: string }) => void;
 		onChildrenStartDrag?: () => void;
+		showSelectModal?: boolean;
+		selectedRowsColValues?: any;
 	}
 
 	let {
@@ -72,7 +74,9 @@
 		onContextmenuUsed,
 		onUpdateQuery,
 		onDeleteSubNode,
-		onChildrenStartDrag
+		onChildrenStartDrag,
+		showSelectModal = $bindable(false),
+		selectedRowsColValues = $bindable()
 	}: Props = $props();
 
 	const deleteItem = (arg: { detail: { id: string } }) => {
@@ -80,7 +84,7 @@
 	};
 
 	const QMSWraperContext = getContext<any>(`${prefix}QMSWraperContext`);
-	const { activeArgumentsDataGrouped_Store, finalGqlArgObj_Store } = QMSWraperContext;
+	const { activeArgumentsDataGrouped_Store, finalGqlArgObj_Store } = QMSWraperContext || {};
 
 	let idColNameOfSelectedRow: string | undefined;
 
@@ -135,7 +139,7 @@
 				value = activeArgumentData.chd_dispatchValue.join(', ');
 			} else if (typeof activeArgumentData.chd_dispatchValue == 'string') {
 				value = string_transformerREVERSE(
-					(activeArgumentData.chd_dispatchValue || activeArgumentData.defaultValue) as string
+					(activeArgumentData.chd_dispatchValue as string) || (activeArgumentData.defaultValue as string)
 				);
 			}
 		}
@@ -183,7 +187,7 @@
 			inUse_set(false);
 		}
 		onChanged?.(detail);
-		Logger.debug('activeArgumentsDataGrouped_Store', $activeArgumentsDataGrouped_Store);
+		// Logger.debug('activeArgumentsDataGrouped_Store', activeArgumentsDataGrouped_Store);
 		updateActiveArgument();
 		//finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 	};
@@ -232,7 +236,6 @@
 	let context = getContext<any>(`${prefix}QMSMainWraperContext`);
 	const schemaData = context?.schemaData;
 	const nodeRootType = getRootType(null, activeArgumentData.dd_rootName, schemaData);
-	let showSelectModal: boolean = $state(false);
 	const OutermostQMSWraperContext = getContext<any>(`${prefix}OutermostQMSWraperContext`);
 
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
@@ -248,7 +251,16 @@
 	});
 
 	const nodeContext_forDynamicData = getContext<any>(`${prefix}nodeContext_forDynamicData`);
-	let selectedRowsColValues = nodeContext_forDynamicData.selectedRowsColValues;
+	let contextSelectedRowsColValuesStore = nodeContext_forDynamicData?.selectedRowsColValues;
+	let contextSelectedRowsColValues = $state<any[]>([]);
+	$effect(() => {
+		if (contextSelectedRowsColValuesStore) {
+			const unsub = contextSelectedRowsColValuesStore.subscribe((v: any) => contextSelectedRowsColValues = v);
+			return unsub;
+		}
+	});
+
+	let finalSelectedRowsColValues = $derived(selectedRowsColValues ?? contextSelectedRowsColValues);
 
 	// Event handler helpers
 	const handleCheckboxChange = (e: Event) => {
@@ -480,7 +492,7 @@
 				</div>
 			</div>
 			{#if expandedVersion || $mutationVersion || $showInputField}
-				{#if $selectedRowsColValues?.length > 0}
+				{#if finalSelectedRowsColValues?.length > 0}
 					<SelectedRowsDisplay />
 				{:else}
 					<div class="pl-1">

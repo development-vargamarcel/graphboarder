@@ -23,7 +23,7 @@ export const convertArrayToCSV = (data: any[]): string => {
 		...flatData.map((row) =>
 			headers
 				.map((header) => {
-					let val = row[header];
+					let val = row[header as keyof typeof row];
 					if (val === null || val === undefined) {
 						return '';
 					}

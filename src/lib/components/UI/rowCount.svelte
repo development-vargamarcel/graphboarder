@@ -1,11 +1,7 @@
 <script lang="ts">
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-
-	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
-	const schemaData = QMSMainWraperContext?.schemaData;
 	import { getDataGivenStepsOfFields } from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
+	import type { QMSMainWraperContext } from '$lib/types/index';
 
 	interface Props {
 		prefix?: string;
@@ -14,6 +10,12 @@
 	}
 
 	let { prefix = '', QMS_bodyPart_StoreDerived, QMS_info }: Props = $props();
+
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = mainWraperCtx?.endpointInfo;
+
+	const urqlCoreClient = mainWraperCtx?.urqlCoreClient;
+	const schemaData = mainWraperCtx?.schemaData;
 
 	let countValue = $state();
 	let queryData = $state();

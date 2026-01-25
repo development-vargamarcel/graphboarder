@@ -8,6 +8,6 @@ const testEndpoints = get(testEndpoints_Store)
 export const getAvailableEndpoints = () => {
   return testEndpoints
 }
-export const getEndpointConfiguration = (endpointId) => {
-  return testEndpoints.find((endpoint) => { return endpoint.url == endpointId })
+export const getEndpointConfiguration = (endpointId: string) => {
+  return testEndpoints.find((endpoint: any) => { return endpoint.url == endpointId })
 }

@@ -17,6 +17,7 @@
 
 <div class="btn btn-ghost btn-xs w-min flex ml-4 {hasGroup_argsNode ? '' : 'pt-1'}">
 	<Toggle
+		displayInterface="boolean"
 		useSwap
 		swapOnText="dnd"
 		showValue={false}
@@ -29,6 +30,7 @@
 </div>
 <div class="btn btn-ghost btn-xs w-min flex ml-4 {hasGroup_argsNode ? '' : 'pt-1'}">
 	<Toggle
+		displayInterface="boolean"
 		useSwap
 		swapOnText="field"
 		showValue={false}
@@ -41,6 +43,7 @@
 </div>
 <div class="btn btn-ghost btn-xs w-min flex ml-4 {hasGroup_argsNode ? '' : 'pt-1'}">
 	<Toggle
+		displayInterface="boolean"
 		useSwap
 		swapOnText="mutVer"
 		showValue={false}

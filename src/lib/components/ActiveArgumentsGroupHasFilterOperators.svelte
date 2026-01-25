@@ -33,6 +33,7 @@
 	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
 	import ManyToAllSelectInterfaceDefinition from './ManyToAllSelectInterfaceDefinition.svelte';
 	import SelectedRowsDisplay from './SelectedRowsDisplay.svelte';
+    import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 
 	interface Props {
 		nodes: any;
@@ -44,7 +45,7 @@
 		type: any;
 		originalNodes: any;
 		prefix?: string;
-		addDefaultFields: any;
+		addDefaultFields?: any;
 		onChanged?: () => void;
 		onUpdateQuery?: () => void;
 		onChildrenStartDrag?: () => void;
@@ -68,16 +69,17 @@
 		onDeleteSubNode
 	}: Props = $props();
 
-	let stepsOfNodes = $state([]);
-	let stepsOfFields = $state([]);
-	let stepsOfFieldsFull = $state([]);
+	let stepsOfNodes = $state<any[]>([]);
+	let stepsOfFields = $state<any[]>([]);
+	let stepsOfFieldsFull = $state<any[]>([]);
 	let testName_stepsOFFieldsWasUpdated = $state(false);
-	const OutermostQMSWraperContext = getContext<any>(`${prefix}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
 	let getManyQMS = $state();
 	///
 
 	let nodeContext_forDynamicData: any = {};
+    // Ensure this logic is robust. Mutating props directly during init is sometimes necessary but check reactivity.
 	if (node.nodeContext_forDynamicData) {
 		nodeContext_forDynamicData = node.nodeContext_forDynamicData;
 	} else {
@@ -104,28 +106,11 @@
 
 
 	setContext(`${prefix}nodeContext_forDynamicData`, nodeContext_forDynamicData);
-	///
-	// $: if ($selectedQMSAAA) {
-	// 	// console.log(
-	// 	// 	{ field, node, nodes },
-	// 	// 	nodes[node.id],
-	// 	// 	schemaData.get_rootType(null, field.dd_rootName, schemaData)
-	// 	// );
-	// 	const objToAdd = {
-	// 		nodeOrField: node,
-	// 		getMany: { selectedQMS: $selectedQMSAAA, rowSelectionState: $rowSelectionStateAAA },
-	// 		id: Math.random().toString(36).substr(2, 9)
-	// 	};
-	// 	console.log({ objToAdd });
-	// 	QMSFieldToQMSGetMany_Store.addOrReplaceKeepingOldId(objToAdd);
-	// }
-	/////start
 
-	let pathIsInCP = false;
-	const nodeContext = getContext<any>(`${prefix}nodeContext`);
-	if (nodeContext) {
-		pathIsInCP = nodeContext?.pathIsInCP;
-	}
+	/////start
+    const nodeContext = getContext<any>(`${prefix}nodeContext`);
+    let pathIsInCP = $derived(nodeContext?.pathIsInCP || false);
+
 	let nodeIsInCP = $state(false);
 	const CPItemContext = getContext<any>(`${prefix}CPItemContext`);
 	if (CPItemContext?.CPItem.nodeId == node.id) {
@@ -133,9 +118,11 @@
 		nodeIsInCP = true;
 	}
 	const isCPChild = CPItemContext ? true : false;
-	const visibleInCP = pathIsInCP || nodeIsInCP;
-	const visible = visibleInCP || !CPItemContext || node.isMain;
-	let correctQMSWraperContext: any = '';
+    // Use derived for visibility logic
+	let visibleInCP = $derived(pathIsInCP || nodeIsInCP);
+	let visible = $derived(visibleInCP || !CPItemContext || node.isMain);
+
+    let correctQMSWraperContext: any = '';
 	if (isCPChild) {
 		correctQMSWraperContext = getQMSWraperCtxDataGivenControlPanelItem(
 			CPItemContext?.CPItem,
@@ -148,7 +135,8 @@
 
 	const { finalGqlArgObj_Store, QMS_info, activeArgumentsDataGrouped_Store, QMSType } =
 		$derived(correctQMSWraperContext);
-	const operatorChangeHandler = () => {
+
+    const operatorChangeHandler = () => {
 		stepsOfNodes = getUpdatedStepsOfNodes(
 			JSON.parse(JSON.stringify(parentNode?.stepsOfNodes || [])),
 			node
@@ -173,18 +161,18 @@
 	});
 
 
-	let context = getContext<any>(`${prefix}QMSMainWraperContext`);
+	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	const endpointInfo = context?.endpointInfo;
 	const schemaData = context?.schemaData;
 	let dragDisabled = $state(true);
 	const flipDurationMs = 500;
-	function handleDndConsider(e) {
+	function handleDndConsider(e: any) {
 		//console.log('considering', e, nodes);
 		const result = handleDndConsiderUtil(e.detail.items);
 		node.items = result.items;
 		dragDisabled = result.dragDisabled;
 	}
-	function handleDndFinalize(e) {
+	function handleDndFinalize(e: any) {
 		const result = handleDndFinalizeUtil(e.detail.items, () => {
 			nodes = { ...nodes };
 			handleChanged();
@@ -194,7 +182,7 @@
 		dragDisabled = result.dragDisabled;
 	}
 
-	const deleteItem = (e) => {
+	const deleteItem = (e: any) => {
 		node.items = handleDeleteItem(node.items, e.detail.id, () => {
 			nodes = { ...nodes };
 			handleChanged();
@@ -202,24 +190,20 @@
 		});
 	};
 	//
-	let labelEl = $state();
-	let shadowEl = $state();
+	let labelEl = $state<HTMLElement>();
+	let shadowEl = $state<HTMLElement>();
 	let shadowHeight = $state(20);
 	let shadowWidth = $state(20);
 
 	let labelElClone = $state();
 
-
-
-	function startDrag(e) {
-		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
-		//e.preventDefault();
+	function startDrag(e: any) {
 		dragDisabled = handleDragStart(e);
 	}
-	function handleKeyDown(e) {
+	function handleKeyDown(e: any) {
 		dragDisabled = handleDragKeyDown(e, dragDisabled);
 	}
-	const transformDraggedElement = (draggedEl, data, index) => {
+	const transformDraggedElement = (draggedEl: any, data: any, index: any) => {
 		transformDraggedElementUtil(draggedEl);
 	};
 	//
@@ -240,8 +224,7 @@
 			group,
 			activeArgumentsDataGrouped_Store,
 			schemaData,
-			endpointInfo,
-			stepsOfFields
+			endpointInfo
 		);
 	}
 	let showSelectModal = $state(false);
@@ -262,7 +245,7 @@
 			$endpointInfo &&
 			$endpointInfo?.inputColumnsPossibleLocationsInArg
 		) {
-			location = $endpointInfo.inputColumnsPossibleLocationsInArg.find((path) => {
+			location = $endpointInfo.inputColumnsPossibleLocationsInArg.find((path: any) => {
 				info = getDeepField(node, path, schemaData, 'inputFields');
 				return info;
 			});
@@ -276,46 +259,21 @@
 	let idColName = $state();
 	//------------
 
-	let QMSWraperContextForSelectedQMS = {};
-	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
+	let QMSWraperContextForSelectedQMS: any = {};
+	let activeArgumentsContext = getContext<any>(`${prefix}activeArgumentsContext`);
 	let forceShowSelectAndAddButtons = false;
-	$effect(() => {
+
+    $effect(() => {
 		if ($QMSFieldToQMSGetMany_Store.length > 0) {
 			getManyQMS = QMSFieldToQMSGetMany_Store.getObj({
 				nodeOrField: node
 			})?.getMany?.selectedQMS;
-			if (getManyQMS) {
-				console.log({ getManyQMS });
-			}
+			// if (getManyQMS) {
+			// 	console.log({ getManyQMS });
+			// }
 		}
 	});
-	$effect(() => {
-		console.log('nodeContext_forDynamicData.selectedRowsColValues', $selectedRowsColValuesAAA);
-	});
-	$effect(() => {
-		console.log(
-			'nodeContext_forDynamicData.selectedRowsColValuesProcessed',
-			$selectedRowsColValuesProcessedAAA
-		);
-	});
-	$effect(() => {
-		console.log('nodeContext_forDynamicData.rowSelectionState', $rowSelectionStateAAA);
-	});
-	$effect(() => {
-		console.log('nodeContext_forDynamicData.idColName', $idColNameAAA);
-	});
-	$effect(() => {
-		console.log('nodeContext_forDynamicData.selectedQMS', $selectedQMSAAA);
-	});
-	$effect(() => {
-		console.log('nodeContext_forDynamicData.QMSRows', $QMSRowsAAA);
-	});
-	$effect(() => {
-		console.log('nodeContext_forDynamicData.itemColumns', $QMSColumnsAAA);
-	});
-	$effect(() => {
-		console.log('nodeContext_forDynamicData.requiredColNames', $requiredColNamesAAA);
-	});
+
 	$effect(() => {
 		stepsOfFieldsFull = stepsOfNodesToStepsOfFields(stepsOfNodes);
 		stepsOfFields = filterElFromArr(stepsOfFieldsFull, ['list', 'bonded']);
@@ -331,7 +289,7 @@
 	//$: console.log(shadowEl);
 	$effect(() => {
 		if (shadowHeight && shadowEl) {
-			labelElClone = updateShadowElement(shadowEl, labelEl, shadowHeight, shadowWidth);
+			labelElClone = updateShadowElement(shadowEl, labelEl!, shadowHeight, shadowWidth);
 		}
 	});
 	$effect(() => {
@@ -342,9 +300,7 @@
 			idColName = QMSWraperContextForSelectedQMS.idColName;
 		}
 	});
-	$effect(() => {
-		console.log({ QMSWraperContextForSelectedQMS });
-	});
+
 </script>
 
 {#if visible}
@@ -381,8 +337,7 @@
 								group,
 								activeArgumentsDataGrouped_Store,
 								schemaData,
-								endpointInfo,
-								stepsOfFields
+								endpointInfo
 							);
 						}}
 					>
@@ -392,7 +347,7 @@
 
 				{#if !node?.isMain}
 					<div class="flex space-x-4 ">
-						{#if parentNode?.inputFields?.some((inputField) => {
+						{#if parentNode?.inputFields?.some((inputField: any) => {
 							return inputField.dd_displayName == '_not';
 						})}
 							<div class="form-control mr-1">
@@ -426,8 +381,7 @@
 									group,
 									activeArgumentsDataGrouped_Store,
 									schemaData,
-									endpointInfo,
-									stepsOfFields
+									endpointInfo
 								);
 							}}
 						>
@@ -461,6 +415,7 @@
 									'not yet implemented,implement here.Delete node and his items and items of his items recursively until the very end of the tree.'
 								);
 							}}
+                            title="Delete"
 						>
 							<i class="bi bi-trash-fill"></i>
 						</button>
@@ -493,7 +448,7 @@
 						parentNodeId={node.id}
 						{onUpdateQuery}
 						bind:group
-						bind:argsInfo
+						argsInfo={argsInfo}
 						{nodes}
 						{node}
 					/>
@@ -507,7 +462,7 @@
 			//
 			//console.log(detail.id, node);
 		}}
-		bind:selectedQMS={getManyQMS}
+		selectedQMS={getManyQMS}
 		bind:selectedRowsColValues
 		bind:showSelectModal
 		{originalNodes}
@@ -590,7 +545,7 @@
 						{/if}
 					</button>
 					{#if nodeIsInCP && node.operator}
-						<GroupDescriptionAndControls />
+						<GroupDescriptionAndControls hasGroup_argsNode={true} />
 					{/if}
 				{/if}
 			</div>
@@ -664,7 +619,7 @@
 					</button>
 
 					{#if nodeIsInCP && node.operator}
-						<GroupDescriptionAndControls />
+						<GroupDescriptionAndControls hasGroup_argsNode={true} />
 					{/if}
 				</div>
 				<!-- {#if inputColumnsLocation && inputColumnsLocationQMS_Info.dd_displayName == node.dd_displayName} -->
@@ -762,7 +717,7 @@
 			>
 				<!-- WE FILTER THE SHADOW PLACEHOLDER THAT WAS ADDED IN VERSION 0.7.4, filtering this way rather than checking whether 'nodes' have the id became possible in version 0.9.1 -->
 				{#if node.items.length > 1 || node?.isMain || true}
-					{#each node.items.filter((item) => {
+					{#each node.items.filter((item: any) => {
 						return item.id !== SHADOW_PLACEHOLDER_ITEM_ID;
 					}) as item (item.id)}
 						<div
@@ -773,7 +728,7 @@
 								{#if testName_stepsOFFieldsWasUpdated}
 									{#key stepsOfFields}
 										<ActiveArgumentsGroupHasFilterOperators
-											onDeleteSubNode={(detail) => {
+											onDeleteSubNode={(detail: any) => {
 												deleteItem({ detail });
 												//
 												//console.log(detail.id, node);

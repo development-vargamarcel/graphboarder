@@ -8,18 +8,19 @@
 	}
 
 	let { prefix = '' }: Props = $props();
-	const nodeContext_forDynamicData = getContext(`${prefix}nodeContext_forDynamicData`);
-	let idColName = nodeContext_forDynamicData.idColName;
-	let requiredColNames = nodeContext_forDynamicData.requiredColNames;
+	const nodeContext_forDynamicData = getContext<any>(`${prefix}nodeContext_forDynamicData`);
+	let idColName = nodeContext_forDynamicData?.idColName;
+	let requiredColNames = nodeContext_forDynamicData?.requiredColNames;
 
-	let selectedRowsColValues = nodeContext_forDynamicData.selectedRowsColValues;
-	let columns = $state();
-	$effect(() => {
+	let selectedRowsColValues = nodeContext_forDynamicData?.selectedRowsColValues;
+	let columns = $state<any[]>([]);
+
+    $effect(() => {
 		if ($selectedRowsColValues) {
 			if ($selectedRowsColValues?.length > 0) {
 				columns = Object.keys($selectedRowsColValues[0]).map((columnName) => {
 					return {
-						accessorFn: (row) => formatData(row[columnName], 40, true),
+						accessorFn: (row: any) => formatData(row[columnName], 40, true),
 						header: columnName,
 						footer: columnName,
 						enableHiding: true
@@ -34,9 +35,9 @@
 	{#if $selectedRowsColValues?.length > 0}
 		<div class=" max-w-[80vw] md:max-w-[50vw] pl-1 pr-2">
 			<ExplorerTable
-				bind:idColName={$idColName}
-				bind:requiredColNames={$requiredColNames}
-				enableRowSelection={false}
+				idColName={$idColName}
+				requiredColNames={$requiredColNames}
+				enableRowSelectionState={false}
 				data={$selectedRowsColValues}
 				{columns}
 			/>

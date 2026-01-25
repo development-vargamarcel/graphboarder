@@ -38,8 +38,8 @@
 		selectedRowsColValues = [],
 		field
 	}: Props = $props();
-	const nodeContext_forDynamicData = getContext(`${prefix}nodeContext_forDynamicData`);
-	let selectedQMS = nodeContext_forDynamicData.selectedQMS;
+	const nodeContext_forDynamicData = getContext<any>(`${prefix}nodeContext_forDynamicData`);
+	let selectedQMS = nodeContext_forDynamicData?.selectedQMS;
 	let QMSRows = nodeContext_forDynamicData.QMSRows;
 	let rowSelectionState = nodeContext_forDynamicData.rowSelectionState;
 	//
@@ -47,7 +47,8 @@
 	const endpointInfo = context?.endpointInfo;
 	const schemaData = context?.schemaData;
 	//
-	const OutermostQMSWraperContext = getContext<any>(`${prefix}OutermostQMSWraperContext`);
+	import type { QMSWraperContext } from '$lib/types/index';
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
 	let inputFieldsContainerLocation = $derived(endpointInfo.get_inputFieldsContainerLocation(
 		field,
@@ -148,14 +149,14 @@
 			$QMSRows = fuse
 				.search(`${myField.dd_StrForFuseComparison}`)
 				.map((item) => item.item)
-				.filter((item) => item.dd_kindList);
+				.filter((item) => (item as any).dd_kindList);
 			if ($QMSRows.length > 0) {
 				return;
 			}
 			$QMSRows = fuse
 				.search(`${myField.dd_rootName}`)
 				.map((item) => item.item)
-				.filter((item) => item.dd_kindList);
+				.filter((item) => (item as any).dd_kindList);
 			if ($QMSRows.length > 0) {
 				return;
 			}
@@ -170,7 +171,7 @@
 				)}`
 			)
 			.map((item) => item.item)
-			.filter((item) => item.dd_kindList);
+			.filter((item) => (item as any).dd_kindList);
 		if ($QMSRows.length > 0) {
 			return;
 		}
@@ -190,4 +191,4 @@
 		</sup>
 	{/if}
 </button>
-<SelectQMS bind:showSelectQMSModal />
+<SelectQMS bind:showSelectQMSModal node={field} />

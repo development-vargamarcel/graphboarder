@@ -8,15 +8,15 @@
 	import { writable } from 'svelte/store';
 	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
 	import { Logger } from '$lib/utils/logger';
-
+    import type { QMSWraperContext } from '$lib/types/index';
 
 	let dragDisabled = true;
-	function handleSort(e) {
+	function handleSort(e: any) {
 		group.group_args = e.detail.items;
 		//Logger.debug('choisesWithId', group.group_args);
 		dragDisabled = true;
 	}
-	const hasGroup_argsNode = group.group_argsNode;
+
 	interface Props {
 		group: any;
 		argsInfo: any;
@@ -35,8 +35,12 @@
 		onUpdateQuery
 	}: Props = $props();
 
-	const { finalGqlArgObj_Store } = getContext(`${prefix}QMSWraperContext`);
-	const CPItemContext = getContext(`${prefix}CPItemContext`);
+    const hasGroup_argsNode = $derived(group.group_argsNode);
+
+	const qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+    const finalGqlArgObj_Store = qmsWraperCtx?.finalGqlArgObj_Store;
+
+	const CPItemContext = getContext<any>(`${prefix}CPItemContext`);
 
 	const dndIsOn = writable(false);
 	const showInputField = writable(false);
@@ -48,7 +52,7 @@
 	// );
 	const mutationVersion = writable(false);
 	setContext('mutationVersion', mutationVersion);
-	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
+	let activeArgumentsContext = getContext<any>(`${prefix}activeArgumentsContext`);
 </script>
 
 {#if !CPItemContext}
@@ -58,9 +62,9 @@
 			<ActiveArgumentsGroup_addFilterAndSortingButton
 				{onUpdateQuery}
 				bind:group
-				bind:argsInfo
-				bind:update_activeArgumentsDataGrouped
-				bind:activeArgumentsDataGrouped
+				argsInfo={argsInfo}
+				update_activeArgumentsDataGrouped={update_activeArgumentsDataGrouped}
+				activeArgumentsDataGrouped={activeArgumentsDataGrouped}
 				node={group.group_argsNode?.mainContainer}
 			/>
 		{/if}
@@ -75,7 +79,7 @@
 				onUpdateQuery={() => {
 					onUpdateQuery?.();
 					//Logger.debug({ finalGqlArgObj_fromGroups });
-					group.group_args = Object.values(group.group_argsNode)?.filter((node) => {
+					group.group_args = Object.values(group.group_argsNode)?.filter((node: any) => {
 						return !node?.operator;
 					});
 					update_activeArgumentsDataGrouped(group);
@@ -91,12 +95,14 @@
 				{group}
 				nodes={group.group_argsNode}
 				onChanged={() => {
-					group.group_args = Object.values(group.group_argsNode)?.filter((node) => {
+					group.group_args = Object.values(group.group_argsNode)?.filter((node: any) => {
 						return !node?.operator;
 					});
 					update_activeArgumentsDataGrouped(group);
 					onUpdateQuery?.();
 				}}
+                parentNodeId={null}
+                availableOperators={[]}
 			/>
 		</div>
 	{:else}
@@ -106,9 +112,9 @@
 				finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 			}}
 			bind:group
-			bind:argsInfo
-			bind:update_activeArgumentsDataGrouped
-			bind:activeArgumentsDataGrouped
+			argsInfo={argsInfo}
+			update_activeArgumentsDataGrouped={update_activeArgumentsDataGrouped}
+			activeArgumentsDataGrouped={activeArgumentsDataGrouped}
 		/>
 	{/if}
 </div>

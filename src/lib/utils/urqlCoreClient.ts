@@ -1,12 +1,16 @@
 import { writable } from 'svelte/store';
+import { Logger } from '$lib/utils/logger';
 
 export const Create_urqlCoreClient = () => {
-	const store = writable(null);
+	const store = writable<any>(null);
 	const { subscribe, set, update } = store;
 
 	return {
 		subscribe,
-		set,
+		set: (client: any) => {
+			Logger.debug('Setting urqlCoreClient', client);
+			set(client);
+		},
 		update
 	};
 };

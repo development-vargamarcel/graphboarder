@@ -1,0 +1,1267 @@
+
+> auto-gql@0.0.11 check
+> svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+
+Loading svelte-check in workspace: /app
+Getting Svelte diagnostics...
+
+/app/src/lib/components/IntrospectionDataGenerator.svelte:22:68
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	// Get context with explicit type
+	let QMSMainWraperContextVal = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const urqlCoreClient = QMSMainWraperContextVal?.urqlCoreClient;
+
+/app/src/lib/components/MainWraper.svelte:40:49
+Warn: This reference only captures the initial value of `endpointInfoProvided`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	// Initialize with the provided prop value immediately so the client has the correct URL on startup.
+	const endpointInfo = create_endpointInfo_Store(endpointInfoProvided);
+	const schemaData = create_schemaData();
+
+/app/src/lib/components/MainWraper.svelte:93:38
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	// Svelte 5 warns about capturing state locally, but for context keys it is expected.
+	setContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`, {
+		endpointInfo: endpointInfo,
+
+/app/src/lib/components/MainWraper.svelte:99:58
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	Logger.info('MainWraper initialized and context set', { prefix });
+</script>
+
+/app/src/lib/components/QMSWraperCtxDataCurrentComputations.svelte:18:68
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+	const mergedChildren_finalGqlArgObj_Store = OutermostQMSWraperContext?.mergedChildren_finalGqlArgObj_Store;
+
+/app/src/lib/components/QMSWraper.svelte:147:19
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	// Using untrack to suppress warning about prefix, as context keys are expected to be stable.
+    setContext(`${prefix}QMSWraperContext`, QMSWraperContext);
+
+/app/src/lib/components/Description.svelte:22:58
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	}: Props = $props();
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const schemaData = mainWraperCtx?.schemaData;
+
+/app/src/lib/components/Description.svelte:24:41
+Warn: This reference only captures the initial value of `QMSInfo`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	const schemaData = mainWraperCtx?.schemaData;
+	const nodeRootType = getRootType(null, QMSInfo.dd_rootName, schemaData);
+	const descriptionNeedsSeparator = QMSInfo?.description && nodeRootType?.description;
+
+/app/src/lib/components/Description.svelte:25:36
+Warn: This reference only captures the initial value of `QMSInfo`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	const nodeRootType = getRootType(null, QMSInfo.dd_rootName, schemaData);
+	const descriptionNeedsSeparator = QMSInfo?.description && nodeRootType?.description;
+</script>
+
+/app/src/lib/components/Modal.svelte:80:80
+Error: Argument of type 'KeyboardEvent & { currentTarget: EventTarget & HTMLDivElement; }' is not assignable to parameter of type 'MouseEvent'.
+  Type 'KeyboardEvent & { currentTarget: EventTarget & HTMLDivElement; }' is missing the following properties from type 'MouseEvent': button, buttons, clientX, clientY, and 14 more. (ts)
+	tabindex="0"
+	onkeydown={(e) => { if(e.key === 'Enter' || e.key === ' ') handleMainDivClick(e); }}
+>
+
+/app/src/lib/components/Modal.svelte:88:82
+Error: Argument of type 'KeyboardEvent & { currentTarget: EventTarget & HTMLDivElement; }' is not assignable to parameter of type 'MouseEvent'.
+  Type 'KeyboardEvent & { currentTarget: EventTarget & HTMLDivElement; }' is missing the following properties from type 'MouseEvent': button, buttons, clientX, clientY, and 14 more. (ts)
+			tabindex="0"
+			onkeydown={(e) => { if(e.key === 'Enter' || e.key === ' ') handlePaddingClick(e); }}
+		></div>
+
+/app/src/lib/utils/usefulFunctions.test.ts:87:5
+Error: Object literal may only specify known properties, and 'get_rootType' does not exist in type 'SchemaData'.
+    subscriptionFields: [],
+    get_rootType: (rootTypes, rootTypeName, schemaData) => {
+        return schemaData.rootTypes.find(t => t.name === rootTypeName);
+
+/app/src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte:30:68
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	/////start
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+
+/app/src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte:33:44
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+    // Context logic - using derived to avoid stale values if context was dynamic (though context is usually stable)
+    const nodeContext = getContext<any>(`${prefix}nodeContext`);
+    let pathIsInCP = $derived(nodeContext?.pathIsInCP || false);
+
+/app/src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte:37:43
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	let nodeIsInCP = false;
+	const CPItemContext = getContext<any>(`${prefix}CPItemContext`);
+	if (CPItemContext?.CPItem.nodeId == node.id) {
+
+/app/src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte:38:38
+Warn: This reference only captures the initial value of `node`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	const CPItemContext = getContext<any>(`${prefix}CPItemContext`);
+	if (CPItemContext?.CPItem.nodeId == node.id) {
+		setContext(`${prefix}nodeContext`, { pathIsInCP: true });
+
+/app/src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte:39:17
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	if (CPItemContext?.CPItem.nodeId == node.id) {
+		setContext(`${prefix}nodeContext`, { pathIsInCP: true });
+		nodeIsInCP = true;
+
+/app/src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte:53:61
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	} else {
+		correctQMSWraperContext = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+	}
+
+/app/src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte:69:61
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+    let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = mainWraperCtx?.endpointInfo;
+
+/app/src/lib/components/ActiveArgumentsGroupNormal.svelte:119:6
+Error: Property 'isNot' is missing in type '{ onUpdateQuery: any; onInUseChanged: () => void; activeArgumentData: any; group: any; activeArgumentsDataGrouped: any; parentNode: any; node: any; nodes: any; type: string; parentNodeId: any; originalNodes: any; availableOperators: undefined[]; startDrag: (e: any) => void; }' but required in type 'Props'. (ts)
+			>
+				<ActiveArgument
+					{onUpdateQuery}
+
+/app/src/lib/components/ColumnInfo.svelte:3:30
+Warn: This reference only captures the initial value of `stepsOfFields`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	let { stepsOfFields } = $props();
+	let stepsOfFields_display = stepsOfFields
+		.map((el) => {
+
+/app/src/lib/components/ExplorerTable.svelte:68:3
+Warn: This reference only captures the initial value of `columns`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+		data,
+		columns,
+		rowSelectionState,
+
+/app/src/lib/components/ExplorerTable.svelte:70:3
+Warn: This reference only captures the initial value of `columnVisibility`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+		rowSelectionState,
+		columnVisibility, // This might need to be reactive in createTableOptions logic or options update
+		enableMultiRowSelectionState,
+
+/app/src/lib/components/ExplorerTable.svelte:71:3
+Warn: This reference only captures the initial value of `enableMultiRowSelectionState`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+		columnVisibility, // This might need to be reactive in createTableOptions logic or options update
+		enableMultiRowSelectionState,
+		enableRowSelectionState,
+
+/app/src/lib/components/ExplorerTable.svelte:72:3
+Warn: This reference only captures the initial value of `enableRowSelectionState`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+		enableMultiRowSelectionState,
+		enableRowSelectionState,
+		getCoreRowModel,
+
+/app/src/lib/components/ExplorerTable.svelte:75:3
+Warn: This reference only captures the initial value of `idColName`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+		setRowSelection,
+		idColName
+	);
+
+/app/src/lib/components/ExplorerTable.svelte:121:44
+Error: Argument of type 'ColumnDefTemplate<HeaderContext<unknown, unknown>>' is not assignable to parameter of type 'string'.
+  Type '(props: HeaderContext<unknown, unknown>) => any' is not assignable to type 'string'. (ts)
+					{#each headerGroup.headers as header}
+						{@const columnFlags = getColumnFlags(header.column.columnDef.header, idColName, requiredColNames)}
+						<th class="normal-case">
+
+/app/src/lib/components/ExplorerTable.svelte:181:10
+Error: Type 'string' is not assignable to type 'number'. (ts)
+				<tr>
+					<td colspan="100%">
+						<div class="flex flex-col items-center justify-center h-32 text-base-content/50">
+
+/app/src/lib/components/SelectQMS.svelte:14:56
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	const nodeContext_forDynamicData = getContext<any>(`${prefix}nodeContext_forDynamicData`);
+	//let selectedQMS = nodeContext_forDynamicData.selectedQMS;
+
+/app/src/lib/components/SelectQMS.svelte:75:41
+Error: Cannot find name 'OutermostQMSWraperContext'. (ts)
+	//const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
+	let getManyData = $state<any>();
+
+/app/src/lib/components/ManyToAllSelectInterfaceDefinitionItem.svelte:41:56
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	}: Props = $props();
+	const nodeContext_forDynamicData = getContext<any>(`${prefix}nodeContext_forDynamicData`);
+	let selectedQMS = nodeContext_forDynamicData?.selectedQMS;
+
+/app/src/lib/components/ManyToAllSelectInterfaceDefinitionItem.svelte:46:35
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	//
+	let context = getContext<any>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = context?.endpointInfo;
+
+/app/src/lib/components/ManyToAllSelectInterfaceDefinitionItem.svelte:51:68
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	import type { QMSWraperContext } from '$lib/types/index';
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
+
+/app/src/lib/components/ManyToAllSelectInterfaceDefinitionItem.svelte:152:28
+Error: Property 'dd_kindList' does not exist on type 'unknown'. (ts)
+				.map((item) => item.item)
+				.filter((item) => item.dd_kindList);
+			if ($QMSRows.length > 0) {
+
+/app/src/lib/components/ManyToAllSelectInterfaceDefinitionItem.svelte:159:28
+Error: Property 'dd_kindList' does not exist on type 'unknown'. (ts)
+				.map((item) => item.item)
+				.filter((item) => item.dd_kindList);
+			if ($QMSRows.length > 0) {
+
+/app/src/lib/components/ManyToAllSelectInterfaceDefinitionItem.svelte:174:27
+Error: Property 'dd_kindList' does not exist on type 'unknown'. (ts)
+			.map((item) => item.item)
+			.filter((item) => item.dd_kindList);
+		if ($QMSRows.length > 0) {
+
+/app/src/lib/components/ManyToAllSelectInterfaceDefinition.svelte:46:68
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	//
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
+
+/app/src/lib/components/ManyToAllSelectInterfaceDefinition.svelte:49:3
+Warn: This reference only captures the initial value of `node`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	const inputFieldsContainerLocation = endpointInfo.get_inputFieldsContainerLocation(
+		node,
+		schemaData
+
+/app/src/lib/components/ManyToAllSelectInterfaceDefinition.svelte:53:3
+Warn: This reference only captures the initial value of `node`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	const inputFieldsContainer = getDeepField(
+		node,
+		inputFieldsContainerLocation,
+
+/app/src/lib/components/ManyToAllSelectInterfaceDefinition.svelte:44:21
+Error: 'QMSMainWraperContext' only refers to a type, but is being used as a value here. (ts)
+	//const endpointInfo = QMSMainWraperContext?.endpointInfo;
+	const schemaData = QMSMainWraperContext?.schemaData;
+	//
+
+/app/src/lib/components/ManyToAllSelectInterfaceDefinition.svelte:48:39
+Error: Cannot find name 'endpointInfo'. (ts)
+	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
+	const inputFieldsContainerLocation = endpointInfo.get_inputFieldsContainerLocation(
+		node,
+
+/app/src/lib/components/ManyToAllSelectInterfaceDefinition.svelte:79:5
+Error: Object literal may only specify known properties, and 'rowSelectionState' does not exist in type 'Props'. (ts)
+			{showSelectQMSModal}
+			{rowSelectionState}
+			{selectedQMS}
+
+/app/src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte:45:16
+Error: Identifier 'QMSWraperContext' has already been declared
+https://svelte.dev/e/js_parse_error (svelte)
+	/////start
+	import type { QMSWraperContext, QMSMainWraperContext } from '$lib/types/index';
+	//const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+
+/app/src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte:13:19
+Error: Duplicate identifier 'QMSMainWraperContext'. (ts)
+	import { Logger } from '$lib/utils/logger';
+    import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
+
+/app/src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte:13:41
+Error: Duplicate identifier 'QMSWraperContext'. (ts)
+	import { Logger } from '$lib/utils/logger';
+    import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
+
+/app/src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte:45:16
+Error: Duplicate identifier 'QMSWraperContext'. (ts)
+	/////start
+	import type { QMSWraperContext, QMSMainWraperContext } from '$lib/types/index';
+	//const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+
+/app/src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte:45:34
+Error: Duplicate identifier 'QMSMainWraperContext'. (ts)
+	/////start
+	import type { QMSWraperContext, QMSMainWraperContext } from '$lib/types/index';
+	//const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+
+/app/src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte:66:4
+Error: Cannot find name 'OutermostQMSWraperContext'. Did you mean 'correctQMSWraperContext'? (ts)
+			CPItemContext?.CPItem,
+			OutermostQMSWraperContext
+		);
+
+/app/src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte:125:16
+Error: Cannot find name 'OutermostQMSWraperContext'. Did you mean 'correctQMSWraperContext'? (ts)
+					id: randomNr,
+					operator: OutermostQMSWraperContext?.QMSType == 'mutation' ? 'bonded' : '~spread~',
+					not: false,
+
+/app/src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte:142:5
+Error: Cannot find name 'OutermostQMSWraperContext'. Did you mean 'correctQMSWraperContext'? (ts)
+		>
+			{OutermostQMSWraperContext?.QMSType == 'mutation' ? 'add item' : 'add container'}
+		</button>
+
+/app/src/lib/components/TypeList.svelte:25:4
+Error: Object literal may only specify known properties, and 'prefix' does not exist in type 'Props'. (ts)
+		{index}
+		{prefix}
+		{type}
+
+/app/src/lib/components/AddColumn.svelte:34:16
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	// Setup contexts with writable stores
+	setContext(`${prefix}stepsOfFieldsOBJ`, writable({}));
+	const stepsOfFieldsOBJ = getContext<ReturnType<typeof writable<Record<string, any>>>>(`${prefix}stepsOfFieldsOBJ`);
+
+/app/src/lib/components/AddColumn.svelte:35:91
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	setContext(`${prefix}stepsOfFieldsOBJ`, writable({}));
+	const stepsOfFieldsOBJ = getContext<ReturnType<typeof writable<Record<string, any>>>>(`${prefix}stepsOfFieldsOBJ`);
+
+/app/src/lib/components/AddColumn.svelte:37:16
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	setContext(`${prefix}stepsOfFieldsOBJFull`, writable({}));
+	const stepsOfFieldsOBJFull = getContext<ReturnType<typeof writable<Record<string, any>>>>(`${prefix}stepsOfFieldsOBJFull`);
+
+/app/src/lib/components/AddColumn.svelte:38:95
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	setContext(`${prefix}stepsOfFieldsOBJFull`, writable({}));
+	const stepsOfFieldsOBJFull = getContext<ReturnType<typeof writable<Record<string, any>>>>(`${prefix}stepsOfFieldsOBJFull`);
+
+/app/src/lib/components/AddColumn.svelte:40:16
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	setContext(`${prefix}activeArgumentsDataGrouped_Store`, writable({}));
+	const activeArgumentsDataGrouped_Store = getContext<ReturnType<typeof writable<Record<string, any>>>>(`${prefix}activeArgumentsDataGrouped_Store`);
+
+/app/src/lib/components/AddColumn.svelte:41:107
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	setContext(`${prefix}activeArgumentsDataGrouped_Store`, writable({}));
+	const activeArgumentsDataGrouped_Store = getContext<ReturnType<typeof writable<Record<string, any>>>>(`${prefix}activeArgumentsDataGrouped_Store`);
+
+/app/src/lib/components/AddColumn.svelte:43:49
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	const tableColsData_Store = getContext<any>(`${prefix}QMSWraperContext`).tableColsData_Store;
+
+/app/src/lib/components/AddColumn.svelte:45:16
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	setContext(`${prefix}StepsOfFieldsSelected`, writable(new Set([])));
+	const StepsOfFieldsSelected = getContext<ReturnType<typeof writable<Set<any>>>>(`${prefix}StepsOfFieldsSelected`);
+
+/app/src/lib/components/AddColumn.svelte:46:85
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	setContext(`${prefix}StepsOfFieldsSelected`, writable(new Set([])));
+	const StepsOfFieldsSelected = getContext<ReturnType<typeof writable<Set<any>>>>(`${prefix}StepsOfFieldsSelected`);
+
+/app/src/lib/components/AddColumn.svelte:132:7
+Error: Object literal may only specify known properties, and '"canExpand"' does not exist in type 'Props'. (ts)
+						stepsOfFields={[]}
+						canExpand={false}
+						expand={() => {}}
+
+/app/src/lib/components/TanTable.svelte:41:58
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+    let loadMore = $state(false);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+
+/app/src/lib/components/TanTable.svelte:42:53
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+	let idColName = $derived(qmsWraperCtx?.idColName);
+
+/app/src/lib/components/TanTable.svelte:97:12
+Warn: This reference only captures the initial value of `columns`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+		data: data,
+		columns: columns, // Initial value
+		getCoreRowModel: getCoreRowModel(),
+
+/app/src/lib/components/TanTable.svelte:99:28
+Warn: This reference only captures the initial value of `enableMultiRowSelectionState`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+		getCoreRowModel: getCoreRowModel(),
+		enableMultiRowSelection: enableMultiRowSelectionState,
+		enableRowSelection: enableRowSelectionState,
+
+/app/src/lib/components/TanTable.svelte:100:23
+Warn: This reference only captures the initial value of `enableRowSelectionState`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+		enableMultiRowSelection: enableMultiRowSelectionState,
+		enableRowSelection: enableRowSelectionState,
+		onRowSelectionChange: setRowSelection,
+
+/app/src/lib/components/TanTable.svelte:104:12
+Warn: This reference only captures the initial value of `columnVisibility`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+		initialState: { rowSelection: rowSelectionState },
+		state: { columnVisibility, rowSelection: rowSelectionState },
+		getRowId: (row) => row?.[idColName!]
+
+/app/src/lib/components/TanTable.svelte:64:31
+Error: Expected 3 arguments, but got 2. (ts)
+				...col,
+				accessorFn: (row: any) => getTableCellData(row, col),
+				header: col.title,
+
+/app/src/lib/components/Table.svelte:39:3
+Error: Cannot use 'bind:' with this property. It is declared as non-bindable inside the component.
+To mark a property as bindable: 'let { cols = $bindable() } = $props()' (ts)
+		bind:data={rows}
+		bind:cols={colsData}
+		{onHideColumn}
+
+/app/src/lib/components/UI/rowCount.svelte:13:36
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	let mainWraperCtx = getContext(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = mainWraperCtx?.endpointInfo;
+
+/app/src/lib/components/UI/rowCount.svelte:51:2
+Warn: This reference only captures the initial value of `QMS_bodyPart_StoreDerived`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	});
+	QMS_bodyPart_StoreDerived.subscribe((QMS_body) => {
+		if (QMS_body && QMS_body !== '') {
+
+/app/src/lib/components/UI/rowCount.svelte:14:38
+Error: Property 'endpointInfo' does not exist on type 'unknown'. (ts)
+	let mainWraperCtx = getContext(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = mainWraperCtx?.endpointInfo;
+
+/app/src/lib/components/UI/rowCount.svelte:16:40
+Error: Property 'urqlCoreClient' does not exist on type 'unknown'. (ts)
+
+	const urqlCoreClient = mainWraperCtx?.urqlCoreClient;
+	const schemaData = mainWraperCtx?.schemaData;
+
+/app/src/lib/components/UI/rowCount.svelte:17:36
+Error: Property 'schemaData' does not exist on type 'unknown'. (ts)
+	const urqlCoreClient = mainWraperCtx?.urqlCoreClient;
+	const schemaData = mainWraperCtx?.schemaData;
+
+/app/src/lib/components/UI/rowCount.svelte:41:18
+Error: Property 'data' does not exist on type 'unknown'. (ts)
+	$effect(() => {
+		if (queryData?.data) {
+			countValue = getDataGivenStepsOfFields(
+
+/app/src/lib/components/UI/rowCount.svelte:44:15
+Error: Property 'data' does not exist on type 'unknown'. (ts)
+				null,
+				queryData.data,
+				endpointInfo.get_rowCountLocation(QMS_info, schemaData)
+
+/app/src/lib/components/fields/CodeEditor.svelte:99:10
+Error: Argument of type '() => Promise<() => void>' is not assignable to parameter of type '() => void | (() => void)'.
+  Type 'Promise<() => void>' is not assignable to type 'void | (() => void)'. (ts)
+
+	$effect(() => {
+		const cleanup = initializeEditor();
+
+/app/src/lib/components/fields/CodeEditor.svelte:156:17
+Error: Property 'id' does not exist on type 'EventTarget'. (ts)
+		} else {
+			if (e.target.id == id) {
+				editor.dispose();
+
+/app/src/lib/components/fields/CodeEditor.svelte:202:37
+Error: Cannot find name 'configurationAsString'. Did you mean 'configurations'? (ts)
+			onclick={() => {
+				editor.setValue(`const data = ${configurationAsString}`);
+			}}
+
+/app/src/lib/components/fields/CodeMirrorCustom.svelte:51:25
+Error: Type 'Extension[] | LanguageSupport' is not assignable to type 'LanguageSupport'.
+  Type 'Extension[]' is missing the following properties from type 'LanguageSupport': language, support, extension (ts)
+<div class="bg-base-300 relative max-h-[90vh] overflow-auto" bind:this={mainContainerEl}>
+	<CodeMirror bind:value lang={chosenConfig.codemirrorLanguage} />
+	<div class="sticky top-1 right-1">
+
+/app/src/lib/components/fields/CodeMirrorCustom.svelte:57:24
+Error: Property 'requestFullscreen' does not exist on type 'unknown'. (ts)
+			onclick={() => {
+				if(mainContainerEl.requestFullscreen) {
+					mainContainerEl.requestFullscreen();
+
+/app/src/lib/components/fields/CodeMirrorCustom.svelte:58:22
+Error: Property 'requestFullscreen' does not exist on type 'unknown'. (ts)
+				if(mainContainerEl.requestFullscreen) {
+					mainContainerEl.requestFullscreen();
+				}
+
+/app/src/lib/components/GraphqlCodeDisplay.svelte:31:31
+Warn: This reference only captures the initial value of `value`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	let valueModifiedManually = $state();
+	let lastSyncedValue = $state(value);
+
+/app/src/lib/components/GraphqlCodeDisplay.svelte:42:50
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+		// But here we are assigning to vars.
+		qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+		mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+
+/app/src/lib/components/GraphqlCodeDisplay.svelte:43:55
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+		qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+		mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	} catch (e) {
+
+/app/src/lib/components/GraphqlCodeDisplay.svelte:61:27
+Error: No overload matches this call.
+  Overload 1 of 2, '(root: ASTNode, visitor: ASTVisitor, visitorKeys?: ASTVisitorKeyMap): ASTNode', gave the following error.
+    Argument of type 'unknown' is not assignable to parameter of type 'ASTNode'.
+  Overload 2 of 2, '(root: ASTNode, visitor: ASTReducer<unknown>, visitorKeys?: ASTVisitorKeyMap): unknown', gave the following error.
+    Argument of type 'unknown' is not assignable to parameter of type 'ASTNode'. (ts)
+	const visitAst = () => {
+		const editedAST = visit(ast, {
+			enter(node, key, parent, path, ancestors) {
+
+/app/src/lib/components/GraphqlCodeDisplay.svelte:129:17
+Error: Argument of type 'unknown' is not assignable to parameter of type 'string | Source'. (ts)
+			try {
+				ast = parse(valueModifiedManually);
+
+/app/src/lib/components/GraphqlCodeDisplay.svelte:147:23
+Error: Argument of type 'unknown' is not assignable to parameter of type 'ASTNode'. (ts)
+
+			astPrinted = print(ast);
+		}
+
+/app/src/lib/components/GraphqlCodeDisplay.svelte:205:18
+Error: Type 'unknown' is not assignable to type 'string'. (ts)
+					<!-- <CodeMirrorCustom {value} language="graphql" /> -->
+					<CodeEditor rawValue={astPrinted} language="graphql" />
+				</div>
+
+/app/src/lib/components/ControlPanelItem.svelte:14:68
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	let { prefix = '', CPItem }: Props = $props();
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+
+/app/src/lib/components/ControlPanelItem.svelte:16:64
+Warn: This reference only captures the initial value of `CPItem`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	const QMSWraperCtx = getQMSWraperCtxDataGivenControlPanelItem(CPItem, OutermostQMSWraperContext);
+	const activeArgumentsDataGrouped_Store = QMSWraperCtx.activeArgumentsDataGrouped_Store;
+
+/app/src/lib/components/ControlPanelItem.svelte:19:26
+Warn: This reference only captures the initial value of `CPItem`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	const CPItemContext = { CPItem, QMSWraperCtx };
+	setContext(`${prefix}CPItemContext`, CPItemContext);
+
+/app/src/lib/components/ControlPanelItem.svelte:20:16
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	const CPItemContext = { CPItem, QMSWraperCtx };
+	setContext(`${prefix}CPItemContext`, CPItemContext);
+</script>
+
+/app/src/lib/components/ControlPanel.svelte:29:58
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+    const qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+	const mergedChildren_controlPanel_Store = qmsWraperCtx?.mergedChildren_controlPanel_Store;
+
+/app/src/lib/components/ControlPanel.svelte:34:16
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	const controlPanelContext = {};
+	setContext(`${prefix}controlPanelContext`, controlPanelContext);
+</script>
+
+/app/src/routes/endpoints/[endpointid]/queries/[queryName]/ComponentForLayout.svelte:39:58
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	// Get contexts - ensuring prefix is defined
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = mainWraperCtx?.endpointInfo;
+
+/app/src/routes/endpoints/[endpointid]/queries/[queryName]/ComponentForLayout.svelte:42:18
+Warn: This reference only captures the initial value of `QMSName`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	const urqlCoreClient = mainWraperCtx?.urqlCoreClient;
+	let queryName = QMSName;
+	const qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+
+/app/src/routes/endpoints/[endpointid]/queries/[queryName]/ComponentForLayout.svelte:43:55
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	let queryName = QMSName;
+	const qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+	const {
+
+/app/src/lib/components/SelectItem.svelte:30:38
+Error: Identifier 'QMSWraperContext' has already been declared
+https://svelte.dev/e/js_parse_error (svelte)
+
+	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+
+/app/src/lib/components/SelectItem.svelte:54:24
+Error: Property 'dd_displayName' does not exist on type 'unknown'. (ts)
+			bind:QMSWraperContext
+			QMSName={getManyQMS.dd_displayName}
+			initialGqlArgObj={{}}
+
+/app/src/lib/components/SelectItem.svelte:60:6
+Error: Object literal may only specify known properties, and 'rowSelectionState' does not exist in type 'Props'. (ts)
+			<ComponentForLayout
+				{rowSelectionState}
+				{enableMultiRowSelectionState}
+
+/app/src/lib/components/AddNodeToControlPanel.svelte:10:45
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	let { prefix = '', node }: Props = $props();
+	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
+	const { mergedChildren_controlPanel_Store } = getContext(`${prefix}OutermostQMSWraperContext`);
+
+/app/src/lib/components/AddNodeToControlPanel.svelte:11:62
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
+	const { mergedChildren_controlPanel_Store } = getContext(`${prefix}OutermostQMSWraperContext`);
+	let currentObject = {
+
+/app/src/lib/components/AddNodeToControlPanel.svelte:14:11
+Warn: This reference only captures the initial value of `node`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+		stepsOfFieldsThisAppliesTo: activeArgumentsContext?.stepsOfFieldsThisAppliesTo,
+		nodeId: node.id,
+		id: Date.now() + Math.random()
+
+/app/src/lib/components/AddNodeToControlPanel.svelte:11:10
+Error: Property 'mergedChildren_controlPanel_Store' does not exist on type '{}'. (ts)
+	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
+	const { mergedChildren_controlPanel_Store } = getContext(`${prefix}OutermostQMSWraperContext`);
+	let currentObject = {
+
+/app/src/lib/components/AddNodeToControlPanel.svelte:13:55
+Error: Property 'stepsOfFieldsThisAppliesTo' does not exist on type 'unknown'. (ts)
+	let currentObject = {
+		stepsOfFieldsThisAppliesTo: activeArgumentsContext?.stepsOfFieldsThisAppliesTo,
+		nodeId: node.id,
+
+/app/src/lib/components/GroupDescriptionAndControls.svelte:13:51
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	const dndIsOn = getContext<Writable<boolean>>(`${prefix}dndIsOn`);
+	const showInputField = getContext<Writable<boolean>>(`${prefix}showInputField`);
+
+/app/src/lib/components/GroupDescriptionAndControls.svelte:14:58
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	const dndIsOn = getContext<Writable<boolean>>(`${prefix}dndIsOn`);
+	const showInputField = getContext<Writable<boolean>>(`${prefix}showInputField`);
+	const mutationVersion = getContext<Writable<boolean>>(`${prefix}mutationVersion`);
+
+/app/src/lib/components/GroupDescriptionAndControls.svelte:15:59
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	const showInputField = getContext<Writable<boolean>>(`${prefix}showInputField`);
+	const mutationVersion = getContext<Writable<boolean>>(`${prefix}mutationVersion`);
+</script>
+
+/app/src/lib/components/SelectModal.svelte:90:68
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	// Context setup - must be after props declaration
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+
+/app/src/lib/components/SelectModal.svelte:92:44
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+    const nodeContext = getContext<any>(`${prefix}nodeContext`);
+    let pathIsInCP = $derived(nodeContext?.pathIsInCP || false);
+
+/app/src/lib/components/SelectModal.svelte:96:43
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	let nodeIsInCP = false;
+	const CPItemContext = getContext<any>(`${prefix}CPItemContext`);
+	if (CPItemContext?.CPItem?.nodeId == node?.id) {
+
+/app/src/lib/components/SelectModal.svelte:98:17
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	if (CPItemContext?.CPItem?.nodeId == node?.id) {
+		setContext(`${prefix}nodeContext`, { pathIsInCP: true });
+		nodeIsInCP = true;
+
+/app/src/lib/components/SelectModal.svelte:112:43
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	} else {
+		correctQMSWraperContext = getContext(`${prefix}QMSWraperContext`);
+	}
+
+/app/src/lib/components/SelectModal.svelte:120:6
+Warn: This reference only captures the initial value of `QMSType`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	const mutationVersion = getContext<any>('mutationVersion');
+	if (QMSType == 'mutation' && mutationVersion) {
+		$mutationVersion = true;
+
+/app/src/lib/components/SelectModal.svelte:124:58
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = mainWraperCtx?.endpointInfo;
+
+/app/src/lib/components/SelectModal.svelte:168:30
+Warn: This reference only captures the initial value of `parentNode`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+		stepsOfNodes = getUpdatedStepsOfNodes(
+			JSON.parse(JSON.stringify(parentNode?.stepsOfNodes || []))
+		);
+
+/app/src/lib/components/SelectModal.svelte:216:49
+Warn: This reference only captures the initial value of `addDefaultFields`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	if (node?.addDefaultFields || (node?.isMain && addDefaultFields)) {
+		nodeAddDefaultFields(
+
+/app/src/lib/components/SelectModal.svelte:219:4
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+			node,
+			prefix,
+			group,
+
+/app/src/lib/components/SelectModal.svelte:220:4
+Warn: This reference only captures the initial value of `group`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+			prefix,
+			group,
+			activeArgumentsDataGrouped_Store,
+
+/app/src/lib/components/SelectModal.svelte:221:4
+Warn: This reference only captures the initial value of `activeArgumentsDataGrouped_Store`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+			group,
+			activeArgumentsDataGrouped_Store,
+			schemaData,
+
+/app/src/lib/components/SelectModal.svelte:229:56
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	const fuse = schemaData ? createQMSSearchInstance($schemaData?.queryFields) : null;
+	const nodeContext_forDynamicData = getContext<any>(`${prefix}nodeContext_forDynamicData`);
+	let selectedQMS = nodeContext_forDynamicData?.selectedQMS;
+
+/app/src/lib/components/SelectModal.svelte:297:7
+Warn: This reference only captures the initial value of `activeArgumentsDataGrouped_Store`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+		$selectedQMS = node.selectedQMS;
+		if (activeArgumentsDataGrouped_Store) {
+			$activeArgumentsDataGrouped_Store = $activeArgumentsDataGrouped_Store;
+
+/app/src/lib/components/SelectModal.svelte:310:50
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	let activeArgumentsContext = getContext<any>(`${prefix}activeArgumentsContext`);
+	let forceShowSelectAndAddButtons = false;
+
+/app/src/lib/components/SelectedRowsDisplay.svelte:11:56
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	let { prefix = '' }: Props = $props();
+	const nodeContext_forDynamicData = getContext<any>(`${prefix}nodeContext_forDynamicData`);
+	let idColName = nodeContext_forDynamicData?.idColName;
+
+/app/src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:76:68
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	let testName_stepsOFFieldsWasUpdated = $state(false);
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
+
+/app/src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:108:16
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	setContext(`${prefix}nodeContext_forDynamicData`, nodeContext_forDynamicData);
+
+/app/src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:111:44
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	/////start
+    const nodeContext = getContext<any>(`${prefix}nodeContext`);
+    let pathIsInCP = $derived(nodeContext?.pathIsInCP || false);
+
+/app/src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:115:43
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	let nodeIsInCP = $state(false);
+	const CPItemContext = getContext<any>(`${prefix}CPItemContext`);
+	if (CPItemContext?.CPItem.nodeId == node.id) {
+
+/app/src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:117:17
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	if (CPItemContext?.CPItem.nodeId == node.id) {
+		setContext(`${prefix}nodeContext`, { pathIsInCP: true });
+		nodeIsInCP = true;
+
+/app/src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:132:43
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	} else {
+		correctQMSWraperContext = getContext(`${prefix}QMSWraperContext`);
+	}
+
+/app/src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:149:6
+Warn: This reference only captures the initial value of `QMSType`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	const mutationVersion = getContext<Writable<boolean>>('mutationVersion');
+	if (QMSType == 'mutation') {
+		$mutationVersion = true;
+
+/app/src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:164:52
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = context?.endpointInfo;
+
+/app/src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:215:24
+Warn: This reference only captures the initial value of `QMS_info`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	let argsInfo = $state(QMS_info?.args);
+	let showModal = $state(false);
+
+/app/src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:220:49
+Warn: This reference only captures the initial value of `addDefaultFields`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	if (node?.addDefaultFields || (node?.isMain && addDefaultFields)) {
+		nodeAddDefaultFields(
+
+/app/src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:223:4
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+			node,
+			prefix,
+			group,
+
+/app/src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:225:4
+Warn: This reference only captures the initial value of `activeArgumentsDataGrouped_Store`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+			group,
+			activeArgumentsDataGrouped_Store,
+			schemaData,
+
+/app/src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:263:50
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	let QMSWraperContextForSelectedQMS: any = {};
+	let activeArgumentsContext = getContext<any>(`${prefix}activeArgumentsContext`);
+	let forceShowSelectAndAddButtons = false;
+
+/app/src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:465:3
+Error: Object literal may only specify known properties, and '"selectedQMS"' does not exist in type 'Props'. (ts)
+		}}
+		selectedQMS={getManyQMS}
+		bind:selectedRowsColValues
+
+/app/src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:466:3
+Error: Cannot use 'bind:' with this property. It is declared as non-bindable inside the component.
+To mark a property as bindable: 'let { selectedRowsColValues = $bindable() } = $props()' (ts)
+		selectedQMS={getManyQMS}
+		bind:selectedRowsColValues
+		bind:showSelectModal
+
+/app/src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:680:7
+Error: Type '(e: any) => void' is not assignable to type '() => void'.
+  Target signature provides too few arguments. Expected 1 or more, but got 0. (ts)
+						{onChanged}
+						onChildrenStartDrag={startDrag}
+						{parentNode}
+
+/app/src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:745:12
+Error: Type '(e: any) => void' is not assignable to type '() => void'.
+  Target signature provides too few arguments. Expected 1 or more, but got 0. (ts)
+											{availableOperators}
+											onChildrenStartDrag={startDrag}
+											{group}
+
+/app/src/lib/components/ActiveArgumentsGroupWraper.svelte:40:55
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	const qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+    const finalGqlArgObj_Store = qmsWraperCtx?.finalGqlArgObj_Store;
+
+/app/src/lib/components/ActiveArgumentsGroupWraper.svelte:43:43
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	const CPItemContext = getContext<any>(`${prefix}CPItemContext`);
+
+/app/src/lib/components/ActiveArgumentsGroupWraper.svelte:55:50
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	setContext('mutationVersion', mutationVersion);
+	let activeArgumentsContext = getContext<any>(`${prefix}activeArgumentsContext`);
+</script>
+
+/app/src/lib/components/ActiveArgumentsGroupWraper.svelte:63:6
+Error: Object literal may only specify known properties, and 'onUpdateQuery' does not exist in type 'Props'. (ts)
+			<ActiveArgumentsGroup_addFilterAndSortingButton
+				{onUpdateQuery}
+				bind:group
+
+/app/src/lib/components/ActiveArguments.svelte:27:35
+Warn: This reference only captures the initial value of `stepsOfFieldsThisAppliesTo`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	const activeArgumentsContext = { stepsOfFieldsThisAppliesTo, isControlPanelChild };
+	setContext(`${prefix}activeArgumentsContext`, activeArgumentsContext);
+
+/app/src/lib/components/ActiveArguments.svelte:27:63
+Warn: This reference only captures the initial value of `isControlPanelChild`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	const activeArgumentsContext = { stepsOfFieldsThisAppliesTo, isControlPanelChild };
+	setContext(`${prefix}activeArgumentsContext`, activeArgumentsContext);
+
+/app/src/lib/components/ActiveArguments.svelte:28:16
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	const activeArgumentsContext = { stepsOfFieldsThisAppliesTo, isControlPanelChild };
+	setContext(`${prefix}activeArgumentsContext`, activeArgumentsContext);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+
+/app/src/lib/components/ActiveArguments.svelte:29:58
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	setContext(`${prefix}activeArgumentsContext`, activeArgumentsContext);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = mainWraperCtx?.endpointInfo;
+
+/app/src/lib/components/ActiveArguments.svelte:32:53
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	const schemaData = mainWraperCtx?.schemaData;
+	let qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+
+/app/src/lib/components/ActiveArguments.svelte:52:69
+Warn: This reference only captures the initial value of `QMSarguments`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	if ($activeArgumentsDataGrouped_Store && $activeArgumentsDataGrouped_Store.length == 0) {
+		activeArgumentsDataGrouped_Store.set_groups(QMS_info, schemaData, QMSarguments, endpointInfo);
+	}
+
+/app/src/lib/components/TypeInfoDisplay.svelte:57:55
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	const qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+
+/app/src/lib/components/TypeInfoDisplay.svelte:58:58
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	const qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const schemaData = mainWraperCtx?.schemaData;
+
+/app/src/lib/components/TypeInfoDisplay.svelte:61:72
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	const tableColsData_Store = qmsWraperCtx?.tableColsData_Store;
+	const stepsOfFieldsOBJ = getContext<Writable<Record<string, any>>>(`${prefix}stepsOfFieldsOBJ`);
+	const stepsOfFieldsOBJFull = getContext<Writable<Record<string, any>>>(`${prefix}stepsOfFieldsOBJFull`);
+
+/app/src/lib/components/TypeInfoDisplay.svelte:62:76
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	const stepsOfFieldsOBJ = getContext<Writable<Record<string, any>>>(`${prefix}stepsOfFieldsOBJ`);
+	const stepsOfFieldsOBJFull = getContext<Writable<Record<string, any>>>(`${prefix}stepsOfFieldsOBJFull`);
+
+/app/src/lib/components/TypeInfoDisplay.svelte:65:3
+Warn: This reference only captures the initial value of `stepsOfFields`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	const stepsOFieldsAsQueryFragmentObject = stepsOfFieldsToQueryFragmentObject(
+		stepsOfFields,
+		false
+
+/app/src/lib/components/TypeInfoDisplay.svelte:118:70
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+		qmsWraperCtx.mergedChildren_QMSWraperCtxData_Store;
+	let activeArgumentsDataGrouped_Store = getContext<Writable<any>>(`${prefix}activeArgumentsDataGrouped_Store`);
+
+/app/src/lib/components/TypeInfoDisplay.svelte:260:7
+Error: Type 'void | Record<string, unknown>' is not assignable to type 'Record<string, any>'.
+  Type 'void' is not assignable to type 'Record<string, any>'. (ts)
+					} else {
+						$stepsOfFieldsOBJ = deleteValueAtPath($stepsOfFieldsOBJ, stepsOfFields);
+
+/app/src/lib/components/fields/ENUMInterface.svelte:4:9
+Warn: `containerEl` is updated, but is not declared with `$state(...)`. Changing its value will not correctly trigger updates
+https://svelte.dev/e/non_reactive_update (svelte)
+	let { typeInfo, rawValue, dispatchValue, onChanged } = $props();
+    let containerEl: HTMLElement;
+</script>
+
+/app/src/lib/components/fields/InterfacePicker.svelte:16:58
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	let { prefix = '', chosen, typeInfo, onInterfaceChosen }: Props = $props();
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = mainWraperCtx?.endpointInfo;
+
+/app/src/lib/components/fields/Interface.svelte:32:58
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = mainWraperCtx?.endpointInfo;
+
+/app/src/lib/components/fields/AutoInterface.svelte:20:18
+Error: Object literal may only specify known properties, and 'alwaysOn_interfacePicker' does not exist in type '$$ComponentProps'. (ts)
+{#if expectsInterfaceList}
+	<InterfaceList {alwaysOn_interfacePicker} {typeInfo} {rawValue} {dispatchValue} {onChanged} />
+{:else}
+
+/app/src/lib/components/ActiveArgument.svelte:190:52
+Error: `$activeArgumentsDataGrouped_Store` is an illegal variable name. To reference a global variable called `$activeArgumentsDataGrouped_Store`, use `globalThis.$activeArgumentsDataGrouped_Store`
+https://svelte.dev/e/global_reference_invalid (svelte)
+		onChanged?.(detail);
+		Logger.debug('activeArgumentsDataGrouped_Store', $activeArgumentsDataGrouped_Store);
+		updateActiveArgument();
+
+/app/src/lib/components/ActiveArgument.svelte:141:5
+Error: Type 'unknown' is not assignable to type 'string'. (ts)
+			} else if (typeof activeArgumentData.chd_dispatchValue == 'string') {
+				value = string_transformerREVERSE(
+					(activeArgumentData.chd_dispatchValue as string) || (activeArgumentData.defaultValue as string)
+
+/app/src/lib/components/ActiveArgument.svelte:190:52
+Error: Cannot find name '$activeArgumentsDataGrouped_Store'. Did you mean 'activeArgumentsDataGrouped'? (ts)
+		onChanged?.(detail);
+		Logger.debug('activeArgumentsDataGrouped_Store', $activeArgumentsDataGrouped_Store);
+		updateActiveArgument();
+
+/app/src/lib/components/ActiveArgument.svelte:202:4
+Error: Cannot find name 'activeArgumentsDataGrouped_Store'. Did you mean 'activeArgumentsDataGrouped'? (ts)
+		if (!CPItemContext) {
+			activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
+			finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
+
+/app/src/lib/components/ActiveArgument.svelte:203:4
+Error: Cannot find name 'finalGqlArgObj_Store'. (ts)
+			activeArgumentsDataGrouped_Store.update_activeArgument(activeArgumentData, group.group_name);
+			finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
+		}
+
+/app/src/lib/components/ActiveArgument.svelte:306:3
+Error: Type '(detail: any) => void' is not assignable to type '() => void'.
+  Target signature provides too few arguments. Expected 1 or more, but got 0. (ts)
+	bind:nodes
+	{onChanged}
+	onChildrenStartDrag={startDrag}
+
+/app/src/lib/components/ActiveArgument.svelte:369:7
+Error: Cannot find name 'activeArgumentsDataGrouped_Store'. (ts)
+					onclick={() => {
+						activeArgumentsDataGrouped_Store.delete_activeArgument(
+							activeArgumentData,
+
+/app/src/lib/components/ActiveArgument.svelte:373:7
+Error: Cannot find name 'finalGqlArgObj_Store'. (ts)
+						);
+						finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
+					}}
+
+/app/src/lib/components/EndpointinfoGeneratorAssistantItem.svelte:16:53
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	// Initialization after props
+	const qmsContext = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+
+/app/src/lib/components/EndpointinfoGeneratorAssistantItem.svelte:17:52
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	const qmsContext = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const schemaData = context?.schemaData;
+
+/app/src/lib/components/EndpointsList.svelte:37:52
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	// Get contexts - ensuring prefix is defined
+	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = context?.endpointInfo;
+
+/app/src/lib/components/EndpointsList.svelte:40:18
+Warn: This reference only captures the initial value of `QMSName`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	const urqlCoreClient = context?.urqlCoreClient;
+	let queryName = QMSName;
+	const qmsContext = getContext<QMSWraperContext>('QMSWraperContext');
+
+/app/src/lib/components/QueryLink.svelte:20:52
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	// Initialization after props
+	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = context?.endpointInfo;
+
+/app/src/lib/components/QueryLink.svelte:23:18
+Warn: This reference only captures the initial value of `query`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	const schemaData = context?.schemaData;
+	let queryName = query.name;
+	let queryNameDisplay = $state(queryName);
+
+/app/src/lib/components/QueryLink.svelte:36:22
+Warn: This reference only captures the initial value of `query`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	let mandatoryArgs = query?.args?.filter((arg) => {
+		return arg.dd_NON_NULL;
+
+/app/src/lib/components/QueryLink.svelte:39:16
+Warn: This reference only captures the initial value of `query`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	});
+	let ID_Args = query?.args?.filter((arg) => {
+		return arg.dd_rootName == 'ID';
+
+/app/src/lib/components/SetEndpointConfigurationToContext.svelte:16:52
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	// Get contexts - ensuring prefix is available
+	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let endpointInfo = $derived(context?.endpointInfo);
+
+/app/src/lib/components/SetEndpointConfigurationToContext.svelte:24:53
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	const qmsContext = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+	const {
+
+/app/src/lib/components/TabContainer.svelte:53:68
+Warn: This reference only captures the initial value of `endpointInfo`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+			hasFill: false,
+			items: getQMSLinks('query', `/endpoints/${endpointid}/queries`, endpointInfo, schemaData)
+		},
+
+/app/src/lib/components/TabContainer.svelte:62:73
+Warn: This reference only captures the initial value of `endpointInfo`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+			hasFill: true,
+			items: getQMSLinks('mutation', `/endpoints/${endpointid}/mutations`, endpointInfo, schemaData)
+		},
+
+/app/src/lib/components/TabContainer.svelte:159:2
+Warn: Unused CSS selector ".shadowTop"
+https://svelte.dev/e/css_unused_selector (svelte)
+<style>
+	.shadowTop {
+		box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+
+/app/src/lib/components/Sidebar.svelte:25:52
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	// Initialization after props
+	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let endpointInfo = $derived(context?.endpointInfo);
+
+/app/src/routes/endpoints/[endpointid]/+layout.svelte:93:39
+Error: Object literal may only specify known properties, and '"QMSName"' does not exist in type 'Props'. (ts)
+		>
+			<SetEndpointConfigurationToContext QMSName="endpoints_by_pk">
+				{@render children?.()}
+
+/app/src/routes/endpoints/[endpointid]/mutations/MutationExample.svelte:16:62
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+	// Initialization after props
+	let mainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let endpointInfo = $derived(mainWraperContext?.endpointInfo);
+
+/app/src/routes/endpoints/[endpointid]/mutations/MutationExample.svelte:24:53
+Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+
+	const qmsContext = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+	const {
+
+/app/src/routes/endpoints/[endpointid]/queries/[queryName]/+layout.svelte:17:3
+Error: Property 'QMSName' is missing in type '{}' but required in type 'Props'. (ts)
+<QMSWraper isOutermostQMSWraper={true} QMSName={queryName}>
+	<ComponentForLayout />
+</QMSWraper>
+
+====================================
+svelte-check found 62 errors and 127 warnings in 49 files

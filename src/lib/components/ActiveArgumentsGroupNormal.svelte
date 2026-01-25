@@ -4,6 +4,7 @@
 	import { flip } from 'svelte/animate';
 	import { getContext, setContext } from 'svelte';
 	import { Logger } from '$lib/utils/logger';
+    import type { Writable } from 'svelte/store';
 
 	let {
 		group = $bindable(),
@@ -21,18 +22,18 @@
 
 	const flipDurationMs = 200;
 	let dragDisabled = $state(true);
-	function handleSort(e) {
+	function handleSort(e: any) {
 		group.group_args = e.detail.items;
 		//Logger.debug('choisesWithId', group.group_args);
 
 		dragDisabled = true;
 	}
-	const transformDraggedElement = (draggedEl, data, index) => {
+	const transformDraggedElement = (draggedEl: any, data: any, index: any) => {
 		draggedEl.querySelector('.dnd-item').classList.add('bg-accent/20', 'border-2', 'border-accent');
 	};
 
 	//
-	function handleConsider(e) {
+	function handleConsider(e: any) {
 		const {
 			items: newItems,
 			info: { source, trigger }
@@ -43,7 +44,7 @@
 			dragDisabled = true;
 		}
 	}
-	function handleFinalize(e) {
+	function handleFinalize(e: any) {
 		const {
 			items: newItems,
 			info: { source }
@@ -55,20 +56,20 @@
 		}
 		onUpdateQuery?.();
 	}
-	function startDrag(e) {
+	function startDrag(e: any) {
 		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
 		e.preventDefault();
 		dragDisabled = false;
 	}
-	function handleKeyDown(e) {
+	function handleKeyDown(e: any) {
 		if ((e.key === 'Enter' || e.key === ' ') && dragDisabled) dragDisabled = false;
 	}
 	//
 
 	const hasGroup_argsNode = group.group_argsNode;
 	//
-	const dndIsOn = getContext('dndIsOn');
-	const showInputField = getContext('showInputField');
+	const dndIsOn = getContext<Writable<boolean>>('dndIsOn');
+	const showInputField = getContext<Writable<boolean>>('showInputField');
 </script>
 
 <ul
@@ -88,6 +89,7 @@
 			{#if $dndIsOn}
 				<div class="grid   content-center  rounded-full ">
 					<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+                    <!-- svelte-ignore a11y_no_static_element_interactions -->
 					<div
 						role="button"
 						tabindex={dragDisabled ? 0 : -1}
@@ -101,6 +103,7 @@
 				</div>
 			{/if}
 
+            <!-- svelte-ignore a11y_no_static_element_interactions -->
 			<div
 				class="w-full "
 				onmousedown={() => {
@@ -118,9 +121,18 @@
 					onInUseChanged={() => {
 						onUpdateQuery?.();
 					}}
+					bind:isNot={activeArgumentData.not}
 					{activeArgumentData}
 					{group}
 					{activeArgumentsDataGrouped}
+					parentNode={group}
+					node={activeArgumentData}
+					nodes={group.group_args}
+					type="activeArgument"
+					parentNodeId={group.group_name}
+					originalNodes={group.group_args}
+					availableOperators={[]}
+					startDrag={startDrag}
 				/>
 			</div>
 		</div>

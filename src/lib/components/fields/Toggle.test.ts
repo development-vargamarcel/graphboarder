@@ -103,7 +103,8 @@ describe('Toggle Component', () => {
 				props: {
 					displayInterface: 'checkbox',
 					useSwap: true,
-					swapOnText: 'Toggle'
+					swapOnText: 'Toggle',
+                    swapOffText: 'Toggle' // Provide default as per logic in component or test expectation
 				}
 			});
 
@@ -120,7 +121,8 @@ describe('Toggle Component', () => {
 					displayInterface: 'checkbox',
 					useSwap: true,
 					swapOnText: 'Same',
-					swapOffText: 'Same'
+					swapOffText: 'Same',
+                    swapOfftextLinethrough: true
 				}
 			});
 
@@ -196,11 +198,9 @@ describe('Toggle Component', () => {
 	describe('Event Dispatching - Standard Toggle', () => {
 		it('should dispatch changed event on toggle', async () => {
 			const changed = vi.fn();
-			const { container, component } = render(Toggle, {
-				props: { displayInterface: 'checkbox', rawValue: false }
+			const { container } = render(Toggle, {
+				props: { displayInterface: 'checkbox', rawValue: false, onChanged: changed }
 			});
-
-			component.$on('changed', changed);
 
 			const checkbox = container.querySelector('input[type="checkbox"]') as HTMLInputElement;
 			await fireEvent.click(checkbox);
@@ -210,51 +210,41 @@ describe('Toggle Component', () => {
 
 		it('should dispatch changed event with chd_rawValue true when toggled on', async () => {
 			const changed = vi.fn();
-			const { container, component } = render(Toggle, {
-				props: { displayInterface: 'checkbox', rawValue: false }
+			const { container } = render(Toggle, {
+				props: { displayInterface: 'checkbox', rawValue: false, onChanged: changed }
 			});
-
-			component.$on('changed', changed);
 
 			const checkbox = container.querySelector('input[type="checkbox"]') as HTMLInputElement;
 			await fireEvent.click(checkbox);
 
 			expect(changed).toHaveBeenCalledWith(
 				expect.objectContaining({
-					detail: expect.objectContaining({
-						chd_rawValue: true
-					})
+					chd_rawValue: true
 				})
 			);
 		});
 
 		it('should dispatch changed event with chd_rawValue false when toggled off', async () => {
 			const changed = vi.fn();
-			const { container, component } = render(Toggle, {
-				props: { displayInterface: 'checkbox', rawValue: true }
+			const { container } = render(Toggle, {
+				props: { displayInterface: 'checkbox', rawValue: true, onChanged: changed }
 			});
-
-			component.$on('changed', changed);
 
 			const checkbox = container.querySelector('input[type="checkbox"]') as HTMLInputElement;
 			await fireEvent.click(checkbox);
 
 			expect(changed).toHaveBeenCalledWith(
 				expect.objectContaining({
-					detail: expect.objectContaining({
-						chd_rawValue: false
-					})
+					chd_rawValue: false
 				})
 			);
 		});
 
 		it('should handle multiple toggles', async () => {
 			const changed = vi.fn();
-			const { container, component } = render(Toggle, {
-				props: { displayInterface: 'checkbox', rawValue: false }
+			const { container } = render(Toggle, {
+				props: { displayInterface: 'checkbox', rawValue: false, onChanged: changed }
 			});
-
-			component.$on('changed', changed);
 
 			const checkbox = container.querySelector('input[type="checkbox"]') as HTMLInputElement;
 
@@ -269,17 +259,16 @@ describe('Toggle Component', () => {
 	describe('Event Dispatching - Swap Mode', () => {
 		it('should dispatch changed event in swap mode', async () => {
 			const changed = vi.fn();
-			const { container, component } = render(Toggle, {
+			const { container } = render(Toggle, {
 				props: {
 					displayInterface: 'checkbox',
 					rawValue: false,
 					useSwap: true,
 					swapOnText: 'On',
-					swapOffText: 'Off'
+					swapOffText: 'Off',
+                    onChanged: changed
 				}
 			});
-
-			component.$on('changed', changed);
 
 			const checkbox = container.querySelector('input[type="checkbox"]') as HTMLInputElement;
 			await fireEvent.click(checkbox);
@@ -307,26 +296,26 @@ describe('Toggle Component', () => {
 
 	describe('Reactive Updates', () => {
 		it('should update checked state when rawValue prop changes', async () => {
-			const { container, component } = render(Toggle, {
+			const { container, rerender } = render(Toggle, {
 				props: { displayInterface: 'checkbox', rawValue: false }
 			});
 
 			const checkbox = container.querySelector('input[type="checkbox"]') as HTMLInputElement;
 			expect(checkbox.checked).toBe(false);
 
-			await component.$set({ rawValue: true });
+			await rerender({ rawValue: true });
 			expect(checkbox.checked).toBe(true);
 		});
 
 		it('should update value text when rawValue changes', async () => {
-			const { container, component } = render(Toggle, {
+			const { container, rerender } = render(Toggle, {
 				props: { displayInterface: 'checkbox', rawValue: true, showValue: true }
 			});
 
 			let valueText = container.querySelector('p.text-primary');
 			expect(valueText?.textContent).toBe('true');
 
-			await component.$set({ rawValue: false });
+			await rerender({ rawValue: false });
 
 			const paragraphs = Array.from(container.querySelectorAll('p'));
 			valueText = paragraphs.find(p => p.textContent === 'false') || null;
@@ -354,6 +343,7 @@ describe('Toggle Component', () => {
 					displayInterface: 'checkbox',
 					useSwap: true,
 					swapOnText: 'On',
+                    swapOffText: 'Off',
 					otherClases: 'custom-swap'
 				}
 			});
@@ -366,11 +356,9 @@ describe('Toggle Component', () => {
 	describe('Edge Cases', () => {
 		it('should handle rapid successive toggles', async () => {
 			const changed = vi.fn();
-			const { container, component } = render(Toggle, {
-				props: { displayInterface: 'checkbox', rawValue: false }
+			const { container } = render(Toggle, {
+				props: { displayInterface: 'checkbox', rawValue: false, onChanged: changed }
 			});
-
-			component.$on('changed', changed);
 
 			const checkbox = container.querySelector('input[type="checkbox"]') as HTMLInputElement;
 

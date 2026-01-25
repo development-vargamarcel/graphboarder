@@ -2,14 +2,17 @@
 	import { getContext, setContext } from 'svelte';
 
 	import ControlPanelItem from './ControlPanelItem.svelte';
+    import type { QMSWraperContext } from '$lib/types/index';
+
 	interface Props {
-		type: any;
+		type?: any;
 		prefix?: string;
-		column_stepsOfFields: any;
-		addColumnFromInput: any;
-		dd_relatedRoot: any;
-		QMSName: any;
-		currentQMS_info: any;
+		column_stepsOfFields?: any;
+		addColumnFromInput?: any;
+		dd_relatedRoot?: any;
+		QMSName?: any;
+		currentQMS_info?: any;
+        hasGroup_argsNode?: boolean;
 	}
 
 	let {
@@ -19,10 +22,12 @@
 		addColumnFromInput,
 		dd_relatedRoot,
 		QMSName,
-		currentQMS_info
+		currentQMS_info,
+        hasGroup_argsNode
 	}: Props = $props();
-	const QMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
-	const { mergedChildren_controlPanel_Store } = QMSWraperContext;
+
+    const qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+	const mergedChildren_controlPanel_Store = qmsWraperCtx?.mergedChildren_controlPanel_Store;
 
 	let showControlPanel = $state(false);
 	const controlPanelContext = {};

@@ -10,23 +10,30 @@
 	import { add_activeArgumentOrContainerTo_activeArgumentsDataGrouped } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
 	import ManyToAllSelectInterfaceDefinition from './ManyToAllSelectInterfaceDefinition.svelte';
 	import { Logger } from '$lib/utils/logger';
+    import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 
 	interface Props {
 		group: any;
 		argsInfo: any;
-		activeArgumentsDataGrouped: any;
+		nodes?: any;
 		node: any;
 		prefix?: string;
 		parent_inputFields: any;
+        parentNodeId?: any;
+        parent_stepsOfFields?: any;
+        onUpdateQuery?: () => void;
 	}
 
 	let {
 		group = $bindable(),
 		argsInfo,
-		activeArgumentsDataGrouped,
+		nodes,
 		node,
 		prefix = '',
-		parent_inputFields
+		parent_inputFields,
+        parentNodeId,
+        parent_stepsOfFields,
+        onUpdateQuery
 	}: Props = $props();
 
 	const groupName = group.group_name;
@@ -34,42 +41,46 @@
 	let dragDisabled = true;
 	const hasGroup_argsNode = group.group_argsNode;
 	const mainContainerOperator = group.group_argsNode?.mainContainer?.operator;
-	/////start
-	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
-	let pathIsInCP = false;
-	const nodeContext = getContext(`${prefix}nodeContext`);
-	if (nodeContext) {
-		pathIsInCP = nodeContext?.pathIsInCP;
-	}
+
+	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+
+    const nodeContext = getContext<any>(`${prefix}nodeContext`);
+    let pathIsInCP = $derived(nodeContext?.pathIsInCP || false);
+
 	let nodeIsInCP = false;
-	const CPItemContext = getContext(`${prefix}CPItemContext`);
+	const CPItemContext = getContext<any>(`${prefix}CPItemContext`);
 	if (CPItemContext?.CPItem.nodeId == node.id) {
 		setContext(`${prefix}nodeContext`, { pathIsInCP: true });
 		nodeIsInCP = true;
 	}
 	const isCPChild = CPItemContext ? true : false;
-	const visibleInCP = pathIsInCP || nodeIsInCP;
-	const visible = visibleInCP || !CPItemContext || node.isMain;
-	let correctQMSWraperContext;
+
+    let visibleInCP = $derived(pathIsInCP || nodeIsInCP);
+	let visible = $derived(visibleInCP || !CPItemContext || node.isMain);
+
+    let correctQMSWraperContext: QMSWraperContext;
 	if (isCPChild) {
 		correctQMSWraperContext = getQMSWraperCtxDataGivenControlPanelItem(
 			CPItemContext?.CPItem,
 			OutermostQMSWraperContext
 		);
 	} else {
-		correctQMSWraperContext = getContext(`${prefix}QMSWraperContext`);
+		correctQMSWraperContext = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
 	}
-	const { finalGqlArgObj_Store, QMS_info, activeArgumentsDataGrouped_Store } =
-		correctQMSWraperContext;
-	/////end
-	let rootArgs = argsInfo.filter((arg) => {
+
+    let activeArgumentsDataGrouped_Store = $derived(correctQMSWraperContext?.activeArgumentsDataGrouped_Store);
+
+	let rootArgs = $derived(argsInfo.filter((arg: any) => {
 		return arg.dd_isRootArg;
-	});
-	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const schemaData = QMSMainWraperContext?.schemaData;
+	}));
+
+    let activeArgumentsContext = getContext<any>(`${prefix}activeArgumentsContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const schemaData = mainWraperCtx?.schemaData;
 	const nodeRootType = getRootType(null, node.dd_rootName, schemaData);
-	let groupArgsPossibilities = $derived.by(() => {
+
+    let groupArgsPossibilities = $derived.by(() => {
 		let possibilities;
 		if (group.group_isRoot) {
 			possibilities = rootArgs;
@@ -93,8 +104,8 @@
 	$effect(() => {
 		Logger.debug({ groupArgsPossibilities, node });
 	});
-	let predefinedFirstSteps = group.group_isRoot ? [] : [group.group_name];
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
+	let predefinedFirstSteps = $derived(group.group_isRoot ? [] : [group.group_name]);
+	const endpointInfo = mainWraperCtx?.endpointInfo;
 </script>
 
 <div
@@ -119,7 +130,8 @@
 					newContainerData,
 					groupName,
 					node?.id,
-					activeArgumentsDataGrouped,
+                    // Use store value
+					$activeArgumentsDataGrouped_Store,
 					endpointInfo,
 					group
 				);
@@ -149,12 +161,14 @@
 				{predefinedFirstSteps}
 				groupName={group.group_name}
 				onArgAddRequest={(newArgData) => {
-					activeArgumentsDataGrouped_Store.add_activeArgument(
-						newArgData,
-						groupName,
-						node?.id,
-						endpointInfo
-					);
+                    if ($activeArgumentsDataGrouped_Store) {
+                        activeArgumentsDataGrouped_Store.add_activeArgument(
+                            newArgData,
+                            groupName,
+                            node?.id,
+                            endpointInfo
+                        );
+                    }
 				}}
 				onContainerAddRequest={(newContainerData) => {
 					Logger.debug({ newContainerData });
@@ -204,7 +218,8 @@
 						newContainerData,
 						groupName,
 						node?.id,
-						activeArgumentsDataGrouped,
+                        // Use store value
+						$activeArgumentsDataGrouped_Store,
 						endpointInfo,
 						group
 					);
@@ -220,6 +235,7 @@
 			type={node}
 			template="default"
 			depth={0}
+            stepsOfFields={[]}
 		/>
 	</div>
 </div>

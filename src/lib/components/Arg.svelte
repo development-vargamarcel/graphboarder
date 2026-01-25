@@ -7,6 +7,7 @@
 	import { circIn, expoIn, expoOut } from 'svelte/easing';
 	import { getContext } from 'svelte';
 	import { Logger } from '$lib/utils/logger';
+    import type { QMSMainWraperContext } from '$lib/types/index';
 
 	const prefix = '';
 
@@ -32,32 +33,33 @@
 		onContainerAddRequest
 	}: Props = $props();
 
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const schemaData = QMSMainWraperContext?.schemaData;
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const schemaData = mainWraperCtx?.schemaData;
 
-	Logger.debug({ type });
-	Logger.debug({ predefinedFirstSteps });
+    $effect(() => {
+        Logger.debug({ type });
+        Logger.debug({ predefinedFirstSteps });
+    });
 
-	if (stepsOfFields.length == 0 && predefinedFirstSteps) {
-		stepsOfFields = [...predefinedFirstSteps];
-	}
-	stepsOfFields = [...stepsOfFields]; // so each tree will have it's own stepsOfFields
+    $effect(() => {
+        if (stepsOfFields.length == 0 && predefinedFirstSteps) {
+            stepsOfFields = [...predefinedFirstSteps];
+        }
+    });
+
 	let indetifier = Math.random();
-	let { dd_kindsArray, dd_rootName, dd_displayName } = type;
 
 	let showExpand = $state(false);
-	let expandData = $state({});
-	let canExpand = false;
-	if (!dd_kindsArray.includes('SCALAR') && dd_kindsArray.length > 0) {
-		canExpand = true;
-	}
+	let expandData = $state<any>({});
+	let canExpand = $derived(!type.dd_kindsArray.includes('SCALAR') && type.dd_kindsArray.length > 0);
 	let inDuration = $state(300);
+
 	const expand = () => {
-		//Logger.debug('dd_rootName', dd_rootName);
-		expandData = getRootType($schemaData.rootTypes, dd_rootName, schemaData);
+		//Logger.debug('dd_rootName', type.dd_rootName);
+		expandData = getRootType($schemaData.rootTypes, type.dd_rootName, schemaData);
 		if (expandData) {
 			if (!showExpand) {
-				stepsOfFields.push(dd_displayName);
+				stepsOfFields.push(type.dd_displayName);
 			} else {
 				// does the trick if you hide one by one from last one
 				stepsOfFields.splice(-1);
@@ -66,7 +68,7 @@
 			showExpand = !showExpand;
 		}
 
-		inDuration = expandData?.inputFields?.length * 100;
+		inDuration = (expandData?.inputFields?.length || 0) * 100;
 		inDuration = inDuration < 300 && inDuration > 200 ? inDuration : 300;
 		//Logger.debug('inDuration', inDuration);
 		//Logger.debug('expandData', expandData);
@@ -102,7 +104,7 @@
 			out:slide|global={{ duration: inDuration, easing: expoOut }}
 		>
 			<div class="">
-				{#each expandData.inputFields || expandData.enumValues as arg, index}
+				{#each expandData?.inputFields || expandData?.enumValues || [] as arg, index}
 					<div>
 						<Arg
 							{index}

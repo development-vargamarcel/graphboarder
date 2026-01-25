@@ -9,68 +9,18 @@
 		toggleFilterChoice,
 		createChoisesWithId
 	} from '$lib/utils/filterStateUtils';
-	
-	Logger.debug({ chosen });
+    import { flip } from 'svelte/animate';
 
-	let chosenInternal = $state(JSON.parse(JSON.stringify(chosen)));
-	let extraInfo = $state('');
-	let extraInfoExtraClass = $state('');
-	let btnExtraClass = $state();
-	let titlePreChange = $state(title);
-	let isToggle = $state(false);
-	if (choises.length == 1) {
-		isToggle = true;
-	}
-	//choises.length == 1 ? (type = 'toggle') : '';
-	let reorder = false;
-	let chosenPreChange;
-	let modalVisible = $state(false);
-	let chosenNew = [];
-	let choisesNew = [];
-	let choisesWithId = $state();
-	let shouldToggle = choises.length == 1;
-	let showModalOrToggle = () => {
-		//		if (choises.length > 1) {
-		if (!shouldToggle) {
-			//show modal
-			modalVisible = true;
-			chosenPreChange = chosen;
-			titlePreChange = title;
-		} else {
-			//toggle
-			Logger.debug('pre', { chosen });
-			chosen = toggleFilterChoice(type, choises, chosen);
-			Logger.debug({ chosen });
-			applyFilter();
-		}
-	};
-	choisesWithId = createChoisesWithId(choises);
-	let hideModal = () => {
-		chosen = chosenPreChange;
-		chosenInternal = chosen;
-		modalVisible = false;
-	};
-	let applyFilter = () => {
-		if (!shouldToggle) {
-			modalVisible = false;
-			chosen = chosenInternal;
-		}
-		//Logger.debug('filterApplied', { id: id, chosen: chosen, extraData });
-		onFilterApplied?.({ id: id, chosen: chosen, extraData, choises: choises });
-	};
-
-
-	import { flip } from 'svelte/animate';
-	interface Props {
+    interface Props {
 		// notice - fade in works fine but don't add svelte's fade-out (known issue)
-		extraData: any;
-		id: any;
+		extraData?: any;
+		id?: any;
 		choises?: any;
 		title?: any;
 		modalTitle?: any;
 		type?: string;
 		size?: string;
-		chosenDefault: any;
+		chosenDefault?: any;
 		defaultMeansNoChange?: boolean;
 		chosen?: any;
 		children?: import('svelte').Snippet;
@@ -91,6 +41,61 @@
 		children,
 		onFilterApplied
 	}: Props = $props();
+
+    $effect(() => {
+        Logger.debug({ chosen });
+    });
+
+	let chosenInternal = $state(JSON.parse(JSON.stringify(chosen)));
+	let extraInfo = $state('');
+	let extraInfoExtraClass = $state('');
+	let btnExtraClass = $state();
+	let titlePreChange = $state(title);
+	let isToggle = $derived(choises.length == 1);
+
+	//choises.length == 1 ? (type = 'toggle') : '';
+	let reorder = false;
+	let chosenPreChange: any;
+	let modalVisible = $state(false);
+	let chosenNew = [];
+	let choisesNew = [];
+	let choisesWithId = $state<any[]>([]);
+
+    $effect(() => {
+        choisesWithId = createChoisesWithId(choises);
+    });
+
+	let shouldToggle = $derived(choises.length == 1);
+	let showModalOrToggle = () => {
+		//		if (choises.length > 1) {
+		if (!shouldToggle) {
+			//show modal
+			modalVisible = true;
+			chosenPreChange = chosen;
+			titlePreChange = title;
+		} else {
+			//toggle
+			Logger.debug('pre', { chosen });
+			chosen = toggleFilterChoice(type, choises, chosen);
+			Logger.debug({ chosen });
+			applyFilter();
+		}
+	};
+
+	let hideModal = () => {
+		chosen = chosenPreChange;
+		chosenInternal = chosen;
+		modalVisible = false;
+	};
+	let applyFilter = () => {
+		if (!shouldToggle) {
+			modalVisible = false;
+			chosen = chosenInternal;
+		}
+		//Logger.debug('filterApplied', { id: id, chosen: chosen, extraData });
+		onFilterApplied?.({ id: id, chosen: chosen, extraData, choises: choises });
+	};
+
 	const flipDurationMs = 200;
 	let dragDisabled = $state(true);
 
@@ -102,19 +107,19 @@
 		choises = choisesNew;
 	};
 
-	function handleSort(e) {
+	function handleSort(e: any) {
 		choisesWithId = e.detail.items;
 		//Logger.debug('choisesWithId', choisesWithId);
 		syncOrder();
 
 		dragDisabled = true;
 	}
-	const transformDraggedElement = (draggedEl, data, index) => {
+	const transformDraggedElement = (draggedEl: any, data: any, index: any) => {
 		draggedEl.querySelector('.dnd-item').classList.add('bg-accent/20', 'border-2', 'border-accent');
 	};
 
 	//
-	function handleConsider(e) {
+	function handleConsider(e: any) {
 		const {
 			items: newItems,
 			info: { source, trigger }
@@ -125,7 +130,7 @@
 			dragDisabled = true;
 		}
 	}
-	function handleFinalize(e) {
+	function handleFinalize(e: any) {
 		const {
 			items: newItems,
 			info: { source }
@@ -136,12 +141,12 @@
 			dragDisabled = true;
 		}
 	}
-	function startDrag(e) {
+	function startDrag(e: any) {
 		// preventing default to prevent lag on touch devices (because of the browser checking for screen scrolling)
 		e.preventDefault();
 		dragDisabled = false;
 	}
-	function handleKeyDown(e) {
+	function handleKeyDown(e: any) {
 		if ((e.key === 'Enter' || e.key === ' ') && dragDisabled) dragDisabled = false;
 	}
 	//

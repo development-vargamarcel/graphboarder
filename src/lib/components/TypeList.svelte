@@ -28,6 +28,5 @@
 		{depth}
 		{stepsOfFields}
 		isOnMainList={true}
-		on:colAddRequest
 	/>
 {/each}

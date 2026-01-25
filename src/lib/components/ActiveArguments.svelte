@@ -2,6 +2,7 @@
 	import { getContext, setContext } from 'svelte';
 	import ActiveArgumentsGroupWraper from '$lib/components/ActiveArgumentsGroupWraper.svelte';
 	import { Logger } from '$lib/utils/logger';
+    import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 
 	interface Props {
 		isControlPanelChild?: any;
@@ -25,17 +26,17 @@
 
 	const activeArgumentsContext = { stepsOfFieldsThisAppliesTo, isControlPanelChild };
 	setContext(`${prefix}activeArgumentsContext`, activeArgumentsContext);
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-	const schemaData = QMSMainWraperContext?.schemaData;
-	let QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = mainWraperCtx?.endpointInfo;
+	const schemaData = mainWraperCtx?.schemaData;
+	let qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
 
 	// Set defaults if not provided
 	if (!activeArgumentsDataGrouped_Store) {
-		activeArgumentsDataGrouped_Store = QMSWraperContext.activeArgumentsDataGrouped_Store;
+		activeArgumentsDataGrouped_Store = qmsWraperCtx?.activeArgumentsDataGrouped_Store;
 	}
 	if (!QMS_info) {
-		QMS_info = QMSWraperContext.QMS_info;
+		QMS_info = qmsWraperCtx?.QMS_info;
 	}
 
 	let activeArgumentsDataGrouped = [];
@@ -43,18 +44,18 @@
 	$effect(() => {
 		Logger.debug('$activeArgumentsDataGrouped_Store', $activeArgumentsDataGrouped_Store);
 	});
-	const update_activeArgumentsDataGrouped = (groupNewData) => {
+	const update_activeArgumentsDataGrouped = (groupNewData: any) => {
 		Logger.debug({ groupNewData });
 		activeArgumentsDataGrouped_Store.update_groups(groupNewData);
 	};
-	if ($activeArgumentsDataGrouped_Store.length == 0) {
+	if ($activeArgumentsDataGrouped_Store && $activeArgumentsDataGrouped_Store.length == 0) {
 		activeArgumentsDataGrouped_Store.set_groups(QMS_info, schemaData, QMSarguments, endpointInfo);
 	}
 	Logger.debug({ QMS_info });
 	let showDescription = null;
 </script>
 
-{#if $activeArgumentsDataGrouped_Store.length == 0}
+{#if $activeArgumentsDataGrouped_Store && $activeArgumentsDataGrouped_Store.length == 0}
 	<div class="p-2">
 		<div class="alert alert-info shadow-lg">
 			<div>
@@ -77,13 +78,15 @@
 {/if}
 
 <div class="">
-	{#each $activeArgumentsDataGrouped_Store as group}
-		<ActiveArgumentsGroupWraper
-			{onUpdateQuery}
-			{update_activeArgumentsDataGrouped}
-			{group}
-			argsInfo={QMS_info?.args}
-			{activeArgumentsDataGrouped}
-		/>
-	{/each}
+	{#if $activeArgumentsDataGrouped_Store}
+		{#each $activeArgumentsDataGrouped_Store as group}
+			<ActiveArgumentsGroupWraper
+				{onUpdateQuery}
+				{update_activeArgumentsDataGrouped}
+				{group}
+				argsInfo={QMS_info?.args}
+				{activeArgumentsDataGrouped}
+			/>
+		{/each}
+	{/if}
 </div>

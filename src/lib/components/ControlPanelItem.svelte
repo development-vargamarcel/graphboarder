@@ -3,13 +3,15 @@
 	import ActiveArgumentsGroupWraper from './ActiveArgumentsGroupWraper.svelte';
 	import { getContext, setContext } from 'svelte';
 	import { getQMSWraperCtxDataGivenControlPanelItem } from '$lib/utils/usefulFunctions';
+    import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
+
 	interface Props {
 		prefix?: string;
 		CPItem: any;
 	}
 
 	let { prefix = '', CPItem }: Props = $props();
-	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
 
 	const QMSWraperCtx = getQMSWraperCtxDataGivenControlPanelItem(CPItem, OutermostQMSWraperContext);
 	const activeArgumentsDataGrouped_Store = QMSWraperCtx.activeArgumentsDataGrouped_Store;

@@ -2,7 +2,16 @@
 	import Modal from './Modal.svelte';
 	import ExplorerTable from './ExplorerTable.svelte';
 	import { getContext } from 'svelte';
-	const nodeContext_forDynamicData = getContext(`${prefix}nodeContext_forDynamicData`);
+
+	interface Props {
+		prefix?: string;
+		node: any;
+		showSelectQMSModal: any;
+	}
+
+	let { prefix = '', node, showSelectQMSModal = $bindable() }: Props = $props();
+
+	const nodeContext_forDynamicData = getContext<any>(`${prefix}nodeContext_forDynamicData`);
 	//let selectedQMS = nodeContext_forDynamicData.selectedQMS;
 	let QMSRows = nodeContext_forDynamicData.QMSRows;
 	let columns = [
@@ -61,18 +70,12 @@
 			enableHiding: true
 		}
 	];
-	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
+	import type { QMSWraperContext } from '$lib/types/index';
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
-	let getManyData = $state();
-	let selectedQMS = $state();
-	let rowSelectionState = $state();
-	interface Props {
-		prefix?: string;
-		node: any;
-		showSelectQMSModal: any;
-	}
-
-	let { prefix = '', node, showSelectQMSModal = $bindable() }: Props = $props();
+	let getManyData = $state<any>();
+	let selectedQMS = $state<any>();
+	let rowSelectionState = $state<any>();
 	$effect(() => {
 		if ($QMSFieldToQMSGetMany_Store.length > 0) {
 			getManyData = QMSFieldToQMSGetMany_Store.getObj({

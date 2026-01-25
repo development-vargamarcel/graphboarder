@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getRootType } from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
+	import type { QMSMainWraperContext } from '$lib/types/index';
 	interface Props {
 		setNotInUseIfNotValid?: boolean;
 		setNotInUseIfNotValidAndENUM?: boolean;
@@ -18,8 +19,8 @@
 		prefix = '',
 		QMSInfo
 	}: Props = $props();
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const schemaData = QMSMainWraperContext?.schemaData;
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const schemaData = mainWraperCtx?.schemaData;
 	const nodeRootType = getRootType(null, QMSInfo.dd_rootName, schemaData);
 	const descriptionNeedsSeparator = QMSInfo?.description && nodeRootType?.description;
 </script>
