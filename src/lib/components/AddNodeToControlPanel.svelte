@@ -10,11 +10,11 @@
 	let activeArgumentsContext = getContext<any>(`${prefix}activeArgumentsContext`);
 	const OutermostQMSWraperContext = getContext<any>(`${prefix}OutermostQMSWraperContext`);
 	const mergedChildren_controlPanel_Store = OutermostQMSWraperContext?.mergedChildren_controlPanel_Store;
-	let currentObject = {
+	let currentObject = $derived({
 		stepsOfFieldsThisAppliesTo: activeArgumentsContext?.stepsOfFieldsThisAppliesTo,
 		nodeId: node.id,
 		id: Date.now() + Math.random()
-	};
+	});
 	let objIsStarred = $derived(mergedChildren_controlPanel_Store.getObj(currentObject));
 	$effect(() => {
 		Logger.debug({ objIsStarred });

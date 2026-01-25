@@ -26,6 +26,7 @@
 	import CodeEditor from '$lib/components/fields/CodeEditor.svelte';
 	import GraphqlCodeDisplay from '$lib/components/GraphqlCodeDisplay.svelte';
 	import ControlPanel from '$lib/components/ControlPanel.svelte';
+	import { addToHistory } from '$lib/stores/queryHistory';
 
 	interface Props {
 		prefix?: string;
@@ -86,6 +87,15 @@
 	// Query execution function
 	const runQuery = (queryBody: string) => {
 		Logger.info('Starting Query Execution', { queryBody });
+
+		if (endpointInfo && $endpointInfo) {
+			addToHistory({
+				query: queryBody,
+				endpointId: $endpointInfo.id || 'unknown',
+				operationName: queryName
+			});
+		}
+
 		let fetching = true;
 		let error: any = false;
 		let data: any = false;

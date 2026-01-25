@@ -213,16 +213,18 @@
 	let argsInfo = $derived(QMS_info?.args);
 	let showModal = false;
 
-	if (node?.addDefaultFields || (node?.isMain && addDefaultFields)) {
-		nodeAddDefaultFields(
-			node,
-			prefix,
-			group,
-			activeArgumentsDataGrouped_Store,
-			schemaData,
-			endpointInfo
-		);
-	}
+	$effect(() => {
+		if (node?.addDefaultFields || (node?.isMain && addDefaultFields)) {
+			nodeAddDefaultFields(
+				node,
+				prefix,
+				group,
+				activeArgumentsDataGrouped_Store,
+				schemaData,
+				endpointInfo
+			);
+		}
+	});
 
 	let showExplorerTable = true;
 	const fuse = schemaData ? createQMSSearchInstance($schemaData?.queryFields) : null;

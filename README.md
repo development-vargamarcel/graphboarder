@@ -121,6 +121,25 @@ Logs are automatically generated for:
 - Query execution start, success, and failure.
 - Fetch requests (via URQL).
 
+## Query History
+
+Auto-GQL allows you to persist and restore executed queries.
+
+- **Automatic:** If using the provided `GraphqlCodeDisplay` and `ComponentForLayout` setup, queries are automatically saved to `localStorage` when executed.
+- **Manual:** You can manually add queries to history using `addToHistory`.
+
+```typescript
+import { addToHistory } from 'auto-gql';
+
+addToHistory({
+  query: 'query { ... }',
+  endpointId: 'my-endpoint',
+  operationName: 'getUsers'
+});
+```
+
+To view and restore history, the `GraphqlCodeDisplay` component includes a "History" button that opens a modal with saved queries.
+
 ## Advanced Configuration
 
 ### EndpointInfo

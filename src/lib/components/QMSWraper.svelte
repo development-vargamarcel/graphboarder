@@ -169,9 +169,11 @@
         }
 
         if (!QMS_info) {
-            Logger.warn(`QMS_info not found for ${QMSName} ${QMSType}`);
+            Logger.warn(`QMS_info not found for ${QMSName} ${QMSType}. Check if schema is loaded and the name is correct.`);
             return;
         }
+
+        Logger.info('QMSWraper initialized', { QMSType, QMSName });
 
         let current_activeArgumentsDataGrouped_Store = activeArgumentsDataGrouped_Store;
         if (!current_activeArgumentsDataGrouped_Store) {
