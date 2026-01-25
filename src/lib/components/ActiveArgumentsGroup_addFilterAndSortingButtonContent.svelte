@@ -77,7 +77,8 @@
     let activeArgumentsContext = getContext<any>(`${prefix}activeArgumentsContext`);
 	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	const schemaData = mainWraperCtx?.schemaData;
-	const nodeRootType = getRootType(null, node.dd_rootName, schemaData);
+	// Use $derived to ensure nodeRootType updates if node changes
+	let nodeRootType = $derived(getRootType(null, node.dd_rootName, schemaData));
 
     let groupArgsPossibilities = $derived.by(() => {
 		let possibilities;

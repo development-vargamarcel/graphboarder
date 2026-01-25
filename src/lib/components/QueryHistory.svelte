@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { queryHistory, removeFromHistory } from '$lib/stores/queryHistory';
+	import { queryHistory, removeFromHistory, clearHistory } from '$lib/stores/queryHistory';
 	import type { HistoryItem } from '$lib/stores/queryHistory';
 
 	interface Props {
@@ -25,7 +25,14 @@
 	>
 		<div class="p-4 border-b border-base-300 flex justify-between items-center">
 			<h3 class="text-xl font-bold">Query History</h3>
-			<button class="btn btn-sm btn-ghost" onclick={onClose}>✕</button>
+			<div class="flex space-x-2">
+				{#if $queryHistory.length > 0}
+					<button class="btn btn-sm btn-error btn-outline" onclick={clearHistory}>
+						Clear All
+					</button>
+				{/if}
+				<button class="btn btn-sm btn-ghost" onclick={onClose}>✕</button>
+			</div>
 		</div>
 
 		<div class="flex-1 overflow-y-auto p-4 space-y-4">

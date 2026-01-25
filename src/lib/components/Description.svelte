@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getRootType } from '$lib/utils/usefulFunctions';
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 	import type { QMSMainWraperContext } from '$lib/types/index';
 	interface Props {
 		setNotInUseIfNotValid?: boolean;
@@ -19,10 +19,10 @@
 		prefix = '',
 		QMSInfo
 	}: Props = $props();
-	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const schemaData = mainWraperCtx?.schemaData;
-	const nodeRootType = getRootType(null, QMSInfo.dd_rootName, schemaData);
-	const descriptionNeedsSeparator = QMSInfo?.description && nodeRootType?.description;
+	let nodeRootType = $derived(getRootType(null, QMSInfo.dd_rootName, schemaData));
+	let descriptionNeedsSeparator = $derived(QMSInfo?.description && nodeRootType?.description);
 </script>
 
 {#if nodeRootType?.description || QMSInfo?.description}
