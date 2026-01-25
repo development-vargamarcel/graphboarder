@@ -63,14 +63,14 @@
 	import { flip } from 'svelte/animate';
 	interface Props {
 		// notice - fade in works fine but don't add svelte's fade-out (known issue)
-		extraData: any;
-		id: any;
+		extraData?: any;
+		id?: any;
 		choises?: any;
 		title?: any;
 		modalTitle?: any;
 		type?: string;
 		size?: string;
-		chosenDefault: any;
+		chosenDefault?: any;
 		defaultMeansNoChange?: boolean;
 		chosen?: any;
 		children?: import('svelte').Snippet;

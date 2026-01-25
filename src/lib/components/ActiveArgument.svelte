@@ -132,11 +132,11 @@
 			value = chd_dispatchValue?.length > 0 ? chd_dispatchValue : undefined;
 		} else {
 			if (Array.isArray(activeArgumentData.chd_dispatchValue)) {
-				value = activeArgumentData.chd_dispatchValue.join(', ');
+				value = (activeArgumentData.chd_dispatchValue as any[]).join(', ');
 			} else if (typeof activeArgumentData.chd_dispatchValue == 'string') {
 				value = string_transformerREVERSE(
 					(activeArgumentData.chd_dispatchValue || activeArgumentData.defaultValue) as string
-				);
+				) as string;
 			}
 		}
 
@@ -291,7 +291,9 @@
 	bind:showSelectModal
 	{onUpdateQuery}
 	bind:nodes
-	{onChanged}
+	onChanged={() => {
+		onChanged?.({});
+	}}
 	onChildrenStartDrag={startDrag}
 	{originalNodes}
 	{type}

@@ -3,7 +3,13 @@
 	import { Logger } from '$lib/utils/logger';
 
 	let inputEl;
-	let { rawValue = [], dispatchValue = [], typeInfo, onChanged } = $props();
+	let {
+		rawValue = [],
+		dispatchValue = [],
+		typeInfo,
+		onChanged,
+		alwaysOn_interfacePicker = false
+	} = $props();
 
 	let elements = $state([]);
 	$effect(() => {
@@ -47,6 +53,7 @@
 	{#each elements as element}
 		<div class="flex">
 			<Interface
+				{alwaysOn_interfacePicker}
 				{typeInfo}
 				rawValue={element.chd_rawValue}
 				dispatchValue={element.chd_dispatchValue}

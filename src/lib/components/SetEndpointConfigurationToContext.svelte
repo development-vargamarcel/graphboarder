@@ -1,10 +1,11 @@
 <script lang="ts">
 	interface Props {
 		prefix?: string;
+		QMSName?: string;
 		children?: import('svelte').Snippet;
 	}
 
-	let { prefix = '', children }: Props = $props();
+	let { prefix = '', QMSName, children }: Props = $props();
 
 	import AddColumn from '$lib/components/AddColumn.svelte';
 	import { getContext } from 'svelte';
@@ -33,7 +34,7 @@
 		paginationState,
 		QMS_info,
 		QMSType,
-		QMSName
+		QMSName: QMSNameCtx
 	} = qmsContext;
 	import {
 		generateTitleFromStepsOfFields,
@@ -47,7 +48,7 @@
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 
-	let queryName = $derived(QMSName);
+	let queryName = $derived(QMSNameCtx || QMSName);
 
 	let currentQMS_info = $derived(schemaData.get_QMS_Field(queryName, 'query', schemaData));
 	let dd_relatedRoot = $derived(getRootType(null, currentQMS_info.dd_rootName, schemaData));
@@ -218,8 +219,8 @@
 				title: `col-${Math.floor(Math.random() * 200)},${generateTitleFromStepsOfFields(
 					stepsOfFields
 				)}`,
-				stepsOfFields: [QMSName, ...stepsOfFields],
-				stepsOfFieldsOBJ: stepsOfFieldsToQueryFragmentObject([QMSName, ...stepsOfFields], false)
+				stepsOfFields: [queryName, ...stepsOfFields],
+				stepsOfFieldsOBJ: stepsOfFieldsToQueryFragmentObject([queryName, ...stepsOfFields], false)
 			};
 
 			tableColsData_Store.addColumn(tableColData);
@@ -273,7 +274,7 @@
 			bind:column_stepsOfFields
 			{addColumnFromInput}
 			{dd_relatedRoot}
-			{QMSName}
+			QMSName={queryName}
 			{QMS_info}
 			onNewColumnAddRequest={(tableColData) => {
 				tableColsData_Store.addColumn(tableColData);

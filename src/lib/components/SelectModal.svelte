@@ -43,6 +43,8 @@
 		showSelectModal: any;
 		onChanged?: () => void;
 		onChildrenStartDrag?: (e?: any) => void;
+		onDeleteSubNode?: (detail: { id: string }) => void;
+		onUpdateQuery?: () => void;
 	}
 
 	let {

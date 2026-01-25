@@ -5,7 +5,7 @@
 	import Map from '$lib/components/fields/Map.svelte';
 	import Toggle from '$lib/components/fields/Toggle.svelte';
 	import CodeEditor from '$lib/components/fields/CodeEditor.svelte';
-	import { getContext } from 'svelte';
+	import { getContext, type Component } from 'svelte';
 	import type { Writable } from 'svelte/store';
 	import InterfacePicker from './InterfacePicker.svelte';
 
@@ -88,7 +88,7 @@
 {/if}
 
 {#if componentToRender}
-	{@const SvelteComponent = componentToRender}
+	{@const SvelteComponent = componentToRender as unknown as Component<Record<string, any>>}
 	<SvelteComponent
 		{typeInfo}
 		{rawValue}

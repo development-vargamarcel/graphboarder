@@ -1,3 +1,7 @@
+<script module lang="ts">
+	declare const MapboxDraw: any;
+</script>
+
 <script lang="ts">
 	import {
 		geojson_transformer,
@@ -6,7 +10,12 @@
 	import * as mapboxglOriginal from 'mapbox-gl';
 	import { Logger } from '$lib/utils/logger';
 	let mapboxgl = mapboxglOriginal;
-	let { containerEl, dispatchValue, rawValue = $bindable(), onChanged } = $props();
+	let {
+		containerEl = undefined,
+		dispatchValue,
+		rawValue = $bindable(),
+		onChanged
+	} = $props();
 	$effect(() => {
 		if (!rawValue && dispatchValue) {
 			rawValue = geojson_transformerREVERSE(dispatchValue);
@@ -19,9 +28,9 @@
 	};
 	const mapContainerId = generateUniqueId();
 	//s
-	let map = $state();
-	let mapContainer = $state();
-	let draw = $state();
+	let map = $state<any>();
+	let mapContainer = $state<any>();
+	let draw = $state<any>();
 	let location;
 	$effect(() => {
 		if (navigator.geolocation) {
