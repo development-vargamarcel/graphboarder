@@ -50,7 +50,7 @@
 			icon: 'bi bi-asterisk',
 			isSelected: false,
 			hasFill: false,
-			items: getQMSLinks('query', `/endpoints/${endpointid}/queries`, endpointInfo, get(schemaData))
+			items: getQMSLinks('query', `/endpoints/${endpointid}/queries`, endpointInfo, schemaData)
 		},
 		{
 			title: 'Mutations',
@@ -59,7 +59,7 @@
 			icon: 'bi bi-pen',
 			isSelected: false,
 			hasFill: true,
-			items: getQMSLinks('mutation', `/endpoints/${endpointid}/mutations`, endpointInfo, get(schemaData))
+			items: getQMSLinks('mutation', `/endpoints/${endpointid}/mutations`, endpointInfo, schemaData)
 		},
 		{
 			title: 'Explorer',

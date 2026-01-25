@@ -5,41 +5,12 @@
 Loading svelte-check in workspace: /app
 Getting Svelte diagnostics...
 
-/app/src/lib/utils/usefulFunctions.ts:1679:44
+/app/src/lib/utils/usefulFunctions.ts:1680:44
 Error: Argument of type '{ group_gqlArgObj: Record<string, unknown>; group_gqlArgObj_string: string; group_canRunQuery: boolean; }[]' is not assignable to parameter of type 'ActiveArgumentGroup[]'.
   Type '{ group_gqlArgObj: Record<string, unknown>; group_gqlArgObj_string: string; group_canRunQuery: boolean; }' is missing the following properties from type 'ActiveArgumentGroup': originType, group_name, group_isRoot, group_args
 	});
 	return generate_finalGqlArgObj_fromGroups(groups_gqlArgObj);
 	//better set an array?
-
-/app/src/lib/utils/dataStructureTransformers.ts:11:4
-Error: Property 'replace' does not exist on type 'unknown'.
-	const modifiedValue = value
-		.replace(/"/g, '')
-		.replace(/'/g, `"`)
-
-/app/src/lib/utils/dataStructureTransformers.ts:26:19
-Error: Property 'replaceAll' does not exist on type 'unknown'.
-	}
-	return `'${value.replaceAll(`"`, `&Prime;`).replaceAll(`'`, `&prime;`)}'`;
-};
-
-/app/src/lib/utils/dataStructureTransformers.ts:34:16
-Error: Property 'replaceAll' does not exist on type 'unknown'.
-	if (onlySingleQuotes) {
-		return value.replaceAll(`'`, ``)
-	}
-
-/app/src/lib/utils/dataStructureTransformers.ts:36:15
-Error: Property 'replaceAll' does not exist on type 'unknown'.
-	}
-	return value.replaceAll(`&Prime;`, `"`).replaceAll(`&prime;`, `'`)
-
-/app/src/lib/utils/dataStructureTransformers.ts:46:9
-Error: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
-	//value * 1 removes leadin zeros: 0001 becomes 1, 0001.5 becomes 1.5
-	return value * 1;
-};
 
 /app/src/lib/utils/dataStructureTransformers.ts:57:30
 Error: No overload matches this call.
@@ -50,31 +21,6 @@ Error: No overload matches this call.
 	// Convert ISO 8601 string to Date object
 	const dateObject = new Date(string_transformerREVERSE(value, true));
 	// Extract individual components
-
-/app/src/lib/utils/dataStructureTransformers.ts:101:12
-Error: Type 'GeoJSONGeometry | GeoJSONGeometry[]' is not assignable to type 'GeoJSONGeometry'.
-  Type 'GeoJSONGeometry[]' is missing the following properties from type 'GeoJSONGeometry': type, coordinates
-	if (valueType == 'object') {
-		value = [value]
-	}
-
-/app/src/lib/utils/dataStructureTransformers.ts:103:21
-Error: Argument of type 'unknown' is not assignable to parameter of type 'string'.
-	}
-	value = JSON.parse(string_transformerREVERSE(JSON.stringify(value), true));
-
-/app/src/lib/utils/dataStructureTransformers.ts:106:19
-Error: Property 'map' does not exist on type 'GeoJSONGeometry | GeoJSONGeometry[]'.
-  Property 'map' does not exist on type 'GeoJSONGeometry'.
-	return {
-		features: value.map((feature) => {
-			return { geometry: feature, type: 'Feature', properties: {} }
-
-/app/src/lib/utils/dataStructureTransformers.ts:116:2
-Error: Type 'unknown' is not assignable to type 'boolean'.
-	}
-	return value;
-};
 
 /app/src/lib/stores/endpointHandling/endpointInfo.ts:308:48
 Error: Argument of type '{ description: string; idFieldNamePossibilities: string[]; countFieldNamePossibilities: string[]; rowsLocationPossibilities: ({ get_Val: (QMS_info: any) => string[]; check: (QMS_info: any, schemaData: any) => false | FieldWithDerivedData; } | { ...; })[]; ... 10 more ...; pageInfoFieldsLocation: string[]; }' is not assignable to parameter of type 'EndpointConfiguration'.
@@ -100,148 +46,108 @@ Error: Expected 1-2 arguments, but got 3.
 				return rowCountLocationPossibility.get_Val(QMS_info, schemaData, storeVal);
 			}
 
-/app/src/lib/stores/endpointHandling/endpointInfo.ts:408:59
-Error: Expected 2 arguments, but got 3.
-			const idFieldPossibility = storeVal.idFieldPossibilities.find((idFieldPossibility) => {
-				return idFieldPossibility.check(QMS_info, schemaData, storeVal);
-			});
-
-/app/src/lib/stores/endpointHandling/endpointInfo.ts:412:61
-Error: Expected 2 arguments, but got 3.
-			if (idFieldPossibility) {
-				return idFieldPossibility.get_Val(QMS_info, schemaData, storeVal);
-			}
-
-/app/src/lib/components/IntrospectionDataGenerator.svelte:18:48
-Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
-https://svelte.dev/e/state_referenced_locally (svelte)
+/app/src/lib/components/IntrospectionDataGenerator.svelte:20:6
+Error: Identifier 'QMSMainWraperContext' has already been declared
+https://svelte.dev/e/js_parse_error (svelte)
 	let { prefix = '', children }: Props = $props();
-	let QMSMainWraperContext = getContext<any>(`${prefix}QMSMainWraperContext`);
+	let QMSMainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
 
-/app/src/lib/components/IntrospectionDataGenerator.svelte:146:39
+/app/src/lib/components/IntrospectionDataGenerator.svelte:153:39
 Error: Expected 1-2 arguments, but got 3. (ts)
 		schema = $queryStoreRes?.data?.__schema;
 		Logger.debug('ppppp', endpointInfo, schema);
-		$schemaData.schema = schema;
+		if (schemaData.set_schema) {
 
-/app/src/lib/stores/endpointHandling/schemaData.ts:22:46
-Error: Property 'types' does not exist on type '{}'.
-			let { rootTypes, queryFields, mutationFields, schema } = storeValue;
-			let new_rootTypes = sortByName([...schema.types]);
-			if (withDerivedData) {
-
-/app/src/lib/stores/endpointHandling/schemaData.ts:25:85
-Error: Argument of type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is not assignable to parameter of type 'SchemaData'.
-  Type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is missing the following properties from type 'SchemaData': subscriptionFields, get_rootType, get_QMS_Field
+/app/src/lib/stores/endpointHandling/schemaData.ts:26:85
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more.
 				new_rootTypes.forEach((el) => {
 					Object.assign(el, generate_derivedData(el, new_rootTypes, false, endpointInfo, storeValue));
 					el?.args?.forEach((arg) => {
 
-/app/src/lib/stores/endpointHandling/schemaData.ts:27:88
-Error: Argument of type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is not assignable to parameter of type 'SchemaData'.
-  Type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is missing the following properties from type 'SchemaData': subscriptionFields, get_rootType, get_QMS_Field
+/app/src/lib/stores/endpointHandling/schemaData.ts:27:10
+Error: Property 'args' does not exist on type 'RootType'.
+					Object.assign(el, generate_derivedData(el, new_rootTypes, false, endpointInfo, storeValue));
+					el?.args?.forEach((arg) => {
+						Object.assign(arg, generate_derivedData(arg, new_rootTypes, false, endpointInfo, storeValue));
+
+/app/src/lib/stores/endpointHandling/schemaData.ts:28:88
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more.
 					el?.args?.forEach((arg) => {
 						Object.assign(arg, generate_derivedData(arg, new_rootTypes, false, endpointInfo, storeValue));
 					});
 
-/app/src/lib/stores/endpointHandling/schemaData.ts:30:92
-Error: Argument of type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is not assignable to parameter of type 'SchemaData'.
-  Type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is missing the following properties from type 'SchemaData': subscriptionFields, get_rootType, get_QMS_Field
+/app/src/lib/stores/endpointHandling/schemaData.ts:31:92
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more.
 					el?.fields?.forEach((field) => {
 						Object.assign(field, generate_derivedData(field, new_rootTypes, false, endpointInfo, storeValue));
 						field?.args?.forEach((arg) => {
 
-/app/src/lib/stores/endpointHandling/schemaData.ts:32:89
-Error: Argument of type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is not assignable to parameter of type 'SchemaData'.
-  Type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is missing the following properties from type 'SchemaData': subscriptionFields, get_rootType, get_QMS_Field
+/app/src/lib/stores/endpointHandling/schemaData.ts:33:89
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more.
 						field?.args?.forEach((arg) => {
 							Object.assign(arg, generate_derivedData(arg, new_rootTypes, false, endpointInfo, storeValue));
 						});
 
-/app/src/lib/stores/endpointHandling/schemaData.ts:36:102
-Error: Argument of type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is not assignable to parameter of type 'SchemaData'.
-  Type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is missing the following properties from type 'SchemaData': subscriptionFields, get_rootType, get_QMS_Field
+/app/src/lib/stores/endpointHandling/schemaData.ts:37:102
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more.
 					el?.inputFields?.forEach((inputField) => {
 						Object.assign(inputField, generate_derivedData(inputField, new_rootTypes, false, endpointInfo, storeValue));
 					});
 
-/app/src/lib/stores/endpointHandling/schemaData.ts:39:100
-Error: Argument of type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is not assignable to parameter of type 'SchemaData'.
-  Type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is missing the following properties from type 'SchemaData': subscriptionFields, get_rootType, get_QMS_Field
+/app/src/lib/stores/endpointHandling/schemaData.ts:40:100
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more.
 					el?.enumValues?.forEach((enumValue) => {
 						Object.assign(enumValue, generate_derivedData(enumValue, new_rootTypes, false, endpointInfo, storeValue));
 					});
 
 /app/src/lib/stores/endpointHandling/schemaData.ts:77:87
-Error: Argument of type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is not assignable to parameter of type 'SchemaData'.
-  Type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is missing the following properties from type 'SchemaData': subscriptionFields, get_rootType, get_QMS_Field
-					new_QMS_Fields?.forEach((el) => {
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more.
+					new_QMS_Fields.forEach((el: any) => {
 						Object.assign(el, generate_derivedData(el, rootTypes, isQMSField, endpointInfo, storeValue));
-						el?.args?.forEach((arg) => {
+						el?.args?.forEach((arg: any) => {
 
 /app/src/lib/stores/endpointHandling/schemaData.ts:79:85
-Error: Argument of type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is not assignable to parameter of type 'SchemaData'.
-  Type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is missing the following properties from type 'SchemaData': subscriptionFields, get_rootType, get_QMS_Field
-						el?.args?.forEach((arg) => {
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more.
+						el?.args?.forEach((arg: any) => {
 							Object.assign(arg, generate_derivedData(arg, rootTypes, false, endpointInfo, storeValue));
 						});
 
 /app/src/lib/stores/endpointHandling/schemaData.ts:82:89
-Error: Argument of type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is not assignable to parameter of type 'SchemaData'.
-  Type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is missing the following properties from type 'SchemaData': subscriptionFields, get_rootType, get_QMS_Field
-						el?.fields?.forEach((field) => {
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more.
+						el?.fields?.forEach((field: any) => {
 							Object.assign(field, generate_derivedData(field, rootTypes, false, endpointInfo, storeValue));
-							field?.args?.forEach((arg) => {
+							field?.args?.forEach((arg: any) => {
 
 /app/src/lib/stores/endpointHandling/schemaData.ts:84:86
-Error: Argument of type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is not assignable to parameter of type 'SchemaData'.
-  Type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is missing the following properties from type 'SchemaData': subscriptionFields, get_rootType, get_QMS_Field
-							field?.args?.forEach((arg) => {
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more.
+							field?.args?.forEach((arg: any) => {
 								Object.assign(arg, generate_derivedData(arg, rootTypes, false, endpointInfo, storeValue));
 							});
 
 /app/src/lib/stores/endpointHandling/schemaData.ts:88:99
-Error: Argument of type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is not assignable to parameter of type 'SchemaData'.
-  Type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is missing the following properties from type 'SchemaData': subscriptionFields, get_rootType, get_QMS_Field
-						el?.inputFields?.forEach((inputField) => {
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more.
+						el?.inputFields?.forEach((inputField: any) => {
 							Object.assign(inputField, generate_derivedData(inputField, rootTypes, false, endpointInfo, storeValue));
 						});
 
 /app/src/lib/stores/endpointHandling/schemaData.ts:91:97
-Error: Argument of type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is not assignable to parameter of type 'SchemaData'.
-  Type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is missing the following properties from type 'SchemaData': subscriptionFields, get_rootType, get_QMS_Field
-						el?.enumValues?.forEach((enumValue) => {
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more.
+						el?.enumValues?.forEach((enumValue: any) => {
 							Object.assign(enumValue, generate_derivedData(enumValue, rootTypes, false, endpointInfo, storeValue));
 						});
-
-/app/src/lib/stores/endpointHandling/schemaData.ts:108:47
-Error: Argument of type 'true' is not assignable to parameter of type 'false'.
-			//set rootTypes,queryFields,mutationFields,subscriptionFields //fields or types?
-			let rootTypes = returnObject.set_rootTypes(true, true, endpointInfo);
-			let storeValue = get(store);
-
-/app/src/lib/stores/endpointHandling/schemaData.ts:110:47
-Error: Argument of type 'true' is not assignable to parameter of type 'false'.
-			let storeValue = get(store);
-			let QMSFields = returnObject.set_QMSFields(true, false, [
-				'query',
-
-/app/src/lib/stores/endpointHandling/schemaData.ts:115:8
-Error: Argument of type '{ isReady: true; rootTypes: any[]; }' is not assignable to parameter of type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }'.
-  Type '{ isReady: true; rootTypes: any[]; }' is missing the following properties from type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }': queryFields, mutationFields, schema
-			], endpointInfo);
-			set({
-				rootTypes,
-				...QMSFields, isReady: true
-			});
-			console.log('updated schemaData', { QMSFields })
-
-/app/src/lib/stores/endpointHandling/schemaData.ts:124:33
-Error: Property 'rootTypes' does not exist on type 'unknown'.
-			if (!rootTypes) {
-				rootTypes = get(schemaData).rootTypes
-			}
 
 /app/src/lib/components/MainWraper.svelte:40:49
 Warn: This reference only captures the initial value of `endpointInfoProvided`. Did you mean to reference it inside a closure instead?
@@ -250,110 +156,49 @@ https://svelte.dev/e/state_referenced_locally (svelte)
 	const endpointInfo = create_endpointInfo_Store(endpointInfoProvided);
 	const schemaData = create_schemaData();
 
-/app/src/lib/components/MainWraper.svelte:43:44
+/app/src/lib/components/MainWraper.svelte:50:44
 Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
 
 	Logger.debug('MainWraper initializing', { prefix, endpointInfoProvided });
 
-/app/src/lib/components/MainWraper.svelte:43:52
+/app/src/lib/components/MainWraper.svelte:50:52
 Warn: This reference only captures the initial value of `endpointInfoProvided`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
 
 	Logger.debug('MainWraper initializing', { prefix, endpointInfoProvided });
 
-/app/src/lib/components/MainWraper.svelte:76:38
+/app/src/lib/components/MainWraper.svelte:83:38
 Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
 	setContextClient(client);
 	setContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`, {
 		endpointInfo: endpointInfo,
 
-/app/src/lib/components/MainWraper.svelte:82:58
+/app/src/lib/components/MainWraper.svelte:89:58
 Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
 
 	Logger.info('MainWraper initialized and context set', { prefix });
 </script>
 
-/app/src/lib/components/MainWraper.svelte:78:3
-Error: Type '{ subscribe: (this: void, run: Subscriber<{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }>, invalidate?: () => void) => Unsubscriber; ... 8 more ...; get_QMS_Field: (name: any, _QMS_: any, schemaData: any) => any; }' is not assignable to type 'Readable<SchemaData>'.
-  Types of property 'subscribe' are incompatible.
-    Type '(this: void, run: Subscriber<{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }>, invalidate?: () => void) => Unsubscriber' is not assignable to type '(this: void, run: Subscriber<SchemaData>, invalidate?: () => void) => Unsubscriber'.
-      Types of parameters 'run' and 'run' are incompatible.
-        Types of parameters 'value' and 'value' are incompatible.
-          Type '{ rootTypes: any[]; queryFields: any[]; mutationFields: any[]; schema: {}; isReady: boolean; }' is missing the following properties from type 'SchemaData': subscriptionFields, get_rootType, get_QMS_Field (ts)
-		endpointInfo: endpointInfo,
-		schemaData: schemaData,
-		urqlCoreClient: urqlCoreClient
-
-/app/src/lib/stores/QMSHandling/activeArgumentsDataGrouped_Store.ts:46:37
+/app/src/lib/stores/QMSHandling/activeArgumentsDataGrouped_Store.ts:45:37
 Error: Expected 1-2 arguments, but got 3.
 			const addAllArgsGroup = () => {
 				Logger.debug('ppppp', QMS_info, QMS_infoRoot)
-				const newGroupData = {
+				const newGroupData: ActiveArgumentGroup = {
 
-/app/src/lib/stores/QMSHandling/activeArgumentsDataGrouped_Store.ts:57:18
-Error: Property 'group_argsNode' does not exist on type '{ group_args: any[]; name: string; description?: string; args?: GraphQLArgument[]; type: GraphQLType; isDeprecated?: boolean; deprecationReason?: string; dd_kindsArray: GraphQLKind[]; ... 28 more ...; group_isRoot: boolean; }'. Did you mean 'group_args'?
-				};
-				newGroupData.group_argsNode = {
-					mainContainer: {
-
-/app/src/lib/stores/QMSHandling/activeArgumentsDataGrouped_Store.ts:97:20
-Error: Property 'group_argsNode' does not exist on type '{ group_args: any[]; name: string; description?: string; type: GraphQLType; defaultValue?: unknown; dd_NON_NULL?: boolean; dd_rootName?: string; dd_displayName?: string; dd_kindList?: boolean; dd_isRootArg?: boolean; originType: FieldWithDerivedData; group_name: string; group_isRoot: boolean; }'. Did you mean 'group_args'?
-							getRootType(null, el.dd_rootName, schemaData)?.dd_baseFilterOperators?.length > 0;
-						newGroupData.group_argsNode = {
-							mainContainer: {
-
-/app/src/lib/stores/QMSHandling/activeArgumentsDataGrouped_Store.ts:123:21
-Error: Property 'group_argsNode' does not exist on type '{ group_args: any[]; name: string; description?: string; type: GraphQLType; defaultValue?: unknown; dd_NON_NULL?: boolean; dd_rootName?: string; dd_displayName?: string; dd_kindList?: boolean; dd_isRootArg?: boolean; originType: FieldWithDerivedData; group_name: string; group_isRoot: boolean; }'. Did you mean 'group_args'?
-						if (expectsList) {
-							newGroupData.group_argsNode = {
-								mainContainer: {
-
-/app/src/lib/stores/QMSHandling/activeArgumentsDataGrouped_Store.ts:271:57
-Error: Property 'items' does not exist on type 'ActiveArgumentData | ContainerData'.
-  Property 'items' does not exist on type 'ActiveArgumentData'.
-): ActiveArgumentGroup[] => {
-	const dataIsForContainer = newArgumentOrContainerData?.items;
-	Logger.debug({ dataIsForContainer, newArgumentOrContainerData })
-
-/app/src/lib/stores/QMSHandling/activeArgumentsDataGrouped_Store.ts:275:41
+/app/src/lib/stores/QMSHandling/activeArgumentsDataGrouped_Store.ts:277:41
 Error: Expected 1-2 arguments, but got 6.
 		group = activeArgumentsDataGrouped?.find((currGroup) => {
 			Logger.debug('currGroup', currGroup, currGroup.group_name, groupName, currGroup.group_name == groupName, currGroup.group_name === groupName);
 			return currGroup.group_name == groupName;
 
-/app/src/lib/stores/QMSHandling/activeArgumentsDataGrouped_Store.ts:309:4
-Error: Type 'ActiveArgumentData | ContainerData' is not assignable to type 'ContainerData'.
-  Type 'ActiveArgumentData' is missing the following properties from type 'ContainerData': operator, items
-			newArgumentOrContainerData.not = false;
-			group.group_argsNode[newArgumentOrContainerData.id] = newArgumentOrContainerData;
-
-/app/src/lib/stores/QMSHandling/activeArgumentsDataGrouped_Store.ts:345:20
-Error: Property 'operator' does not exist on type '{}'.
-	if (type && type.dd_kindList) {
-		lastDefiningData.operator = 'list'
-	}
-
-/app/src/lib/stores/QMSHandling/activeArgumentsDataGrouped_Store.ts:348:2
-Error: Property 'operator' is missing in type '{ name?: string; description?: string; args?: GraphQLArgument[]; type?: GraphQLType; isDeprecated?: boolean; deprecationReason?: string; ... 29 more ...; id: string; }' but required in type 'ContainerData'.
-
-	return {
-		///inputFields,
-
-/app/src/lib/stores/QMSHandling/activeArgumentsDataGrouped_Store.ts:427:4
-Error: Type 'unknown' is not assignable to type 'Record<string, unknown>'.
-  Index signature for type 'string' is missing in type '{}'.
-		if (!group.group_isRoot) {
-			return object?.[group.group_name];
-		}
-
-/app/src/lib/stores/QMSHandling/activeArgumentsDataGrouped_Store.ts:541:15
-Error: This expression is not callable.
-  Type '{}' has no call signatures.
-
-				gqlArgObj.forEach(element => {
+/app/src/lib/stores/QMSHandling/activeArgumentsDataGrouped_Store.ts:545:6
+Error: Conversion of type 'Record<string, unknown>' to type 'any[]' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type 'Record<string, unknown>' is missing the following properties from type 'any[]': length, pop, push, concat, and 35 more.
+			if (gqlArgObjTypeOf == 'array') {
+				(gqlArgObj as any[]).forEach(element => {
 				});
 
 /app/src/lib/stores/QMSHandling/finalGqlArgObj_Store.ts:23:79
@@ -363,30 +208,30 @@ Error: Argument of type 'unknown' is not assignable to parameter of type 'Active
 			const finalGqlArgObjAndCanRunQuery = generate_finalGqlArgObjAndCanRunQuery(activeArgumentsDataGrouped, _paginationState_Store, true)
 			if (finalGqlArgObjAndCanRunQuery.final_canRunQuery) {
 
-/app/src/lib/stores/QMSHandling/QMS_bodyPart_StoreDerived.ts:32:29
+/app/src/lib/stores/QMSHandling/QMS_bodyPart_StoreDerived.ts:33:29
 Error: Property 'finalGqlArgObj' does not exist on type 'unknown'.
 					paginationState,
 					$finalGqlArgObj_Store?.finalGqlArgObj || {},
 
-/app/src/lib/stores/QMSHandling/QMS_bodyPart_StoreDerived.ts:42:6
-Error: Argument of type 'string | StepsOfFieldsObject' is not assignable to parameter of type 'Record<string, unknown>'.
-  Type 'string' is not assignable to type 'Record<string, unknown>'.
-					QMS_name,
-					tableColsDataToQueryFields($tableColsData_Store),
+/app/src/lib/stores/QMSHandling/QMS_bodyPart_StoreDerived.ts:49:16
+Error: Argument of type 'unknown' is not assignable to parameter of type 'Record<string, unknown>'.
+  Index signature for type 'string' is missing in type '{}'.
 					get_QMS_args(),
+					QMS_type, $mergedChildren_finalGqlArgObj_Store
+				)
 
-/app/src/lib/stores/QMSHandling/QMS_bodyPart_StoreDerived.ts:42:33
-Error: Argument of type 'unknown' is not assignable to parameter of type 'TableColumnData[]'.
-  Type '{}' is missing the following properties from type 'TableColumnData[]': length, pop, push, concat, and 35 more.
-					QMS_name,
-					tableColsDataToQueryFields($tableColsData_Store),
-					get_QMS_args(),
+/app/src/lib/stores/QMSHandling/QMS_bodyPartsUnifier_StoreDerived.ts:13:11
+Error: Operator '+' cannot be applied to types 'unknown' and 'unknown'.
+			}
+			return prevVal + currVal;
+		}, '');
 
-/app/src/lib/stores/QMSHandling/QMS_bodyPartsUnifier_StoreDerived.ts:4:36
-Error: Generic type 'Array<T>' requires 1 type argument(s).
-export const Create_QMS_bodyPartsUnifier_StoreDerived = (
-	_QMS_bodyPart_StoreDerived_array: Array,
-	QMS_type = 'query',
+/app/src/lib/stores/QMSHandling/paginationState.ts:19:63
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more.
+): PaginationStateStore => {
+	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData).find((pagType) => {
+		return pagType.name == paginationType;
 
 /app/src/lib/components/QMSWraperCtxDataCurrentComputations.svelte:13:75
 Warn: This reference only captures the initial value of `QMSWraperCtxDataCurrent`. Did you mean to reference it inside a closure instead?
@@ -402,287 +247,289 @@ https://svelte.dev/e/state_referenced_locally (svelte)
 	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
 	const { mergedChildren_finalGqlArgObj_Store } = OutermostQMSWraperContext;
 
-/app/src/lib/components/QMSWraper.svelte:134:69
+/app/src/lib/components/QMSWraper.svelte:135:69
 Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
 	// Move logic after props destructuring to avoid TDZ
 	let QMSMainWraperContext = getContext<QMSMainWraperContextType>(`${prefix}QMSMainWraperContext`);
 	const endpointInfo: EndpointInfoStore = QMSMainWraperContext?.endpointInfo;
 
-/app/src/lib/components/QMSWraper.svelte:138:45
+/app/src/lib/components/QMSWraper.svelte:139:45
 Warn: This reference only captures the initial value of `QMSName`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
 
     Logger.debug('QMSWraper initialized', { QMSName, QMSType });
 
-/app/src/lib/components/QMSWraper.svelte:138:54
+/app/src/lib/components/QMSWraper.svelte:139:54
 Warn: This reference only captures the initial value of `QMSType`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
 
     Logger.debug('QMSWraper initialized', { QMSName, QMSType });
 
-/app/src/lib/components/QMSWraper.svelte:160:6
+/app/src/lib/components/QMSWraper.svelte:161:6
 Warn: This reference only captures the initial value of `isOutermostQMSWraper`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
 	// Calculate defaults that depend on other props/context
 	if (isOutermostQMSWraper === undefined) {
 		isOutermostQMSWraper = getContext<QMSWraperContextType>(`${prefix}QMSWraperContext`) ? false : true;
 
-/app/src/lib/components/QMSWraper.svelte:161:62
+/app/src/lib/components/QMSWraper.svelte:162:62
 Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
 	if (isOutermostQMSWraper === undefined) {
 		isOutermostQMSWraper = getContext<QMSWraperContextType>(`${prefix}QMSWraperContext`) ? false : true;
 	}
 
-/app/src/lib/components/QMSWraper.svelte:165:39
+/app/src/lib/components/QMSWraper.svelte:166:39
 Warn: This reference only captures the initial value of `QMSName`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
 	if (!QMS_info && schemaData) {
 		QMS_info = schemaData.get_QMS_Field(QMSName, QMSType, schemaData);
 	}
 
-/app/src/lib/components/QMSWraper.svelte:165:48
+/app/src/lib/components/QMSWraper.svelte:166:48
 Warn: This reference only captures the initial value of `QMSType`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
 	if (!QMS_info && schemaData) {
 		QMS_info = schemaData.get_QMS_Field(QMSName, QMSType, schemaData);
 	}
 
-/app/src/lib/components/QMSWraper.svelte:168:7
+/app/src/lib/components/QMSWraper.svelte:169:7
 Warn: This reference only captures the initial value of `activeArgumentsDataGrouped_Store`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
 
 	if (!activeArgumentsDataGrouped_Store) {
 		activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store(
 
-/app/src/lib/components/QMSWraper.svelte:170:4
+/app/src/lib/components/QMSWraper.svelte:171:4
 Warn: This reference only captures the initial value of `activeArgumentsDataGrouped_StoreInitialValue`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
 		activeArgumentsDataGrouped_Store = Create_activeArgumentsDataGrouped_Store(
 			activeArgumentsDataGrouped_StoreInitialValue
 		);
 
-/app/src/lib/components/QMSWraper.svelte:176:41
+/app/src/lib/components/QMSWraper.svelte:177:41
 Warn: This reference only captures the initial value of `QMSName`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
 	if (!QMS_info) {
 		Logger.warn(`QMS_info not found for ${QMSName} ${QMSType}`);
         // Maybe handle error?
 
-/app/src/lib/components/QMSWraper.svelte:176:52
+/app/src/lib/components/QMSWraper.svelte:177:52
 Warn: This reference only captures the initial value of `QMSType`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
 	if (!QMS_info) {
 		Logger.warn(`QMS_info not found for ${QMSName} ${QMSType}`);
         // Maybe handle error?
 
-/app/src/lib/components/QMSWraper.svelte:182:24
+/app/src/lib/components/QMSWraper.svelte:183:24
 Warn: This reference only captures the initial value of `QMSType`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
         let paginationTypeInfo = getPaginationTypeInfo(dd_paginationType, paginationTypes);
         Logger.debug({ QMSType, QMSName, QMS_info });
 
-/app/src/lib/components/QMSWraper.svelte:182:33
+/app/src/lib/components/QMSWraper.svelte:183:33
 Warn: This reference only captures the initial value of `QMSName`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
         let paginationTypeInfo = getPaginationTypeInfo(dd_paginationType, paginationTypes);
         Logger.debug({ QMSType, QMSName, QMS_info });
 
-/app/src/lib/components/QMSWraper.svelte:200:14
+/app/src/lib/components/QMSWraper.svelte:201:14
 Warn: This reference only captures the initial value of `finalGqlArgObj_Store`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
 
         if (!finalGqlArgObj_Store) {
              finalGqlArgObj_Store = Create_finalGqlArgObj_Store(
 
-/app/src/lib/components/QMSWraper.svelte:202:17
+/app/src/lib/components/QMSWraper.svelte:203:17
 Warn: This reference only captures the initial value of `activeArgumentsDataGrouped_Store`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
              finalGqlArgObj_Store = Create_finalGqlArgObj_Store(
                 activeArgumentsDataGrouped_Store,
                 paginationState
 
-/app/src/lib/components/QMSWraper.svelte:211:35
+/app/src/lib/components/QMSWraper.svelte:212:35
 Warn: This reference only captures the initial value of `QMSType`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
 
         const possibleLocations = QMSType == 'query'
 			? (get(endpointInfo) as any).returningColumnsPossibleLocationsInQueriesPerRow
 
-/app/src/lib/components/QMSWraper.svelte:225:84
+/app/src/lib/components/QMSWraper.svelte:226:84
 Warn: This reference only captures the initial value of `QMSType`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
 
         Logger.debug({ returningColumnsLocationQMS_Info, returningColumnsLocation, QMSType });
 
-/app/src/lib/components/QMSWraper.svelte:228:13
+/app/src/lib/components/QMSWraper.svelte:229:13
 Warn: This reference only captures the initial value of `QMSType`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
         let prefixStepsOfFields = buildPrefixStepsOfFields(
             QMSType,
             QMS_info.dd_displayName,
 
-/app/src/lib/components/QMSWraper.svelte:241:13
+/app/src/lib/components/QMSWraper.svelte:242:13
 Warn: This reference only captures the initial value of `QMSName`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
         const dependencyColsData = paginationTypeInfo?.get_dependencyColsData(
             QMSName,
             'query',
 
-/app/src/lib/components/QMSWraper.svelte:252:13
+/app/src/lib/components/QMSWraper.svelte:253:13
 Warn: This reference only captures the initial value of `QMSType`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
         Logger.debug({
             QMSType,
             QMSName,
 
-/app/src/lib/components/QMSWraper.svelte:253:13
+/app/src/lib/components/QMSWraper.svelte:254:13
 Warn: This reference only captures the initial value of `QMSName`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
             QMSType,
             QMSName,
             QMS_info,
 
-/app/src/lib/components/QMSWraper.svelte:291:13
+/app/src/lib/components/QMSWraper.svelte:292:13
 Warn: This reference only captures the initial value of `finalGqlArgObj_Store`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
         QMS_bodyPart_StoreDerived = Create_QMS_bodyPart_StoreDerived(
             finalGqlArgObj_Store,
             tableColsData_Store,
 
-/app/src/lib/components/QMSWraper.svelte:293:13
+/app/src/lib/components/QMSWraper.svelte:294:13
 Warn: This reference only captures the initial value of `QMSType`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
             tableColsData_Store,
             QMSType,
             QMSName,
 
-/app/src/lib/components/QMSWraper.svelte:294:13
+/app/src/lib/components/QMSWraper.svelte:295:13
 Warn: This reference only captures the initial value of `QMSName`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
             QMSType,
             QMSName,
             paginationOptions,
 
-/app/src/lib/components/QMSWraper.svelte:298:13
+/app/src/lib/components/QMSWraper.svelte:299:13
 Warn: This reference only captures the initial value of `initialGqlArgObj`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
             mergedChildren_finalGqlArgObj_Store,
             initialGqlArgObj
         );
 
-/app/src/lib/components/QMSWraper.svelte:303:13
+/app/src/lib/components/QMSWraper.svelte:304:13
 Warn: This reference only captures the initial value of `QMSType`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
             [QMS_bodyPart_StoreDerived],
             QMSType
         );
 
-/app/src/lib/components/QMSWraper.svelte:316:17
+/app/src/lib/components/QMSWraper.svelte:317:17
 Warn: This reference only captures the initial value of `finalGqlArgObj_Store`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
             QMS_bodyPart_StoreDerived_rowsCount = Create_QMS_bodyPart_StoreDerived(
                 finalGqlArgObj_Store,
                 tableColsData_Store_rowsCount,
 
-/app/src/lib/components/QMSWraper.svelte:318:17
+/app/src/lib/components/QMSWraper.svelte:319:17
 Warn: This reference only captures the initial value of `QMSType`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
                 tableColsData_Store_rowsCount,
                 QMSType,
                 rowCountLocation[0],
 
-/app/src/lib/components/QMSWraper.svelte:351:13
+/app/src/lib/components/QMSWraper.svelte:352:13
 Warn: This reference only captures the initial value of `QMSType`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
             QMS_info,
             QMSType,
             QMSName,
 
-/app/src/lib/components/QMSWraper.svelte:352:13
+/app/src/lib/components/QMSWraper.svelte:353:13
 Warn: This reference only captures the initial value of `QMSName`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
             QMSType,
             QMSName,
             activeArgumentsDataGrouped_Store,
 
-/app/src/lib/components/QMSWraper.svelte:353:13
+/app/src/lib/components/QMSWraper.svelte:354:13
 Warn: This reference only captures the initial value of `activeArgumentsDataGrouped_Store`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
             QMSName,
             activeArgumentsDataGrouped_Store,
             tableColsData_Store,
 
-/app/src/lib/components/QMSWraper.svelte:355:13
+/app/src/lib/components/QMSWraper.svelte:356:13
 Warn: This reference only captures the initial value of `finalGqlArgObj_Store`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
             tableColsData_Store,
             finalGqlArgObj_Store,
             QMS_bodyPart_StoreDerived,
 
-/app/src/lib/components/QMSWraper.svelte:366:13
+/app/src/lib/components/QMSWraper.svelte:367:13
 Warn: This reference only captures the initial value of `extraInfo`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
             QMSFieldToQMSGetMany_Store,
             extraInfo
         };
 
-/app/src/lib/components/QMSWraper.svelte:369:13
+/app/src/lib/components/QMSWraper.svelte:370:13
 Warn: This reference only captures the initial value of `preferGivenQMSWraperContext`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
 
         if (preferGivenQMSWraperContext && QMSWraperContextGiven) {
             QMSWraperContext = QMSWraperContextGiven;
 
-/app/src/lib/components/QMSWraper.svelte:369:44
+/app/src/lib/components/QMSWraper.svelte:370:44
 Warn: This reference only captures the initial value of `QMSWraperContextGiven`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
 
         if (preferGivenQMSWraperContext && QMSWraperContextGiven) {
             QMSWraperContext = QMSWraperContextGiven;
 
-/app/src/lib/components/QMSWraper.svelte:370:32
+/app/src/lib/components/QMSWraper.svelte:371:32
 Warn: This reference only captures the initial value of `QMSWraperContextGiven`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
         if (preferGivenQMSWraperContext && QMSWraperContextGiven) {
             QMSWraperContext = QMSWraperContextGiven;
         }
 
-/app/src/lib/components/QMSWraper.svelte:372:45
+/app/src/lib/components/QMSWraper.svelte:373:45
 Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
         }
         setContext<QMSWraperContextType>(`${prefix}QMSWraperContext`, QMSWraperContext as QMSWraperContextType);
         if (isOutermostQMSWraper) {
 
-/app/src/lib/components/QMSWraper.svelte:373:13
+/app/src/lib/components/QMSWraper.svelte:374:13
 Warn: This reference only captures the initial value of `isOutermostQMSWraper`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
         setContext<QMSWraperContextType>(`${prefix}QMSWraperContext`, QMSWraperContext as QMSWraperContextType);
         if (isOutermostQMSWraper) {
             setContext<QMSWraperContextType>(`${prefix}OutermostQMSWraperContext`, QMSWraperContext as QMSWraperContextType);
 
-/app/src/lib/components/QMSWraper.svelte:374:49
+/app/src/lib/components/QMSWraper.svelte:375:49
 Warn: This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
         if (isOutermostQMSWraper) {
             setContext<QMSWraperContextType>(`${prefix}OutermostQMSWraperContext`, QMSWraperContext as QMSWraperContextType);
         }
 
-/app/src/lib/components/QMSWraper.svelte:136:8
-Error: Type 'Readable<SchemaData>' is missing the following properties from type 'SchemaData': rootTypes, queryFields, mutationFields, subscriptionFields, and 2 more. (ts)
-	const endpointInfo: EndpointInfoStore = QMSMainWraperContext?.endpointInfo;
-	const schemaData: SchemaData = QMSMainWraperContext?.schemaData;
+/app/src/lib/components/QMSWraper.svelte:191:13
+Error: Argument of type 'SchemaDataStore' is not assignable to parameter of type 'SchemaData'.
+  Type 'SchemaDataStore' is missing the following properties from type 'SchemaData': rootTypes, queryFields, mutationFields, subscriptionFields (ts)
+            endpointInfo,
+            schemaData
+        );
 
-/app/src/lib/components/QMSWraper.svelte:372:71
+/app/src/lib/components/QMSWraper.svelte:373:71
 Error: Conversion of type 'Record<string, unknown>' to type 'QMSWraperContext' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
   Type 'Record<string, unknown>' is missing the following properties from type 'QMSWraperContext': idColName, returningColumnsLocationQMS_Info, rowsLocation, returningColumnsLocation, and 17 more. (ts)
         }
         setContext<QMSWraperContextType>(`${prefix}QMSWraperContext`, QMSWraperContext as QMSWraperContextType);
         if (isOutermostQMSWraper) {
 
-/app/src/lib/components/QMSWraper.svelte:374:84
+/app/src/lib/components/QMSWraper.svelte:375:84
 Error: Conversion of type 'Record<string, unknown>' to type 'QMSWraperContext' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
   Type 'Record<string, unknown>' is missing the following properties from type 'QMSWraperContext': idColName, returningColumnsLocationQMS_Info, rowsLocation, returningColumnsLocation, and 17 more. (ts)
         if (isOutermostQMSWraper) {
@@ -1127,6 +974,54 @@ Error: Type 'unknown' cannot be used as an index type.
 				.map((header) => {
 					let val = row[header];
 					if (val === null || val === undefined) {
+
+/app/src/lib/utils/usefulFunctions.test.ts:87:5
+Error: Object literal may only specify known properties, and 'get_rootType' does not exist in type 'SchemaData'.
+    subscriptionFields: [],
+    get_rootType: (rootTypes, rootTypeName, schemaData) => {
+        return schemaData.rootTypes.find(t => t.name === rootTypeName);
+
+/app/src/lib/utils/usefulFunctions.test.ts:96:71
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more.
+        const rootField = mockSchemaData.rootTypes[0].fields![0]; // user
+        const result = getDeepField(rootField, ['address', 'street'], mockSchemaData);
+        expect(result).toBeDefined();
+
+/app/src/lib/utils/usefulFunctions.test.ts:103:76
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more.
+        const rootField = mockSchemaData.rootTypes[0].fields![0]; // user
+        const result = getDeepField(rootField, ['address', 'nonExistent'], mockSchemaData);
+        expect(result).toBeNull();
+
+/app/src/lib/utils/usefulFunctions.test.ts:109:52
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more.
+        const rootField = mockSchemaData.rootTypes[0].fields![0]; // user
+        const result = getDeepField(rootField, [], mockSchemaData);
+        expect(result).toBe(rootField);
+
+/app/src/lib/utils/usefulFunctions.test.ts:116:72
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more.
+        // user.bestFriend.name
+        const result = getDeepField(rootField, ['bestFriend', 'name'], mockSchemaData);
+        expect(result).toBeDefined();
+
+/app/src/lib/utils/usefulFunctions.test.ts:126:58
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more.
+
+        const result = getDeepField(rootField, ['user'], mockSchemaData);
+        expect(result).toBeDefined();
+
+/app/src/lib/utils/usefulFunctions.test.ts:140:65
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more.
+         // Address does not have a field 'address'
+         const result = getDeepField(addressField, ['address'], mockSchemaData);
+         expect(result).toBeNull();
 
 /app/src/lib/components/ArgInfoDisplay.svelte:36:35
 Warn: This reference only captures the initial value of `predefinedFirstSteps`. Did you mean to reference it inside a closure instead?
@@ -3017,6 +2912,13 @@ Error: Property 'extraInfo' does not exist on type 'unknown'. (ts)
 	const isForExplorer = OutermostQMSWraperContext?.extraInfo?.isForExplorer;
 	const schemaData = mainWraperContext?.schemaData;
 
+/app/src/lib/components/Type.svelte:67:68
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more. (ts)
+		//console.log('dd_rootName', dd_rootName);
+		expandData = getRootType(get(schemaData).rootTypes, dd_rootName, get(schemaData));
+		if (expandData) {
+
 /app/src/lib/components/Type.svelte:79:17
 Error: Property 'fields' does not exist on type '{}'. (ts)
 			let typeLen =
@@ -3621,14 +3523,14 @@ https://svelte.dev/e/state_referenced_locally (svelte)
 Warn: This reference only captures the initial value of `endpointInfo`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
 			hasFill: false,
-			items: getQMSLinks('query', `/endpoints/${endpointid}/queries`, endpointInfo, get(schemaData))
+			items: getQMSLinks('query', `/endpoints/${endpointid}/queries`, endpointInfo, schemaData)
 		},
 
 /app/src/lib/components/TabContainer.svelte:62:73
 Warn: This reference only captures the initial value of `endpointInfo`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
 			hasFill: true,
-			items: getQMSLinks('mutation', `/endpoints/${endpointid}/mutations`, endpointInfo, get(schemaData))
+			items: getQMSLinks('mutation', `/endpoints/${endpointid}/mutations`, endpointInfo, schemaData)
 		},
 
 /app/src/lib/components/TabContainer.svelte:159:2
@@ -3665,5 +3567,32 @@ https://svelte.dev/e/state_referenced_locally (svelte)
 	const qmsContext = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
 	const {
 
+/app/src/routes/endpoints/[endpointid]/mutations/MutationExample.svelte:62:72
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more. (ts)
+
+	let dd_relatedRoot = $derived(getRootType(null, QMS_info.dd_rootName, get(schemaData)));
+	$effect(() => {
+
+/app/src/routes/endpoints/[endpointid]/mutations/MutationExample.svelte:71:70
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more. (ts)
+	let activeArgumentsData = [];
+	let paginationTypeInfo = $derived(get_paginationTypes(endpointInfo, get(schemaData)).find((pagType) => {
+		return pagType.name == QMS_info?.dd_paginationType;
+
+/app/src/routes/endpoints/[endpointid]/mutations/MutationExample.svelte:82:68
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more. (ts)
+
+	let scalarFields = $derived(getFields_Grouped(dd_relatedRoot, [], get(schemaData)).scalarFields);
+
+/app/src/routes/endpoints/[endpointid]/mutations/MutationExample.svelte:133:49
+Error: Argument of type 'SchemaData' is not assignable to parameter of type 'SchemaDataStore'.
+  Type 'SchemaData' is missing the following properties from type 'SchemaDataStore': set, update, set_schema, set_rootTypes, and 5 more. (ts)
+					QMS_info.dd_displayName,
+					...endpointInfo.get_rowsLocation(QMS_info, get(schemaData))
+				];
+
 ====================================
-svelte-check found 323 errors and 211 warnings in 70 files
+svelte-check found 312 errors and 210 warnings in 72 files

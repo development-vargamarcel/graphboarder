@@ -12,6 +12,7 @@ import type {
 	FieldWithDerivedData,
 	RootType,
 	SchemaData,
+	SchemaDataStore,
 	EndpointInfoStore,
 	ActiveArgumentData,
 	ActiveArgumentGroup,
@@ -45,7 +46,7 @@ export const findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey = (obj: u
 		return true
 	}
 	if (objectKeysLength == 1) {
-		return findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey(obj[objectKeys[0]])
+		return findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey((obj as any)[objectKeys[0]])
 	}
     return null;
 }
@@ -359,10 +360,10 @@ export let get_displayName = (namesArray: string[]): string => {
 export const getRootType = (
 	rootTypes: RootType[] | null,
 	RootType_Name: string | undefined,
-	schemaData: SchemaData
+	schemaData: SchemaDataStore
 ): RootType | undefined => {
 	if (!rootTypes) {
-		rootTypes = schemaData.rootTypes;
+		rootTypes = get(schemaData).rootTypes;
 	}
 
 	return rootTypes.filter((type) => {
@@ -374,13 +375,13 @@ export const getRootType = (
  * Groups fields of a type into scalar, non-scalar, and enum fields.
  * @param node - The node (type or field) to inspect.
  * @param dd_displayNameToExclude - List of display names to exclude.
- * @param schemaData - The schema data.
+ * @param schemaData - The schema data store.
  * @returns An object containing arrays of grouped fields.
  */
 export const getFields_Grouped = (
 	node: Partial<FieldWithDerivedData> | RootType,
 	dd_displayNameToExclude: string[] = [],
-	schemaData: SchemaData
+	schemaData: SchemaDataStore
 ): FieldsGrouped => {
 	const node_rootType = schemaData?.get_rootType(
 		null,
@@ -407,7 +408,7 @@ export const getFields_Grouped = (
 		return !dd_displayNameToExclude.includes(field.dd_displayName)
 	}).forEach((field: any) => {
 		if (get_KindsArray(field).includes('ENUM')) {
-			enumFields.push({ ...schemaData.get_rootType(null, field.dd_rootName, schemaData), ...field });
+			enumFields.push({ ...schemaData.get_rootType(null, field.dd_rootName, schemaData), ...field } as any);
 		} else
 			if (get_KindsArray(field).includes('SCALAR')) {
 				scalarFields.push(field);
@@ -607,7 +608,7 @@ export const mark_paginationArgs = (args: FieldWithDerivedData[], endpointInfo: 
 export const get_paginationType = (
 	paginationArgs: FieldWithDerivedData[],
 	endpointInfo: EndpointInfoStore,
-	schemaData: SchemaData
+	schemaData: SchemaDataStore
 ): string => {
 	const standsForArray = paginationArgs.map((arg) => {
 		return arg.dd_standsFor || '';
@@ -635,7 +636,7 @@ export const generate_derivedData = (
 	rootTypes: RootType[] | null,
 	isQMSField: boolean,
 	endpointInfo: EndpointInfoStore,
-	schemaData: SchemaData
+	schemaData: SchemaDataStore
 ): FieldWithDerivedData => {
 	//type/field
 	let derivedData: FieldWithDerivedData = { ...type } as FieldWithDerivedData;
@@ -687,7 +688,7 @@ export const generate_derivedData = (
 		let dd_nonBaseFilterOperators: string[] | undefined = []
 		if ((type as any)?.inputFields) {
 			(type as any).inputFields
-				.forEach(inputField => {
+				.forEach((inputField: any) => {
 					if (baseFilterOperatorNames.includes(inputField.name)) {
 						dd_baseFilterOperators?.push(inputField.name)
 						return inputField.name
@@ -723,14 +724,14 @@ export const generate_derivedData = (
 	if (derivedData?.dd_baseFilterOperators) {
 		let defaultdisplayInterface = get_displayInterface(derivedData, endpointInfo);
 		if ((type as any)?.inputFields !== undefined) {
-			(type as any).inputFields.forEach((inputField) => {
+			(type as any).inputFields.forEach((inputField: any) => {
 				Object.assign(inputField, { dd_displayInterface: defaultdisplayInterface });
 			});
 		}
 	}
 	if (derivedData.args) {
 		mark_paginationArgs(derivedData.args as any, endpointInfo);
-		derivedData.dd_paginationArgs = (derivedData.args as any).filter((arg) => {
+		derivedData.dd_paginationArgs = (derivedData.args as any).filter((arg: any) => {
 			return arg.dd_isPaginationArg;
 		});
 		derivedData.dd_paginationType = get_paginationType(derivedData.dd_paginationArgs, endpointInfo, schemaData);
@@ -1014,11 +1015,11 @@ export const generate_finalGqlArgObj_fromGroups = (activeArgumentsDataGrouped: A
 	return { finalGqlArgObj, final_canRunQuery };
 };
 
-export const getQMSLinks = (QMSName: QMSType = 'query', parentURL: string, endpointInfo: EndpointInfoStore, schemaData: SchemaData): { url: string; title: string }[] => {
+export const getQMSLinks = (QMSName: QMSType = 'query', parentURL: string, endpointInfo: EndpointInfoStore, schemaData: SchemaDataStore): { url: string; title: string }[] => {
 	let $page = get(page);
 	let origin = $page.url.origin;
 	let queryLinks: { url: string; title: string }[] = [];
-	let $schemaData = get(schemaData as any); // Cast to any as Readable<SchemaData> compatibility issues persisted
+	let $schemaData = get(schemaData);
 	const sortIt = (QMSFields: FieldWithDerivedData[]): FieldWithDerivedData[] => {
 		return QMSFields?.sort((a, b) => {
 			let ea = a.dd_rootName;
@@ -1169,7 +1170,7 @@ export const generateNewArgData = (
 export const get_scalarColsData = (
 	currentQMS_info: FieldWithDerivedData | null | undefined,
 	prefixStepsOfFields: string[] = [],
-	schemaData: SchemaData
+	schemaData: SchemaDataStore
 ): TableColumnData[] => {
 	if (!currentQMS_info) {
 		return []
@@ -1205,7 +1206,7 @@ export const get_scalarColsData = (
 export const get_nodeFieldsQMS_info = (
 	QMS_info: FieldWithDerivedData,
 	rowsLocation: string[],
-	schemaData: SchemaData
+	schemaData: SchemaDataStore
 ): FieldWithDerivedData | undefined => {
 	if (rowsLocation?.length == 0) {
 		return QMS_info;
@@ -1242,7 +1243,7 @@ export const get_nodeFieldsQMS_info = (
  * @param schemaData - The schema data.
  * @returns The field definition of the last step if valid, otherwise throws an error.
  */
-export const check_stepsOfFields = (stepsOfFields: string[], schemaData: SchemaData): FieldWithDerivedData | undefined => {
+export const check_stepsOfFields = (stepsOfFields: string[], schemaData: SchemaDataStore): FieldWithDerivedData | undefined => {
 	if (!stepsOfFields || stepsOfFields.length === 0) return undefined;
 
 	const rootFieldName = stepsOfFields[0];
@@ -1318,7 +1319,7 @@ export const nodeAddDefaultFields = (
 	prefix: string = '',
 	group: ActiveArgumentGroup,
 	activeArgumentsDataGrouped_Store: ActiveArgumentsDataGroupedStore,
-	schemaData: SchemaData,
+	schemaData: SchemaDataStore,
 	endpointInfo: EndpointInfoStore
 ): void => {
 
@@ -1543,7 +1544,7 @@ export const hasDeepProperty = (obj: Record<string, unknown>, propertyPath: stri
 export const getDeepField = (
 	obj: Partial<FieldWithDerivedData>,
 	propertyPath: string[],
-	schemaData: SchemaData,
+	schemaData: SchemaDataStore,
 	fieldsType: 'fields' | 'inputFields' = 'fields'
 ): FieldWithDerivedData | null => {
 	//console.log({ obj, propertyPath })

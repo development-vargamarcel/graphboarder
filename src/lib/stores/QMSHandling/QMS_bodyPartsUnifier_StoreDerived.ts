@@ -1,7 +1,7 @@
 import { derived } from 'svelte/store';
 
 export const Create_QMS_bodyPartsUnifier_StoreDerived = (
-	_QMS_bodyPart_StoreDerived_array: Array,
+	_QMS_bodyPart_StoreDerived_array: Array<any>,
 	QMS_type = 'query',
 	QMS_name = 'QMS_name'
 ) => {

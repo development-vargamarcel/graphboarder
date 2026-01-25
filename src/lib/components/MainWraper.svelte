@@ -40,6 +40,13 @@
 	const endpointInfo = create_endpointInfo_Store(endpointInfoProvided);
 	const schemaData = create_schemaData();
 
+	// Update store when prop changes
+	$effect(() => {
+		if (endpointInfoProvided) {
+			endpointInfo.smartSet(endpointInfoProvided);
+		}
+	});
+
 	Logger.debug('MainWraper initializing', { prefix, endpointInfoProvided });
 
 	$effect(() => {
@@ -82,6 +89,6 @@
 	Logger.info('MainWraper initialized and context set', { prefix });
 </script>
 
-<IntrospectionDataGenerator>
+<IntrospectionDataGenerator {prefix}>
 	{@render children?.()}
 </IntrospectionDataGenerator>

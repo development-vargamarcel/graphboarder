@@ -12,7 +12,7 @@ import {
 import { writable, get } from 'svelte/store';
 import { getDeepField, getFields_Grouped, getRootType } from '$lib/utils/usefulFunctions';
 import { Logger } from '$lib/utils/logger';
-import type { EndpointConfiguration, FieldWithDerivedData, SchemaData } from '$lib/types';
+import type { EndpointConfiguration, FieldWithDerivedData, SchemaDataStore } from '$lib/types';
 
 export const endpointInfoDefaultValues = {
 	description: 'no description',
@@ -307,7 +307,7 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 
 	const store = writable<EndpointConfiguration>({ ...endpointInfoDefaultValues, ...endpointConfiguration });
 
-	const get_fieldsNames = (currentQMS_info: any, fieldsLocation: any, schemaData: any, FieldsPossibleNamesName: any) => {
+	const get_fieldsNames = (currentQMS_info: any, fieldsLocation: any, schemaData: SchemaDataStore, FieldsPossibleNamesName: any) => {
 		//do not move this function,needs "store" to be defined
 		const storeVal = get(store) as any;
 		if (!storeVal || !storeVal?.[FieldsPossibleNamesName]) {
@@ -334,7 +334,7 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 		smartSet: (newEndpoint: any) => {
 			store.set({ ...endpointInfoDefaultValues, ...newEndpoint });
 		},
-		get_inputFieldsContainerLocation: function (QMS_info: any, schemaData: any) {
+		get_inputFieldsContainerLocation: function (QMS_info: any, schemaData: SchemaDataStore) {
 			const storeVal = get(store);
 			if (!storeVal?.inputColumnsPossibleLocationsInArg?.length) {
 				return [];
@@ -362,7 +362,7 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			}
 			return [];
 		},
-		get_rowsLocation: function (QMS_info: any, schemaData: any) {
+		get_rowsLocation: function (QMS_info: any, schemaData: SchemaDataStore) {
 			const storeVal = get(store);
 			if (!storeVal?.rowsLocationPossibilities?.length) {
 				return [];
@@ -378,7 +378,7 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			}
 			return [];
 		},
-		get_rowCountLocation: function (QMS_info: any, schemaData: any) {
+		get_rowCountLocation: function (QMS_info: any, schemaData: SchemaDataStore) {
 			Logger.debug({ schemaData })
 			const storeVal = get(store);
 			if (!storeVal || !storeVal?.rowCountLocationPossibilities?.length) {
@@ -398,7 +398,7 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			Logger.warn('no rowCountLocation found', QMS_info);
 			return null;
 		},
-		get_idField: (QMS_info: any, schemaData: any) => {
+		get_idField: (QMS_info: any, schemaData: SchemaDataStore) => {
 			const storeVal = get(store);
 			if (!storeVal || !storeVal?.idFieldPossibilities?.length) {
 				Logger.warn('no idFieldPossibilities found or endpointInfo value is null/undefined');
@@ -447,7 +447,7 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			}
 			return null;
 		},
-		get_tableName: (QMS_info: any, schemaData: any) => {
+		get_tableName: (QMS_info: any, schemaData: SchemaDataStore) => {
 			const storeVal = get(store);
 			if (!storeVal || !storeVal?.tableNamePossibilities?.length) {
 				return null;
@@ -463,7 +463,7 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 
 			return null;
 		},
-		get_qmsNameForObjective: function (QMS_info: any, schemaData: any, qmsObjective: any) {
+		get_qmsNameForObjective: function (QMS_info: any, schemaData: SchemaDataStore, qmsObjective: any) {
 			const thisContext = this
 			const tableName = this.get_tableName(QMS_info, schemaData);
 			if (!tableName) {
@@ -486,7 +486,7 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			return null;
 
 		},
-		get_decodedId: (QMS_info: any, schemaData: any, id: any) => {
+		get_decodedId: (QMS_info: any, schemaData: SchemaDataStore, id: any) => {
 			const storeVal = get(store);
 			if (!storeVal || !storeVal?.idDecoderPossibilities?.length) {
 				return null;
@@ -504,7 +504,7 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 		}
 
 		,
-		get_relayPageInfoFieldsNames: (currentQMS_info: any, pageInfoFieldsLocation: any, schemaData: any) => {
+		get_relayPageInfoFieldsNames: (currentQMS_info: any, pageInfoFieldsLocation: any, schemaData: SchemaDataStore) => {
 			const storeVal = get(store);
 			if (!storeVal || !storeVal?.relayPageInfoFieldsPossibleNames) {
 				return null;
@@ -513,7 +513,7 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 
 		}
 		,
-		get_relayCursorFieldName: (currentQMS_info: any, rowsLocation: any, schemaData: any) => {
+		get_relayCursorFieldName: (currentQMS_info: any, rowsLocation: any, schemaData: SchemaDataStore) => {
 			const storeVal = get(store);
 			if (!storeVal || !storeVal?.relayCursorPossibleNames) {
 				return null;

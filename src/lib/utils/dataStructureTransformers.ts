@@ -3,7 +3,7 @@ import { getPreciseType } from "./usefulFunctions";
 //In the future use terms like processString_transformer and unprocessString_transformer,and also use chd_processedValue and chd_unprocessedValue instead of chd_rawValue and chd_dispatchValue
 export const stringToQMSString_transformer = (value: unknown): string | unknown => {
 	//the input value is the result of a stringified QMS object, so we need to parse it
-	if (getPreciseType(value) !== 'string') {
+	if (typeof value !== 'string') {
 		console.warn('stringToQMSString_transformer: value is not a string', value)
 		return value
 	}
@@ -19,14 +19,14 @@ export const stringToQMSString_transformer = (value: unknown): string | unknown 
 	return modifiedValue
 }
 export const string_transformer = (value: unknown): string | unknown => {
-	if (getPreciseType(value) !== 'string') {
+	if (typeof value !== 'string') {
 		console.warn('string_transformer: value is not a string', value)
 		return value
 	}
 	return `'${value.replaceAll(`"`, `&Prime;`).replaceAll(`'`, `&prime;`)}'`;
 };
 export const string_transformerREVERSE = (value: unknown, onlySingleQuotes?: boolean): string | unknown => {
-	if (getPreciseType(value) !== 'string') {
+	if (typeof value !== 'string') {
 		console.warn('string_transformer: value is not a string', value)
 		return value
 	}
@@ -38,7 +38,7 @@ export const string_transformerREVERSE = (value: unknown, onlySingleQuotes?: boo
 };
 
 export const number_transformer = (value: unknown): number | unknown => {
-	if (getPreciseType(value) !== 'number') {
+	if (typeof value !== 'number') {
 		console.warn('number_transformer: value is not a number', value)
 		return value
 	}
@@ -97,13 +97,17 @@ export const geojson_transformer = (value: GeoJSONFeatureCollection): GeoJSONGeo
 };
 export const geojson_transformerREVERSE = (value: GeoJSONGeometry | GeoJSONGeometry[]): GeoJSONFeatureCollection => {
 	const valueType = getPreciseType(value)
+	let valArray: any[] = [];
 	if (valueType == 'object') {
-		value = [value]
+		valArray = [value]
+	} else if (Array.isArray(value)) {
+		valArray = value;
 	}
-	value = JSON.parse(string_transformerREVERSE(JSON.stringify(value), true));
+
+	const transformed = JSON.parse(string_transformerREVERSE(JSON.stringify(valArray), true) as string);
 
 	return {
-		features: value.map((feature) => {
+		features: transformed.map((feature: any) => {
 			return { geometry: feature, type: 'Feature', properties: {} }
 		}),
 		type: "FeatureCollection"
@@ -113,7 +117,7 @@ export const boolean_transformer = (value: unknown): boolean => {
 	if (value == undefined) {
 		return false;
 	}
-	return value;
+	return value as boolean;
 };
 const escapeAllSigngleAndDoubleQuotes = (str: string): string => {
 	return str.replace(/["']/g, (match) => {

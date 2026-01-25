@@ -3,7 +3,7 @@ import type {
 	TableColumnData,
 	StepsOfFieldsObject,
 	FieldWithDerivedData,
-	SchemaData,
+	SchemaDataStore,
 	ActiveArgumentGroup,
 	ActiveArgumentData,
 	EndpointInfoStore,
@@ -230,7 +230,7 @@ export const separatePaginationArgs = (
 export const argumentsToActiveArgumentGroups = (
 	args: Record<string, unknown>,
 	qmsInfo: FieldWithDerivedData,
-	schemaData: SchemaData,
+	schemaData: SchemaDataStore,
 	endpointInfo: EndpointInfoStore
 ): void => {
 	// This function will be used to populate the activeArgumentsDataGrouped store
@@ -244,7 +244,7 @@ export const argumentsToActiveArgumentGroups = (
 export const updateStoresFromAST = (
 	ast: DocumentNode,
 	qmsInfo: FieldWithDerivedData,
-	schemaData: SchemaData,
+	schemaData: SchemaDataStore,
 	endpointInfo: EndpointInfoStore,
 	activeArgumentsStore: ActiveArgumentsDataGroupedStore,
 	tableColsStore: TableColsDataStore,

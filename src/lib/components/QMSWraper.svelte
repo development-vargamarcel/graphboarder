@@ -32,6 +32,7 @@
 		ActiveArgumentGroup,
 		TableColumnData,
 		SchemaData,
+        SchemaDataStore,
 		EndpointInfoStore,
 		PaginationTypeInfo,
 		QMSMainWraperContext as QMSMainWraperContextType,
@@ -133,7 +134,7 @@
 	// Move logic after props destructuring to avoid TDZ
 	let QMSMainWraperContext = getContext<QMSMainWraperContextType>(`${prefix}QMSMainWraperContext`);
 	const endpointInfo: EndpointInfoStore = QMSMainWraperContext?.endpointInfo;
-	const schemaData: SchemaData = QMSMainWraperContext?.schemaData;
+	const schemaData: SchemaDataStore = QMSMainWraperContext?.schemaData;
 
     Logger.debug('QMSWraper initialized', { QMSName, QMSType });
 

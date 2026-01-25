@@ -9,25 +9,30 @@
 	import {  queryStore,gql,getContextClient  } from '@urql/svelte';
 	import { getContext } from 'svelte';
 	import { Logger } from '$lib/utils/logger';
+	import type { QMSMainWraperContext } from '$lib/types';
+
 	interface Props {
 		prefix?: string;
 		children?: import('svelte').Snippet;
 	}
 
 	let { prefix = '', children }: Props = $props();
-	let QMSMainWraperContext = getContext<any>(`${prefix}QMSMainWraperContext`);
-	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-	const schemaData = QMSMainWraperContext?.schemaData;
+	let QMSMainWraperContextVal = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const urqlCoreClient = QMSMainWraperContextVal?.urqlCoreClient;
+	const endpointInfo = QMSMainWraperContextVal?.endpointInfo;
+	const schemaData = QMSMainWraperContextVal?.schemaData;
 
 	Logger.debug({ endpointInfo }, $endpointInfo);
-	const endpointInfoUrl = $endpointInfo?.Url;
-	const getStoredSchemaData = (endpointInfoUrl) => {
+	const endpointInfoUrl = $endpointInfo?.url;
+	const getStoredSchemaData = (endpointInfoUrl: string | undefined) => {
+		if (!endpointInfoUrl) return undefined;
 		return endpointsSchemaData.find((item) => item.url === endpointInfoUrl);
 	};
 	const storedSchemaData = getStoredSchemaData(endpointInfoUrl);
 	if (storedSchemaData) {
-		$schemaData = storedSchemaData;
+		// This might need type adjustment if storedSchemaData doesn't match SchemaData perfectly
+		// Assuming it does or we need to cast
+		schemaData.set(storedSchemaData as any);
 	}
 	//setClient(urqlCoreClient);
   //ds
@@ -138,13 +143,21 @@
 	$effect(() => {
 		sortingArray = sortingInputValue.split(' ');
 	});
-	$schemaData = {};
-	$schemaData.isReady = false;
+
+	// Initialize with empty valid state if needed, or rely on store default
+	// $schemaData = { rootTypes: [], queryFields: [], mutationFields: [], subscriptionFields: [], isReady: false };
+
 	const handleData = () => {
 		Logger.debug('handledata run');
 		schema = $queryStoreRes?.data?.__schema;
 		Logger.debug('ppppp', endpointInfo, schema);
-		$schemaData.schema = schema;
+		if (schemaData.set_schema) {
+			schemaData.set_schema(schema);
+		} else {
+			// Fallback if method missing (shouldn't be with new types)
+			schemaData.update(s => ({ ...s, schema }));
+		}
+
 		schemaData.set_fields(endpointInfo);
 		Logger.debug('schemaData', $schemaData);
 	};
