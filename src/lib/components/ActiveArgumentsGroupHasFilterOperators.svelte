@@ -30,7 +30,7 @@
 	let stepsOfFields = $state([]);
 	let stepsOfFieldsFull = $state([]);
 	let testName_stepsOFFieldsWasUpdated = $state(false);
-	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<any>(`${prefix}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
 	let getManyQMS = $state();
 	///
@@ -131,9 +131,9 @@
 	});
 
 
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-	const schemaData = QMSMainWraperContext?.schemaData;
+	let context = getContext<any>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = context?.endpointInfo;
+	const schemaData = context?.schemaData;
 	let dragDisabled = $state(true);
 	const flipDurationMs = 500;
 	function handleDndConsider(e) {

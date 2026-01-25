@@ -60,7 +60,7 @@
 			<div class="flex-none block">
 				<ul class="flex">
 					<li>
-						<button class="btn btn-sm "><i class="bi bi-plus-square text-xl "></i> </button>
+						<button class="btn btn-sm " aria-label="Add"><i class="bi bi-plus-square text-xl "></i> </button>
 					</li>
 				</ul>
 			</div>

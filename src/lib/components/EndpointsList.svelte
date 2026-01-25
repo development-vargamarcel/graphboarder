@@ -10,6 +10,7 @@
 	} from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
 	import { goto } from '$app/navigation';
+	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 	import Type from '$lib/components/Type.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
@@ -33,11 +34,11 @@
 	let { prefix = '', QMSName, children }: Props = $props();
 
 	// Get contexts
-	let QMSMainWraperContext = getContext<any>(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext?.endpointInfo;
-	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
+	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const endpointInfo = context?.endpointInfo;
+	const urqlCoreClient = context?.urqlCoreClient;
 	let queryName = QMSName;
-	const QMSWraperContext = getContext<any>('QMSWraperContext');
+	const qmsContext = getContext<QMSWraperContext>('QMSWraperContext');
 	const {
 		QMS_bodyPart_StoreDerived_rowsCount = null,
 		activeArgumentsDataGrouped_Store,
@@ -47,20 +48,20 @@
 		QMS_bodyPartsUnifier_StoreDerived,
 		paginationOptions,
 		paginationState
-	} = QMSWraperContext;
-	const schemaData = QMSMainWraperContext?.schemaData;
+	} = qmsContext;
+	const schemaData = context?.schemaData;
 
-	let currentQMS_info = schemaData.get_QMS_Field(queryName, 'query', schemaData);
-	let dd_relatedRoot = getRootType(null, currentQMS_info.dd_rootName, schemaData);
+	let currentQMS_info = (schemaData as any).get_QMS_Field(queryName, 'query', schemaData as any);
+	let dd_relatedRoot = getRootType(null, currentQMS_info.dd_rootName, schemaData as any);
 	if (!currentQMS_info) {
 		goto('/queries');
 	}
 
-	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData).find((pagType: any) => {
+	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData as any).find((pagType: any) => {
 		return pagType.name == currentQMS_info.dd_paginationType;
 	});
 
-	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], schemaData);
+	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], schemaData as any);
 
 	// Reactive state
 	let queryData = $state<{ fetching: boolean; error: any; data: any }>(
@@ -100,10 +101,10 @@
 				queryData = { fetching, error, data };
 				let stepsOfFieldsInput = [
 					currentQMS_info.dd_displayName,
-					...endpointInfo.get_rowsLocation(currentQMS_info, schemaData)
+					...endpointInfo.get_rowsLocation(currentQMS_info, schemaData as any)
 				];
 				Logger.debug({ stepsOfFieldsInput }, currentQMS_info.dd_displayName);
-				rowsCurrent = getDataGivenStepsOfFields(undefined, queryData.data, stepsOfFieldsInput);
+				rowsCurrent = getDataGivenStepsOfFields(undefined, queryData.data, stepsOfFieldsInput) as any[];
 				if (rowsCurrent && !Array.isArray(rowsCurrent)) {
 					rowsCurrent = [rowsCurrent];
 				}
@@ -158,7 +159,7 @@
 		);
 		if (
 			rowLimitingArgNames?.some((argName: string) => {
-				return rows.length / $paginationState?.[argName] >= 1;
+				return rows.length / ($paginationState?.[argName] as number) >= 1;
 			}) ||
 			paginationTypeInfo?.name == 'pageBased'
 		) {

@@ -137,7 +137,7 @@ export const build_QMS_bodyPart = (
 	}
 
 
-	const modifiedString = smartModifyStringBasedOnBoundries(listOfSubstrings.join(''), '(', ')', stringToQMSString_transformer, outsideTextModifier);
+	const modifiedString = smartModifyStringBasedOnBoundries(listOfSubstrings.join(''), '(', ')', stringToQMSString_transformer as any, outsideTextModifier);
 
 	Logger.debug({ modifiedString })
 	const QMS_bodyPart = modifiedString.slice(1, -1)
@@ -281,7 +281,7 @@ const inputString = ":{textBefore:{1dadas,2dasda,(inside parentheses1{iside1:'as
  * @param type - The GraphQL type definition.
  * @returns An array of GraphQLKind strings.
  */
-export const get_KindsArray = (type: Partial<FieldWithDerivedData>): GraphQLKind[] => {
+export const get_KindsArray = (type: Partial<FieldWithDerivedData> | any): GraphQLKind[] => {
 	let kinds: GraphQLKind[] = [];
 
 	if (type?.kind) {
@@ -317,7 +317,7 @@ export const get_KindsArray = (type: Partial<FieldWithDerivedData>): GraphQLKind
  * @param type - The GraphQL type definition.
  * @returns An array of name strings.
  */
-export const get_NamesArray = (type: Partial<FieldWithDerivedData>): string[] => {
+export const get_NamesArray = (type: Partial<FieldWithDerivedData> | any): string[] => {
 	let names: string[] = [];
 
 	if (type?.name) {
@@ -362,7 +362,7 @@ export const getRootType = (
 	schemaData: SchemaData
 ): RootType | undefined => {
 	if (!rootTypes) {
-		rootTypes = get(schemaData).rootTypes
+		rootTypes = schemaData.rootTypes;
 	}
 
 	return rootTypes.filter((type) => {
@@ -392,14 +392,14 @@ export const getFields_Grouped = (
 	let enumFields: (RootType & FieldWithDerivedData)[] = [];
 
 	let fieldsArray
-	if (node?.args) {
-		fieldsArray = node?.args
+	if ((node as any)?.args) {
+		fieldsArray = (node as any)?.args
 	} else if (node_rootType?.fields) {
 		fieldsArray = node_rootType?.fields
 	} else if (node_rootType?.inputFields) {
 		fieldsArray = node_rootType?.inputFields
 	} else if (node_rootType?.enumValues) {
-		fieldsArray = node?.enumValues
+		fieldsArray = (node as any)?.enumValues
 	}
 
 
@@ -685,8 +685,8 @@ export const generate_derivedData = (
 		const baseFilterOperatorNames = ['_and', '_or', '_not', 'and', 'or', 'not']
 		let dd_baseFilterOperators: string[] | undefined = []
 		let dd_nonBaseFilterOperators: string[] | undefined = []
-		if (type?.inputFields) {
-			type.inputFields
+		if ((type as any)?.inputFields) {
+			(type as any).inputFields
 				.forEach(inputField => {
 					if (baseFilterOperatorNames.includes(inputField.name)) {
 						dd_baseFilterOperators?.push(inputField.name)
@@ -722,15 +722,15 @@ export const generate_derivedData = (
 	////////// others
 	if (derivedData?.dd_baseFilterOperators) {
 		let defaultdisplayInterface = get_displayInterface(derivedData, endpointInfo);
-		if (type?.inputFields !== undefined) {
-			type.inputFields.forEach((inputField) => {
+		if ((type as any)?.inputFields !== undefined) {
+			(type as any).inputFields.forEach((inputField) => {
 				Object.assign(inputField, { dd_displayInterface: defaultdisplayInterface });
 			});
 		}
 	}
 	if (derivedData.args) {
-		mark_paginationArgs(derivedData.args, endpointInfo);
-		derivedData.dd_paginationArgs = derivedData.args.filter((arg) => {
+		mark_paginationArgs(derivedData.args as any, endpointInfo);
+		derivedData.dd_paginationArgs = (derivedData.args as any).filter((arg) => {
 			return arg.dd_isPaginationArg;
 		});
 		derivedData.dd_paginationType = get_paginationType(derivedData.dd_paginationArgs, endpointInfo, schemaData);

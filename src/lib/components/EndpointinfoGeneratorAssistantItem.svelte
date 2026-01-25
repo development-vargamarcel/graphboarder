@@ -8,11 +8,13 @@
 		prefix?: string;
 	}
 
+	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
+
 	let { type, i, prefix = '' }: Props = $props();
 
-	const QMSWraperContext = getContext(`${prefix}QMSWraperContext`);
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const schemaData = QMSMainWraperContext?.schemaData;
+	const qmsContext = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const schemaData = context?.schemaData;
 </script>
 
 <tr>
@@ -28,7 +30,7 @@
 	<td
 		class="cursor-pointer hover:text-primary"
 		onclick={() => {
-			Logger.debug(schemaData.get_rootType(null, type.dd_rootName, schemaData));
+			Logger.debug((schemaData as any).get_rootType(null, type.dd_rootName, schemaData));
 		}}>{type.dd_rootName}</td
 	>
 	<td>{type.dd_kindList_NON_NULL ? '!' : ''}</td>

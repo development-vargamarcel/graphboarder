@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { fade, scale } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
 	//import { cubicInOut } from 'svelte/easing';
 	import { browser } from '$app/environment';
 
@@ -52,7 +52,7 @@
 
 		let lastScroll = localStorage.getItem(CustomId);
 		if (lastScroll) {
-			mainEl.scrollTop = lastScroll;
+			mainEl.scrollTop = parseInt(lastScroll);
 		}
 	};
 
@@ -78,7 +78,7 @@
 			if (mainEl) {
 				let lastScroll = localStorage.getItem(CustomId);
 				if (lastScroll) {
-					mainEl.scrollTop = lastScroll;
+					mainEl.scrollTop = parseInt(lastScroll);
 				}
 			}
 		}
@@ -98,8 +98,8 @@
 	</main>
 {:else}
 	<main
-		in:scale|global={{ x: 200, duration: 300, opacity: 1, start: 0.97 }}
-		out:scale|global={{ x: 300, duration: 300, opacity: 0, start: 0.97 }}
+		in:fly|global={{ x: 200, duration: 300, opacity: 1 }}
+		out:fly|global={{ x: 300, duration: 300, opacity: 0 }}
 		id={CustomId}
 		class="  overflow-y-scroll pb-96 fixed top-0 h-full w-full z-40 bg-base-100"
 	>

@@ -21,8 +21,8 @@
 		prefix = ''
 	}: Props = $props();
 
-	let QMSMainWraperContext_Value = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
-	const endpointInfo = QMSMainWraperContext_Value?.endpointInfo;
+	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let endpointInfo = $derived(context?.endpointInfo);
 
 	$effect(() => {
 		Logger.debug({ forceVisibleSidebar });

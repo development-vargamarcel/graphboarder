@@ -21,7 +21,11 @@
 		onFilterChanged
 	}: Props = $props();
 
-	choises.length == 1 ? (type = 'toggle') : '';
+	$effect(() => {
+		if (choises.length == 1) {
+			type = 'toggle';
+		}
+	});
 	$effect(() => {
 		if (chosen || !chosen) {
 			onFilterChanged?.({ id: id, chosen: chosen });

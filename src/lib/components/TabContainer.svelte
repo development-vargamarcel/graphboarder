@@ -5,6 +5,8 @@
 	import { getQMSLinks } from '$lib/utils/usefulFunctions';
 	import { getContext, onMount } from 'svelte';
 	import { Logger } from '$lib/utils/logger';
+	import type { QMSMainWraperContext } from '$lib/types/index';
+	import { get } from 'svelte/store';
 
 	const prefix = '';
 
@@ -15,8 +17,8 @@
 
 	let { endpointInfo, onHideSidebar }: Props = $props();
 
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const schemaData = QMSMainWraperContext?.schemaData;
+	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const schemaData = context?.schemaData;
 	Logger.debug('page', $page);
 	let endpointid = $page.params.endpointid;
 	Logger.debug({ endpointid });
@@ -47,7 +49,7 @@
 			icon: 'bi bi-asterisk',
 			isSelected: false,
 			hasFill: false,
-			items: getQMSLinks('query', `/endpoints/${endpointid}/queries`, endpointInfo, schemaData)
+			items: getQMSLinks('query', `/endpoints/${endpointid}/queries`, endpointInfo, get(schemaData))
 		},
 		{
 			title: 'Mutations',
@@ -56,7 +58,7 @@
 			icon: 'bi bi-pen',
 			isSelected: false,
 			hasFill: true,
-			items: getQMSLinks('mutation', `/endpoints/${endpointid}/mutations`, endpointInfo, schemaData)
+			items: getQMSLinks('mutation', `/endpoints/${endpointid}/mutations`, endpointInfo, get(schemaData))
 		},
 		{
 			title: 'Explorer',
@@ -96,11 +98,6 @@
 		</div>
 		<ul
 			class="flex h-full w-16xxx flex-col  justify-start border-t-[1px] border-base-content border-opacity-5 bg-base-300   pt-1 pb-[25vh] overscroll-contain"
-			onclick={() => {
-				// if (itemsToShow.length == 0) {
-				// 	onHideSidebar?.();
-				// }
-			}}
 		>
 			{#each links as link}
 				<TabItem
@@ -109,7 +106,7 @@
 					icon={link.icon}
 					hasFill={link.hasFill}
 					urlIsRoute={link.urlIsRoute}
-					target={link.target}
+					target={(link as any)?.target}
 				/>
 			{/each}
 		</ul>
@@ -118,11 +115,13 @@
 	{#if itemsToShow.length > 0}
 		<div class="">
 			<div class="h-[50px] bg-accent">{''}</div>
+			<!-- svelte-ignore a11y_click_events_have_key_events -->
 			<ul
 				class="space-y-1 px-4 py-4 h-full overflow-y-auto  w-[60vw] md:w-full   overflow-x-auto  bg-base-100  grow pb-[25vh] overscroll-contain"
 				onclick={() => {
 					onHideSidebar?.();
 				}}
+				role="presentation"
 			>
 				{#each itemsToShow as item}
 					<li class="md:w-[10vw] md:min-w-[170px] ">
@@ -142,8 +141,15 @@
 
 	<div
 		class="w-[100vw] h-screen  md:hidden "
+		role="button"
+		tabindex="0"
 		onclick={() => {
 			onHideSidebar?.();
+		}}
+		onkeydown={(e) => {
+			if (e.key === 'Enter' || e.key === ' ') {
+				onHideSidebar?.();
+			}
 		}}
 	></div>
 </div>

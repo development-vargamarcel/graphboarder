@@ -222,14 +222,14 @@
 	};
 	let showModal: boolean = $state(false);
 	const mutationVersion = getContext('mutationVersion');
-	const showInputField = getContext('showInputField');
+	const showInputField = getContext('showInputField') as any;
 
 	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
-	const schemaData = QMSMainWraperContext?.schemaData;
+	let context = getContext<any>(`${prefix}QMSMainWraperContext`);
+	const schemaData = context?.schemaData;
 	const nodeRootType = getRootType(null, activeArgumentData.dd_rootName, schemaData);
 	let showSelectModal: boolean = $state(false);
-	const OutermostQMSWraperContext = getContext(`${prefix}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<any>(`${prefix}OutermostQMSWraperContext`);
 
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
 	let selectedQMS = $state<any>();

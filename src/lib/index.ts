@@ -9,6 +9,7 @@
 import MainWraper from './components/MainWraper.svelte';
 import QMSWraper from './components/QMSWraper.svelte';
 import Input from './components/fields/Input.svelte';
+import { Logger, LogLevel } from './utils/logger';
 
 export {
     /**
@@ -26,5 +27,15 @@ export {
     /**
      * A generic input field component.
      */
-    Input
+    Input,
+
+    /**
+     * The logger utility used by the library.
+     */
+    Logger,
+
+    /**
+     * Log levels for the logger.
+     */
+    LogLevel
 };

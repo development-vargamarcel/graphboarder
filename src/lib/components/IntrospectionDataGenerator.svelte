@@ -15,7 +15,7 @@
 	}
 
 	let { prefix = '', children }: Props = $props();
-	let QMSMainWraperContext = getContext(`${prefix}QMSMainWraperContext`);
+	let QMSMainWraperContext = getContext<any>(`${prefix}QMSMainWraperContext`);
 	const urqlCoreClient = QMSMainWraperContext?.urqlCoreClient;
 	const endpointInfo = QMSMainWraperContext?.endpointInfo;
 	const schemaData = QMSMainWraperContext?.schemaData;
@@ -154,12 +154,12 @@
 	$effect(() => {
 		if (!$queryStoreRes.fetching) {
 			if ($queryStoreRes?.data) {
-				Logger.debug($queryStoreRes?.data);
+				Logger.debug('Introspection Data received', $queryStoreRes?.data);
 				handleData();
 			} else if ($queryStoreRes?.error) {
-				Logger.debug($queryStoreRes?.error);
+				Logger.error('Introspection Error', $queryStoreRes?.error);
 			} else {
-				Logger.debug('no data');
+				Logger.warn('Introspection: no data');
 			}
 		}
 	});
@@ -175,7 +175,7 @@
 
 	<!-- Put this part before </body> tag -->
 	<input type="checkbox" checked id="my-modal" class="modal-toggle" />
-	<div class="modal">
+	<div class="modal" role="dialog" aria-modal="true">
 		<div class="modal-box">
 			<div class="alert alert-error shadow-lg">
 				<div>
