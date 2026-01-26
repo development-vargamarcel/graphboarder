@@ -105,16 +105,16 @@
 	let requiredColNamesAAA = nodeContext_forDynamicData.requiredColNames;
 
 
-	setContext(`${prefix}nodeContext_forDynamicData`, nodeContext_forDynamicData);
+	setContext(`${untrack(() => prefix)}nodeContext_forDynamicData`, nodeContext_forDynamicData);
 
 	/////start
-    const nodeContext = getContext<any>(`${prefix}nodeContext`);
+    const nodeContext = getContext<any>(`${untrack(() => prefix)}nodeContext`);
     let pathIsInCP = $derived(nodeContext?.pathIsInCP || false);
 
 	let nodeIsInCP = $state(false);
-	const CPItemContext = getContext<any>(`${prefix}CPItemContext`);
+	const CPItemContext = getContext<any>(`${untrack(() => prefix)}CPItemContext`);
 	if (CPItemContext?.CPItem.nodeId == node.id) {
-		setContext(`${prefix}nodeContext`, { pathIsInCP: true });
+		setContext(`${untrack(() => prefix)}nodeContext`, { pathIsInCP: true });
 		nodeIsInCP = true;
 	}
 	const isCPChild = CPItemContext ? true : false;
@@ -129,7 +129,7 @@
 			OutermostQMSWraperContext
 		);
 	} else {
-		correctQMSWraperContext = getContext(`${prefix}QMSWraperContext`);
+		correctQMSWraperContext = getContext(`${untrack(() => prefix)}QMSWraperContext`);
 	}
 	/////end
 
@@ -142,10 +142,16 @@
 			node
 		);
 	};
+
 	const dndIsOn = getContext<Writable<boolean>>('dndIsOn');
 	const showInputField = getContext<Writable<boolean>>('showInputField');
 
 	const mutationVersion = getContext<Writable<boolean>>('mutationVersion');
+	$effect(() => {
+		if (QMSType == 'mutation') {
+			if ($mutationVersion === false) $mutationVersion = true;
+		}
+	});
 	if (QMSType == 'mutation') {
 		$mutationVersion = true;
 	}
@@ -212,21 +218,23 @@
 		finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 	};
 
-	let argsInfo = $state(QMS_info?.args);
+	let argsInfo = $derived(QMS_info?.args);
 	let showModal = $state(false);
 
 	let groupDisplayTitle = $state('');
 
-	if (node?.addDefaultFields || (node?.isMain && addDefaultFields)) {
-		nodeAddDefaultFields(
-			node,
-			prefix,
-			group,
-			activeArgumentsDataGrouped_Store,
-			schemaData,
-			endpointInfo
-		);
-	}
+	$effect(() => {
+		if (node?.addDefaultFields || (node?.isMain && addDefaultFields)) {
+			nodeAddDefaultFields(
+				node,
+				prefix,
+				group,
+				activeArgumentsDataGrouped_Store,
+				schemaData,
+				endpointInfo
+			);
+		}
+	});
 	let showSelectModal = $state(false);
 
 	let showAddModal = $state(false);
@@ -260,7 +268,7 @@
 	//------------
 
 	let QMSWraperContextForSelectedQMS: any = {};
-	let activeArgumentsContext = getContext<any>(`${prefix}activeArgumentsContext`);
+	let activeArgumentsContext = getContext<any>(`${untrack(() => prefix)}activeArgumentsContext`);
 	let forceShowSelectAndAddButtons = false;
 
     $effect(() => {

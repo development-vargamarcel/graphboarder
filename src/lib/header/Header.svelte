@@ -2,6 +2,7 @@
 	import { page } from '$app/state';
 	import logo from './svelte-logo.svg';
 	import github from './github.svg';
+	import ThemeToggle from '$lib/components/UI/ThemeToggle.svelte';
 </script>
 
 <div class="navbar bg-base-100 shadow-sm">
@@ -53,6 +54,7 @@
 		</ul>
 	</div>
 	<div class="navbar-end">
+		<ThemeToggle />
 		<a
 			href="https://github.com/development-vargamarcel/graphboarder"
 			target="_blank"
