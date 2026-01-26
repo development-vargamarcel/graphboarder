@@ -8,7 +8,7 @@
 		getFields_Grouped,
 		getRootType
 	} from '$lib/utils/usefulFunctions';
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 	import { goto } from '$app/navigation';
 	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 	import Type from '$lib/components/Type.svelte';
@@ -34,10 +34,10 @@
 	let { prefix = '', QMSName, children }: Props = $props();
 
 	// Get contexts - ensuring prefix is defined
-	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let context = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const endpointInfo = context?.endpointInfo;
 	const urqlCoreClient = context?.urqlCoreClient;
-	let queryName = QMSName;
+	let queryName = untrack(() => QMSName);
 	const qmsContext = getContext<QMSWraperContext>('QMSWraperContext');
 	const {
 		QMS_bodyPart_StoreDerived_rowsCount = null,
