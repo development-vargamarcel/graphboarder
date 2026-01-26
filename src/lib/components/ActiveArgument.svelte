@@ -4,7 +4,7 @@
 	import { writable, type Writable } from 'svelte/store';
 	import AutoInterface from '$lib/components/fields/AutoInterface.svelte';
 	import { SHADOW_ITEM_MARKER_PROPERTY_NAME } from 'svelte-dnd-action';
-	import { getContext, setContext } from 'svelte';
+	import { getContext, setContext, untrack } from 'svelte';
 	import type {
 		ActiveArgumentData,
 		ActiveArgumentGroup,
@@ -83,7 +83,7 @@
 		onDeleteSubNode?.(arg.detail);
 	};
 
-	const QMSWraperContext = getContext<any>(`${prefix}QMSWraperContext`);
+	const QMSWraperContext = getContext<any>(`${untrack(() => prefix)}QMSWraperContext`);
 	const { activeArgumentsDataGrouped_Store, finalGqlArgObj_Store } = QMSWraperContext || {};
 
 	let idColNameOfSelectedRow: string | undefined;
@@ -151,7 +151,7 @@
 		return value;
 	};
 
-	const CPItemContext = getContext<any>(`${prefix}CPItemContext`);
+	const CPItemContext = getContext<any>(`${untrack(() => prefix)}CPItemContext`);
 	const CPItem = CPItemContext?.CPItem;
 	let expandedVersion: boolean = $state(!!CPItemContext);
 	let valueToDisplay: string | undefined = $state(undefined);
@@ -168,7 +168,7 @@
 		}
 	});
 
-	const outermostQMSWraperContext = getContext<any>(`${prefix}OutermostQMSWraperContext`);
+	const outermostQMSWraperContext = getContext<any>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
 	const { mergedChildren_QMSWraperCtxData_Store } = outermostQMSWraperContext;
 
 	const handleChanged = (detail: Partial<ActiveArgumentData>): void => {
@@ -232,11 +232,11 @@
 	const mutationVersion = getContext<Writable<boolean>>('mutationVersion');
 	const showInputField = getContext<Writable<boolean>>('showInputField');
 
-	let activeArgumentsContext = getContext(`${prefix}activeArgumentsContext`);
-	let context = getContext<any>(`${prefix}QMSMainWraperContext`);
+	let activeArgumentsContext = getContext(`${untrack(() => prefix)}activeArgumentsContext`);
+	let context = getContext<any>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const schemaData = context?.schemaData;
 	const nodeRootType = getRootType(null, activeArgumentData.dd_rootName, schemaData);
-	const OutermostQMSWraperContext = getContext<any>(`${prefix}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<any>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
 
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
 	let selectedQMS = $state<any>();
@@ -250,7 +250,7 @@
 		}
 	});
 
-	const nodeContext_forDynamicData = getContext<any>(`${prefix}nodeContext_forDynamicData`);
+	const nodeContext_forDynamicData = getContext<any>(`${untrack(() => prefix)}nodeContext_forDynamicData`);
 	let contextSelectedRowsColValuesStore = nodeContext_forDynamicData?.selectedRowsColValues;
 	let contextSelectedRowsColValues = $state<any[]>([]);
 	$effect(() => {

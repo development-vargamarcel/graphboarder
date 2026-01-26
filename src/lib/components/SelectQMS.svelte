@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Modal from './Modal.svelte';
 	import ExplorerTable from './ExplorerTable.svelte';
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 
 	interface Props {
 		prefix?: string;
@@ -11,7 +11,7 @@
 
 	let { prefix = '', node, showSelectQMSModal = $bindable() }: Props = $props();
 
-	const nodeContext_forDynamicData = getContext<any>(`${prefix}nodeContext_forDynamicData`);
+	const nodeContext_forDynamicData = getContext<any>(`${untrack(() => prefix)}nodeContext_forDynamicData`);
 	//let selectedQMS = nodeContext_forDynamicData.selectedQMS;
 	let QMSRows = nodeContext_forDynamicData.QMSRows;
 	let columns = [
@@ -71,7 +71,7 @@
 		}
 	];
 	import type { QMSWraperContext } from '$lib/types/index';
-	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
 	let getManyData = $state<any>();
 	let selectedQMS = $state<any>();

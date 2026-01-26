@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 	import { Logger } from '$lib/utils/logger';
 	interface Props {
 		prefix?: string;
@@ -7,8 +7,8 @@
 	}
 
 	let { prefix = '', node }: Props = $props();
-	let activeArgumentsContext = getContext<any>(`${prefix}activeArgumentsContext`);
-	const OutermostQMSWraperContext = getContext<any>(`${prefix}OutermostQMSWraperContext`);
+	let activeArgumentsContext = getContext<any>(`${untrack(() => prefix)}activeArgumentsContext`);
+	const OutermostQMSWraperContext = getContext<any>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
 	const mergedChildren_controlPanel_Store = OutermostQMSWraperContext?.mergedChildren_controlPanel_Store;
 	let currentObject = $derived({
 		stepsOfFieldsThisAppliesTo: activeArgumentsContext?.stepsOfFieldsThisAppliesTo,
