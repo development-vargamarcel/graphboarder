@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getContext, setContext } from 'svelte';
+	import { getContext, setContext, untrack } from 'svelte';
 
 	import ControlPanelItem from './ControlPanelItem.svelte';
     import type { QMSWraperContext } from '$lib/types/index';
@@ -26,12 +26,12 @@
         hasGroup_argsNode
 	}: Props = $props();
 
-    const qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+    const qmsWraperCtx = getContext<QMSWraperContext>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
 	const mergedChildren_controlPanel_Store = qmsWraperCtx?.mergedChildren_controlPanel_Store;
 
 	let showControlPanel = $state(false);
 	const controlPanelContext = {};
-	setContext(`${prefix}controlPanelContext`, controlPanelContext);
+	setContext(`${untrack(() => prefix)}controlPanelContext`, controlPanelContext);
 </script>
 
 <button
