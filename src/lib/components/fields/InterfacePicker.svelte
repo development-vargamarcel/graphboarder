@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 	import FilterItem from '$lib/components/FilterItem.svelte';
 	import { getRootType } from '$lib/utils/usefulFunctions';
 	import { Logger } from '$lib/utils/logger';
@@ -13,7 +13,7 @@
 	}
 
 	let { prefix = '', chosen, typeInfo, onInterfaceChosen }: Props = $props();
-	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const endpointInfo = mainWraperCtx?.endpointInfo;
 	let possible_displayInterfaces = $derived($endpointInfo.typesExtraDataPossibilities.map(
 		(possibility: any) => {

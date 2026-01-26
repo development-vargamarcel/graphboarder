@@ -13,7 +13,7 @@
 	} from '../utils/usefulFunctions';
 	import { flip } from 'svelte/animate';
 	import { dndzone, SHADOW_PLACEHOLDER_ITEM_ID } from 'svelte-dnd-action';
-	import { getContext, setContext } from 'svelte';
+	import { getContext, setContext, untrack } from 'svelte';
 	import ActiveArgument from '$lib/components/ActiveArgument.svelte';
 	import ActiveArgumentsGroup_addFilterAndSortingButtonContent from '$lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte';
 	import Modal from './Modal.svelte';
@@ -87,15 +87,15 @@
 	Logger.debug({ node });
 
 	// Context setup - must be after props declaration
-	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
 
-    const nodeContext = getContext<any>(`${prefix}nodeContext`);
+    const nodeContext = getContext<any>(`${untrack(() => prefix)}nodeContext`);
     let pathIsInCP = $derived(nodeContext?.pathIsInCP || false);
 
 	let nodeIsInCP = false;
-	const CPItemContext = getContext<any>(`${prefix}CPItemContext`);
+	const CPItemContext = getContext<any>(`${untrack(() => prefix)}CPItemContext`);
 	if (CPItemContext?.CPItem?.nodeId == node?.id) {
-		setContext(`${prefix}nodeContext`, { pathIsInCP: true });
+		setContext(`${untrack(() => prefix)}nodeContext`, { pathIsInCP: true });
 		nodeIsInCP = true;
 	}
 	const isCPChild = CPItemContext ? true : false;
@@ -109,7 +109,7 @@
 			OutermostQMSWraperContext
 		);
 	} else {
-		correctQMSWraperContext = getContext(`${prefix}QMSWraperContext`);
+		correctQMSWraperContext = getContext(`${untrack(() => prefix)}QMSWraperContext`);
 	}
 
 	const { finalGqlArgObj_Store, QMS_info, activeArgumentsDataGrouped_Store, QMSType } =
@@ -121,7 +121,7 @@
 		$mutationVersion = true;
 	}
 
-	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const endpointInfo = mainWraperCtx?.endpointInfo;
 	const schemaData = mainWraperCtx?.schemaData;
 
@@ -213,20 +213,22 @@
 	let argsInfo = $derived(QMS_info?.args);
 	let showModal = false;
 
-	if (node?.addDefaultFields || (node?.isMain && addDefaultFields)) {
-		nodeAddDefaultFields(
-			node,
-			prefix,
-			group,
-			activeArgumentsDataGrouped_Store,
-			schemaData,
-			endpointInfo
-		);
-	}
+	$effect(() => {
+		if (node?.addDefaultFields || (node?.isMain && addDefaultFields)) {
+			nodeAddDefaultFields(
+				node,
+				prefix,
+				group,
+				activeArgumentsDataGrouped_Store,
+				schemaData,
+				endpointInfo
+			);
+		}
+	});
 
 	let showExplorerTable = true;
 	const fuse = schemaData ? createQMSSearchInstance($schemaData?.queryFields) : null;
-	const nodeContext_forDynamicData = getContext<any>(`${prefix}nodeContext_forDynamicData`);
+	const nodeContext_forDynamicData = getContext<any>(`${untrack(() => prefix)}nodeContext_forDynamicData`);
 	let selectedQMS = nodeContext_forDynamicData?.selectedQMS;
 	let QMSRows = nodeContext_forDynamicData?.QMSRows;
 	let rowSelectionState = nodeContext_forDynamicData?.rowSelectionState;
@@ -307,7 +309,7 @@
 
 	Logger.debug({ node, inputColumnsLocationQMS_Info, inputColumnsLocation });
 
-	let activeArgumentsContext = getContext<any>(`${prefix}activeArgumentsContext`);
+	let activeArgumentsContext = getContext<any>(`${untrack(() => prefix)}activeArgumentsContext`);
 	let forceShowSelectAndAddButtons = false;
 	const inputFieldsContainerLocation = endpointInfo?.get_inputFieldsContainerLocation?.(
 		node,

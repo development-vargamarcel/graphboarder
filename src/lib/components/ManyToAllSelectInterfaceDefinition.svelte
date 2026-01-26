@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 	import ManyToAllSelectInterfaceDefinitionItem from './ManyToAllSelectInterfaceDefinitionItem.svelte';
 	import { getDeepField, getRootType } from '$lib/utils/usefulFunctions';
 	import { Logger } from '$lib/utils/logger';
@@ -39,11 +39,11 @@
 
 	//
 	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
-	let mainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let mainWraperContext = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const endpointInfo = mainWraperContext?.endpointInfo;
 	const schemaData = mainWraperContext?.schemaData;
 	//
-	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
 	const inputFieldsContainerLocation = endpointInfo.get_inputFieldsContainerLocation(
 		node,

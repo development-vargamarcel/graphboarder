@@ -5,7 +5,7 @@
 	import Map from '$lib/components/fields/Map.svelte';
 	import Toggle from '$lib/components/fields/Toggle.svelte';
 	import CodeEditor from '$lib/components/fields/CodeEditor.svelte';
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 	import type { Writable } from 'svelte/store';
 	import InterfacePicker from './InterfacePicker.svelte';
     import type { QMSMainWraperContext } from '$lib/types/index';
@@ -29,7 +29,7 @@
 		onChanged
 	}: Props = $props();
 
-	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const endpointInfo = mainWraperCtx?.endpointInfo;
 	const choosenDisplayInterface = getContext<Writable<string>>('choosenDisplayInterface');
 

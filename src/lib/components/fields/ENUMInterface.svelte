@@ -1,7 +1,7 @@
 <script lang="ts">
 	import FilterGroup from '$lib/components/FilterGroup.svelte';
 	let { typeInfo, rawValue, dispatchValue, onChanged } = $props();
-    let containerEl: HTMLElement;
+    let containerEl: HTMLElement | undefined = $state();
 </script>
 
 <div class="flex flex-col" bind:this={containerEl}>

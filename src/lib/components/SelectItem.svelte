@@ -28,21 +28,25 @@
 	}: Props = $props();
 
 	import type { QMSMainWraperContext, QMSWraperContext as QMSWraperContextType } from '$lib/types/index';
-	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const endpointInfo = mainWraperCtx?.endpointInfo;
 	const schemaData = mainWraperCtx?.schemaData;
-	const OutermostQMSWraperContext = getContext<QMSWraperContextType>(`${prefix}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<QMSWraperContextType>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
 	Logger.debug('nooooddeeee', { node });
-	let getManyQMS = $state();
-	$effect(() => {
+
+	let getManyQMS = $derived.by(() => {
 		if ($QMSFieldToQMSGetMany_Store.length > 0) {
-			getManyQMS = QMSFieldToQMSGetMany_Store.getObj({
+			return QMSFieldToQMSGetMany_Store.getObj({
 				nodeOrField: node
 			})?.getMany?.selectedQMS;
-			if (getManyQMS) {
-				Logger.debug({ getManyQMS });
-			}
+		}
+		return undefined;
+	});
+
+	$effect(() => {
+		if (getManyQMS) {
+			Logger.debug({ getManyQMS });
 		}
 	});
 </script>

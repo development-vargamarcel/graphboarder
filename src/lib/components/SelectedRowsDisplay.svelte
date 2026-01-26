@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { formatData } from '$lib/utils/usefulFunctions';
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 	import ExplorerTable from './ExplorerTable.svelte';
 
 	interface Props {
@@ -8,7 +8,7 @@
 	}
 
 	let { prefix = '' }: Props = $props();
-	const nodeContext_forDynamicData = getContext<any>(`${prefix}nodeContext_forDynamicData`);
+	const nodeContext_forDynamicData = getContext<any>(`${untrack(() => prefix)}nodeContext_forDynamicData`);
 	let idColName = nodeContext_forDynamicData?.idColName;
 	let requiredColNames = nodeContext_forDynamicData?.requiredColNames;
 

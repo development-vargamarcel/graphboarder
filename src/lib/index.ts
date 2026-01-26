@@ -10,6 +10,7 @@ import MainWraper from './components/MainWraper.svelte';
 import QMSWraper from './components/QMSWraper.svelte';
 import Input from './components/fields/Input.svelte';
 import { Logger, LogLevel } from './utils/logger';
+import { addToHistory } from './stores/queryHistory';
 
 // Export types
 export type { QMSMainWraperContext, QMSWraperContext } from './types/index';
@@ -55,5 +56,10 @@ export {
     /**
      * Log levels for the logger.
      */
-    LogLevel
+    LogLevel,
+
+    /**
+     * Add a query to the history.
+     */
+    addToHistory
 };

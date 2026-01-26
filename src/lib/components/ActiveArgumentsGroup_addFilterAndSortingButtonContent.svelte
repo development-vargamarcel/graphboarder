@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Type from '$lib/components/Type.svelte';
 	import Description from './Description.svelte';
-	import { getContext, setContext } from 'svelte';
+	import { getContext, setContext, untrack } from 'svelte';
 	import Arg from '$lib/components/Arg.svelte';
 	import {
 		getQMSWraperCtxDataGivenControlPanelItem,
@@ -42,16 +42,15 @@
 	const hasGroup_argsNode = group.group_argsNode;
 	const mainContainerOperator = group.group_argsNode?.mainContainer?.operator;
 
-	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
-	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
 
-    const nodeContext = getContext<any>(`${prefix}nodeContext`);
+    const nodeContext = getContext<any>(`${untrack(() => prefix)}nodeContext`);
     let pathIsInCP = $derived(nodeContext?.pathIsInCP || false);
 
 	let nodeIsInCP = false;
-	const CPItemContext = getContext<any>(`${prefix}CPItemContext`);
+	const CPItemContext = getContext<any>(`${untrack(() => prefix)}CPItemContext`);
 	if (CPItemContext?.CPItem.nodeId == node.id) {
-		setContext(`${prefix}nodeContext`, { pathIsInCP: true });
+		setContext(`${untrack(() => prefix)}nodeContext`, { pathIsInCP: true });
 		nodeIsInCP = true;
 	}
 	const isCPChild = CPItemContext ? true : false;
@@ -66,7 +65,7 @@
 			OutermostQMSWraperContext
 		);
 	} else {
-		correctQMSWraperContext = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+		correctQMSWraperContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}QMSWraperContext`);
 	}
 
     let activeArgumentsDataGrouped_Store = $derived(correctQMSWraperContext?.activeArgumentsDataGrouped_Store);
@@ -75,10 +74,11 @@
 		return arg.dd_isRootArg;
 	}));
 
-    let activeArgumentsContext = getContext<any>(`${prefix}activeArgumentsContext`);
-	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+    let activeArgumentsContext = getContext<any>(`${untrack(() => prefix)}activeArgumentsContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const schemaData = mainWraperCtx?.schemaData;
-	const nodeRootType = getRootType(null, node.dd_rootName, schemaData);
+	// Use $derived to ensure nodeRootType updates if node changes
+	let nodeRootType = $derived(getRootType(null, node.dd_rootName, schemaData));
 
     let groupArgsPossibilities = $derived.by(() => {
 		let possibilities;

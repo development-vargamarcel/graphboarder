@@ -14,6 +14,8 @@
 	import { parse, print, visit } from 'graphql';
 	import JSON5 from 'json5';
 	import CodeMirrorCustom from './fields/CodeMirrorCustom.svelte';
+	import QueryHistory from '$lib/components/QueryHistory.svelte';
+	import type { HistoryItem } from '$lib/stores/queryHistory';
 
 	interface Props {
 		showNonPrettifiedQMSBody: any;
@@ -58,6 +60,12 @@
 	let astPrinted = $state();
 	let isCopied = $state(false);
 	let isCurlCopied = $state(false);
+	let showHistory = $state(false);
+
+	const restoreQuery = (item: HistoryItem) => {
+		valueModifiedManually = item.query;
+		showHistory = false;
+	};
 
 	///
 	const visitAst = () => {
@@ -164,6 +172,13 @@
 	<div class="absolute top-3 right-40 flex space-x-2">
 		<button
 			class="btn btn-xs btn-ghost transition-opacity"
+			aria-label="History"
+			onclick={() => (showHistory = true)}
+		>
+			<i class="bi bi-clock-history"></i> History
+		</button>
+		<button
+			class="btn btn-xs btn-ghost transition-opacity"
 			aria-label="Copy to Clipboard"
 			onclick={() => {
 				navigator.clipboard.writeText(value);
@@ -240,3 +255,7 @@
 		{showNonPrettifiedQMSBody ? ' show prettified ' : ' show non-prettified '}</button
 	>
 </div>
+
+{#if showHistory}
+	<QueryHistory onRestore={restoreQuery} onClose={() => (showHistory = false)} />
+{/if}
