@@ -128,6 +128,9 @@ Auto-GQL allows you to persist and restore executed queries.
 
 - **Automatic:** If using the provided `GraphqlCodeDisplay` and `ComponentForLayout` setup, queries are automatically saved to `localStorage` when executed.
 - **Manual:** You can manually add queries to history using `addToHistory`.
+- **Favorites:** You can mark queries as favorites (star icon) to keep them at the top of the list.
+- **Renaming:** Click on a query name in the history to rename it for easier identification.
+- **Export/Import:** You can export your query history to a JSON file and import it on another device or for backup.
 
 ### Data Export
 
