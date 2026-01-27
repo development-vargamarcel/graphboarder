@@ -16,29 +16,30 @@
 
 	let { prefix = '', origin, query }: Props = $props();
 
+    const initialPrefix = prefix;
 	// Initialization after props
-	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let context = getContext<QMSMainWraperContext>(`${initialPrefix}QMSMainWraperContext`);
 	const endpointInfo = context?.endpointInfo;
 	const schemaData = context?.schemaData;
-	let queryName = query.name;
+	let queryName = $derived(query.name);
 	let queryNameDisplay = $state(queryName);
 	let queryTitleDisplay = '';
 	//let { scalarFields, non_scalarFields } = getFields_Grouped(currentQueryFromRootTypes);
-	let currentQMS_info = (get(schemaData) as any).get_QMS_Field(queryName, 'query', get(schemaData));
-	const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_info, get(schemaData) as any);
-	const nodeFieldsQMS_info = get_nodeFieldsQMS_info(currentQMS_info, rowsLocation, get(schemaData) as any);
-	let scalarFields = get_scalarColsData(
+	let currentQMS_info = $derived((get(schemaData) as any).get_QMS_Field(queryName, 'query', get(schemaData)));
+	let rowsLocation = $derived(endpointInfo.get_rowsLocation(currentQMS_info, get(schemaData) as any));
+	let nodeFieldsQMS_info = $derived(get_nodeFieldsQMS_info(currentQMS_info, rowsLocation, get(schemaData) as any));
+	let scalarFields = $derived(get_scalarColsData(
 		nodeFieldsQMS_info,
 		[currentQMS_info.dd_displayName, ...rowsLocation],
 		get(schemaData) as any
-	);
+	));
 
-	let mandatoryArgs = query?.args?.filter((arg) => {
+	let mandatoryArgs = $derived(query?.args?.filter((arg) => {
 		return arg.dd_NON_NULL;
-	});
-	let ID_Args = query?.args?.filter((arg) => {
+	}));
+	let ID_Args = $derived(query?.args?.filter((arg) => {
 		return arg.dd_rootName == 'ID';
-	});
+	}));
 
 	$effect(() => {
 		let name = queryName;

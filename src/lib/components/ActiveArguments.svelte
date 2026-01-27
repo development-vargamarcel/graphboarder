@@ -1,4 +1,8 @@
 <script lang="ts">
+	/**
+	 * Component for managing active arguments (filters, sorting, etc.) for a QMS operation.
+	 * Displays groups of arguments and allows adding/removing/modifying them.
+	 */
 	import { getContext, setContext } from 'svelte';
 	import ActiveArgumentsGroupWraper from '$lib/components/ActiveArgumentsGroupWraper.svelte';
 	import { Logger } from '$lib/utils/logger';
@@ -48,9 +52,13 @@
 		Logger.debug({ groupNewData });
 		activeArgumentsDataGrouped_Store.update_groups(groupNewData);
 	};
-	if ($activeArgumentsDataGrouped_Store && $activeArgumentsDataGrouped_Store.length == 0) {
-		activeArgumentsDataGrouped_Store.set_groups(QMS_info, schemaData, QMSarguments, endpointInfo);
-	}
+
+	$effect(() => {
+		if ($activeArgumentsDataGrouped_Store && $activeArgumentsDataGrouped_Store.length == 0) {
+			activeArgumentsDataGrouped_Store.set_groups(QMS_info, schemaData, QMSarguments, endpointInfo);
+		}
+	});
+
 	Logger.debug({ QMS_info });
 	let showDescription = null;
 </script>
@@ -78,6 +86,20 @@
 {/if}
 
 <div class="">
+	{#if $activeArgumentsDataGrouped_Store && $activeArgumentsDataGrouped_Store.length > 0}
+		<div class="flex justify-end p-2">
+			<button
+				class="btn btn-sm btn-outline btn-error gap-2"
+				onclick={() => {
+					activeArgumentsDataGrouped_Store.set_groups(QMS_info, schemaData, null, endpointInfo);
+					onUpdateQuery?.();
+				}}
+			>
+				<i class="bi bi-x-circle"></i>
+				Clear All Filters
+			</button>
+		</div>
+	{/if}
 	{#if $activeArgumentsDataGrouped_Store}
 		{#each $activeArgumentsDataGrouped_Store as group}
 			<ActiveArgumentsGroupWraper

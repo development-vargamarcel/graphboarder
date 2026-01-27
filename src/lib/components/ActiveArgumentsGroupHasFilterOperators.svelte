@@ -203,7 +203,7 @@
 
 	let labelElClone = $state();
 
-	function startDrag(e: any) {
+	function startDrag(e?: any) {
 		dragDisabled = handleDragStart(e);
 	}
 	function handleKeyDown(e: any) {
@@ -470,8 +470,6 @@
 			//
 			//console.log(detail.id, node);
 		}}
-		selectedQMS={getManyQMS}
-		bind:selectedRowsColValues
 		bind:showSelectModal
 		{originalNodes}
 		{onUpdateQuery}

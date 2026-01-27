@@ -6,6 +6,8 @@
 
 	let { prefix = '', children }: Props = $props();
 
+    const initialPrefix = prefix;
+
 	import AddColumn from './../../../../lib/components/AddColumn.svelte';
 	import { getContext } from 'svelte';
 	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
@@ -13,7 +15,7 @@
 	import { get } from 'svelte/store';
 
 	// Initialization after props
-	let mainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let mainWraperContext = getContext<QMSMainWraperContext>(`${initialPrefix}QMSMainWraperContext`);
 	let endpointInfo = $derived(mainWraperContext?.endpointInfo);
 	let schemaData = $derived(mainWraperContext?.schemaData);
 
@@ -21,7 +23,7 @@
 	import { page } from '$app/stores';
 	import Table from '$lib/components/Table.svelte';
 
-	const qmsContext = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+	const qmsContext = getContext<QMSWraperContext>(`${initialPrefix}QMSWraperContext`);
 	const {
 		QMS_bodyPart_StoreDerived_rowsCount = null,
 		activeArgumentsDataGrouped_Store,

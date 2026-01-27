@@ -138,9 +138,8 @@
 			if (Array.isArray(activeArgumentData.chd_dispatchValue)) {
 				value = activeArgumentData.chd_dispatchValue.join(', ');
 			} else if (typeof activeArgumentData.chd_dispatchValue == 'string') {
-				value = string_transformerREVERSE(
-					(activeArgumentData.chd_dispatchValue as string) || (activeArgumentData.defaultValue as string)
-				);
+				const val = (activeArgumentData.chd_dispatchValue as string) || (activeArgumentData.defaultValue as unknown as string);
+				value = string_transformerREVERSE(val);
 			}
 		}
 
@@ -303,7 +302,7 @@
 	bind:showSelectModal
 	{onUpdateQuery}
 	bind:nodes
-	{onChanged}
+	onChanged={() => onChanged?.({})}
 	onChildrenStartDrag={startDrag}
 	{originalNodes}
 	{type}
