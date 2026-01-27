@@ -21,9 +21,13 @@
 	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	const schemaData = context?.schemaData;
 	Logger.debug('page', $page);
-	let endpointid = $page.params.endpointid;
-	Logger.debug({ endpointid });
-	let links = [
+	let endpointid = $derived($page.params.endpointid);
+
+    $effect(() => {
+	    Logger.debug({ endpointid });
+    });
+
+	let links = $derived([
 		{
 			title: 'Home',
 			url: '/',
@@ -33,16 +37,6 @@
 			hasFill: true,
 			items: []
 		},
-		// {
-		// 	title: 'Endpoints',
-		// 	url: `/endpoints/`,
-		// 	//target: '_blank',
-		// 	urlIsRoute: false,
-		// 	icon: 'bi bi-list',
-		// 	isSelected: false,
-		// 	hasFill: false,
-		// 	items: []
-		// },
 		{
 			title: 'Queries',
 			url: `/endpoints/${endpointid}/queries`,
@@ -70,7 +64,7 @@
 			hasFill: true,
 			items: []
 		}
-	];
+	]);
 
 	const get_itemsToShow = () => {
 		return (itemsToShow =
@@ -156,7 +150,7 @@
 </div>
 
 <style>
-	.shadowTop {
+	/* .shadowTop {
 		box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
-	}
+	} */
 </style>

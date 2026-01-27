@@ -55,3 +55,28 @@ export const downloadCSV = (data: any[], filename = 'export.csv') => {
 		setTimeout(() => URL.revokeObjectURL(url), 100);
 	}
 };
+
+/**
+ * Downloads the given data as a JSON file.
+ * @param data - The data array to download.
+ * @param filename - The name of the file to download (default: 'export.json').
+ */
+export const downloadJSON = (data: any[], filename = 'export.json') => {
+	if (!data || !data.length) {
+		return;
+	}
+
+	const json = JSON.stringify(data, null, 2);
+	const blob = new Blob([json], { type: 'application/json;charset=utf-8;' });
+	const link = document.createElement('a');
+	if (link.download !== undefined) {
+		const url = URL.createObjectURL(blob);
+		link.setAttribute('href', url);
+		link.setAttribute('download', filename);
+		link.style.visibility = 'hidden';
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+		setTimeout(() => URL.revokeObjectURL(url), 100);
+	}
+};

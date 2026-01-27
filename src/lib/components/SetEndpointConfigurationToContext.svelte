@@ -2,9 +2,12 @@
 	interface Props {
 		prefix?: string;
 		children?: import('svelte').Snippet;
+		QMSName?: string;
 	}
 
-	let { prefix = '', children }: Props = $props();
+	let { prefix = '', children, QMSName: _QMSName }: Props = $props();
+
+    const initialPrefix = prefix;
 
 	import AddColumn from '$lib/components/AddColumn.svelte';
 	import { getContext } from 'svelte';
@@ -13,7 +16,7 @@
 	import { get } from 'svelte/store';
 
 	// Get contexts - ensuring prefix is available
-	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let context = getContext<QMSMainWraperContext>(`${initialPrefix}QMSMainWraperContext`);
 	let endpointInfo = $derived(context?.endpointInfo);
 	let schemaData = $derived(context?.schemaData);
 	const urqlCoreClient = context?.urqlCoreClient;
@@ -21,7 +24,7 @@
 	import { page } from '$app/stores';
 	import Table from '$lib/components/Table.svelte';
 
-	const qmsContext = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+	const qmsContext = getContext<QMSWraperContext>(`${initialPrefix}QMSWraperContext`);
 	const {
 		QMS_bodyPart_StoreDerived_rowsCount = null,
 		activeArgumentsDataGrouped_Store,

@@ -129,6 +129,18 @@ Auto-GQL allows you to persist and restore executed queries.
 - **Automatic:** If using the provided `GraphqlCodeDisplay` and `ComponentForLayout` setup, queries are automatically saved to `localStorage` when executed.
 - **Manual:** You can manually add queries to history using `addToHistory`.
 
+### Data Export
+
+The `Table` component supports exporting data to CSV and JSON formats.
+
+- **CSV Export:** Click the "Export CSV" button.
+- **JSON Export:** Click the "Export JSON" button.
+
+### Filters Management
+
+You can manage active filters and arguments using the `ActiveArguments` component.
+A "Clear All Filters" button allows you to quickly reset all active arguments to their default state.
+
 ```typescript
 import { addToHistory } from 'auto-gql';
 

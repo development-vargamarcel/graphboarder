@@ -1,6 +1,10 @@
 <script lang="ts">
+	/**
+	 * Table component wrapper around TanTable.
+	 * Supports CSV and JSON export, row selection, and infinite scrolling.
+	 */
 	import TanTable from './TanTable.svelte';
-	import { downloadCSV, convertArrayToCSV } from '$lib/utils/exportUtils';
+	import { downloadCSV, downloadJSON, convertArrayToCSV } from '$lib/utils/exportUtils';
 
 	interface Props {
 		prefix?: string;
@@ -35,7 +39,7 @@
 
 {#if rows.length > 0}
 	{#if enableExport}
-		<div class="flex justify-end mb-2">
+		<div class="flex justify-end mb-2 space-x-2">
 			<button
 				class="btn btn-sm btn-outline gap-2"
 				onclick={() => {
@@ -46,6 +50,17 @@
 			>
 				<i class="bi bi-download"></i>
 				Export CSV
+			</button>
+			<button
+				class="btn btn-sm btn-outline gap-2"
+				onclick={() => {
+					if (rows && rows.length > 0) {
+						downloadJSON(rows, 'export.json');
+					}
+				}}
+			>
+				<i class="bi bi-filetype-json"></i>
+				Export JSON
 			</button>
 		</div>
 	{/if}

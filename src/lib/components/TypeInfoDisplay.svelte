@@ -41,6 +41,9 @@
 		prefix = ''
 	}: Props = $props();
 
+    // Capture initial prefix for context
+    const initialPrefix = prefix;
+
     // Use derived to react to type changes
 	let dd_kindsArray = $derived(type.dd_kindsArray);
     let dd_namesArray = $derived(type.dd_namesArray);
@@ -54,12 +57,12 @@
 		});
 	};
 
-	const qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
-	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	const qmsWraperCtx = getContext<QMSWraperContext>(`${initialPrefix}QMSWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${initialPrefix}QMSMainWraperContext`);
 	const schemaData = mainWraperCtx?.schemaData;
 	const tableColsData_Store = qmsWraperCtx?.tableColsData_Store;
-	const stepsOfFieldsOBJ = getContext<Writable<Record<string, any>>>(`${prefix}stepsOfFieldsOBJ`);
-	const stepsOfFieldsOBJFull = getContext<Writable<Record<string, any>>>(`${prefix}stepsOfFieldsOBJFull`);
+	const stepsOfFieldsOBJ = getContext<Writable<Record<string, any>>>(`${initialPrefix}stepsOfFieldsOBJ`);
+	const stepsOfFieldsOBJFull = getContext<Writable<Record<string, any>>>(`${initialPrefix}stepsOfFieldsOBJFull`);
 
 	const stepsOFieldsAsQueryFragmentObject = stepsOfFieldsToQueryFragmentObject(
 		stepsOfFields,
@@ -115,7 +118,7 @@
 	const mergedChildren_finalGqlArgObj_Store = qmsWraperCtx.mergedChildren_finalGqlArgObj_Store;
 	const mergedChildren_QMSWraperCtxData_Store =
 		qmsWraperCtx.mergedChildren_QMSWraperCtxData_Store;
-	let activeArgumentsDataGrouped_Store = getContext<Writable<any>>(`${prefix}activeArgumentsDataGrouped_Store`);
+	let activeArgumentsDataGrouped_Store = getContext<Writable<any>>(`${initialPrefix}activeArgumentsDataGrouped_Store`);
 
 	// //S//move to QMSWraper (outermost if possible)
 	// $: if (finalGqlArgObj_StoreValue && finalGqlArgObj_StoreValue.final_canRunQuery) {
@@ -257,7 +260,8 @@
 						//	$StepsOfFieldsSelected.add(JSON.stringify(stepsOfFields));
 						//	$StepsOfFieldsSelected = $StepsOfFieldsSelected;
 					} else {
-						$stepsOfFieldsOBJ = deleteValueAtPath($stepsOfFieldsOBJ, stepsOfFields);
+						const res = deleteValueAtPath($stepsOfFieldsOBJ, stepsOfFields);
+                        if (res) $stepsOfFieldsOBJ = res as any;
 
 						///
 						//	$StepsOfFieldsSelected.delete(JSON.stringify(stepsOfFields));
