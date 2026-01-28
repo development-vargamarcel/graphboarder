@@ -2,164 +2,156 @@
 > auto-gql@0.0.11 dev
 > vite dev
 
-Port 5173 is in use, trying another one...
+Forced re-optimization of dependencies
 
-  VITE v5.4.21  ready in 8855 ms
+  VITE v5.4.21  ready in 1343 ms
 
-  ➜  Local:   http://localhost:5174/
+  ➜  Local:   http://localhost:5173/
   ➜  Network: use --host to expose
-[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
-8:08:52 PM [vite-plugin-svelte] src/lib/components/EndpointsList.svelte:279:1 Buttons and links should either contain text or have an `aria-label`, `aria-labelledby` or `title` attribute
-https://svelte.dev/e/a11y_consider_explicit_label
-8:08:52 PM [vite-plugin-svelte] src/lib/components/EndpointsList.svelte:291:5 `<svg>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:52 PM [vite-plugin-svelte] src/lib/components/ExplorerTable.svelte:157:11 `<div>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:53 PM [vite-plugin-svelte] src/lib/components/Type.svelte:91:5 This reference only captures the initial value of `canExpand`. Did you mean to reference it inside a closure instead?
+10:54:34 PM [vite-plugin-svelte] src/lib/components/MainWraper.svelte:40:48 This reference only captures the initial value of `endpointInfoProvided`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally
-8:08:53 PM [vite-plugin-svelte] src/lib/components/Modal.svelte:69:0 Visible, non-interactive elements with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
-https://svelte.dev/e/a11y_click_events_have_key_events
-8:08:53 PM [vite-plugin-svelte] src/lib/components/Modal.svelte:69:0 `<div>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:53 PM [vite-plugin-svelte] src/lib/components/Modal.svelte:80:2 Visible, non-interactive elements with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
-https://svelte.dev/e/a11y_click_events_have_key_events
-8:08:53 PM [vite-plugin-svelte] src/lib/components/Modal.svelte:80:2 `<div>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:53 PM [vite-plugin-svelte] src/lib/components/TypeInfoDisplay.svelte:165:4 Visible, non-interactive elements with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
-https://svelte.dev/e/a11y_click_events_have_key_events
-8:08:53 PM [vite-plugin-svelte] src/lib/components/TypeInfoDisplay.svelte:165:4 `<div>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:53 PM [vite-plugin-svelte] src/lib/components/TypeInfoDisplay.svelte:169:4 Visible, non-interactive elements with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
-https://svelte.dev/e/a11y_click_events_have_key_events
-8:08:53 PM [vite-plugin-svelte] src/lib/components/TypeInfoDisplay.svelte:169:4 `<div>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:53 PM [vite-plugin-svelte] src/lib/components/TypeInfoDisplay.svelte:172:3 Visible, non-interactive elements with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
-https://svelte.dev/e/a11y_click_events_have_key_events
-8:08:53 PM [vite-plugin-svelte] src/lib/components/TypeInfoDisplay.svelte:172:3 `<div>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:53 PM [vite-plugin-svelte] src/lib/components/TypeInfoDisplay.svelte:183:3 Visible, non-interactive elements with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
-https://svelte.dev/e/a11y_click_events_have_key_events
-8:08:53 PM [vite-plugin-svelte] src/lib/components/TypeInfoDisplay.svelte:183:3 `<div>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:53 PM [vite-plugin-svelte] src/lib/components/TypeInfoDisplay.svelte:197:3 Visible, non-interactive elements with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
-https://svelte.dev/e/a11y_click_events_have_key_events
-8:08:53 PM [vite-plugin-svelte] src/lib/components/TypeInfoDisplay.svelte:197:3 `<div>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:53 PM [vite-plugin-svelte] src/lib/components/TypeInfoDisplay.svelte:227:4 `<div>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:53 PM [vite-plugin-svelte] src/lib/components/TypeInfoDisplay.svelte:265:2 `<div>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:53 PM [vite-plugin-svelte] src/lib/components/TanTable.svelte:90:11 This reference only captures the initial value of `columns`. Did you mean to reference it inside a closure instead?
+10:54:35 PM [vite-plugin-svelte] src/lib/components/MainWraper.svelte:93:37 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally
-8:08:53 PM [vite-plugin-svelte] src/lib/components/TanTable.svelte:173:11 `<div>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:53 PM [vite-plugin-svelte] src/lib/components/ArgInfoDisplay.svelte:65:4 Visible, non-interactive elements with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
-https://svelte.dev/e/a11y_click_events_have_key_events
-8:08:53 PM [vite-plugin-svelte] src/lib/components/ArgInfoDisplay.svelte:65:4 `<div>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:53 PM [vite-plugin-svelte] src/lib/components/ArgInfoDisplay.svelte:69:4 Visible, non-interactive elements with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
-https://svelte.dev/e/a11y_click_events_have_key_events
-8:08:53 PM [vite-plugin-svelte] src/lib/components/ArgInfoDisplay.svelte:69:4 `<div>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:53 PM [vite-plugin-svelte] src/lib/components/ArgInfoDisplay.svelte:72:3 Visible, non-interactive elements with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
-https://svelte.dev/e/a11y_click_events_have_key_events
-8:08:53 PM [vite-plugin-svelte] src/lib/components/ArgInfoDisplay.svelte:72:3 `<div>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:53 PM [vite-plugin-svelte] src/lib/components/ArgInfoDisplay.svelte:88:5 Visible, non-interactive elements with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
-https://svelte.dev/e/a11y_click_events_have_key_events
-8:08:53 PM [vite-plugin-svelte] src/lib/components/ArgInfoDisplay.svelte:88:5 `<div>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:53 PM [vite-plugin-svelte] src/lib/components/ArgInfoDisplay.svelte:102:5 Visible, non-interactive elements with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
-https://svelte.dev/e/a11y_click_events_have_key_events
-8:08:53 PM [vite-plugin-svelte] src/lib/components/ArgInfoDisplay.svelte:102:5 `<div>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:53 PM [vite-plugin-svelte] src/lib/components/ArgInfoDisplay.svelte:125:1 Visible, non-interactive elements with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
-https://svelte.dev/e/a11y_click_events_have_key_events
-8:08:53 PM [vite-plugin-svelte] src/lib/components/ArgInfoDisplay.svelte:125:1 Non-interactive element `<label>` should not be assigned mouse or keyboard event listeners
-https://svelte.dev/e/a11y_no_noninteractive_element_interactions
-8:08:53 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte:136:3 `<i>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:53 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_info.svelte:29:1 `<i>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupNormal.svelte:90:5 `<div>` with a mousedown or keydown handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupNormal.svelte:102:3 `<div>` with a mousedown or keydown handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:94:35 This reference only captures the initial value of `nodeIsInCP`. Did you mean to reference it inside a closure instead?
+10:54:35 PM [vite-plugin-svelte] src/lib/components/MainWraper.svelte:99:57 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:123:6 This reference only captures the initial value of `testName_stepsOFFieldsWasUpdated`. Did you mean to reference it inside a closure instead?
+10:54:35 PM [vite-plugin-svelte] src/lib/components/QMSWraper.svelte:147:18 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:200:3 This reference only captures the initial value of `stepsOfFields`. Did you mean to reference it inside a closure instead?
+10:54:35 PM [vite-plugin-svelte] src/lib/components/ExplorerTable.svelte:68:2 This reference only captures the initial value of `columns`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:371:5 Visible, non-interactive elements with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
-https://svelte.dev/e/a11y_click_events_have_key_events
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:371:5 `<btn>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:416:6 Visible, non-interactive elements with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
-https://svelte.dev/e/a11y_click_events_have_key_events
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:416:6 `<btn>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:433:6 Visible, non-interactive elements with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
-https://svelte.dev/e/a11y_click_events_have_key_events
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:433:6 `<btn>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:453:6 `<btn>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:528:5 `<div>` with a mousedown, keydown or contextmenu handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:562:5 Visible, non-interactive elements with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
-https://svelte.dev/e/a11y_click_events_have_key_events
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:562:5 `<div>` with a click or contextmenu handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:597:1 `<div>` with a contextmenu, mousedown or keydown handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:633:5 Visible, non-interactive elements with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
-https://svelte.dev/e/a11y_click_events_have_key_events
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:633:5 noninteractive element cannot have nonnegative tabIndex value
-https://svelte.dev/e/a11y_no_noninteractive_tabindex
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:633:5 `<div>` with a click or contextmenu handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:691:5 noninteractive element cannot have nonnegative tabIndex value
-https://svelte.dev/e/a11y_no_noninteractive_tabindex
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:691:5 `<div>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-/*! 🌼 daisyUI 5.3.7 */
-[vite:css] @import must precede all other statements (besides @charset or empty @layer)
-3  |  @import 'tailwindcss';
-4  |  @plugin 'daisyui';
-5  |  @import '@fontsource/fira-mono';
-   |  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-6  |
-7  |  :root {
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgument.svelte:348:4 Visible, non-interactive elements with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
-https://svelte.dev/e/a11y_click_events_have_key_events
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgument.svelte:348:4 `<btn>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgument.svelte:459:6 Visible, non-interactive elements with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
-https://svelte.dev/e/a11y_click_events_have_key_events
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgument.svelte:459:6 Non-interactive element `<p>` should not be assigned mouse or keyboard event listeners
-https://svelte.dev/e/a11y_no_noninteractive_element_interactions
-8:08:54 PM [vite-plugin-svelte] src/lib/components/SelectModal.svelte:316:30 This reference only captures the initial value of `getManyQMS`. Did you mean to reference it inside a closure instead?
+10:54:35 PM [vite-plugin-svelte] src/lib/components/ExplorerTable.svelte:70:2 This reference only captures the initial value of `columnVisibility`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally
-8:08:54 PM [vite-plugin-svelte] src/lib/components/SelectModal.svelte:316:42 This reference only captures the initial value of `showSelectQMSModal`. Did you mean to reference it inside a closure instead?
+10:54:35 PM [vite-plugin-svelte] src/lib/components/ExplorerTable.svelte:71:2 This reference only captures the initial value of `enableMultiRowSelectionState`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally
-8:08:54 PM [vite-plugin-svelte] src/lib/components/AddNodeToControlPanel.svelte:22:0 Buttons and links should either contain text or have an `aria-label`, `aria-labelledby` or `title` attribute
-https://svelte.dev/e/a11y_consider_explicit_label
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte:81:6 This reference only captures the initial value of `groupArgsPossibilities`. Did you mean to reference it inside a closure instead?
+10:54:35 PM [vite-plugin-svelte] src/lib/components/ExplorerTable.svelte:72:2 This reference only captures the initial value of `enableRowSelectionState`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally
-8:08:54 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte:88:15 This reference only captures the initial value of `groupArgsPossibilities`. Did you mean to reference it inside a closure instead?
+10:54:35 PM [vite-plugin-svelte] src/lib/components/ExplorerTable.svelte:75:2 This reference only captures the initial value of `idColName`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally
-8:08:55 PM [vite-plugin-svelte] src/lib/components/fields/InterfaceList.svelte:10:13 This reference only captures the initial value of `elements`. Did you mean to reference it inside a closure instead?
+10:54:35 PM [vite-plugin-svelte] src/lib/components/IntrospectionDataGenerator.svelte:22:67 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally
-8:08:55 PM [vite-plugin-svelte] src/lib/components/fields/InterfaceList.svelte:54:3 Buttons and links should either contain text or have an `aria-label`, `aria-labelledby` or `title` attribute
-https://svelte.dev/e/a11y_consider_explicit_label
-8:08:55 PM [vite-plugin-svelte] src/lib/components/fields/Interface.svelte:29:23 This reference only captures the initial value of `typeExtraData`. Did you mean to reference it inside a closure instead?
+10:54:35 PM [vite-plugin-svelte] src/lib/components/AddColumn.svelte:34:15 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally
-8:08:55 PM [vite-plugin-svelte] src/routes/endpoints/[endpointid]/queries/[queryName]/ComponentForLayout.svelte:335:1 Buttons and links should either contain text or have an `aria-label`, `aria-labelledby` or `title` attribute
-https://svelte.dev/e/a11y_consider_explicit_label
-8:08:55 PM [vite-plugin-svelte] src/routes/endpoints/[endpointid]/queries/[queryName]/ComponentForLayout.svelte:347:5 `<svg>` with a click handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:55 PM [vite-plugin-svelte] src/lib/components/FilterItem.svelte:268:8 `<div>` with a mousedown or keydown handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
-8:08:55 PM [vite-plugin-svelte] src/lib/components/FilterItem.svelte:277:8 `<div>` with a mousedown or keydown handler must have an ARIA role
-https://svelte.dev/e/a11y_no_static_element_interactions
+10:54:35 PM [vite-plugin-svelte] src/lib/components/AddColumn.svelte:35:90 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/AddColumn.svelte:37:15 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/AddColumn.svelte:38:94 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/AddColumn.svelte:40:15 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/AddColumn.svelte:41:106 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/AddColumn.svelte:43:48 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/AddColumn.svelte:45:15 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/AddColumn.svelte:46:84 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/ActiveArguments.svelte:31:34 This reference only captures the initial value of `stepsOfFieldsThisAppliesTo`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/ActiveArguments.svelte:31:62 This reference only captures the initial value of `isControlPanelChild`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/ActiveArguments.svelte:32:15 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/ActiveArguments.svelte:33:57 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/ActiveArguments.svelte:36:52 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/GraphqlCodeDisplay.svelte:35:30 This reference only captures the initial value of `value`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/GraphqlCodeDisplay.svelte:46:49 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/GraphqlCodeDisplay.svelte:47:54 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/UI/rowCount.svelte:14:57 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/UI/rowCount.svelte:52:1 This reference only captures the initial value of `QMS_bodyPart_StoreDerived`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/QMSWraperCtxDataCurrentComputations.svelte:18:67 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/ColumnInfo.svelte:3:29 This reference only captures the initial value of `stepsOfFields`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/TypeInfoDisplay.svelte:45:26 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/TypeInfoDisplay.svelte:68:2 This reference only captures the initial value of `stepsOfFields`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupWraper.svelte:40:54 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupWraper.svelte:43:42 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupWraper.svelte:55:49 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/TanTable.svelte:41:57 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/TanTable.svelte:42:52 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/TanTable.svelte:97:11 This reference only captures the initial value of `columns`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/TanTable.svelte:99:27 This reference only captures the initial value of `enableMultiRowSelectionState`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/TanTable.svelte:100:22 This reference only captures the initial value of `enableRowSelectionState`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:35 PM [vite-plugin-svelte] src/lib/components/TanTable.svelte:104:11 This reference only captures the initial value of `columnVisibility`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:36 PM [vite-plugin-svelte] src/lib/components/GroupDescriptionAndControls.svelte:13:50 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:36 PM [vite-plugin-svelte] src/lib/components/GroupDescriptionAndControls.svelte:14:57 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:36 PM [vite-plugin-svelte] src/lib/components/GroupDescriptionAndControls.svelte:15:58 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:36 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte:32:67 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:36 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte:35:43 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:36 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte:39:42 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:36 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte:40:37 This reference only captures the initial value of `node`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:36 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte:41:16 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:36 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte:55:60 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:36 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte:71:60 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:36 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:76:67 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:36 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:155:5 This reference only captures the initial value of `QMSType`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:36 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte:170:51 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:36 PM [vite-plugin-svelte] src/lib/components/SelectModal.svelte:120:5 This reference only captures the initial value of `QMSType`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:36 PM [vite-plugin-svelte] src/lib/components/SelectModal.svelte:168:29 This reference only captures the initial value of `parentNode`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:36 PM [vite-plugin-svelte] src/lib/components/SelectModal.svelte:299:6 This reference only captures the initial value of `activeArgumentsDataGrouped_Store`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:36 PM [vite-plugin-svelte] src/lib/components/ManyToAllSelectInterfaceDefinition.svelte:49:2 This reference only captures the initial value of `node`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:36 PM [vite-plugin-svelte] src/lib/components/ManyToAllSelectInterfaceDefinition.svelte:53:2 This reference only captures the initial value of `node`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:36 PM [vite-plugin-svelte] src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte:52:37 This reference only captures the initial value of `node`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:36 PM [vite-plugin-svelte] src/lib/components/SelectItem.svelte:36:31 This reference only captures the initial value of `node`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+/*! 🌼 daisyUI 5.5.14 */
+10:54:37 PM [vite-plugin-svelte] src/routes/endpoints/[endpointid]/queries/[queryName]/ComponentForLayout.svelte:40:57 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:37 PM [vite-plugin-svelte] src/routes/endpoints/[endpointid]/queries/[queryName]/ComponentForLayout.svelte:43:17 This reference only captures the initial value of `QMSName`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:37 PM [vite-plugin-svelte] src/routes/endpoints/[endpointid]/queries/[queryName]/ComponentForLayout.svelte:44:54 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:37 PM [vite-plugin-svelte] src/lib/components/ControlPanelItem.svelte:14:67 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:37 PM [vite-plugin-svelte] src/lib/components/ControlPanelItem.svelte:16:63 This reference only captures the initial value of `CPItem`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:37 PM [vite-plugin-svelte] src/lib/components/ControlPanelItem.svelte:19:25 This reference only captures the initial value of `CPItem`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:54:37 PM [vite-plugin-svelte] src/lib/components/ControlPanelItem.svelte:20:15 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:55:08 PM [vite] page reload verification/verify_history.py
+10:55:19 PM [vite-plugin-svelte] src/lib/components/SetEndpointConfigurationToContext.svelte:10:26 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+10:55:19 PM [vite-plugin-svelte] src/lib/components/Sidebar.svelte:24:26 This reference only captures the initial value of `prefix`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+11:02:18 PM [vite] page reload verification/verify_history.py
+11:03:51 PM [vite] page reload verification/verify_history.py
+11:04:29 PM [vite] page reload verification/verify_history.py
