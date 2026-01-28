@@ -14,5 +14,5 @@
 
 {@render children?.()}
 <QMSWraper isOutermostQMSWraper={true} QMSName={queryName}>
-	<ComponentForLayout />
+	<ComponentForLayout QMSName={queryName} />
 </QMSWraper>

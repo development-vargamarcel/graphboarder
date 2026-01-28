@@ -50,6 +50,7 @@
 		onUpdateQuery?: () => void;
 		onChildrenStartDrag?: () => void;
 		onDeleteSubNode?: (detail: { id: string }) => void;
+		activeArgumentsDataGrouped?: any;
 	}
 
 	let {
@@ -66,14 +67,15 @@
 		onChanged,
 		onUpdateQuery,
 		onChildrenStartDrag,
-		onDeleteSubNode
+		onDeleteSubNode,
+		activeArgumentsDataGrouped = $bindable()
 	}: Props = $props();
 
 	let stepsOfNodes = $state<any[]>([]);
 	let stepsOfFields = $state<any[]>([]);
 	let stepsOfFieldsFull = $state<any[]>([]);
 	let testName_stepsOFFieldsWasUpdated = $state(false);
-	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
 	let getManyQMS = $state();
 	///
@@ -152,9 +154,6 @@
 			if ($mutationVersion === false) $mutationVersion = true;
 		}
 	});
-	if (QMSType == 'mutation') {
-		$mutationVersion = true;
-	}
 
 	$effect(() => {
 		if (!testName_stepsOFFieldsWasUpdated) {
@@ -167,7 +166,7 @@
 	});
 
 
-	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let context = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const endpointInfo = context?.endpointInfo;
 	const schemaData = context?.schemaData;
 	let dragDisabled = $state(true);
@@ -684,6 +683,7 @@
 						bind:nodes
 						{onChanged}
 						onChildrenStartDrag={startDrag}
+						startDrag={startDrag}
 						{parentNode}
 						{node}
 						onContextmenuUsed={() => {
@@ -697,6 +697,11 @@
 						onInUseChanged={() => {}}
 						activeArgumentData={node}
 						{group}
+						{activeArgumentsDataGrouped}
+						{originalNodes}
+						{type}
+						{parentNodeId}
+						{availableOperators}
 					/>
 				</div>
 			</div>
@@ -750,6 +755,7 @@
 											{availableOperators}
 											onChildrenStartDrag={startDrag}
 											{group}
+											{activeArgumentsDataGrouped}
 										/>
 									{/key}
 								{/if}

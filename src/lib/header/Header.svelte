@@ -3,6 +3,9 @@
 	import logo from './svelte-logo.svg';
 	import github from './github.svg';
 	import ThemeToggle from '$lib/components/UI/ThemeToggle.svelte';
+	import LogViewer from '$lib/components/UI/LogViewer.svelte';
+
+	let showLogs = $state(false);
 </script>
 
 <div class="navbar bg-base-100 shadow-sm">
@@ -54,6 +57,14 @@
 		</ul>
 	</div>
 	<div class="navbar-end">
+		<button
+			class="btn btn-ghost btn-circle"
+			onclick={() => (showLogs = true)}
+			title="System Logs"
+			aria-label="System Logs"
+		>
+			<i class="bi bi-terminal text-lg"></i>
+		</button>
 		<ThemeToggle />
 		<a
 			href="https://github.com/development-vargamarcel/graphboarder"
@@ -64,3 +75,7 @@
 		</a>
 	</div>
 </div>
+
+{#if showLogs}
+	<LogViewer onClose={() => (showLogs = false)} />
+{/if}

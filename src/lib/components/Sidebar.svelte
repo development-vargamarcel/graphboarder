@@ -2,7 +2,7 @@
 
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import TabContainer from '$lib/components/TabContainer.svelte';
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
 	import { Logger } from '$lib/utils/logger';
 	import type { QMSMainWraperContext } from '$lib/types/index';
@@ -23,7 +23,7 @@
 
     const initialPrefix = prefix;
 	// Initialization after props
-	let context = getContext<QMSMainWraperContext>(`${initialPrefix}QMSMainWraperContext`);
+	let context = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	let endpointInfo = $derived(context?.endpointInfo);
 
 	$effect(() => {

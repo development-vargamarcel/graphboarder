@@ -4,7 +4,7 @@
 		get_scalarColsData,
 		get_nodeFieldsQMS_info
 	} from '$lib/utils/usefulFunctions';
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 	import type { QMSMainWraperContext } from '$lib/types/index';
 	import { get } from 'svelte/store';
 
@@ -18,7 +18,7 @@
 
     const initialPrefix = prefix;
 	// Initialization after props
-	let context = getContext<QMSMainWraperContext>(`${initialPrefix}QMSMainWraperContext`);
+	let context = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const endpointInfo = context?.endpointInfo;
 	const schemaData = context?.schemaData;
 	let queryName = $derived(query.name);

@@ -44,17 +44,17 @@
 		prettify();
 		console.log(value);
 	};
-	let mainContainerEl = $state();
+	let mainContainerEl = $state<HTMLElement>();
 </script>
 
 <div class="bg-base-300 relative max-h-[90vh] overflow-auto" bind:this={mainContainerEl}>
-	<CodeMirror bind:value lang={chosenConfig.codemirrorLanguage} />
+	<CodeMirror bind:value lang={chosenConfig.codemirrorLanguage as any} />
 	<div class="sticky top-1 right-1">
 		<button class="btn btn-xs btn-primary" onclick={handlechange}> format </button>
 		<button
 			class="btn btn-primary btn-xs normal-case ml-2"
 			onclick={() => {
-				if(mainContainerEl.requestFullscreen) {
+				if (mainContainerEl && mainContainerEl.requestFullscreen) {
 					mainContainerEl.requestFullscreen();
 				}
 			}}>fullscreen</button

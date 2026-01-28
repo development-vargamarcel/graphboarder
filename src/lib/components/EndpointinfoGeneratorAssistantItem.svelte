@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 	import { Logger } from '$lib/utils/logger';
 
 	interface Props {
@@ -14,8 +14,8 @@
 
     const initialPrefix = prefix;
 	// Initialization after props
-	const qmsContext = getContext<QMSWraperContext>(`${initialPrefix}QMSWraperContext`);
-	let context = getContext<QMSMainWraperContext>(`${initialPrefix}QMSMainWraperContext`);
+	const qmsContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}QMSWraperContext`);
+	let context = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const schemaData = context?.schemaData;
 </script>
 

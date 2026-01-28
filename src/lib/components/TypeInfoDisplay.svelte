@@ -11,7 +11,7 @@
 	import _ from 'lodash';
 
 	import { stringify } from 'postcss';
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 	import Modal from '$lib/components/Modal.svelte';
 	import ActiveArguments from '$lib/components/ActiveArguments.svelte';
 	import { Create_activeArgumentsDataGrouped_Store } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
@@ -57,12 +57,12 @@
 		});
 	};
 
-	const qmsWraperCtx = getContext<QMSWraperContext>(`${initialPrefix}QMSWraperContext`);
-	let mainWraperCtx = getContext<QMSMainWraperContext>(`${initialPrefix}QMSMainWraperContext`);
+	const qmsWraperCtx = getContext<QMSWraperContext>(`${untrack(() => prefix)}QMSWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const schemaData = mainWraperCtx?.schemaData;
 	const tableColsData_Store = qmsWraperCtx?.tableColsData_Store;
-	const stepsOfFieldsOBJ = getContext<Writable<Record<string, any>>>(`${initialPrefix}stepsOfFieldsOBJ`);
-	const stepsOfFieldsOBJFull = getContext<Writable<Record<string, any>>>(`${initialPrefix}stepsOfFieldsOBJFull`);
+	const stepsOfFieldsOBJ = getContext<Writable<Record<string, any>>>(`${untrack(() => prefix)}stepsOfFieldsOBJ`);
+	const stepsOfFieldsOBJFull = getContext<Writable<Record<string, any>>>(`${untrack(() => prefix)}stepsOfFieldsOBJFull`);
 
 	const stepsOFieldsAsQueryFragmentObject = stepsOfFieldsToQueryFragmentObject(
 		stepsOfFields,
@@ -118,7 +118,7 @@
 	const mergedChildren_finalGqlArgObj_Store = qmsWraperCtx.mergedChildren_finalGqlArgObj_Store;
 	const mergedChildren_QMSWraperCtxData_Store =
 		qmsWraperCtx.mergedChildren_QMSWraperCtxData_Store;
-	let activeArgumentsDataGrouped_Store = getContext<Writable<any>>(`${initialPrefix}activeArgumentsDataGrouped_Store`);
+	let activeArgumentsDataGrouped_Store = getContext<Writable<any>>(`${untrack(() => prefix)}activeArgumentsDataGrouped_Store`);
 
 	// //S//move to QMSWraper (outermost if possible)
 	// $: if (finalGqlArgObj_StoreValue && finalGqlArgObj_StoreValue.final_canRunQuery) {

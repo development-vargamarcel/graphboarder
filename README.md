@@ -122,6 +122,38 @@ Logs are automatically generated for:
 - Query execution start, success, and failure.
 - Fetch requests (via URQL).
 
+## Log Viewer
+
+Auto-GQL includes a built-in Log Viewer to inspect system logs, which is useful for debugging and monitoring application state.
+
+### Accessing the Log Viewer
+
+In the demo application, click the **Terminal Icon** (<i class="bi bi-terminal"></i>) in the header to open the Log Viewer.
+
+### Features
+
+- **Live Logs:** View real-time logs from the application.
+- **Filtering:** Filter logs by text or log level (DEBUG, INFO, WARN, ERROR).
+- **Copy:** Copy individual logs or clear the entire history.
+- **Persisted:** Logs are stored in memory (up to 500 entries).
+
+### Using Log Viewer in Your App
+
+You can import and use the `LogViewer` component in your own application:
+
+```svelte
+<script>
+  import { LogViewer } from 'auto-gql';
+  let showLogs = $state(false);
+</script>
+
+<button onclick={() => showLogs = true}>Open Logs</button>
+
+{#if showLogs}
+  <LogViewer onClose={() => showLogs = false} />
+{/if}
+```
+
 ## Query History
 
 Auto-GQL allows you to persist and restore executed queries.

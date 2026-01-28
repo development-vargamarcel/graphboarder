@@ -1,7 +1,7 @@
 <script lang="ts">
 
 	import QmsWraper from '$lib/components/QMSWraper.svelte';
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 	import ComponentForLayout from '../../routes/endpoints/[endpointid]/queries/[queryName]/ComponentForLayout.svelte';
 	import { Logger } from '$lib/utils/logger';
 
@@ -61,6 +61,7 @@
 			tableColsData_StoreInitialValue={[]}
 		>
 			<ComponentForLayout
+				QMSName={getManyQMS.dd_displayName}
 				{rowSelectionState}
 				{enableMultiRowSelectionState}
 				{onRowSelectionChange}

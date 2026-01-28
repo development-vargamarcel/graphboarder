@@ -5,6 +5,7 @@
 	 */
 	import TanTable from './TanTable.svelte';
 	import { downloadCSV, downloadJSON, convertArrayToCSV } from '$lib/utils/exportUtils';
+	import { Logger } from '$lib/utils/logger';
 
 	interface Props {
 		prefix?: string;
@@ -43,8 +44,11 @@
 			<button
 				class="btn btn-sm btn-outline gap-2"
 				onclick={() => {
+					Logger.info('User initiated CSV Export', { rowCount: rows.length });
 					if (rows && rows.length > 0) {
 						downloadCSV(rows, 'export.csv');
+					} else {
+						Logger.warn('Export CSV failed: No rows to export');
 					}
 				}}
 			>
@@ -54,8 +58,11 @@
 			<button
 				class="btn btn-sm btn-outline gap-2"
 				onclick={() => {
+					Logger.info('User initiated JSON Export', { rowCount: rows.length });
 					if (rows && rows.length > 0) {
 						downloadJSON(rows, 'export.json');
+					} else {
+						Logger.warn('Export JSON failed: No rows to export');
 					}
 				}}
 			>

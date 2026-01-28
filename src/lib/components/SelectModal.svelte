@@ -117,9 +117,11 @@
 
 	const dndIsOn = getContext<any>('dndIsOn');
 	const mutationVersion = getContext<any>('mutationVersion');
-	if (QMSType == 'mutation' && mutationVersion) {
-		$mutationVersion = true;
-	}
+	$effect(() => {
+		if (QMSType == 'mutation' && mutationVersion) {
+			$mutationVersion = true;
+		}
+	});
 
 	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const endpointInfo = mainWraperCtx?.endpointInfo;

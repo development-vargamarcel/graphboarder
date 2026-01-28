@@ -30,20 +30,22 @@
 		onNewColumnAddRequest
 	}: Props = $props();
 
+	import { untrack } from 'svelte';
+
 	// Setup contexts with writable stores
-	setContext(`${prefix}stepsOfFieldsOBJ`, writable({}));
-	const stepsOfFieldsOBJ = getContext<ReturnType<typeof writable<Record<string, any>>>>(`${prefix}stepsOfFieldsOBJ`);
+	setContext(`${untrack(() => prefix)}stepsOfFieldsOBJ`, writable({}));
+	const stepsOfFieldsOBJ = getContext<ReturnType<typeof writable<Record<string, any>>>>(`${untrack(() => prefix)}stepsOfFieldsOBJ`);
 
-	setContext(`${prefix}stepsOfFieldsOBJFull`, writable({}));
-	const stepsOfFieldsOBJFull = getContext<ReturnType<typeof writable<Record<string, any>>>>(`${prefix}stepsOfFieldsOBJFull`);
+	setContext(`${untrack(() => prefix)}stepsOfFieldsOBJFull`, writable({}));
+	const stepsOfFieldsOBJFull = getContext<ReturnType<typeof writable<Record<string, any>>>>(`${untrack(() => prefix)}stepsOfFieldsOBJFull`);
 
-	setContext(`${prefix}activeArgumentsDataGrouped_Store`, writable({}));
-	const activeArgumentsDataGrouped_Store = getContext<ReturnType<typeof writable<Record<string, any>>>>(`${prefix}activeArgumentsDataGrouped_Store`);
+	setContext(`${untrack(() => prefix)}activeArgumentsDataGrouped_Store`, writable({}));
+	const activeArgumentsDataGrouped_Store = getContext<ReturnType<typeof writable<Record<string, any>>>>(`${untrack(() => prefix)}activeArgumentsDataGrouped_Store`);
 
-	const tableColsData_Store = getContext<any>(`${prefix}QMSWraperContext`).tableColsData_Store;
+	const tableColsData_Store = getContext<any>(`${untrack(() => prefix)}QMSWraperContext`).tableColsData_Store;
 
-	setContext(`${prefix}StepsOfFieldsSelected`, writable(new Set([])));
-	const StepsOfFieldsSelected = getContext<ReturnType<typeof writable<Set<any>>>>(`${prefix}StepsOfFieldsSelected`);
+	setContext(`${untrack(() => prefix)}StepsOfFieldsSelected`, writable(new Set([])));
+	const StepsOfFieldsSelected = getContext<ReturnType<typeof writable<Set<any>>>>(`${untrack(() => prefix)}StepsOfFieldsSelected`);
 
 	// Use $effect for reactive subscriptions - these automatically clean up
 	$effect(() => {
@@ -129,9 +131,6 @@
 						isOnMainList={true}
 						index={0}
 						stepsOfFields={[]}
-						canExpand={false}
-						expand={() => {}}
-						showExpand={false}
 					/>
 					<!-- <TypeList
 						types={dd_relatedRoot.fields}

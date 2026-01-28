@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 	import SelectModal from './SelectModal.svelte';
 	import Fuse from 'fuse.js';
 	import Modal from './Modal.svelte';
@@ -21,6 +21,8 @@
 		showSelectQMSModal?: boolean;
 		selectedRowsColValues?: any;
 		field: any;
+		rowSelectionState?: any;
+		selectedQMS?: any;
 	}
 
 	let {
@@ -36,7 +38,9 @@
 		addDefaultFields,
 		showSelectQMSModal = $bindable(false),
 		selectedRowsColValues = [],
-		field
+		field,
+		rowSelectionState: rowSelectionStateProp = {},
+		selectedQMS: selectedQMSProp
 	}: Props = $props();
 	const nodeContext_forDynamicData = getContext<any>(`${untrack(() => prefix)}nodeContext_forDynamicData`);
 	let selectedQMS = nodeContext_forDynamicData?.selectedQMS;

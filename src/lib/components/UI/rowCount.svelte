@@ -9,16 +9,18 @@
 		QMS_info: any;
 	}
 
+	import { untrack } from 'svelte';
+
 	let { prefix = '', QMS_bodyPart_StoreDerived, QMS_info }: Props = $props();
 
-	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const endpointInfo = mainWraperCtx?.endpointInfo;
 
 	const urqlCoreClient = mainWraperCtx?.urqlCoreClient;
 	const schemaData = mainWraperCtx?.schemaData;
 
 	let countValue = $state();
-	let queryData = $state();
+	let queryData = $state<any>();
 	const runQuery = (queryBody) => {
 		let fetching = true;
 		let error = false;
@@ -49,14 +51,17 @@
 			countValue = '?';
 		}
 	});
-	QMS_bodyPart_StoreDerived.subscribe((QMS_body) => {
-		if (QMS_body && QMS_body !== '') {
-			runQuery(
-				`query {
+	$effect(() => {
+		const unsubscribe = QMS_bodyPart_StoreDerived.subscribe((QMS_body) => {
+			if (QMS_body && QMS_body !== '') {
+				runQuery(
+					`query {
 				${QMS_body}
 		}`
-			);
-		}
+				);
+			}
+		});
+		return unsubscribe;
 	});
 </script>
 

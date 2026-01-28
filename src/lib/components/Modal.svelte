@@ -47,7 +47,7 @@
 	});
 
 	// Helper functions for event handling
-	const handleMainDivClick = (e: MouseEvent) => {
+	const handleMainDivClick = (e: Event) => {
 		if (e.target === e.currentTarget) {
 			e.preventDefault();
 			e.stopPropagation();
@@ -55,7 +55,7 @@
 		}
 	};
 
-	const handlePaddingClick = (e: MouseEvent) => {
+	const handlePaddingClick = (e: Event) => {
 		if (e.target === e.currentTarget) {
 			e.preventDefault();
 			e.stopPropagation();
