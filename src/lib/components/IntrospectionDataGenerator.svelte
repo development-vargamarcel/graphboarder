@@ -7,7 +7,7 @@
 	import { fetchExchange } from '@urql/core';
 	import { browser } from '$app/environment';
 	import { queryStore, gql, getContextClient } from '@urql/svelte';
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 	import { Logger } from '$lib/utils/logger';
 	import type { QMSMainWraperContext } from '$lib/types/index';
 
@@ -19,7 +19,7 @@
 	let { prefix = '', children }: Props = $props();
 
 	// Get context with explicit type
-	let QMSMainWraperContextVal = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let QMSMainWraperContextVal = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const urqlCoreClient = QMSMainWraperContextVal?.urqlCoreClient;
 	const endpointInfo = QMSMainWraperContextVal?.endpointInfo;
 	const schemaData = QMSMainWraperContextVal?.schemaData;

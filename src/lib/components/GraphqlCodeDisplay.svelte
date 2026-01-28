@@ -16,6 +16,7 @@
 	import CodeMirrorCustom from './fields/CodeMirrorCustom.svelte';
 	import QueryHistory from '$lib/components/QueryHistory.svelte';
 	import type { HistoryItem } from '$lib/stores/queryHistory';
+	import { generateMockData } from '$lib/utils/mockGenerator';
 
 	interface Props {
 		showNonPrettifiedQMSBody: any;
@@ -61,10 +62,29 @@
 	let isCopied = $state(false);
 	let isCurlCopied = $state(false);
 	let showHistory = $state(false);
+	let mockDataResult = $state('');
+	let showMockData = $state(false);
 
 	const restoreQuery = (item: HistoryItem) => {
 		valueModifiedManually = item.query;
 		showHistory = false;
+	};
+
+	const handleGenerateMockData = () => {
+		if (!mainWraperCtx?.schemaData) {
+			Logger.warn('Cannot generate mock data: schemaData not available');
+			return;
+		}
+		try {
+			Logger.info('Generating mock data...');
+			const result = generateMockData(value, mainWraperCtx.schemaData);
+			mockDataResult = JSON.stringify(result, null, 2);
+			showMockData = true;
+		} catch (e) {
+			Logger.error('Error generating mock data', e);
+			mockDataResult = JSON.stringify({ error: (e as Error).message }, null, 2);
+			showMockData = true;
+		}
 	};
 
 	///
@@ -173,6 +193,7 @@
 		<button
 			class="btn btn-xs btn-ghost transition-opacity"
 			aria-label="History"
+			title="View Query History"
 			onclick={() => (showHistory = true)}
 		>
 			<i class="bi bi-clock-history"></i> History
@@ -180,6 +201,7 @@
 		<button
 			class="btn btn-xs btn-ghost transition-opacity"
 			aria-label="Copy to Clipboard"
+			title="Copy Query to Clipboard"
 			onclick={() => {
 				Logger.info('Copied query to clipboard');
 				navigator.clipboard.writeText(value);
@@ -196,6 +218,7 @@
 		<button
 			class="btn btn-xs btn-ghost transition-opacity"
 			aria-label="Copy as cURL"
+			title="Copy as cURL Command"
 			onclick={() => {
 				if (mainWraperCtx?.endpointInfo) {
 					Logger.info('Copied query as cURL to clipboard');
@@ -213,9 +236,25 @@
 				<i class="bi bi-terminal"></i> Copy as cURL
 			{/if}
 		</button>
+		<button
+			class="btn btn-xs btn-ghost transition-opacity"
+			aria-label="Generate Mock Data"
+			title="Generate Mock Response Data"
+			onclick={handleGenerateMockData}
+		>
+			<i class="bi bi-code-slash"></i> Mock Data
+		</button>
 	</div>
 	<div class="max-h-[50vh] overflow-y-auto">
-		{#if showNonPrettifiedQMSBody}
+		{#if showMockData}
+			<div class="p-2">
+				<div class="flex justify-between items-center mb-2">
+					<h3 class="font-bold">Mock Data Result</h3>
+					<button class="btn btn-xs btn-ghost" onclick={() => (showMockData = false)}>✕ Close</button>
+				</div>
+				<CodeEditor rawValue={mockDataResult} language="json" />
+			</div>
+		{:else if showNonPrettifiedQMSBody}
 			<code class="px-10">{value}</code>
 			<div class="mt-4">
 				<code class="px-10 ">{astAsString}</code>

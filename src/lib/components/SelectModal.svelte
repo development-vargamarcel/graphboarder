@@ -167,7 +167,7 @@
 
 	if (!testName_stepsOFFieldsWasUpdated) {
 		stepsOfNodes = getUpdatedStepsOfNodes(
-			JSON.parse(JSON.stringify(parentNode?.stepsOfNodes || []))
+			JSON.parse(JSON.stringify(untrack(() => parentNode)?.stepsOfNodes || []))
 		);
 	}
 
@@ -298,7 +298,7 @@
 
 	if (node?.selectedQMS && selectedQMS) {
 		$selectedQMS = node.selectedQMS;
-		if (activeArgumentsDataGrouped_Store) {
+		if (untrack(() => activeArgumentsDataGrouped_Store)) {
 			$activeArgumentsDataGrouped_Store = $activeArgumentsDataGrouped_Store;
 		}
 	}

@@ -188,6 +188,13 @@ addToHistory({
 
 To view and restore history, the `GraphqlCodeDisplay` component includes a "History" button that opens a modal with saved queries.
 
+## Mock Data Generator
+
+Auto-GQL can generate mock response data for your queries based on the schema. This is useful for frontend development when the backend is not ready or to test UI handling of data structures.
+
+- **Usage:** In the code display view (where the query is shown), click the **Mock Data** button (<i class="bi bi-code-slash"></i> icon).
+- **Functionality:** It parses the current query and generates realistic random data (Strings, Ints, Lists, Objects) matching the schema types.
+
 ## Theme Support
 
 GraphBoarder supports Light and Dark modes. The theme can be toggled using the button in the header. The preference is persisted in `localStorage`.

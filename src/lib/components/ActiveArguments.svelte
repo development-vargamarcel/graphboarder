@@ -28,7 +28,10 @@
 		onUpdateQuery
 	}: Props = $props();
 
-	const activeArgumentsContext = { stepsOfFieldsThisAppliesTo, isControlPanelChild };
+	const activeArgumentsContext = {
+		stepsOfFieldsThisAppliesTo: untrack(() => stepsOfFieldsThisAppliesTo),
+		isControlPanelChild: untrack(() => isControlPanelChild)
+	};
 	setContext(`${untrack(() => prefix)}activeArgumentsContext`, activeArgumentsContext);
 	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const endpointInfo = mainWraperCtx?.endpointInfo;

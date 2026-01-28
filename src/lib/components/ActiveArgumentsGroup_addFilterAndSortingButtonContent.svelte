@@ -49,7 +49,7 @@
 
 	let nodeIsInCP = false;
 	const CPItemContext = getContext<any>(`${untrack(() => prefix)}CPItemContext`);
-	if (CPItemContext?.CPItem.nodeId == node.id) {
+	if (CPItemContext?.CPItem.nodeId == untrack(() => node).id) {
 		setContext(`${untrack(() => prefix)}nodeContext`, { pathIsInCP: true });
 		nodeIsInCP = true;
 	}

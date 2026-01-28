@@ -41,9 +41,6 @@
 		prefix = ''
 	}: Props = $props();
 
-    // Capture initial prefix for context
-    const initialPrefix = prefix;
-
     // Use derived to react to type changes
 	let dd_kindsArray = $derived(type.dd_kindsArray);
     let dd_namesArray = $derived(type.dd_namesArray);
@@ -64,10 +61,10 @@
 	const stepsOfFieldsOBJ = getContext<Writable<Record<string, any>>>(`${untrack(() => prefix)}stepsOfFieldsOBJ`);
 	const stepsOfFieldsOBJFull = getContext<Writable<Record<string, any>>>(`${untrack(() => prefix)}stepsOfFieldsOBJFull`);
 
-	const stepsOFieldsAsQueryFragmentObject = stepsOfFieldsToQueryFragmentObject(
+	let stepsOFieldsAsQueryFragmentObject = $derived(stepsOfFieldsToQueryFragmentObject(
 		stepsOfFields,
 		false
-	);
+	));
 	//getValueAtPath
 	let isSelected = $state(false);
 	let hasSelected = $state(false);

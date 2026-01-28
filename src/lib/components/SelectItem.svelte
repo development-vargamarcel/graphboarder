@@ -33,7 +33,9 @@
 	const schemaData = mainWraperCtx?.schemaData;
 	const OutermostQMSWraperContext = getContext<QMSWraperContextType>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
-	Logger.debug('nooooddeeee', { node });
+    $effect(() => {
+	    Logger.debug('nooooddeeee', { node });
+    });
 
 	let getManyQMS = $derived.by(() => {
 		if ($QMSFieldToQMSGetMany_Store.length > 0) {
