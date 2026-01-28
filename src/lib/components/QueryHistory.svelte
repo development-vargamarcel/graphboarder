@@ -30,6 +30,7 @@
 	};
 
 	const handleExport = () => {
+		Logger.info('Exporting query history');
 		const json = exportHistory();
 		const blob = new Blob([json], { type: 'application/json' });
 		const url = URL.createObjectURL(blob);
@@ -50,6 +51,7 @@
 			reader.onload = (e) => {
 				const result = e.target?.result as string;
 				if (result) {
+					Logger.info('Importing query history');
 					importHistory(result);
 				}
 			};
@@ -123,7 +125,13 @@
 					<i class="bi bi-download"></i> Export
 				</button>
 				{#if $queryHistory.length > 0}
-					<button class="btn btn-sm btn-error btn-outline" onclick={clearHistory}>
+					<button
+						class="btn btn-sm btn-error btn-outline"
+						onclick={() => {
+							Logger.info('Clearing all query history');
+							clearHistory();
+						}}
+					>
 						Clear All
 					</button>
 				{/if}
@@ -193,13 +201,22 @@
 									>
 										<i class="bi {item.isFavorite ? 'bi-star-fill' : 'bi-star'}"></i>
 									</button>
-									<button class="btn btn-sm btn-primary" onclick={() => onRestore(item)}>
+									<button
+										class="btn btn-sm btn-primary"
+										onclick={() => {
+											Logger.info('Restoring query from history', { id: item.id });
+											onRestore(item);
+										}}
+									>
 										Restore
 									</button>
 									<button
 										class="btn btn-sm btn-ghost text-error"
 										aria-label="Delete"
-										onclick={() => removeFromHistory(item.id)}
+										onclick={() => {
+											Logger.info('Deleting query from history', { id: item.id });
+											removeFromHistory(item.id);
+										}}
 									>
 										<i class="bi bi-trash"></i>
 									</button>

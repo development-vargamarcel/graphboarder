@@ -50,6 +50,7 @@
 		onUpdateQuery?: () => void;
 		onChildrenStartDrag?: () => void;
 		onDeleteSubNode?: (detail: { id: string }) => void;
+		activeArgumentsDataGrouped?: any;
 	}
 
 	let {
@@ -66,7 +67,8 @@
 		onChanged,
 		onUpdateQuery,
 		onChildrenStartDrag,
-		onDeleteSubNode
+		onDeleteSubNode,
+		activeArgumentsDataGrouped = $bindable()
 	}: Props = $props();
 
 	let stepsOfNodes = $state<any[]>([]);
@@ -684,6 +686,7 @@
 						bind:nodes
 						{onChanged}
 						onChildrenStartDrag={startDrag}
+						startDrag={startDrag}
 						{parentNode}
 						{node}
 						onContextmenuUsed={() => {
@@ -697,6 +700,11 @@
 						onInUseChanged={() => {}}
 						activeArgumentData={node}
 						{group}
+						{activeArgumentsDataGrouped}
+						{originalNodes}
+						{type}
+						{parentNodeId}
+						{availableOperators}
 					/>
 				</div>
 			</div>
@@ -750,6 +758,7 @@
 											{availableOperators}
 											onChildrenStartDrag={startDrag}
 											{group}
+											{activeArgumentsDataGrouped}
 										/>
 									{/key}
 								{/if}

@@ -139,7 +139,7 @@
 				value = activeArgumentData.chd_dispatchValue.join(', ');
 			} else if (typeof activeArgumentData.chd_dispatchValue == 'string') {
 				const val = (activeArgumentData.chd_dispatchValue as string) || (activeArgumentData.defaultValue as unknown as string);
-				value = string_transformerREVERSE(val);
+				value = string_transformerREVERSE(val) as string;
 			}
 		}
 

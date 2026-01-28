@@ -11,7 +11,7 @@
 	import { updateStoresFromAST } from '$lib/utils/astToUIState';
 	import { generateCurlCommand } from '$lib/utils/curlUtils';
 	import { get } from 'svelte/store';
-	import { parse, print, visit } from 'graphql';
+	import { parse, print, visit, type ASTNode } from 'graphql';
 	import JSON5 from 'json5';
 	import CodeMirrorCustom from './fields/CodeMirrorCustom.svelte';
 	import QueryHistory from '$lib/components/QueryHistory.svelte';
@@ -69,7 +69,7 @@
 
 	///
 	const visitAst = () => {
-		const editedAST = visit(ast, {
+		const editedAST = visit(ast as ASTNode, {
 			enter(node, key, parent, path, ancestors) {
 				Logger.debug(JSON.parse(JSON.stringify({ node, key, parent, path, ancestors })));
 				// @return
@@ -137,7 +137,7 @@
 	$effect(() => {
 		if (valueModifiedManually && valueModifiedManually !== lastSyncedValue) {
 			try {
-				ast = parse(valueModifiedManually);
+				ast = parse(valueModifiedManually as string);
 
 				// Sync to UI if enabled and context is available
 				if (enableSyncToUI && qmsWraperCtx && mainWraperCtx) {
@@ -155,7 +155,7 @@
 			//const operationType = ast.definitions[0]?.operation;
 			//const operationName = ast.definitions[0]?.name?.value;
 
-			astPrinted = print(ast);
+			astPrinted = print(ast as ASTNode);
 		}
 	});
 	$effect(() => {
@@ -181,6 +181,7 @@
 			class="btn btn-xs btn-ghost transition-opacity"
 			aria-label="Copy to Clipboard"
 			onclick={() => {
+				Logger.info('Copied query to clipboard');
 				navigator.clipboard.writeText(value);
 				isCopied = true;
 				setTimeout(() => (isCopied = false), 2000);
@@ -197,6 +198,7 @@
 			aria-label="Copy as cURL"
 			onclick={() => {
 				if (mainWraperCtx?.endpointInfo) {
+					Logger.info('Copied query as cURL to clipboard');
 					const info = get(mainWraperCtx.endpointInfo);
 					const curl = generateCurlCommand(info.url, value, {}, info.headers || {});
 					navigator.clipboard.writeText(curl);
@@ -241,7 +243,7 @@
 			{#if astPrinted}
 				<div class="mx-4 mt-2 ">
 					<!-- <CodeMirrorCustom {value} language="graphql" /> -->
-					<CodeEditor rawValue={astPrinted} language="graphql" />
+					<CodeEditor rawValue={astPrinted as string} language="graphql" />
 				</div>
 			{/if}
 		{/if}

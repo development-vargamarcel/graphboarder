@@ -1,3 +1,5 @@
+import { writable, type Writable, type Readable } from 'svelte/store';
+
 /**
  * Enum representing the severity levels of logs.
  */
@@ -12,6 +14,12 @@ export enum LogLevel {
     ERROR = 3
 }
 
+export interface LogEntry {
+    timestamp: string;
+    level: string; // 'DEBUG' | 'INFO' | 'WARN' | 'ERROR'
+    message: unknown[];
+}
+
 /**
  * A simple logging service that supports log levels and formatting.
  *
@@ -23,6 +31,8 @@ export enum LogLevel {
  */
 export class LoggerService {
     private level: LogLevel = LogLevel.DEBUG;
+    private logs: Writable<LogEntry[]> = writable([]);
+    private maxLogs = 500;
 
     constructor() {
         // Default to DEBUG for now, could be configurable
@@ -36,9 +46,39 @@ export class LoggerService {
         this.level = level;
     }
 
+    /**
+     * Gets the store of logs.
+     */
+    get logsStore(): Readable<LogEntry[]> {
+        return { subscribe: this.logs.subscribe };
+    }
+
+    /**
+     * Clears all logs.
+     */
+    clear() {
+        this.logs.set([]);
+    }
+
     private formatMessage(level: string, ...args: unknown[]): any[] {
         const timestamp = new Date().toISOString();
         return [`[${timestamp}] [${level}]`, ...args];
+    }
+
+    private addLog(level: string, args: unknown[]) {
+        const entry: LogEntry = {
+            timestamp: new Date().toISOString(),
+            level,
+            message: args
+        };
+
+        this.logs.update(currentLogs => {
+            const newLogs = [entry, ...currentLogs];
+            if (newLogs.length > this.maxLogs) {
+                return newLogs.slice(0, this.maxLogs);
+            }
+            return newLogs;
+        });
     }
 
     /**
@@ -48,6 +88,7 @@ export class LoggerService {
     debug(...args: unknown[]) {
         if (this.level <= LogLevel.DEBUG) {
             console.debug(...this.formatMessage('DEBUG', ...args));
+            this.addLog('DEBUG', args);
         }
     }
 
@@ -58,6 +99,7 @@ export class LoggerService {
     info(...args: unknown[]) {
         if (this.level <= LogLevel.INFO) {
             console.info(...this.formatMessage('INFO', ...args));
+            this.addLog('INFO', args);
         }
     }
 
@@ -68,6 +110,7 @@ export class LoggerService {
     warn(...args: unknown[]) {
         if (this.level <= LogLevel.WARN) {
             console.warn(...this.formatMessage('WARN', ...args));
+            this.addLog('WARN', args);
         }
     }
 
@@ -78,6 +121,7 @@ export class LoggerService {
     error(...args: unknown[]) {
         if (this.level <= LogLevel.ERROR) {
             console.error(...this.formatMessage('ERROR', ...args));
+            this.addLog('ERROR', args);
         }
     }
 }

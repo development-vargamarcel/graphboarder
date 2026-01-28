@@ -32,9 +32,21 @@
 		prefix?: string;
 		QMSName: any;
 		children?: import('svelte').Snippet;
+		rowSelectionState?: any;
+		enableMultiRowSelectionState?: boolean;
+		onRowSelectionChange?: (detail: any) => void;
+		onRowClicked?: (detail: any) => void;
 	}
 
-	let { prefix = '', QMSName, children }: Props = $props();
+	let {
+		prefix = '',
+		QMSName,
+		children,
+		rowSelectionState = $bindable(),
+		enableMultiRowSelectionState = true,
+		onRowSelectionChange,
+		onRowClicked
+	}: Props = $props();
 
 	// Get contexts - ensuring prefix is defined
 	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
@@ -356,18 +368,25 @@
 		{infiniteHandler}
 		colsData={$tableColsData_Store}
 		{rows}
+		{rowSelectionState}
+		{enableMultiRowSelectionState}
+		{onRowSelectionChange}
 		onHideColumn={(detail) => {
 			hideColumn({ detail });
 		}}
 		onRowClicked={(detail) => {
-			if (browser) {
-				window.open(
-					`${$page.url.origin}/endpoints/${detail.id}`,
-					'_blank' // <- This is what makes it open in a new window.
-				);
-				//	window.location = `${$page.url.origin}/endpoints/${detail.id}`;
+			if (onRowClicked) {
+				onRowClicked(detail);
+			} else {
+				if (browser) {
+					window.open(
+						`${$page.url.origin}/endpoints/${detail.id}`,
+						'_blank' // <- This is what makes it open in a new window.
+					);
+					//	window.location = `${$page.url.origin}/endpoints/${detail.id}`;
+				}
+				//goto(`${$page.url.origin}/endpoints/${detail.id}`);
 			}
-			//goto(`${$page.url.origin}/endpoints/${detail.id}`);
 		}}
 	/>
 </div>

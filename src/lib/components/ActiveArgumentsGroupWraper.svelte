@@ -103,6 +103,7 @@
 				}}
                 parentNodeId={null}
                 availableOperators={[]}
+				{activeArgumentsDataGrouped}
 			/>
 		</div>
 	{:else}

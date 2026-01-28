@@ -9,6 +9,7 @@
 import MainWraper from './components/MainWraper.svelte';
 import QMSWraper from './components/QMSWraper.svelte';
 import Input from './components/fields/Input.svelte';
+import LogViewer from './components/UI/LogViewer.svelte';
 import { Logger, LogLevel } from './utils/logger';
 import { addToHistory, exportHistory, importHistory, queryHistory } from './stores/queryHistory';
 
@@ -46,6 +47,11 @@ export {
      * A generic input field component that adapts to the data type.
      */
     Input,
+
+    /**
+     * A UI component to view system logs.
+     */
+    LogViewer,
 
     /**
      * The logger utility used by the library.
