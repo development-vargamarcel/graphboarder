@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getContext, setContext } from 'svelte';
+	import { getContext, setContext, untrack } from 'svelte';
 	import Arg from '$lib/components/Arg.svelte';
 	import { getQMSWraperCtxDataGivenControlPanelItem } from '$lib/utils/usefulFunctions';
     import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
@@ -29,16 +29,16 @@
 	let dragDisabled = true;
 	const hasGroup_argsNode = group.group_argsNode;
 	/////start
-	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
 
     // Context logic - using derived to avoid stale values if context was dynamic (though context is usually stable)
-    const nodeContext = getContext<any>(`${prefix}nodeContext`);
+    const nodeContext = getContext<any>(`${untrack(() => prefix)}nodeContext`);
     let pathIsInCP = $derived(nodeContext?.pathIsInCP || false);
 
 	let nodeIsInCP = false;
-	const CPItemContext = getContext<any>(`${prefix}CPItemContext`);
-	if (CPItemContext?.CPItem.nodeId == node.id) {
-		setContext(`${prefix}nodeContext`, { pathIsInCP: true });
+	const CPItemContext = getContext<any>(`${untrack(() => prefix)}CPItemContext`);
+	if (CPItemContext?.CPItem.nodeId == untrack(() => node).id) {
+		setContext(`${untrack(() => prefix)}nodeContext`, { pathIsInCP: true });
 		nodeIsInCP = true;
 	}
 	const isCPChild = CPItemContext ? true : false;
@@ -52,7 +52,7 @@
 			OutermostQMSWraperContext
 		);
 	} else {
-		correctQMSWraperContext = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+		correctQMSWraperContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}QMSWraperContext`);
 	}
 
     let activeArgumentsDataGrouped_Store = $derived(correctQMSWraperContext?.activeArgumentsDataGrouped_Store);
@@ -68,7 +68,7 @@
 
     let predefinedFirstSteps = $derived(group.group_isRoot ? [] : [group.group_name]);
 
-    let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+    let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const endpointInfo = mainWraperCtx?.endpointInfo;
 </script>
 

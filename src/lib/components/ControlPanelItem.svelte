@@ -13,10 +13,10 @@
 	let { prefix = '', CPItem }: Props = $props();
 	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
 
-	const QMSWraperCtx = getQMSWraperCtxDataGivenControlPanelItem(CPItem, OutermostQMSWraperContext);
+	const QMSWraperCtx = getQMSWraperCtxDataGivenControlPanelItem(untrack(() => CPItem), OutermostQMSWraperContext);
 	const activeArgumentsDataGrouped_Store = QMSWraperCtx.activeArgumentsDataGrouped_Store;
 
-	const CPItemContext = { CPItem, QMSWraperCtx };
+	const CPItemContext = { CPItem: untrack(() => CPItem), QMSWraperCtx };
 	setContext(`${untrack(() => prefix)}CPItemContext`, CPItemContext);
 </script>
 

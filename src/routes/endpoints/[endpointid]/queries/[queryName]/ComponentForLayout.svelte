@@ -52,7 +52,7 @@
 	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const endpointInfo = mainWraperCtx?.endpointInfo;
 	const urqlCoreClient = mainWraperCtx?.urqlCoreClient;
-	let queryName = QMSName;
+	let queryName = untrack(() => QMSName);
 	const qmsWraperCtx = getContext<QMSWraperContext>(`${untrack(() => prefix)}QMSWraperContext`);
 	const {
 		QMS_bodyPart_StoreDerived_rowsCount = null,

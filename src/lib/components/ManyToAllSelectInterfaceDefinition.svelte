@@ -45,19 +45,21 @@
 	//
 	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
-	const inputFieldsContainerLocation = endpointInfo.get_inputFieldsContainerLocation(
+	let inputFieldsContainerLocation = $derived(endpointInfo.get_inputFieldsContainerLocation(
 		node,
 		schemaData
-	);
-	const inputFieldsContainer = getDeepField(
+	));
+	let inputFieldsContainer = $derived(getDeepField(
 		node,
 		inputFieldsContainerLocation,
 		schemaData,
 		'inputFields'
-	);
-	const inputFieldsContainerRoot = getRootType(null, inputFieldsContainer.dd_rootName, schemaData);
-	const inputFields = inputFieldsContainerRoot?.inputFields || [];
-	Logger.debug({ inputFieldsContainer, inputFieldsContainerRoot, inputFields });
+	));
+	let inputFieldsContainerRoot = $derived(getRootType(null, inputFieldsContainer.dd_rootName, schemaData));
+	let inputFields = $derived(inputFieldsContainerRoot?.inputFields || []);
+    $effect(() => {
+	    Logger.debug({ inputFieldsContainer, inputFieldsContainerRoot, inputFields });
+    });
 </script>
 
 <div class="flex space-x-2">

@@ -7,8 +7,6 @@
 
 	let { prefix = '', children, QMSName: _QMSName }: Props = $props();
 
-    const initialPrefix = prefix;
-
 	import AddColumn from '$lib/components/AddColumn.svelte';
 	import { getContext, untrack } from 'svelte';
 	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
