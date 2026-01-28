@@ -24,6 +24,7 @@
 	let { onRestore, onClose }: Props = $props();
 
 	let fileInput: HTMLInputElement;
+	let searchTerm = $state('');
 
 	const formatDate = (timestamp: number) => {
 		return new Date(timestamp).toLocaleString();
@@ -62,12 +63,23 @@
 
 	// Sort: Favorites first, then by timestamp descending
 	let sortedHistory = $derived(
-		[...$queryHistory].sort((a, b) => {
-			if (a.isFavorite === b.isFavorite) {
-				return b.timestamp - a.timestamp;
-			}
-			return a.isFavorite ? -1 : 1;
-		})
+		[...$queryHistory]
+			.filter((item) => {
+				if (!searchTerm) return true;
+				const term = searchTerm.toLowerCase();
+				return (
+					(item.name && item.name.toLowerCase().includes(term)) ||
+					(item.operationName && item.operationName.toLowerCase().includes(term)) ||
+					(item.query && item.query.toLowerCase().includes(term)) ||
+					(item.endpointId && item.endpointId.toLowerCase().includes(term))
+				);
+			})
+			.sort((a, b) => {
+				if (a.isFavorite === b.isFavorite) {
+					return b.timestamp - a.timestamp;
+				}
+				return a.isFavorite ? -1 : 1;
+			})
 	);
 
 	let editingId = $state<string | null>(null);
@@ -104,38 +116,48 @@
 		tabindex="0"
 		onclick={(e) => e.stopPropagation()}
 	>
-		<div class="p-4 border-b border-base-300 flex justify-between items-center">
-			<h3 class="text-xl font-bold">Query History</h3>
-			<div class="flex space-x-2 items-center">
-				<input
-					type="file"
-					accept=".json"
-					class="hidden"
-					bind:this={fileInput}
-					onchange={handleImport}
-				/>
-				<button
-					class="btn btn-sm btn-ghost"
-					onclick={() => fileInput.click()}
-					aria-label="Import History"
-				>
-					<i class="bi bi-upload"></i> Import
-				</button>
-				<button class="btn btn-sm btn-ghost" onclick={handleExport} aria-label="Export History">
-					<i class="bi bi-download"></i> Export
-				</button>
-				{#if $queryHistory.length > 0}
+		<div class="p-4 border-b border-base-300 flex flex-col gap-4">
+			<div class="flex justify-between items-center w-full">
+				<h3 class="text-xl font-bold">Query History</h3>
+				<div class="flex space-x-2 items-center">
+					<input
+						type="file"
+						accept=".json"
+						class="hidden"
+						bind:this={fileInput}
+						onchange={handleImport}
+					/>
 					<button
-						class="btn btn-sm btn-error btn-outline"
-						onclick={() => {
-							Logger.info('Clearing all query history');
-							clearHistory();
-						}}
+						class="btn btn-sm btn-ghost"
+						onclick={() => fileInput.click()}
+						aria-label="Import History"
 					>
-						Clear All
+						<i class="bi bi-upload"></i> Import
 					</button>
-				{/if}
-				<button class="btn btn-sm btn-ghost" onclick={onClose}>✕</button>
+					<button class="btn btn-sm btn-ghost" onclick={handleExport} aria-label="Export History">
+						<i class="bi bi-download"></i> Export
+					</button>
+					{#if $queryHistory.length > 0}
+						<button
+							class="btn btn-sm btn-error btn-outline"
+							onclick={() => {
+								Logger.info('Clearing all query history');
+								clearHistory();
+							}}
+						>
+							Clear All
+						</button>
+					{/if}
+					<button class="btn btn-sm btn-ghost" onclick={onClose}>✕</button>
+				</div>
+			</div>
+			<div class="w-full">
+				<input
+					type="text"
+					class="input input-bordered input-sm w-full"
+					placeholder="Search history..."
+					bind:value={searchTerm}
+				/>
 			</div>
 		</div>
 
