@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { get } from 'svelte/store';
 	import ActiveArgumentsGroupWraper from './ActiveArgumentsGroupWraper.svelte';
-	import { getContext, setContext } from 'svelte';
+	import { getContext, setContext, untrack } from 'svelte';
 	import { getQMSWraperCtxDataGivenControlPanelItem } from '$lib/utils/usefulFunctions';
     import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 
@@ -11,13 +11,13 @@
 	}
 
 	let { prefix = '', CPItem }: Props = $props();
-	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
 
 	const QMSWraperCtx = getQMSWraperCtxDataGivenControlPanelItem(CPItem, OutermostQMSWraperContext);
 	const activeArgumentsDataGrouped_Store = QMSWraperCtx.activeArgumentsDataGrouped_Store;
 
 	const CPItemContext = { CPItem, QMSWraperCtx };
-	setContext(`${prefix}CPItemContext`, CPItemContext);
+	setContext(`${untrack(() => prefix)}CPItemContext`, CPItemContext);
 </script>
 
 <div class="card w-full bg-base-100 text-base-content">

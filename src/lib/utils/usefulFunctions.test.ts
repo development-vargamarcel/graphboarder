@@ -4,7 +4,7 @@ import { getDeepField } from './usefulFunctions';
 import type { SchemaData } from '$lib/types';
 
 // Mock SchemaData
-const mockSchemaData: SchemaData = {
+const mockSchemaData: any = {
     rootTypes: [
         {
             name: 'RootQuery',

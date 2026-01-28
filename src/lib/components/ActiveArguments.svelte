@@ -3,7 +3,7 @@
 	 * Component for managing active arguments (filters, sorting, etc.) for a QMS operation.
 	 * Displays groups of arguments and allows adding/removing/modifying them.
 	 */
-	import { getContext, setContext } from 'svelte';
+	import { getContext, setContext, untrack } from 'svelte';
 	import ActiveArgumentsGroupWraper from '$lib/components/ActiveArgumentsGroupWraper.svelte';
 	import { Logger } from '$lib/utils/logger';
     import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
@@ -29,11 +29,11 @@
 	}: Props = $props();
 
 	const activeArgumentsContext = { stepsOfFieldsThisAppliesTo, isControlPanelChild };
-	setContext(`${prefix}activeArgumentsContext`, activeArgumentsContext);
-	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	setContext(`${untrack(() => prefix)}activeArgumentsContext`, activeArgumentsContext);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const endpointInfo = mainWraperCtx?.endpointInfo;
 	const schemaData = mainWraperCtx?.schemaData;
-	let qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+	let qmsWraperCtx = getContext<QMSWraperContext>(`${untrack(() => prefix)}QMSWraperContext`);
 
 	// Set defaults if not provided
 	if (!activeArgumentsDataGrouped_Store) {

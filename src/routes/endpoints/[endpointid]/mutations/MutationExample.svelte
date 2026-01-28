@@ -9,13 +9,13 @@
     const initialPrefix = prefix;
 
 	import AddColumn from './../../../../lib/components/AddColumn.svelte';
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 	import { Logger } from '$lib/utils/logger';
 	import { get } from 'svelte/store';
 
 	// Initialization after props
-	let mainWraperContext = getContext<QMSMainWraperContext>(`${initialPrefix}QMSMainWraperContext`);
+	let mainWraperContext = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	let endpointInfo = $derived(mainWraperContext?.endpointInfo);
 	let schemaData = $derived(mainWraperContext?.schemaData);
 
@@ -23,7 +23,7 @@
 	import { page } from '$app/stores';
 	import Table from '$lib/components/Table.svelte';
 
-	const qmsContext = getContext<QMSWraperContext>(`${initialPrefix}QMSWraperContext`);
+	const qmsContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}QMSWraperContext`);
 	const {
 		QMS_bodyPart_StoreDerived_rowsCount = null,
 		activeArgumentsDataGrouped_Store,

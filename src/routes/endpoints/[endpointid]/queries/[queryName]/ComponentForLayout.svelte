@@ -9,7 +9,7 @@
 		getRootType,
 		stepsOfFieldsToQueryFragmentObject
 	} from '$lib/utils/usefulFunctions';
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 	import { goto } from '$app/navigation';
 	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 	import Type from '$lib/components/Type.svelte';
@@ -49,11 +49,11 @@
 	}: Props = $props();
 
 	// Get contexts - ensuring prefix is defined
-	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const endpointInfo = mainWraperCtx?.endpointInfo;
 	const urqlCoreClient = mainWraperCtx?.urqlCoreClient;
 	let queryName = QMSName;
-	const qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+	const qmsWraperCtx = getContext<QMSWraperContext>(`${untrack(() => prefix)}QMSWraperContext`);
 	const {
 		QMS_bodyPart_StoreDerived_rowsCount = null,
 		activeArgumentsDataGrouped_Store,

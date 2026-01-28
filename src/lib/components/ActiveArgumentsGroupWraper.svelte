@@ -2,7 +2,7 @@
 	import ActiveArgumentsGroup_addFilterAndSortingButton from '$lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte';
 	import ActiveArgumentsGroup_info from '$lib/components/ActiveArgumentsGroup_info.svelte';
 	import ActiveArgumentsGroupNormal from '$lib/components/ActiveArgumentsGroupNormal.svelte';
-	import { getContext, setContext } from 'svelte';
+	import { getContext, setContext, untrack } from 'svelte';
 	import ActiveArgumentsGroupHasFilterOperators from '$lib/components/ActiveArgumentsGroupHasFilterOperators.svelte';
 	import Toggle from './fields/Toggle.svelte';
 	import { writable } from 'svelte/store';
@@ -37,10 +37,10 @@
 
     const hasGroup_argsNode = $derived(group.group_argsNode);
 
-	const qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+	const qmsWraperCtx = getContext<QMSWraperContext>(`${untrack(() => prefix)}QMSWraperContext`);
     const finalGqlArgObj_Store = qmsWraperCtx?.finalGqlArgObj_Store;
 
-	const CPItemContext = getContext<any>(`${prefix}CPItemContext`);
+	const CPItemContext = getContext<any>(`${untrack(() => prefix)}CPItemContext`);
 
 	const dndIsOn = writable(false);
 	const showInputField = writable(false);
@@ -52,7 +52,7 @@
 	// );
 	const mutationVersion = writable(false);
 	setContext('mutationVersion', mutationVersion);
-	let activeArgumentsContext = getContext<any>(`${prefix}activeArgumentsContext`);
+	let activeArgumentsContext = getContext<any>(`${untrack(() => prefix)}activeArgumentsContext`);
 </script>
 
 {#if !CPItemContext}

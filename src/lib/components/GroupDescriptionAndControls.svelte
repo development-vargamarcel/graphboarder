@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Toggle from '$lib/components/fields/Toggle.svelte';
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 	import type { Writable } from 'svelte/store';
 
 	interface Props {
@@ -10,9 +10,9 @@
 
 	let { prefix = '', hasGroup_argsNode }: Props = $props();
 
-	const dndIsOn = getContext<Writable<boolean>>(`${prefix}dndIsOn`);
-	const showInputField = getContext<Writable<boolean>>(`${prefix}showInputField`);
-	const mutationVersion = getContext<Writable<boolean>>(`${prefix}mutationVersion`);
+	const dndIsOn = getContext<Writable<boolean>>(`${untrack(() => prefix)}dndIsOn`);
+	const showInputField = getContext<Writable<boolean>>(`${untrack(() => prefix)}showInputField`);
+	const mutationVersion = getContext<Writable<boolean>>(`${untrack(() => prefix)}mutationVersion`);
 </script>
 
 <div class="btn btn-ghost btn-xs w-min flex ml-4 {hasGroup_argsNode ? '' : 'pt-1'}">

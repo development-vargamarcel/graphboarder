@@ -5,7 +5,7 @@
 	import type { ColumnDef, TableOptions } from '@tanstack/table-core';
 	import { formatData, getPreciseType, getTableCellData } from '$lib/utils/usefulFunctions';
 	import ColumnInfo from './ColumnInfo.svelte';
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 	import InfiniteLoading from 'svelte-infinite-loading';
     import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 
@@ -38,8 +38,8 @@
 	}: Props = $props();
 
     let loadMore = $state(false);
-	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
-	let qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
+	let qmsWraperCtx = getContext<QMSWraperContext>(`${untrack(() => prefix)}QMSWraperContext`);
 	let idColName = $derived(qmsWraperCtx?.idColName);
 	const paginationOptions = $derived(qmsWraperCtx?.paginationOptions);
 
@@ -94,14 +94,14 @@
 
     const options = writable<TableOptions<any>>({
 		data: data,
-		columns: columns, // Initial value
+		columns: untrack(() => columns), // Initial value
 		getCoreRowModel: getCoreRowModel(),
-		enableMultiRowSelection: enableMultiRowSelectionState,
-		enableRowSelection: enableRowSelectionState,
+		enableMultiRowSelection: untrack(() => enableMultiRowSelectionState),
+		enableRowSelection: untrack(() => enableRowSelectionState),
 		onRowSelectionChange: setRowSelection,
 		enableHiding: true,
-		initialState: { rowSelection: rowSelectionState },
-		state: { columnVisibility, rowSelection: rowSelectionState },
+		initialState: { rowSelection: untrack(() => rowSelectionState) },
+		state: { columnVisibility: untrack(() => columnVisibility), rowSelection: untrack(() => rowSelectionState) },
 		getRowId: (row) => row?.[idColName!]
 	});
 

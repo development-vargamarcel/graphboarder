@@ -75,7 +75,7 @@
 	let stepsOfFields = $state<any[]>([]);
 	let stepsOfFieldsFull = $state<any[]>([]);
 	let testName_stepsOFFieldsWasUpdated = $state(false);
-	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
 	let getManyQMS = $state();
 	///
@@ -154,9 +154,6 @@
 			if ($mutationVersion === false) $mutationVersion = true;
 		}
 	});
-	if (QMSType == 'mutation') {
-		$mutationVersion = true;
-	}
 
 	$effect(() => {
 		if (!testName_stepsOFFieldsWasUpdated) {
@@ -169,7 +166,7 @@
 	});
 
 
-	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let context = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const endpointInfo = context?.endpointInfo;
 	const schemaData = context?.schemaData;
 	let dragDisabled = $state(true);

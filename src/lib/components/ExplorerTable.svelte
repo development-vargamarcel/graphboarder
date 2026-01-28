@@ -7,7 +7,7 @@
 	import { getColumnVisibility, createTableOptions, getColumnFlags } from '$lib/utils/tableUtils';
 	import ColumnInfo from './ColumnInfo.svelte';
 	import { Logger } from '$lib/utils/logger';
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 
 	let loadMore = false;
 
@@ -65,14 +65,14 @@
 
 	const optionsObj = createTableOptions(
 		data,
-		columns,
-		rowSelectionState,
-		columnVisibility, // This might need to be reactive in createTableOptions logic or options update
-		enableMultiRowSelectionState,
-		enableRowSelectionState,
+		untrack(() => columns),
+		untrack(() => rowSelectionState),
+		untrack(() => columnVisibility), // This might need to be reactive in createTableOptions logic or options update
+		untrack(() => enableMultiRowSelectionState),
+		untrack(() => enableRowSelectionState),
 		getCoreRowModel,
 		setRowSelection,
-		idColName
+		untrack(() => idColName)
 	);
 
 	const options = writable(optionsObj);

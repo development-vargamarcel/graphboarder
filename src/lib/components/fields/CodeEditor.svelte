@@ -97,8 +97,10 @@
 	};
 
 	$effect(() => {
-		const cleanup = initializeEditor();
-		return cleanup;
+		const cleanupPromise = initializeEditor();
+		return () => {
+			cleanupPromise.then((cleanup) => cleanup && cleanup());
+		};
 	});
 
 
@@ -153,7 +155,7 @@
 			// Full-screen mode entered
 			//Logger.debug('Entered full-screen mode');
 		} else {
-			if (e.target.id == id) {
+			if ((e.target as HTMLElement).id == id) {
 				editor.dispose();
 				setTimeout(initializeEditor, 500);
 			}
@@ -199,7 +201,7 @@
 		<button
 			class="btn btn-primary btn-xs normal-case ml-2"
 			onclick={() => {
-				editor.setValue(`const data = ${configurationAsString}`);
+				editor.setValue(`const data = ${JSON.stringify(configurations, null, 2)}`);
 			}}
 		>
 			Load Demo Data

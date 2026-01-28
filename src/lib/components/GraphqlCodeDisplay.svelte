@@ -3,7 +3,7 @@
 	import CodeEditor from './fields/CodeEditor.svelte';
 	import { format } from 'graphql-formatter';
 	import hljs from 'highlight.js/lib/core';
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 	import graphql from 'highlight.js/lib/languages/graphql';
 	import 'highlight.js/styles/base16/solarized-dark.css';
 	import { Logger } from '$lib/utils/logger';
@@ -32,7 +32,7 @@
 	}: Props = $props();
 
 	let valueModifiedManually = $state();
-	let lastSyncedValue = $state(value);
+	let lastSyncedValue = $state(untrack(() => value));
 
 	// Try to get context if available
 	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
@@ -43,8 +43,8 @@
 	try {
 		// Suppress duplicate identifier if getContext was already imported and used previously in this scope (which it was, up top)
 		// But here we are assigning to vars.
-		qmsWraperCtx = getContext<QMSWraperContext>(`${prefix}QMSWraperContext`);
-		mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+		qmsWraperCtx = getContext<QMSWraperContext>(`${untrack(() => prefix)}QMSWraperContext`);
+		mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	} catch (e) {
 		Logger.debug('GraphqlCodeDisplay: Context not available', e);
 	}

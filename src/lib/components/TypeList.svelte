@@ -22,7 +22,6 @@
 {#each types as type, index (index)}
 	<Type
 		{index}
-		{prefix}
 		{type}
 		{template}
 		{depth}
