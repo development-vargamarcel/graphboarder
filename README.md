@@ -205,6 +205,16 @@ Auto-GQL can generate mock response data for your queries based on the schema. T
 - **Usage:** In the code display view (where the query is shown), click the **Mock Data** button (<i class="bi bi-code-slash"></i> icon).
 - **Functionality:** It parses the current query and generates realistic random data (Strings, Ints, Lists, Objects) matching the schema types.
 
+## Import from cURL
+
+Auto-GQL allows you to import a GraphQL query and headers from a cURL command (e.g., copied from Chrome DevTools).
+
+- **Access:** In the code display view, click the **Import cURL** button (<i class="bi bi-box-arrow-in-down"></i>).
+- **Functionality:**
+    - Parses the cURL command to extract the GraphQL query.
+    - Updates the current query in the editor.
+    - Merges any extracted headers (e.g., `Authorization`) with your existing persisted headers.
+
 ## Theme Support
 
 GraphBoarder supports Light and Dark modes. The theme can be toggled using the button in the header. The preference is persisted in `localStorage`.
