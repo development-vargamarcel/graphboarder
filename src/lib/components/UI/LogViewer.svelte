@@ -60,7 +60,7 @@
                  <button class="btn btn-sm btn-error btn-outline" onclick={() => Logger.clear()}>
                     <i class="bi bi-trash"></i> Clear
                 </button>
-                <button class="btn btn-sm btn-ghost btn-circle" onclick={onClose}>
+                <button class="btn btn-sm btn-ghost btn-circle" aria-label="Close" onclick={onClose}>
                     <i class="bi bi-x-lg"></i>
                 </button>
             </div>

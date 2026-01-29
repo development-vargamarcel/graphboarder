@@ -16,13 +16,13 @@
 
 	let { prefix = '', origin, query }: Props = $props();
 
-    const initialPrefix = prefix;
+    const initialPrefix = untrack(() => prefix);
 	// Initialization after props
-	let context = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
+	let context = getContext<QMSMainWraperContext>(`${initialPrefix}QMSMainWraperContext`);
 	const endpointInfo = context?.endpointInfo;
 	const schemaData = context?.schemaData;
 	let queryName = $derived(query.name);
-	let queryNameDisplay = $state(queryName);
+	let queryNameDisplay = $state(untrack(() => queryName));
 	let queryTitleDisplay = '';
 	//let { scalarFields, non_scalarFields } = getFields_Grouped(currentQueryFromRootTypes);
 	let currentQMS_info = $derived((get(schemaData) as any).get_QMS_Field(queryName, 'query', get(schemaData)));

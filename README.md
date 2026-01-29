@@ -164,6 +164,16 @@ Auto-GQL allows you to persist and restore executed queries.
 - **Renaming:** Click on a query name in the history to rename it for easier identification.
 - **Export/Import:** You can export your query history to a JSON file and import it on another device or for backup.
 
+## Headers Editor
+
+Auto-GQL allows you to configure HTTP headers (e.g., Authorization tokens) for your GraphQL requests directly from the UI.
+
+- **Access:** Click the **Settings** button (gear icon) at the bottom of the sidebar.
+- **Functionality:**
+    - View, add, edit, and delete headers.
+    - Headers are persisted in `localStorage`.
+    - Supports both global headers and endpoint-specific headers (if the endpoint ID is available).
+
 ### Data Export
 
 The `Table` component supports exporting data to CSV and JSON formats.

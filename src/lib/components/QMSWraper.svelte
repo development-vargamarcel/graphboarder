@@ -144,14 +144,18 @@
 
     // We set the context object reference immediately. We will mutate it.
 	// Using untrack to suppress warning about prefix, as context keys are expected to be stable.
-    setContext(`${prefix}QMSWraperContext`, QMSWraperContext);
+    setContext(`${untrack(() => prefix)}QMSWraperContext`, QMSWraperContext);
 
     // Derived value for children context setting
-    $effect(() => {
-        if (calculated_isOutermostQMSWraper) {
-             setContext(`${prefix}OutermostQMSWraperContext`, QMSWraperContext);
-        }
-    })
+    // Note: setContext is synchronous and should not be in $effect usually, but if this is intended to be reactive...
+    // Actually setContext MUST be called during component initialization.
+    // The previous code had it in $effect which might be wrong or ignored by Svelte 5 for context provision?
+    // "setContext... must be called during component initialization".
+    // If calculated_isOutermostQMSWraper is derived, we can't condition setContext on it easily if it changes.
+    // Assuming isOutermostQMSWraper doesn't change after init, we can untrack it.
+    if (untrack(() => calculated_isOutermostQMSWraper)) {
+         setContext(`${untrack(() => prefix)}OutermostQMSWraperContext`, QMSWraperContext);
+    }
 
     // Main Logic Effect
     $effect(() => {
@@ -195,6 +199,8 @@
             endpointInfo,
             schemaData
         );
+        Logger.debug('Pagination State created', { QMSName, paginationState: get(paginationState) });
+
         const paginationState_derived = Create_paginationState_derived(
             paginationState,
             QMS_info.dd_paginationArgs,
@@ -255,6 +261,7 @@
             tableColsData_StoreInitialValue,
             dependencyColsData
         );
+        Logger.debug('Table Columns Data merged', { QMSName, current_tableColsData_StoreInitialValue });
 
         const tableColsData_Store = Create_tableColsData_Store(
             paginationState,

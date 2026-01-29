@@ -6,7 +6,7 @@
 
 	let { prefix = '', children }: Props = $props();
 
-    const initialPrefix = prefix;
+    const initialPrefix = untrack(() => prefix);
 
 	import AddColumn from './../../../../lib/components/AddColumn.svelte';
 	import { getContext, untrack } from 'svelte';
