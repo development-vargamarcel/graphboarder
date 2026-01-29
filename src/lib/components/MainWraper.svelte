@@ -8,7 +8,7 @@
 	import IntrospectionDataGenerator from '$lib/components/IntrospectionDataGenerator.svelte';
 	import { create_schemaData } from '$lib/stores/endpointHandling/schemaData';
 
-	import { setContext } from 'svelte';
+	import { setContext, untrack } from 'svelte';
 	import { Client, fetchExchange, setContextClient } from '@urql/svelte';
 	import { browser } from '$app/environment';
 	import { Create_urqlCoreClient } from '$lib/utils/urqlCoreClient';
@@ -37,7 +37,8 @@
 
 	// Initialize stores
 	// Initialize with the provided prop value immediately so the client has the correct URL on startup.
-	const endpointInfo = create_endpointInfo_Store(endpointInfoProvided);
+	// Using untrack to avoid "state referenced locally" warning as this is initialization logic
+	const endpointInfo = create_endpointInfo_Store(untrack(() => endpointInfoProvided));
 	const schemaData = create_schemaData();
 
 	// Update store when prop changes (for reactivity if the prop updates later)
@@ -72,16 +73,42 @@
 		exchanges: [fetchExchange]
 	});
 
+	/**
+	 * Retrieves headers for the GraphQL client, merging provided headers with those stored in localStorage.
+	 * Priorities: localStorage (specific > global) > endpointInfo.headers
+	 */
 	let getHeaders = () => {
+		let headers: Record<string, string> = {};
+
+		// Start with provided headers
 		if ($endpointInfo?.headers) {
-			return $endpointInfo?.headers;
+			headers = { ...$endpointInfo.headers };
 		}
+
 		if (browser) {
-			const headers = localStorage.getItem('headers');
-			return headers ? JSON.parse(headers) : {};
-		} else {
-			return {};
+			// Check for global headers first
+			const globalHeaders = localStorage.getItem('headers');
+			if (globalHeaders) {
+				try {
+					headers = { ...headers, ...JSON.parse(globalHeaders) };
+				} catch (e) {
+					Logger.error('MainWraper: Failed to parse global headers from localStorage', e);
+				}
+			}
+
+			// Check for endpoint-specific headers (overrides global)
+			if ($endpointInfo?.id) {
+				const specificHeaders = localStorage.getItem(`headers_${$endpointInfo.id}`);
+				if (specificHeaders) {
+					try {
+						headers = { ...headers, ...JSON.parse(specificHeaders) };
+					} catch (e) {
+						Logger.error(`MainWraper: Failed to parse specific headers for ${$endpointInfo.id}`, e);
+					}
+				}
+			}
 		}
+		return headers;
 	};
 	const urqlCoreClient = Create_urqlCoreClient();
 	urqlCoreClient.set(client);
@@ -90,13 +117,13 @@
 
 	// We capture the initial prefix for the context key. This is standard behavior.
 	// Svelte 5 warns about capturing state locally, but for context keys it is expected.
-	setContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`, {
+	setContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`, {
 		endpointInfo: endpointInfo,
 		schemaData: schemaData,
 		urqlCoreClient: urqlCoreClient
 	});
 
-	Logger.info('MainWraper initialized and context set', { prefix });
+	Logger.info('MainWraper initialized and context set', { prefix: untrack(() => prefix) });
 </script>
 
 <IntrospectionDataGenerator {prefix}>
