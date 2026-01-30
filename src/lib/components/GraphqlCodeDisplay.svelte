@@ -2,8 +2,8 @@
 	import CodeEditor from './fields/CodeEditor.svelte';
 	import { format } from 'graphql-formatter';
 	import hljs from 'highlight.js/lib/core';
+    import graphql from 'highlight.js/lib/languages/graphql';
 	import { getContext, untrack } from 'svelte';
-	import graphql from 'highlight.js/lib/languages/graphql';
 	import 'highlight.js/styles/base16/solarized-dark.css';
 	import { Logger } from '$lib/utils/logger';
 	import { getPreciseType } from '$lib/utils/usefulFunctions';
@@ -62,12 +62,29 @@
 		Logger.debug('GraphqlCodeDisplay: Context not available', e);
 	}
 
+
+    // Ensure language is registered
+    try {
+        if (typeof hljs !== 'undefined' && hljs.registerLanguage) {
+            // Some environments might not have getLanguage or might throw
+             try {
+                if (!hljs.getLanguage('graphql')) {
+                    hljs.registerLanguage('graphql', graphql);
+                }
+             } catch(e) {
+                // If getLanguage fails, attempt registration anyway to be safe
+                try { hljs.registerLanguage('graphql', graphql); } catch(e2) {}
+             }
+        }
+    } catch(e) {
+        // ignore
+    }
+
 	$effect(() => {
 		try {
-			if (hljs && !hljs.getLanguage('graphql')) {
-				hljs.registerLanguage('graphql', graphql);
+			if (typeof hljs !== 'undefined' && hljs.highlightAll) {
+				hljs.highlightAll();
 			}
-			hljs.highlightAll();
 		} catch (e) {
 			Logger.warn('GraphqlCodeDisplay: Highlight init failed', e);
 		}
@@ -76,13 +93,17 @@
 	const safeHighlight = (code: string) => {
 		try {
 			const formatted = format(code);
-			// Check if language is registered before highlighting
-			if (hljs.getLanguage('graphql')) {
-				return hljs.highlight(formatted, { language: 'graphql' }).value.trim();
-			}
-			return formatted;
+            if (typeof hljs !== 'undefined' && hljs.highlight) {
+                // Explicitly use graphql language if possible
+			    return hljs.highlight(formatted, { language: 'graphql' }).value;
+            }
+            return formatted;
 		} catch (e) {
-			return code;
+			try {
+				return format(code);
+			} catch (e2) {
+				return code;
+			}
 		}
 	};
 
