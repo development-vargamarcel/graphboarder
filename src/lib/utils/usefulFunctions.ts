@@ -1324,6 +1324,11 @@ export const check_stepsOfFields = (stepsOfFields: string[], schemaData: SchemaD
 	return currentField;
 };
 
+/**
+ * Generates a concise title from a list of field steps, abbreviating intermediate steps.
+ * @param stepsOfFields - The array of field names.
+ * @returns A string representation of the path.
+ */
 export const generateTitleFromStepsOfFields = (stepsOfFields: string[]): string => {
 	const title = stepsOfFields.map((step, index) => {
 		if (stepsOfFields.length - index - 1 == 0) {
@@ -1334,6 +1339,12 @@ export const generateTitleFromStepsOfFields = (stepsOfFields: string[]): string 
 	title.shift();
 	return title.join('');
 };
+
+/**
+ * Compare function for sorting based on multiple columns/criteria.
+ * @param array - An array of tuples, where each tuple contains values to compare [valA, valB].
+ * @returns -1 if A < B, 1 if A > B, or 0 if equal.
+ */
 export const sortingFunctionMutipleColumnsGivenArray = (array: [unknown, unknown][]): number => {
 	let maxIndex = array.length - 1;
 	const check = (currentIndex: number): number => {
@@ -1739,6 +1750,13 @@ export const getQMSWraperCtxDataGivenControlPanelItem = (CPItem: { stepsOfFields
 	}
 	return undefined;
 };
+
+/**
+ * Sorts and filters a list of endpoints.
+ * @param endpoints - The list of endpoints to sort.
+ * @param filterOutIfNotMaintaned - Whether to filter out endpoints that are not maintained.
+ * @returns The sorted (and optionally filtered) list of endpoints.
+ */
 export const getSortedAndOrderedEndpoints = (endpoints: { id: number | string; isMantained?: boolean }[], filterOutIfNotMaintaned: boolean = false): { id: number | string; isMantained?: boolean }[] => {
 	const sortedEndpoints = endpoints.sort((a, b) => {
 		if (a.id > b.id) {
