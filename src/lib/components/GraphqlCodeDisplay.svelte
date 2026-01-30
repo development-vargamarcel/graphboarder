@@ -2,8 +2,8 @@
 	import CodeEditor from './fields/CodeEditor.svelte';
 	import { format } from 'graphql-formatter';
 	import hljs from 'highlight.js/lib/core';
+    import graphql from 'highlight.js/lib/languages/graphql';
 	import { getContext, untrack } from 'svelte';
-	import graphql from 'highlight.js/lib/languages/graphql';
 	import 'highlight.js/styles/base16/solarized-dark.css';
 	import { Logger } from '$lib/utils/logger';
 	import { getPreciseType } from '$lib/utils/usefulFunctions';
@@ -16,12 +16,26 @@
 	import QueryHistory from '$lib/components/QueryHistory.svelte';
 	import type { HistoryItem } from '$lib/stores/queryHistory';
 	import { generateMockData } from '$lib/utils/mockGenerator';
+	import { generatePostmanCollectionForQuery } from '$lib/utils/postmanUtils';
 	import Modal from '$lib/components/Modal.svelte';
 
 	interface Props {
+		/**
+		 * Whether to show the raw, non-prettified query body.
+		 */
 		showNonPrettifiedQMSBody: any;
+		/**
+		 * The GraphQL query string to display.
+		 */
 		value: any;
+		/**
+		 * Whether to enable syncing changes in the editor back to the UI stores.
+		 * Default: true
+		 */
 		enableSyncToUI?: boolean;
+		/**
+		 * Prefix for context keys.
+		 */
 		prefix?: string;
 	}
 
@@ -48,10 +62,50 @@
 		Logger.debug('GraphqlCodeDisplay: Context not available', e);
 	}
 
+
+    // Ensure language is registered
+    try {
+        if (typeof hljs !== 'undefined' && hljs.registerLanguage) {
+            // Some environments might not have getLanguage or might throw
+             try {
+                if (!hljs.getLanguage('graphql')) {
+                    hljs.registerLanguage('graphql', graphql);
+                }
+             } catch(e) {
+                // If getLanguage fails, attempt registration anyway to be safe
+                try { hljs.registerLanguage('graphql', graphql); } catch(e2) {}
+             }
+        }
+    } catch(e) {
+        // ignore
+    }
+
 	$effect(() => {
-		hljs.registerLanguage('graphql', graphql);
-		hljs.highlightAll();
+		try {
+			if (typeof hljs !== 'undefined' && hljs.highlightAll) {
+				hljs.highlightAll();
+			}
+		} catch (e) {
+			Logger.warn('GraphqlCodeDisplay: Highlight init failed', e);
+		}
 	});
+
+	const safeHighlight = (code: string) => {
+		try {
+			const formatted = format(code);
+            if (typeof hljs !== 'undefined' && hljs.highlight) {
+                // Explicitly use graphql language if possible
+			    return hljs.highlight(formatted, { language: 'graphql' }).value;
+            }
+            return formatted;
+		} catch (e) {
+			try {
+				return format(code);
+			} catch (e2) {
+				return code;
+			}
+		}
+	};
 
 	let astAsString = $state('');
 	let astAsString2 = '';
@@ -59,6 +113,7 @@
 	let astPrinted = $state();
 	let isCopied = $state(false);
 	let isCurlCopied = $state(false);
+	let isMarkdownCopied = $state(false);
 	let showHistory = $state(false);
 	let showImportModal = $state(false);
 	let importCurlValue = $state('');
@@ -266,6 +321,52 @@
 		>
 			<i class="bi bi-code-slash"></i> Mock Data
 		</button>
+		<button
+			class="btn btn-xs btn-ghost transition-opacity"
+			aria-label="Export to Postman"
+			title="Export as Postman Collection"
+			onclick={() => {
+				if (mainWraperCtx?.endpointInfo) {
+					Logger.info('Exporting to Postman');
+					const info = get(mainWraperCtx.endpointInfo);
+					const json = generatePostmanCollectionForQuery(
+						qmsWraperCtx?.QMSName || 'Query',
+						info.url,
+						value,
+						info.headers || {}
+					);
+					const blob = new Blob([json], { type: 'application/json' });
+					const url = URL.createObjectURL(blob);
+					const a = document.createElement('a');
+					a.href = url;
+					a.download = `${qmsWraperCtx?.QMSName || 'query'}.postman_collection.json`;
+					document.body.appendChild(a);
+					a.click();
+					document.body.removeChild(a);
+					URL.revokeObjectURL(url);
+				}
+			}}
+		>
+			<i class="bi bi-collection"></i> Postman
+		</button>
+		<button
+			class="btn btn-xs btn-ghost transition-opacity"
+			aria-label="Copy as Markdown"
+			title="Copy Query as Markdown"
+			onclick={() => {
+				Logger.info('Copied query as Markdown to clipboard');
+				const markdown = `\`\`\`graphql\n${value}\n\`\`\``;
+				navigator.clipboard.writeText(markdown);
+				isMarkdownCopied = true;
+				setTimeout(() => (isMarkdownCopied = false), 2000);
+			}}
+		>
+			{#if isMarkdownCopied}
+				<i class="bi bi-check"></i> Copied MD!
+			{:else}
+				<i class="bi bi-markdown"></i> Copy MD
+			{/if}
+		</button>
 	</div>
 	<div class="max-h-[50vh] overflow-y-auto">
 		{#if showMockData}
@@ -282,9 +383,7 @@
 				<code class="px-10 ">{astAsString}</code>
 			</div>
 		{:else}
-			<code class="language-graphql "
-				>{@html hljs.highlight(format(value), { language: 'graphql' }).value.trim()}</code
-			>
+			<code class="language-graphql ">{@html safeHighlight(value)}</code>
 			<div class="mx-4 mt-2 ">
 				<CodeEditor
 					rawValue={value}
