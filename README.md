@@ -215,6 +215,23 @@ Auto-GQL allows you to import a GraphQL query and headers from a cURL command (e
     - Updates the current query in the editor.
     - Merges any extracted headers (e.g., `Authorization`) with your existing persisted headers.
 
+## Export to Postman
+
+Auto-GQL allows you to export your current GraphQL query and headers as a Postman Collection.
+
+- **Access:** In the code display view, click the **Postman** button (<i class="bi bi-collection"></i>).
+- **Functionality:**
+    - Generates a Postman Collection v2.1 JSON file.
+    - Includes the query, variables, and headers.
+    - Downloads the file, which can be imported directly into Postman.
+
+## Copy as Markdown
+
+Quickly copy the current query formatted as a Markdown code block (e.g., for GitHub issues or Slack).
+
+- **Access:** In the code display view, click the **Copy MD** button (<i class="bi bi-markdown"></i>).
+- **Functionality:** Copies the query to the clipboard wrapped in \`\`\`graphql ... \`\`\`.
+
 ## Theme Support
 
 GraphBoarder supports Light and Dark modes. The theme can be toggled using the button in the header. The preference is persisted in `localStorage`.
