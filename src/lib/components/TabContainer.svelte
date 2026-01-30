@@ -67,6 +67,15 @@
 			isSelected: false,
 			hasFill: true,
 			items: []
+		},
+		{
+			title: 'Schema',
+			url: `/endpoints/${endpointid}/schema`,
+			urlIsRoute: false,
+			icon: 'bi bi-diagram-3',
+			isSelected: false,
+			hasFill: true,
+			items: []
 		}
 	]);
 

@@ -198,6 +198,17 @@ addToHistory({
 
 To view and restore history, the `GraphqlCodeDisplay` component includes a "History" button that opens a modal with saved queries.
 
+## Schema Visualizer
+
+Auto-GQL includes a **Schema Visualizer** to help you explore and understand the GraphQL schema.
+
+- **Access:** Click the **Schema** link in the sidebar (icon <i class="bi bi-diagram-3"></i>).
+- **Functionality:**
+    - **Browse Types:** Searchable list of all types defined in the schema (Objects, Scalars, Enums, Interfaces, etc.).
+    - **Type Details:** View detailed information about any type, including description, fields, arguments, input fields, and implemented interfaces.
+    - **Navigation:** Click on interface names to jump to their definitions.
+    - **Copy Introspection:** Button to copy the full introspection result to clipboard.
+
 ## Mock Data Generator
 
 Auto-GQL can generate mock response data for your queries based on the schema. This is useful for frontend development when the backend is not ready or to test UI handling of data structures.

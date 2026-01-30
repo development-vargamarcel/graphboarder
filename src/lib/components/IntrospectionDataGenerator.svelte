@@ -157,6 +157,10 @@
 	let schema = $state({});
 
 	const handleData = () => {
+		// Prevent infinite loop if data is already processed
+		if ($schemaData.isReady) {
+			return;
+		}
 		Logger.debug('handledata run');
 		schema = $queryStoreRes?.data?.__schema;
 		Logger.debug('ppppp', $endpointInfo, schema); // Fixed: use store value
