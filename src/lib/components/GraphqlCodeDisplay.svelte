@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { stringify } from 'postcss';
 	import CodeEditor from './fields/CodeEditor.svelte';
 	import { format } from 'graphql-formatter';
 	import hljs from 'highlight.js/lib/core';
@@ -7,16 +6,17 @@
 	import graphql from 'highlight.js/lib/languages/graphql';
 	import 'highlight.js/styles/base16/solarized-dark.css';
 	import { Logger } from '$lib/utils/logger';
-	import { getPreciseType, objectToSourceCode } from '$lib/utils/usefulFunctions';
+	import { getPreciseType } from '$lib/utils/usefulFunctions';
 	import { updateStoresFromAST } from '$lib/utils/astToUIState';
 	import { generateCurlCommand } from '$lib/utils/curlUtils';
+	import { parseCurlCommand } from '$lib/utils/curlParser';
 	import { get } from 'svelte/store';
-	import { parse, print, visit, type ASTNode } from 'graphql';
+	import { parse, print, type ASTNode } from 'graphql';
 	import JSON5 from 'json5';
-	import CodeMirrorCustom from './fields/CodeMirrorCustom.svelte';
 	import QueryHistory from '$lib/components/QueryHistory.svelte';
 	import type { HistoryItem } from '$lib/stores/queryHistory';
 	import { generateMockData } from '$lib/utils/mockGenerator';
+	import Modal from '$lib/components/Modal.svelte';
 
 	interface Props {
 		showNonPrettifiedQMSBody: any;
@@ -42,8 +42,6 @@
 	let currentQMS_info;
 
 	try {
-		// Suppress duplicate identifier if getContext was already imported and used previously in this scope (which it was, up top)
-		// But here we are assigning to vars.
 		qmsWraperCtx = getContext<QMSWraperContext>(`${untrack(() => prefix)}QMSWraperContext`);
 		mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	} catch (e) {
@@ -62,6 +60,8 @@
 	let isCopied = $state(false);
 	let isCurlCopied = $state(false);
 	let showHistory = $state(false);
+	let showImportModal = $state(false);
+	let importCurlValue = $state('');
 	let mockDataResult = $state('');
 	let showMockData = $state(false);
 
@@ -87,27 +87,48 @@
 		}
 	};
 
-	///
-	const visitAst = () => {
-		const editedAST = visit(ast as ASTNode, {
-			enter(node, key, parent, path, ancestors) {
-				Logger.debug(JSON.parse(JSON.stringify({ node, key, parent, path, ancestors })));
-				// @return
-				//   undefined: no action
-				//   false: skip visiting this node
-				//   visitor.BREAK: stop visiting altogether
-				//   null: delete this node
-				//   any value: replace this node with the returned value
+	const handleImportCurl = () => {
+		if (!importCurlValue.trim()) return;
+
+		try {
+			Logger.info('Importing cURL command...');
+			const parsed = parseCurlCommand(importCurlValue);
+
+			if (parsed.query) {
+				valueModifiedManually = parsed.query;
+
+				// Handle headers
+				let headerMessage = '';
+				if (Object.keys(parsed.headers).length > 0 && mainWraperCtx?.endpointInfo) {
+					const info = get(mainWraperCtx.endpointInfo);
+					const storageKey = info.id ? `headers_${info.id}` : 'headers';
+
+					// Merge with existing headers
+					let existingHeaders = {};
+					const stored = localStorage.getItem(storageKey);
+					if (stored) {
+						try {
+							existingHeaders = JSON.parse(stored);
+						} catch (e) {}
+					}
+
+					const newHeaders = { ...existingHeaders, ...parsed.headers };
+					localStorage.setItem(storageKey, JSON.stringify(newHeaders));
+					Logger.info('Updated headers from cURL import', { headers: parsed.headers });
+					headerMessage = '\nHeaders have been updated.';
+				}
+
+				Logger.info('Query imported from cURL');
+				alert(`Query imported successfully.${headerMessage}`);
+				showImportModal = false;
+				importCurlValue = '';
+			} else {
+				alert('No valid GraphQL query found in the cURL command.');
 			}
-			// leave(node, key, parent, path, ancestors) {
-			//   // @return
-			//   //   undefined: no action
-			//   //   false: no action
-			//   //   visitor.BREAK: stop visiting altogether
-			//   //   null: delete this node
-			//   //   any value: replace this node with the returned value
-			// }
-		},);
+		} catch (e) {
+			Logger.error('Failed to import cURL', e);
+			alert('Failed to parse cURL command.');
+		}
 	};
 
 	const syncQueryToUI = (ast) => {
@@ -171,19 +192,12 @@
 	});
 	$effect(() => {
 		if (ast) {
-			// Extract operation type and name
-			//const operationType = ast.definitions[0]?.operation;
-			//const operationName = ast.definitions[0]?.name?.value;
-
 			astPrinted = print(ast as ASTNode);
 		}
 	});
 	$effect(() => {
 		if (getPreciseType(ast) == 'object') {
-			//Logger.debug('qqqwww', value, ast, astAsString);
 			astAsString = JSON5.stringify(ast);
-			//astAsString2 = objectToSourceCode(ast);
-			//Logger.debug('qqqwww2', value, ast, astAsString);
 		}
 	});
 </script>
@@ -238,6 +252,14 @@
 		</button>
 		<button
 			class="btn btn-xs btn-ghost transition-opacity"
+			aria-label="Import cURL"
+			title="Import Query from cURL Command"
+			onclick={() => (showImportModal = true)}
+		>
+			<i class="bi bi-box-arrow-in-down"></i> Import cURL
+		</button>
+		<button
+			class="btn btn-xs btn-ghost transition-opacity"
 			aria-label="Generate Mock Data"
 			title="Generate Mock Response Data"
 			onclick={handleGenerateMockData}
@@ -264,7 +286,6 @@
 				>{@html hljs.highlight(format(value), { language: 'graphql' }).value.trim()}</code
 			>
 			<div class="mx-4 mt-2 ">
-				<!-- <CodeMirrorCustom {value} language="graphql" /> -->
 				<CodeEditor
 					rawValue={value}
 					language="graphql"
@@ -273,16 +294,9 @@
 					}}
 				/>
 			</div>
-			<div class="mx-4 mt-2 ">
-				<!-- <CodeMirrorCustom value={`const ast:${astAsString}`} language="typescript" /> -->
-
-				<CodeEditor rawValue={astAsString} language="javascript" />
-				<button class="btn btn-xs btn-primary" onclick={visitAst}> visit ast </button>
-			</div>
 			{#if astPrinted}
 				<div class="mx-4 mt-2 ">
-					<!-- <CodeMirrorCustom {value} language="graphql" /> -->
-					<CodeEditor rawValue={astPrinted as string} language="graphql" />
+					<!-- <CodeEditor rawValue={astPrinted as string} language="graphql" /> -->
 				</div>
 			{/if}
 		{/if}
@@ -299,4 +313,24 @@
 
 {#if showHistory}
 	<QueryHistory onRestore={restoreQuery} onClose={() => (showHistory = false)} />
+{/if}
+
+{#if showImportModal}
+	<Modal
+		modalIdetifier="import-curl-modal"
+		onCancel={() => (showImportModal = false)}
+		onApply={handleImportCurl}
+	>
+		<div class="p-4">
+			<h3 class="text-lg font-bold mb-2">Import cURL</h3>
+			<p class="mb-4 text-sm text-gray-500">
+				Paste a cURL command below to import the GraphQL query and headers.
+			</p>
+			<textarea
+				class="textarea textarea-bordered w-full h-64 font-mono text-sm"
+				placeholder="curl 'https://...'"
+				bind:value={importCurlValue}
+			></textarea>
+		</div>
+	</Modal>
 {/if}

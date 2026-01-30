@@ -10,3 +10,4 @@ node_modules
 # Playwright test results
 test-results/
 playwright-report/
+verification/
