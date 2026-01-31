@@ -12,6 +12,7 @@ A powerful Svelte 5 library for auto-generating GraphQL UIs, handling complex qu
 - **Built-in Logging:** Includes a configurable logger for debugging.
 - **Theme Support:** Built-in Light and Dark mode toggle.
 - **Execute Queries:** Execute queries directly from the editor and view results.
+- **Code Snippets:** Generate code snippets for various clients (Fetch, URQL, Apollo, Python Requests).
 - **Toast Notifications:** Built-in toast notification system for user feedback.
 
 ## Installation
@@ -255,6 +256,16 @@ You can execute the current query directly from the `GraphqlCodeDisplay` compone
     - Executes the query using the configured URQL client.
     - Displays the JSON result (or error) in a dedicated view within the component.
     - Allows copying the result to clipboard.
+
+## Code Snippets
+
+Auto-GQL can generate code snippets for your query in various languages and clients.
+
+- **Access:** In the code display view, click the **Snippets** button (<i class="bi bi-code-square"></i>).
+- **Functionality:**
+    - Opens a modal where you can select the target language (JavaScript/Fetch, JavaScript/URQL, JavaScript/Apollo, Python/Requests).
+    - Generates ready-to-use code including the query, variables, and headers.
+    - Allows copying the snippet to the clipboard.
 
 ## Export to Postman
 
