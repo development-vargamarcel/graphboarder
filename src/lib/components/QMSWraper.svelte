@@ -362,6 +362,8 @@
             extraInfo
         });
 
+        Logger.debug('QMSWraper: Context setup complete', { QMSName, QMSType });
+
         return () => {
             unsubs.forEach(unsub => unsub());
         };

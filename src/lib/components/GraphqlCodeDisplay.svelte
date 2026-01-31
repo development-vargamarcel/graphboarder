@@ -21,6 +21,7 @@
 	import { toast } from '$lib/stores/toastStore';
 	import LoadingSpinner from '$lib/components/UI/LoadingSpinner.svelte';
 	import { generateSnippet, SUPPORTED_LANGUAGES } from '$lib/utils/snippetGenerator';
+	import { compressQuery, decompressQuery } from '$lib/utils/shareUtils';
 
 	interface Props {
 		/**
@@ -40,13 +41,18 @@
 		 * Prefix for context keys.
 		 */
 		prefix?: string;
+		/**
+		 * Whether to enable sharing the query via URL.
+		 */
+		enableShareUrl?: boolean;
 	}
 
 	let {
 		showNonPrettifiedQMSBody = $bindable(),
 		value,
 		enableSyncToUI = true,
-		prefix = ''
+		prefix = '',
+		enableShareUrl = false
 	}: Props = $props();
 
 	let valueModifiedManually = $state();
@@ -142,6 +148,46 @@
 			);
 		}
 		return '';
+	});
+
+	let isShareCopied = $state(false);
+
+	const handleShare = () => {
+		try {
+			const compressed = compressQuery(value);
+			const url = new URL(window.location.href);
+			url.searchParams.set('q', compressed);
+			window.history.pushState({}, '', url.toString());
+			navigator.clipboard.writeText(url.toString());
+			isShareCopied = true;
+			toast.success('Share URL copied to clipboard');
+			Logger.info('Query Share URL copied');
+			setTimeout(() => (isShareCopied = false), 2000);
+		} catch (e) {
+			Logger.error('Failed to share query', e);
+			toast.error('Failed to create share URL');
+		}
+	};
+
+	$effect(() => {
+		if (enableShareUrl) {
+			try {
+				const params = new URLSearchParams(window.location.search);
+				const q = params.get('q');
+				if (q) {
+					Logger.info('Found query in URL, restoring...');
+					const restored = decompressQuery(q);
+					if (restored) {
+						valueModifiedManually = restored;
+						toast.success('Query loaded from URL');
+						// Remove q from URL to clean up? Or keep it?
+						// Keeping it allows reload to persist.
+					}
+				}
+			} catch (e) {
+				Logger.error('Failed to restore query from URL', e);
+			}
+		}
 	});
 
 	const restoreQuery = (item: HistoryItem) => {
@@ -477,6 +523,18 @@
 				<i class="bi bi-check"></i> Copied MD!
 			{:else}
 				<i class="bi bi-markdown"></i> Copy MD
+			{/if}
+		</button>
+		<button
+			class="btn btn-xs btn-ghost transition-opacity"
+			aria-label="Share URL"
+			title="Share Query via URL"
+			onclick={handleShare}
+		>
+			{#if isShareCopied}
+				<i class="bi bi-check"></i> Copied Link!
+			{:else}
+				<i class="bi bi-share"></i> Share
 			{/if}
 		</button>
 	</div>

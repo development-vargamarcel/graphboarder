@@ -61,7 +61,12 @@
 
 	/**
 	 * Retrieves headers for the GraphQL client, merging provided headers with those stored in localStorage.
-	 * Priorities: localStorage (specific > global) > endpointInfo.headers
+	 * Priorities:
+	 * 1. Endpoint specific headers from localStorage
+	 * 2. Global headers from localStorage
+	 * 3. Headers provided in endpointInfo prop
+	 *
+	 * @returns The merged headers object.
 	 */
 	let getHeaders = () => {
 		let headers: Record<string, string> = {};
@@ -116,12 +121,13 @@
 	// Sync client to urqlCoreClient store initially
 	urqlCoreClient.set(untrack(() => client));
 	setContextClient(untrack(() => client));
+	Logger.debug('MainWraper: Initial URQL Client created and context set', { url: untrack(() => $endpointInfo.url) });
 
 	$effect(() => {
 		const url = $endpointInfo.url;
 		const currentClientUrl = untrack(() => (client as any).url);
 		if (url && url !== currentClientUrl) {
-			Logger.info('MainWraper: Recreating URQL Client due to URL change', { url });
+			Logger.info('MainWraper: Recreating URQL Client due to URL change', { url, oldUrl: currentClientUrl });
 			const newClient = new Client({
 				url: url,
 				fetchOptions: () => {

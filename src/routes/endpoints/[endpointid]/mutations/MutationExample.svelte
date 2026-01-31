@@ -327,7 +327,11 @@
 	{/if}
 
 	{#if showQMSBody}
-		<GraphqlCodeDisplay {showNonPrettifiedQMSBody} value={$QMS_bodyPartsUnifier_StoreDerived} />
+		<GraphqlCodeDisplay
+			{showNonPrettifiedQMSBody}
+			value={$QMS_bodyPartsUnifier_StoreDerived}
+			enableShareUrl={true}
+		/>
 	{/if}
 
 	{#if queryData.data}
