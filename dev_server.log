@@ -1,56 +1,16 @@
 
 > auto-gql@0.0.11 dev
-> vite dev
+> vite dev --port 5173
 
 Forced re-optimization of dependencies
 
-  VITE v5.4.21  ready in 1859 ms
+  VITE v5.4.21  ready in 1303 ms
 
   ➜  Local:   http://localhost:5173/
   ➜  Network: use --host to expose
-5:15:04 PM [vite-plugin-svelte] src/lib/components/MainWraper.svelte:117:20 This reference only captures the initial value of `client`. Did you mean to reference it inside a closure instead?
-https://svelte.dev/e/state_referenced_locally
-5:15:04 PM [vite-plugin-svelte] src/lib/components/MainWraper.svelte:118:18 This reference only captures the initial value of `client`. Did you mean to reference it inside a closure instead?
-https://svelte.dev/e/state_referenced_locally
-5:15:04 PM [vite-plugin-svelte] src/lib/components/GraphqlCodeDisplay.svelte:575:4 A form label must be associated with a control
-https://svelte.dev/e/a11y_label_has_associated_control
-5:15:05 PM [vite-plugin-svelte] src/lib/components/UI/EndpointManager.svelte:151:5 A form label must be associated with a control
-https://svelte.dev/e/a11y_label_has_associated_control
-5:15:05 PM [vite-plugin-svelte] src/lib/components/UI/EndpointManager.svelte:158:5 A form label must be associated with a control
-https://svelte.dev/e/a11y_label_has_associated_control
-5:15:05 PM [vite-plugin-svelte] src/lib/components/UI/EndpointManager.svelte:165:5 A form label must be associated with a control
-https://svelte.dev/e/a11y_label_has_associated_control
 /*! 🌼 daisyUI 5.5.14 */
-5:17:16 PM [vite] page reload verification/page_content.html
-5:17:59 PM [vite] page reload verification/page_content.html
-5:22:15 PM [vite] hmr update /src/lib/components/GraphqlCodeDisplay.svelte, /src/app.postcss
-5:22:35 PM [vite] page reload src/lib/utils/snippetGenerator.test.ts
-5:22:55 PM [vite] page reload .svelte-kit/generated/client/nodes/1.js
-5:22:55 PM [vite] page reload .svelte-kit/generated/client/nodes/0.js
-5:22:55 PM [vite] page reload .svelte-kit/generated/client/nodes/2.js
-5:22:55 PM [vite] page reload .svelte-kit/generated/client/nodes/3.js
-5:22:55 PM [vite] page reload .svelte-kit/generated/client/nodes/4.js
-5:22:55 PM [vite] page reload .svelte-kit/generated/client/nodes/5.js
-5:22:55 PM [vite] page reload .svelte-kit/generated/client/nodes/16.js
-5:22:55 PM [vite] page reload .svelte-kit/generated/client/nodes/17.js
-5:22:55 PM [vite] page reload .svelte-kit/generated/client/nodes/18.js
-5:22:55 PM [vite] page reload .svelte-kit/generated/client/app.js
-5:22:55 PM [vite] page reload .svelte-kit/generated/client/matchers.js
-5:22:55 PM [vite] page reload .svelte-kit/generated/server/internal.js
-5:22:55 PM [vite] page reload .svelte-kit/generated/root.js
-5:44:29 PM [vite] hmr update /src/lib/components/GraphqlCodeDisplay.svelte, /src/app.postcss
-5:44:44 PM [vite] hmr update /src/lib/components/MainWraper.svelte, /src/app.postcss
-5:44:53 PM [vite] hmr update /src/lib/components/UI/EndpointManager.svelte, /src/app.postcss
-5:45:15 PM [vite] page reload .svelte-kit/generated/client/nodes/0.js
-5:45:15 PM [vite] page reload .svelte-kit/generated/client/nodes/1.js
-5:45:15 PM [vite] page reload .svelte-kit/generated/client/nodes/2.js
-5:45:15 PM [vite] page reload .svelte-kit/generated/client/nodes/3.js
-5:45:15 PM [vite] page reload .svelte-kit/generated/client/nodes/4.js
-5:45:15 PM [vite] page reload .svelte-kit/generated/client/nodes/5.js
-5:45:15 PM [vite] page reload .svelte-kit/generated/client/nodes/16.js
-5:45:15 PM [vite] page reload .svelte-kit/generated/client/nodes/17.js
-5:45:15 PM [vite] page reload .svelte-kit/generated/client/nodes/18.js
-5:45:15 PM [vite] page reload .svelte-kit/generated/client/app.js
-5:45:15 PM [vite] page reload .svelte-kit/generated/client/matchers.js
-5:45:15 PM [vite] page reload .svelte-kit/generated/server/internal.js
-5:45:15 PM [vite] page reload .svelte-kit/generated/root.js
+8:23:22 PM [vite] page reload src/routes/endpoints/[endpointid]/mutations/MutationExample.svelte
+8:24:29 PM [vite] page reload .svelte-kit/generated/client/app.js
+8:25:30 PM [vite] hmr update /src/routes/test-share/+page.svelte
+8:25:30 PM [vite] page reload .svelte-kit/generated/client/nodes/27.js
+8:25:30 PM [vite] page reload .svelte-kit/generated/client/app.js

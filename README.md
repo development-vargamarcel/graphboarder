@@ -284,6 +284,17 @@ Quickly copy the current query formatted as a Markdown code block (e.g., for Git
 - **Access:** In the code display view, click the **Copy MD** button (<i class="bi bi-markdown"></i>).
 - **Functionality:** Copies the query to the clipboard wrapped in \`\`\`graphql ... \`\`\`.
 
+## Share Query
+
+Auto-GQL allows you to share your current query via a URL.
+
+- **Access:** In the code display view, click the **Share** button (<i class="bi bi-share"></i>).
+- **Functionality:**
+    - Compresses the current query into a URL parameter.
+    - Copies the full URL to the clipboard.
+    - When someone opens the link, the query is automatically restored in the editor.
+- **Enable:** To use this feature, set the `enableShareUrl` prop to `true` on `GraphqlCodeDisplay`.
+
 ## Toast Notifications
 
 Auto-GQL includes a built-in toast notification system for providing feedback to users (e.g., success messages, errors).
