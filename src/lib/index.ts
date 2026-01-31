@@ -12,6 +12,7 @@ import Input from './components/fields/Input.svelte';
 import LogViewer from './components/UI/LogViewer.svelte';
 import { Logger, LogLevel } from './utils/logger';
 import { addToHistory, exportHistory, importHistory, queryHistory } from './stores/queryHistory';
+import { toast } from './stores/toastStore';
 
 // Export types
 export type { QMSMainWraperContext, QMSWraperContext } from './types/index';
@@ -82,5 +83,11 @@ export {
     /**
      * The history store.
      */
-    queryHistory
+    queryHistory,
+
+    /**
+     * The toast notification store.
+     * Use `toast.info()`, `toast.success()`, `toast.error()`, `toast.warning()` to display messages.
+     */
+    toast
 };

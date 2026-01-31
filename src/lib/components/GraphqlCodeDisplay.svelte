@@ -18,6 +18,8 @@
 	import { generateMockData } from '$lib/utils/mockGenerator';
 	import { generatePostmanCollectionForQuery } from '$lib/utils/postmanUtils';
 	import Modal from '$lib/components/Modal.svelte';
+	import { toast } from '$lib/stores/toastStore';
+	import LoadingSpinner from '$lib/components/UI/LoadingSpinner.svelte';
 
 	interface Props {
 		/**
@@ -119,10 +121,76 @@
 	let importCurlValue = $state('');
 	let mockDataResult = $state('');
 	let showMockData = $state(false);
+	let isExecuting = $state(false);
+	let executionResult = $state('');
+	let showExecutionResult = $state(false);
 
 	const restoreQuery = (item: HistoryItem) => {
 		valueModifiedManually = item.query;
 		showHistory = false;
+	};
+
+	/**
+	 * Executes the current query using the URQL client.
+	 */
+	const handleExecuteQuery = async () => {
+		if (!mainWraperCtx?.urqlCoreClient) {
+			toast.error('GraphQL Client not available');
+			return;
+		}
+
+		const client = get(mainWraperCtx.urqlCoreClient) as any;
+		if (!client) {
+			toast.error('GraphQL Client not initialized');
+			return;
+		}
+
+		isExecuting = true;
+		showExecutionResult = true;
+		executionResult = 'Loading...';
+
+		try {
+			// Determine if it's a mutation or query
+			const isMutation = value.trim().startsWith('mutation');
+
+			let result;
+			const opOptions = {
+				fetchOptions: () => {
+					// Ensure headers are up to date
+					const info = get(mainWraperCtx!.endpointInfo);
+					let headers = info.headers || {};
+					// Merge with local storage headers if any logic requires it,
+					// but MainWraper client already handles this via fetchOptions callback.
+					// So we just pass nothing extra or just let the client handle it.
+					// However, MainWraper recreation logic might be sufficient.
+					return {};
+				}
+			};
+
+			Logger.info(`Executing ${isMutation ? 'mutation' : 'query'}...`);
+
+			if (isMutation) {
+				result = await client.mutation(value, {}).toPromise();
+			} else {
+				result = await client.query(value, {}).toPromise();
+			}
+
+			if (result.error) {
+				Logger.error('Execution failed', result.error);
+				executionResult = JSON.stringify(result.error, null, 2);
+				toast.error('Query execution failed');
+			} else {
+				Logger.info('Execution successful');
+				executionResult = JSON.stringify(result.data, null, 2);
+				toast.success('Query executed successfully');
+			}
+		} catch (e) {
+			Logger.error('Execution error', e);
+			executionResult = JSON.stringify({ error: (e as Error).message }, null, 2);
+			toast.error('An error occurred during execution');
+		} finally {
+			isExecuting = false;
+		}
 	};
 
 	const handleGenerateMockData = () => {
@@ -174,15 +242,15 @@
 				}
 
 				Logger.info('Query imported from cURL');
-				alert(`Query imported successfully.${headerMessage}`);
+				toast.success(`Query imported successfully.${headerMessage}`);
 				showImportModal = false;
 				importCurlValue = '';
 			} else {
-				alert('No valid GraphQL query found in the cURL command.');
+				toast.error('No valid GraphQL query found in the cURL command.');
 			}
 		} catch (e) {
 			Logger.error('Failed to import cURL', e);
-			alert('Failed to parse cURL command.');
+			toast.error('Failed to parse cURL command.');
 		}
 	};
 
@@ -260,6 +328,19 @@
 <div class="mockup-code bg-base text-content my-1 mx-2 px-2 relative group">
 	<div class="absolute top-3 right-40 flex space-x-2">
 		<button
+			class="btn btn-xs btn-ghost text-primary font-bold transition-opacity"
+			aria-label="Execute Query"
+			title="Execute Query"
+			onclick={handleExecuteQuery}
+			disabled={isExecuting}
+		>
+			{#if isExecuting}
+				<span class="loading loading-spinner loading-xs"></span> Running...
+			{:else}
+				<i class="bi bi-play-fill"></i> Execute
+			{/if}
+		</button>
+		<button
 			class="btn btn-xs btn-ghost transition-opacity"
 			aria-label="History"
 			title="View Query History"
@@ -275,6 +356,7 @@
 				Logger.info('Copied query to clipboard');
 				navigator.clipboard.writeText(value);
 				isCopied = true;
+				toast.success('Query copied to clipboard');
 				setTimeout(() => (isCopied = false), 2000);
 			}}
 		>
@@ -369,7 +451,26 @@
 		</button>
 	</div>
 	<div class="max-h-[50vh] overflow-y-auto">
-		{#if showMockData}
+		{#if showExecutionResult}
+			<div class="p-2">
+				<div class="flex justify-between items-center mb-2">
+					<h3 class="font-bold text-success"><i class="bi bi-play-circle"></i> Execution Result</h3>
+					<div class="flex gap-2">
+						<button
+							class="btn btn-xs btn-ghost"
+							onclick={() => {
+								navigator.clipboard.writeText(executionResult);
+								toast.success('Result copied to clipboard');
+							}}
+						>
+							<i class="bi bi-clipboard"></i> Copy
+						</button>
+						<button class="btn btn-xs btn-ghost" onclick={() => (showExecutionResult = false)}>✕ Close</button>
+					</div>
+				</div>
+				<CodeEditor rawValue={executionResult} language="json" />
+			</div>
+		{:else if showMockData}
 			<div class="p-2">
 				<div class="flex justify-between items-center mb-2">
 					<h3 class="font-bold">Mock Data Result</h3>

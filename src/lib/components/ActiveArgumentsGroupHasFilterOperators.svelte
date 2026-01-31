@@ -34,6 +34,7 @@
 	import ManyToAllSelectInterfaceDefinition from './ManyToAllSelectInterfaceDefinition.svelte';
 	import SelectedRowsDisplay from './SelectedRowsDisplay.svelte';
     import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
+	import { toast } from '$lib/stores/toastStore';
 
 	interface Props {
 		nodes: any;
@@ -417,7 +418,7 @@
 						<button
 							class="btn btn-xs btn-warning  mb-6 flex-1"
 							onclick={() => {
-								alert('not yet implemented');
+								toast.info('not yet implemented');
 								console.log(
 									'not yet implemented,implement here.Delete node and his items and items of his items recursively until the very end of the tree.'
 								);

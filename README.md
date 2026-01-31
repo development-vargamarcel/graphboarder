@@ -11,6 +11,8 @@ A powerful Svelte 5 library for auto-generating GraphQL UIs, handling complex qu
 - **Headless & Customizable:** Provides the logic and stores, giving you full control over the UI components.
 - **Built-in Logging:** Includes a configurable logger for debugging.
 - **Theme Support:** Built-in Light and Dark mode toggle.
+- **Execute Queries:** Execute queries directly from the editor and view results.
+- **Toast Notifications:** Built-in toast notification system for user feedback.
 
 ## Installation
 
@@ -244,6 +246,16 @@ Auto-GQL allows you to import a GraphQL query and headers from a cURL command (e
     - Updates the current query in the editor.
     - Merges any extracted headers (e.g., `Authorization`) with your existing persisted headers.
 
+## Execute Query
+
+You can execute the current query directly from the `GraphqlCodeDisplay` component.
+
+- **Access:** In the code display view, click the **Execute** button (<i class="bi bi-play-fill"></i>).
+- **Functionality:**
+    - Executes the query using the configured URQL client.
+    - Displays the JSON result (or error) in a dedicated view within the component.
+    - Allows copying the result to clipboard.
+
 ## Export to Postman
 
 Auto-GQL allows you to export your current GraphQL query and headers as a Postman Collection.
@@ -260,6 +272,14 @@ Quickly copy the current query formatted as a Markdown code block (e.g., for Git
 
 - **Access:** In the code display view, click the **Copy MD** button (<i class="bi bi-markdown"></i>).
 - **Functionality:** Copies the query to the clipboard wrapped in \`\`\`graphql ... \`\`\`.
+
+## Toast Notifications
+
+Auto-GQL includes a built-in toast notification system for providing feedback to users (e.g., success messages, errors).
+
+- **Usage:** Import `toast` from `auto-gql`.
+- **Methods:** `toast.info(msg)`, `toast.success(msg)`, `toast.error(msg)`, `toast.warning(msg)`.
+- **Integration:** The `ToastContainer` is automatically included in `MainWraper`.
 
 ## Theme Support
 
