@@ -20,6 +20,7 @@
 	import Modal from '$lib/components/Modal.svelte';
 	import { toast } from '$lib/stores/toastStore';
 	import LoadingSpinner from '$lib/components/UI/LoadingSpinner.svelte';
+	import { generateSnippet, SUPPORTED_LANGUAGES } from '$lib/utils/snippetGenerator';
 
 	interface Props {
 		/**
@@ -124,6 +125,24 @@
 	let isExecuting = $state(false);
 	let executionResult = $state('');
 	let showExecutionResult = $state(false);
+	let showSnippetsModal = $state(false);
+	let selectedSnippetLanguage = $state('javascript-fetch');
+	let snippetEditorLanguage = $derived(
+		selectedSnippetLanguage.startsWith('python') ? 'python' : 'javascript'
+	);
+	let generatedSnippet = $derived.by(() => {
+		if (showSnippetsModal && mainWraperCtx?.endpointInfo) {
+			const info = get(mainWraperCtx.endpointInfo);
+			return generateSnippet(
+				selectedSnippetLanguage,
+				info.url,
+				value,
+				{}, // Variables support could be added if QMS has them
+				info.headers || {}
+			);
+		}
+		return '';
+	});
 
 	const restoreQuery = (item: HistoryItem) => {
 		valueModifiedManually = item.query;
@@ -405,6 +424,17 @@
 		</button>
 		<button
 			class="btn btn-xs btn-ghost transition-opacity"
+			aria-label="Code Snippets"
+			title="Generate Code Snippets"
+			onclick={() => {
+				showSnippetsModal = true;
+				Logger.info('Opened code snippets modal');
+			}}
+		>
+			<i class="bi bi-code-square"></i> Snippets
+		</button>
+		<button
+			class="btn btn-xs btn-ghost transition-opacity"
 			aria-label="Export to Postman"
 			title="Export as Postman Collection"
 			onclick={() => {
@@ -468,7 +498,7 @@
 						<button class="btn btn-xs btn-ghost" onclick={() => (showExecutionResult = false)}>✕ Close</button>
 					</div>
 				</div>
-				<CodeEditor rawValue={executionResult} language="json" />
+				<CodeEditor rawValue={executionResult} language="json" readOnly={true} />
 			</div>
 		{:else if showMockData}
 			<div class="p-2">
@@ -476,7 +506,7 @@
 					<h3 class="font-bold">Mock Data Result</h3>
 					<button class="btn btn-xs btn-ghost" onclick={() => (showMockData = false)}>✕ Close</button>
 				</div>
-				<CodeEditor rawValue={mockDataResult} language="json" />
+				<CodeEditor rawValue={mockDataResult} language="json" readOnly={true} />
 			</div>
 		{:else if showNonPrettifiedQMSBody}
 			<code class="px-10">{value}</code>
@@ -531,6 +561,43 @@
 				placeholder="curl 'https://...'"
 				bind:value={importCurlValue}
 			></textarea>
+		</div>
+	</Modal>
+{/if}
+
+{#if showSnippetsModal}
+	<Modal
+		modalIdetifier="code-snippets-modal"
+		showApplyBtn={false}
+		onCancel={() => (showSnippetsModal = false)}
+	>
+		<div class="p-4">
+			<h3 class="text-lg font-bold mb-4">Generate Code Snippets</h3>
+
+			<div class="form-control w-full max-w-xs mb-4">
+				<label class="label" for="snippet-language-select">
+					<span class="label-text">Select Language/Client</span>
+				</label>
+				<select id="snippet-language-select" class="select select-bordered" bind:value={selectedSnippetLanguage}>
+					{#each SUPPORTED_LANGUAGES as lang}
+						<option value={lang.value}>{lang.label}</option>
+					{/each}
+				</select>
+			</div>
+
+			<div class="relative">
+				<CodeEditor rawValue={generatedSnippet} language={snippetEditorLanguage} readOnly={true} />
+				<button
+					class="btn btn-xs btn-outline absolute top-2 right-2"
+					onclick={() => {
+						navigator.clipboard.writeText(generatedSnippet);
+						toast.success('Snippet copied to clipboard');
+						Logger.info('Copied code snippet', { language: selectedSnippetLanguage });
+					}}
+				>
+					<i class="bi bi-clipboard"></i> Copy
+				</button>
+			</div>
 		</div>
 	</Modal>
 {/if}

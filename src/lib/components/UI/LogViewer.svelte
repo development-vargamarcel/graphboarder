@@ -1,3 +1,8 @@
+<!--
+    @component
+    The LogViewer component displays system logs captured by the Logger utility.
+    It supports filtering by text and log level (DEBUG, INFO, WARN, ERROR), and allows copying logs.
+-->
 <script lang="ts">
     import { Logger } from '$lib/utils/logger';
     import type { LogEntry } from '$lib/utils/logger';
@@ -5,6 +10,9 @@
     import { fade } from 'svelte/transition';
 
     interface Props {
+        /**
+         * Callback function to close the log viewer modal.
+         */
         onClose: () => void;
     }
 

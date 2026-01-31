@@ -114,8 +114,8 @@
 	);
 
 	// Sync client to urqlCoreClient store initially
-	urqlCoreClient.set(client);
-	setContextClient(client);
+	urqlCoreClient.set(untrack(() => client));
+	setContextClient(untrack(() => client));
 
 	$effect(() => {
 		const url = $endpointInfo.url;

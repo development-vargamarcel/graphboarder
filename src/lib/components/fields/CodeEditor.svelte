@@ -21,6 +21,7 @@
 		value?: string;
 		displayInterface?: string;
 		onChanged?: (detail: { chd_rawValue: string }) => void;
+		readOnly?: boolean;
 	}
 
 	let {
@@ -28,7 +29,8 @@
 		rawValue = '{}',
 		value = $bindable(''),
 		displayInterface,
-		onChanged
+		onChanged,
+		readOnly = false
 	}: Props = $props();
 
 	const mutationVersion = getContext('mutationVersion');
@@ -63,10 +65,10 @@
 			lineNumbers: 'off',
 			roundedSelection: false,
 			scrollBeyondLastLine: false,
-			readOnly: false,
+			readOnly: readOnly,
 			theme: 'vs-dark',
 			tabSize: 2,
-			formatOnType: true,
+			formatOnType: !readOnly,
 			formatOnPaste: true,
 			minimap: { enabled: false },
 			folding: true
@@ -184,28 +186,30 @@
 		<div bind:this={divEl} class="h-full "></div>
 	</div>
 	<div class="flex flex-row-reverse w-full overflow-x-auto overflow-y-hidden px-10 pb-4 pt-2">
-		<button
-			class="btn btn-primary btn-xs normal-case ml-2"
-			onclick={() => {
-				const editorValue = editor.getValue();
-				const firstCurlyBraces = editorValue.indexOf('{');
-				const lastCurlyBraces = editorValue.lastIndexOf('}');
-				const editorValueCleaned = editorValue.substring(firstCurlyBraces, lastCurlyBraces + 1);
-				onChanged?.({
-					chd_rawValue: chosenConfig?.language == 'typescript' ? editorValueCleaned : editorValue
-				});
-			}}
-		>
-			Save
-		</button>
-		<button
-			class="btn btn-primary btn-xs normal-case ml-2"
-			onclick={() => {
-				editor.setValue(`const data = ${JSON.stringify(configurations, null, 2)}`);
-			}}
-		>
-			Load Demo Data
-		</button>
+		{#if !readOnly}
+			<button
+				class="btn btn-primary btn-xs normal-case ml-2"
+				onclick={() => {
+					const editorValue = editor.getValue();
+					const firstCurlyBraces = editorValue.indexOf('{');
+					const lastCurlyBraces = editorValue.lastIndexOf('}');
+					const editorValueCleaned = editorValue.substring(firstCurlyBraces, lastCurlyBraces + 1);
+					onChanged?.({
+						chd_rawValue: chosenConfig?.language == 'typescript' ? editorValueCleaned : editorValue
+					});
+				}}
+			>
+				Save
+			</button>
+			<button
+				class="btn btn-primary btn-xs normal-case ml-2"
+				onclick={() => {
+					editor.setValue(`const data = ${JSON.stringify(configurations, null, 2)}`);
+				}}
+			>
+				Load Demo Data
+			</button>
+		{/if}
 		<button
 			class="btn btn-primary btn-xs normal-case ml-2"
 			onclick={() => {

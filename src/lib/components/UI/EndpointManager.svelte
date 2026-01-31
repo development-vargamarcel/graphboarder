@@ -1,3 +1,8 @@
+<!--
+	@component
+	The EndpointManager component allows users to view, add, delete, and switch between GraphQL endpoints.
+	It manages a list of custom endpoints persisted in localStorage and combines them with built-in test endpoints.
+-->
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import { goto } from '$app/navigation';
@@ -6,6 +11,9 @@
 	import { toast } from '$lib/stores/toastStore';
 
 	interface Props {
+		/**
+		 * Callback function to close the modal.
+		 */
 		onClose: () => void;
 	}
 
@@ -140,24 +148,24 @@
 		{:else}
 			<div class="space-y-4">
 				<div class="form-control">
-					<label class="label">
+					<label class="label" for="endpoint-name">
 						<span class="label-text">Name (Description)</span>
 					</label>
-					<input type="text" bind:value={newName} class="input input-bordered w-full" placeholder="My API" />
+					<input id="endpoint-name" type="text" bind:value={newName} class="input input-bordered w-full" placeholder="My API" />
 				</div>
 
 				<div class="form-control">
-					<label class="label">
+					<label class="label" for="endpoint-url">
 						<span class="label-text">GraphQL URL</span>
 					</label>
-					<input type="text" bind:value={newUrl} class="input input-bordered w-full" placeholder="https://api.example.com/graphql" />
+					<input id="endpoint-url" type="text" bind:value={newUrl} class="input input-bordered w-full" placeholder="https://api.example.com/graphql" />
 				</div>
 
 				<div class="form-control">
-					<label class="label">
+					<label class="label" for="endpoint-headers">
 						<span class="label-text">Headers (Key:Value, one per line)</span>
 					</label>
-					<textarea bind:value={newHeaders} class="textarea textarea-bordered h-24" placeholder="Authorization: Bearer token"></textarea>
+					<textarea id="endpoint-headers" bind:value={newHeaders} class="textarea textarea-bordered h-24" placeholder="Authorization: Bearer token"></textarea>
 				</div>
 
 				<div class="flex justify-end gap-2 mt-4">
