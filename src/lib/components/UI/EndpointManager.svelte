@@ -3,6 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { localEndpoints } from '$lib/stores/testData/testEndpoints';
 	import { Logger } from '$lib/utils/logger';
+	import { toast } from '$lib/stores/toastStore';
 
 	interface Props {
 		onClose: () => void;
@@ -63,7 +64,7 @@
 				});
 			} catch (e) {
 				Logger.error('Failed to parse headers', e);
-				alert('Invalid headers format. Use Key:Value (one per line)');
+				toast.error('Invalid headers format. Use Key:Value (one per line)');
 				return;
 			}
 		}

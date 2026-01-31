@@ -14,6 +14,7 @@
 	import { Create_urqlCoreClient } from '$lib/utils/urqlCoreClient';
 	import { Logger } from '$lib/utils/logger';
 	import type { QMSMainWraperContext } from '$lib/types/index';
+	import ToastContainer from './UI/ToastContainer.svelte';
 
 	/**
 	 * Props for the MainWraper component.
@@ -118,7 +119,7 @@
 
 	$effect(() => {
 		const url = $endpointInfo.url;
-		const currentClientUrl = untrack(() => client.url);
+		const currentClientUrl = untrack(() => (client as any).url);
 		if (url && url !== currentClientUrl) {
 			Logger.info('MainWraper: Recreating URQL Client due to URL change', { url });
 			const newClient = new Client({
@@ -148,4 +149,5 @@
 
 <IntrospectionDataGenerator {prefix}>
 	{@render children?.()}
+	<ToastContainer />
 </IntrospectionDataGenerator>

@@ -3,6 +3,7 @@
 	import type { QMSMainWraperContext, RootType, FieldWithDerivedData, SchemaDataStore, GraphQLKind } from '$lib/types';
 	import { Logger } from '$lib/utils/logger';
 	import { get } from 'svelte/store';
+	import { toast } from '$lib/stores/toastStore';
 
 	interface Props {
 		prefix?: string;
@@ -41,9 +42,9 @@
     const copySchema = () => {
         if (schemaData?.schema) {
             navigator.clipboard.writeText(JSON.stringify(schemaData.schema, null, 2));
-            alert('Schema introspection result copied to clipboard!');
+            toast.success('Schema introspection result copied to clipboard!');
         } else {
-            alert('Schema data not available.');
+            toast.error('Schema data not available.');
         }
     };
 
