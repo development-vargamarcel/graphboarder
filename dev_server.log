@@ -1,12 +1,27 @@
 
 > auto-gql@0.0.11 dev
-> vite dev --port 3000
+> vite dev
 
 Forced re-optimization of dependencies
 
-  VITE v5.4.21  ready in 1414 ms
+  VITE v5.4.21  ready in 1578 ms
 
-  ➜  Local:   http://localhost:3000/
+  ➜  Local:   http://localhost:5173/
   ➜  Network: use --host to expose
+11:31:27 AM [vite-plugin-svelte] src/lib/components/MainWraper.svelte:116:20 This reference only captures the initial value of `client`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+11:31:27 AM [vite-plugin-svelte] src/lib/components/MainWraper.svelte:117:18 This reference only captures the initial value of `client`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+11:31:28 AM [vite-plugin-svelte] src/lib/components/UI/EndpointManager.svelte:142:5 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+11:31:28 AM [vite-plugin-svelte] src/lib/components/UI/EndpointManager.svelte:149:5 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+11:31:28 AM [vite-plugin-svelte] src/lib/components/UI/EndpointManager.svelte:156:5 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
 /*! 🌼 daisyUI 5.5.14 */
-8:31:14 PM [vite] hmr update /src/lib/components/IntrospectionDataGenerator.svelte, /src/app.postcss
+11:35:37 AM [vite] hmr update /src/lib/components/MainWraper.svelte, /src/app.postcss
+11:35:44 AM [vite-plugin-svelte] src/lib/components/MainWraper.svelte:116:20 This reference only captures the initial value of `client`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+11:35:44 AM [vite-plugin-svelte] src/lib/components/MainWraper.svelte:117:18 This reference only captures the initial value of `client`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+11:36:30 AM [vite] hmr update /src/routes/endpoints/+layout.svelte, /src/app.postcss, /src/routes/endpoints/[endpointid]/+layout.svelte, /src/lib/components/EndpointsList.svelte, /src/lib/components/QMSWraper.svelte, /src/lib/components/SetEndpointConfigurationToContext.svelte, /src/lib/components/MainWraper.svelte, /src/lib/components/ActiveArgumentsGroupHasFilterOperators.svelte, /src/lib/components/ActiveArgument.svelte, /src/lib/components/SelectModal.svelte, /src/lib/components/fields/Input.svelte, /src/lib/components/fields/Map.svelte, /src/routes/endpoints/+page.svelte, /src/lib/components/UI/EndpointManager.svelte, /src/lib/components/AddColumn.svelte, /src/lib/components/GraphqlCodeDisplay.svelte, /src/lib/components/Type.svelte, /src/lib/components/UI/rowCount.svelte, /src/lib/components/QMSWraperCtxDataCurrentComputations.svelte, /src/lib/components/TabContainer.svelte, /src/routes/endpoints/[endpointid]/queries/[queryName]/ComponentForLayout.svelte, /src/lib/components/TypeInfoDisplay.svelte, /src/lib/components/ArgInfoDisplay.svelte, /src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte, /src/lib/components/TanTable.svelte, /src/lib/components/Arg.svelte, /src/lib/components/ActiveArgumentsGroup_addFilterAndSortingButton.svelte, /src/lib/components/ActiveArgumentsGroup_info.svelte, /src/lib/components/ManyToAllSelectInterfaceDefinition.svelte, /src/lib/components/SelectedRowsDisplay.svelte, /src/lib/components/ExplorerTable.svelte, /src/lib/components/fields/AutoInterface.svelte, /src/lib/components/Description.svelte, /src/lib/components/ManyToAllSelectInterfaceDefinitionItem.svelte, /src/lib/components/fields/InterfacePicker.svelte, /src/lib/components/ControlPanelItem.svelte, /src/lib/components/addEndpointToLocalStorage.svelte

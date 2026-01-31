@@ -58,21 +58,6 @@
 		}
 	});
 
-	// Client creation depends on $endpointInfo.url which is a store value.
-	// Since client is created once, it might not react to url changes unless we recreate it.
-	// But URQL Client usually isn't recreated. We assume URL is stable after init.
-	// To make it reactive, we would need to recreate the client, but setContextClient is usually done once.
-	// We'll keep it as is but be aware.
-	let client = new Client({
-		url: $endpointInfo.url || 'http://localhost/graphql', // Default to avoid crash if empty
-		fetchOptions: () => {
-			return {
-				headers: getHeaders()
-			};
-		},
-		exchanges: [fetchExchange]
-	});
-
 	/**
 	 * Retrieves headers for the GraphQL client, merging provided headers with those stored in localStorage.
 	 * Priorities: localStorage (specific > global) > endpointInfo.headers
@@ -110,10 +95,45 @@
 		}
 		return headers;
 	};
-	const urqlCoreClient = Create_urqlCoreClient();
-	urqlCoreClient.set(client);
 
+	const urqlCoreClient = Create_urqlCoreClient();
+
+	// Client creation depends on $endpointInfo.url which is a store value.
+	// We use $effect to recreate the client whenever the URL changes.
+	let client = $state<Client>(
+		new Client({
+			url: untrack(() => $endpointInfo.url) || 'http://localhost/graphql', // Default to avoid crash if empty
+			fetchOptions: () => {
+				return {
+					headers: getHeaders()
+				};
+			},
+			exchanges: [fetchExchange]
+		})
+	);
+
+	// Sync client to urqlCoreClient store initially
+	urqlCoreClient.set(client);
 	setContextClient(client);
+
+	$effect(() => {
+		const url = $endpointInfo.url;
+		const currentClientUrl = untrack(() => client.url);
+		if (url && url !== currentClientUrl) {
+			Logger.info('MainWraper: Recreating URQL Client due to URL change', { url });
+			const newClient = new Client({
+				url: url,
+				fetchOptions: () => {
+					return {
+						headers: getHeaders()
+					};
+				},
+				exchanges: [fetchExchange]
+			});
+			client = newClient;
+			urqlCoreClient.set(newClient);
+		}
+	});
 
 	// We capture the initial prefix for the context key. This is standard behavior.
 	// Svelte 5 warns about capturing state locally, but for context keys it is expected.

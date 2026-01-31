@@ -1059,7 +1059,7 @@ export const getQMSLinks = (QMSName: QMSType = 'query', parentURL: string, endpo
 	let queryLinks: { url: string; title: string }[] = [];
 	let $schemaData = get(schemaData);
 	const sortIt = (QMSFields: FieldWithDerivedData[]): FieldWithDerivedData[] => {
-		return QMSFields?.sort((a, b) => {
+		return [...(QMSFields || [])]?.sort((a, b) => {
 			let ea = a.dd_rootName;
 			let eb = b.dd_rootName;
 			let fa = a.dd_displayName.substring(6);

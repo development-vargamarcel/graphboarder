@@ -80,6 +80,7 @@
 	let showNonPrettifiedQMSBody = false;
 	let showModal = $state(false);
 	let showActiveFilters: boolean | undefined;
+	let executionTime = $state<number | null>(null);
 
 	// Query execution function
 	const runQuery = (queryBody: string) => {
@@ -87,10 +88,14 @@
 		let fetching = true;
 		let error: any = false;
 		let data: any = false;
+		const startTime = performance.now();
+
 		$urqlCoreClient
 			.query(queryBody)
 			.toPromise()
 			.then((result: any) => {
+				const endTime = performance.now();
+				executionTime = Math.round(endTime - startTime);
 				fetching = false;
 
 				if (result.error) {
@@ -277,6 +282,12 @@
 				QMS_bodyPart_StoreDerived={QMS_bodyPart_StoreDerived_rowsCount}
 				QMS_info={currentQMS_info}
 			/>
+		</div>
+	{/if}
+
+	{#if executionTime !== null}
+		<div class="badge badge-secondary flex space-x-2" title="Query execution time">
+			<i class="bi bi-stopwatch"></i> {executionTime}ms
 		</div>
 	{/if}
 
