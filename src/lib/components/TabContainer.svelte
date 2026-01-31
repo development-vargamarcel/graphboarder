@@ -4,6 +4,7 @@
 	import TabItem from '$lib/components/TabItem.svelte';
 	import TabButton from '$lib/components/TabButton.svelte';
 	import HeadersEditor from '$lib/components/UI/HeadersEditor.svelte';
+	import EndpointManager from '$lib/components/UI/EndpointManager.svelte';
 	import { getQMSLinks } from '$lib/utils/usefulFunctions';
 	import { getContext, onMount } from 'svelte';
 	import { Logger } from '$lib/utils/logger';
@@ -20,6 +21,7 @@
 	let { endpointInfo, onHideSidebar }: Props = $props();
 
 	let showSettings = $state(false);
+	let showEndpoints = $state(false);
 
 	// Ensure prefix is defined or passed
 	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
@@ -119,6 +121,15 @@
 			{/each}
 			<div class="mt-auto pb-4">
 				<TabButton
+					title="Endpoints"
+					icon="bi bi-hdd-network"
+					isActive={showEndpoints}
+					onclick={() => {
+						showEndpoints = true;
+						Logger.debug('Opening Endpoint Manager');
+					}}
+				/>
+				<TabButton
 					title="Headers"
 					icon="bi bi-gear"
 					isActive={showSettings}
@@ -130,6 +141,10 @@
 			</div>
 		</ul>
 	</div>
+
+	{#if showEndpoints}
+		<EndpointManager onClose={() => (showEndpoints = false)} />
+	{/if}
 
 	{#if showSettings}
 		<HeadersEditor {endpointInfo} onClose={() => (showSettings = false)} />

@@ -154,6 +154,24 @@ You can import and use the `LogViewer` component in your own application:
 {/if}
 ```
 
+## Endpoint Manager
+
+Auto-GQL allows you to manage multiple GraphQL endpoints.
+
+- **Access:** Click the **Endpoints** button (network drive icon) in the bottom of the sidebar.
+- **Functionality:**
+    - **List:** View all available endpoints (built-in and custom).
+    - **Add:** Add new custom endpoints with URL and headers.
+    - **Switch:** Click an endpoint to switch the application context to that endpoint.
+    - **Delete:** Remove custom endpoints.
+    - **Persisted:** Custom endpoints are saved in `localStorage`.
+
+## Query Execution Timer
+
+Auto-GQL automatically measures and displays the time taken for each query execution.
+
+- **Display:** The execution time (in milliseconds) is shown in a badge next to the row count (e.g., `<i class="bi bi-stopwatch"></i> 150ms`).
+
 ## Query History
 
 Auto-GQL allows you to persist and restore executed queries.
