@@ -4,7 +4,9 @@
 	import type { QMSMainWraperContext } from '$lib/types/index';
 	//!!Q
 	export const prefix = '';
-	let QMSMainWraperContext_Value = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
+	let QMSMainWraperContext_Value = getContext<QMSMainWraperContext>(
+		`${prefix}QMSMainWraperContext`
+	);
 	const schemaData = QMSMainWraperContext_Value?.schemaData;
 	import {
 		getRootType,

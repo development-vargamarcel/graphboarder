@@ -6,7 +6,7 @@ import type {
 	FieldWithDerivedData,
 	EndpointInfoStore,
 	SchemaData,
-    SchemaDataStore,
+	SchemaDataStore,
 	QMSType
 } from '$lib/types';
 

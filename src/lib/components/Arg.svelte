@@ -7,7 +7,7 @@
 	import { circIn, expoIn, expoOut } from 'svelte/easing';
 	import { getContext } from 'svelte';
 	import { Logger } from '$lib/utils/logger';
-    import type { QMSMainWraperContext } from '$lib/types/index';
+	import type { QMSMainWraperContext } from '$lib/types/index';
 
 	const prefix = '';
 
@@ -36,16 +36,16 @@
 	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
 	const schemaData = mainWraperCtx?.schemaData;
 
-    $effect(() => {
-        Logger.debug({ type });
-        Logger.debug({ predefinedFirstSteps });
-    });
+	$effect(() => {
+		Logger.debug({ type });
+		Logger.debug({ predefinedFirstSteps });
+	});
 
-    $effect(() => {
-        if (stepsOfFields.length == 0 && predefinedFirstSteps) {
-            stepsOfFields = [...predefinedFirstSteps];
-        }
-    });
+	$effect(() => {
+		if (stepsOfFields.length == 0 && predefinedFirstSteps) {
+			stepsOfFields = [...predefinedFirstSteps];
+		}
+	});
 
 	let indetifier = Math.random();
 
@@ -78,7 +78,7 @@
 {#if template == 'default'}<div class="pt-2 text-center text-xs"></div>{/if}
 
 <div
-	class="  pb-0 pl-1 pr-0  rounded-r-sm rounded-l-none shadow-none  space-x-2  normal-case text-xs min-w-max {showExpand
+	class="  pb-0 pl-1 pr-0 rounded-r-sm rounded-l-none shadow-none space-x-2 normal-case text-xs min-w-max {showExpand
 		? ''
 		: ''}"
 >

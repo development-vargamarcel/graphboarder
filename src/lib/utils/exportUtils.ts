@@ -16,7 +16,9 @@ export const convertArrayToCSV = (data: any[]): string => {
 	};
 
 	const flatData = data.map((item) => flattenObject(item));
-	const headers = Array.from(new Set(flatData.reduce((keys, obj) => keys.concat(Object.keys(obj)), [])));
+	const headers = Array.from(
+		new Set(flatData.reduce((keys, obj) => keys.concat(Object.keys(obj)), []))
+	);
 
 	const csvContent = [
 		headers.join(','),

@@ -3,7 +3,13 @@
 	import { Logger } from '$lib/utils/logger';
 
 	let inputEl;
-	let { rawValue = [], dispatchValue = [], typeInfo, onChanged, alwaysOn_interfacePicker = false } = $props();
+	let {
+		rawValue = [],
+		dispatchValue = [],
+		typeInfo,
+		onChanged,
+		alwaysOn_interfacePicker = false
+	} = $props();
 
 	let elements = $state([]);
 	$effect(() => {

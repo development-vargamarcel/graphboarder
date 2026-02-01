@@ -11,3 +11,6 @@ node_modules
 test-results/
 playwright-report/
 verification/
+
+# Vite timestamps
+vite.config.ts.timestamp-*

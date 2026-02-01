@@ -1,7 +1,10 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('User Flow Tests', () => {
-	test('complete user flow: get started -> endpoints table -> drawer -> queries -> documents', async ({ page, context }) => {
+	test('complete user flow: get started -> endpoints table -> drawer -> queries -> documents', async ({
+		page,
+		context
+	}) => {
 		// Step 1: Navigate to home page
 		await page.goto('/');
 		await page.waitForLoadState('domcontentloaded');
@@ -21,10 +24,7 @@ test.describe('User Flow Tests', () => {
 		const firstRow = page.locator('tbody tr').first();
 		await expect(firstRow).toBeVisible({ timeout: 10000 });
 
-		const [newPage] = await Promise.all([
-			context.waitForEvent('page'),
-			firstRow.click()
-		]);
+		const [newPage] = await Promise.all([context.waitForEvent('page'), firstRow.click()]);
 
 		// Wait for the new page to load
 		await newPage.waitForLoadState('domcontentloaded');
@@ -32,7 +32,9 @@ test.describe('User Flow Tests', () => {
 
 		// Step 4: Open the drawer (hamburger menu for mobile/sidebar)
 		// The drawer toggle is the hamburger button - visible on mobile or when sidebar is hidden
-		const drawerButton = newPage.locator('label.btn.btn-square.btn-ghost, button.btn.btn-square.btn-ghost').first();
+		const drawerButton = newPage
+			.locator('label.btn.btn-square.btn-ghost, button.btn.btn-square.btn-ghost')
+			.first();
 
 		// Check if drawer button is visible (might not be on desktop)
 		const isDrawerButtonVisible = await drawerButton.isVisible();
@@ -60,7 +62,7 @@ test.describe('User Flow Tests', () => {
 		const firstQueryItem = newPage.locator('ul.space-y-1 li a').first();
 
 		// Check if "documents" link exists, otherwise click the first query
-		const documentsExists = await documentsLink.count() > 0;
+		const documentsExists = (await documentsLink.count()) > 0;
 		if (documentsExists) {
 			await expect(documentsLink).toBeVisible();
 			await documentsLink.click();
@@ -77,7 +79,7 @@ test.describe('User Flow Tests', () => {
 		await expect(newPage.url()).toMatch(/\/endpoints\/.*\/queries\/.+/);
 
 		// Additional verification: check that we're on a page with table content
-		const tableExists = await newPage.locator('table').count() > 0;
+		const tableExists = (await newPage.locator('table').count()) > 0;
 		expect(tableExists).toBeTruthy();
 	});
 });

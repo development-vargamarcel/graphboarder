@@ -44,7 +44,8 @@ export function getFilterButtonClasses(
 
 	if (hasSelection && defaultMeansNoChange && isDefault) {
 		return {
-			btnExtraClass: 'btn-outline btn-neutral bg-primary/10 hover:bg-primary/10 hover:text-base-content',
+			btnExtraClass:
+				'btn-outline btn-neutral bg-primary/10 hover:bg-primary/10 hover:text-base-content',
 			extraInfoExtraClass: 'border-base-content text-base-content'
 		};
 	} else if (hasSelection) {
@@ -60,7 +61,8 @@ export function getFilterButtonClasses(
 	}
 
 	return {
-		btnExtraClass: 'btn-outline btn-neutral bg-primary/10 hover:bg-primary/10 hover:text-base-content',
+		btnExtraClass:
+			'btn-outline btn-neutral bg-primary/10 hover:bg-primary/10 hover:text-base-content',
 		extraInfoExtraClass: ''
 	};
 }
@@ -117,7 +119,8 @@ export function toggleFilterChoice(
 	currentChosen: string | string[] | undefined
 ): string | string[] | undefined {
 	if (type == 'radio') {
-		const hasSelection = currentChosen && (Array.isArray(currentChosen) ? currentChosen.length > 0 : true);
+		const hasSelection =
+			currentChosen && (Array.isArray(currentChosen) ? currentChosen.length > 0 : true);
 		return hasSelection ? undefined : choises[0];
 	}
 

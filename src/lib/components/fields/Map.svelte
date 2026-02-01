@@ -126,7 +126,7 @@
 <div
 	id={mapContainerId}
 	bind:this={mapContainer}
-	class="h-max min-h-[110px]   aspect-video rounded-box"
+	class="h-max min-h-[110px] aspect-video rounded-box"
 ></div>
 
 <style>

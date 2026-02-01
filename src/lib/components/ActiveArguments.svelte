@@ -6,7 +6,7 @@
 	import { getContext, setContext, untrack } from 'svelte';
 	import ActiveArgumentsGroupWraper from '$lib/components/ActiveArgumentsGroupWraper.svelte';
 	import { Logger } from '$lib/utils/logger';
-    import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
+	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 
 	interface Props {
 		isControlPanelChild?: any;
@@ -33,7 +33,9 @@
 		isControlPanelChild: untrack(() => isControlPanelChild)
 	};
 	setContext(`${untrack(() => prefix)}activeArgumentsContext`, activeArgumentsContext);
-	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(
+		`${untrack(() => prefix)}QMSMainWraperContext`
+	);
 	const endpointInfo = mainWraperCtx?.endpointInfo;
 	const schemaData = mainWraperCtx?.schemaData;
 	let qmsWraperCtx = getContext<QMSWraperContext>(`${untrack(() => prefix)}QMSWraperContext`);

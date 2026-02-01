@@ -11,7 +11,7 @@
 	<div
 		role="button"
 		tabindex="0"
-		class="w-[30vh]  h-[100vh]  {forceVisibleSidebar
+		class="w-[30vh] h-[100vh] {forceVisibleSidebar
 			? 'visible '
 			: ' invisible'} fixed left-0 top-0 z-50 lg:z-0 lg:visible lg:static bg-base-200 overflow-y-auto"
 		use:clickOutside
@@ -60,7 +60,9 @@
 			<div class="flex-none block">
 				<ul class="flex">
 					<li>
-						<button class="btn btn-sm " aria-label="Add"><i class="bi bi-plus-square text-xl "></i> </button>
+						<button class="btn btn-sm" aria-label="Add"
+							><i class="bi bi-plus-square text-xl"></i>
+						</button>
 					</li>
 				</ul>
 			</div>

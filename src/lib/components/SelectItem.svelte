@@ -1,5 +1,4 @@
 <script lang="ts">
-
 	import QmsWraper from '$lib/components/QMSWraper.svelte';
 	import { getContext, untrack } from 'svelte';
 	import ComponentForLayout from '../../routes/endpoints/[endpointid]/queries/[queryName]/ComponentForLayout.svelte';
@@ -27,15 +26,22 @@
 		onRowClicked
 	}: Props = $props();
 
-	import type { QMSMainWraperContext, QMSWraperContext as QMSWraperContextType } from '$lib/types/index';
-	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
+	import type {
+		QMSMainWraperContext,
+		QMSWraperContext as QMSWraperContextType
+	} from '$lib/types/index';
+	let mainWraperCtx = getContext<QMSMainWraperContext>(
+		`${untrack(() => prefix)}QMSMainWraperContext`
+	);
 	const endpointInfo = mainWraperCtx?.endpointInfo;
 	const schemaData = mainWraperCtx?.schemaData;
-	const OutermostQMSWraperContext = getContext<QMSWraperContextType>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<QMSWraperContextType>(
+		`${untrack(() => prefix)}OutermostQMSWraperContext`
+	);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
-    $effect(() => {
-	    Logger.debug('nooooddeeee', { node });
-    });
+	$effect(() => {
+		Logger.debug('nooooddeeee', { node });
+	});
 
 	let getManyQMS = $derived.by(() => {
 		if ($QMSFieldToQMSGetMany_Store.length > 0) {

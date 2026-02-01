@@ -1,5 +1,4 @@
 <script lang="ts">
-
 	import { writable } from 'svelte/store';
 	import { createSvelteTable, flexRender, getCoreRowModel } from '@tanstack/svelte-table';
 	import type { ColumnDef, TableOptions } from '@tanstack/table-core';
@@ -7,7 +6,7 @@
 	import ColumnInfo from './ColumnInfo.svelte';
 	import { getContext, untrack } from 'svelte';
 	import InfiniteLoading from 'svelte-infinite-loading';
-    import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
+	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 
 	interface Props {
 		prefix?: string;
@@ -37,8 +36,10 @@
 		onRowClicked
 	}: Props = $props();
 
-    let loadMore = $state(false);
-	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
+	let loadMore = $state(false);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(
+		`${untrack(() => prefix)}QMSMainWraperContext`
+	);
 	let qmsWraperCtx = getContext<QMSWraperContext>(`${untrack(() => prefix)}QMSWraperContext`);
 	let idColName = $derived(qmsWraperCtx?.idColName);
 	const paginationOptions = $derived(qmsWraperCtx?.paginationOptions);
@@ -51,11 +52,11 @@
 		return columnVisibility;
 	};
 
-    let columnVisibility = $derived(getColumnVisibility(cols));
+	let columnVisibility = $derived(getColumnVisibility(cols));
 
-    $effect(() => {
-        console.log({ columnVisibility });
-    });
+	$effect(() => {
+		console.log({ columnVisibility });
+	});
 
 	const getColumns = (cols: any[]) => {
 		let columns = cols.map((col, index) => {
@@ -70,9 +71,9 @@
 		return columns;
 	};
 
-    let columns = $derived(getColumns(cols));
+	let columns = $derived(getColumns(cols));
 
-    const setRowSelection = (updater: any) => {
+	const setRowSelection = (updater: any) => {
 		if (updater instanceof Function) {
 			rowSelectionState = updater(rowSelectionState);
 		} else {
@@ -92,7 +93,7 @@
 
 	console.log({ rowSelectionState });
 
-    const options = writable<TableOptions<any>>({
+	const options = writable<TableOptions<any>>({
 		data: data,
 		columns: untrack(() => columns), // Initial value
 		getCoreRowModel: getCoreRowModel(),
@@ -101,11 +102,14 @@
 		onRowSelectionChange: setRowSelection,
 		enableHiding: true,
 		initialState: { rowSelection: untrack(() => rowSelectionState) },
-		state: { columnVisibility: untrack(() => columnVisibility), rowSelection: untrack(() => rowSelectionState) },
+		state: {
+			columnVisibility: untrack(() => columnVisibility),
+			rowSelection: untrack(() => rowSelectionState)
+		},
 		getRowId: (row) => row?.[idColName!]
 	});
 
-    const rerender = () => {
+	const rerender = () => {
 		options.update((options) => ({
 			...options,
 			data: data
@@ -119,15 +123,15 @@
 			...options,
 			data: data,
 			columns: columns,
-            state: {
-                ...options.state,
-                columnVisibility: columnVisibility
-            }
+			state: {
+				...options.state,
+				columnVisibility: columnVisibility
+			}
 		}));
 		console.log({ data, cols });
 	});
 
-    $effect(() => {
+	$effect(() => {
 		console.log({ table }, '$table', $table);
 	});
 </script>
@@ -158,9 +162,11 @@
 												: ''}
 										>
 											{#if !header.isPlaceholder}
-												{@const SvelteComponent = flexRender(header.column.columnDef.header, header.getContext())}
-												<SvelteComponent
-												/>
+												{@const SvelteComponent = flexRender(
+													header.column.columnDef.header,
+													header.getContext()
+												)}
+												<SvelteComponent />
 											{/if}
 										</div>
 										<div class="bi bi-chevron-down"></div>
@@ -178,16 +184,18 @@
 											<div
 												class="w-full pr-2 hover:text-primary cursor-pointer max-w-xs md:max-w-sm overflow-x-auto"
 											>
-												<ColumnInfo stepsOfFields={(header.column.columnDef as any).stepsOfFields} />
+												<ColumnInfo
+													stepsOfFields={(header.column.columnDef as any).stepsOfFields}
+												/>
 												<!-- {colsData[index].stepsOfFields.join(' > ')} -->
 											</div>
 											<button
 												class="w-full pr-2 hover:text-primary cursor-pointer text-left bg-transparent border-0 p-0"
 												onclick={() => {
-                                                    const headerVal = header.column.columnDef.header;
-                                                    if (typeof headerVal === 'string') {
-													    onHideColumn?.({ column: headerVal });
-                                                    }
+													const headerVal = header.column.columnDef.header;
+													if (typeof headerVal === 'string') {
+														onHideColumn?.({ column: headerVal });
+													}
 												}}
 											>
 												hide field
@@ -211,7 +219,12 @@
 					}}
 				>
 					{#if enableRowSelectionState}
-						<th class="z-0" onclick={(e) => { e.stopPropagation(); }}>
+						<th
+							class="z-0"
+							onclick={(e) => {
+								e.stopPropagation();
+							}}
+						>
 							<label>
 								<input
 									checked={row.getIsSelected()}

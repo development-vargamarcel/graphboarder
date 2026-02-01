@@ -18,76 +18,76 @@ import { toast } from './stores/toastStore';
 export type { QMSMainWraperContext, QMSWraperContext } from './types/index';
 
 export {
-    /**
-     * The top-level component that sets up the GraphQL client and schema introspection.
-     * Wrap your application or the part that needs GraphQL access with this.
-     *
-     * @example
-     * ```svelte
-     * <MainWraper endpointInfoProvided={{ url: '...' }}>
-     *   <App />
-     * </MainWraper>
-     * ```
-     */
-    MainWraper,
+	/**
+	 * The top-level component that sets up the GraphQL client and schema introspection.
+	 * Wrap your application or the part that needs GraphQL access with this.
+	 *
+	 * @example
+	 * ```svelte
+	 * <MainWraper endpointInfoProvided={{ url: '...' }}>
+	 *   <App />
+	 * </MainWraper>
+	 * ```
+	 */
+	MainWraper,
 
-    /**
-     * The component that establishes the context for a specific GraphQL operation (Query, Mutation, Subscription).
-     * Used to define a query, filtering, sorting, and pagination context.
-     *
-     * @example
-     * ```svelte
-     * <QMSWraper QMSName="users" QMSType="query">
-     *   <MyComponent />
-     * </QMSWraper>
-     * ```
-     */
-    QMSWraper,
+	/**
+	 * The component that establishes the context for a specific GraphQL operation (Query, Mutation, Subscription).
+	 * Used to define a query, filtering, sorting, and pagination context.
+	 *
+	 * @example
+	 * ```svelte
+	 * <QMSWraper QMSName="users" QMSType="query">
+	 *   <MyComponent />
+	 * </QMSWraper>
+	 * ```
+	 */
+	QMSWraper,
 
-    /**
-     * A generic input field component that adapts to the data type.
-     */
-    Input,
+	/**
+	 * A generic input field component that adapts to the data type.
+	 */
+	Input,
 
-    /**
-     * A UI component to view system logs.
-     */
-    LogViewer,
+	/**
+	 * A UI component to view system logs.
+	 */
+	LogViewer,
 
-    /**
-     * The logger utility used by the library.
-     * Configure log level via `Logger.setLevel(LogLevel.INFO)`.
-     */
-    Logger,
+	/**
+	 * The logger utility used by the library.
+	 * Configure log level via `Logger.setLevel(LogLevel.INFO)`.
+	 */
+	Logger,
 
-    /**
-     * Log levels for the logger.
-     */
-    LogLevel,
+	/**
+	 * Log levels for the logger.
+	 */
+	LogLevel,
 
-    /**
-     * Add a query to the history.
-     */
-    addToHistory,
+	/**
+	 * Add a query to the history.
+	 */
+	addToHistory,
 
-    /**
-     * Export the history as a JSON string.
-     */
-    exportHistory,
+	/**
+	 * Export the history as a JSON string.
+	 */
+	exportHistory,
 
-    /**
-     * Import history from a JSON string.
-     */
-    importHistory,
+	/**
+	 * Import history from a JSON string.
+	 */
+	importHistory,
 
-    /**
-     * The history store.
-     */
-    queryHistory,
+	/**
+	 * The history store.
+	 */
+	queryHistory,
 
-    /**
-     * The toast notification store.
-     * Use `toast.info()`, `toast.success()`, `toast.error()`, `toast.warning()` to display messages.
-     */
-    toast
+	/**
+	 * The toast notification store.
+	 * Use `toast.info()`, `toast.success()`, `toast.error()`, `toast.warning()` to display messages.
+	 */
+	toast
 };

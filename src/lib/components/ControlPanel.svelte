@@ -2,7 +2,7 @@
 	import { getContext, setContext, untrack } from 'svelte';
 
 	import ControlPanelItem from './ControlPanelItem.svelte';
-    import type { QMSWraperContext } from '$lib/types/index';
+	import type { QMSWraperContext } from '$lib/types/index';
 
 	interface Props {
 		type?: any;
@@ -12,7 +12,7 @@
 		dd_relatedRoot?: any;
 		QMSName?: any;
 		currentQMS_info?: any;
-        hasGroup_argsNode?: boolean;
+		hasGroup_argsNode?: boolean;
 	}
 
 	let {
@@ -23,10 +23,12 @@
 		dd_relatedRoot,
 		QMSName,
 		currentQMS_info,
-        hasGroup_argsNode
+		hasGroup_argsNode
 	}: Props = $props();
 
-    const qmsWraperCtx = getContext<QMSWraperContext>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
+	const qmsWraperCtx = getContext<QMSWraperContext>(
+		`${untrack(() => prefix)}OutermostQMSWraperContext`
+	);
 	const mergedChildren_controlPanel_Store = qmsWraperCtx?.mergedChildren_controlPanel_Store;
 
 	let showControlPanel = $state(false);

@@ -5,10 +5,13 @@ This directory contains comprehensive end-to-end tests for the GraphBoarder appl
 ## Test Files
 
 ### 1. `test.ts`
+
 Basic test to verify the application setup.
 
 ### 2. `user-flow.spec.ts`
+
 Tests the basic user flow through the application:
+
 - Clicking "Get Started" button
 - Selecting an endpoint from the table
 - Opening the drawer/sidebar
@@ -16,50 +19,61 @@ Tests the basic user flow through the application:
 - Clicking on query items (including "documents" query)
 
 ### 3. `advanced-user-flows.spec.ts`
+
 Comprehensive tests covering advanced functionality:
 
 #### Filter Tests
+
 - **Radio Filter Selection**: Tests selecting single-choice filters
 - **Checkbox Filter Selection**: Tests selecting multiple filter options
 - **Drag and Drop Reordering**: Tests reordering filter items using drag handles
 
 #### Column Management
+
 - **Adding Columns**: Tests the column addition dropdown and field selection
 - **Hiding Columns**: Tests removing columns from the table view
 
 #### UI Interaction
+
 - **Control Panel**: Tests toggling the control panel visibility
 - **QMS Body Display**: Tests showing/hiding GraphQL query code
 - **Table Row Selection**: Tests selecting rows with checkboxes/radio buttons
 
 #### Navigation
+
 - **Explorer Page**: Tests navigating to the Explorer tab
 - **Mutations Page**: Tests navigating to and interacting with mutations
 
 #### Integration Tests
+
 - **Complete User Journey**: Tests multiple interactions in sequence
 
 ### 4. `page-navigation.spec.ts`
+
 Tests for page navigation and routing:
 
 #### Main Navigation
+
 - **Full Navigation Flow**: Tests navigating through all main sections
 - **Endpoint Type Switching**: Tests switching between local, localstorage, and remote endpoints
 - **Sidebar Interaction**: Tests sidebar visibility on mobile viewports
 - **Home Button Navigation**: Tests returning to home via sidebar
 
 #### State Management
+
 - **Breadcrumb Navigation**: Tests browser back/forward buttons
 - **Multiple Query Navigation**: Tests navigating through different queries
 - **Persistent State**: Tests state preservation across navigation
 
 #### Error Handling
+
 - **Error Resilience**: Tests graceful handling of invalid URLs
 - **Page Recovery**: Tests application stability after navigation errors
 
 ## Running the Tests
 
 ### Prerequisites
+
 ```bash
 # Install dependencies
 npm install
@@ -105,17 +119,23 @@ npx playwright show-report
 ## Test Architecture
 
 ### Helper Functions
+
 The tests use shared helper functions to reduce duplication:
+
 - `navigateToQueryPage()`: Common navigation flow to reach a query detail page
 
 ### Page Objects Pattern
+
 Tests interact with the UI using Playwright's locator strategy:
+
 - Semantic selectors (text content, ARIA labels)
 - CSS selectors for specific components
 - Fallback strategies for resilient tests
 
 ### Waiting Strategies
+
 Tests use multiple waiting strategies for reliability:
+
 - `waitForLoadState('domcontentloaded')`: Wait for DOM to be ready
 - `waitForLoadState('networkidle')`: Wait for network requests to complete
 - `waitForTimeout()`: Wait for animations and transitions
@@ -126,24 +146,28 @@ Tests use multiple waiting strategies for reliability:
 The test suite covers:
 
 ### User Flows
+
 - ✅ Basic navigation through the application
 - ✅ Endpoint selection and detail views
 - ✅ Query browsing and execution
 - ✅ Mutation navigation
 
 ### Filtering & Arguments
+
 - ✅ Radio button filters
 - ✅ Checkbox filters
 - ✅ Filter reordering via drag and drop
 - ✅ Filter application and removal
 
 ### Data Management
+
 - ✅ Column addition
 - ✅ Column removal/hiding
 - ✅ Table row selection
 - ✅ Multi-select functionality
 
 ### UI Components
+
 - ✅ Modal dialogs
 - ✅ Dropdown menus
 - ✅ Sidebar/drawer behavior
@@ -151,11 +175,13 @@ The test suite covers:
 - ✅ Code display toggle
 
 ### Responsive Design
+
 - ✅ Mobile viewport behavior
 - ✅ Hamburger menu interaction
 - ✅ Sidebar auto-hide on mobile
 
 ### State & Navigation
+
 - ✅ Browser back/forward
 - ✅ Deep linking
 - ✅ Error handling
@@ -166,30 +192,31 @@ The test suite covers:
 ### Best Practices
 
 1. **Use Descriptive Test Names**
+
    ```typescript
    test('test query with filter selection - radio type', async ({ page, context }) => {
    ```
 
 2. **Wait for Elements Properly**
+
    ```typescript
    await expect(element).toBeVisible({ timeout: 10000 });
    await page.waitForLoadState('networkidle');
    ```
 
 3. **Handle Optional Elements**
+
    ```typescript
    const elementExists = await element.isVisible().catch(() => false);
    if (elementExists) {
-     // interact with element
+	// interact with element
    }
    ```
 
 4. **Use Context for Multi-Page Scenarios**
+
    ```typescript
-   const [newPage] = await Promise.all([
-     context.waitForEvent('page'),
-     element.click()
-   ]);
+   const [newPage] = await Promise.all([context.waitForEvent('page'), element.click()]);
    ```
 
 5. **Verify State Changes**
@@ -201,6 +228,7 @@ The test suite covers:
 ## Debugging Tests
 
 ### Visual Debugging
+
 ```bash
 # Run with headed browser
 npx playwright test --headed
@@ -210,7 +238,9 @@ npx playwright test --debug
 ```
 
 ### Screenshots and Videos
+
 The Playwright config can be updated to capture screenshots and videos:
+
 ```typescript
 use: {
   screenshot: 'on',
@@ -219,6 +249,7 @@ use: {
 ```
 
 ### Trace Viewer
+
 ```bash
 # Record trace
 npx playwright test --trace on
@@ -261,6 +292,7 @@ These tests can be integrated into CI/CD pipelines:
 ## Contributing
 
 When adding new tests:
+
 1. Follow the existing test structure
 2. Add descriptive comments for complex interactions
 3. Use helper functions to reduce duplication

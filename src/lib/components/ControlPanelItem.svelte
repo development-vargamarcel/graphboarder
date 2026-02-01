@@ -3,7 +3,7 @@
 	import ActiveArgumentsGroupWraper from './ActiveArgumentsGroupWraper.svelte';
 	import { getContext, setContext, untrack } from 'svelte';
 	import { getQMSWraperCtxDataGivenControlPanelItem } from '$lib/utils/usefulFunctions';
-    import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
+	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 
 	interface Props {
 		prefix?: string;
@@ -11,9 +11,14 @@
 	}
 
 	let { prefix = '', CPItem }: Props = $props();
-	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(
+		`${untrack(() => prefix)}OutermostQMSWraperContext`
+	);
 
-	const QMSWraperCtx = getQMSWraperCtxDataGivenControlPanelItem(untrack(() => CPItem), OutermostQMSWraperContext);
+	const QMSWraperCtx = getQMSWraperCtxDataGivenControlPanelItem(
+		untrack(() => CPItem),
+		OutermostQMSWraperContext
+	);
 	const activeArgumentsDataGrouped_Store = QMSWraperCtx.activeArgumentsDataGrouped_Store;
 
 	const CPItemContext = { CPItem: untrack(() => CPItem), QMSWraperCtx };

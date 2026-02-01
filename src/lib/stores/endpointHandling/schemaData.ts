@@ -12,7 +12,14 @@ import { get, writable, type Writable } from 'svelte/store';
  * @returns A SchemaDataStore with helper methods for schema processing.
  */
 export const create_schemaData = (): SchemaDataStore => {
-	const store: Writable<SchemaData> = writable({ rootTypes: [], queryFields: [], mutationFields: [], subscriptionFields: [], schema: {}, isReady: false });
+	const store: Writable<SchemaData> = writable({
+		rootTypes: [],
+		queryFields: [],
+		mutationFields: [],
+		subscriptionFields: [],
+		schema: {},
+		isReady: false
+	});
 	const { subscribe, set, update } = store;
 	let returnObject: SchemaDataStore = {
 		subscribe,
@@ -23,7 +30,7 @@ export const create_schemaData = (): SchemaDataStore => {
 		 * @param schema - The raw schema object.
 		 */
 		set_schema: (schema: any) => {
-			update(s => ({ ...s, schema }));
+			update((s) => ({ ...s, schema }));
 		},
 		/**
 		 * Processes root types from the schema and optionally generates derived data.
@@ -31,7 +38,11 @@ export const create_schemaData = (): SchemaDataStore => {
 		 * @param set_storeVal - Whether to update the store with the result.
 		 * @param endpointInfo - The endpoint configuration store.
 		 */
-		set_rootTypes: (withDerivedData: boolean, set_storeVal: boolean = true, endpointInfo: EndpointInfoStore) => {
+		set_rootTypes: (
+			withDerivedData: boolean,
+			set_storeVal: boolean = true,
+			endpointInfo: EndpointInfoStore
+		) => {
 			let storeValue = get(store);
 			let { schema } = storeValue;
 			if (!schema || !schema.types) return [];
@@ -39,25 +50,39 @@ export const create_schemaData = (): SchemaDataStore => {
 			let new_rootTypes = sortByName([...schema.types]) as RootType[];
 			if (withDerivedData) {
 				new_rootTypes.forEach((el) => {
-					Object.assign(el, generate_derivedData(el, new_rootTypes, false, endpointInfo, storeValue));
+					Object.assign(
+						el,
+						generate_derivedData(el, new_rootTypes, false, endpointInfo, storeValue)
+					);
 					el?.fields?.forEach((field) => {
-						Object.assign(field, generate_derivedData(field, new_rootTypes, false, endpointInfo, storeValue));
+						Object.assign(
+							field,
+							generate_derivedData(field, new_rootTypes, false, endpointInfo, storeValue)
+						);
 						field?.args?.forEach((arg) => {
-							Object.assign(arg, generate_derivedData(arg, new_rootTypes, false, endpointInfo, storeValue));
+							Object.assign(
+								arg,
+								generate_derivedData(arg, new_rootTypes, false, endpointInfo, storeValue)
+							);
 						});
 					});
 					el?.inputFields?.forEach((inputField) => {
-						Object.assign(inputField, generate_derivedData(inputField, new_rootTypes, false, endpointInfo, storeValue));
+						Object.assign(
+							inputField,
+							generate_derivedData(inputField, new_rootTypes, false, endpointInfo, storeValue)
+						);
 					});
 					el?.enumValues?.forEach((enumValue) => {
-						Object.assign(enumValue, generate_derivedData(enumValue, new_rootTypes, false, endpointInfo, storeValue));
+						Object.assign(
+							enumValue,
+							generate_derivedData(enumValue, new_rootTypes, false, endpointInfo, storeValue)
+						);
 					});
-
 				});
 			}
 
 			if (set_storeVal) {
-				update(s => ({ ...s, rootTypes: new_rootTypes }));
+				update((s) => ({ ...s, rootTypes: new_rootTypes }));
 			}
 
 			return new_rootTypes;
@@ -94,21 +119,39 @@ export const create_schemaData = (): SchemaDataStore => {
 
 				if (withDerivedData && new_QMS_Fields) {
 					new_QMS_Fields.forEach((el: any) => {
-						Object.assign(el, generate_derivedData(el, rootTypes, isQMSField, endpointInfo, storeValue));
+						Object.assign(
+							el,
+							generate_derivedData(el, rootTypes, isQMSField, endpointInfo, storeValue)
+						);
 						el?.args?.forEach((arg: any) => {
-							Object.assign(arg, generate_derivedData(arg, rootTypes, false, endpointInfo, storeValue));
+							Object.assign(
+								arg,
+								generate_derivedData(arg, rootTypes, false, endpointInfo, storeValue)
+							);
 						});
 						el?.fields?.forEach((field: any) => {
-							Object.assign(field, generate_derivedData(field, rootTypes, false, endpointInfo, storeValue));
+							Object.assign(
+								field,
+								generate_derivedData(field, rootTypes, false, endpointInfo, storeValue)
+							);
 							field?.args?.forEach((arg: any) => {
-								Object.assign(arg, generate_derivedData(arg, rootTypes, false, endpointInfo, storeValue));
+								Object.assign(
+									arg,
+									generate_derivedData(arg, rootTypes, false, endpointInfo, storeValue)
+								);
 							});
 						});
 						el?.inputFields?.forEach((inputField: any) => {
-							Object.assign(inputField, generate_derivedData(inputField, rootTypes, false, endpointInfo, storeValue));
+							Object.assign(
+								inputField,
+								generate_derivedData(inputField, rootTypes, false, endpointInfo, storeValue)
+							);
 						});
 						el?.enumValues?.forEach((enumValue: any) => {
-							Object.assign(enumValue, generate_derivedData(enumValue, rootTypes, false, endpointInfo, storeValue));
+							Object.assign(
+								enumValue,
+								generate_derivedData(enumValue, rootTypes, false, endpointInfo, storeValue)
+							);
 						});
 					});
 				}
@@ -117,7 +160,7 @@ export const create_schemaData = (): SchemaDataStore => {
 			});
 
 			if (set_storeVal) {
-				update(s => ({ ...s, ...result }));
+				update((s) => ({ ...s, ...result }));
 			}
 			return result;
 		},
@@ -128,21 +171,25 @@ export const create_schemaData = (): SchemaDataStore => {
 		set_fields: (endpointInfo: EndpointInfoStore) => {
 			//set rootTypes,queryFields,mutationFields,subscriptionFields //fields or types?
 			let rootTypes = returnObject.set_rootTypes(true, true, endpointInfo);
-			let QMSFields = returnObject.set_QMSFields(true, false, [
-				'query',
-				'mutation',
-				'subscription'
-			], endpointInfo);
-			update(s => ({
+			let QMSFields = returnObject.set_QMSFields(
+				true,
+				false,
+				['query', 'mutation', 'subscription'],
+				endpointInfo
+			);
+			update((s) => ({
 				...s,
 				rootTypes,
 				...QMSFields,
 				isReady: true
 			}));
-			console.log('updated schemaData', { QMSFields })
-
+			console.log('updated schemaData', { QMSFields });
 		},
-		get_rootType: (rootTypes: RootType[] | null, RootType_Name: string, schemaData: SchemaDataStore | SchemaData) => {
+		get_rootType: (
+			rootTypes: RootType[] | null,
+			RootType_Name: string,
+			schemaData: SchemaDataStore | SchemaData
+		) => {
 			return getRootType(rootTypes, RootType_Name, schemaData);
 		},
 		get_QMS_Field: (name: string, _QMS_: QMSType, schemaData: SchemaDataStore | SchemaData) => {

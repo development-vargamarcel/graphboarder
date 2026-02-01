@@ -1,7 +1,7 @@
 <script lang="ts">
 	import FilterGroup from '$lib/components/FilterGroup.svelte';
 	let { typeInfo, rawValue, dispatchValue, onChanged } = $props();
-    let containerEl: HTMLElement | undefined = $state();
+	let containerEl: HTMLElement | undefined = $state();
 </script>
 
 <div class="flex flex-col" bind:this={containerEl}>
@@ -19,6 +19,6 @@
 		id={typeInfo.stepsOfFields}
 		title="choose"
 		type={typeInfo.dd_kindList ? 'checkbox' : 'radio'}
-        containerEl={containerEl}
+		{containerEl}
 	/>
 </div>

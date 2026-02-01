@@ -4,7 +4,10 @@ import { get } from 'svelte/store';
 import { page } from '$app/stores';
 import { get_paginationTypes } from '$lib/stores/pagination/paginationTypes';
 import { getContext } from 'svelte';
-import { stringToQMSString_transformer, string_transformer } from '$lib/utils/dataStructureTransformers';
+import {
+	stringToQMSString_transformer,
+	string_transformer
+} from '$lib/utils/dataStructureTransformers';
 import { Logger } from '$lib/utils/logger';
 import type {
 	GraphQLKind,
@@ -26,60 +29,63 @@ import type {
 	ActiveArgumentsDataGroupedStore
 } from '$lib/types';
 
-
 /**
  * Recursively finds a nested child object that has multiple keys or if the last key is 'QMSarguments'.
  * @param obj - The object to search within.
  * @returns The found object, true if 'QMSarguments' is the only key, or null if not found.
  */
-export const findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey = (obj: unknown): Record<string, unknown> | boolean | null => {
+export const findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey = (
+	obj: unknown
+): Record<string, unknown> | boolean | null => {
 	// Check if the input is an object
 	if (typeof obj !== 'object' || obj === null) {
 		return null;
 	}
-	const objectKeys = Object.keys(obj)
-	const objectKeysLength = objectKeys.length
+	const objectKeys = Object.keys(obj);
+	const objectKeysLength = objectKeys.length;
 	if (objectKeysLength > 1) {
-		return obj as Record<string, unknown>
+		return obj as Record<string, unknown>;
 	}
-	if (obj.hasOwnProperty("QMSarguments") && objectKeysLength == 1) {
-		return true
+	if (obj.hasOwnProperty('QMSarguments') && objectKeysLength == 1) {
+		return true;
 	}
 	if (objectKeysLength == 1) {
-		return findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey((obj as any)[objectKeys[0]])
+		return findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey((obj as any)[objectKeys[0]]);
 	}
-    return null;
-}
+	return null;
+};
 
 /**
  * Removes nested objects if they contain only one key and that key is 'QMSarguments'.
  * @param obj - The object to modify.
  * @returns The modified object or null.
  */
-export const deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments = (obj: unknown): Record<string, unknown> | null => {
+export const deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments = (
+	obj: unknown
+): Record<string, unknown> | null => {
 	if (getPreciseType(obj) !== 'object' || obj === null) {
 		return null;
 	}
 	Logger.debug('deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments', { obj });
 
 	for (const key in obj as Record<string, any>) {
-        const typedObj = obj as Record<string, any>;
-		const keys = Object.keys(typedObj[key])
-		const numberOfKeys = keys.length
+		const typedObj = obj as Record<string, any>;
+		const keys = Object.keys(typedObj[key]);
+		const numberOfKeys = keys.length;
 		if (numberOfKeys == 1 && typedObj[key][keys[0]] == 'QMSarguments') {
-			delete typedObj[key]
-			return typedObj
+			delete typedObj[key];
+			return typedObj;
 		}
-		const result = findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey(typedObj[key])
+		const result = findNestedChildWithMultipleKeysOrIfLastHasQMSargumentsKey(typedObj[key]);
 		if (result === true) {
-			delete typedObj[key]
+			delete typedObj[key];
 		}
 		if (getPreciseType(result) == 'object') {
-			deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments(typedObj[key])
+			deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments(typedObj[key]);
 		}
 	}
-	return obj as Record<string, unknown>
-}
+	return obj as Record<string, unknown>;
+};
 
 /**
  * Checks if an object is empty.
@@ -92,7 +98,7 @@ export const objectIsEmpty = (obj: Record<string, unknown>): boolean => {
 	} else {
 		return false;
 	}
-}
+};
 
 /**
  * Builds the body part of a QMS query string.
@@ -118,34 +124,47 @@ export const build_QMS_bodyPart = (
 		Logger.info('no args chosen');
 	}
 
-	Logger.debug('build_QMS_bodyPart inputs', { QMS_args, QMS_fields, mergedChildren_finalGqlArgObj })
-	const QMSarguments = { [QMS_name]: { QMSarguments: QMS_args } }
-	const fullObject = JSON.parse(JSON.stringify(deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments(_.mergeWith({}, QMSarguments, mergedChildren_finalGqlArgObj, QMS_fields))
-	))
+	Logger.debug('build_QMS_bodyPart inputs', {
+		QMS_args,
+		QMS_fields,
+		mergedChildren_finalGqlArgObj
+	});
+	const QMSarguments = { [QMS_name]: { QMSarguments: QMS_args } };
+	const fullObject = JSON.parse(
+		JSON.stringify(
+			deleteIfChildrenHaveOneKeyAndLastKeyIsQMSarguments(
+				_.mergeWith({}, QMSarguments, mergedChildren_finalGqlArgObj, QMS_fields)
+			)
+		)
+	);
 
 	const inputString = JSON.stringify(fullObject, function (key, value) {
-		if (key === "QMSarguments") {
+		if (key === 'QMSarguments') {
 			// Logger.debug('QMSarguments', { value }, JSON.stringify(value))
-			return "(" + JSON.stringify(value) + ")";
+			return '(' + JSON.stringify(value) + ')';
 		}
 		return value;
-	}).replaceAll('\"QMSarguments\":', '')
-	const listOfSubstrings = generateListOfSubstrings(inputString)
+	}).replaceAll('\"QMSarguments\":', '');
+	const listOfSubstrings = generateListOfSubstrings(inputString);
 	// Logger.debug({ listOfSubstrings })
 
 	const outsideTextModifier = (text: string): string => {
-		return text.replaceAll(/novaluehere|"|:/gi, '')
-	}
+		return text.replaceAll(/novaluehere|"|:/gi, '');
+	};
 
+	const modifiedString = smartModifyStringBasedOnBoundries(
+		listOfSubstrings.join(''),
+		'(',
+		')',
+		stringToQMSString_transformer as any,
+		outsideTextModifier
+	);
 
-	const modifiedString = smartModifyStringBasedOnBoundries(listOfSubstrings.join(''), '(', ')', stringToQMSString_transformer as any, outsideTextModifier);
-
-	Logger.debug({ modifiedString })
-	const QMS_bodyPart = modifiedString.slice(1, -1)
-
+	Logger.debug({ modifiedString });
+	const QMS_bodyPart = modifiedString.slice(1, -1);
 
 	// Logger.debug({ QMS_bodyPart })
-	return QMS_bodyPart
+	return QMS_bodyPart;
 };
 
 /**
@@ -160,57 +179,57 @@ export const build_QMS_bodyPart = (
  */
 export const smartModifyStringBasedOnBoundries = (
 	inputString: string,
-	openBoundryChar: string = "(",
-	closeBoundryChar: string = ")",
+	openBoundryChar: string = '(',
+	closeBoundryChar: string = ')',
 	insideTextModifier: ((text: string) => string) | undefined,
 	outsideTextModifier: ((text: string) => string) | undefined,
 	deleteBoundriesIfTextInsideIsEmpty: boolean = true
 ): string => {
 	if (!inputString.includes(openBoundryChar)) {
-		return inputString
+		return inputString;
 	}
-	let result: string[] = []
+	let result: string[] = [];
 	//let splitByOpened=inputString.split('(')
-	const splitByClosed = inputString.split(closeBoundryChar)
+	const splitByClosed = inputString.split(closeBoundryChar);
 	splitByClosed.forEach((element) => {
-		const splitByOpen = element.split(openBoundryChar)
-		let outsidePart = splitByOpen[0]
-		let insidePart = splitByOpen[1]
+		const splitByOpen = element.split(openBoundryChar);
+		let outsidePart = splitByOpen[0];
+		let insidePart = splitByOpen[1];
 		if (outsidePart) {
 			if (getPreciseType(outsideTextModifier) === 'function' && outsideTextModifier) {
-				outsidePart = outsideTextModifier(outsidePart)
+				outsidePart = outsideTextModifier(outsidePart);
 			}
-			result.push(outsidePart)
+			result.push(outsidePart);
 		}
 		if (insidePart) {
 			if (getPreciseType(insideTextModifier) === 'function' && insideTextModifier) {
-				insidePart = insideTextModifier(insidePart)
+				insidePart = insideTextModifier(insidePart);
 			}
 			if (deleteBoundriesIfTextInsideIsEmpty && insidePart == '') {
-				result.push(``)
+				result.push(``);
 			} else {
-				result.push(`${openBoundryChar}${insidePart}${closeBoundryChar}`)
+				result.push(`${openBoundryChar}${insidePart}${closeBoundryChar}`);
 			}
 		}
-
 	});
 
 	return result.join('');
-}
+};
 ///
 function replaceLastOccurrence(str: string, MaxIndex: number, REPLACEMENT_STRING: string): string {
 	// Find the index of the first occurrence of ":{" after the first character
-	const startIndex = str.indexOf(":{", 1);
+	const startIndex = str.indexOf(':{', 1);
 
 	// If the first occurrence is found
 	if (startIndex !== -1) {
 		// Find the index of the last occurrence of ":{" before the fourth character
-		const lastIndex = str.lastIndexOf(":{", MaxIndex);
+		const lastIndex = str.lastIndexOf(':{', MaxIndex);
 
 		// If the last occurrence is found
 		if (lastIndex !== -1) {
 			// Replace the last occurrence with a new string (e.g., "REPLACEMENT_STRING")
-			const replacedString = str.substring(0, lastIndex) + REPLACEMENT_STRING + str.substring(lastIndex + 2);
+			const replacedString =
+				str.substring(0, lastIndex) + REPLACEMENT_STRING + str.substring(lastIndex + 2);
 
 			return replacedString;
 		}
@@ -220,51 +239,52 @@ function replaceLastOccurrence(str: string, MaxIndex: number, REPLACEMENT_STRING
 	return str;
 }
 
-
 var replaceBetween = function (string: string, start: number, end: number, what: string): string {
 	return string.substring(0, start) + what + string.substring(end);
 };
 function modifyString(input: string): { modifiedSubstring: string; remainingString: string } {
 	// Step 1: Match the first parenthesis and the text inside them
 	const matchParenthesis = input.match(/\(([^)]+)\)/);
-	let remainingString: string
-	let modifiedSubstring: string
+	let remainingString: string;
+	let modifiedSubstring: string;
 	if (!matchParenthesis) {
-		modifiedSubstring = input
-		remainingString = ''
-		return { modifiedSubstring, remainingString }
+		modifiedSubstring = input;
+		remainingString = '';
+		return { modifiedSubstring, remainingString };
 	}
-	const parenhtesisLength = matchParenthesis[0].length
-	const parenhtesisStart = matchParenthesis.index || 0
-	const parenhtesisEnd = parenhtesisStart + parenhtesisLength
+	const parenhtesisLength = matchParenthesis[0].length;
+	const parenhtesisStart = matchParenthesis.index || 0;
+	const parenhtesisEnd = parenhtesisStart + parenhtesisLength;
 
 	//delete matched parenthesis and it's content from string
-	input = replaceBetween(input, parenhtesisStart, parenhtesisEnd, '')
+	input = replaceBetween(input, parenhtesisStart, parenhtesisEnd, '');
 	//console.log({ matchParenthesis }, matchParenthesis.index)
-	input = replaceLastOccurrence(input, matchParenthesis.index || 0, matchParenthesis[0] + ":{")
-	modifiedSubstring = input.substring(0, parenhtesisEnd)
-	remainingString = input.substring(parenhtesisEnd, input.length)
+	input = replaceLastOccurrence(input, matchParenthesis.index || 0, matchParenthesis[0] + ':{');
+	modifiedSubstring = input.substring(0, parenhtesisEnd);
+	remainingString = input.substring(parenhtesisEnd, input.length);
 	// Return the original string if no match is found
 	return { modifiedSubstring, remainingString };
 }
 const generateListOfSubstrings = (string: string): string[] => {
-	const substrings: string[] = []
-	let reachedTheEnd = false
+	const substrings: string[] = [];
+	let reachedTheEnd = false;
 	while (!reachedTheEnd) {
-		const { modifiedSubstring, remainingString } = modifyString(string)
+		const { modifiedSubstring, remainingString } = modifyString(string);
 		//console.log({ remainingString })
 		if (remainingString === '') {
-			reachedTheEnd = true
+			reachedTheEnd = true;
 		}
-		substrings.push(modifiedSubstring)
-		string = remainingString
+		substrings.push(modifiedSubstring);
+		string = remainingString;
 	}
-	return substrings
-}
-const inputString2 = "query QMS_name{ authUserRoles:{ createdAt,id,role,userId,(order_by:[{createdAt:asc_nulls_last},{userId:desc_nulls_first}],limit:20,offset:0)roleByRole{role,userRoles_aggregate{nodes{id},aggregate{count}}} } }";
+	return substrings;
+};
+const inputString2 =
+	'query QMS_name{ authUserRoles:{ createdAt,id,role,userId,(order_by:[{createdAt:asc_nulls_last},{userId:desc_nulls_first}],limit:20,offset:0)roleByRole{role,userRoles_aggregate{nodes{id},aggregate{count}}} } }';
 
-// Example usage: 
-const inputString = ":{textBefore:{1dadas,2dasda,(inside parentheses1{iside1:'asd1'}),3dasds :{ textBefore2:{4dadas,5dasda,(inside parentheses2,inside2:'asd2'),6dasds :{";
+// Example usage:
+const inputString =
+	":{textBefore:{1dadas,2dasda,(inside parentheses1{iside1:'asd1'}),3dasds :{ textBefore2:{4dadas,5dasda,(inside parentheses2,inside2:'asd2'),6dasds :{";
 // const modifiedResult = modifyString(inputString); // Debugging
 
 //console.log(modifiedResult);
@@ -364,11 +384,11 @@ export const getRootType = (
 ): RootType | undefined => {
 	if (!rootTypes) {
 		// Handle both store and value
-        if ('subscribe' in schemaData) {
-		    rootTypes = get(schemaData).rootTypes;
-        } else {
-            rootTypes = schemaData.rootTypes;
-        }
+		if ('subscribe' in schemaData) {
+			rootTypes = get(schemaData).rootTypes;
+		} else {
+			rootTypes = schemaData.rootTypes;
+		}
 	}
 
 	return rootTypes.filter((type) => {
@@ -421,7 +441,7 @@ export const getFields_Grouped = (
 	schemaData: SchemaDataStore | SchemaData
 ): FieldsGrouped => {
 	// Helper to handle both store and value for recursive calls
-    const getRootTypeHelper = (rtName: string | undefined) => getRootType(null, rtName, schemaData);
+	const getRootTypeHelper = (rtName: string | undefined) => getRootType(null, rtName, schemaData);
 
 	const node_rootType = getRootTypeHelper(
 		node?.dd_rootName || (node as any).parent_node?.dd_rootName
@@ -430,30 +450,30 @@ export const getFields_Grouped = (
 	let non_scalarFields: FieldWithDerivedData[] = [];
 	let enumFields: (RootType & FieldWithDerivedData)[] = [];
 
-	let fieldsArray
+	let fieldsArray;
 	if ((node as any)?.args) {
-		fieldsArray = (node as any)?.args
+		fieldsArray = (node as any)?.args;
 	} else if (node_rootType?.fields) {
-		fieldsArray = node_rootType?.fields
+		fieldsArray = node_rootType?.fields;
 	} else if (node_rootType?.inputFields) {
-		fieldsArray = node_rootType?.inputFields
+		fieldsArray = node_rootType?.inputFields;
 	} else if (node_rootType?.enumValues) {
-		fieldsArray = (node as any)?.enumValues
+		fieldsArray = (node as any)?.enumValues;
 	}
 
-
-	fieldsArray?.filter((field: any) => {
-		return !dd_displayNameToExclude.includes(field.dd_displayName)
-	}).forEach((field: any) => {
-		if (get_KindsArray(field).includes('ENUM')) {
-			enumFields.push({ ...getRootTypeHelper(field.dd_rootName), ...field } as any);
-		} else
-			if (get_KindsArray(field).includes('SCALAR')) {
+	fieldsArray
+		?.filter((field: any) => {
+			return !dd_displayNameToExclude.includes(field.dd_displayName);
+		})
+		.forEach((field: any) => {
+			if (get_KindsArray(field).includes('ENUM')) {
+				enumFields.push({ ...getRootTypeHelper(field.dd_rootName), ...field } as any);
+			} else if (get_KindsArray(field).includes('SCALAR')) {
 				scalarFields.push(field);
 			} else {
 				non_scalarFields.push(field);
 			}
-	});
+		});
 
 	return {
 		scalarFields,
@@ -467,27 +487,27 @@ export const getStepsOfFieldsForDataGetter = (
 	colInfo: TableColumnData,
 	stepsOfFieldsInput?: string[]
 ): string[] => {
-	const stepsOfFieldsOBJ = colInfo?.stepsOfFieldsOBJ
-	const stepsOfFields = colInfo?.stepsOfFields
-	const stepsOfFieldsForDataGetter = colInfo?.stepsOfFieldsForDataGetter
+	const stepsOfFieldsOBJ = colInfo?.stepsOfFieldsOBJ;
+	const stepsOfFields = colInfo?.stepsOfFields;
+	const stepsOfFieldsForDataGetter = colInfo?.stepsOfFieldsForDataGetter;
 
 	if (stepsOfFieldsInput) {
-		return stepsOfFieldsInput
+		return stepsOfFieldsInput;
 	}
 	if (stepsOfFieldsForDataGetter) {
-		return stepsOfFieldsForDataGetter
+		return stepsOfFieldsForDataGetter;
 	}
 	if (stepsOfFields) {
-		return stepsOfFields
+		return stepsOfFields;
 	}
 	if (stepsOfFieldsOBJ) {
 		//!!!change this like so:
 		//here stringify and look for the first time there is a ",",this way you know there the object bifurcates into multiple paths and so,just before that is the farthest common step to all stepsOfFields
 		//temporary solution:
-		return []
+		return [];
 	}
-	return []
-}
+	return [];
+};
 
 /**
  * Traverses a result object using a path of field names (steps) to retrieve a nested value.
@@ -504,34 +524,37 @@ export const getDataGivenStepsOfFields = (
 ): unknown => {
 	//col data is column info like colInfo.stepsOfFields,not the result's column data
 
-	const stepsOfFields = colInfo ? getStepsOfFieldsForDataGetter(colInfo, stepsOfFieldsInput) : (stepsOfFieldsInput || []);
+	const stepsOfFields = colInfo
+		? getStepsOfFieldsForDataGetter(colInfo, stepsOfFieldsInput)
+		: stepsOfFieldsInput || [];
 	if (stepsOfFields.length == 0) {
-		return row_resultData
+		return row_resultData;
 	}
 
 	const handleStep = (step: string, colResultData: unknown): unknown => {
 		//!!! there must be some changes made here because undefined == null (but typeof undefined !== null)
 		//colResultData is undefined
 		if (colResultData == undefined && row_resultData == null) {
-			return null
+			return null;
 		}
 		if (colResultData == undefined && Array.isArray(row_resultData)) {
 			return (row_resultData as any[])[0];
 		}
 		if (colResultData !== undefined && colResultData == null) {
-			return null
+			return null;
 		}
-		if (colResultData == undefined && (row_resultData as any)?.[step] !== undefined) {//!!! this must be changed  colResultData == undefined must become typeof colResultData == undefined,for now this change causes some problems,dig deeper next time
+		if (colResultData == undefined && (row_resultData as any)?.[step] !== undefined) {
+			//!!! this must be changed  colResultData == undefined must become typeof colResultData == undefined,for now this change causes some problems,dig deeper next time
 			return (row_resultData as any)[step];
 		}
 		if (colResultData == undefined) {
-			return row_resultData
+			return row_resultData;
 		}
 
 		//colResultData is defined
 
 		if (colResultData == null) {
-			return null
+			return null;
 		}
 
 		if (Array.isArray(colResultData)) {
@@ -556,13 +579,17 @@ export const getDataGivenStepsOfFields = (
 	let colResultData: unknown;
 	stepsOfFields.every((step) => {
 		colResultData = handleStep(step, colResultData);
-		return true
+		return true;
 	});
 
 	return colResultData;
 };
 
-export const getTableCellData = (rowData: unknown, colData: TableColumnData, index: number): unknown => {
+export const getTableCellData = (
+	rowData: unknown,
+	colData: TableColumnData,
+	index: number
+): unknown => {
 	let data;
 	if (rowData) {
 		if ((rowData as any)[index] !== undefined) {
@@ -578,7 +605,11 @@ export const getTableCellData = (rowData: unknown, colData: TableColumnData, ind
 	return data;
 };
 
-export const formatData = (data: unknown = '', length: number, alwaysStringyfy: boolean = true): string => {
+export const formatData = (
+	data: unknown = '',
+	length: number,
+	alwaysStringyfy: boolean = true
+): string => {
 	let string = '';
 	let resultingString = '';
 
@@ -613,22 +644,22 @@ export const sortByName = <T extends { name?: string }>(array: T[]): T[] => {
 	return array;
 };
 
-
-
 export const get_displayInterface = (
 	typeInfo: Partial<FieldWithDerivedData>,
 	endpointInfo: EndpointInfoStore
 ): string | null => {
-
 	if (endpointInfo.get_typeExtraData(typeInfo)) {
 		return endpointInfo.get_typeExtraData(typeInfo)?.displayInterface || null;
 	}
 	return null;
 };
 
-export const mark_paginationArgs = (args: FieldWithDerivedData[], endpointInfo: EndpointInfoStore): void => {
+export const mark_paginationArgs = (
+	args: FieldWithDerivedData[],
+	endpointInfo: EndpointInfoStore
+): void => {
 	const paginationPossibleNames = get(endpointInfo).paginationArgsPossibleNames;
-    if (!paginationPossibleNames) return;
+	if (!paginationPossibleNames) return;
 	const paginationPossibleNamesKeys = Object.keys(paginationPossibleNames);
 	args.forEach((arg) => {
 		let matchingKey = paginationPossibleNamesKeys.find((key) => {
@@ -684,7 +715,6 @@ export const generate_derivedData = (
 	derivedData.dd_displayName = get_displayName(derivedData.dd_namesArray);
 	derivedData.dd_relatedRoot = getRootType(rootTypes, derivedData.dd_rootName, schemaData) || '';
 
-
 	derivedData.dd_kindEl = undefined;
 	derivedData.dd_kindEl_NON_NULL = false;
 	derivedData.dd_kindList = false;
@@ -713,28 +743,27 @@ export const generate_derivedData = (
 	}
 
 	derivedData.dd_isArg = !type?.args;
-	derivedData.dd_relatedRoot_inputFields_allScalar = (derivedData.dd_relatedRoot as RootType)?.inputFields?.every(
-		(field) => {
-			return get_KindsArray(field).includes('SCALAR');
-		}
-	);
+	derivedData.dd_relatedRoot_inputFields_allScalar = (
+		derivedData.dd_relatedRoot as RootType
+	)?.inputFields?.every((field) => {
+		return get_KindsArray(field).includes('SCALAR');
+	});
 	derivedData.dd_canExpand =
 		!derivedData.dd_kindsArray?.includes('SCALAR') && derivedData.dd_kindsArray.length > 0;
 	if (derivedData.dd_isArg) {
-		const baseFilterOperatorNames = ['_and', '_or', '_not', 'and', 'or', 'not']
-		let dd_baseFilterOperators: string[] | undefined = []
-		let dd_nonBaseFilterOperators: string[] | undefined = []
+		const baseFilterOperatorNames = ['_and', '_or', '_not', 'and', 'or', 'not'];
+		let dd_baseFilterOperators: string[] | undefined = [];
+		let dd_nonBaseFilterOperators: string[] | undefined = [];
 		if ((type as any)?.inputFields) {
-			(type as any).inputFields
-				.forEach((inputField: any) => {
-					if (baseFilterOperatorNames.includes(inputField.name)) {
-						dd_baseFilterOperators?.push(inputField.name)
-						return inputField.name
-					}
-					if (inputField.name.startsWith('_')) {
-						dd_nonBaseFilterOperators?.push(inputField.name)
-					}
-				});
+			(type as any).inputFields.forEach((inputField: any) => {
+				if (baseFilterOperatorNames.includes(inputField.name)) {
+					dd_baseFilterOperators?.push(inputField.name);
+					return inputField.name;
+				}
+				if (inputField.name.startsWith('_')) {
+					dd_nonBaseFilterOperators?.push(inputField.name);
+				}
+			});
 
 			if (!(dd_baseFilterOperators?.length > 0)) {
 				dd_baseFilterOperators = undefined;
@@ -742,18 +771,17 @@ export const generate_derivedData = (
 			if (!(dd_nonBaseFilterOperators?.length > 0)) {
 				dd_nonBaseFilterOperators = undefined;
 			}
-			derivedData.dd_baseFilterOperators = dd_baseFilterOperators
-			derivedData.dd_nonBaseFilterOperators = dd_nonBaseFilterOperators
-
+			derivedData.dd_baseFilterOperators = dd_baseFilterOperators;
+			derivedData.dd_nonBaseFilterOperators = dd_nonBaseFilterOperators;
 		}
 
 		derivedData.dd_isRootArg = !(
-			derivedData.dd_canExpand &&
-			!(derivedData?.dd_relatedRoot as RootType)?.enumValues
+			derivedData.dd_canExpand && !(derivedData?.dd_relatedRoot as RootType)?.enumValues
 		);
 	}
 
-	derivedData.dd_shouldExpand = derivedData.dd_canExpand && !(derivedData.dd_relatedRoot as RootType)?.enumValues;
+	derivedData.dd_shouldExpand =
+		derivedData.dd_canExpand && !(derivedData.dd_relatedRoot as RootType)?.enumValues;
 	derivedData.dd_isQMSField = isQMSField ? true : false;
 
 	derivedData.dd_castType = 'implement this.possible values:string,number,graphqlGeoJson...'; //example of why:date can be expected as timestamptz ("2016-07-20T17:30:15+05:30"),but must be casted as string
@@ -772,38 +800,46 @@ export const generate_derivedData = (
 		derivedData.dd_paginationArgs = (derivedData.args as any).filter((arg: any) => {
 			return arg.dd_isPaginationArg;
 		});
-		derivedData.dd_paginationType = get_paginationType(derivedData.dd_paginationArgs, endpointInfo, schemaData);
+		derivedData.dd_paginationType = get_paginationType(
+			derivedData.dd_paginationArgs,
+			endpointInfo,
+			schemaData
+		);
 	}
-	derivedData.dd_relatedRoot = 'overwritten to evade error: Uncaught TypeError: Converting circular structure to JSON'
+	derivedData.dd_relatedRoot =
+		'overwritten to evade error: Uncaught TypeError: Converting circular structure to JSON';
 
 	if (isQMSField) {
 		//derivedData.dd_tableName = endpointInfo.get_tableName(derivedData, schemaData)
 	}
 	//	derivedData.dd_StrForFuseComparison = `${derivedData.dd_displayName}  ${derivedData.dd_rootName} ${derivedData.description}`
 	//${derivedData.dd_displayName}  ${derivedData.dd_rootName} ${derivedData.description}
-	derivedData.dd_StrForFuseComparison = `${prepareStrForFuseComparison(`${derivedData.dd_displayName}   `)} `
+	derivedData.dd_StrForFuseComparison = `${prepareStrForFuseComparison(`${derivedData.dd_displayName}   `)} `;
 	//console.log(derivedData.dd_StrForFuseComparison)
 	return derivedData;
 };
 const prepareStrForFuseComparison = (str: string): string => {
-	return str.replace(/(?=[A-Z_])/g, ' ').replace(/_/g, ' ').replace(/s|null/g, '').toLowerCase();
-}
+	return str
+		.replace(/(?=[A-Z_])/g, ' ')
+		.replace(/_/g, ' ')
+		.replace(/s|null/g, '')
+		.toLowerCase();
+};
 
 export const generate_gqlArgObj = (group_argumentsData: ActiveArgumentData[]): GQLArgObj => {
 	// check for group if expects list and treat it accordingly like here --->https://stackoverflow.com/questions/69040911/hasura-order-by-date-with-distinct
 	let gqlArgObj: Record<string, any> = {};
 	let canRunQuery = true;
 	group_argumentsData.every((argData) => {
-		let _argumentCanRunQuery = argumentCanRunQuery(argData)
+		let _argumentCanRunQuery = argumentCanRunQuery(argData);
 		if (!_argumentCanRunQuery) {
-			canRunQuery = false
-			return false
+			canRunQuery = false;
+			return false;
 		}
-		let { chd_dispatchValue, stepsOfFields, dd_displayName } =
-			argData;
+		let { chd_dispatchValue, stepsOfFields, dd_displayName } = argData;
 
 		let curr_gqlArgObj = gqlArgObj;
-		curr_gqlArgObj[dd_displayName] = chd_dispatchValue
+		curr_gqlArgObj[dd_displayName] = chd_dispatchValue;
 	});
 
 	return {
@@ -816,9 +852,9 @@ export const generate_gqlArgObj = (group_argumentsData: ActiveArgumentData[]): G
 };
 
 export const gqlArgObjToString = (gqlArgObj: Record<string, unknown>): string => {
-	const gqlArgObj_string = JSON.stringify(gqlArgObj)
+	const gqlArgObj_string = JSON.stringify(gqlArgObj);
 	if (gqlArgObj_string == '{ }') {
-		return ''
+		return '';
 	}
 	const gqlArgObj_stringModified = gqlArgObj_string
 		.replace(/"/g, '')
@@ -828,12 +864,19 @@ export const gqlArgObjToString = (gqlArgObj: Record<string, unknown>): string =>
 		.slice(1, -1);
 	return gqlArgObj_stringModified;
 };
-export const generate_group_gqlArgObjForRoot = (group_argumentsData: ActiveArgumentData[]): Record<string, unknown> => {
-	return _.merge({}, ...group_argumentsData.map((arggumentData) => {
-		return arggumentData.gqlArgObj
-	}))
-}
-export const generate_group_gqlArgObj = (group: ActiveArgumentGroup): {
+export const generate_group_gqlArgObjForRoot = (
+	group_argumentsData: ActiveArgumentData[]
+): Record<string, unknown> => {
+	return _.merge(
+		{},
+		...group_argumentsData.map((arggumentData) => {
+			return arggumentData.gqlArgObj;
+		})
+	);
+};
+export const generate_group_gqlArgObj = (
+	group: ActiveArgumentGroup
+): {
 	group_gqlArgObj: Record<string, unknown>;
 	group_gqlArgObj_string: string;
 	group_canRunQuery: boolean;
@@ -850,8 +893,8 @@ export const generate_group_gqlArgObj = (group: ActiveArgumentGroup): {
 	if (group_argumentsData?.length > 0) {
 		if (group.group_isRoot) {
 			//console.log('root group handled');
-			group_gqlArgObj = generate_group_gqlArgObjForRoot(group_argumentsData)
-			Logger.debug({ group_gqlArgObj, group_argumentsData })
+			group_gqlArgObj = generate_group_gqlArgObjForRoot(group_argumentsData);
+			Logger.debug({ group_gqlArgObj, group_argumentsData });
 		} else {
 			Logger.error('Uncomment code for handling non root group');
 			// //console.log('NON root group handled');
@@ -880,12 +923,18 @@ export const generate_group_gqlArgObj = (group: ActiveArgumentGroup): {
 	};
 };
 
-
-const validItems = (items: { id: string }[], nodes: Record<string, ContainerData>): { id: string }[] => {
+const validItems = (
+	items: { id: string }[],
+	nodes: Record<string, ContainerData>
+): { id: string }[] => {
 	return items.filter((item) => {
 		let itemData = nodes[item.id];
-		Logger.debug('itemData.selectedRowsColValues', itemData.selectedRowsColValues)
-		return itemData.inUse || (itemData.operator && validItems(itemData.items, nodes).length > 0 || itemData.selectedRowsColValues);
+		Logger.debug('itemData.selectedRowsColValues', itemData.selectedRowsColValues);
+		return (
+			itemData.inUse ||
+			(itemData.operator && validItems(itemData.items, nodes).length > 0) ||
+			itemData.selectedRowsColValues
+		);
 	});
 };
 
@@ -896,71 +945,76 @@ export const filterElFromArr = <T>(arr: T[], undesiredElements: T[] = []): T[] =
 	});
 };
 
-export const generate_group_gqlArgObj_forHasOperators = (items: { id: string }[], group_name: string, nodes: Record<string, ContainerData>): {
+export const generate_group_gqlArgObj_forHasOperators = (
+	items: { id: string }[],
+	group_name: string,
+	nodes: Record<string, ContainerData>
+): {
 	resultingGqlArgObj: Record<string, unknown> | undefined;
 	itemsResultingData: Record<string, unknown>[];
 } => {
-	let resultingGqlArgObj: Record<string, unknown> | undefined
-	let itemsResultingData: Record<string, unknown>[] = []
+	let resultingGqlArgObj: Record<string, unknown> | undefined;
+	let itemsResultingData: Record<string, unknown>[] = [];
 	const spreadItemsIfInSpreadContainers = (items: { id: string }[]): { id: string }[] => {
-		const spreadOutItems: { id: string }[] = []
-		items.forEach(item => {
+		const spreadOutItems: { id: string }[] = [];
+		items.forEach((item) => {
 			if (nodes[item.id]?.operator == '~spread~') {
 				const validItemsResult = validItems(nodes[item.id].items, nodes);
-				spreadOutItems.push(...validItemsResult)
+				spreadOutItems.push(...validItemsResult);
 			} else {
-				spreadOutItems.push(item)
+				spreadOutItems.push(item);
 			}
 		});
-		return spreadOutItems
-	}
+		return spreadOutItems;
+	};
 
-	const spreadOutItems = spreadItemsIfInSpreadContainers(items)
-	Logger.debug({ items, spreadOutItems })
+	const spreadOutItems = spreadItemsIfInSpreadContainers(items);
+	Logger.debug({ items, spreadOutItems });
 	spreadOutItems.forEach((item) => {
 		let itemData = nodes[item.id];
-		const isContainer = itemData.hasOwnProperty('items')
-		const nodeStep = itemData?.stepsOfNodes?.[(itemData?.stepsOfNodes?.length || 0) - 1] as any
-		const nodeStepClean = filterElFromArr(nodeStep, [null, undefined, 'bonded', 'list'])
-		Logger.debug({ nodeStep }, { nodeStepClean })
+		const isContainer = itemData.hasOwnProperty('items');
+		const nodeStep = itemData?.stepsOfNodes?.[(itemData?.stepsOfNodes?.length || 0) - 1] as any;
+		const nodeStepClean = filterElFromArr(nodeStep, [null, undefined, 'bonded', 'list']);
+		Logger.debug({ nodeStep }, { nodeStepClean });
 
-		const operator = itemData.operator
+		const operator = itemData.operator;
 		let itemObj = {};
-		let itemObjCurr: any = itemObj
-		const displayName = itemData?.dd_displayName
-		let dataToAssign
+		let itemObjCurr: any = itemObj;
+		const displayName = itemData?.dd_displayName;
+		let dataToAssign;
 
 		if (isContainer) {
 			const validItemsResult = validItems(spreadItemsIfInSpreadContainers(itemData.items), nodes);
-			const gqlArgObjForItems = generate_group_gqlArgObj_forHasOperators(validItemsResult, group_name, nodes).itemsResultingData
+			const gqlArgObjForItems = generate_group_gqlArgObj_forHasOperators(
+				validItemsResult,
+				group_name,
+				nodes
+			).itemsResultingData;
 			if (operator == 'bonded' || !itemData?.dd_kindList) {
-				const merged_gqlArgObjForItems = _.merge({}, ...gqlArgObjForItems)
-				dataToAssign = merged_gqlArgObjForItems
+				const merged_gqlArgObjForItems = _.merge({}, ...gqlArgObjForItems);
+				dataToAssign = merged_gqlArgObjForItems;
 			} else {
-				dataToAssign = gqlArgObjForItems
+				dataToAssign = gqlArgObjForItems;
 			}
-			Logger.debug('vvvvvvv', { gqlArgObjForItems, dataToAssign })
+			Logger.debug('vvvvvvv', { gqlArgObjForItems, dataToAssign });
 		} else {
-			dataToAssign = nodes[item.id]?.gqlArgObj
+			dataToAssign = nodes[item.id]?.gqlArgObj;
 		}
 		if (itemData.selectedRowsColValues) {
-
-
 			if (Array.isArray(dataToAssign)) {
-				dataToAssign = [...itemData.selectedRowsColValues, ...dataToAssign]
+				dataToAssign = [...itemData.selectedRowsColValues, ...dataToAssign];
 			} else {
-				dataToAssign = _.merge({}, itemData.selectedRowsColValues[0], dataToAssign)
-
+				dataToAssign = _.merge({}, itemData.selectedRowsColValues[0], dataToAssign);
 			}
 		}
-		resultingGqlArgObj = setValueAtPath({}, nodeStepClean, dataToAssign, true) || undefined
-		let itemObjectTestCurr = setValueAtPath({}, nodeStepClean, dataToAssign, true)
-		let itemObjectTest2 = 'not set'
+		resultingGqlArgObj = setValueAtPath({}, nodeStepClean, dataToAssign, true) || undefined;
+		let itemObjectTestCurr = setValueAtPath({}, nodeStepClean, dataToAssign, true);
+		let itemObjectTest2 = 'not set';
 		if (resultingGqlArgObj == undefined) {
-			let itemObjectTest2 = 'set'
+			let itemObjectTest2 = 'set';
 			//itemObjectTest2 = dataToAssign
-			resultingGqlArgObj = dataToAssign as any
-			itemObjectTestCurr = dataToAssign as any
+			resultingGqlArgObj = dataToAssign as any;
+			itemObjectTestCurr = dataToAssign as any;
 		}
 
 		if (isContainer) {
@@ -969,10 +1023,10 @@ export const generate_group_gqlArgObj_forHasOperators = (items: { id: string }[]
 				itemObjCurr = itemObjCurr['_not'];
 			}
 			if (displayName) {
-				itemObjCurr[displayName] = dataToAssign
-				itemObjCurr = itemObjCurr[displayName]
+				itemObjCurr[displayName] = dataToAssign;
+				itemObjCurr = itemObjCurr[displayName];
 			} else {
-				itemObjCurr = _.merge(itemObjCurr, dataToAssign)
+				itemObjCurr = _.merge(itemObjCurr, dataToAssign);
 			}
 		}
 
@@ -981,17 +1035,23 @@ export const generate_group_gqlArgObj_forHasOperators = (items: { id: string }[]
 				itemObjCurr['_not'] = dataToAssign;
 				itemObjCurr = itemObjCurr['_not'];
 			} else {
-				itemObj = dataToAssign as any
+				itemObj = dataToAssign as any;
 			}
 		}
 
-		Logger.debug('itemsResultingData loop', { nodeStepClean, itemObj, resultingGqlArgObj, itemObjectTest2, itemObjectTestCurr, dataToAssign, selectedRowsColValues: itemData.selectedRowsColValues })
+		Logger.debug('itemsResultingData loop', {
+			nodeStepClean,
+			itemObj,
+			resultingGqlArgObj,
+			itemObjectTest2,
+			itemObjectTestCurr,
+			dataToAssign,
+			selectedRowsColValues: itemData.selectedRowsColValues
+		});
 
+		itemsResultingData.push(itemObj);
 
-
-		itemsResultingData.push(itemObj)
-
-		Logger.debug({ itemsResultingData, dataToAssign, itemData })
+		Logger.debug({ itemsResultingData, dataToAssign, itemData });
 	});
 	return {
 		resultingGqlArgObj,
@@ -999,7 +1059,9 @@ export const generate_group_gqlArgObj_forHasOperators = (items: { id: string }[]
 	};
 };
 
-export const generate_group_gqlArgObjAndCanRunQuery_forHasOperators = (group: ActiveArgumentGroup): {
+export const generate_group_gqlArgObjAndCanRunQuery_forHasOperators = (
+	group: ActiveArgumentGroup
+): {
 	group_gqlArgObj: Record<string, unknown> | undefined;
 	group_gqlArgObj_string: string;
 	group_canRunQuery: boolean;
@@ -1017,8 +1079,8 @@ export const generate_group_gqlArgObjAndCanRunQuery_forHasOperators = (group: Ac
 		[mainContainer],
 		group_name,
 		nodes
-	)
-	Logger.debug({ generate_group_gqlArgObj_forHasOperatorsRESULT })
+	);
+	Logger.debug({ generate_group_gqlArgObj_forHasOperatorsRESULT });
 
 	let group_argumentsData = group.group_args.filter((arg) => {
 		return arg.inUse;
@@ -1026,11 +1088,13 @@ export const generate_group_gqlArgObjAndCanRunQuery_forHasOperators = (group: Ac
 	group_canRunQuery = group_argumentsData.every((arg) => {
 		return arg.canRunQuery;
 	});
-	let group_gqlArgObj
+	let group_gqlArgObj;
 	if (group_hasAllArgs) {
-		group_gqlArgObj = (generate_group_gqlArgObj_forHasOperatorsRESULT.resultingGqlArgObj as any)?.[mainContainer.dd_displayName]
+		group_gqlArgObj = (generate_group_gqlArgObj_forHasOperatorsRESULT.resultingGqlArgObj as any)?.[
+			mainContainer.dd_displayName
+		];
 	} else {
-		group_gqlArgObj = generate_group_gqlArgObj_forHasOperatorsRESULT.resultingGqlArgObj
+		group_gqlArgObj = generate_group_gqlArgObj_forHasOperatorsRESULT.resultingGqlArgObj;
 	}
 	let group_gqlArgObj_string = gqlArgObjToString(group_gqlArgObj || {});
 	return {
@@ -1041,19 +1105,31 @@ export const generate_group_gqlArgObjAndCanRunQuery_forHasOperators = (group: Ac
 };
 ////
 
-export const generate_finalGqlArgObj_fromGroups = (activeArgumentsDataGrouped: { group_gqlArgObj?: Record<string, unknown>; group_canRunQuery?: boolean }[]): FinalGQLArgObj => {
+export const generate_finalGqlArgObj_fromGroups = (
+	activeArgumentsDataGrouped: {
+		group_gqlArgObj?: Record<string, unknown>;
+		group_canRunQuery?: boolean;
+	}[]
+): FinalGQLArgObj => {
 	let finalGqlArgObj = {};
-	let final_canRunQuery = activeArgumentsDataGrouped.every((group) => { return group.group_canRunQuery })
+	let final_canRunQuery = activeArgumentsDataGrouped.every((group) => {
+		return group.group_canRunQuery;
+	});
 
 	activeArgumentsDataGrouped.forEach((group) => {
-		Logger.debug({ group })
+		Logger.debug({ group });
 		Object.assign(finalGqlArgObj, group.group_gqlArgObj);
 	});
 
 	return { finalGqlArgObj, final_canRunQuery };
 };
 
-export const getQMSLinks = (QMSName: QMSType = 'query', parentURL: string, endpointInfo: EndpointInfoStore, schemaData: SchemaDataStore): { url: string; title: string }[] => {
+export const getQMSLinks = (
+	QMSName: QMSType = 'query',
+	parentURL: string,
+	endpointInfo: EndpointInfoStore,
+	schemaData: SchemaDataStore
+): { url: string; title: string }[] => {
 	let $page = get(page);
 	let origin = $page.url.origin;
 	let queryLinks: { url: string; title: string }[] = [];
@@ -1072,44 +1148,54 @@ export const getQMSLinks = (QMSName: QMSType = 'query', parentURL: string, endpo
 				[ga, gb]
 			]);
 		});
-	}
+	};
 
-	queryLinks = sortIt((($schemaData as any)?.[`${QMSName}Fields`]) as FieldWithDerivedData[])?.map((query) => {
-		let queryName = query.name;
-		let queryNameDisplay = queryName;
-		let queryTitleDisplay = '';
-		let currentQueryFromRootTypes = getRootType(null, query.dd_rootName, schemaData);
-		let currentQMS_info = get_QMS_Field(queryName, QMSName, schemaData);
-		let endpointInfoVal = get(endpointInfo);
-		const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_info as FieldWithDerivedData, schemaData);
-		const nodeFieldsQMS_info = get_nodeFieldsQMS_info(currentQMS_info as FieldWithDerivedData, rowsLocation, schemaData);
-		let scalarFields = get_scalarColsData(nodeFieldsQMS_info, [
-			(currentQMS_info as FieldWithDerivedData).dd_displayName,
-			...rowsLocation
-		], schemaData);
+	queryLinks = sortIt(($schemaData as any)?.[`${QMSName}Fields`] as FieldWithDerivedData[])?.map(
+		(query) => {
+			let queryName = query.name;
+			let queryNameDisplay = queryName;
+			let queryTitleDisplay = '';
+			let currentQueryFromRootTypes = getRootType(null, query.dd_rootName, schemaData);
+			let currentQMS_info = get_QMS_Field(queryName, QMSName, schemaData);
+			let endpointInfoVal = get(endpointInfo);
+			const rowsLocation = endpointInfo.get_rowsLocation(
+				currentQMS_info as FieldWithDerivedData,
+				schemaData
+			);
+			const nodeFieldsQMS_info = get_nodeFieldsQMS_info(
+				currentQMS_info as FieldWithDerivedData,
+				rowsLocation,
+				schemaData
+			);
+			let scalarFields = get_scalarColsData(
+				nodeFieldsQMS_info,
+				[(currentQMS_info as FieldWithDerivedData).dd_displayName, ...rowsLocation],
+				schemaData
+			);
 
-		let currentQuery_fields_SCALAR_names = scalarFields.map((field) => {
-			return field.title; // title used to be name? get_scalarColsData returns TableColumnData which has title
-		});
+			let currentQuery_fields_SCALAR_names = scalarFields.map((field) => {
+				return field.title; // title used to be name? get_scalarColsData returns TableColumnData which has title
+			});
 
-		let mandatoryArgs = query?.args?.filter((arg) => {
-			return arg.dd_NON_NULL;
-		});
-		let ID_Args = query?.args?.filter((arg) => {
-			return arg.dd_rootName == 'ID';
-		});
-		if (mandatoryArgs?.length > 0) {
-			queryNameDisplay = `${queryNameDisplay} (${mandatoryArgs.length}) `;
+			let mandatoryArgs = query?.args?.filter((arg) => {
+				return arg.dd_NON_NULL;
+			});
+			let ID_Args = query?.args?.filter((arg) => {
+				return arg.dd_rootName == 'ID';
+			});
+			if (mandatoryArgs?.length > 0) {
+				queryNameDisplay = `${queryNameDisplay} (${mandatoryArgs.length}) `;
+			}
+			if (ID_Args?.length > 0) {
+				queryNameDisplay = `${queryNameDisplay} <${ID_Args.length}> `;
+			}
+			if (scalarFields.length == 0) {
+				queryNameDisplay = queryNameDisplay + ' (no scalar)';
+			}
+			let queryLink = { url: `${parentURL}/${queryName}`, title: queryNameDisplay };
+			return queryLink;
 		}
-		if (ID_Args?.length > 0) {
-			queryNameDisplay = `${queryNameDisplay} <${ID_Args.length}> `;
-		}
-		if (scalarFields.length == 0) {
-			queryNameDisplay = queryNameDisplay + ' (no scalar)';
-		}
-		let queryLink = { url: `${parentURL}/${queryName}`, title: queryNameDisplay };
-		return queryLink;
-	});
+	);
 	return queryLinks;
 };
 
@@ -1123,7 +1209,6 @@ export const stepsOfFieldsToQueryFragmentObject = (
 	let _stepsOfFields = [...stepsOfFields];
 	if (excludeFirstStep) {
 		_stepsOfFields.shift();
-
 	}
 	let _stepsOfFields_length = _stepsOfFields.length;
 	let queryObject: any = {};
@@ -1139,7 +1224,9 @@ export const stepsOfFieldsToQueryFragmentObject = (
 	return queryObject;
 };
 
-export const tableColsDataToQueryFields = (tableColsData: TableColumnData[]): StepsOfFieldsObject | string => {
+export const tableColsDataToQueryFields = (
+	tableColsData: TableColumnData[]
+): StepsOfFieldsObject | string => {
 	if (tableColsData.length == 0) {
 		return ``;
 	}
@@ -1168,7 +1255,7 @@ export const argumentCanRunQuery = (arg: ActiveArgumentData): boolean => {
 		dd_kindList,
 		dd_kindList_NON_NULL
 	} = arg;
-	Logger.debug('argumentCanRunQuery', { arg })
+	Logger.debug('argumentCanRunQuery', { arg });
 	let argFinalValue = chd_dispatchValue;
 	if (!inUse) {
 		return true;
@@ -1179,7 +1266,10 @@ export const argumentCanRunQuery = (arg: ActiveArgumentData): boolean => {
 	if (dd_kindList_NON_NULL && argFinalValue == null) {
 		return false;
 	}
-	if (dd_kindEl && (argFinalValue == undefined || (Array.isArray(argFinalValue) && argFinalValue.length == 0))) {
+	if (
+		dd_kindEl &&
+		(argFinalValue == undefined || (Array.isArray(argFinalValue) && argFinalValue.length == 0))
+	) {
 		return false;
 	}
 	if (chd_dispatchValue == undefined) {
@@ -1211,7 +1301,7 @@ export const get_scalarColsData = (
 	schemaData: SchemaDataStore | SchemaData
 ): TableColumnData[] => {
 	if (!currentQMS_info) {
-		return []
+		return [];
 	}
 	let keep_currentQMS_info_dd_displayName = true;
 	if (prefixStepsOfFields.length > 0) {
@@ -1281,7 +1371,10 @@ export const get_nodeFieldsQMS_info = (
  * @param schemaData - The schema data.
  * @returns The field definition of the last step if valid, otherwise throws an error.
  */
-export const check_stepsOfFields = (stepsOfFields: string[], schemaData: SchemaDataStore | SchemaData): FieldWithDerivedData | undefined => {
+export const check_stepsOfFields = (
+	stepsOfFields: string[],
+	schemaData: SchemaDataStore | SchemaData
+): FieldWithDerivedData | undefined => {
 	if (!stepsOfFields || stepsOfFields.length === 0) return undefined;
 
 	const rootFieldName = stepsOfFields[0];
@@ -1309,13 +1402,17 @@ export const check_stepsOfFields = (stepsOfFields: string[], schemaData: SchemaD
 		const currentType = getRootType(null, currentField.dd_rootName, schemaData);
 
 		if (!currentType) {
-			throw new Error(`Type '${currentField.dd_rootName}' for field '${currentField.dd_displayName}' not found in schema.`);
+			throw new Error(
+				`Type '${currentField.dd_rootName}' for field '${currentField.dd_displayName}' not found in schema.`
+			);
 		}
 
-		const nextField = currentType.fields?.find(f => f.dd_displayName === stepName);
+		const nextField = currentType.fields?.find((f) => f.dd_displayName === stepName);
 
 		if (!nextField) {
-			throw new Error(`Field '${stepName}' not found in type '${currentType.name}' (field path: ${stepsOfFields.slice(0, i + 2).join(' -> ')}).`);
+			throw new Error(
+				`Field '${stepName}' not found in type '${currentType.name}' (field path: ${stepsOfFields.slice(0, i + 2).join(' -> ')}).`
+			);
 		}
 
 		currentField = nextField;
@@ -1371,9 +1468,6 @@ export const nodeAddDefaultFields = (
 	schemaData: SchemaDataStore | SchemaData,
 	endpointInfo: EndpointInfoStore
 ): void => {
-
-
-
 	Logger.debug({ node });
 	const node_rootType = getRootType(
 		null,
@@ -1386,17 +1480,20 @@ export const nodeAddDefaultFields = (
 	const dd_displayNameToExclude = [
 		...node.items.map((item) => {
 			return group_argsNode?.[item.id]?.dd_displayName;
-		}), '_and', '_or', '_not', 'and', 'or', 'not'
+		}),
+		'_and',
+		'_or',
+		'_not',
+		'and',
+		'or',
+		'not'
 	];
 	Logger.debug({ dd_displayNameToExclude });
 
-	let fields_Grouped = getFields_Grouped(
-		node,
-		dd_displayNameToExclude, schemaData
-	);
-	let scalarFields = fields_Grouped.scalarFields
-	let non_scalarFields = fields_Grouped.non_scalarFields
-	let enumFields = fields_Grouped.enumFields
+	let fields_Grouped = getFields_Grouped(node, dd_displayNameToExclude, schemaData);
+	let scalarFields = fields_Grouped.scalarFields;
+	let non_scalarFields = fields_Grouped.non_scalarFields;
+	let enumFields = fields_Grouped.enumFields;
 
 	Logger.debug({ group, node, node_rootType, dd_displayNameToExclude, fields_Grouped });
 
@@ -1414,7 +1511,12 @@ export const nodeAddDefaultFields = (
 			id: `${JSON.stringify(stepsOfFields)}${Math.random()}`,
 			...element
 		};
-		activeArgumentsDataGrouped_Store.add_activeArgument(newArgData as any, group.group_name, node?.id, endpointInfo);
+		activeArgumentsDataGrouped_Store.add_activeArgument(
+			newArgData as any,
+			group.group_name,
+			node?.id,
+			endpointInfo
+		);
 	});
 
 	let baseFilterOperators = ['_and', '_or', '_not', 'and', 'or', 'not']; //!!!this might create problem if there is some nonBase operator with the same name as one of these
@@ -1441,11 +1543,7 @@ export const nodeAddDefaultFields = (
 			Logger.debug({ newContainerData });
 			let randomNr = Math.random();
 			Logger.debug('group', group);
-			let newContainerDataRootType = getRootType(
-				null,
-				newContainerData.dd_rootName,
-				schemaData
-			);
+			let newContainerDataRootType = getRootType(null, newContainerData.dd_rootName, schemaData);
 			let hasBaseFilterOperators = newContainerDataRootType?.dd_baseFilterOperators;
 			let NODEhasBaseFilterOperators = getRootType(
 				null,
@@ -1476,7 +1574,7 @@ export const nodeAddDefaultFields = (
 					id: `${randomNr}`,
 					operator,
 					not: false,
-					isMain: false,
+					isMain: false
 				} as any;
 			}
 			Logger.debug({ newContainerDataRootType });
@@ -1487,39 +1585,38 @@ export const nodeAddDefaultFields = (
 				group.group_argsNode['mainContainer'].items.push({ id: `${randomNr}` });
 			}
 		});
-	activeArgumentsDataGrouped_Store.update((data) => { return data })//force update
+	activeArgumentsDataGrouped_Store.update((data) => {
+		return data;
+	}); //force update
 
 	node.addDefaultFields = false; // Note: addDefaultFields is not in ContainerData type, assuming it's dynamic
-}
-
+};
 
 export const stigifyAll = (data: unknown): string => {
 	return JSON.stringify(data, function (key, value) {
-		if (typeof value === "function") {
-			return "/Function(" + value.toString() + ")/";
+		if (typeof value === 'function') {
+			return '/Function(' + value.toString() + ')/';
 		}
 		return value;
 	});
-}
-
-
+};
 
 export const parseAll = (json: string): unknown => {
 	return JSON.parse(json, function (key, value) {
-		if (typeof value === "string" &&
-			value.startsWith("/Function(") &&
-			value.endsWith(")/")) {
+		if (typeof value === 'string' && value.startsWith('/Function(') && value.endsWith(')/')) {
 			value = value.substring(10, value.length - 2);
-			return (0, eval)("(" + value + ")");
+			return (0, eval)('(' + value + ')');
 		}
 		return value;
 	});
-}
-
+};
 
 export const stringToJs = (string: unknown): unknown => {
-	if (getPreciseType(string) !== "string") {
-		Logger.warn(`expectig string but got ${getPreciseType(string)},will use it as is.If object,you do not need this function,maybe this function was run previously.`, { string });
+	if (getPreciseType(string) !== 'string') {
+		Logger.warn(
+			`expectig string but got ${getPreciseType(string)},will use it as is.If object,you do not need this function,maybe this function was run previously.`,
+			{ string }
+		);
 		return string;
 	}
 	const str = string as string;
@@ -1556,9 +1653,9 @@ export const objectToSourceCode = (obj: Record<string, unknown>): string => {
 				Object.entries(obj as any)
 					.map(([key, value]) => {
 						if (key.includes('-')) {
-							key = `'${key}'`
+							key = `'${key}'`;
 						}
-						return `${key}: ${convertObjectToSourceCode(value)}`
+						return `${key}: ${convertObjectToSourceCode(value)}`;
 					})
 					.join(', ') +
 				'}'
@@ -1570,7 +1667,7 @@ export const objectToSourceCode = (obj: Record<string, unknown>): string => {
 	}
 
 	return convertObjectToSourceCode(obj);
-}
+};
 export const hasDeepProperty = (obj: Record<string, unknown>, propertyPath: string[]): boolean => {
 	let currentObj: any = obj;
 	for (let i = 0; i < propertyPath.length; i++) {
@@ -1581,7 +1678,7 @@ export const hasDeepProperty = (obj: Record<string, unknown>, propertyPath: stri
 		currentObj = currentObj[prop];
 	}
 	return true;
-}
+};
 /**
  * Traverses the GraphQL schema structure to find a nested field definition.
  * @param obj - The starting field or type definition.
@@ -1598,24 +1695,28 @@ export const getDeepField = (
 ): FieldWithDerivedData | null => {
 	//console.log({ obj, propertyPath })
 	if (propertyPath.length == 0) {
-		return obj as FieldWithDerivedData
+		return obj as FieldWithDerivedData;
 	}
 	let currentObj = obj as FieldWithDerivedData;
 	for (let i = 0; i < propertyPath.length; i++) {
 		const prop = propertyPath[i];
-		const currentObjRootType = getRootType(null, currentObj?.dd_rootName, schemaData)
-		const currentObjRootTypeFields = currentObjRootType?.[fieldsType]
-		const nextObj = currentObjRootTypeFields?.find((field) => { return field.dd_displayName == prop })
+		const currentObjRootType = getRootType(null, currentObj?.dd_rootName, schemaData);
+		const currentObjRootTypeFields = currentObjRootType?.[fieldsType];
+		const nextObj = currentObjRootTypeFields?.find((field) => {
+			return field.dd_displayName == prop;
+		});
 
 		if (!nextObj) {
 			return null;
 		}
-		currentObj = nextObj
+		currentObj = nextObj;
 	}
 	return currentObj;
-}
+};
 
-export const passAllObjectValuesThroughStringTransformerAndReturnNewObject = (obj: Record<string, unknown>): Record<string, unknown> => {
+export const passAllObjectValuesThroughStringTransformerAndReturnNewObject = (
+	obj: Record<string, unknown>
+): Record<string, unknown> => {
 	//!!! to do: make this function recursive to handle nested objects and arrays
 
 	let newObj = { ...obj };
@@ -1626,7 +1727,6 @@ export const passAllObjectValuesThroughStringTransformerAndReturnNewObject = (ob
 	});
 	return newObj;
 };
-
 
 export const getValueAtPath = (obj: Record<string, unknown>, path: string[]): unknown => {
 	let current: any = obj;
@@ -1641,14 +1741,16 @@ export const getValueAtPath = (obj: Record<string, unknown>, path: string[]): un
 	}
 
 	return current;
-}
+};
 
 export const getPreciseType = (value: unknown): string => {
 	return Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
-}
+};
 
-
-export const deleteValueAtPath = (obj: Record<string, unknown>, path: string[]): Record<string, unknown> | void => {
+export const deleteValueAtPath = (
+	obj: Record<string, unknown>,
+	path: string[]
+): Record<string, unknown> | void => {
 	if (!obj || !path || path.length === 0) {
 		// Check for valid input
 		Logger.error('Invalid input');
@@ -1671,7 +1773,7 @@ export const deleteValueAtPath = (obj: Record<string, unknown>, path: string[]):
 	// Delete the value at the final key in the path
 	delete currentObj[path[path.length - 1]];
 	return obj;
-}
+};
 export const setValueAtPath = (
 	obj: Record<string, unknown>,
 	path: string[],
@@ -1693,7 +1795,7 @@ export const setValueAtPath = (
 			if (addPathIfNotExist) {
 				// If the path does not exist, add it
 				Logger.info('Path does not exist,adding it');
-				currentObj[path[i]] = {}
+				currentObj[path[i]] = {};
 			}
 			if (!addPathIfNotExist) {
 				// If the path does not exist, return
@@ -1707,7 +1809,7 @@ export const setValueAtPath = (
 	// Set the value at the final key in the path
 	currentObj[path[path.length - 1]] = value;
 	return obj;
-}
+};
 export const generate_finalGqlArgObjAndCanRunQuery = (
 	activeArgumentsDataGrouped: ActiveArgumentGroup[],
 	_paginationState_Store: PaginationStateStore | null,
@@ -1728,7 +1830,7 @@ export const generate_finalGqlArgObjAndCanRunQuery = (
 	});
 	return generate_finalGqlArgObj_fromGroups(groups_gqlArgObj);
 	//better set an array?
-}
+};
 
 /**
  * Retrieves the QMSWraper context data for a given control panel item.
@@ -1736,7 +1838,10 @@ export const generate_finalGqlArgObjAndCanRunQuery = (
  * @param OutermostQMSWraperContext - The context of the outermost QMS wrapper.
  * @returns The found context data or undefined.
  */
-export const getQMSWraperCtxDataGivenControlPanelItem = (CPItem: { stepsOfFieldsThisAppliesTo: string[] }, OutermostQMSWraperContext: { mergedChildren_QMSWraperCtxData_Store: any }): any => {
+export const getQMSWraperCtxDataGivenControlPanelItem = (
+	CPItem: { stepsOfFieldsThisAppliesTo: string[] },
+	OutermostQMSWraperContext: { mergedChildren_QMSWraperCtxData_Store: any }
+): any => {
 	const { mergedChildren_QMSWraperCtxData_Store } = OutermostQMSWraperContext;
 
 	let mergedChildren_QMSWraperCtxData_Value = get(mergedChildren_QMSWraperCtxData_Store);
@@ -1757,7 +1862,10 @@ export const getQMSWraperCtxDataGivenControlPanelItem = (CPItem: { stepsOfFields
  * @param filterOutIfNotMaintaned - Whether to filter out endpoints that are not maintained.
  * @returns The sorted (and optionally filtered) list of endpoints.
  */
-export const getSortedAndOrderedEndpoints = (endpoints: { id: number | string; isMantained?: boolean }[], filterOutIfNotMaintaned: boolean = false): { id: number | string; isMantained?: boolean }[] => {
+export const getSortedAndOrderedEndpoints = (
+	endpoints: { id: number | string; isMantained?: boolean }[],
+	filterOutIfNotMaintaned: boolean = false
+): { id: number | string; isMantained?: boolean }[] => {
 	const sortedEndpoints = endpoints.sort((a, b) => {
 		if (a.id > b.id) {
 			return 1;

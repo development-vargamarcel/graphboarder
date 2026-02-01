@@ -3,7 +3,15 @@
 /**
  * Represents the kind of a GraphQL type.
  */
-export type GraphQLKind = 'SCALAR' | 'OBJECT' | 'INTERFACE' | 'UNION' | 'ENUM' | 'INPUT_OBJECT' | 'LIST' | 'NON_NULL';
+export type GraphQLKind =
+	| 'SCALAR'
+	| 'OBJECT'
+	| 'INTERFACE'
+	| 'UNION'
+	| 'ENUM'
+	| 'INPUT_OBJECT'
+	| 'LIST'
+	| 'NON_NULL';
 
 /**
  * Represents the type of a QMS operation (Query, Mutation, Subscription).
@@ -153,11 +161,28 @@ export interface SchemaDataStore extends Readable<SchemaData> {
 	set: (value: SchemaData) => void;
 	update: (updater: (value: SchemaData) => SchemaData) => void;
 	set_schema: (schema: any) => void;
-	set_rootTypes: (withDerivedData: boolean, set_storeVal: boolean, endpointInfo: EndpointInfoStore) => RootType[];
-	set_QMSFields: (withDerivedData: boolean, set_storeVal: boolean, QMS: string[], endpointInfo: EndpointInfoStore) => Record<string, FieldWithDerivedData[]>;
+	set_rootTypes: (
+		withDerivedData: boolean,
+		set_storeVal: boolean,
+		endpointInfo: EndpointInfoStore
+	) => RootType[];
+	set_QMSFields: (
+		withDerivedData: boolean,
+		set_storeVal: boolean,
+		QMS: string[],
+		endpointInfo: EndpointInfoStore
+	) => Record<string, FieldWithDerivedData[]>;
 	set_fields: (endpointInfo: EndpointInfoStore) => void;
-	get_rootType: (rootTypes: RootType[] | null, rootTypeName: string, schemaData: SchemaDataStore | SchemaData) => RootType | undefined;
-	get_QMS_Field: (qmsName: string, qmsType: QMSType, schemaData: SchemaDataStore | SchemaData) => FieldWithDerivedData | undefined;
+	get_rootType: (
+		rootTypes: RootType[] | null,
+		rootTypeName: string,
+		schemaData: SchemaDataStore | SchemaData
+	) => RootType | undefined;
+	get_QMS_Field: (
+		qmsName: string,
+		qmsType: QMSType,
+		schemaData: SchemaDataStore | SchemaData
+	) => FieldWithDerivedData | undefined;
 }
 
 // Display Interface Types
@@ -165,7 +190,15 @@ export interface SchemaDataStore extends Readable<SchemaData> {
 /**
  * types of interfaces available for displaying data.
  */
-export type DisplayInterface = 'text' | 'number' | 'datetime-local' | 'geo' | 'boolean' | 'ENUM' | 'codeeditor' | null;
+export type DisplayInterface =
+	| 'text'
+	| 'number'
+	| 'datetime-local'
+	| 'geo'
+	| 'boolean'
+	| 'ENUM'
+	| 'codeeditor'
+	| null;
 
 /**
  * Extra data associated with a type for display purposes.
@@ -182,7 +215,15 @@ export interface TypeExtraData {
 /**
  * Represents different pagination strategies/keywords.
  */
-export type PaginationStand = 'limit' | 'offset' | 'first' | 'last' | 'after' | 'before' | 'from' | 'page';
+export type PaginationStand =
+	| 'limit'
+	| 'offset'
+	| 'first'
+	| 'last'
+	| 'after'
+	| 'before'
+	| 'from'
+	| 'page';
 
 /**
  * Represents the current state of pagination.
@@ -198,12 +239,34 @@ export interface PaginationTypeInfo {
 	name: string;
 	check: (standsForArray: string[]) => boolean;
 	get_rowLimitingArgNames?: (paginationArgs: FieldWithDerivedData[]) => (string | undefined)[];
-	get_dependencyColsData?: (qmsName: string, qmsType: QMSType, schemaData: SchemaDataStore | SchemaData) => unknown[];
+	get_dependencyColsData?: (
+		qmsName: string,
+		qmsType: QMSType,
+		schemaData: SchemaDataStore | SchemaData
+	) => unknown[];
 	get_initialState: (paginationArgs: FieldWithDerivedData[]) => PaginationState;
-	get_nextPageState: (currentState: PaginationState, paginationArgs: FieldWithDerivedData[], returnedDataBatch_last?: unknown, qmsName?: string, qmsType?: QMSType) => PaginationState;
-	get_prevPageState: (currentState: PaginationState, paginationArgs: FieldWithDerivedData[], returnedDataBatch_last?: unknown, qmsName?: string, qmsType?: QMSType) => PaginationState;
-	get_defaultPaginationStateForDynamic: (currentState: PaginationState, paginationArgs: FieldWithDerivedData[]) => PaginationState;
-	isFirstPage?: (paginationStateStore: PaginationStateStore, paginationArgs: FieldWithDerivedData[]) => boolean;
+	get_nextPageState: (
+		currentState: PaginationState,
+		paginationArgs: FieldWithDerivedData[],
+		returnedDataBatch_last?: unknown,
+		qmsName?: string,
+		qmsType?: QMSType
+	) => PaginationState;
+	get_prevPageState: (
+		currentState: PaginationState,
+		paginationArgs: FieldWithDerivedData[],
+		returnedDataBatch_last?: unknown,
+		qmsName?: string,
+		qmsType?: QMSType
+	) => PaginationState;
+	get_defaultPaginationStateForDynamic: (
+		currentState: PaginationState,
+		paginationArgs: FieldWithDerivedData[]
+	) => PaginationState;
+	isFirstPage?: (
+		paginationStateStore: PaginationStateStore,
+		paginationArgs: FieldWithDerivedData[]
+	) => boolean;
 }
 
 // Column Data Types
@@ -288,22 +351,46 @@ export interface RowsLocationPossibility {
 }
 
 export interface RowCountLocationPossibility {
-	get_Val: (qmsInfo: FieldWithDerivedData, schemaData?: SchemaDataStore | SchemaData, storeVal?: any) => string[];
-	check: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData, storeVal?: any) => boolean;
+	get_Val: (
+		qmsInfo: FieldWithDerivedData,
+		schemaData?: SchemaDataStore | SchemaData,
+		storeVal?: any
+	) => string[];
+	check: (
+		qmsInfo: FieldWithDerivedData,
+		schemaData: SchemaDataStore | SchemaData,
+		storeVal?: any
+	) => boolean;
 }
 
 export interface IdFieldPossibility {
-	get_Val: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData, storeVal?: any) => FieldWithDerivedData | undefined;
-	check: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData, storeVal?: any) => boolean | FieldWithDerivedData | undefined;
+	get_Val: (
+		qmsInfo: FieldWithDerivedData,
+		schemaData: SchemaDataStore | SchemaData,
+		storeVal?: any
+	) => FieldWithDerivedData | undefined;
+	check: (
+		qmsInfo: FieldWithDerivedData,
+		schemaData: SchemaDataStore | SchemaData,
+		storeVal?: any
+	) => boolean | FieldWithDerivedData | undefined;
 }
 
 export interface TypeExtraDataPossibility {
 	get_Val: (typeInfo?: FieldWithDerivedData) => TypeExtraData;
-	check: (dd_rootName: string, dd_displayName: string, typeObj: Partial<FieldWithDerivedData>) => boolean | null;
+	check: (
+		dd_rootName: string,
+		dd_displayName: string,
+		typeObj: Partial<FieldWithDerivedData>
+	) => boolean | null;
 }
 
 export interface IdDecoderPossibility {
-	get_Val: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData, id: string) => string;
+	get_Val: (
+		qmsInfo: FieldWithDerivedData,
+		schemaData: SchemaDataStore | SchemaData,
+		id: string
+	) => string;
 	check: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData) => boolean;
 }
 
@@ -329,7 +416,10 @@ export interface EndpointConfiguration {
 	inputColumnsPossibleLocationsInArg?: string[][];
 	pageInfoFieldsLocation?: string[];
 	tableNamePossibilities?: {
-		get_Val: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData) => string | null;
+		get_Val: (
+			qmsInfo: FieldWithDerivedData,
+			schemaData: SchemaDataStore | SchemaData
+		) => string | null;
 		check: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData) => boolean;
 	}[];
 	qmsNameForObjectivePossibilities?: {
@@ -357,16 +447,50 @@ export interface EndpointInfoStore {
 	update: (updater: (value: EndpointConfiguration) => EndpointConfiguration) => void;
 	get_thisContext: () => EndpointInfoStore;
 	smartSet: (newEndpoint: EndpointConfiguration) => void;
-	get_inputFieldsContainerLocation: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData) => string[];
-	get_rowsLocation: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData) => string[];
-	get_rowCountLocation: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData) => string[] | null;
-	get_idField: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData) => FieldWithDerivedData | null;
-	get_typeExtraData: (typeInfo: Partial<FieldWithDerivedData>, choosenDisplayInterface?: DisplayInterface) => TypeExtraData | null;
-	get_tableName: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData) => string | null;
-	get_qmsNameForObjective: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData, qmsObjective: string) => string | null;
-	get_decodedId: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData, id: string) => string | null;
-	get_relayPageInfoFieldsNames: (currentQmsInfo: FieldWithDerivedData, pageInfoFieldsLocation: string[], schemaData: SchemaDataStore | SchemaData) => Record<string, string> | null;
-	get_relayCursorFieldName: (currentQmsInfo: FieldWithDerivedData, rowsLocation: string[], schemaData: SchemaDataStore | SchemaData) => Record<string, string> | null;
+	get_inputFieldsContainerLocation: (
+		qmsInfo: FieldWithDerivedData,
+		schemaData: SchemaDataStore | SchemaData
+	) => string[];
+	get_rowsLocation: (
+		qmsInfo: FieldWithDerivedData,
+		schemaData: SchemaDataStore | SchemaData
+	) => string[];
+	get_rowCountLocation: (
+		qmsInfo: FieldWithDerivedData,
+		schemaData: SchemaDataStore | SchemaData
+	) => string[] | null;
+	get_idField: (
+		qmsInfo: FieldWithDerivedData,
+		schemaData: SchemaDataStore | SchemaData
+	) => FieldWithDerivedData | null;
+	get_typeExtraData: (
+		typeInfo: Partial<FieldWithDerivedData>,
+		choosenDisplayInterface?: DisplayInterface
+	) => TypeExtraData | null;
+	get_tableName: (
+		qmsInfo: FieldWithDerivedData,
+		schemaData: SchemaDataStore | SchemaData
+	) => string | null;
+	get_qmsNameForObjective: (
+		qmsInfo: FieldWithDerivedData,
+		schemaData: SchemaDataStore | SchemaData,
+		qmsObjective: string
+	) => string | null;
+	get_decodedId: (
+		qmsInfo: FieldWithDerivedData,
+		schemaData: SchemaDataStore | SchemaData,
+		id: string
+	) => string | null;
+	get_relayPageInfoFieldsNames: (
+		currentQmsInfo: FieldWithDerivedData,
+		pageInfoFieldsLocation: string[],
+		schemaData: SchemaDataStore | SchemaData
+	) => Record<string, string> | null;
+	get_relayCursorFieldName: (
+		currentQmsInfo: FieldWithDerivedData,
+		rowsLocation: string[],
+		schemaData: SchemaDataStore | SchemaData
+	) => Record<string, string> | null;
 }
 
 /**
@@ -376,12 +500,25 @@ export interface ActiveArgumentsDataGroupedStore {
 	subscribe: (run: (value: ActiveArgumentGroup[]) => void) => () => void;
 	set: (value: ActiveArgumentGroup[]) => void;
 	update: (updater: (value: ActiveArgumentGroup[]) => ActiveArgumentGroup[]) => void;
-	set_groups: (qmsInfo: FieldWithDerivedData, schemaData: SchemaDataStore | SchemaData, qmsArguments: Record<string, unknown> | null, endpointInfo: EndpointInfoStore) => void;
+	set_groups: (
+		qmsInfo: FieldWithDerivedData,
+		schemaData: SchemaDataStore | SchemaData,
+		qmsArguments: Record<string, unknown> | null,
+		endpointInfo: EndpointInfoStore
+	) => void;
 	update_groups: (groupNewData: ActiveArgumentGroup) => void;
 	update_activeArgument: (activeArgumentData: ActiveArgumentData, groupName: string) => void;
 	delete_activeArgument: (activeArgumentData: ActiveArgumentData, groupName: string) => void;
-	get_activeArgument: (stepsOfFields: string[], groupName?: string) => ActiveArgumentData | undefined;
-	add_activeArgument: (newArgumentOrContainerData: ActiveArgumentData | ContainerData, groupName: string, parentContainerId: string | null, endpointInfo: EndpointInfoStore) => void;
+	get_activeArgument: (
+		stepsOfFields: string[],
+		groupName?: string
+	) => ActiveArgumentData | undefined;
+	add_activeArgument: (
+		newArgumentOrContainerData: ActiveArgumentData | ContainerData,
+		groupName: string,
+		parentContainerId: string | null,
+		endpointInfo: EndpointInfoStore
+	) => void;
 }
 
 /**

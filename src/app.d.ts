@@ -41,7 +41,7 @@ declare global {
 	// Example: const __APP_VERSION__: string
 	namespace svelteHTML {
 		interface HTMLAttributes<T> {
-			'onclick_outside'?: (event: CustomEvent) => void;
+			onclick_outside?: (event: CustomEvent) => void;
 		}
 	}
 }

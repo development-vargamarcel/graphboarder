@@ -49,7 +49,9 @@
 	}: Props = $props();
 
 	// Get contexts - ensuring prefix is defined
-	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(
+		`${untrack(() => prefix)}QMSMainWraperContext`
+	);
 	const endpointInfo = mainWraperCtx?.endpointInfo;
 	const urqlCoreClient = mainWraperCtx?.urqlCoreClient;
 	let queryName = untrack(() => QMSName);
@@ -72,9 +74,11 @@
 		goto('/queries');
 	}
 
-	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData as any).find((pagType: any) => {
-		return pagType.name == currentQMS_info.dd_paginationType;
-	});
+	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData as any).find(
+		(pagType: any) => {
+			return pagType.name == currentQMS_info.dd_paginationType;
+		}
+	);
 
 	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], schemaData as any);
 
@@ -123,7 +127,9 @@
 				}
 				if (result.data) {
 					data = result.data;
-					Logger.info('Query execution successful', { dataCount: Array.isArray(data) ? data.length : 1 });
+					Logger.info('Query execution successful', {
+						dataCount: Array.isArray(data) ? data.length : 1
+					});
 				}
 				queryData = { fetching, error, data };
 				let stepsOfFieldsInput = [
@@ -131,7 +137,11 @@
 					...endpointInfo.get_rowsLocation(currentQMS_info, schemaData as any)
 				];
 				Logger.debug({ stepsOfFieldsInput }, currentQMS_info.dd_displayName);
-				rowsCurrent = getDataGivenStepsOfFields(undefined, queryData.data, stepsOfFieldsInput) as any[];
+				rowsCurrent = getDataGivenStepsOfFields(
+					undefined,
+					queryData.data,
+					stepsOfFieldsInput
+				) as any[];
 				if (rowsCurrent && !Array.isArray(rowsCurrent)) {
 					rowsCurrent = [rowsCurrent];
 				}
@@ -178,7 +188,11 @@
 			});
 	};
 
-	function infiniteHandler({ detail: { loaded, complete } }: { detail: { loaded: () => void; complete: () => void } }) {
+	function infiniteHandler({
+		detail: { loaded, complete }
+	}: {
+		detail: { loaded: () => void; complete: () => void };
+	}) {
 		loadedF = loaded;
 		completeF = complete;
 		const rowLimitingArgNames = paginationTypeInfo?.get_rowLimitingArgNames(
@@ -237,9 +251,9 @@
 		hljs.registerLanguage('graphql', graphql);
 		hljs.highlightAll();
 	});
-    const addColumnFromInput = (e: any) => {
-        // ...
-    }
+	const addColumnFromInput = (e: any) => {
+		// ...
+	};
 </script>
 
 {@render children?.()}
@@ -259,9 +273,9 @@
 		{dd_relatedRoot}
 		QMSName={queryName}
 		QMS_info={currentQMS_info}
-        onNewColumnAddRequest={(tableColData: any) => {
-            tableColsData_Store.addColumn(tableColData);
-        }}
+		onNewColumnAddRequest={(tableColData: any) => {
+			tableColsData_Store.addColumn(tableColData);
+		}}
 	/>
 	<div class="grow==">
 		<ControlPanel
@@ -281,8 +295,8 @@
 						showModal = false;
 					}
 				}}
-				><div class="  w-full  ">
-					<div class="mx-auto mt-2  w-full   space-y-2   pb-2  ">
+				><div class="  w-full">
+					<div class="mx-auto mt-2 w-full space-y-2 pb-2">
 						<div class="w-2"></div>
 						<ActiveArguments />
 						<div class="w-2"></div>
@@ -304,7 +318,7 @@
 		</div> -->
 	</div>
 	<button
-		class=" btn btn-xs grow normal-case "
+		class=" btn btn-xs grow normal-case"
 		onclick={() => {
 			showQMSBody = !showQMSBody;
 		}}>QMS body</button
@@ -319,15 +333,15 @@
 		</div>
 	{/if}
 
-	<button class="btn btn-xs btn-primary " aria-label="Add">
-		<i class="bi bi-plus-circle-fill "></i>
+	<button class="btn btn-xs btn-primary" aria-label="Add">
+		<i class="bi bi-plus-circle-fill"></i>
 	</button>
 </div>
 
 {@render children?.()}
 {#if queryData.error}
-	<div class="px-4 mx-auto  mb-2">
-		<div class="alert alert-error shadow-lg ">
+	<div class="px-4 mx-auto mb-2">
+		<div class="alert alert-error shadow-lg">
 			<div>
 				<button
 					class="btn btn-ghost btn-sm p-0"

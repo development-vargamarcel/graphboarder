@@ -13,7 +13,9 @@
 
 	let { prefix = '', QMS_bodyPart_StoreDerived, QMS_info }: Props = $props();
 
-	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(
+		`${untrack(() => prefix)}QMSMainWraperContext`
+	);
 	const endpointInfo = mainWraperCtx?.endpointInfo;
 
 	const urqlCoreClient = mainWraperCtx?.urqlCoreClient;

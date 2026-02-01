@@ -12,14 +12,13 @@ export const localEndpoints = [
 		displayNamePossibilitiesForCreateItem: [
 			{
 				get_Val: (QMS_info, schemaData) => {
-					return `create_${QMS_info.dd_rootName}_item`
+					return `create_${QMS_info.dd_rootName}_item`;
 				},
 				check: (QMS_info, schemaData) => {
-					return true
+					return true;
 				}
-			},
-		]
-		,
+			}
+		],
 		rowsLocationPossibilities: [
 			{
 				get_Val: (QMS_info, schemaData) => {
@@ -39,16 +38,15 @@ export const localEndpoints = [
 			}
 		],
 		rowCountLocationPossibilities: [
-
 			{
 				get_Val: (QMS_info, schemaData) => {
 					const aggregatedQMS_info = schemaData.get_QMS_Field(
 						`${QMS_info.dd_displayName}_aggregated`,
 						'query'
 					);
-					const rootType = schemaData.get_rootType(null, QMS_info.dd_rootName, schemaData)
+					const rootType = schemaData.get_rootType(null, QMS_info.dd_rootName, schemaData);
 					if (!rootType) {
-						return null
+						return null;
 					}
 					const nodeFieldsQMS_info = rootType.fields[0].dd_displayName;
 					if (nodeFieldsQMS_info) {
@@ -64,15 +62,9 @@ export const localEndpoints = [
 				}
 			}
 		],
-		returningColumnsPossibleLocationsInMutations: [[]
-		],
-		returningColumnsPossibleLocationsInQueriesPerRow: [
-			[]
-		],
-		inputColumnsPossibleLocationsInArg: [
-			[]
-		]
-		,
+		returningColumnsPossibleLocationsInMutations: [[]],
+		returningColumnsPossibleLocationsInQueriesPerRow: [[]],
+		inputColumnsPossibleLocationsInArg: [[]]
 	},
 	{
 		id: 'directus2',
@@ -136,15 +128,9 @@ export const localEndpoints = [
 				}
 			}
 		],
-		returningColumnsPossibleLocationsInMutations: [[]
-		],
-		returningColumnsPossibleLocationsInQueriesPerRow: [
-			[]
-		],
-		inputColumnsPossibleLocationsInArg: [
-			[]
-		]
-		,
+		returningColumnsPossibleLocationsInMutations: [[]],
+		returningColumnsPossibleLocationsInQueriesPerRow: [[]],
+		inputColumnsPossibleLocationsInArg: [[]]
 	},
 	{
 		id: 'nhost',
@@ -170,16 +156,9 @@ export const localEndpoints = [
 				}
 			}
 		],
-		returningColumnsPossibleLocationsInMutations: [
-			['returning'], []
-		],
-		returningColumnsPossibleLocationsInQueriesPerRow: [
-			[]
-		],
-		inputColumnsPossibleLocationsInArg: [
-			['data']
-		]
-		,
+		returningColumnsPossibleLocationsInMutations: [['returning'], []],
+		returningColumnsPossibleLocationsInQueriesPerRow: [[]],
+		inputColumnsPossibleLocationsInArg: [['data']],
 		rowCountLocationPossibilities: [
 			{
 				get_Val: (QMS_info, schemaData) => {
@@ -202,7 +181,6 @@ export const localEndpoints = [
 			}
 		]
 	},
-
 
 	{
 		id: 'spacex',
@@ -268,16 +246,9 @@ export const localEndpoints = [
 		description: 'edgeBased pagination,no rowCount avalable',
 		headers: { 'x-hasura-admin-secret': ',v!)R06aVMCPsY:xL&es$q0PSMYe1g)!' },
 		pageInfoFieldsLocation: ['pageInfo'],
-		returningColumnsPossibleLocationsInMutations: [
-			['returning'], []
-		],
-		returningColumnsPossibleLocationsInQueriesPerRow: [
-			['node'], []
-		],
-		inputColumnsPossibleLocationsInArg: [
-			['data']
-		]
-		,
+		returningColumnsPossibleLocationsInMutations: [['returning'], []],
+		returningColumnsPossibleLocationsInQueriesPerRow: [['node'], []],
+		inputColumnsPossibleLocationsInArg: [['data']],
 		rowsLocationPossibilities: [
 			{
 				get_Val: (QMS_info, schemaData) => {
@@ -294,35 +265,32 @@ export const localEndpoints = [
 			startCursor: 'startCursor',
 			endCursor: 'endCursor',
 			cursor: 'cursor'
-		}
-		,
+		},
 		idDecoderPossibilities: [
 			{
 				get_Val: (QMS_info, schemaData, id) => {
 					let array = stringToJs(atob(id)) as any[];
-					return array[array.length - 1]
+					return array[array.length - 1];
 				},
-				check: (QMS_info, schemaData) => { return true }
-			},
-		],
+				check: (QMS_info, schemaData) => {
+					return true;
+				}
+			}
+		]
 	},
 	{
 		id: 'supabase',
 		url: 'https://bdpktzyqszaqnlbushhk.supabase.co/graphql/v1',
 		isMantained: false,
 		description: 'offset based pagination,no rowCount avalable',
-		headers: { 'apiKey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJkcGt0enlxc3phcW5sYnVzaGhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk1NDg1ODcsImV4cCI6MjAyNTEyNDU4N30.ADkneNGSwCcLgtKSdQuMOd0P5dN6ZZ1FFNnjgQaid44' },
+		headers: {
+			apiKey:
+				'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJkcGt0enlxc3phcW5sYnVzaGhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk1NDg1ODcsImV4cCI6MjAyNTEyNDU4N30.ADkneNGSwCcLgtKSdQuMOd0P5dN6ZZ1FFNnjgQaid44'
+		},
 		pageInfoFieldsLocation: ['pageInfo'],
-		returningColumnsPossibleLocationsInMutations: [
-			['records'], []
-		],
-		returningColumnsPossibleLocationsInQueriesPerRow: [
-			['node'], []
-		],
-		inputColumnsPossibleLocationsInArg: [
-			['data']
-		]
-		,
+		returningColumnsPossibleLocationsInMutations: [['records'], []],
+		returningColumnsPossibleLocationsInQueriesPerRow: [['node'], []],
+		inputColumnsPossibleLocationsInArg: [['data']],
 		rowsLocationPossibilities: [
 			{
 				get_Val: (QMS_info, schemaData) => {
@@ -339,16 +307,17 @@ export const localEndpoints = [
 			startCursor: 'startCursor',
 			endCursor: 'endCursor',
 			cursor: 'cursor'
-		}
-		,
+		},
 		idDecoderPossibilities: [
 			{
 				get_Val: (QMS_info, schemaData, id) => {
-					return id
+					return id;
 				},
-				check: (QMS_info, schemaData) => { return true }
-			},
-		],
+				check: (QMS_info, schemaData) => {
+					return true;
+				}
+			}
+		]
 	},
 	{
 		id: 'ehri-project',
@@ -794,30 +763,24 @@ export const localEndpoints = [
 // 			]
 // };
 
-
-
 export const stigifyAll = (data) => {
 	return JSON.stringify(data, function (key, value) {
-		if (typeof value === "function") {
-			return "/Function(" + value.toString() + ")/";
+		if (typeof value === 'function') {
+			return '/Function(' + value.toString() + ')/';
 		}
 		return value;
 	});
-}
-
-
+};
 
 export const parseAll = (json) => {
 	return JSON.parse(json, function (key, value) {
-		if (typeof value === "string" &&
-			value.startsWith("/Function(") &&
-			value.endsWith(")/")) {
+		if (typeof value === 'string' && value.startsWith('/Function(') && value.endsWith(')/')) {
 			value = value.substring(10, value.length - 2);
-			return (0, eval)("(" + value + ")");
+			return (0, eval)('(' + value + ')');
 		}
 		return value;
 	});
-}
+};
 
 import { writable } from 'svelte/store';
 

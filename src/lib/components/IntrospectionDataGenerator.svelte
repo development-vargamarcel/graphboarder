@@ -19,7 +19,9 @@
 	let { prefix = '', children }: Props = $props();
 
 	// Get context with explicit type
-	let QMSMainWraperContextVal = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
+	let QMSMainWraperContextVal = getContext<QMSMainWraperContext>(
+		`${untrack(() => prefix)}QMSMainWraperContext`
+	);
 	const urqlCoreClient = QMSMainWraperContextVal?.urqlCoreClient;
 	const endpointInfo = QMSMainWraperContextVal?.endpointInfo;
 	const schemaData = QMSMainWraperContextVal?.schemaData;
@@ -48,110 +50,118 @@
 	const queryStoreRes = queryStore({
 		client: getContextClient(),
 		query: gql`
-    query IntrospectionQuery {
-      __schema {
-        queryType { name }
-        mutationType { name }
-        subscriptionType { name }
-        types {
-          ...FullType
-        }
-        directives {
-          name
-          description
-          locations
-          args {
-            ...InputValue
-          }
-        }
-      }
-    }
+			query IntrospectionQuery {
+				__schema {
+					queryType {
+						name
+					}
+					mutationType {
+						name
+					}
+					subscriptionType {
+						name
+					}
+					types {
+						...FullType
+					}
+					directives {
+						name
+						description
+						locations
+						args {
+							...InputValue
+						}
+					}
+				}
+			}
 
-    fragment FullType on __Type {
-      kind
-      name
-      description
-      fields(includeDeprecated: true) {
-        name
-        description
-        args {
-          ...InputValue
-        }
-        type {
-          ...TypeRef
-        }
-        isDeprecated
-        deprecationReason
-      }
-      inputFields {
-        ...InputValue
-      }
-      interfaces {
-        ...TypeRef
-      }
-      enumValues(includeDeprecated: true) {
-        name
-        description
-        isDeprecated
-        deprecationReason
-      }
-      possibleTypes {
-        ...TypeRef
-      }
-    }
+			fragment FullType on __Type {
+				kind
+				name
+				description
+				fields(includeDeprecated: true) {
+					name
+					description
+					args {
+						...InputValue
+					}
+					type {
+						...TypeRef
+					}
+					isDeprecated
+					deprecationReason
+				}
+				inputFields {
+					...InputValue
+				}
+				interfaces {
+					...TypeRef
+				}
+				enumValues(includeDeprecated: true) {
+					name
+					description
+					isDeprecated
+					deprecationReason
+				}
+				possibleTypes {
+					...TypeRef
+				}
+			}
 
-    fragment InputValue on __InputValue {
-      name
-      description
-      type { ...TypeRef }
-      defaultValue
-    }
+			fragment InputValue on __InputValue {
+				name
+				description
+				type {
+					...TypeRef
+				}
+				defaultValue
+			}
 
-    fragment TypeRef on __Type {
-      kind
-      name
-      ofType {
-        kind
-        name
-        ofType {
-          kind
-          name
-          ofType {
-            kind
-            name
-            ofType {
-              kind
-              name
-              ofType {
-                kind
-                name
-                ofType {
-                  kind
-                  name
-                  ofType {
-                    kind
-                    name
-                    ofType {
-                      kind
-                      name
-                      ofType {
-                        kind
-                        name
-                        ofType {
-                          kind
-                          name
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `
+			fragment TypeRef on __Type {
+				kind
+				name
+				ofType {
+					kind
+					name
+					ofType {
+						kind
+						name
+						ofType {
+							kind
+							name
+							ofType {
+								kind
+								name
+								ofType {
+									kind
+									name
+									ofType {
+										kind
+										name
+										ofType {
+											kind
+											name
+											ofType {
+												kind
+												name
+												ofType {
+													kind
+													name
+													ofType {
+														kind
+														name
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		`
 	});
 
 	let schema = $state({});
@@ -167,7 +177,7 @@
 		if (schemaData.set_schema) {
 			schemaData.set_schema(schema);
 		} else {
-			schemaData.update(s => ({ ...s, schema }));
+			schemaData.update((s) => ({ ...s, schema }));
 		}
 
 		schemaData.set_fields(endpointInfo);

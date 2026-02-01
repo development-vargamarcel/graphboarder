@@ -8,14 +8,16 @@
 	}
 
 	let { prefix = '' }: Props = $props();
-	const nodeContext_forDynamicData = getContext<any>(`${untrack(() => prefix)}nodeContext_forDynamicData`);
+	const nodeContext_forDynamicData = getContext<any>(
+		`${untrack(() => prefix)}nodeContext_forDynamicData`
+	);
 	let idColName = nodeContext_forDynamicData?.idColName;
 	let requiredColNames = nodeContext_forDynamicData?.requiredColNames;
 
 	let selectedRowsColValues = nodeContext_forDynamicData?.selectedRowsColValues;
 	let columns = $state<any[]>([]);
 
-    $effect(() => {
+	$effect(() => {
 		if ($selectedRowsColValues) {
 			if ($selectedRowsColValues?.length > 0) {
 				columns = Object.keys($selectedRowsColValues[0]).map((columnName) => {

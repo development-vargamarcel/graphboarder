@@ -1,4 +1,11 @@
-import type { DocumentNode, FieldNode, ArgumentNode, ValueNode, SelectionNode, ObjectValueNode } from 'graphql';
+import type {
+	DocumentNode,
+	FieldNode,
+	ArgumentNode,
+	ValueNode,
+	SelectionNode,
+	ObjectValueNode
+} from 'graphql';
 import type {
 	TableColumnData,
 	StepsOfFieldsObject,
@@ -93,10 +100,7 @@ export const extractFieldsFromAST = (
 
 			// If this field has a selection set, it's a nested field
 			if (selection.selectionSet) {
-				const nestedColumns = extractFieldsFromAST(
-					selection.selectionSet.selections,
-					currentPath
-				);
+				const nestedColumns = extractFieldsFromAST(selection.selectionSet.selections, currentPath);
 				columns.push(...nestedColumns);
 			} else {
 				// This is a leaf field - create a column for it
@@ -148,7 +152,9 @@ export const createStepsOfFieldsObject = (path: string[]): StepsOfFieldsObject |
 /**
  * Parse a GraphQL query AST and extract UI state
  */
-export const parseQueryAST = (ast: DocumentNode): {
+export const parseQueryAST = (
+	ast: DocumentNode
+): {
 	queryName: string | null;
 	arguments: Record<string, unknown>;
 	fields: TableColumnData[];

@@ -3,7 +3,7 @@
 	import FilterItem from '$lib/components/FilterItem.svelte';
 	import { getRootType } from '$lib/utils/usefulFunctions';
 	import { Logger } from '$lib/utils/logger';
-    import type { QMSMainWraperContext } from '$lib/types/index';
+	import type { QMSMainWraperContext } from '$lib/types/index';
 
 	interface Props {
 		prefix?: string;
@@ -13,13 +13,15 @@
 	}
 
 	let { prefix = '', chosen, typeInfo, onInterfaceChosen }: Props = $props();
-	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(
+		`${untrack(() => prefix)}QMSMainWraperContext`
+	);
 	const endpointInfo = mainWraperCtx?.endpointInfo;
-	let possible_displayInterfaces = $derived($endpointInfo.typesExtraDataPossibilities.map(
-		(possibility: any) => {
+	let possible_displayInterfaces = $derived(
+		$endpointInfo.typesExtraDataPossibilities.map((possibility: any) => {
 			return possibility.get_Val()?.displayInterface;
-		}
-	));
+		})
+	);
 	const schemaData = mainWraperCtx?.schemaData;
 	let rootType = $derived(getRootType(null, typeInfo.dd_rootName, schemaData));
 </script>

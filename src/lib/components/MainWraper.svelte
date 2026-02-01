@@ -55,7 +55,10 @@
 
 	$effect(() => {
 		if (!$endpointInfo?.url) {
-			Logger.error('MainWraper: No URL provided in endpoint info. Please check your configuration.', { endpointInfoProvided });
+			Logger.error(
+				'MainWraper: No URL provided in endpoint info. Please check your configuration.',
+				{ endpointInfoProvided }
+			);
 		}
 	});
 
@@ -121,13 +124,18 @@
 	// Sync client to urqlCoreClient store initially
 	urqlCoreClient.set(untrack(() => client));
 	setContextClient(untrack(() => client));
-	Logger.debug('MainWraper: Initial URQL Client created and context set', { url: untrack(() => $endpointInfo.url) });
+	Logger.debug('MainWraper: Initial URQL Client created and context set', {
+		url: untrack(() => $endpointInfo.url)
+	});
 
 	$effect(() => {
 		const url = $endpointInfo.url;
 		const currentClientUrl = untrack(() => (client as any).url);
 		if (url && url !== currentClientUrl) {
-			Logger.info('MainWraper: Recreating URQL Client due to URL change', { url, oldUrl: currentClientUrl });
+			Logger.info('MainWraper: Recreating URQL Client due to URL change', {
+				url,
+				oldUrl: currentClientUrl
+			});
 			const newClient = new Client({
 				url: url,
 				fetchOptions: () => {

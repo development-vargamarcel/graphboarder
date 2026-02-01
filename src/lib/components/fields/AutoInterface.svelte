@@ -4,15 +4,16 @@
 	import Interface from '$lib/components/fields/Interface.svelte';
 	import { getContext } from 'svelte';
 	import { getPreciseType } from '$lib/utils/usefulFunctions';
-    import type { Writable } from 'svelte/store';
+	import type { Writable } from 'svelte/store';
 
 	let { typeInfo, alwaysOn_interfacePicker = false, onChanged } = $props();
 	const choosenDisplayInterface = getContext<Writable<string>>('choosenDisplayInterface');
 	const expectsInterfaceList = $derived(typeInfo.dd_kindList && $choosenDisplayInterface != 'ENUM');
-	let rawValue =
-		$derived(expectsInterfaceList && getPreciseType(typeInfo?.chd_rawValue) != 'array'
+	let rawValue = $derived(
+		expectsInterfaceList && getPreciseType(typeInfo?.chd_rawValue) != 'array'
 			? [typeInfo?.chd_rawValue]
-			: typeInfo?.chd_rawValue);
+			: typeInfo?.chd_rawValue
+	);
 	let dispatchValue = $derived(typeInfo?.chd_dispatchValue);
 </script>
 

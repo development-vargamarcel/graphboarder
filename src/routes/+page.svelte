@@ -7,11 +7,14 @@
 
 <main class="pt-20 p-4">
 	<div class="card w-full max-w-lg bg-base-100 shadow-xl mx-auto">
-		<div class="card-body ">
+		<div class="card-body">
 			<h2 class="card-title text-base-content">GraphQL Endpoint Explorer</h2>
-			<p class="text-accent">Select a demonstration endpoint or connect your own GraphQL API to begin exploring and visualizing your data.</p>
+			<p class="text-accent">
+				Select a demonstration endpoint or connect your own GraphQL API to begin exploring and
+				visualizing your data.
+			</p>
 			<div class="card-actions justify-end mt-10">
-				<a href="/endpoints" class="btn btn-primary  normal-case">Get Started</a>
+				<a href="/endpoints" class="btn btn-primary normal-case">Get Started</a>
 			</div>
 		</div>
 	</div>

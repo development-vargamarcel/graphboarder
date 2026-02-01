@@ -12,7 +12,7 @@
 
 	let { type, i, prefix = '' }: Props = $props();
 
-    const initialPrefix = untrack(() => prefix);
+	const initialPrefix = untrack(() => prefix);
 	// Initialization after props
 	const qmsContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}QMSWraperContext`);
 	let context = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);

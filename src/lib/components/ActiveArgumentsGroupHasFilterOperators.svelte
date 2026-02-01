@@ -22,9 +22,22 @@
 	import ActiveArgumentsGroup_addFilterAndSortingButtonContent from '$lib/components/ActiveArgumentsGroup_addFilterAndSortingButtonContent.svelte';
 	import Modal from './Modal.svelte';
 	import { nodeAddDefaultFields } from '$lib/utils/usefulFunctions';
-	import { stepsOfNodesToStepsOfFields, getUpdatedStepsOfNodes, updateNodeSteps } from '$lib/utils/nodeStepsUtils';
+	import {
+		stepsOfNodesToStepsOfFields,
+		getUpdatedStepsOfNodes,
+		updateNodeSteps
+	} from '$lib/utils/nodeStepsUtils';
 	import { generateGroupDisplayTitle, getNodeDisplayClasses } from '$lib/utils/displayTitleUtils';
-	import { getShadowDimensions, updateShadowElement, handleDragStart, handleDragKeyDown, transformDraggedElement as transformDraggedElementUtil, handleDndConsider as handleDndConsiderUtil, handleDndFinalize as handleDndFinalizeUtil, handleDeleteItem } from '$lib/utils/dndUtils';
+	import {
+		getShadowDimensions,
+		updateShadowElement,
+		handleDragStart,
+		handleDragKeyDown,
+		transformDraggedElement as transformDraggedElementUtil,
+		handleDndConsider as handleDndConsiderUtil,
+		handleDndFinalize as handleDndFinalizeUtil,
+		handleDeleteItem
+	} from '$lib/utils/dndUtils';
 	import { getRowSelectionState } from '$lib/utils/rowSelectionUtils';
 	import ExplorerTable from '$lib/components/ExplorerTable.svelte';
 	import { string_transformer } from '$lib/utils/dataStructureTransformers';
@@ -33,7 +46,7 @@
 	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
 	import ManyToAllSelectInterfaceDefinition from './ManyToAllSelectInterfaceDefinition.svelte';
 	import SelectedRowsDisplay from './SelectedRowsDisplay.svelte';
-    import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
+	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 	import { toast } from '$lib/stores/toastStore';
 
 	interface Props {
@@ -76,13 +89,15 @@
 	let stepsOfFields = $state<any[]>([]);
 	let stepsOfFieldsFull = $state<any[]>([]);
 	let testName_stepsOFFieldsWasUpdated = $state(false);
-	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(
+		`${untrack(() => prefix)}OutermostQMSWraperContext`
+	);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
 	let getManyQMS = $state();
 	///
 
 	let nodeContext_forDynamicData: any = {};
-    // Ensure this logic is robust. Mutating props directly during init is sometimes necessary but check reactivity.
+	// Ensure this logic is robust. Mutating props directly during init is sometimes necessary but check reactivity.
 	if (node.nodeContext_forDynamicData) {
 		nodeContext_forDynamicData = node.nodeContext_forDynamicData;
 	} else {
@@ -107,12 +122,11 @@
 	let QMSColumnsAAA = nodeContext_forDynamicData.itemColumns;
 	let requiredColNamesAAA = nodeContext_forDynamicData.requiredColNames;
 
-
 	setContext(`${untrack(() => prefix)}nodeContext_forDynamicData`, nodeContext_forDynamicData);
 
 	/////start
-    const nodeContext = getContext<any>(`${untrack(() => prefix)}nodeContext`);
-    let pathIsInCP = $derived(nodeContext?.pathIsInCP || false);
+	const nodeContext = getContext<any>(`${untrack(() => prefix)}nodeContext`);
+	let pathIsInCP = $derived(nodeContext?.pathIsInCP || false);
 
 	let nodeIsInCP = $state(false);
 	const CPItemContext = getContext<any>(`${untrack(() => prefix)}CPItemContext`);
@@ -121,11 +135,11 @@
 		nodeIsInCP = true;
 	}
 	const isCPChild = CPItemContext ? true : false;
-    // Use derived for visibility logic
+	// Use derived for visibility logic
 	let visibleInCP = $derived(pathIsInCP || nodeIsInCP);
 	let visible = $derived(visibleInCP || !CPItemContext || node.isMain);
 
-    let correctQMSWraperContext: any = '';
+	let correctQMSWraperContext: any = '';
 	if (isCPChild) {
 		correctQMSWraperContext = getQMSWraperCtxDataGivenControlPanelItem(
 			CPItemContext?.CPItem,
@@ -139,7 +153,7 @@
 	const { finalGqlArgObj_Store, QMS_info, activeArgumentsDataGrouped_Store, QMSType } =
 		$derived(correctQMSWraperContext);
 
-    const operatorChangeHandler = () => {
+	const operatorChangeHandler = () => {
 		stepsOfNodes = getUpdatedStepsOfNodes(
 			JSON.parse(JSON.stringify(parentNode?.stepsOfNodes || [])),
 			node
@@ -165,7 +179,6 @@
 			testName_stepsOFFieldsWasUpdated = true;
 		}
 	});
-
 
 	let context = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const endpointInfo = context?.endpointInfo;
@@ -271,7 +284,7 @@
 	let activeArgumentsContext = getContext<any>(`${untrack(() => prefix)}activeArgumentsContext`);
 	let forceShowSelectAndAddButtons = false;
 
-    $effect(() => {
+	$effect(() => {
 		if ($QMSFieldToQMSGetMany_Store.length > 0) {
 			getManyQMS = QMSFieldToQMSGetMany_Store.getObj({
 				nodeOrField: node
@@ -308,7 +321,6 @@
 			idColName = QMSWraperContextForSelectedQMS.idColName;
 		}
 	});
-
 </script>
 
 {#if visible}
@@ -328,8 +340,8 @@
 				showModal = false;
 			}}
 		>
-			<div class="flex flex-col ">
-				<div class="w-full text-lg text-center  mb-2 ">
+			<div class="flex flex-col">
+				<div class="w-full text-lg text-center mb-2">
 					<p class="badge badge-info font-bold">
 						{groupDisplayTitle}
 					</p>
@@ -337,7 +349,7 @@
 
 				{#if node?.isMain}
 					<button
-						class="btn btn-xs btn-info normal-case  mb-6 flex-1"
+						class="btn btn-xs btn-info normal-case mb-6 flex-1"
 						onclick={() => {
 							nodeAddDefaultFields(
 								node,
@@ -354,7 +366,7 @@
 				{/if}
 
 				{#if !node?.isMain}
-					<div class="flex space-x-4 ">
+					<div class="flex space-x-4">
 						{#if parentNode?.inputFields?.some((inputField: any) => {
 							return inputField.dd_displayName == '_not';
 						})}
@@ -381,7 +393,7 @@
 						{/if}
 
 						<button
-							class="btn btn-xs btn-info  normal-case mb-6 flex-1"
+							class="btn btn-xs btn-info normal-case mb-6 flex-1"
 							onclick={() => {
 								nodeAddDefaultFields(
 									node,
@@ -416,14 +428,14 @@
 							change
 						</button>
 						<button
-							class="btn btn-xs btn-warning  mb-6 flex-1"
+							class="btn btn-xs btn-warning mb-6 flex-1"
 							onclick={() => {
 								toast.info('not yet implemented');
 								console.log(
 									'not yet implemented,implement here.Delete node and his items and items of his items recursively until the very end of the tree.'
 								);
 							}}
-                            title="Delete"
+							title="Delete"
 						>
 							<i class="bi bi-trash-fill"></i>
 						</button>
@@ -456,7 +468,7 @@
 						parentNodeId={node.id}
 						{onUpdateQuery}
 						bind:group
-						argsInfo={argsInfo}
+						{argsInfo}
 						{nodes}
 						{node}
 					/>
@@ -485,20 +497,20 @@
 	/>
 
 	{#if !node?.isMain}
-		<div class="   grid   content-center  rounded-full w-min-max w-max">
+		<div class="   grid content-center rounded-full w-min-max w-max">
 			<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-			<div class="flex ">
+			<div class="flex">
 				{#if $dndIsOn && !nodeIsInCP}
 					<div
 						role="button"
 						tabindex={dragDisabled ? 0 : -1}
 						aria-label="drag-handle"
-						class="  transition:all duration-500 bi bi-grip-vertical ml-2  -mr-1 text-lg rounded-l-md {node?.operator ==
+						class="  transition:all duration-500 bi bi-grip-vertical ml-2 -mr-1 text-lg rounded-l-md {node?.operator ==
 							undefined || node?.operator == 'bonded'
 							? 'text-base-content'
 							: node?.operator == '_and'
-							? 'text-primary'
-							: 'text-secondary'} 
+								? 'text-primary'
+								: 'text-secondary'}
 						{node?.not ? ' bg-gradient-to-r== from-base-300/100==' : 'bg-error/0'}
 						"
 						style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
@@ -525,12 +537,12 @@
 				<!-- node?.items?.length <= 1 -->
 				{#if node?.operator && !$mutationVersion}
 					<button
-						class="btn btn-xs btn-ghost px-[1px] text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
+						class="btn btn-xs btn-ghost px-[1px] text-xs font-light transition-all duration-500 rounded-full normal-case {node?.operator ==
 							'bonded' || node?.operator == 'list'
 							? 'text-base-content'
 							: node?.operator == '_and'
-							? 'text-primary'
-							: 'text-secondary'} break-all h-max  w-max
+								? 'text-primary'
+								: 'text-secondary'} break-all h-max w-max
 						{node?.not ? ' bg-gradient-to-r from-secondary/50' : 'bg-error/0'}
 						"
 						onclick={() => {
@@ -572,8 +584,8 @@
 {node?.operator == 'bonded' || node?.operator == 'list'
 			? 'border-base-content'
 			: node?.operator == '_and'
-			? 'border-primary'
-			: 'border-secondary '}
+				? 'border-primary'
+				: 'border-secondary '}
 
 
 "
@@ -597,14 +609,14 @@
 			{#if $mutationVersion && !node?.isMain}
 				<div class="flex">
 					<button
-						class="btn btn-xs btn-ghost px-[1px] text-xs font-light transition-all duration-500  rounded-full  normal-case {getManyQMS ||
+						class="btn btn-xs btn-ghost px-[1px] text-xs font-light transition-all duration-500 rounded-full normal-case {getManyQMS ||
 						$selectedQMSAAA
 							? 'text-secondary'
 							: ''}   {node?.operator == 'bonded' || node?.operator == 'list'
 							? 'text-base-content'
 							: node?.operator == '_and'
-							? 'text-primary'
-							: 'text-secondary'} break-all h-max  w-max
+								? 'text-primary'
+								: 'text-secondary'} break-all h-max w-max
 						{node?.not ? ' bg-gradient-to-r from-secondary/50' : 'bg-error/0'}
 						"
 						onclick={() => {
@@ -648,18 +660,18 @@
 
 				<SelectedRowsDisplay />
 			{/if}
-			<div class="flex ">
+			<div class="flex">
 				<!-- svelte-ignore a11y_click_events_have_key_events -->
 				<!-- node?.items?.length > 1 || node?.isMain -->
 
 				{#if node?.isMain}
 					<button
-						class="btn btn-xs btn-ghost px-[1px] text-xs font-light transition-all duration-500  rounded-full  normal-case   {node?.operator ==
+						class="btn btn-xs btn-ghost px-[1px] text-xs font-light transition-all duration-500 rounded-full normal-case {node?.operator ==
 							'bonded' || node?.operator == 'list'
 							? 'text-base-content'
 							: node?.operator == '_and'
-							? 'text-primary'
-							: 'text-secondary'} break-all h-max  w-max"
+								? 'text-primary'
+								: 'text-secondary'} break-all h-max w-max"
 						onclick={() => {
 							showModal = true;
 						}}
@@ -675,8 +687,8 @@
 				<p class="grow"></p>
 			</div>
 		{:else}
-			<div class="pr-2 rounded-box  w-full">
-				<div class=" transition-color duration-500 rounded-box ringxxx  ring-1xxx    ">
+			<div class="pr-2 rounded-box w-full">
+				<div class=" transition-color duration-500 rounded-box ringxxx ring-1xxx">
 					<ActiveArgument
 						bind:selectedRowsColValues
 						bind:showSelectModal
@@ -684,7 +696,7 @@
 						bind:nodes
 						{onChanged}
 						onChildrenStartDrag={startDrag}
-						startDrag={startDrag}
+						{startDrag}
 						{parentNode}
 						{node}
 						onContextmenuUsed={() => {
@@ -712,7 +724,7 @@
 			<section
 				class=" duration-500 {$dndIsOn
 					? '  min-h-[30px] min-w-[200px]'
-					: 'pl-1'} rounded-l-none  {node?.isMain && !isCPChild
+					: 'pl-1'} rounded-l-none {node?.isMain && !isCPChild
 					? ' border-l-2 border-l-transparent  min-h-[40vh] md:min-h-[60vh] '
 					: ' '}
 				 w-full"
@@ -734,7 +746,7 @@
 					}) as item (item.id)}
 						<div
 							animate:flip={{ duration: flipDurationMs }}
-							class="    border-2== max-w-min  {$mutationVersion && 'mt-2'} "
+							class="    border-2== max-w-min {$mutationVersion && 'mt-2'} "
 						>
 							<div class="flex dnd-item">
 								{#if testName_stepsOFFieldsWasUpdated}
@@ -768,6 +780,6 @@
 		{/if}
 	</div>
 	{#if node.id == SHADOW_PLACEHOLDER_ITEM_ID}
-		<div class=" ml-8 h-0     top-0 left-0 visible" id="shadowEl" bind:this={shadowEl}></div>
+		<div class=" ml-8 h-0 top-0 left-0 visible" id="shadowEl" bind:this={shadowEl}></div>
 	{/if}
 {/if}

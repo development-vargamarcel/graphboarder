@@ -26,9 +26,17 @@
 	import AddNodeToControlPanel from './AddNodeToControlPanel.svelte';
 	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
 	import { Logger } from '$lib/utils/logger';
-	import { createQMSSearchInstance, discoverMatchingQMS, getReturningFields } from '$lib/utils/searchUtils';
-	import { getRowSelectionState, processSelectedRowsColValues, getRequiredColumnNames } from '$lib/utils/rowSelectionUtils';
-    import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
+	import {
+		createQMSSearchInstance,
+		discoverMatchingQMS,
+		getReturningFields
+	} from '$lib/utils/searchUtils';
+	import {
+		getRowSelectionState,
+		processSelectedRowsColValues,
+		getRequiredColumnNames
+	} from '$lib/utils/rowSelectionUtils';
+	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 
 	interface Props {
 		nodes: any;
@@ -44,8 +52,8 @@
 		showSelectModal: any;
 		onChanged?: () => void;
 		onChildrenStartDrag?: (e?: any) => void;
-        onUpdateQuery?: () => void;
-        onDeleteSubNode?: (detail: { id: string }) => void;
+		onUpdateQuery?: () => void;
+		onDeleteSubNode?: (detail: { id: string }) => void;
 	}
 
 	let {
@@ -61,9 +69,9 @@
 		addDefaultFields,
 		showSelectModal = $bindable(),
 		onChanged,
-        onUpdateQuery,
-        onChildrenStartDrag,
-        onDeleteSubNode
+		onUpdateQuery,
+		onChildrenStartDrag,
+		onDeleteSubNode
 	}: Props = $props();
 
 	// State declarations
@@ -87,10 +95,12 @@
 	Logger.debug({ node });
 
 	// Context setup - must be after props declaration
-	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(
+		`${untrack(() => prefix)}OutermostQMSWraperContext`
+	);
 
-    const nodeContext = getContext<any>(`${untrack(() => prefix)}nodeContext`);
-    let pathIsInCP = $derived(nodeContext?.pathIsInCP || false);
+	const nodeContext = getContext<any>(`${untrack(() => prefix)}nodeContext`);
+	let pathIsInCP = $derived(nodeContext?.pathIsInCP || false);
 
 	let nodeIsInCP = false;
 	const CPItemContext = getContext<any>(`${untrack(() => prefix)}CPItemContext`);
@@ -102,7 +112,7 @@
 	let visibleInCP = $derived(pathIsInCP || nodeIsInCP);
 	let visible = $derived(visibleInCP || !CPItemContext || node?.isMain);
 
-    let correctQMSWraperContext: any = '';
+	let correctQMSWraperContext: any = '';
 	if (isCPChild) {
 		correctQMSWraperContext = getQMSWraperCtxDataGivenControlPanelItem(
 			CPItemContext?.CPItem,
@@ -112,8 +122,9 @@
 		correctQMSWraperContext = getContext(`${untrack(() => prefix)}QMSWraperContext`);
 	}
 
-	const { finalGqlArgObj_Store, QMS_info, activeArgumentsDataGrouped_Store, QMSType } =
-		$derived(correctQMSWraperContext || {});
+	const { finalGqlArgObj_Store, QMS_info, activeArgumentsDataGrouped_Store, QMSType } = $derived(
+		correctQMSWraperContext || {}
+	);
 
 	const dndIsOn = getContext<any>('dndIsOn');
 	const mutationVersion = getContext<any>('mutationVersion');
@@ -123,7 +134,9 @@
 		}
 	});
 
-	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(
+		`${untrack(() => prefix)}QMSMainWraperContext`
+	);
 	const endpointInfo = mainWraperCtx?.endpointInfo;
 	const schemaData = mainWraperCtx?.schemaData;
 
@@ -230,7 +243,9 @@
 
 	let showExplorerTable = true;
 	const fuse = schemaData ? createQMSSearchInstance($schemaData?.queryFields) : null;
-	const nodeContext_forDynamicData = getContext<any>(`${untrack(() => prefix)}nodeContext_forDynamicData`);
+	const nodeContext_forDynamicData = getContext<any>(
+		`${untrack(() => prefix)}nodeContext_forDynamicData`
+	);
 	let selectedQMS = nodeContext_forDynamicData?.selectedQMS;
 	let QMSRows = nodeContext_forDynamicData?.QMSRows;
 	let rowSelectionState = nodeContext_forDynamicData?.rowSelectionState;
@@ -281,7 +296,8 @@
 			accessorFn: (row: any) =>
 				row.args
 					?.map(
-						(arg: any) => `${arg.dd_displayName} (${arg.dd_kindList ? 'list of ' : ''}${arg.dd_kindEl})`
+						(arg: any) =>
+							`${arg.dd_displayName} (${arg.dd_kindList ? 'list of ' : ''}${arg.dd_kindEl})`
 					)
 					.join('; '),
 			header: 'Arguments',
@@ -304,10 +320,12 @@
 	}
 
 	let inputColumnsLocationQMS_Info: any;
-	let inputColumnsLocation = endpointInfo ? $endpointInfo?.inputColumnsPossibleLocationsInArg?.find((path: any) => {
-		inputColumnsLocationQMS_Info = getDeepField(node, path, schemaData, 'inputFields');
-		return inputColumnsLocationQMS_Info;
-	}) : undefined;
+	let inputColumnsLocation = endpointInfo
+		? $endpointInfo?.inputColumnsPossibleLocationsInArg?.find((path: any) => {
+				inputColumnsLocationQMS_Info = getDeepField(node, path, schemaData, 'inputFields');
+				return inputColumnsLocationQMS_Info;
+			})
+		: undefined;
 
 	Logger.debug({ node, inputColumnsLocationQMS_Info, inputColumnsLocation });
 
@@ -317,12 +335,9 @@
 		node,
 		schemaData
 	);
-	const inputFieldsContainer = inputFieldsContainerLocation ? getDeepField(
-		node,
-		inputFieldsContainerLocation,
-		schemaData,
-		'inputFields'
-	) : null;
+	const inputFieldsContainer = inputFieldsContainerLocation
+		? getDeepField(node, inputFieldsContainerLocation, schemaData, 'inputFields')
+		: null;
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext || {};
 
 	$effect(() => {
@@ -434,7 +449,12 @@
 				$requiredColNames = getRequiredColumnNames(node);
 			}
 
-			if (selectedRowsColValuesProcessed && selectedRowsColValues && idColName && requiredColNames) {
+			if (
+				selectedRowsColValuesProcessed &&
+				selectedRowsColValues &&
+				idColName &&
+				requiredColNames
+			) {
 				$selectedRowsColValuesProcessed = processSelectedRowsColValues(
 					$selectedRowsColValues,
 					$idColName,
@@ -455,8 +475,8 @@
 			showSelectModal = false;
 		}}
 	>
-		<div class="flex flex-col ">
-			<div class="w-full text-lg text-center  mb-2 ">
+		<div class="flex flex-col">
+			<div class="w-full text-lg text-center mb-2">
 				<p class="badge badge-info font-bold">
 					{groupDisplayTitle}
 				</p>
@@ -474,9 +494,11 @@
 							let selectedRowsOriginal = detail.rows.map((row: any) => row.original);
 
 							const returningColumnsLocation =
-								$endpointInfo?.returningColumnsPossibleLocationsInQueriesPerRow?.find((item: any) => {
-									return hasDeepProperty(selectedRowsOriginal[0], item);
-								});
+								$endpointInfo?.returningColumnsPossibleLocationsInQueriesPerRow?.find(
+									(item: any) => {
+										return hasDeepProperty(selectedRowsOriginal[0], item);
+									}
+								);
 
 							Logger.debug({ returningColumnsLocation });
 							if (selectedRowsColValues) {

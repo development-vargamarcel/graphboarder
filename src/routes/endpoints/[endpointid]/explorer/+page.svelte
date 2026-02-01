@@ -257,9 +257,9 @@
 </script>
 
 <Page MenuItem={true}>
-	<section class="  h-screen pb-20 w-screen  overflow-auto ml-4">
+	<section class="  h-screen pb-20 w-screen overflow-auto ml-4">
 		<div class="sticky top-0 bg-base-300">
-			<div class="flex space-x-2 ">
+			<div class="flex space-x-2">
 				<button
 					class="p-1 rounded-sm leading-none bg-accent text-xs max-w-min"
 					onclick={() => {
@@ -284,7 +284,7 @@
 				<br />
 			</div>
 			<div>
-				<button class="btn btn-xs " onclick={showRootTypes}> root</button>
+				<button class="btn btn-xs" onclick={showRootTypes}> root</button>
 				<button class="btn btn-xs" onclick={showQueries}> queries</button>
 				<button class="btn btn-xs" onclick={showMutations}> mutations</button>
 				<button class="btn btn-xs" onclick={showQueriesAndMutations}> Q&M</button>
@@ -367,13 +367,7 @@
 			<div class="">
 				{#key whatToShow}
 					{#each whatToShow as type, index (index)}
-						<Type
-							{index}
-							{type}
-							template="default"
-							depth={0}
-							stepsOfFields={[]}
-						/>
+						<Type {index} {type} template="default" depth={0} stepsOfFields={[]} />
 					{/each}
 				{/key}
 			</div>{/if}

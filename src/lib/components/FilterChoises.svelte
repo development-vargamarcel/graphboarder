@@ -36,21 +36,21 @@
 
 <div class="rounded-box border-2 border-base-300 overflow-hidden pb-3 bg-base-100">
 	{#if type !== 'toggle'}
-		<h4 class="text-xl pl-2 pt-1 pb-1  bg-base-300 ">{modalTitle}</h4>
+		<h4 class="text-xl pl-2 pt-1 pb-1 bg-base-300">{modalTitle}</h4>
 	{/if}
 	<div class="form-control mt-3">
 		{#if type == 'radio'}
 			{#each choises as choice}
 				<label
-					class=" w-11/12 mx-auto cursor-pointer label  rounded-box  transition font-light  border-2 border-dotted border-transparent  active:border-base-content/50 active:bg-primary/5 {chosen ==
+					class=" w-11/12 mx-auto cursor-pointer label rounded-box transition font-light border-2 border-dotted border-transparent active:border-base-content/50 active:bg-primary/5 {chosen ==
 					choice
 						? 'font-bold'
 						: null}"
 				>
-					<span class="label-text  text-lg"
+					<span class="label-text text-lg"
 						>{choice}
 						{#if chosenDefault && chosenDefault == choice}
-							<div class="badge badge-xs  badge-info">default</div>
+							<div class="badge badge-xs badge-info">default</div>
 						{/if}
 					</span>
 					<input type="radio" name={modalTitle} class="radio" value={choice} bind:group={chosen} />
@@ -58,16 +58,16 @@
 			{/each}{:else}
 			{#each choises as choice}
 				<label
-					class="w-11/12 mx-auto cursor-pointer label  rounded-box  transition font-light border-2 border-dotted border-transparent  active:border-base-content/50 active:bg-primary/5 {chosen.includes(
+					class="w-11/12 mx-auto cursor-pointer label rounded-box transition font-light border-2 border-dotted border-transparent active:border-base-content/50 active:bg-primary/5 {chosen.includes(
 						choice
 					)
 						? 'font-bold '
 						: null}"
 				>
-					<span class="label-text  text-lg"
+					<span class="label-text text-lg"
 						>{choice}
 						{#if chosenDefault && chosenDefault.includes(choice)}
-							<div class="badge badge-xs  badge-info">default</div>
+							<div class="badge badge-xs badge-info">default</div>
 						{/if}
 					</span>
 					<input

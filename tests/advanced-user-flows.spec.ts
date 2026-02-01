@@ -22,17 +22,16 @@ test.describe('Advanced User Flow Tests', () => {
 		const firstRow = page.locator('tbody tr').first();
 		await expect(firstRow).toBeVisible({ timeout: 10000 });
 
-		const [newPage] = await Promise.all([
-			context.waitForEvent('page'),
-			firstRow.click()
-		]);
+		const [newPage] = await Promise.all([context.waitForEvent('page'), firstRow.click()]);
 
 		// Wait for the new page to load
 		await newPage.waitForLoadState('domcontentloaded');
 		await newPage.waitForLoadState('networkidle');
 
 		// Open drawer if needed
-		const drawerButton = newPage.locator('label.btn.btn-square.btn-ghost, button.btn.btn-square.btn-ghost').first();
+		const drawerButton = newPage
+			.locator('label.btn.btn-square.btn-ghost, button.btn.btn-square.btn-ghost')
+			.first();
 		const isDrawerButtonVisible = await drawerButton.isVisible();
 		if (isDrawerButtonVisible) {
 			await drawerButton.click();
@@ -83,8 +82,10 @@ test.describe('Advanced User Flow Tests', () => {
 					await secondRadio.click();
 
 					// Click Apply button
-					const applyButton = queryPage.locator('button:has-text("Apply"), button:has-text("apply")');
-					const applyExists = await applyButton.count() > 0;
+					const applyButton = queryPage.locator(
+						'button:has-text("Apply"), button:has-text("apply")'
+					);
+					const applyExists = (await applyButton.count()) > 0;
 					if (applyExists) {
 						await applyButton.click();
 					}
@@ -132,8 +133,10 @@ test.describe('Advanced User Flow Tests', () => {
 					}
 
 					// Click Apply button
-					const applyButton = queryPage.locator('button:has-text("Apply"), button:has-text("apply")');
-					const applyExists = await applyButton.count() > 0;
+					const applyButton = queryPage.locator(
+						'button:has-text("Apply"), button:has-text("apply")'
+					);
+					const applyExists = (await applyButton.count()) > 0;
 					if (applyExists) {
 						await applyButton.click();
 						await queryPage.waitForTimeout(1000);
@@ -142,8 +145,10 @@ test.describe('Advanced User Flow Tests', () => {
 					break; // Exit loop after finding checkbox filter
 				} else {
 					// Close modal if no checkboxes found
-					const cancelButton = queryPage.locator('button:has-text("Cancel"), button:has-text("cancel")');
-					const cancelExists = await cancelButton.count() > 0;
+					const cancelButton = queryPage.locator(
+						'button:has-text("Cancel"), button:has-text("cancel")'
+					);
+					const cancelExists = (await cancelButton.count()) > 0;
 					if (cancelExists) {
 						await cancelButton.click();
 					}
@@ -182,10 +187,16 @@ test.describe('Advanced User Flow Tests', () => {
 
 				if (firstBox && secondBox) {
 					// Drag the second item to the first position
-					await queryPage.mouse.move(secondBox.x + secondBox.width / 2, secondBox.y + secondBox.height / 2);
+					await queryPage.mouse.move(
+						secondBox.x + secondBox.width / 2,
+						secondBox.y + secondBox.height / 2
+					);
 					await queryPage.mouse.down();
 					await queryPage.waitForTimeout(100);
-					await queryPage.mouse.move(firstBox.x + firstBox.width / 2, firstBox.y + firstBox.height / 2);
+					await queryPage.mouse.move(
+						firstBox.x + firstBox.width / 2,
+						firstBox.y + firstBox.height / 2
+					);
 					await queryPage.waitForTimeout(100);
 					await queryPage.mouse.up();
 
@@ -200,14 +211,16 @@ test.describe('Advanced User Flow Tests', () => {
 
 				// Click Apply or Cancel to close the modal
 				const applyButton = queryPage.locator('button:has-text("Apply"), button:has-text("apply")');
-				const applyExists = await applyButton.count() > 0;
+				const applyExists = (await applyButton.count()) > 0;
 				if (applyExists) {
 					await applyButton.click();
 				}
 			} else {
 				// Close modal if no drag handles found
-				const cancelButton = queryPage.locator('button:has-text("Cancel"), button:has-text("cancel")');
-				const cancelExists = await cancelButton.count() > 0;
+				const cancelButton = queryPage.locator(
+					'button:has-text("Cancel"), button:has-text("cancel")'
+				);
+				const cancelExists = (await cancelButton.count()) > 0;
 				if (cancelExists) {
 					await cancelButton.click();
 				}
@@ -236,7 +249,9 @@ test.describe('Advanced User Flow Tests', () => {
 
 			if (dropdownVisible) {
 				// Look for expandable field options
-				const fieldOptions = queryPage.locator('.dropdown-content button, .dropdown-content label').first();
+				const fieldOptions = queryPage
+					.locator('.dropdown-content button, .dropdown-content label')
+					.first();
 				const optionsExist = await fieldOptions.isVisible().catch(() => false);
 
 				if (optionsExist) {
@@ -247,7 +262,7 @@ test.describe('Advanced User Flow Tests', () => {
 
 				// Click the "add" button to add the column
 				const addButton = queryPage.locator('button.btn.btn-xs.btn-primary:has-text("add")');
-				const addButtonExists = await addButton.count() > 0;
+				const addButtonExists = (await addButton.count()) > 0;
 				if (addButtonExists) {
 					await addButton.click();
 					await queryPage.waitForTimeout(1000);
@@ -349,7 +364,9 @@ test.describe('Advanced User Flow Tests', () => {
 		await queryPage.waitForTimeout(2000);
 
 		// Look for checkboxes or radio buttons in table rows
-		const rowSelectors = queryPage.locator('tbody input[type="checkbox"], tbody input[type="radio"]');
+		const rowSelectors = queryPage.locator(
+			'tbody input[type="checkbox"], tbody input[type="radio"]'
+		);
 		const selectorCount = await rowSelectors.count();
 
 		if (selectorCount > 0) {
@@ -364,7 +381,7 @@ test.describe('Advanced User Flow Tests', () => {
 			// If there are multiple rows and multi-select is enabled, select another row
 			if (selectorCount > 1) {
 				const secondSelector = rowSelectors.nth(1);
-				const isCheckbox = await secondSelector.getAttribute('type') === 'checkbox';
+				const isCheckbox = (await secondSelector.getAttribute('type')) === 'checkbox';
 
 				if (isCheckbox) {
 					await secondSelector.click();
@@ -398,15 +415,15 @@ test.describe('Advanced User Flow Tests', () => {
 
 		// 1. Apply a filter
 		const filterButtons = queryPage.locator('btn.btn.btn-xs');
-		if (await filterButtons.count() > 0) {
+		if ((await filterButtons.count()) > 0) {
 			await filterButtons.first().click();
 			await queryPage.waitForTimeout(300);
 
 			const radioOptions = queryPage.locator('input[type="radio"]');
-			if (await radioOptions.count() > 0) {
+			if ((await radioOptions.count()) > 0) {
 				await radioOptions.nth(1).click();
 				const applyButton = queryPage.locator('button:has-text("Apply")');
-				if (await applyButton.count() > 0) {
+				if ((await applyButton.count()) > 0) {
 					await applyButton.click();
 					await queryPage.waitForTimeout(1000);
 				}
@@ -423,9 +440,9 @@ test.describe('Advanced User Flow Tests', () => {
 
 		// 3. Interact with the table
 		const tableRows = queryPage.locator('tbody tr');
-		if (await tableRows.count() > 0) {
+		if ((await tableRows.count()) > 0) {
 			const rowSelectors = queryPage.locator('tbody input[type="checkbox"]');
-			if (await rowSelectors.count() > 0) {
+			if ((await rowSelectors.count()) > 0) {
 				await rowSelectors.first().click();
 				await queryPage.waitForTimeout(300);
 			}
@@ -454,10 +471,7 @@ test.describe('Advanced User Flow Tests', () => {
 		const firstRow = page.locator('tbody tr').first();
 		await expect(firstRow).toBeVisible({ timeout: 10000 });
 
-		const [newPage] = await Promise.all([
-			context.waitForEvent('page'),
-			firstRow.click()
-		]);
+		const [newPage] = await Promise.all([context.waitForEvent('page'), firstRow.click()]);
 
 		await newPage.waitForLoadState('networkidle');
 
@@ -492,10 +506,7 @@ test.describe('Advanced User Flow Tests', () => {
 		const firstRow = page.locator('tbody tr').first();
 		await expect(firstRow).toBeVisible({ timeout: 10000 });
 
-		const [newPage] = await Promise.all([
-			context.waitForEvent('page'),
-			firstRow.click()
-		]);
+		const [newPage] = await Promise.all([context.waitForEvent('page'), firstRow.click()]);
 
 		await newPage.waitForLoadState('networkidle');
 

@@ -10,11 +10,11 @@
 		toasts = value;
 	});
 
-    // Clean up subscription if component is destroyed (though MainWraper usually persists)
-    import { onDestroy } from 'svelte';
-    onDestroy(() => {
-        unsubscribe();
-    });
+	// Clean up subscription if component is destroyed (though MainWraper usually persists)
+	import { onDestroy } from 'svelte';
+	onDestroy(() => {
+		unsubscribe();
+	});
 </script>
 
 {#if browser}

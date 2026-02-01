@@ -5,11 +5,7 @@
 	import AutoInterface from '$lib/components/fields/AutoInterface.svelte';
 	import { SHADOW_ITEM_MARKER_PROPERTY_NAME } from 'svelte-dnd-action';
 	import { getContext, setContext, untrack } from 'svelte';
-	import type {
-		ActiveArgumentData,
-		ActiveArgumentGroup,
-		ContainerData
-	} from '$lib/types/index';
+	import type { ActiveArgumentData, ActiveArgumentGroup, ContainerData } from '$lib/types/index';
 	import Toggle from '$lib/components/fields/Toggle.svelte';
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import Modal from './Modal.svelte';
@@ -138,7 +134,9 @@
 			if (Array.isArray(activeArgumentData.chd_dispatchValue)) {
 				value = activeArgumentData.chd_dispatchValue.join(', ');
 			} else if (typeof activeArgumentData.chd_dispatchValue == 'string') {
-				const val = (activeArgumentData.chd_dispatchValue as string) || (activeArgumentData.defaultValue as unknown as string);
+				const val =
+					(activeArgumentData.chd_dispatchValue as string) ||
+					(activeArgumentData.defaultValue as unknown as string);
 				value = string_transformerREVERSE(val) as string;
 			}
 		}
@@ -167,7 +165,9 @@
 		}
 	});
 
-	const outermostQMSWraperContext = getContext<any>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
+	const outermostQMSWraperContext = getContext<any>(
+		`${untrack(() => prefix)}OutermostQMSWraperContext`
+	);
 	const { mergedChildren_QMSWraperCtxData_Store } = outermostQMSWraperContext;
 
 	const handleChanged = (detail: Partial<ActiveArgumentData>): void => {
@@ -235,7 +235,9 @@
 	let context = getContext<any>(`${untrack(() => prefix)}QMSMainWraperContext`);
 	const schemaData = context?.schemaData;
 	const nodeRootType = getRootType(null, activeArgumentData.dd_rootName, schemaData);
-	const OutermostQMSWraperContext = getContext<any>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<any>(
+		`${untrack(() => prefix)}OutermostQMSWraperContext`
+	);
 
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
 	let selectedQMS = $state<any>();
@@ -249,12 +251,16 @@
 		}
 	});
 
-	const nodeContext_forDynamicData = getContext<any>(`${untrack(() => prefix)}nodeContext_forDynamicData`);
+	const nodeContext_forDynamicData = getContext<any>(
+		`${untrack(() => prefix)}nodeContext_forDynamicData`
+	);
 	let contextSelectedRowsColValuesStore = nodeContext_forDynamicData?.selectedRowsColValues;
 	let contextSelectedRowsColValues = $state<any[]>([]);
 	$effect(() => {
 		if (contextSelectedRowsColValuesStore) {
-			const unsub = contextSelectedRowsColValuesStore.subscribe((v: any) => contextSelectedRowsColValues = v);
+			const unsub = contextSelectedRowsColValuesStore.subscribe(
+				(v: any) => (contextSelectedRowsColValues = v)
+			);
 			return unsub;
 		}
 	});
@@ -509,5 +515,9 @@
 </label>
 
 {#if activeArgumentData[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
-	<div class=" ml-8 h-0 absolute w-11/12 top-0 left-0 visible" id="shadowEl" bind:this={shadowEl}></div>
+	<div
+		class=" ml-8 h-0 absolute w-11/12 top-0 left-0 visible"
+		id="shadowEl"
+		bind:this={shadowEl}
+	></div>
 {/if}

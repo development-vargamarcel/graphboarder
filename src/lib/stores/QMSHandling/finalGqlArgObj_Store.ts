@@ -2,7 +2,7 @@ import {
 	generate_finalGqlArgObjAndCanRunQuery,
 	generate_finalGqlArgObj_fromGroups,
 	generate_group_gqlArgObjAndCanRunQuery_forHasOperators,
-	generate_group_gqlArgObj,
+	generate_group_gqlArgObj
 } from '$lib/utils/usefulFunctions';
 import { writable, get } from 'svelte/store';
 import type { ActiveArgumentsDataGroupedStore, ActiveArgumentGroup } from '$lib/types/index';
@@ -22,13 +22,21 @@ export const Create_finalGqlArgObj_Store = (
 		update,
 		regenerate_groupsAndfinalGqlArgObj: () => {
 			Logger.debug('Regenerating groups and final GraphQL argument object');
-			const activeArgumentsDataGrouped = get(_activeArgumentsDataGrouped_Store) as ActiveArgumentGroup[];
-			const finalGqlArgObjAndCanRunQuery = generate_finalGqlArgObjAndCanRunQuery(activeArgumentsDataGrouped, _paginationState_Store, true)
+			const activeArgumentsDataGrouped = get(
+				_activeArgumentsDataGrouped_Store
+			) as ActiveArgumentGroup[];
+			const finalGqlArgObjAndCanRunQuery = generate_finalGqlArgObjAndCanRunQuery(
+				activeArgumentsDataGrouped,
+				_paginationState_Store,
+				true
+			);
 			if (finalGqlArgObjAndCanRunQuery.final_canRunQuery) {
 				Logger.debug('Updating finalGqlArgObj', finalGqlArgObjAndCanRunQuery);
 				set(finalGqlArgObjAndCanRunQuery);
 			} else {
-				Logger.warn('Did not update finalGqlArgObj and final_canRunQuery because there was some error in arguments or query is not ready');
+				Logger.warn(
+					'Did not update finalGqlArgObj and final_canRunQuery because there was some error in arguments or query is not ready'
+				);
 			}
 		}
 	};

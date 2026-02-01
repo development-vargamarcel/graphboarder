@@ -49,14 +49,14 @@
 {#if endpointid}
 	{#if (endpointid.startsWith('localEndpoint--') || endpointid.startsWith('localstorageEndpoint--')) && endpointConfiguration}
 		<MainWraper endpointInfoProvided={endpointConfiguration}>
-			<main class="bg-base-300  flex w-[100vw] overflow-hidden">
+			<main class="bg-base-300 flex w-[100vw] overflow-hidden">
 				<div class="  md:max-w-[300px]">
 					<Sidebar bind:forceVisibleSidebar />
 				</div>
-				<div class="flex flex-col w-full md:w-[65vw]   grow h-screen">
+				<div class="flex flex-col w-full md:w-[65vw] grow h-screen">
 					<div class=" bg-base-100 min-h-[50px] flex">
 						<button
-							class="btn btn-square btn-ghost  md:hidden"
+							class="btn btn-square btn-ghost md:hidden"
 							aria-label="Toggle Sidebar"
 							onclick={() => {
 								forceVisibleSidebar = true;
@@ -66,7 +66,7 @@
 								xmlns="http://www.w3.org/2000/svg"
 								fill="none"
 								viewBox="0 0 24 24"
-								class="inline-block w-6 h-6 stroke-current "
+								class="inline-block w-6 h-6 stroke-current"
 								><path
 									stroke-linecap="round"
 									stroke-linejoin="round"

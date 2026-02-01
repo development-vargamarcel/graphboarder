@@ -81,7 +81,7 @@ describe('dataStructureTransformers', () => {
 		it('should reverse the transformation', () => {
 			const transformed = "'test &Prime;quoted&Prime; text'";
 			const result = string_transformerREVERSE(transformed);
-			expect(result).toBe("'test \"quoted\" text'");
+			expect(result).toBe('\'test "quoted" text\'');
 		});
 
 		it('should handle onlySingleQuotes flag', () => {
@@ -239,7 +239,15 @@ describe('dataStructureTransformers', () => {
 						type: 'Feature',
 						geometry: {
 							type: 'Polygon',
-							coordinates: [[[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]]
+							coordinates: [
+								[
+									[0, 0],
+									[1, 0],
+									[1, 1],
+									[0, 1],
+									[0, 0]
+								]
+							]
 						},
 						properties: {}
 					}
@@ -285,7 +293,15 @@ describe('dataStructureTransformers', () => {
 		it('should create proper Feature structure', () => {
 			const geometry = {
 				type: "'Polygon'",
-				coordinates: [[[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]]
+				coordinates: [
+					[
+						[0, 0],
+						[1, 0],
+						[1, 1],
+						[0, 1],
+						[0, 0]
+					]
+				]
 			};
 
 			const result = geojson_transformerREVERSE(geometry);

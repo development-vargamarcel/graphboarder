@@ -13,7 +13,14 @@
 		onCancel?: (detail: { modalIdetifier: string }) => void;
 	}
 
-	let { modalIdetifier = 'modal', showApplyBtn = true, children, onApply, onMounted, onCancel }: Props = $props();
+	let {
+		modalIdetifier = 'modal',
+		showApplyBtn = true,
+		children,
+		onApply,
+		onMounted,
+		onCancel
+	}: Props = $props();
 
 	let apply = () => {
 		onApply?.();
@@ -67,7 +74,7 @@
 <!-- grid grid-cols-1 content-end -->
 <!-- scroll-smooth -->
 <div
-	class="fixed top-0 right-0 z-[99]  h-screen  w-screen lg:w-full  overflow-y-scroll overscroll-contain   bg-base-100/50   "
+	class="fixed top-0 right-0 z-[99] h-screen w-screen lg:w-full overflow-y-scroll overscroll-contain bg-base-100/50"
 	use:portal={'body'}
 	hidden
 	bind:this={mainDiv}
@@ -77,7 +84,9 @@
 	onclick={handleMainDivClick}
 	role="button"
 	tabindex="0"
-	onkeydown={(e) => { if(e.key === 'Enter' || e.key === ' ') handleMainDivClick(e); }}
+	onkeydown={(e) => {
+		if (e.key === 'Enter' || e.key === ' ') handleMainDivClick(e);
+	}}
 >
 	{#if mainDivIntroEnd}
 		<div
@@ -85,14 +94,16 @@
 			onclick={handlePaddingClick}
 			role="button"
 			tabindex="0"
-			onkeydown={(e) => { if(e.key === 'Enter' || e.key === ' ') handlePaddingClick(e); }}
+			onkeydown={(e) => {
+				if (e.key === 'Enter' || e.key === ' ') handlePaddingClick(e);
+			}}
 		></div>
 
 		<div
 			bind:this={bodyDiv}
 			id={modalIdetifier}
 			class=" shadowTop card-bordered card rounded-box z-[99]
-			my-0 min-h-[80vh] max-h-min space-y-0 rounded-b-none border-transparent bg-base-100  mx-auto md:w-2/3 pb-8 "
+			my-0 min-h-[80vh] max-h-min space-y-0 rounded-b-none border-transparent bg-base-100 mx-auto md:w-2/3 pb-8"
 			in:fly|global={{
 				delay: 20,
 				duration: 200,
@@ -104,24 +115,24 @@
 			out:fly|global={{ delay: 0, duration: 100, x: 0, y: 20, opacity: 0, easing: sineIn }}
 			onintroend={() => (bodyDivIntroEnd = true)}
 		>
-			<div class="sticky top-0  bg-base-100 rounded-xl z-50 ">
-				<div class="my-4 h-2 bg-base-300    rounded-box mx-auto w-12  "></div>
+			<div class="sticky top-0 bg-base-100 rounded-xl z-50">
+				<div class="my-4 h-2 bg-base-300 rounded-box mx-auto w-12"></div>
 			</div>
 
-			<div class="px-3 pb-80 ">
+			<div class="px-3 pb-80">
 				{@render children?.()}
 			</div>
 		</div>
 	{/if}
 	{#if showApplyBtn}
-		<div class="fixed bottom-0  left-0 z-[99] w-full 	">
+		<div class="fixed bottom-0 left-0 z-[99] w-full">
 			<!-- card-actions -->
 			<div
-				class="my-0  mx-auto w-full  mx-auto justify-center bg-gradient-to-t from-base-100/100 via-base-100/70 to-base-100/10 px-2 pb-0 "
+				class="my-0 mx-auto w-full mx-auto justify-center bg-gradient-to-t from-base-100/100 via-base-100/70 to-base-100/10 px-2 pb-0"
 			>
-				<div class=" mx-auto w-11/12    lg:pb-4 ">
+				<div class=" mx-auto w-11/12 lg:pb-4">
 					<button
-						class="btn btn-primary btn-lg    w-full  mx-auto  justify-center normal-case shadow-2xl drop-shadow-2xl "
+						class="btn btn-primary btn-lg w-full mx-auto justify-center normal-case shadow-2xl drop-shadow-2xl"
 						onclick={apply}>Apply</button
 					>
 				</div>

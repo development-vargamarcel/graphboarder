@@ -5,17 +5,20 @@ Thank you for your interest in contributing to Auto-GQL!
 ## Development Setup
 
 1.  **Install dependencies**:
+
     ```bash
     npm install
     ```
 
 2.  **Start the development server**:
+
     ```bash
     npm run dev
     ```
 
 3.  **Run checks**:
     We use `svelte-check` for type checking.
+
     ```bash
     npm run check
     ```
@@ -27,8 +30,8 @@ Thank you for your interest in contributing to Auto-GQL!
 
 ## Code Style
 
--   This project uses Prettier for code formatting.
--   We use Svelte 5 Runes syntax (`$state`, `$derived`, `$props`).
+- This project uses Prettier for code formatting.
+- We use Svelte 5 Runes syntax (`$state`, `$derived`, `$props`).
 
 ## Logging
 

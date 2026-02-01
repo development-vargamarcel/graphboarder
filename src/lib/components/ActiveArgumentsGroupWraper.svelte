@@ -8,7 +8,7 @@
 	import { writable } from 'svelte/store';
 	import GroupDescriptionAndControls from './GroupDescriptionAndControls.svelte';
 	import { Logger } from '$lib/utils/logger';
-    import type { QMSWraperContext } from '$lib/types/index';
+	import type { QMSWraperContext } from '$lib/types/index';
 
 	let dragDisabled = true;
 	function handleSort(e: any) {
@@ -35,10 +35,10 @@
 		onUpdateQuery
 	}: Props = $props();
 
-    const hasGroup_argsNode = $derived(group.group_argsNode);
+	const hasGroup_argsNode = $derived(group.group_argsNode);
 
 	const qmsWraperCtx = getContext<QMSWraperContext>(`${untrack(() => prefix)}QMSWraperContext`);
-    const finalGqlArgObj_Store = qmsWraperCtx?.finalGqlArgObj_Store;
+	const finalGqlArgObj_Store = qmsWraperCtx?.finalGqlArgObj_Store;
 
 	const CPItemContext = getContext<any>(`${untrack(() => prefix)}CPItemContext`);
 
@@ -62,9 +62,9 @@
 			<ActiveArgumentsGroup_addFilterAndSortingButton
 				{onUpdateQuery}
 				bind:group
-				argsInfo={argsInfo}
-				update_activeArgumentsDataGrouped={update_activeArgumentsDataGrouped}
-				activeArgumentsDataGrouped={activeArgumentsDataGrouped}
+				{argsInfo}
+				{update_activeArgumentsDataGrouped}
+				{activeArgumentsDataGrouped}
 				node={group.group_argsNode?.mainContainer}
 			/>
 		{/if}
@@ -101,8 +101,8 @@
 					update_activeArgumentsDataGrouped(group);
 					onUpdateQuery?.();
 				}}
-                parentNodeId={null}
-                availableOperators={[]}
+				parentNodeId={null}
+				availableOperators={[]}
 				{activeArgumentsDataGrouped}
 			/>
 		</div>
@@ -113,9 +113,9 @@
 				finalGqlArgObj_Store.regenerate_groupsAndfinalGqlArgObj();
 			}}
 			bind:group
-			argsInfo={argsInfo}
-			update_activeArgumentsDataGrouped={update_activeArgumentsDataGrouped}
-			activeArgumentsDataGrouped={activeArgumentsDataGrouped}
+			{argsInfo}
+			{update_activeArgumentsDataGrouped}
+			{activeArgumentsDataGrouped}
 		/>
 	{/if}
 </div>

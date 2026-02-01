@@ -17,7 +17,7 @@
 	import { Create_activeArgumentsDataGrouped_Store } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
 	import QMSWraper from '$lib/components/QMSWraper.svelte';
 	import { get, type Writable } from 'svelte/store';
-    import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
+	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 
 	interface Props {
 		canExpand: any;
@@ -41,12 +41,12 @@
 		prefix = ''
 	}: Props = $props();
 
-    // Use derived to react to type changes
+	// Use derived to react to type changes
 	let dd_kindsArray = $derived(type.dd_kindsArray);
-    let dd_namesArray = $derived(type.dd_namesArray);
-    let dd_displayName = $derived(type.dd_displayName);
-    let dd_rootName = $derived(type.dd_rootName);
-    let args = $derived(type.args);
+	let dd_namesArray = $derived(type.dd_namesArray);
+	let dd_displayName = $derived(type.dd_displayName);
+	let dd_rootName = $derived(type.dd_rootName);
+	let args = $derived(type.args);
 
 	let isSubset = (parentArray: any, subsetArray: any) => {
 		return subsetArray.every((el: any, index: any) => {
@@ -55,16 +55,21 @@
 	};
 
 	const qmsWraperCtx = getContext<QMSWraperContext>(`${untrack(() => prefix)}QMSWraperContext`);
-	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(
+		`${untrack(() => prefix)}QMSMainWraperContext`
+	);
 	const schemaData = mainWraperCtx?.schemaData;
 	const tableColsData_Store = qmsWraperCtx?.tableColsData_Store;
-	const stepsOfFieldsOBJ = getContext<Writable<Record<string, any>>>(`${untrack(() => prefix)}stepsOfFieldsOBJ`);
-	const stepsOfFieldsOBJFull = getContext<Writable<Record<string, any>>>(`${untrack(() => prefix)}stepsOfFieldsOBJFull`);
+	const stepsOfFieldsOBJ = getContext<Writable<Record<string, any>>>(
+		`${untrack(() => prefix)}stepsOfFieldsOBJ`
+	);
+	const stepsOfFieldsOBJFull = getContext<Writable<Record<string, any>>>(
+		`${untrack(() => prefix)}stepsOfFieldsOBJFull`
+	);
 
-	let stepsOFieldsAsQueryFragmentObject = $derived(stepsOfFieldsToQueryFragmentObject(
-		stepsOfFields,
-		false
-	));
+	let stepsOFieldsAsQueryFragmentObject = $derived(
+		stepsOfFieldsToQueryFragmentObject(stepsOfFields, false)
+	);
 	//getValueAtPath
 	let isSelected = $state(false);
 	let hasSelected = $state(false);
@@ -113,9 +118,10 @@
 	let canAcceptArguments = $derived(canExpand && args?.length > 0 && isUsedInSomeColumn);
 
 	const mergedChildren_finalGqlArgObj_Store = qmsWraperCtx.mergedChildren_finalGqlArgObj_Store;
-	const mergedChildren_QMSWraperCtxData_Store =
-		qmsWraperCtx.mergedChildren_QMSWraperCtxData_Store;
-	let activeArgumentsDataGrouped_Store = getContext<Writable<any>>(`${untrack(() => prefix)}activeArgumentsDataGrouped_Store`);
+	const mergedChildren_QMSWraperCtxData_Store = qmsWraperCtx.mergedChildren_QMSWraperCtxData_Store;
+	let activeArgumentsDataGrouped_Store = getContext<Writable<any>>(
+		`${untrack(() => prefix)}activeArgumentsDataGrouped_Store`
+	);
 
 	// //S//move to QMSWraper (outermost if possible)
 	// $: if (finalGqlArgObj_StoreValue && finalGqlArgObj_StoreValue.final_canRunQuery) {
@@ -159,10 +165,9 @@
 		}
 	});
 	//$: console.log({ currentQMSWraperCtxData });//!!!This logs multiple times when expected only one log,because $mergedChildren_QMSWraperCtxData_Store is being updated multiple times instead of just onece
-	let currentQMSArguments = $derived(getValueAtPath($mergedChildren_finalGqlArgObj_Store, [
-		...stepsOfFields,
-		'QMSarguments'
-	]));
+	let currentQMSArguments = $derived(
+		getValueAtPath($mergedChildren_finalGqlArgObj_Store, [...stepsOfFields, 'QMSarguments'])
+	);
 </script>
 
 {#if template == 'default'}
@@ -173,9 +178,7 @@
 					{showExpand ? '-' : '+'}
 				</button>
 			{:else}
-				<button class="btn btn-xs p-1 rounded normal-case btn-disabled" onclick={expand}
-					>+</button
-				>
+				<button class="btn btn-xs p-1 rounded normal-case btn-disabled" onclick={expand}>+</button>
 			{/if}
 			<div class="bg-secondary p-1 rounded">{index + 1}</div>
 			<button
@@ -258,7 +261,7 @@
 						//	$StepsOfFieldsSelected = $StepsOfFieldsSelected;
 					} else {
 						const res = deleteValueAtPath($stepsOfFieldsOBJ, stepsOfFields);
-                        if (res) $stepsOfFieldsOBJ = res as any;
+						if (res) $stepsOfFieldsOBJ = res as any;
 
 						///
 						//	$StepsOfFieldsSelected.delete(JSON.stringify(stepsOfFields));

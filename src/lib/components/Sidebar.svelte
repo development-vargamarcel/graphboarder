@@ -1,5 +1,4 @@
 <script lang="ts">
-
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import TabContainer from '$lib/components/TabContainer.svelte';
 	import { getContext, untrack } from 'svelte';
@@ -39,9 +38,9 @@
 <div
 	role="button"
 	tabindex="0"
-	class="w-full h-screen  {forceVisibleSidebar
+	class="w-full h-screen {forceVisibleSidebar
 		? 'visible '
-		: ' invisible'} fixed left-0  z-50  md:z-0 md:visible md:static flex  "
+		: ' invisible'} fixed left-0 z-50 md:z-0 md:visible md:static flex"
 	use:clickOutside
 	onclick={() => {
 		if (forceVisibleSidebar) {

@@ -104,7 +104,7 @@ describe('Toggle Component', () => {
 					displayInterface: 'checkbox',
 					useSwap: true,
 					swapOnText: 'Toggle',
-                    swapOffText: 'Toggle' // Provide default as per logic in component or test expectation
+					swapOffText: 'Toggle' // Provide default as per logic in component or test expectation
 				}
 			});
 
@@ -122,7 +122,7 @@ describe('Toggle Component', () => {
 					useSwap: true,
 					swapOnText: 'Same',
 					swapOffText: 'Same',
-                    swapOfftextLinethrough: true
+					swapOfftextLinethrough: true
 				}
 			});
 
@@ -189,7 +189,7 @@ describe('Toggle Component', () => {
 			});
 
 			const paragraphs = Array.from(container.querySelectorAll('p'));
-			const valueText = paragraphs.find(p => p.textContent === 'false');
+			const valueText = paragraphs.find((p) => p.textContent === 'false');
 			expect(valueText).toBeTruthy();
 			expect(valueText?.classList.contains('text-primary')).toBe(false);
 		});
@@ -266,7 +266,7 @@ describe('Toggle Component', () => {
 					useSwap: true,
 					swapOnText: 'On',
 					swapOffText: 'Off',
-                    onChanged: changed
+					onChanged: changed
 				}
 			});
 
@@ -318,7 +318,7 @@ describe('Toggle Component', () => {
 			await rerender({ rawValue: false });
 
 			const paragraphs = Array.from(container.querySelectorAll('p'));
-			valueText = paragraphs.find(p => p.textContent === 'false') || null;
+			valueText = paragraphs.find((p) => p.textContent === 'false') || null;
 			expect(valueText?.textContent).toBe('false');
 		});
 	});
@@ -343,7 +343,7 @@ describe('Toggle Component', () => {
 					displayInterface: 'checkbox',
 					useSwap: true,
 					swapOnText: 'On',
-                    swapOffText: 'Off',
+					swapOffText: 'Off',
 					otherClases: 'custom-swap'
 				}
 			});

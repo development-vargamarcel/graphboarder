@@ -6,7 +6,7 @@
 	import { getRootType } from '$lib/utils/usefulFunctions';
 	import { getContext } from 'svelte';
 	import { Logger } from '$lib/utils/logger';
-    import type { QMSMainWraperContext } from '$lib/types/index';
+	import type { QMSMainWraperContext } from '$lib/types/index';
 
 	interface Props {
 		expand: any;
@@ -34,15 +34,15 @@
 		onContainerAddRequest
 	}: Props = $props();
 
-    $effect(() => {
-        if (stepsOfFields.length == 0 && predefinedFirstSteps) {
-            stepsOfFields = [...predefinedFirstSteps];
-        }
-    });
+	$effect(() => {
+		if (stepsOfFields.length == 0 && predefinedFirstSteps) {
+			stepsOfFields = [...predefinedFirstSteps];
+		}
+	});
 
-    $effect(() => {
-        Logger.debug({ type });
-    });
+	$effect(() => {
+		Logger.debug({ type });
+	});
 
 	const prefix = '';
 	let mainWraperCtx = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
@@ -60,15 +60,15 @@
 	<div class="flex space-x-2">
 		<div class="flex space-x-2 w-1/3">
 			{#if type.dd_canExpand}
-				<button class="btn btn-xs  p-1 rounded normal-case" onclick={expand}>
+				<button class="btn btn-xs p-1 rounded normal-case" onclick={expand}>
 					{showExpand ? '-' : '+'}
 				</button>
 			{:else}
-				<button class="btn btn-xs  p-1 rounded normal-case btn-disabled" onclick={expand}>+</button>
+				<button class="btn btn-xs p-1 rounded normal-case btn-disabled" onclick={expand}>+</button>
 			{/if}
 			<div class="bg-secondary p-1 rounded">{index + 1}</div>
 			<button
-				class="btn btn-xs btn-info normal-case font-light "
+				class="btn btn-xs btn-info normal-case font-light"
 				onclick={() => {
 					Logger.debug(type);
 					//Logger.debug(type.dd_namesArray);
@@ -78,13 +78,13 @@
 			</button>
 		</div>
 
-		<div class="w-1/2 ">
+		<div class="w-1/2">
 			<div class="flex">
-				<div class="bg-secondary p-1 rounded ">{type.dd_kindsArray.join(' of ')}</div>
+				<div class="bg-secondary p-1 rounded">{type.dd_kindsArray.join(' of ')}</div>
 
 				{#if !type.dd_canExpand}
 					<button
-						class="btn btn-xs  bg-base-200 p-1 rounded"
+						class="btn btn-xs bg-base-200 p-1 rounded"
 						onclick={() => {
 							Logger.debug(getRootType(null, type.dd_rootName, schemaData));
 						}}
@@ -98,7 +98,7 @@
 				{/if}
 				{#if type.dd_canExpand}
 					<button
-						class="btn btn-xs  bg-base-200  rounded px-2 py-1"
+						class="btn btn-xs bg-base-200 rounded px-2 py-1"
 						onclick={() => {
 							Logger.debug(getRootType(null, type.dd_rootName, schemaData));
 						}}
@@ -123,7 +123,7 @@
 	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 	<!-- svelte-ignore a11y_label_has_associated_control -->
 	<label
-		class=" cursor-pointer  hover:text-primary px-2 py-2 rounded-box flex text-base min-w-max  w-full active:font-black duration-100 select-none"
+		class=" cursor-pointer hover:text-primary px-2 py-2 rounded-box flex text-base min-w-max w-full active:font-black duration-100 select-none"
 		onclick={() => {
 			/////
 			if (type.dd_kindEl == 'INPUT_OBJECT') {
@@ -153,11 +153,11 @@
 			// // }
 		}}
 	>
-		<div class=" pr-2  w-full min-w-max {type.dd_NON_NULL && 'underline underline-offset-0'}">
+		<div class=" pr-2 w-full min-w-max {type.dd_NON_NULL && 'underline underline-offset-0'}">
 			{type.dd_displayName}
 		</div>
 
-		<div class="w-10  ">
+		<div class="w-10">
 			{#if type.dd_kindEl == 'INPUT_OBJECT'}
 				{#if type.dd_kindList}
 					<div class="bi bi-card-list mx-auto w-min"></div>

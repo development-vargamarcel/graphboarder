@@ -29,23 +29,23 @@ Wrap your application or the part that needs GraphQL access with `MainWraper`. T
 
 ```svelte
 <script>
-  import { MainWraper } from 'auto-gql';
+	import { MainWraper } from 'auto-gql';
 
-  const endpointInfo = {
-    url: 'https://rickandmortyapi.com/graphql',
-    // Optional headers
-    headers: {
-      // 'Authorization': 'Bearer ...'
-    },
-    // Optional heuristics for identifying fields (see EndpointConfiguration)
-    idFieldNamePossibilities: ['id', '_id'],
-    countFieldNamePossibilities: ['count', 'totalCount']
-  };
+	const endpointInfo = {
+		url: 'https://rickandmortyapi.com/graphql',
+		// Optional headers
+		headers: {
+			// 'Authorization': 'Bearer ...'
+		},
+		// Optional heuristics for identifying fields (see EndpointConfiguration)
+		idFieldNamePossibilities: ['id', '_id'],
+		countFieldNamePossibilities: ['count', 'totalCount']
+	};
 </script>
 
 <MainWraper endpointInfoProvided={endpointInfo}>
-  <!-- Your app content here -->
-  <slot />
+	<!-- Your app content here -->
+	<slot />
 </MainWraper>
 ```
 
@@ -55,24 +55,20 @@ Use `QMSWraper` (Query/Mutation/Subscription Wrapper) to define a specific opera
 
 ```svelte
 <script>
-  import { QMSWraper } from 'auto-gql';
-  import MyArticlesComponent from './MyArticlesComponent.svelte';
+	import { QMSWraper } from 'auto-gql';
+	import MyArticlesComponent from './MyArticlesComponent.svelte';
 
-  const queryName = 'characters';
-  // Define initial columns if you want to preload data or customize display
-  const columns = [
-    { title: 'ID', stepsOfFields: ['characters', 'id'] },
-    { title: 'Name', stepsOfFields: ['characters', 'name'] },
-    { title: 'Status', stepsOfFields: ['characters', 'status'] }
-  ];
+	const queryName = 'characters';
+	// Define initial columns if you want to preload data or customize display
+	const columns = [
+		{ title: 'ID', stepsOfFields: ['characters', 'id'] },
+		{ title: 'Name', stepsOfFields: ['characters', 'name'] },
+		{ title: 'Status', stepsOfFields: ['characters', 'status'] }
+	];
 </script>
 
-<QMSWraper
-  QMSName={queryName}
-  QMSType="query"
-  tableColsData_StoreInitialValue={columns}
->
-  <MyArticlesComponent />
+<QMSWraper QMSName={queryName} QMSType="query" tableColsData_StoreInitialValue={columns}>
+	<MyArticlesComponent />
 </QMSWraper>
 ```
 
@@ -82,26 +78,26 @@ Inside your component (e.g., `MyArticlesComponent.svelte`), you can access the s
 
 ```svelte
 <script lang="ts">
-  import { getContext } from 'svelte';
-  import type { QMSWraperContext } from 'auto-gql';
+	import { getContext } from 'svelte';
+	import type { QMSWraperContext } from 'auto-gql';
 
-  // Access the context provided by QMSWraper
-  const context = getContext<QMSWraperContext>('QMSWraperContext');
+	// Access the context provided by QMSWraper
+	const context = getContext<QMSWraperContext>('QMSWraperContext');
 
-  // Destructure the stores you need
-  // QMS_bodyPartsUnifier_StoreDerived contains the constructed GraphQL query body
-  // paginationState contains current pagination info
-  const { QMS_bodyPartsUnifier_StoreDerived, paginationState } = context;
+	// Destructure the stores you need
+	// QMS_bodyPartsUnifier_StoreDerived contains the constructed GraphQL query body
+	// paginationState contains current pagination info
+	const { QMS_bodyPartsUnifier_StoreDerived, paginationState } = context;
 
-  // React to changes using Svelte 5 runes
-  $effect(() => {
-    console.log('Current Query Body:', $QMS_bodyPartsUnifier_StoreDerived);
-  });
+	// React to changes using Svelte 5 runes
+	$effect(() => {
+		console.log('Current Query Body:', $QMS_bodyPartsUnifier_StoreDerived);
+	});
 </script>
 
 <div>
-  <!-- Build your UI here using the stores -->
-  <pre>{JSON.stringify($paginationState, null, 2)}</pre>
+	<!-- Build your UI here using the stores -->
+	<pre>{JSON.stringify($paginationState, null, 2)}</pre>
 </div>
 ```
 
@@ -121,6 +117,7 @@ Logger.error('Something went wrong', { details: '...' });
 ```
 
 Logs are automatically generated for:
+
 - Initialization of wrappers.
 - Query execution start, success, and failure.
 - Fetch requests (via URQL).
@@ -146,14 +143,14 @@ You can import and use the `LogViewer` component in your own application:
 
 ```svelte
 <script>
-  import { LogViewer } from 'auto-gql';
-  let showLogs = $state(false);
+	import { LogViewer } from 'auto-gql';
+	let showLogs = $state(false);
 </script>
 
-<button onclick={() => showLogs = true}>Open Logs</button>
+<button onclick={() => (showLogs = true)}>Open Logs</button>
 
 {#if showLogs}
-  <LogViewer onClose={() => showLogs = false} />
+	<LogViewer onClose={() => (showLogs = false)} />
 {/if}
 ```
 
@@ -163,17 +160,19 @@ Auto-GQL allows you to manage multiple GraphQL endpoints.
 
 - **Access:** Click the **Endpoints** button (network drive icon) in the bottom of the sidebar.
 - **Functionality:**
-    - **List:** View all available endpoints (built-in and custom).
-    - **Add:** Add new custom endpoints with URL and headers.
-    - **Switch:** Click an endpoint to switch the application context to that endpoint.
-    - **Delete:** Remove custom endpoints.
-    - **Persisted:** Custom endpoints are saved in `localStorage`.
+  - **List:** View all available endpoints (built-in and custom).
+  - **Add:** Add new custom endpoints with URL and headers.
+  - **Switch:** Click an endpoint to switch the application context to that endpoint.
+  - **Delete:** Remove custom endpoints.
+  - **Persisted:** Custom endpoints are saved in `localStorage`.
 
-## Query Execution Timer
+## Query Metrics
 
-Auto-GQL automatically measures and displays the time taken for each query execution.
+Auto-GQL automatically measures and displays useful metrics for each query execution.
 
-- **Display:** The execution time (in milliseconds) is shown in a badge next to the row count (e.g., `<i class="bi bi-stopwatch"></i> 150ms`).
+- **Execution Time:** The time taken (in milliseconds) is shown in a badge (e.g., `<i class="bi bi-stopwatch"></i> 150ms`).
+- **Response Size:** The approximate size of the response payload is shown in a badge (e.g., `<i class="bi bi-hdd-network"></i> 1.2 KB`).
+- **Query Complexity:** In the query editor, a real-time analysis of the query complexity (Depth / Field Count) is displayed to help estimate performance impact.
 
 ## Query History
 
@@ -191,9 +190,9 @@ Auto-GQL allows you to configure HTTP headers (e.g., Authorization tokens) for y
 
 - **Access:** Click the **Settings** button (gear icon) at the bottom of the sidebar.
 - **Functionality:**
-    - View, add, edit, and delete headers.
-    - Headers are persisted in `localStorage`.
-    - Supports both global headers and endpoint-specific headers (if the endpoint ID is available).
+  - View, add, edit, and delete headers.
+  - Headers are persisted in `localStorage`.
+  - Supports both global headers and endpoint-specific headers (if the endpoint ID is available).
 
 ### Data Export
 
@@ -211,9 +210,9 @@ A "Clear All Filters" button allows you to quickly reset all active arguments to
 import { addToHistory } from 'auto-gql';
 
 addToHistory({
-  query: 'query { ... }',
-  endpointId: 'my-endpoint',
-  operationName: 'getUsers'
+	query: 'query { ... }',
+	endpointId: 'my-endpoint',
+	operationName: 'getUsers'
 });
 ```
 
@@ -225,10 +224,10 @@ Auto-GQL includes a **Schema Visualizer** to help you explore and understand the
 
 - **Access:** Click the **Schema** link in the sidebar (icon <i class="bi bi-diagram-3"></i>).
 - **Functionality:**
-    - **Browse Types:** Searchable list of all types defined in the schema (Objects, Scalars, Enums, Interfaces, etc.).
-    - **Type Details:** View detailed information about any type, including description, fields, arguments, input fields, and implemented interfaces.
-    - **Navigation:** Click on interface names to jump to their definitions.
-    - **Copy Introspection:** Button to copy the full introspection result to clipboard.
+  - **Browse Types:** Searchable list of all types defined in the schema (Objects, Scalars, Enums, Interfaces, etc.).
+  - **Type Details:** View detailed information about any type, including description, fields, arguments, input fields, and implemented interfaces.
+  - **Navigation:** Click on interface names to jump to their definitions.
+  - **Copy Introspection:** Button to copy the full introspection result to clipboard.
 
 ## Mock Data Generator
 
@@ -243,9 +242,9 @@ Auto-GQL allows you to import a GraphQL query and headers from a cURL command (e
 
 - **Access:** In the code display view, click the **Import cURL** button (<i class="bi bi-box-arrow-in-down"></i>).
 - **Functionality:**
-    - Parses the cURL command to extract the GraphQL query **and variables**.
-    - Updates the current query and variables in the editor.
-    - Merges any extracted headers (e.g., `Authorization`) with your existing persisted headers.
+  - Parses the cURL command to extract the GraphQL query **and variables**.
+  - Updates the current query and variables in the editor.
+  - Merges any extracted headers (e.g., `Authorization`) with your existing persisted headers.
 
 ## Variables Editor
 
@@ -253,10 +252,10 @@ Auto-GQL allows you to define and manage variables for your GraphQL queries.
 
 - **Access:** In the code display view, click the **Variables** button (<i class="bi bi-braces"></i>).
 - **Functionality:**
-    - Opens a dedicated JSON editor for variables.
-    - Includes a **Prettify** button to format the JSON.
-    - Validates JSON before execution.
-    - Variables are included in query execution, sharing, cURL generation, and code snippets.
+  - Opens a dedicated JSON editor for variables.
+  - Includes a **Prettify** button to format the JSON.
+  - Validates JSON before execution.
+  - Variables are included in query execution, sharing, cURL generation, and code snippets.
 
 ## Execute Query
 
@@ -264,9 +263,9 @@ You can execute the current query directly from the `GraphqlCodeDisplay` compone
 
 - **Access:** In the code display view, click the **Execute** button (<i class="bi bi-play-fill"></i>).
 - **Functionality:**
-    - Executes the query using the configured URQL client.
-    - Displays the JSON result (or error) in a dedicated view within the component.
-    - Allows copying the result to clipboard.
+  - Executes the query using the configured URQL client.
+  - Displays the JSON result (or error) in a dedicated view within the component.
+  - Allows copying the result to clipboard.
 
 ## Code Snippets
 
@@ -274,9 +273,9 @@ Auto-GQL can generate code snippets for your query in various languages and clie
 
 - **Access:** In the code display view, click the **Snippets** button (<i class="bi bi-code-square"></i>).
 - **Functionality:**
-    - Opens a modal where you can select the target language (JavaScript/Fetch, JavaScript/URQL, JavaScript/Apollo, Python/Requests).
-    - Generates ready-to-use code including the query, variables, and headers.
-    - Allows copying the snippet to the clipboard.
+  - Opens a modal where you can select the target language (JavaScript/Fetch, JavaScript/URQL, JavaScript/Apollo, Python/Requests).
+  - Generates ready-to-use code including the query, variables, and headers.
+  - Allows copying the snippet to the clipboard.
 
 ## Export to Postman
 
@@ -284,9 +283,9 @@ Auto-GQL allows you to export your current GraphQL query and headers as a Postma
 
 - **Access:** In the code display view, click the **Postman** button (<i class="bi bi-collection"></i>).
 - **Functionality:**
-    - Generates a Postman Collection v2.1 JSON file.
-    - Includes the query, variables, and headers.
-    - Downloads the file, which can be imported directly into Postman.
+  - Generates a Postman Collection v2.1 JSON file.
+  - Includes the query, variables, and headers.
+  - Downloads the file, which can be imported directly into Postman.
 
 ## Copy as Markdown
 
@@ -301,9 +300,9 @@ Auto-GQL allows you to share your current query via a URL.
 
 - **Access:** In the code display view, click the **Share** button (<i class="bi bi-share"></i>).
 - **Functionality:**
-    - Compresses the current query **and variables** into a URL parameter.
-    - Copies the full URL to the clipboard.
-    - When someone opens the link, the query (and variables) are automatically restored in the editor.
+  - Compresses the current query **and variables** into a URL parameter.
+  - Copies the full URL to the clipboard.
+  - When someone opens the link, the query (and variables) are automatically restored in the editor.
 - **Enable:** To use this feature, set the `enableShareUrl` prop to `true` on `GraphqlCodeDisplay`.
 
 ## Toast Notifications
