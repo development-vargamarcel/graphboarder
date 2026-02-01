@@ -132,4 +132,18 @@ describe('queryHistory Store', () => {
         expect(history).toHaveLength(1);
         expect(history[0].name).toBe('Exported');
     });
+
+	it('should store and retrieve variables', () => {
+		const item = {
+			query: 'query { test($var: String) { field(arg: $var) } }',
+			endpointId: '1',
+			operationName: 'testQuery',
+			variables: { var: 'value' }
+		};
+		addToHistory(item);
+
+		const history = get(queryHistory);
+		expect(history).toHaveLength(1);
+		expect(history[0].variables).toEqual({ var: 'value' });
+	});
 });
