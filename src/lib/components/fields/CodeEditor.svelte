@@ -116,6 +116,11 @@
 			language: 'typescript',
 			codemirrorLanguage: javascript({ typescript: true }),
 			plugins: [prettierPluginTypescript, prettierPluginEstree]
+		},
+		{
+			language: 'json',
+			codemirrorLanguage: javascript({ typescript: false }),
+			plugins: [prettierPluginEstree]
 		}
 	];
 
