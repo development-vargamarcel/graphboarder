@@ -243,9 +243,20 @@ Auto-GQL allows you to import a GraphQL query and headers from a cURL command (e
 
 - **Access:** In the code display view, click the **Import cURL** button (<i class="bi bi-box-arrow-in-down"></i>).
 - **Functionality:**
-    - Parses the cURL command to extract the GraphQL query.
-    - Updates the current query in the editor.
+    - Parses the cURL command to extract the GraphQL query **and variables**.
+    - Updates the current query and variables in the editor.
     - Merges any extracted headers (e.g., `Authorization`) with your existing persisted headers.
+
+## Variables Editor
+
+Auto-GQL allows you to define and manage variables for your GraphQL queries.
+
+- **Access:** In the code display view, click the **Variables** button (<i class="bi bi-braces"></i>).
+- **Functionality:**
+    - Opens a dedicated JSON editor for variables.
+    - Includes a **Prettify** button to format the JSON.
+    - Validates JSON before execution.
+    - Variables are included in query execution, sharing, cURL generation, and code snippets.
 
 ## Execute Query
 
@@ -290,9 +301,9 @@ Auto-GQL allows you to share your current query via a URL.
 
 - **Access:** In the code display view, click the **Share** button (<i class="bi bi-share"></i>).
 - **Functionality:**
-    - Compresses the current query into a URL parameter.
+    - Compresses the current query **and variables** into a URL parameter.
     - Copies the full URL to the clipboard.
-    - When someone opens the link, the query is automatically restored in the editor.
+    - When someone opens the link, the query (and variables) are automatically restored in the editor.
 - **Enable:** To use this feature, set the `enableShareUrl` prop to `true` on `GraphqlCodeDisplay`.
 
 ## Toast Notifications

@@ -212,6 +212,9 @@
 									{#if item.rowsCount !== undefined}
 										<div class="text-xs badge badge-sm mt-1">{item.rowsCount} rows</div>
 									{/if}
+									{#if item.variables && Object.keys(item.variables).length > 0}
+										<div class="text-xs badge badge-sm badge-info mt-1 ml-1">vars</div>
+									{/if}
 								</div>
 								<div class="flex space-x-2">
 									<button

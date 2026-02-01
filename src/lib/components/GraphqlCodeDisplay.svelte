@@ -14,7 +14,7 @@
 	import { parse, print, type ASTNode } from 'graphql';
 	import JSON5 from 'json5';
 	import QueryHistory from '$lib/components/QueryHistory.svelte';
-	import type { HistoryItem } from '$lib/stores/queryHistory';
+	import { addToHistory, type HistoryItem } from '$lib/stores/queryHistory';
 	import { generateMockData } from '$lib/utils/mockGenerator';
 	import { generatePostmanCollectionForQuery } from '$lib/utils/postmanUtils';
 	import Modal from '$lib/components/Modal.svelte';
@@ -57,6 +57,8 @@
 
 	let valueModifiedManually = $state();
 	let lastSyncedValue = $state(untrack(() => value));
+	let variablesString = $state('{}');
+	let showVariables = $state(false);
 
 	// Try to get context if available
 	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
@@ -136,6 +138,16 @@
 	let snippetEditorLanguage = $derived(
 		selectedSnippetLanguage.startsWith('python') ? 'python' : 'javascript'
 	);
+
+	const getParsedVariables = () => {
+		try {
+			return JSON.parse(variablesString || '{}');
+		} catch (e) {
+			Logger.warn('Failed to parse variables', e);
+			return {};
+		}
+	};
+
 	let generatedSnippet = $derived.by(() => {
 		if (showSnippetsModal && mainWraperCtx?.endpointInfo) {
 			const info = get(mainWraperCtx.endpointInfo);
@@ -143,7 +155,7 @@
 				selectedSnippetLanguage,
 				info.url,
 				value,
-				{}, // Variables support could be added if QMS has them
+				getParsedVariables(),
 				info.headers || {}
 			);
 		}
@@ -154,14 +166,15 @@
 
 	const handleShare = () => {
 		try {
-			const compressed = compressQuery(value);
+			const vars = getParsedVariables();
+			const compressed = compressQuery(value, vars);
 			const url = new URL(window.location.href);
 			url.searchParams.set('q', compressed);
 			window.history.pushState({}, '', url.toString());
 			navigator.clipboard.writeText(url.toString());
 			isShareCopied = true;
 			toast.success('Share URL copied to clipboard');
-			Logger.info('Query Share URL copied');
+			Logger.info('Query Share URL copied', { hasVariables: Object.keys(vars).length > 0 });
 			setTimeout(() => (isShareCopied = false), 2000);
 		} catch (e) {
 			Logger.error('Failed to share query', e);
@@ -178,7 +191,11 @@
 					Logger.info('Found query in URL, restoring...');
 					const restored = decompressQuery(q);
 					if (restored) {
-						valueModifiedManually = restored;
+						valueModifiedManually = restored.query;
+						if (restored.variables) {
+							variablesString = JSON.stringify(restored.variables, null, 2);
+							showVariables = true;
+						}
 						toast.success('Query loaded from URL');
 						// Remove q from URL to clean up? Or keep it?
 						// Keeping it allows reload to persist.
@@ -192,6 +209,12 @@
 
 	const restoreQuery = (item: HistoryItem) => {
 		valueModifiedManually = item.query;
+		if (item.variables) {
+			variablesString = JSON.stringify(item.variables, null, 2);
+			showVariables = true;
+		} else {
+			variablesString = '{}';
+		}
 		showHistory = false;
 	};
 
@@ -210,6 +233,31 @@
 			return;
 		}
 
+		let variables = {};
+		try {
+			variables = JSON.parse(variablesString || '{}');
+		} catch (e) {
+			toast.error('Invalid Variables JSON');
+			Logger.warn('Invalid Variables JSON on execute', e);
+			// We can choose to return here or proceed with empty variables.
+			// Usually invalid JSON means user error, so we should stop.
+			return;
+		}
+
+		// Save to history
+		try {
+			const info = get(mainWraperCtx.endpointInfo);
+			addToHistory({
+				query: value,
+				variables: variables,
+				endpointId: info.id || 'unknown',
+				operationName: qmsWraperCtx?.QMSName || 'Query',
+				rowsCount: undefined // will update if successful?
+			});
+		} catch (e) {
+			Logger.error('Failed to save to history', e);
+		}
+
 		isExecuting = true;
 		showExecutionResult = true;
 		executionResult = 'Loading...';
@@ -226,18 +274,16 @@
 					let headers = info.headers || {};
 					// Merge with local storage headers if any logic requires it,
 					// but MainWraper client already handles this via fetchOptions callback.
-					// So we just pass nothing extra or just let the client handle it.
-					// However, MainWraper recreation logic might be sufficient.
 					return {};
 				}
 			};
 
-			Logger.info(`Executing ${isMutation ? 'mutation' : 'query'}...`);
+			Logger.info(`Executing ${isMutation ? 'mutation' : 'query'}...`, { variables });
 
 			if (isMutation) {
-				result = await client.mutation(value, {}).toPromise();
+				result = await client.mutation(value, variables).toPromise();
 			} else {
-				result = await client.query(value, {}).toPromise();
+				result = await client.query(value, variables).toPromise();
 			}
 
 			if (result.error) {
@@ -284,6 +330,10 @@
 
 			if (parsed.query) {
 				valueModifiedManually = parsed.query;
+				if (parsed.variables && Object.keys(parsed.variables).length > 0) {
+					variablesString = JSON.stringify(parsed.variables, null, 2);
+					showVariables = true;
+				}
 
 				// Handle headers
 				let headerMessage = '';
@@ -414,6 +464,14 @@
 			<i class="bi bi-clock-history"></i> History
 		</button>
 		<button
+			class="btn btn-xs btn-ghost transition-opacity {showVariables ? 'text-primary font-bold' : ''}"
+			aria-label="Variables"
+			title="Toggle Variables Editor"
+			onclick={() => (showVariables = !showVariables)}
+		>
+			<i class="bi bi-braces"></i> Variables
+		</button>
+		<button
 			class="btn btn-xs btn-ghost transition-opacity"
 			aria-label="Copy to Clipboard"
 			title="Copy Query to Clipboard"
@@ -439,7 +497,7 @@
 				if (mainWraperCtx?.endpointInfo) {
 					Logger.info('Copied query as cURL to clipboard');
 					const info = get(mainWraperCtx.endpointInfo);
-					const curl = generateCurlCommand(info.url, value, {}, info.headers || {});
+					const curl = generateCurlCommand(info.url, value, getParsedVariables(), info.headers || {});
 					navigator.clipboard.writeText(curl);
 					isCurlCopied = true;
 					setTimeout(() => (isCurlCopied = false), 2000);
@@ -491,7 +549,8 @@
 						qmsWraperCtx?.QMSName || 'Query',
 						info.url,
 						value,
-						info.headers || {}
+						info.headers || {},
+						getParsedVariables()
 					);
 					const blob = new Blob([json], { type: 'application/json' });
 					const url = URL.createObjectURL(blob);
@@ -582,6 +641,33 @@
 					}}
 				/>
 			</div>
+			{#if showVariables}
+				<div class="border-t border-base-200 mt-2 pt-2 mx-4">
+					<div class="flex justify-between items-center mb-1">
+						<span class="text-xs font-bold text-gray-500 uppercase">Query Variables (JSON)</span>
+						<button
+							class="btn btn-xs btn-ghost text-xs"
+							onclick={() => {
+								try {
+									const parsed = JSON.parse(variablesString || '{}');
+									variablesString = JSON.stringify(parsed, null, 2);
+								} catch (e) {
+									toast.error('Invalid JSON');
+								}
+							}}
+						>
+							Prettify
+						</button>
+					</div>
+					<CodeEditor
+						rawValue={variablesString}
+						language="json"
+						onChanged={(detail) => {
+							variablesString = detail.chd_rawValue;
+						}}
+					/>
+				</div>
+			{/if}
 			{#if astPrinted}
 				<div class="mx-4 mt-2 ">
 					<!-- <CodeEditor rawValue={astPrinted as string} language="graphql" /> -->
