@@ -24,6 +24,7 @@
 	import TypeList from './TypeList.svelte';
 	import CodeEditor from './fields/CodeEditor.svelte';
 	import GraphqlCodeDisplay from './GraphqlCodeDisplay.svelte';
+	import { calculateResponseSize, formatBytes } from '$lib/utils/queryAnalyzer';
 
 	interface Props {
 		prefix?: string;
@@ -57,9 +58,11 @@
 		goto('/queries');
 	}
 
-	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData as any).find((pagType: any) => {
-		return pagType.name == currentQMS_info.dd_paginationType;
-	});
+	const paginationTypeInfo = get_paginationTypes(endpointInfo, schemaData as any).find(
+		(pagType: any) => {
+			return pagType.name == currentQMS_info.dd_paginationType;
+		}
+	);
 
 	let { scalarFields } = getFields_Grouped(dd_relatedRoot, [], schemaData as any);
 
@@ -81,6 +84,7 @@
 	let showModal = $state(false);
 	let showActiveFilters: boolean | undefined;
 	let executionTime = $state<number | null>(null);
+	let responseSize = $state<number | null>(null);
 
 	// Query execution function
 	const runQuery = (queryBody: string) => {
@@ -101,10 +105,14 @@
 				if (result.error) {
 					error = result.error.message;
 					Logger.error('Query execution failed', result.error);
+					responseSize = 0;
 				}
 				if (result.data) {
 					data = result.data;
-					Logger.info('Query execution successful', { dataCount: Array.isArray(data) ? data.length : 1 });
+					responseSize = calculateResponseSize(data);
+					Logger.info('Query execution successful', {
+						dataCount: Array.isArray(data) ? data.length : 1
+					});
 				}
 				queryData = { fetching, error, data };
 				let stepsOfFieldsInput = [
@@ -112,7 +120,11 @@
 					...endpointInfo.get_rowsLocation(currentQMS_info, schemaData as any)
 				];
 				Logger.debug({ stepsOfFieldsInput }, currentQMS_info.dd_displayName);
-				rowsCurrent = getDataGivenStepsOfFields(undefined, queryData.data, stepsOfFieldsInput) as any[];
+				rowsCurrent = getDataGivenStepsOfFields(
+					undefined,
+					queryData.data,
+					stepsOfFieldsInput
+				) as any[];
 				if (rowsCurrent && !Array.isArray(rowsCurrent)) {
 					rowsCurrent = [rowsCurrent];
 				}
@@ -159,7 +171,11 @@
 			});
 	};
 
-	function infiniteHandler({ detail: { loaded, complete } }: { detail: { loaded: () => void; complete: () => void } }) {
+	function infiniteHandler({
+		detail: { loaded, complete }
+	}: {
+		detail: { loaded: () => void; complete: () => void };
+	}) {
 		loadedF = loaded;
 		completeF = complete;
 		const rowLimitingArgNames = paginationTypeInfo?.get_rowLimitingArgNames(
@@ -247,8 +263,8 @@
 						showModal = false;
 					}
 				}}
-				><div class="  w-full  ">
-					<div class="mx-auto mt-2  w-full   space-y-2   pb-2  ">
+				><div class="  w-full">
+					<div class="mx-auto mt-2 w-full space-y-2 pb-2">
 						<div class="w-2"></div>
 						<ActiveArguments />
 						<div class="w-2"></div>
@@ -270,7 +286,7 @@
 		</div> -->
 	</div>
 	<button
-		class=" btn btn-xs grow normal-case "
+		class=" btn btn-xs grow normal-case"
 		onclick={() => {
 			showQMSBody = !showQMSBody;
 		}}>QMS body</button
@@ -287,19 +303,27 @@
 
 	{#if executionTime !== null}
 		<div class="badge badge-secondary flex space-x-2" title="Query execution time">
-			<i class="bi bi-stopwatch"></i> {executionTime}ms
+			<i class="bi bi-stopwatch"></i>
+			{executionTime}ms
 		</div>
 	{/if}
 
-	<button class="btn btn-xs btn-primary " aria-label="Add">
-		<i class="bi bi-plus-circle-fill "></i>
+	{#if responseSize !== null && responseSize > 0}
+		<div class="badge badge-info flex space-x-2" title="Response Size">
+			<i class="bi bi-hdd-network"></i>
+			{formatBytes(responseSize)}
+		</div>
+	{/if}
+
+	<button class="btn btn-xs btn-primary" aria-label="Add">
+		<i class="bi bi-plus-circle-fill"></i>
 	</button>
 </div>
 
 {@render children?.()}
 {#if queryData.error}
-	<div class="px-4 mx-auto  mb-2">
-		<div class="alert alert-error shadow-lg ">
+	<div class="px-4 mx-auto mb-2">
+		<div class="alert alert-error shadow-lg">
 			<div>
 				<button
 					class="btn btn-ghost btn-sm p-0"

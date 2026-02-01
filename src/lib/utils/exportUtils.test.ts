@@ -17,7 +17,8 @@ describe('exportUtils', () => {
 				{ name: 'John', address: { city: 'New York', zip: '10001' } },
 				{ name: 'Jane', address: { city: 'San Francisco', zip: '94105' } }
 			];
-			const expected = 'name,address.city,address.zip\nJohn,New York,10001\nJane,San Francisco,94105';
+			const expected =
+				'name,address.city,address.zip\nJohn,New York,10001\nJane,San Francisco,94105';
 			expect(convertArrayToCSV(data)).toBe(expected);
 		});
 

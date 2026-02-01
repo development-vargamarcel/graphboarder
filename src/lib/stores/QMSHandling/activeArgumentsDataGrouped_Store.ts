@@ -1,4 +1,9 @@
-import { argumentCanRunQuery, generate_gqlArgObj, getPreciseType, getRootType } from '$lib/utils/usefulFunctions';
+import {
+	argumentCanRunQuery,
+	generate_gqlArgObj,
+	getPreciseType,
+	getRootType
+} from '$lib/utils/usefulFunctions';
 import { get, writable } from 'svelte/store';
 import { Logger } from '$lib/utils/logger';
 import _ from 'lodash';
@@ -9,7 +14,7 @@ import type {
 	ContainerData,
 	FieldWithDerivedData,
 	SchemaDataStore,
-    SchemaData,
+	SchemaData,
 	EndpointInfoStore
 } from '$lib/types';
 
@@ -30,7 +35,7 @@ export const Create_activeArgumentsDataGrouped_Store = (
 			QMSarguments: Record<string, unknown> | null,
 			endpointInfo: EndpointInfoStore
 		) => {
-			const QMS_infoRoot = getRootType(null, QMS_info.dd_rootName, schemaData)
+			const QMS_infoRoot = getRootType(null, QMS_info.dd_rootName, schemaData);
 			const argsInfo = QMS_info?.args;
 			Logger.debug({ argsInfo });
 			//handle generating activeArgumentsDataGrouped
@@ -39,11 +44,9 @@ export const Create_activeArgumentsDataGrouped_Store = (
 				return el.dd_isRootArg;
 			});
 
-
-
 			////-------- all encompassing group !!!put this first to have it overriden by other groups,or last for opposite result
 			const addAllArgsGroup = () => {
-				Logger.debug('ppppp', QMS_info, QMS_infoRoot)
+				Logger.debug('ppppp', QMS_info, QMS_infoRoot);
 				const newGroupData: ActiveArgumentGroup = {
 					originType: QMS_info,
 
@@ -67,7 +70,7 @@ export const Create_activeArgumentsDataGrouped_Store = (
 					}
 				};
 				activeArgumentsDataGrouped.push(newGroupData);
-			}
+			};
 			////-----------
 			//////////////////////////----------Smart groups
 			const addSmartGroups = () => {
@@ -107,7 +110,8 @@ export const Create_activeArgumentsDataGrouped_Store = (
 						};
 
 						const hasFilterOperators =
-							getRootType(null, el.dd_rootName, schemaData)?.dd_baseFilterOperators?.length ?? 0 > 0;
+							getRootType(null, el.dd_rootName, schemaData)?.dd_baseFilterOperators?.length ??
+							0 > 0;
 
 						// if (hasFilterOperators) {
 						// 	newGroupData.group_argsNode = {
@@ -130,12 +134,10 @@ export const Create_activeArgumentsDataGrouped_Store = (
 						activeArgumentsDataGrouped.push(newGroupData);
 					}
 				});
-			}
+			};
 			//////////////////////////----------
 			//addSmartGroups()
-			addAllArgsGroup()//!!!put this first to have it's result overriden by other groups, or last for opposite result
-
-
+			addAllArgsGroup(); //!!!put this first to have it's result overriden by other groups, or last for opposite result
 
 			//filter out duplicate groups:
 			const seenGroupNames: string[] = [];
@@ -154,7 +156,12 @@ export const Create_activeArgumentsDataGrouped_Store = (
 			//Handle QMSarguments data if present
 			Logger.debug({ QMSarguments });
 			if (QMSarguments) {
-				gqlArgObjToActiveArgumentsDataGrouped(QMSarguments, activeArgumentsDataGrouped, schemaData, endpointInfo);
+				gqlArgObjToActiveArgumentsDataGrouped(
+					QMSarguments,
+					activeArgumentsDataGrouped,
+					schemaData,
+					endpointInfo
+				);
 			}
 
 			addAllRootArgs(activeArgumentsDataGrouped, schemaData, endpointInfo);
@@ -257,7 +264,8 @@ export const Create_activeArgumentsDataGrouped_Store = (
 					newArgumentOrContainerData,
 					groupName,
 					parentContainerId,
-					activeArgumentsDataGrouped, endpointInfo
+					activeArgumentsDataGrouped,
+					endpointInfo
 				);
 			});
 		}
@@ -272,36 +280,47 @@ export const add_activeArgumentOrContainerTo_activeArgumentsDataGrouped = (
 	group?: ActiveArgumentGroup
 ): ActiveArgumentGroup[] => {
 	const dataIsForContainer = (newArgumentOrContainerData as ContainerData)?.items;
-	Logger.debug({ dataIsForContainer, newArgumentOrContainerData })
+	Logger.debug({ dataIsForContainer, newArgumentOrContainerData });
 	if (!group) {
 		group = activeArgumentsDataGrouped?.find((currGroup) => {
-			Logger.debug('currGroup', { currGroup, groupName, comparison: currGroup.group_name == groupName });
+			Logger.debug('currGroup', {
+				currGroup,
+				groupName,
+				comparison: currGroup.group_name == groupName
+			});
 			return currGroup.group_name == groupName;
-		})
+		});
 	}
 	if (!group) {
-		Logger.warn('group not found', { groupName, newArgumentOrContainerData })
-		return activeArgumentsDataGrouped
+		Logger.warn('group not found', { groupName, newArgumentOrContainerData });
+		return activeArgumentsDataGrouped;
 	}
-	; (function () {
+	(function () {
 		if (dataIsForContainer) {
-			return
+			return;
 		}
-		if (!endpointInfo) { return }
+		if (!endpointInfo) {
+			return;
+		}
 		let typeExtraData = endpointInfo.get_typeExtraData(newArgumentOrContainerData);
-		if (!typeExtraData) { return }
-		const gqlArgObj = generate_gqlArgObj([newArgumentOrContainerData])
-		newArgumentOrContainerData = _.merge({}, newArgumentOrContainerData, gqlArgObj)
-		if (typeExtraData.defaultValue == undefined) { return }
+		if (!typeExtraData) {
+			return;
+		}
+		const gqlArgObj = generate_gqlArgObj([newArgumentOrContainerData]);
+		newArgumentOrContainerData = _.merge({}, newArgumentOrContainerData, gqlArgObj);
+		if (typeExtraData.defaultValue == undefined) {
+			return;
+		}
 
 		if (newArgumentOrContainerData.chd_rawValue == undefined) {
-			newArgumentOrContainerData.chd_rawValue = typeExtraData.defaultValue
+			newArgumentOrContainerData.chd_rawValue = typeExtraData.defaultValue;
 		}
 		if (newArgumentOrContainerData.chd_dispatchValue == undefined) {
-			newArgumentOrContainerData.chd_dispatchValue = typeExtraData.use_transformer(typeExtraData.defaultValue);
+			newArgumentOrContainerData.chd_dispatchValue = typeExtraData.use_transformer(
+				typeExtraData.defaultValue
+			);
 		}
-	})()
-
+	})();
 
 	{
 		if (group.group_argsNode) {
@@ -309,7 +328,8 @@ export const add_activeArgumentOrContainerTo_activeArgumentsDataGrouped = (
 			(newArgumentOrContainerData as any).dd_relatedRoot =
 				'overwritten to evade error: Uncaught TypeError: Converting circular structure to JSON';
 			newArgumentOrContainerData.not = false;
-			group.group_argsNode[newArgumentOrContainerData.id] = newArgumentOrContainerData as ContainerData;
+			group.group_argsNode[newArgumentOrContainerData.id] =
+				newArgumentOrContainerData as ContainerData;
 
 			if (parentContainerId) {
 				group.group_argsNode[parentContainerId].items.push(newArgumentOrContainerData as any);
@@ -343,9 +363,9 @@ export const generateContainerData = (
 		stepsOfFields.push(dd_displayName); //take care might caus eproblems
 	}
 
-	const lastDefiningData: any = {}
+	const lastDefiningData: any = {};
 	if (type && type.dd_kindList) {
-		lastDefiningData.operator = 'list'
+		lastDefiningData.operator = 'list';
 	}
 
 	return {
@@ -398,7 +418,7 @@ const addAllRootArgs = (
 	});
 	if (!group) {
 		Logger.debug('no root group');
-		return
+		return;
 	}
 	const groupName = group.group_name;
 	const groupOriginType = group.originType;
@@ -413,7 +433,8 @@ const addAllRootArgs = (
 			argData,
 			groupName,
 			null,
-			activeArgumentsDataGrouped, endpointInfo
+			activeArgumentsDataGrouped,
+			endpointInfo
 		);
 	});
 };
@@ -477,7 +498,9 @@ const gqlArgObjToActiveArgumentsDataGrouped = (
 					argData,
 					groupName,
 					null,
-					activeArgumentsDataGrouped, endpointInfo, undefined
+					activeArgumentsDataGrouped,
+					endpointInfo,
+					undefined
 				);
 			});
 		} else {
@@ -536,15 +559,14 @@ const gqlArgObjToActiveArgumentsDataGroupedForHasArgsNode = (
 	endpointInfo: EndpointInfoStore
 ): void => {
 	let group_argsNode;
-	const isContainer = type.dd_shouldExpand
-		; (function () {//handle containers only
-			if (!isContainer) {
-				return
-			}
-			if (Array.isArray(gqlArgObj)) {
-				(gqlArgObj as any[]).forEach(element => {
-				});
-			}
-
-		})()
-}
+	const isContainer = type.dd_shouldExpand;
+	(function () {
+		//handle containers only
+		if (!isContainer) {
+			return;
+		}
+		if (Array.isArray(gqlArgObj)) {
+			(gqlArgObj as any[]).forEach((element) => {});
+		}
+	})();
+};

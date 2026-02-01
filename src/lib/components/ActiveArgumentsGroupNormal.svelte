@@ -4,7 +4,7 @@
 	import { flip } from 'svelte/animate';
 	import { getContext, setContext } from 'svelte';
 	import { Logger } from '$lib/utils/logger';
-    import type { Writable } from 'svelte/store';
+	import type { Writable } from 'svelte/store';
 
 	let {
 		group = $bindable(),
@@ -87,14 +87,14 @@
 	{#each group.group_args as activeArgumentData (activeArgumentData.id)}
 		<div animate:flip={{ duration: flipDurationMs }} class="relative flex">
 			{#if $dndIsOn}
-				<div class="grid   content-center  rounded-full ">
+				<div class="grid content-center rounded-full">
 					<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-                    <!-- svelte-ignore a11y_no_static_element_interactions -->
+					<!-- svelte-ignore a11y_no_static_element_interactions -->
 					<div
 						role="button"
 						tabindex={dragDisabled ? 0 : -1}
 						aria-label="drag-handle"
-						class="bi bi-grip-vertical ml-2  -mr-1"
+						class="bi bi-grip-vertical ml-2 -mr-1"
 						style={dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
 						onmousedown={startDrag}
 						ontouchstart={startDrag}
@@ -103,9 +103,9 @@
 				</div>
 			{/if}
 
-            <!-- svelte-ignore a11y_no_static_element_interactions -->
+			<!-- svelte-ignore a11y_no_static_element_interactions -->
 			<div
-				class="w-full "
+				class="w-full"
 				onmousedown={() => {
 					dragDisabled = true;
 				}}
@@ -132,7 +132,7 @@
 					parentNodeId={group.group_name}
 					originalNodes={group.group_args}
 					availableOperators={[]}
-					startDrag={startDrag}
+					{startDrag}
 				/>
 			</div>
 		</div>

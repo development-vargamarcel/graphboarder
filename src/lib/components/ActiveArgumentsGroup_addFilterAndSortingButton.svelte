@@ -2,7 +2,7 @@
 	import { getContext, setContext, untrack } from 'svelte';
 	import Arg from '$lib/components/Arg.svelte';
 	import { getQMSWraperCtxDataGivenControlPanelItem } from '$lib/utils/usefulFunctions';
-    import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
+	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 
 	interface Props {
 		group: any;
@@ -11,7 +11,7 @@
 		activeArgumentsDataGrouped: any;
 		prefix?: string;
 		node: any;
-        onUpdateQuery?: () => void;
+		onUpdateQuery?: () => void;
 	}
 
 	let {
@@ -21,7 +21,7 @@
 		activeArgumentsDataGrouped,
 		prefix = '',
 		node,
-        onUpdateQuery
+		onUpdateQuery
 	}: Props = $props();
 
 	let showDescription = $state();
@@ -29,11 +29,13 @@
 	let dragDisabled = true;
 	const hasGroup_argsNode = group.group_argsNode;
 	/////start
-	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(
+		`${untrack(() => prefix)}OutermostQMSWraperContext`
+	);
 
-    // Context logic - using derived to avoid stale values if context was dynamic (though context is usually stable)
-    const nodeContext = getContext<any>(`${untrack(() => prefix)}nodeContext`);
-    let pathIsInCP = $derived(nodeContext?.pathIsInCP || false);
+	// Context logic - using derived to avoid stale values if context was dynamic (though context is usually stable)
+	const nodeContext = getContext<any>(`${untrack(() => prefix)}nodeContext`);
+	let pathIsInCP = $derived(nodeContext?.pathIsInCP || false);
 
 	let nodeIsInCP = false;
 	const CPItemContext = getContext<any>(`${untrack(() => prefix)}CPItemContext`);
@@ -52,30 +54,40 @@
 			OutermostQMSWraperContext
 		);
 	} else {
-		correctQMSWraperContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}QMSWraperContext`);
+		correctQMSWraperContext = getContext<QMSWraperContext>(
+			`${untrack(() => prefix)}QMSWraperContext`
+		);
 	}
 
-    let activeArgumentsDataGrouped_Store = $derived(correctQMSWraperContext?.activeArgumentsDataGrouped_Store);
+	let activeArgumentsDataGrouped_Store = $derived(
+		correctQMSWraperContext?.activeArgumentsDataGrouped_Store
+	);
 
 	/////end
-	let rootArgs = $derived(argsInfo.filter((arg: any) => {
-		return arg.dd_isRootArg;
-	}));
+	let rootArgs = $derived(
+		argsInfo.filter((arg: any) => {
+			return arg.dd_isRootArg;
+		})
+	);
 
-	let groupArgsPossibilities = $derived(group.group_isRoot
-		? rootArgs
-		: group.dd_relatedRoot.inputFields || group.inputFields || group.args);
+	let groupArgsPossibilities = $derived(
+		group.group_isRoot
+			? rootArgs
+			: group.dd_relatedRoot.inputFields || group.inputFields || group.args
+	);
 
-    let predefinedFirstSteps = $derived(group.group_isRoot ? [] : [group.group_name]);
+	let predefinedFirstSteps = $derived(group.group_isRoot ? [] : [group.group_name]);
 
-    let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(
+		`${untrack(() => prefix)}QMSMainWraperContext`
+	);
 	const endpointInfo = mainWraperCtx?.endpointInfo;
 </script>
 
-<div class="bg-base-100  rounded-box">
+<div class="bg-base-100 rounded-box">
 	<div class="font-bold flex">
 		<div class=" ">
-			<div class="dropdown dropdown-start ">
+			<div class="dropdown dropdown-start">
 				<!-- svelte-ignore a11y_label_has_associated_control -->
 				<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 				<label
@@ -85,10 +97,10 @@
 				<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 				<div
 					tabindex="0"
-					class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl overflow-y-auto overscroll-contain  max-h-52 sm:max-h-72 md:max-h-90    max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
+					class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-max text-sm shadow-2xl overflow-y-auto overscroll-contain max-h-52 sm:max-h-72 md:max-h-90 max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
 				>
 					<div
-						class="flex flex-col overflow-x-auto overscroll-contain text-sm font-normal normal-case min-w-max w-full "
+						class="flex flex-col overflow-x-auto overscroll-contain text-sm font-normal normal-case min-w-max w-full"
 					>
 						{#if hasGroup_argsNode}
 							<button
@@ -116,14 +128,14 @@
 								{predefinedFirstSteps}
 								groupName={group.group_name}
 								onArgAddRequest={(newArgData) => {
-                                    if ($activeArgumentsDataGrouped_Store) {
-                                        activeArgumentsDataGrouped_Store.add_activeArgument(
-                                            newArgData,
-                                            group.group_name,
-                                            undefined,
-                                            endpointInfo
-                                        );
-                                    }
+									if ($activeArgumentsDataGrouped_Store) {
+										activeArgumentsDataGrouped_Store.add_activeArgument(
+											newArgData,
+											group.group_name,
+											undefined,
+											endpointInfo
+										);
+									}
 								}}
 							/>
 						{/each}
@@ -142,7 +154,7 @@
 		{/if}
 		{#if group.group_name !== 'root'}
 			<!-- svelte-ignore a11y_click_events_have_key_events -->
-            <!-- svelte-ignore a11y_no_static_element_interactions -->
+			<!-- svelte-ignore a11y_no_static_element_interactions -->
 			<i
 				class="bi bi-info-circle text-secondary px-2"
 				title={group.description}

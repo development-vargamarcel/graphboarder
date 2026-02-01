@@ -8,8 +8,11 @@
 
 	let { prefix = '', node }: Props = $props();
 	let activeArgumentsContext = getContext<any>(`${untrack(() => prefix)}activeArgumentsContext`);
-	const OutermostQMSWraperContext = getContext<any>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
-	const mergedChildren_controlPanel_Store = OutermostQMSWraperContext?.mergedChildren_controlPanel_Store;
+	const OutermostQMSWraperContext = getContext<any>(
+		`${untrack(() => prefix)}OutermostQMSWraperContext`
+	);
+	const mergedChildren_controlPanel_Store =
+		OutermostQMSWraperContext?.mergedChildren_controlPanel_Store;
 	let currentObject = $derived({
 		stepsOfFieldsThisAppliesTo: activeArgumentsContext?.stepsOfFieldsThisAppliesTo,
 		nodeId: node.id,
@@ -22,7 +25,7 @@
 </script>
 
 <button
-	class="flex btn btn-xs "
+	class="flex btn btn-xs"
 	aria-label={objIsStarred ? 'Remove from control panel' : 'Add to control panel'}
 	title={objIsStarred ? 'Remove from control panel' : 'Add to control panel'}
 	onclick={() => {
@@ -34,5 +37,5 @@
 		objIsStarred = mergedChildren_controlPanel_Store.getObj(currentObject);
 	}}
 >
-	<i class="bi  {objIsStarred ? 'bi-star-fill' : 'bi-star'}"></i>
+	<i class="bi {objIsStarred ? 'bi-star-fill' : 'bi-star'}"></i>
 </button>

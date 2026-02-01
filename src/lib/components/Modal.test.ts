@@ -44,8 +44,8 @@ describe('Modal Component', () => {
 		it('should accept apply event listener', () => {
 			const apply = vi.fn();
 			const { component } = render(Modal, {
-                props: { onApply: apply }
-            });
+				props: { onApply: apply }
+			});
 			expect(component).toBeTruthy();
 		});
 
@@ -62,7 +62,7 @@ describe('Modal Component', () => {
 		it('should handle different modalIdentifier values', () => {
 			const identifiers = ['modal-1', 'user-settings', 'confirmation-dialog'];
 
-			identifiers.forEach(identifier => {
+			identifiers.forEach((identifier) => {
 				const { component } = render(Modal, {
 					props: { modalIdetifier: identifier }
 				});

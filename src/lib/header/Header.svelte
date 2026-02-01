@@ -33,9 +33,8 @@
 			>
 				<li><a href="/" class:active={page.url.pathname === '/'}>Home</a></li>
 				<li>
-					<a
-						href="/endpoints"
-						class:active={page.url.pathname.startsWith('/endpoints')}>Endpoints</a
+					<a href="/endpoints" class:active={page.url.pathname.startsWith('/endpoints')}
+						>Endpoints</a
 					>
 				</li>
 			</ul>
@@ -49,10 +48,7 @@
 		<ul class="menu menu-horizontal px-1">
 			<li><a href="/" class:active={page.url.pathname === '/'}>Home</a></li>
 			<li>
-				<a
-					href="/endpoints"
-					class:active={page.url.pathname.startsWith('/endpoints')}>Endpoints</a
-				>
+				<a href="/endpoints" class:active={page.url.pathname.startsWith('/endpoints')}>Endpoints</a>
 			</li>
 		</ul>
 	</div>

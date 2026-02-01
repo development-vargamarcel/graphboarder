@@ -1,5 +1,4 @@
 <script lang="ts">
-
 	import { page } from '$app/stores';
 	import TabItem from '$lib/components/TabItem.svelte';
 	import TabButton from '$lib/components/TabButton.svelte';
@@ -29,9 +28,9 @@
 	Logger.debug('page', $page);
 	let endpointid = $derived($page.params.endpointid);
 
-    $effect(() => {
-	    Logger.debug({ endpointid });
-    });
+	$effect(() => {
+		Logger.debug({ endpointid });
+	});
 
 	let links = $derived([
 		{
@@ -100,14 +99,14 @@
 </script>
 
 <div class="flex h-screen overscroll-contain">
-	<div class="w-16 ">
-		<div class="h-[50px] bg-primary ">
-			<a href="/" class="block w-full h-full ">
+	<div class="w-16">
+		<div class="h-[50px] bg-primary">
+			<a href="/" class="block w-full h-full">
 				<img src="/png_website_logo_placeholder.png" alt="" class="w-full h-full" />
 			</a>
 		</div>
 		<ul
-			class="flex h-full w-16xxx flex-col  justify-start border-t-[1px] border-base-content border-opacity-5 bg-base-300   pt-1 pb-[25vh] overscroll-contain"
+			class="flex h-full w-16xxx flex-col justify-start border-t-[1px] border-base-content border-opacity-5 bg-base-300 pt-1 pb-[25vh] overscroll-contain"
 		>
 			{#each links as link}
 				<TabItem
@@ -155,17 +154,17 @@
 			<div class="h-[50px] bg-accent">{''}</div>
 			<!-- svelte-ignore a11y_click_events_have_key_events -->
 			<ul
-				class="space-y-1 px-4 py-4 h-full overflow-y-auto  w-[60vw] md:w-full   overflow-x-auto  bg-base-100  grow pb-[25vh] overscroll-contain"
+				class="space-y-1 px-4 py-4 h-full overflow-y-auto w-[60vw] md:w-full overflow-x-auto bg-base-100 grow pb-[25vh] overscroll-contain"
 				onclick={() => {
 					onHideSidebar?.();
 				}}
 				role="presentation"
 			>
 				{#each itemsToShow as item}
-					<li class="md:w-[10vw] md:min-w-[170px] ">
+					<li class="md:w-[10vw] md:min-w-[170px]">
 						<a
 							href={item.url}
-							class="rounded hover:bg-info/50 text-base-content  break-allxxx truncate ...  block w-full h-full px-2  py-2 text-sm leading-tight {$page
+							class="rounded hover:bg-info/50 text-base-content break-allxxx truncate ... block w-full h-full px-2 py-2 text-sm leading-tight {$page
 								.url.pathname == item.url || $page.url.pathname.startsWith(`${item.url}/`)
 								? 'font-bold bg-info/50 '
 								: 'bg-info/5'}"
@@ -178,7 +177,7 @@
 	{/if}
 
 	<div
-		class="w-[100vw] h-screen  md:hidden "
+		class="w-[100vw] h-screen md:hidden"
 		role="button"
 		tabindex="0"
 		onclick={() => {

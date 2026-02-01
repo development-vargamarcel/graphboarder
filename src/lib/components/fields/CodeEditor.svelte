@@ -105,7 +105,6 @@
 		};
 	});
 
-
 	const configurations = [
 		{
 			language: 'graphql',
@@ -188,7 +187,7 @@
 	bind:this={mainContainerEl}
 >
 	<div class="h-full rounded-box overflow-auto">
-		<div bind:this={divEl} class="h-full "></div>
+		<div bind:this={divEl} class="h-full"></div>
 	</div>
 	<div class="flex flex-row-reverse w-full overflow-x-auto overflow-y-hidden px-10 pb-4 pt-2">
 		{#if !readOnly}

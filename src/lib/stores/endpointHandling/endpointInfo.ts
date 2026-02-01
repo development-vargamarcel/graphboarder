@@ -12,7 +12,12 @@ import {
 import { writable, get } from 'svelte/store';
 import { getDeepField, getFields_Grouped, getRootType } from '$lib/utils/usefulFunctions';
 import { Logger } from '$lib/utils/logger';
-import type { EndpointConfiguration, FieldWithDerivedData, SchemaData, SchemaDataStore } from '$lib/types';
+import type {
+	EndpointConfiguration,
+	FieldWithDerivedData,
+	SchemaData,
+	SchemaDataStore
+} from '$lib/types';
 
 /**
  * Default values for endpoint configuration.
@@ -29,15 +34,14 @@ export const endpointInfoDefaultValues = {
 			},
 			check: (QMS_info: any, schemaData: any) => {
 				const QMS_infoRootType = getRootType(null, QMS_info.dd_rootName, schemaData);
-				Logger.debug({ QMS_infoRootType, QMS_info })
+				Logger.debug({ QMS_infoRootType, QMS_info });
 				if (!QMS_infoRootType?.fields) {
 					Logger.error('QMS_infoRootType.fields is undefined');
 					return false;
 				}
-				return !!QMS_infoRootType.fields.find((field) => field.dd_displayName === 'edges')
+				return !!QMS_infoRootType.fields.find((field) => field.dd_displayName === 'edges');
 			}
-		}
-		,
+		},
 		{
 			get_Val: (QMS_info: any) => {
 				return [];
@@ -90,101 +94,113 @@ export const endpointInfoDefaultValues = {
 				return this.check(QMS_info, schemaData, storeVal);
 			},
 			check: (QMS_info: any, schemaData: any, storeVal: any) => {
-				const rootType = getRootType(null, QMS_info.dd_rootName, schemaData)
-				const fields = rootType?.fields
-				let idField
-				const {
-					scalarFields,
-					non_scalarFields,
-					enumFields
-				} = getFields_Grouped(rootType!, [], schemaData)
+				const rootType = getRootType(null, QMS_info.dd_rootName, schemaData);
+				const fields = rootType?.fields;
+				let idField;
+				const { scalarFields, non_scalarFields, enumFields } = getFields_Grouped(
+					rootType!,
+					[],
+					schemaData
+				);
 				const nonNullScalarFields = scalarFields.filter((field) => {
-					return field.dd_NON_NULL
-				})
-				Logger.debug({ nonNullScalarFields })
+					return field.dd_NON_NULL;
+				});
+				Logger.debug({ nonNullScalarFields });
 				if (nonNullScalarFields.length == 1) {
-					return nonNullScalarFields[0]
+					return nonNullScalarFields[0];
 				}
 
-				const tableNameLowercase = QMS_info.dd_displayName.toLowerCase().replaceAll('s', '')//the last part handles plurar-singular problems
+				const tableNameLowercase = QMS_info.dd_displayName.toLowerCase().replaceAll('s', ''); //the last part handles plurar-singular problems
 
 				let possibleNames = [...(storeVal?.idFieldNamePossibilities || [])];
 				if (!possibleNames.includes('id')) possibleNames.push('id');
 				possibleNames.push(`${tableNameLowercase}_id`, `${tableNameLowercase}id`);
 
-				possibleNames.find(possibleName => {
+				possibleNames.find((possibleName) => {
 					idField = nonNullScalarFields?.find((field) => {
-						const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase().replaceAll('s', '')//the last part handles plurar-singular problems
-						return possibleName == fieldDisplayNameLowercase
+						const fieldDisplayNameLowercase = field.dd_displayName
+							.toLowerCase()
+							.replaceAll('s', ''); //the last part handles plurar-singular problems
+						return possibleName == fieldDisplayNameLowercase;
 					});
-					return idField
+					return idField;
 				});
 				if (idField) {
-					return idField
+					return idField;
 				}
 				idField = nonNullScalarFields?.find((field) => {
-					const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase().replaceAll('s', '')//the last part handles plurar-singular problems
-					return possibleNames.includes(fieldDisplayNameLowercase) || field.dd_rootName == 'ID'
+					const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase().replaceAll('s', ''); //the last part handles plurar-singular problems
+					return possibleNames.includes(fieldDisplayNameLowercase) || field.dd_rootName == 'ID';
 				});
 				if (idField) {
-					return idField
+					return idField;
 				}
 
 				idField = nonNullScalarFields?.find((field) => {
-					const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase().replaceAll('s', '')//the last part handles plurar-singular problems
+					const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase().replaceAll('s', ''); //the last part handles plurar-singular problems
 					return tableNameLowercase.includes(fieldDisplayNameLowercase);
 				});
 				if (idField) {
-					return idField
+					return idField;
 				}
 				idField = nonNullScalarFields?.find((field) => {
-					const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase().replaceAll('s', '')//the last part handles plurar-singular problems
+					const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase().replaceAll('s', ''); //the last part handles plurar-singular problems
 					return fieldDisplayNameLowercase.includes(tableNameLowercase);
 				});
 				if (idField) {
-					return idField
+					return idField;
 				}
 
 				let idFields = nonNullScalarFields?.filter((field) => {
-					const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase().replaceAll('s', '')//the last part handles plurar-singular problems
+					const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase().replaceAll('s', ''); //the last part handles plurar-singular problems
 					return fieldDisplayNameLowercase.includes('id');
 				});
 				if (idFields.length > 1) {
-					Logger.info('private key could be a conbination of these columns:', { idFields })
+					Logger.info('private key could be a conbination of these columns:', { idFields });
 				}
 				if (idFields.length == 1) {
-					return idFields[0]
+					return idFields[0];
 				}
-				Logger.warn('id field is one of these', { nonNullScalarFields })
-
+				Logger.warn('id field is one of these', { nonNullScalarFields });
 			}
 		}
 	],
 	typesExtraDataPossibilities: [
-
 		{
 			get_Val: () => {
-				return { displayInterface: 'codeeditor' as const, defaultValue: '{}', use_transformerREVERSE: (val: any) => { return val }, use_transformer: string_transformer };
+				return {
+					displayInterface: 'codeeditor' as const,
+					defaultValue: '{}',
+					use_transformerREVERSE: (val: any) => {
+						return val;
+					},
+					use_transformer: string_transformer
+				};
 			},
 			check: function (dd_rootName: string, dd_displayName: string, typeObj: any) {
 				if (!dd_rootName) {
-					return null
+					return null;
 				}
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
 				const dd_displayNameLowerCase = dd_displayName.toLowerCase();
-				return dd_displayNameLowerCase.includes('config')
+				return dd_displayNameLowerCase.includes('config');
 			}
 		},
 		{
 			get_Val: () => {
-				return { displayInterface: 'text' as const, defaultValue: ' ', use_transformerREVERSE: string_transformerREVERSE, use_transformer: string_transformer };
+				return {
+					displayInterface: 'text' as const,
+					defaultValue: ' ',
+					use_transformerREVERSE: string_transformerREVERSE,
+					use_transformer: string_transformer
+				};
 			},
 			check: function (dd_rootName: string, dd_displayName: string, typeObj: any) {
 				if (!dd_rootName) {
-					return null
+					return null;
 				}
 				if (typeObj.dd_kindEl?.toLowerCase() == 'enum') {
-					return null
+					return null;
 				}
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
 				return dd_rootNameLowerCase.includes('string') || dd_rootNameLowerCase.includes('text');
@@ -192,19 +208,24 @@ export const endpointInfoDefaultValues = {
 		},
 		{
 			get_Val: () => {
-				return { displayInterface: 'datetime-local' as const, defaultValue: ISO8601_transformerGETDEFAULTVAl(), use_transformerREVERSE: ISO8601_transformerREVERSE, use_transformer: ISO8601_transformer };
+				return {
+					displayInterface: 'datetime-local' as const,
+					defaultValue: ISO8601_transformerGETDEFAULTVAl(),
+					use_transformerREVERSE: ISO8601_transformerREVERSE,
+					use_transformer: ISO8601_transformer
+				};
 			},
 			check: function (dd_rootName: string, dd_displayName: string, typeObj: any) {
 				if (!dd_rootName) {
-					return null
+					return null;
 				}
 				if (typeObj.dd_kindEl?.toLowerCase() == 'enum') {
-					return null
+					return null;
 				}
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
 				return (
 					dd_rootNameLowerCase.includes('timestamp') ||
-					dd_rootNameLowerCase.replace("update", "").includes('date') ||
+					dd_rootNameLowerCase.replace('update', '').includes('date') ||
 					dd_rootNameLowerCase.includes('time')
 				);
 			}
@@ -212,31 +233,43 @@ export const endpointInfoDefaultValues = {
 		{
 			get_Val: () => {
 				return {
-					displayInterface: 'number' as const, defaultValue: 0,
-					use_transformerREVERSE: (val: any) => { return val }, use_transformer: number_transformer
+					displayInterface: 'number' as const,
+					defaultValue: 0,
+					use_transformerREVERSE: (val: any) => {
+						return val;
+					},
+					use_transformer: number_transformer
 				};
 			},
 			check: function (dd_rootName: string, dd_displayName: string, typeObj: any) {
 				if (!dd_rootName) {
-					return null
+					return null;
 				}
 				if (typeObj.dd_kindEl?.toLowerCase() == 'enum') {
-					return null
+					return null;
 				}
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
-				return dd_rootNameLowerCase.replace('constraint', '').includes('int') || dd_rootNameLowerCase.includes('float');
+				return (
+					dd_rootNameLowerCase.replace('constraint', '').includes('int') ||
+					dd_rootNameLowerCase.includes('float')
+				);
 			}
 		},
 		{
 			get_Val: () => {
-				return { displayInterface: 'geo' as const, defaultValue: undefined, use_transformerREVERSE: geojson_transformerREVERSE, use_transformer: geojson_transformer };
+				return {
+					displayInterface: 'geo' as const,
+					defaultValue: undefined,
+					use_transformerREVERSE: geojson_transformerREVERSE,
+					use_transformer: geojson_transformer
+				};
 			},
 			check: function (dd_rootName: string, dd_displayName: string, typeObj: any) {
 				if (!dd_rootName) {
-					return null
+					return null;
 				}
 				if (typeObj.dd_kindEl?.toLowerCase() == 'enum') {
-					return null
+					return null;
 				}
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
 				return dd_rootNameLowerCase.includes('geo');
@@ -244,63 +277,91 @@ export const endpointInfoDefaultValues = {
 		},
 		{
 			get_Val: () => {
-				return { displayInterface: 'boolean' as const, defaultValue: true, use_transformerREVERSE: (val: any) => { return val }, use_transformer: boolean_transformer };
-				return { displayInterface: 'ENUM' as const, defaultValue: [], use_transformerREVERSE: (val: any) => { return val }, use_transformer: (val: any) => { return val } };
+				return {
+					displayInterface: 'boolean' as const,
+					defaultValue: true,
+					use_transformerREVERSE: (val: any) => {
+						return val;
+					},
+					use_transformer: boolean_transformer
+				};
+				return {
+					displayInterface: 'ENUM' as const,
+					defaultValue: [],
+					use_transformerREVERSE: (val: any) => {
+						return val;
+					},
+					use_transformer: (val: any) => {
+						return val;
+					}
+				};
 			},
 			check: function (dd_rootName: string, dd_displayName: string, typeObj: any) {
 				if (!dd_rootName) {
-					return null
+					return null;
 				}
 				if (typeObj.dd_kindEl?.toLowerCase() == 'enum') {
-					return null
+					return null;
 				}
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
 				return dd_rootNameLowerCase.includes('bool');
 			}
-		}, {
+		},
+		{
 			get_Val: () => {
-				return { displayInterface: 'ENUM', defaultValue: [], use_transformerREVERSE: (val: any) => { return val }, use_transformer: (val: any) => { return val } };
+				return {
+					displayInterface: 'ENUM',
+					defaultValue: [],
+					use_transformerREVERSE: (val: any) => {
+						return val;
+					},
+					use_transformer: (val: any) => {
+						return val;
+					}
+				};
 			},
 			check: function (dd_rootName: string, dd_displayName: string, typeObj: any) {
 				if (!dd_rootName) {
-					return null
+					return null;
 				}
 				const dd_rootNameLowerCase = dd_rootName.toLowerCase();
 				return dd_rootNameLowerCase.includes('enum') || dd_rootNameLowerCase.includes('constraint');
 			}
-		}
-		, {
+		},
+		{
 			get_Val: () => {
-				return { displayInterface: null, defaultValue: null, use_transformerREVERSE: (val: any) => { return val }, use_transformer: (val: any) => { return val } };
+				return {
+					displayInterface: null,
+					defaultValue: null,
+					use_transformerREVERSE: (val: any) => {
+						return val;
+					},
+					use_transformer: (val: any) => {
+						return val;
+					}
+				};
 			},
 			check: function (dd_rootName: string, dd_displayName: string, typeObj: any) {
 				//	console.warn('no typesExtraDataPossibility found,using the default one')
-				return true
+				return true;
 			}
 		}
 	],
 	idDecoderPossibilities: [
 		{
 			get_Val: (QMS_info: any, schemaData: any, id: any) => {
-				return id
-
+				return id;
 			},
-			check: (QMS_info: any, schemaData: any) => { return true }
-		},
+			check: (QMS_info: any, schemaData: any) => {
+				return true;
+			}
+		}
 	],
-	returningColumnsPossibleLocationsInMutations: [[]
-	],
-	returningColumnsPossibleLocationsInQueriesPerRow: [
-		['node'], []
-	],
-	inputColumnsPossibleLocationsInArg: [
-		[]
-	]
-	, pageInfoFieldsLocation: ['pageInfo'],
-
+	returningColumnsPossibleLocationsInMutations: [[]],
+	returningColumnsPossibleLocationsInQueriesPerRow: [['node'], []],
+	inputColumnsPossibleLocationsInArg: [[]],
+	pageInfoFieldsLocation: ['pageInfo']
 };
-
-
 
 /**
  * Creates the endpoint info store with configuration and helper methods to inspect the schema.
@@ -308,28 +369,36 @@ export const endpointInfoDefaultValues = {
  * @returns A writable store enriched with helper methods.
  */
 export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
+	const store = writable<EndpointConfiguration>({
+		...endpointInfoDefaultValues,
+		...endpointConfiguration
+	});
 
-
-	const store = writable<EndpointConfiguration>({ ...endpointInfoDefaultValues, ...endpointConfiguration });
-
-	const get_fieldsNames = (currentQMS_info: any, fieldsLocation: any, schemaData: SchemaDataStore | SchemaData, FieldsPossibleNamesName: any) => {
+	const get_fieldsNames = (
+		currentQMS_info: any,
+		fieldsLocation: any,
+		schemaData: SchemaDataStore | SchemaData,
+		FieldsPossibleNamesName: any
+	) => {
 		//do not move this function,needs "store" to be defined
 		const storeVal = get(store) as any;
 		if (!storeVal || !storeVal?.[FieldsPossibleNamesName]) {
 			return null;
 		}
-		const fieldsNames: any = {}
-		const QMSInfo = getDeepField(currentQMS_info, fieldsLocation, schemaData, 'fields')
+		const fieldsNames: any = {};
+		const QMSInfo = getDeepField(currentQMS_info, fieldsLocation, schemaData, 'fields');
 		if (!QMSInfo) return null;
-		const QMSInfoROOT = getRootType(null, QMSInfo.dd_rootName, schemaData)
+		const QMSInfoROOT = getRootType(null, QMSInfo.dd_rootName, schemaData);
 		if (!QMSInfoROOT?.fields) return null;
-		const QMSInfoROOTFieldNames = QMSInfoROOT.fields.map((field: any) => field.dd_displayName)
+		const QMSInfoROOTFieldNames = QMSInfoROOT.fields.map((field: any) => field.dd_displayName);
 
 		for (const [name, possibilities] of Object.entries(storeVal[FieldsPossibleNamesName])) {
-			fieldsNames[name] = (possibilities as any[]).find(possibility => QMSInfoROOTFieldNames.includes(possibility))
+			fieldsNames[name] = (possibilities as any[]).find((possibility) =>
+				QMSInfoROOTFieldNames.includes(possibility)
+			);
 		}
-		return fieldsNames
-	}
+		return fieldsNames;
+	};
 
 	return {
 		...store,
@@ -337,7 +406,7 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 		 * Returns the current context of the store.
 		 */
 		get_thisContext: function () {
-			return this
+			return this;
 		},
 		/**
 		 * Updates the store with new endpoint configuration efficiently.
@@ -351,7 +420,10 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 		 * @param QMS_info - The QMS field info.
 		 * @param schemaData - The schema data.
 		 */
-		get_inputFieldsContainerLocation: function (QMS_info: any, schemaData: SchemaDataStore | SchemaData) {
+		get_inputFieldsContainerLocation: function (
+			QMS_info: any,
+			schemaData: SchemaDataStore | SchemaData
+		) {
 			const storeVal = get(store);
 			if (!storeVal?.inputColumnsPossibleLocationsInArg?.length) {
 				return [];
@@ -362,20 +434,15 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 					if (currPossibility.length == 0) {
 						return true;
 					}
-					const deepField = getDeepField(
-						QMS_info,
-						currPossibility,
-						schemaData,
-						'inputFields'
-					);
+					const deepField = getDeepField(QMS_info, currPossibility, schemaData, 'inputFields');
 					if (deepField) {
-						return true
+						return true;
 					}
 				}
 			);
 
 			if (inputColumnsLocationInArg) {
-				return inputColumnsLocationInArg
+				return inputColumnsLocationInArg;
 			}
 			return [];
 		},
@@ -406,7 +473,7 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 		 * @param schemaData - The schema data.
 		 */
 		get_rowCountLocation: function (QMS_info: any, schemaData: SchemaDataStore | SchemaData) {
-			Logger.debug({ schemaData })
+			Logger.debug({ schemaData });
 			const storeVal = get(store);
 			if (!storeVal || !storeVal?.rowCountLocationPossibilities?.length) {
 				return null;
@@ -417,7 +484,6 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 					return rowCountLocationPossibility.check(QMS_info, schemaData, storeVal);
 				}
 			);
-
 
 			if (rowCountLocationPossibility) {
 				return rowCountLocationPossibility.get_Val(QMS_info, schemaData, storeVal);
@@ -443,7 +509,11 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			if (idFieldPossibility) {
 				return idFieldPossibility.get_Val(QMS_info, schemaData, storeVal);
 			}
-			Logger.warn('no idField found', { idFieldPossibilities: storeVal.idFieldPossibilities, idFieldPossibility, QMS_info });
+			Logger.warn('no idField found', {
+				idFieldPossibilities: storeVal.idFieldPossibilities,
+				idFieldPossibility,
+				QMS_info
+			});
 
 			return null;
 		},
@@ -458,26 +528,29 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			if (!storeVal || !storeVal?.typesExtraDataPossibilities?.length) {
 				return null;
 			}
-			let typesExtraDataPossibility
+			let typesExtraDataPossibility;
 			if (choosenDisplayInterface) {
-				typesExtraDataPossibility = storeVal.typesExtraDataPossibilities
-					.find((possibility) => {
-						return possibility.get_Val().displayInterface == choosenDisplayInterface;
-					})
+				typesExtraDataPossibility = storeVal.typesExtraDataPossibilities.find((possibility) => {
+					return possibility.get_Val().displayInterface == choosenDisplayInterface;
+				});
 			} else {
 				typesExtraDataPossibility = storeVal.typesExtraDataPossibilities.find(
 					(typesExtraDataPossibility) => {
 						return (
-							typesExtraDataPossibility.check(typeInfo.dd_kindEl, typeInfo.dd_displayName, typeInfo) ||
-							typesExtraDataPossibility.check(typeInfo.dd_rootName, typeInfo.dd_displayName, typeInfo)
-
+							typesExtraDataPossibility.check(
+								typeInfo.dd_kindEl,
+								typeInfo.dd_displayName,
+								typeInfo
+							) ||
+							typesExtraDataPossibility.check(
+								typeInfo.dd_rootName,
+								typeInfo.dd_displayName,
+								typeInfo
+							)
 						);
 					}
 				);
-
 			}
-
-
 
 			if (typesExtraDataPossibility) {
 				return typesExtraDataPossibility.get_Val(typeInfo);
@@ -511,28 +584,45 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 		 * @param schemaData - The schema data.
 		 * @param qmsObjective - The objective (e.g., 'getOne').
 		 */
-		get_qmsNameForObjective: function (QMS_info: any, schemaData: SchemaDataStore | SchemaData, qmsObjective: any) {
-			const thisContext = this
+		get_qmsNameForObjective: function (
+			QMS_info: any,
+			schemaData: SchemaDataStore | SchemaData,
+			qmsObjective: any
+		) {
+			const thisContext = this;
 			const tableName = this.get_tableName(QMS_info, schemaData);
 			if (!tableName) {
 				Logger.warn('no qmsNameForObjective found because tableName is null');
-				return null
+				return null;
 			}
 			const storeVal = get(store);
 			if (!storeVal || !storeVal?.qmsNameForObjectivePossibilities?.length) {
 				return null;
 			}
-			const qmsNameForObjectivePossibility = storeVal.qmsNameForObjectivePossibilities.find((qmsNameForObjectivePossibility) => {
-				return qmsNameForObjectivePossibility.check({ QMS_info, schemaData, thisContext, tableName, qmsObjective });
-			});
+			const qmsNameForObjectivePossibility = storeVal.qmsNameForObjectivePossibilities.find(
+				(qmsNameForObjectivePossibility) => {
+					return qmsNameForObjectivePossibility.check({
+						QMS_info,
+						schemaData,
+						thisContext,
+						tableName,
+						qmsObjective
+					});
+				}
+			);
 
 			if (qmsNameForObjectivePossibility) {
-				return qmsNameForObjectivePossibility.get_Val({ QMS_info, schemaData, thisContext, tableName, qmsObjective });
+				return qmsNameForObjectivePossibility.get_Val({
+					QMS_info,
+					schemaData,
+					thisContext,
+					tableName,
+					qmsObjective
+				});
 			}
 			Logger.warn('no qmsNameForObjective found');
 
 			return null;
-
 		},
 		/**
 		 * Decodes an ID if necessary.
@@ -555,32 +645,40 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 			Logger.warn('no idDecoder found');
 
 			return null;
-		}
+		},
 
-		,
 		/**
 		 * Gets field names for Relay pagination page info.
 		 */
-		get_relayPageInfoFieldsNames: (currentQMS_info: any, pageInfoFieldsLocation: any, schemaData: SchemaDataStore | SchemaData) => {
+		get_relayPageInfoFieldsNames: (
+			currentQMS_info: any,
+			pageInfoFieldsLocation: any,
+			schemaData: SchemaDataStore | SchemaData
+		) => {
 			const storeVal = get(store);
 			if (!storeVal || !storeVal?.relayPageInfoFieldsPossibleNames) {
 				return null;
 			}
-			return get_fieldsNames(currentQMS_info, pageInfoFieldsLocation, schemaData, 'relayPageInfoFieldsPossibleNames')
-
-		}
-		,
+			return get_fieldsNames(
+				currentQMS_info,
+				pageInfoFieldsLocation,
+				schemaData,
+				'relayPageInfoFieldsPossibleNames'
+			);
+		},
 		/**
 		 * Gets the field name for the Relay cursor.
 		 */
-		get_relayCursorFieldName: (currentQMS_info: any, rowsLocation: any, schemaData: SchemaDataStore | SchemaData) => {
+		get_relayCursorFieldName: (
+			currentQMS_info: any,
+			rowsLocation: any,
+			schemaData: SchemaDataStore | SchemaData
+		) => {
 			const storeVal = get(store);
 			if (!storeVal || !storeVal?.relayCursorPossibleNames) {
 				return null;
 			}
-			return get_fieldsNames(currentQMS_info, rowsLocation, schemaData, 'relayCursorPossibleNames')
-
+			return get_fieldsNames(currentQMS_info, rowsLocation, schemaData, 'relayCursorPossibleNames');
 		}
-
-	}
-}
+	};
+};

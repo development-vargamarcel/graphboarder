@@ -46,9 +46,7 @@ export function getReturningFields(
 		return null;
 	}
 
-	const myField = fields.find(
-		(field: any) => field.dd_displayName == matchingField.dd_displayName
-	);
+	const myField = fields.find((field: any) => field.dd_displayName == matchingField.dd_displayName);
 
 	if (myField) {
 		return fields;
@@ -117,9 +115,7 @@ export function discoverMatchingQMS(
 	}
 
 	// Fourth try: Same search without list filter
-	const allMatches = fuse
-		.search(nodeSearchTerm)
-		.map((item) => item.item);
+	const allMatches = fuse.search(nodeSearchTerm).map((item) => item.item);
 
 	return allMatches;
 }

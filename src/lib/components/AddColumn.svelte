@@ -34,18 +34,28 @@
 
 	// Setup contexts with writable stores
 	setContext(`${untrack(() => prefix)}stepsOfFieldsOBJ`, writable({}));
-	const stepsOfFieldsOBJ = getContext<ReturnType<typeof writable<Record<string, any>>>>(`${untrack(() => prefix)}stepsOfFieldsOBJ`);
+	const stepsOfFieldsOBJ = getContext<ReturnType<typeof writable<Record<string, any>>>>(
+		`${untrack(() => prefix)}stepsOfFieldsOBJ`
+	);
 
 	setContext(`${untrack(() => prefix)}stepsOfFieldsOBJFull`, writable({}));
-	const stepsOfFieldsOBJFull = getContext<ReturnType<typeof writable<Record<string, any>>>>(`${untrack(() => prefix)}stepsOfFieldsOBJFull`);
+	const stepsOfFieldsOBJFull = getContext<ReturnType<typeof writable<Record<string, any>>>>(
+		`${untrack(() => prefix)}stepsOfFieldsOBJFull`
+	);
 
 	setContext(`${untrack(() => prefix)}activeArgumentsDataGrouped_Store`, writable({}));
-	const activeArgumentsDataGrouped_Store = getContext<ReturnType<typeof writable<Record<string, any>>>>(`${untrack(() => prefix)}activeArgumentsDataGrouped_Store`);
+	const activeArgumentsDataGrouped_Store = getContext<
+		ReturnType<typeof writable<Record<string, any>>>
+	>(`${untrack(() => prefix)}activeArgumentsDataGrouped_Store`);
 
-	const tableColsData_Store = getContext<any>(`${untrack(() => prefix)}QMSWraperContext`).tableColsData_Store;
+	const tableColsData_Store = getContext<any>(
+		`${untrack(() => prefix)}QMSWraperContext`
+	).tableColsData_Store;
 
 	setContext(`${untrack(() => prefix)}StepsOfFieldsSelected`, writable(new Set([])));
-	const StepsOfFieldsSelected = getContext<ReturnType<typeof writable<Set<any>>>>(`${untrack(() => prefix)}StepsOfFieldsSelected`);
+	const StepsOfFieldsSelected = getContext<ReturnType<typeof writable<Set<any>>>>(
+		`${untrack(() => prefix)}StepsOfFieldsSelected`
+	);
 
 	// Use $effect for reactive subscriptions - these automatically clean up
 	$effect(() => {
@@ -79,21 +89,21 @@
 	});
 </script>
 
-<div class="dropdown grow ">
+<div class="dropdown grow">
 	<!-- svelte-ignore a11y_label_has_associated_control -->
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-	<label tabindex="0" class="btn btn-xs bi bi-node-plus-fill text-lg p-1  w-full"></label>
+	<label tabindex="0" class="btn btn-xs bi bi-node-plus-fill text-lg p-1 w-full"></label>
 	<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 	<div
 		tabindex="0"
-		class="dropdown-content menu p-2  bg-base-100 rounded-box ==w-max max-w-screen text-sm shadow-2xl z-[9999] "
+		class="dropdown-content menu p-2 bg-base-100 rounded-box ==w-max max-w-screen text-sm shadow-2xl z-[9999]"
 	>
 		<div
 			class="max-h-[70vh] sm:max-h-[80vh] md:max-h-[80vh] overflow-auto overscroll-contain max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl"
 		>
 			<div
-				class="flex flex-col overflow-x-auto text-sm font-normal normal-case min-w-max  w-full  space-y-1"
+				class="flex flex-col overflow-x-auto text-sm font-normal normal-case min-w-max w-full space-y-1"
 			>
 				<!-- <input
 					type="text"
@@ -102,9 +112,9 @@
 					bind:value={column_stepsOfFields}
 					on:keypress={addColumnFromInput}
 				/> -->
-				<div class="text-center sticky left-0  bg-black= mx-auto ">
+				<div class="text-center sticky left-0 bg-black= mx-auto">
 					<button
-						class="btn btn-xs btn-primary w-min "
+						class="btn btn-xs btn-primary w-min"
 						onclick={() => {
 							let stepsOfFields = [];
 							let tableColData = {

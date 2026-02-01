@@ -25,12 +25,15 @@ This project is configured to work with the Svelte MCP server.
 ### Setup Methods
 
 #### Method 1: Command Line (Recommended)
+
 ```bash
 claude mcp add -t http -s project svelte https://mcp.svelte.dev/mcp
 ```
 
 #### Method 2: Manual Configuration
+
 Edit `~/.claude.json` and add the server configuration under the project's `mcpServers` object:
+
 ```json
 "mcpServers": {
   "svelte": {
@@ -45,6 +48,7 @@ Edit `~/.claude.json` and add the server configuration under the project's `mcpS
 After configuration, **restart Claude Code** to establish the connection with the MCP server. The MCP tools should be available in the next session.
 
 To verify the connection:
+
 - Use `/mcp` command to list configured MCP servers
 - Look for tools prefixed with `mcp__svelte__*`
 

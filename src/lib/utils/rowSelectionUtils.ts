@@ -7,7 +7,9 @@
  * @param selectedRowsModel - Model containing selected rows
  * @returns Object mapping row IDs to true for selected rows
  */
-export function getRowSelectionState(selectedRowsModel: { rows?: Array<{ id: string }> }): Record<string, boolean> {
+export function getRowSelectionState(selectedRowsModel: {
+	rows?: Array<{ id: string }>;
+}): Record<string, boolean> {
 	let rowSelectionState: Record<string, boolean> = {};
 
 	if (!selectedRowsModel?.rows) {
@@ -35,7 +37,11 @@ export function processSelectedRowsColValues(
 	selectedRowsColValues: any[],
 	idColName: string,
 	requiredColNames: string[],
-	node: { dd_kindEl?: string; dd_displayName?: string; inputFields?: Array<{ dd_NON_NULL?: boolean; dd_displayName?: string }> },
+	node: {
+		dd_kindEl?: string;
+		dd_displayName?: string;
+		inputFields?: Array<{ dd_NON_NULL?: boolean; dd_displayName?: string }>;
+	},
 	endpointInfo: any,
 	passAllObjectValuesThroughStringTransformerAndReturnNewObject: (obj: any) => any
 ): any[] {
@@ -62,12 +68,16 @@ export function processSelectedRowsColValues(
  * @param node - Node with inputFields array
  * @returns Array of required column names
  */
-export function getRequiredColumnNames(node: { dd_kindEl?: string; inputFields?: Array<{ dd_NON_NULL?: boolean; dd_displayName?: string }> }): string[] {
+export function getRequiredColumnNames(node: {
+	dd_kindEl?: string;
+	inputFields?: Array<{ dd_NON_NULL?: boolean; dd_displayName?: string }>;
+}): string[] {
 	if (node.dd_kindEl == 'SCALAR') {
 		return [];
 	}
 
-	return node?.inputFields
-		?.filter((field) => field.dd_NON_NULL)
-		.map((field) => field.dd_displayName) || [];
+	return (
+		node?.inputFields?.filter((field) => field.dd_NON_NULL).map((field) => field.dd_displayName) ||
+		[]
+	);
 }

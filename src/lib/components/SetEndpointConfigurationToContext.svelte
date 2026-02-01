@@ -74,9 +74,11 @@
 
 	//
 	let activeArgumentsData = [];
-	let paginationTypeInfo = $derived(get_paginationTypes(endpointInfo, schemaData).find((pagType) => {
-		return pagType.name == QMS_info?.dd_paginationType;
-	}));
+	let paginationTypeInfo = $derived(
+		get_paginationTypes(endpointInfo, schemaData).find((pagType) => {
+			return pagType.name == QMS_info?.dd_paginationType;
+		})
+	);
 
 	let activeArgumentsDataGrouped_Store_IS_SET = $state(false);
 	$effect(() => {
@@ -250,15 +252,15 @@
 </script>
 
 <div class=" h-full">
-	<div class="  w-full   px-0 mb-10 ">
-		<div class=" mt-2     space-y-2   pb-2  bg-base-100 rounded-box ">
+	<div class="  w-full px-0 mb-10">
+		<div class=" mt-2 space-y-2 pb-2 bg-base-100 rounded-box">
 			<div class="w-2"></div>
 			<ActiveArguments />
 			<div class="w-2"></div>
 
 			<div class=" w-full p-2">
 				<button
-					class="btn btn-sm btn-primary  w-full"
+					class="btn btn-sm btn-primary w-full"
 					onclick={() => {
 						let mutationBody = $QMS_bodyPartsUnifier_StoreDerived;
 						if (mutationBody && mutationBody !== '') {
@@ -282,7 +284,7 @@
 		/>
 
 		<button
-			class=" btn btn-xs grow normal-case "
+			class=" btn btn-xs grow normal-case"
 			onclick={() => {
 				showQMSBody = !showQMSBody;
 			}}>QMS body</button
@@ -297,8 +299,8 @@
 
 	{@render children?.()}
 	{#if queryData.error}
-		<div class="px-4 mx-auto  mb-2">
-			<div class="alert alert-error shadow-lg ">
+		<div class="px-4 mx-auto mb-2">
+			<div class="alert alert-error shadow-lg">
 				<div>
 					<button
 						class="btn btn-ghost btn-sm p-0"

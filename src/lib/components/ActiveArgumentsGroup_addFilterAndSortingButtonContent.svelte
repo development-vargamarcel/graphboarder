@@ -10,7 +10,7 @@
 	import { add_activeArgumentOrContainerTo_activeArgumentsDataGrouped } from '$lib/stores/QMSHandling/activeArgumentsDataGrouped_Store';
 	import ManyToAllSelectInterfaceDefinition from './ManyToAllSelectInterfaceDefinition.svelte';
 	import { Logger } from '$lib/utils/logger';
-    import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
+	import type { QMSMainWraperContext, QMSWraperContext } from '$lib/types/index';
 
 	interface Props {
 		group: any;
@@ -19,9 +19,9 @@
 		node: any;
 		prefix?: string;
 		parent_inputFields: any;
-        parentNodeId?: any;
-        parent_stepsOfFields?: any;
-        onUpdateQuery?: () => void;
+		parentNodeId?: any;
+		parent_stepsOfFields?: any;
+		onUpdateQuery?: () => void;
 	}
 
 	let {
@@ -31,9 +31,9 @@
 		node,
 		prefix = '',
 		parent_inputFields,
-        parentNodeId,
-        parent_stepsOfFields,
-        onUpdateQuery
+		parentNodeId,
+		parent_stepsOfFields,
+		onUpdateQuery
 	}: Props = $props();
 
 	const groupName = group.group_name;
@@ -42,10 +42,12 @@
 	const hasGroup_argsNode = group.group_argsNode;
 	const mainContainerOperator = group.group_argsNode?.mainContainer?.operator;
 
-	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(
+		`${untrack(() => prefix)}OutermostQMSWraperContext`
+	);
 
-    const nodeContext = getContext<any>(`${untrack(() => prefix)}nodeContext`);
-    let pathIsInCP = $derived(nodeContext?.pathIsInCP || false);
+	const nodeContext = getContext<any>(`${untrack(() => prefix)}nodeContext`);
+	let pathIsInCP = $derived(nodeContext?.pathIsInCP || false);
 
 	let nodeIsInCP = false;
 	const CPItemContext = getContext<any>(`${untrack(() => prefix)}CPItemContext`);
@@ -55,32 +57,40 @@
 	}
 	const isCPChild = CPItemContext ? true : false;
 
-    let visibleInCP = $derived(pathIsInCP || nodeIsInCP);
+	let visibleInCP = $derived(pathIsInCP || nodeIsInCP);
 	let visible = $derived(visibleInCP || !CPItemContext || node.isMain);
 
-    let correctQMSWraperContext: QMSWraperContext;
+	let correctQMSWraperContext: QMSWraperContext;
 	if (isCPChild) {
 		correctQMSWraperContext = getQMSWraperCtxDataGivenControlPanelItem(
 			CPItemContext?.CPItem,
 			OutermostQMSWraperContext
 		);
 	} else {
-		correctQMSWraperContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}QMSWraperContext`);
+		correctQMSWraperContext = getContext<QMSWraperContext>(
+			`${untrack(() => prefix)}QMSWraperContext`
+		);
 	}
 
-    let activeArgumentsDataGrouped_Store = $derived(correctQMSWraperContext?.activeArgumentsDataGrouped_Store);
+	let activeArgumentsDataGrouped_Store = $derived(
+		correctQMSWraperContext?.activeArgumentsDataGrouped_Store
+	);
 
-	let rootArgs = $derived(argsInfo.filter((arg: any) => {
-		return arg.dd_isRootArg;
-	}));
+	let rootArgs = $derived(
+		argsInfo.filter((arg: any) => {
+			return arg.dd_isRootArg;
+		})
+	);
 
-    let activeArgumentsContext = getContext<any>(`${untrack(() => prefix)}activeArgumentsContext`);
-	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
+	let activeArgumentsContext = getContext<any>(`${untrack(() => prefix)}activeArgumentsContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(
+		`${untrack(() => prefix)}QMSMainWraperContext`
+	);
 	const schemaData = mainWraperCtx?.schemaData;
 	// Use $derived to ensure nodeRootType updates if node changes
 	let nodeRootType = $derived(getRootType(null, node.dd_rootName, schemaData));
 
-    let groupArgsPossibilities = $derived.by(() => {
+	let groupArgsPossibilities = $derived.by(() => {
 		let possibilities;
 		if (group.group_isRoot) {
 			possibilities = rootArgs;
@@ -109,11 +119,11 @@
 </script>
 
 <div
-	class="flex flex-col overflow-x-auto overscroll-contain text-sm text-base-content font-normal normal-case min-w-full w-full "
+	class="flex flex-col overflow-x-auto overscroll-contain text-sm text-base-content font-normal normal-case min-w-full w-full"
 >
 	{#if hasGroup_argsNode}
 		<button
-			class="btn btn-primary btn-xs  normal-case font-thin text-base sticky top-0"
+			class="btn btn-primary btn-xs normal-case font-thin text-base sticky top-0"
 			onclick={() => {
 				let randomNr = Math.random();
 				const newContainerData = {
@@ -130,7 +140,7 @@
 					newContainerData,
 					groupName,
 					node?.id,
-                    // Use store value
+					// Use store value
 					$activeArgumentsDataGrouped_Store,
 					endpointInfo,
 					group
@@ -152,7 +162,7 @@
 			{group}
 		/> -->
 	{/if}
-	<div class="my-2 border-2 rounded-box ">
+	<div class="my-2 border-2 rounded-box">
 		{#each groupArgsPossibilities as arg, index}
 			<Arg
 				{index}
@@ -161,14 +171,14 @@
 				{predefinedFirstSteps}
 				groupName={group.group_name}
 				onArgAddRequest={(newArgData) => {
-                    if ($activeArgumentsDataGrouped_Store) {
-                        activeArgumentsDataGrouped_Store.add_activeArgument(
-                            newArgData,
-                            groupName,
-                            node?.id,
-                            endpointInfo
-                        );
-                    }
+					if ($activeArgumentsDataGrouped_Store) {
+						activeArgumentsDataGrouped_Store.add_activeArgument(
+							newArgData,
+							groupName,
+							node?.id,
+							endpointInfo
+						);
+					}
 				}}
 				onContainerAddRequest={(newContainerData) => {
 					Logger.debug({ newContainerData });
@@ -218,7 +228,7 @@
 						newContainerData,
 						groupName,
 						node?.id,
-                        // Use store value
+						// Use store value
 						$activeArgumentsDataGrouped_Store,
 						endpointInfo,
 						group
@@ -229,13 +239,7 @@
 		{/each}
 	</div>
 	<Description QMSInfo={node} />
-	<div class="mt-2  w-full overflow-x-auto ">
-		<Type
-			index={0}
-			type={node}
-			template="default"
-			depth={0}
-            stepsOfFields={[]}
-		/>
+	<div class="mt-2 w-full overflow-x-auto">
+		<Type index={0} type={node} template="default" depth={0} stepsOfFields={[]} />
 	</div>
 </div>

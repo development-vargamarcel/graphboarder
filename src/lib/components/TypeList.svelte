@@ -10,22 +10,9 @@
 		stepsOfFields: any;
 	}
 
-	let {
-		prefix = '',
-		types,
-		template,
-		depth,
-		stepsOfFields
-	}: Props = $props();
+	let { prefix = '', types, template, depth, stepsOfFields }: Props = $props();
 </script>
 
 {#each types as type, index (index)}
-	<Type
-		{index}
-		{type}
-		{template}
-		{depth}
-		{stepsOfFields}
-		isOnMainList={true}
-	/>
+	<Type {index} {type} {template} {depth} {stepsOfFields} isOnMainList={true} />
 {/each}

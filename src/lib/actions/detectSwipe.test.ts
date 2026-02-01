@@ -166,7 +166,7 @@ describe('detectSwipe action', () => {
 			document.dispatchEvent(touchEnd);
 
 			// Wait a bit to ensure no event was fired
-			await new Promise(resolve => setTimeout(resolve, 100));
+			await new Promise((resolve) => setTimeout(resolve, 100));
 			expect(swipeHandler).not.toHaveBeenCalled();
 			action.destroy();
 		});
@@ -223,7 +223,7 @@ describe('detectSwipe action', () => {
 			document.dispatchEvent(touchMove);
 			document.dispatchEvent(touchEnd);
 
-			await new Promise(resolve => setTimeout(resolve, 100));
+			await new Promise((resolve) => setTimeout(resolve, 100));
 			expect(swipeHandler).not.toHaveBeenCalled();
 		});
 	});
@@ -243,7 +243,7 @@ describe('detectSwipe action', () => {
 			// Skip touchmove
 			document.dispatchEvent(touchEnd);
 
-			await new Promise(resolve => setTimeout(resolve, 100));
+			await new Promise((resolve) => setTimeout(resolve, 100));
 			expect(swipeHandler).not.toHaveBeenCalled();
 			action.destroy();
 		});
@@ -262,7 +262,7 @@ describe('detectSwipe action', () => {
 			document.dispatchEvent(touchMove);
 			document.dispatchEvent(touchEnd);
 
-			await new Promise(resolve => setTimeout(resolve, 100));
+			await new Promise((resolve) => setTimeout(resolve, 100));
 			expect(swipeHandler).not.toHaveBeenCalled();
 			action.destroy();
 		});

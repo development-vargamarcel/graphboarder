@@ -7,7 +7,9 @@
  * @param columns - Array of column configurations
  * @returns Object mapping column titles to visibility boolean
  */
-export function getColumnVisibility(columns: Array<{ title: string; hidden?: boolean }>): Record<string, boolean> {
+export function getColumnVisibility(
+	columns: Array<{ title: string; hidden?: boolean }>
+): Record<string, boolean> {
 	let columnVisibility: Record<string, boolean> = {};
 
 	columns.forEach((col) => {

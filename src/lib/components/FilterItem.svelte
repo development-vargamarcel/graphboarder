@@ -9,9 +9,9 @@
 		toggleFilterChoice,
 		createChoisesWithId
 	} from '$lib/utils/filterStateUtils';
-    import { flip } from 'svelte/animate';
+	import { flip } from 'svelte/animate';
 
-    interface Props {
+	interface Props {
 		// notice - fade in works fine but don't add svelte's fade-out (known issue)
 		extraData?: any;
 		id?: any;
@@ -42,9 +42,9 @@
 		onFilterApplied
 	}: Props = $props();
 
-    $effect(() => {
-        Logger.debug({ chosen });
-    });
+	$effect(() => {
+		Logger.debug({ chosen });
+	});
 
 	let chosenInternal = $state(JSON.parse(JSON.stringify(chosen)));
 	let extraInfo = $state('');
@@ -61,9 +61,9 @@
 	let choisesNew = [];
 	let choisesWithId = $state<any[]>([]);
 
-    $effect(() => {
-        choisesWithId = createChoisesWithId(choises);
-    });
+	$effect(() => {
+		choisesWithId = createChoisesWithId(choises);
+	});
 
 	let shouldToggle = $derived(choises.length == 1);
 	let showModalOrToggle = () => {
@@ -209,20 +209,24 @@
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <button
-	class="btn  btn-{size} {btnExtraClass}  flex  w-full normal-case"
-	onclickcapture={(e) => { e.preventDefault(); e.stopPropagation(); showModalOrToggle(); }}
+	class="btn btn-{size} {btnExtraClass}  flex w-full normal-case"
+	onclickcapture={(e) => {
+		e.preventDefault();
+		e.stopPropagation();
+		showModalOrToggle();
+	}}
 >
 	{isToggle ? choises[0] : title}
 
 	{#if extraInfo && !isToggle}
 		<div
-			class="ml-2 space-y-0 border  leading-3 {extraInfoExtraClass} rounded-box  flex space-x-1 px-1"
+			class="ml-2 space-y-0 border leading-3 {extraInfoExtraClass} rounded-box flex space-x-1 px-1"
 		>
 			<p class=" mx-auto pt-[1px] my-0 p-0 text-xs leading-3 text-primary-content">
 				{extraInfo}
 			</p>
 			<p></p>
-			<i class="bi bi-chevron-down  mx-auto pt-[1px] my-0 p-0 text-xs leading-3"></i>
+			<i class="bi bi-chevron-down mx-auto pt-[1px] my-0 p-0 text-xs leading-3"></i>
 		</div>
 	{/if}
 
@@ -232,20 +236,20 @@
 </button>
 {#if modalVisible}
 	<Modal onApply={applyFilter} onCancel={hideModal}>
-		<div class="rounded-box overflow-hidden ">
+		<div class="rounded-box overflow-hidden">
 			<div class="form-control px-2 mt-2 pt-2">
 				{#if type == 'radio'}
 					{#each choises as choice}
 						<label
-							class="label rounded-box  cursor-pointer   border-2 border-dotted  border-transparent font-light transition  active:border-base-content/50 active:bg-primary/5 {chosenInternal ==
+							class="label rounded-box cursor-pointer border-2 border-dotted border-transparent font-light transition active:border-base-content/50 active:bg-primary/5 {chosenInternal ==
 							choice
 								? 'font-extrabold '
 								: ''}"
 						>
-							<span class="label-text  text-lg"
+							<span class="label-text text-lg"
 								>{choice}
 								{#if chosenDefault && chosenDefault == choice}
-									<div class="badge badge-xs  badge-info">default</div>
+									<div class="badge badge-xs badge-info">default</div>
 								{/if}
 							</span>
 							<input
@@ -297,18 +301,18 @@
 									}}
 								>
 									<label
-										class="cursor-pointer label  rounded-box my-[1px] transition-all   font-light border-transparent border-[1px] active:border-base-content/50 active:bg-primary/5  duration-75    {chosenInternal?.includes(
+										class="cursor-pointer label rounded-box my-[1px] transition-all font-light border-transparent border-[1px] active:border-base-content/50 active:bg-primary/5 duration-75 {chosenInternal?.includes(
 											choice.title
 										)
 											? 'font-extrabold '
 											: ''} dnd-item
 									"
 									>
-										<span class="label-text  text-lg">
+										<span class="label-text text-lg">
 											{choice.title}
 
 											{#if chosenDefault && chosenDefault.includes(choice.title)}
-												<div class="badge badge-xs  badge-info">default</div>
+												<div class="badge badge-xs badge-info">default</div>
 											{/if}
 										</span>
 
@@ -324,7 +328,7 @@
 
 								{#if choice[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
 									<div
-										class="ml-8 rounded-box mx-2 py-5 border-dotted  border-accent/20 border-2 text-primary absolute w-11/12   top-0 left-0 visible"
+										class="ml-8 rounded-box mx-2 py-5 border-dotted border-accent/20 border-2 text-primary absolute w-11/12 top-0 left-0 visible"
 									></div>
 								{/if}
 							</div>
@@ -333,7 +337,7 @@
 					<div class="flex space-x-2 pr-2 mt-10"></div>
 				{/if}
 			</div>
-			<div class="alert alert-info shadow-lg py-2 mt-2 text-md  ">
+			<div class="alert alert-info shadow-lg py-2 mt-2 text-md">
 				<div class="flex space-x-4">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"

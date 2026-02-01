@@ -15,8 +15,11 @@
 	let stepsOfFields = $derived(QMSWraperCtxDataCurrent?.stepsOfFields);
 	let paginationState_derived = $derived(QMSWraperCtxDataCurrent?.paginationState_derived);
 
-	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
-	const mergedChildren_finalGqlArgObj_Store = OutermostQMSWraperContext?.mergedChildren_finalGqlArgObj_Store;
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(
+		`${untrack(() => prefix)}OutermostQMSWraperContext`
+	);
+	const mergedChildren_finalGqlArgObj_Store =
+		OutermostQMSWraperContext?.mergedChildren_finalGqlArgObj_Store;
 	/////////////////
 	let QMSarguments = $state();
 	/////////////////

@@ -7,7 +7,10 @@
  * @param labelEl - Label element to clone
  * @returns Object with height and width
  */
-export function getShadowDimensions(labelEl: HTMLElement | null): { height: number; width: number } {
+export function getShadowDimensions(labelEl: HTMLElement | null): {
+	height: number;
+	width: number;
+} {
 	if (!labelEl) {
 		return { height: 20, width: 20 };
 	}

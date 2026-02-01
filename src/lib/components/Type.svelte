@@ -12,7 +12,9 @@
 	const prefix = '';
 
 	let mainWraperContext = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
-	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${prefix}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(
+		`${prefix}OutermostQMSWraperContext`
+	);
 	const isForExplorer = OutermostQMSWraperContext?.extraInfo?.isForExplorer;
 	const schemaData = mainWraperContext?.schemaData;
 
@@ -37,21 +39,21 @@
 		showExpand = $bindable(false)
 	}: Props = $props();
 
-    // Use derived values to react to prop changes
+	// Use derived values to react to prop changes
 	let dd_kindsArray = $derived(type.dd_kindsArray);
-    let dd_rootName = $derived(type.dd_rootName);
-    let dd_displayName = $derived(type.dd_displayName);
+	let dd_rootName = $derived(type.dd_rootName);
+	let dd_displayName = $derived(type.dd_displayName);
 
-    $effect(() => {
-        if (!stepsOfFields) {
-            stepsOfFields = [dd_displayName];
-        } else {
-            // Check if last element is already current displayName to avoid duplicates if effect runs multiple times
-            if (stepsOfFields[stepsOfFields.length - 1] !== dd_displayName) {
-                 stepsOfFields = [...stepsOfFields, dd_displayName];
-            }
-        }
-    });
+	$effect(() => {
+		if (!stepsOfFields) {
+			stepsOfFields = [dd_displayName];
+		} else {
+			// Check if last element is already current displayName to avoid duplicates if effect runs multiple times
+			if (stepsOfFields[stepsOfFields.length - 1] !== dd_displayName) {
+				stepsOfFields = [...stepsOfFields, dd_displayName];
+			}
+		}
+	});
 
 	let inDuration = $state(300);
 	let expandData = $state<any>({});
@@ -66,7 +68,8 @@
 			let typeLen =
 				expandData?.fields?.length ||
 				expandData?.inputFields?.length ||
-				expandData?.enumValues?.length || 0;
+				expandData?.enumValues?.length ||
+				0;
 
 			let argLen = 0;
 			if (type?.args) {
@@ -92,7 +95,7 @@
 {/if}
 
 <div
-	class="  pb-0 pl-1 pr-0  rounded-r-sm rounded-l-none shadow-none  space-x-2  normal-case text-xs {showExpand
+	class="  pb-0 pl-1 pr-0 rounded-r-sm rounded-l-none shadow-none space-x-2 normal-case text-xs {showExpand
 		? ''
 		: ''}"
 >

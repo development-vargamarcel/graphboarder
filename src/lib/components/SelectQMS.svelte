@@ -11,7 +11,9 @@
 
 	let { prefix = '', node, showSelectQMSModal = $bindable() }: Props = $props();
 
-	const nodeContext_forDynamicData = getContext<any>(`${untrack(() => prefix)}nodeContext_forDynamicData`);
+	const nodeContext_forDynamicData = getContext<any>(
+		`${untrack(() => prefix)}nodeContext_forDynamicData`
+	);
 	//let selectedQMS = nodeContext_forDynamicData.selectedQMS;
 	let QMSRows = nodeContext_forDynamicData.QMSRows;
 	let columns = [
@@ -71,7 +73,9 @@
 		}
 	];
 	import type { QMSWraperContext } from '$lib/types/index';
-	const OutermostQMSWraperContext = getContext<QMSWraperContext>(`${untrack(() => prefix)}OutermostQMSWraperContext`);
+	const OutermostQMSWraperContext = getContext<QMSWraperContext>(
+		`${untrack(() => prefix)}OutermostQMSWraperContext`
+	);
 	const { QMSFieldToQMSGetMany_Store } = OutermostQMSWraperContext;
 	let getManyData = $state<any>();
 	let selectedQMS = $state<any>();
@@ -102,7 +106,7 @@
 			showSelectQMSModal = false;
 		}}
 	>
-		<div class="flex flex-col ">
+		<div class="flex flex-col">
 			<!-- <div class="w-full text-lg text-center  mb-2 ">
 				<p class="badge badge-info font-bold">
 					{groupDisplayTitle}

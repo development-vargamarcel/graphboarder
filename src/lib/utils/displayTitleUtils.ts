@@ -51,10 +51,11 @@ export function generateGroupDisplayTitle(
  * @param node - Node with operator and not properties
  * @returns Object with text and border color classes
  */
-export function getNodeDisplayClasses(node: {
-	operator?: string;
-	not?: boolean;
-}): { textClass: string; borderClass: string; bgClass: string } {
+export function getNodeDisplayClasses(node: { operator?: string; not?: boolean }): {
+	textClass: string;
+	borderClass: string;
+	bgClass: string;
+} {
 	let textClass = 'text-base-content';
 	let borderClass = 'border-base-content';
 	let bgClass = '';

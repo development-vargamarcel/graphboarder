@@ -40,7 +40,7 @@
 </script>
 
 <div class="w-full p-2 max-h-[80vh] overflow-y-auto">
-	<div class="card w-full  glass mx-auto md:max-w-4xl">
+	<div class="card w-full glass mx-auto md:max-w-4xl">
 		<div class="card-body">
 			<h2 class="card-title">Add new Endpoint</h2>
 			<p>To Local Storage</p>

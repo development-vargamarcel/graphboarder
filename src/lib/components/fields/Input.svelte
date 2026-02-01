@@ -29,12 +29,7 @@
 		onChanged?: (detail: { chd_rawValue: any }) => void;
 	}
 
-	let {
-		displayInterface,
-		rawValue = $bindable(),
-		dispatchValue,
-		onChanged
-	}: Props = $props();
+	let { displayInterface, rawValue = $bindable(), dispatchValue, onChanged }: Props = $props();
 
 	let inputEl = $state<HTMLInputElement>();
 	const mutationVersion = getContext<Writable<boolean>>('mutationVersion');
@@ -55,7 +50,7 @@
 
 <input
 	type={displayInterface}
-	class="input input-primary  {$mutationVersion ? 'input-md' : 'input-xs'} mb-[1px] w-full  mr-2 "
+	class="input input-primary {$mutationVersion ? 'input-md' : 'input-xs'} mb-[1px] w-full mr-2"
 	bind:this={inputEl}
 	value={rawValue}
 	onchange={() => {

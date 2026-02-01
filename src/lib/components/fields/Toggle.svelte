@@ -46,7 +46,7 @@
 		</div>
 	</label>
 {:else}
-	<label class="flex w-full ">
+	<label class="flex w-full">
 		<input
 			type="checkbox"
 			class="toggle {otherClases} toggle-primary"

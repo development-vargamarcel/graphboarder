@@ -44,15 +44,15 @@ describe('QueryHistory Component', () => {
 		expect(onRestore).toHaveBeenCalled();
 	});
 
-    it('should show export and import buttons', () => {
-        const { getByText } = render(QueryHistory, {
+	it('should show export and import buttons', () => {
+		const { getByText } = render(QueryHistory, {
 			props: {
 				onRestore: () => {},
 				onClose: () => {}
 			}
 		});
 
-        expect(getByText('Export')).toBeTruthy();
-        expect(getByText('Import')).toBeTruthy();
-    });
+		expect(getByText('Export')).toBeTruthy();
+		expect(getByText('Import')).toBeTruthy();
+	});
 });

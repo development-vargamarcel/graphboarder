@@ -1,11 +1,11 @@
-import { getPreciseType } from "./usefulFunctions";
+import { getPreciseType } from './usefulFunctions';
 
 //In the future use terms like processString_transformer and unprocessString_transformer,and also use chd_processedValue and chd_unprocessedValue instead of chd_rawValue and chd_dispatchValue
 export const stringToQMSString_transformer = (value: unknown): string | unknown => {
 	//the input value is the result of a stringified QMS object, so we need to parse it
 	if (typeof value !== 'string') {
-		console.warn('stringToQMSString_transformer: value is not a string', value)
-		return value
+		console.warn('stringToQMSString_transformer: value is not a string', value);
+		return value;
 	}
 	const modifiedValue = value
 		.replace(/"/g, '')
@@ -14,39 +14,41 @@ export const stringToQMSString_transformer = (value: unknown): string | unknown 
 		.replace(/&prime;/g, `'`)
 		.replace(/\\/g, '')
 		.slice(1, -1);
-	console.log('stringToQMSString_transformer', { value, modifiedValue })
+	console.log('stringToQMSString_transformer', { value, modifiedValue });
 
-	return modifiedValue
-}
+	return modifiedValue;
+};
 export const string_transformer = (value: unknown): string | unknown => {
 	if (typeof value !== 'string') {
-		console.warn('string_transformer: value is not a string', value)
-		return value
+		console.warn('string_transformer: value is not a string', value);
+		return value;
 	}
 	return `'${value.replaceAll(`"`, `&Prime;`).replaceAll(`'`, `&prime;`)}'`;
 };
-export const string_transformerREVERSE = (value: unknown, onlySingleQuotes?: boolean): string | unknown => {
+export const string_transformerREVERSE = (
+	value: unknown,
+	onlySingleQuotes?: boolean
+): string | unknown => {
 	if (typeof value !== 'string') {
-		console.warn('string_transformer: value is not a string', value)
-		return value
+		console.warn('string_transformer: value is not a string', value);
+		return value;
 	}
 	if (onlySingleQuotes) {
-		return value.replaceAll(`'`, ``)
+		return value.replaceAll(`'`, ``);
 	}
-	return value.replaceAll(`&Prime;`, `"`).replaceAll(`&prime;`, `'`)
-
+	return value.replaceAll(`&Prime;`, `"`).replaceAll(`&prime;`, `'`);
 };
 
 export const number_transformer = (value: unknown): number | unknown => {
 	if (typeof value !== 'number') {
-		console.warn('number_transformer: value is not a number', value)
-		return value
+		console.warn('number_transformer: value is not a number', value);
+		return value;
 	}
 	//value * 1 removes leadin zeros: 0001 becomes 1, 0001.5 becomes 1.5
 	return value * 1;
 };
 export const ISO8601_transformerGETDEFAULTVAl = (): string => {
-	return ISO8601_transformerREVERSE(string_transformer(new Date().toISOString()))
+	return ISO8601_transformerREVERSE(string_transformer(new Date().toISOString()));
 };
 export const ISO8601_transformer = (value: string): string | unknown => {
 	let date_ISO8601 = new Date(value).toISOString();
@@ -63,7 +65,7 @@ export const ISO8601_transformerREVERSE = (value: unknown): string => {
 	const hour = dateObject.getHours().toString().padStart(2, '0');
 	const minute = dateObject.getMinutes().toString().padStart(2, '0');
 	//const second = dateObject.getSeconds().toString().padStart(2, '0');
-	return `${year}-${month}-${day}T${hour}:${minute}`
+	return `${year}-${month}-${day}T${hour}:${minute}`;
 };
 
 interface GeoJSONGeometry {
@@ -82,36 +84,42 @@ interface GeoJSONFeatureCollection {
 	type: string;
 }
 
-export const geojson_transformer = (value: GeoJSONFeatureCollection): GeoJSONGeometry | GeoJSONGeometry[] => {
+export const geojson_transformer = (
+	value: GeoJSONFeatureCollection
+): GeoJSONGeometry | GeoJSONGeometry[] => {
 	const featuresLength = value.features.length;
 	const geojson = value.features.map((feature) => {
-		const geometry = JSON.parse(JSON.stringify(feature.geometry))
+		const geometry = JSON.parse(JSON.stringify(feature.geometry));
 		geometry.type = string_transformer(geometry.type);
 		return geometry;
 	});
-	console.log('geojson_transformer', { geojson, value }, geojson_transformerREVERSE(geojson))
+	console.log('geojson_transformer', { geojson, value }, geojson_transformerREVERSE(geojson));
 	if (featuresLength == 1) {
 		return geojson[0];
 	}
-	return geojson;//this line (return geojson;) is useful in case the endpoint supports multi-polygon or multi-geometry in general...
+	return geojson; //this line (return geojson;) is useful in case the endpoint supports multi-polygon or multi-geometry in general...
 };
-export const geojson_transformerREVERSE = (value: GeoJSONGeometry | GeoJSONGeometry[]): GeoJSONFeatureCollection => {
-	const valueType = getPreciseType(value)
+export const geojson_transformerREVERSE = (
+	value: GeoJSONGeometry | GeoJSONGeometry[]
+): GeoJSONFeatureCollection => {
+	const valueType = getPreciseType(value);
 	let valArray: any[] = [];
 	if (valueType == 'object') {
-		valArray = [value]
+		valArray = [value];
 	} else if (Array.isArray(value)) {
 		valArray = value;
 	}
 
-	const transformed = JSON.parse(string_transformerREVERSE(JSON.stringify(valArray), true) as string);
+	const transformed = JSON.parse(
+		string_transformerREVERSE(JSON.stringify(valArray), true) as string
+	);
 
 	return {
 		features: transformed.map((feature: any) => {
-			return { geometry: feature, type: 'Feature', properties: {} }
+			return { geometry: feature, type: 'Feature', properties: {} };
 		}),
-		type: "FeatureCollection"
-	}
+		type: 'FeatureCollection'
+	};
 };
 export const boolean_transformer = (value: unknown): boolean => {
 	if (value == undefined) {
@@ -123,7 +131,7 @@ const escapeAllSigngleAndDoubleQuotes = (str: string): string => {
 	return str.replace(/["']/g, (match) => {
 		return `\\${match}`;
 	});
-}
+};
 // export const stringContainingQuotes_transformer = (value) => {
 
 // 	//const base64 = btoa(value)

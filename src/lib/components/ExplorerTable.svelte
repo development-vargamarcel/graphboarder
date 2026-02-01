@@ -1,5 +1,4 @@
 <script lang="ts">
-
 	import { writable } from 'svelte/store';
 	import { createSvelteTable, flexRender, getCoreRowModel } from '@tanstack/svelte-table';
 	import type { ColumnDef, TableOptions } from '@tanstack/table-core';
@@ -85,7 +84,7 @@
 	};
 	const table = createSvelteTable(options);
 
-    $effect(() => {
+	$effect(() => {
 		if (data) {
 			Logger.debug({ data }, 'data changed');
 			rerender();
@@ -118,7 +117,11 @@
 					{/if}
 					<th>#</th>
 					{#each headerGroup.headers as header}
-						{@const columnFlags = getColumnFlags(header.column.columnDef.header as string, idColName, requiredColNames)}
+						{@const columnFlags = getColumnFlags(
+							header.column.columnDef.header as string,
+							idColName,
+							requiredColNames
+						)}
 						<th class="normal-case">
 							<div class="dropdown dropdown-end">
 								<!-- svelte-ignore a11y_label_has_associated_control -->
@@ -128,14 +131,14 @@
 										<div
 											class="{columnFlags.isIdColumn
 												? ' underline decoration-dotted font-black text-primary'
-												: ''} {columnFlags.isRequired
-												? ' font-black text-primary'
-												: ''} "
+												: ''} {columnFlags.isRequired ? ' font-black text-primary' : ''} "
 										>
 											{#if !header.isPlaceholder}
-												{@const SvelteComponent = flexRender(header.column.columnDef.header, header.getContext())}
-												<SvelteComponent
-												/>
+												{@const SvelteComponent = flexRender(
+													header.column.columnDef.header,
+													header.getContext()
+												)}
+												<SvelteComponent />
 											{/if}
 										</div>
 										<div class="bi bi-chevron-down"></div>
@@ -158,10 +161,10 @@
 											<button
 												class="w-full pr-2 hover:text-primary cursor-pointer text-left bg-transparent border-0 p-0"
 												onclick={() => {
-                                                    const headerVal = header.column.columnDef.header;
-                                                    if (typeof headerVal === 'string') {
-													    onHideColumn?.({ column: headerVal });
-                                                    }
+													const headerVal = header.column.columnDef.header;
+													if (typeof headerVal === 'string') {
+														onHideColumn?.({ column: headerVal });
+													}
 												}}
 											>
 												hide field

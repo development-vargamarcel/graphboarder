@@ -8,8 +8,8 @@
 	import { getContext, untrack } from 'svelte';
 	import type { Writable } from 'svelte/store';
 	import InterfacePicker from './InterfacePicker.svelte';
-    import type { QMSMainWraperContext } from '$lib/types/index';
-    import type { Component } from 'svelte';
+	import type { QMSMainWraperContext } from '$lib/types/index';
+	import type { Component } from 'svelte';
 
 	interface Props {
 		prefix?: string;
@@ -29,7 +29,9 @@
 		onChanged
 	}: Props = $props();
 
-	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(
+		`${untrack(() => prefix)}QMSMainWraperContext`
+	);
 	const endpointInfo = mainWraperCtx?.endpointInfo;
 	const choosenDisplayInterface = getContext<Writable<string>>('choosenDisplayInterface');
 

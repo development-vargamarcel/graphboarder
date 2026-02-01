@@ -1,1 +1,1 @@
-export const endpointsSchemaData=[] 
+export const endpointsSchemaData = [];

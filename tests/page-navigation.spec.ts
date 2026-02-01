@@ -27,10 +27,7 @@ test.describe('Page Navigation Tests', () => {
 		const firstRow = page.locator('tbody tr').first();
 		await expect(firstRow).toBeVisible({ timeout: 10000 });
 
-		const [endpointPage] = await Promise.all([
-			context.waitForEvent('page'),
-			firstRow.click()
-		]);
+		const [endpointPage] = await Promise.all([context.waitForEvent('page'), firstRow.click()]);
 
 		await endpointPage.waitForLoadState('networkidle');
 
@@ -110,15 +107,14 @@ test.describe('Page Navigation Tests', () => {
 		await page.waitForURL(/\/endpoints/);
 
 		const firstRow = page.locator('tbody tr').first();
-		const [endpointPage] = await Promise.all([
-			context.waitForEvent('page'),
-			firstRow.click()
-		]);
+		const [endpointPage] = await Promise.all([context.waitForEvent('page'), firstRow.click()]);
 
 		await endpointPage.waitForLoadState('networkidle');
 
 		// Find and click the hamburger menu
-		const hamburgerButton = endpointPage.locator('label.btn.btn-square.btn-ghost, button.btn.btn-square.btn-ghost').first();
+		const hamburgerButton = endpointPage
+			.locator('label.btn.btn-square.btn-ghost, button.btn.btn-square.btn-ghost')
+			.first();
 		await expect(hamburgerButton).toBeVisible();
 		await hamburgerButton.click();
 
@@ -144,10 +140,7 @@ test.describe('Page Navigation Tests', () => {
 		await page.waitForURL(/\/endpoints/);
 
 		const firstRow = page.locator('tbody tr').first();
-		const [endpointPage] = await Promise.all([
-			context.waitForEvent('page'),
-			firstRow.click()
-		]);
+		const [endpointPage] = await Promise.all([context.waitForEvent('page'), firstRow.click()]);
 
 		await endpointPage.waitForLoadState('networkidle');
 
@@ -171,10 +164,7 @@ test.describe('Page Navigation Tests', () => {
 		await page.waitForURL(/\/endpoints/);
 
 		const firstRow = page.locator('tbody tr').first();
-		const [endpointPage] = await Promise.all([
-			context.waitForEvent('page'),
-			firstRow.click()
-		]);
+		const [endpointPage] = await Promise.all([context.waitForEvent('page'), firstRow.click()]);
 
 		await endpointPage.waitForLoadState('networkidle');
 
@@ -206,10 +196,7 @@ test.describe('Page Navigation Tests', () => {
 		await getStartedButton.click();
 
 		const firstRow = page.locator('tbody tr').first();
-		const [endpointPage] = await Promise.all([
-			context.waitForEvent('page'),
-			firstRow.click()
-		]);
+		const [endpointPage] = await Promise.all([context.waitForEvent('page'), firstRow.click()]);
 
 		await endpointPage.waitForLoadState('networkidle');
 
@@ -278,10 +265,7 @@ test.describe('Page Navigation Tests', () => {
 		await getStartedButton.click();
 
 		const firstRow = page.locator('tbody tr').first();
-		const [endpointPage] = await Promise.all([
-			context.waitForEvent('page'),
-			firstRow.click()
-		]);
+		const [endpointPage] = await Promise.all([context.waitForEvent('page'), firstRow.click()]);
 
 		await endpointPage.waitForLoadState('networkidle');
 
@@ -298,15 +282,15 @@ test.describe('Page Navigation Tests', () => {
 
 				// Apply a filter if available
 				const filterButtons = endpointPage.locator('btn.btn.btn-xs');
-				if (await filterButtons.count() > 0) {
+				if ((await filterButtons.count()) > 0) {
 					await filterButtons.first().click();
 					await endpointPage.waitForTimeout(300);
 
 					const radioOptions = endpointPage.locator('input[type="radio"]');
-					if (await radioOptions.count() > 0) {
+					if ((await radioOptions.count()) > 0) {
 						await radioOptions.nth(1).click();
 						const applyButton = endpointPage.locator('button:has-text("Apply")');
-						if (await applyButton.count() > 0) {
+						if ((await applyButton.count()) > 0) {
 							await applyButton.click();
 							await endpointPage.waitForTimeout(1000);
 						}

@@ -19,14 +19,16 @@
 		prefix = '',
 		QMSInfo
 	}: Props = $props();
-	let mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
+	let mainWraperCtx = getContext<QMSMainWraperContext>(
+		`${untrack(() => prefix)}QMSMainWraperContext`
+	);
 	const schemaData = mainWraperCtx?.schemaData;
 	let nodeRootType = $derived(getRootType(null, QMSInfo.dd_rootName, schemaData));
 	let descriptionNeedsSeparator = $derived(QMSInfo?.description && nodeRootType?.description);
 </script>
 
 {#if nodeRootType?.description || QMSInfo?.description}
-	<div class="alert alert-info shadow-lg py-2 mt-2 text-md  ">
+	<div class="alert alert-info shadow-lg py-2 mt-2 text-md">
 		<div class="flex space-x-4">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"

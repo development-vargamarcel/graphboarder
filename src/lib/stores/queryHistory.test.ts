@@ -51,7 +51,7 @@ describe('queryHistory Store', () => {
 		let history = get(queryHistory);
 		expect(history[0].query).toBe(item2.query);
 		expect(history[1].query).toBe(item1.query);
-        const firstTimestamp = history[1].timestamp;
+		const firstTimestamp = history[1].timestamp;
 
 		// Add item1 again
 		addToHistory(item1);
@@ -60,7 +60,7 @@ describe('queryHistory Store', () => {
 		expect(history).toHaveLength(2);
 		expect(history[0].query).toBe(item1.query);
 		expect(history[1].query).toBe(item2.query);
-        expect(history[0].timestamp).toBeGreaterThanOrEqual(firstTimestamp);
+		expect(history[0].timestamp).toBeGreaterThanOrEqual(firstTimestamp);
 	});
 
 	it('should preserve favorite status when updating existing item', () => {
@@ -92,7 +92,7 @@ describe('queryHistory Store', () => {
 			operationName: 'testQuery'
 		};
 		addToHistory(item);
-        const id = get(queryHistory)[0].id;
+		const id = get(queryHistory)[0].id;
 
 		toggleFavorite(id);
 		expect(get(queryHistory)[0].isFavorite).toBe(true);
@@ -108,30 +108,30 @@ describe('queryHistory Store', () => {
 			operationName: 'testQuery'
 		};
 		addToHistory(item);
-        const id = get(queryHistory)[0].id;
+		const id = get(queryHistory)[0].id;
 
 		updateHistoryItem(id, { name: 'My Query' });
 		expect(get(queryHistory)[0].name).toBe('My Query');
 	});
 
-    it('should export and import history', () => {
-        const item = {
+	it('should export and import history', () => {
+		const item = {
 			query: 'query { test }',
 			endpointId: '1',
 			operationName: 'testQuery',
-            name: 'Exported'
+			name: 'Exported'
 		};
-        addToHistory(item);
+		addToHistory(item);
 
-        const json = exportHistory();
-        clearHistory();
-        expect(get(queryHistory)).toHaveLength(0);
+		const json = exportHistory();
+		clearHistory();
+		expect(get(queryHistory)).toHaveLength(0);
 
-        importHistory(json);
-        const history = get(queryHistory);
-        expect(history).toHaveLength(1);
-        expect(history[0].name).toBe('Exported');
-    });
+		importHistory(json);
+		const history = get(queryHistory);
+		expect(history).toHaveLength(1);
+		expect(history[0].name).toBe('Exported');
+	});
 
 	it('should store and retrieve variables', () => {
 		const item = {

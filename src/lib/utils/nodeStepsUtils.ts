@@ -7,7 +7,9 @@
  * @param stepsOfNodes - Array of node steps, each step is [not, displayName, operator]
  * @returns Flattened array of field steps
  */
-export function stepsOfNodesToStepsOfFields(stepsOfNodes: Array<[string | undefined, string | undefined, string | undefined]>): string[] {
+export function stepsOfNodesToStepsOfFields(
+	stepsOfNodes: Array<[string | undefined, string | undefined, string | undefined]>
+): string[] {
 	const stepsOfFields = stepsOfNodes
 		.filter((step) => {
 			const [not, displayName, operator] = step;

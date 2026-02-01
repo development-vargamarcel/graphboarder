@@ -2,7 +2,7 @@
 	import CodeEditor from './fields/CodeEditor.svelte';
 	import { format } from 'graphql-formatter';
 	import hljs from 'highlight.js/lib/core';
-    import graphql from 'highlight.js/lib/languages/graphql';
+	import graphql from 'highlight.js/lib/languages/graphql';
 	import { getContext, untrack } from 'svelte';
 	import 'highlight.js/styles/base16/solarized-dark.css';
 	import { Logger } from '$lib/utils/logger';
@@ -22,6 +22,12 @@
 	import LoadingSpinner from '$lib/components/UI/LoadingSpinner.svelte';
 	import { generateSnippet, SUPPORTED_LANGUAGES } from '$lib/utils/snippetGenerator';
 	import { compressQuery, decompressQuery } from '$lib/utils/shareUtils';
+	import {
+		calculateComplexity,
+		calculateResponseSize,
+		formatBytes,
+		type QueryComplexity
+	} from '$lib/utils/queryAnalyzer';
 
 	interface Props {
 		/**
@@ -68,28 +74,31 @@
 
 	try {
 		qmsWraperCtx = getContext<QMSWraperContext>(`${untrack(() => prefix)}QMSWraperContext`);
-		mainWraperCtx = getContext<QMSMainWraperContext>(`${untrack(() => prefix)}QMSMainWraperContext`);
+		mainWraperCtx = getContext<QMSMainWraperContext>(
+			`${untrack(() => prefix)}QMSMainWraperContext`
+		);
 	} catch (e) {
 		Logger.debug('GraphqlCodeDisplay: Context not available', e);
 	}
 
-
-    // Ensure language is registered
-    try {
-        if (typeof hljs !== 'undefined' && hljs.registerLanguage) {
-            // Some environments might not have getLanguage or might throw
-             try {
-                if (!hljs.getLanguage('graphql')) {
-                    hljs.registerLanguage('graphql', graphql);
-                }
-             } catch(e) {
-                // If getLanguage fails, attempt registration anyway to be safe
-                try { hljs.registerLanguage('graphql', graphql); } catch(e2) {}
-             }
-        }
-    } catch(e) {
-        // ignore
-    }
+	// Ensure language is registered
+	try {
+		if (typeof hljs !== 'undefined' && hljs.registerLanguage) {
+			// Some environments might not have getLanguage or might throw
+			try {
+				if (!hljs.getLanguage('graphql')) {
+					hljs.registerLanguage('graphql', graphql);
+				}
+			} catch (e) {
+				// If getLanguage fails, attempt registration anyway to be safe
+				try {
+					hljs.registerLanguage('graphql', graphql);
+				} catch (e2) {}
+			}
+		}
+	} catch (e) {
+		// ignore
+	}
 
 	$effect(() => {
 		try {
@@ -104,11 +113,11 @@
 	const safeHighlight = (code: string) => {
 		try {
 			const formatted = format(code);
-            if (typeof hljs !== 'undefined' && hljs.highlight) {
-                // Explicitly use graphql language if possible
-			    return hljs.highlight(formatted, { language: 'graphql' }).value;
-            }
-            return formatted;
+			if (typeof hljs !== 'undefined' && hljs.highlight) {
+				// Explicitly use graphql language if possible
+				return hljs.highlight(formatted, { language: 'graphql' }).value;
+			}
+			return formatted;
 		} catch (e) {
 			try {
 				return format(code);
@@ -133,6 +142,9 @@
 	let isExecuting = $state(false);
 	let executionResult = $state('');
 	let showExecutionResult = $state(false);
+	let executionTime = $state(0);
+	let responseSize = $state(0);
+	let queryComplexity = $state<QueryComplexity>({ depth: 0, fieldCount: 0 });
 	let showSnippetsModal = $state(false);
 	let selectedSnippetLanguage = $state('javascript-fetch');
 	let snippetEditorLanguage = $derived(
@@ -261,6 +273,9 @@
 		isExecuting = true;
 		showExecutionResult = true;
 		executionResult = 'Loading...';
+		executionTime = 0;
+		responseSize = 0;
+		const startTime = performance.now();
 
 		try {
 			// Determine if it's a mutation or query
@@ -286,14 +301,19 @@
 				result = await client.query(value, variables).toPromise();
 			}
 
+			const endTime = performance.now();
+			executionTime = Math.round(endTime - startTime);
+
 			if (result.error) {
 				Logger.error('Execution failed', result.error);
 				executionResult = JSON.stringify(result.error, null, 2);
 				toast.error('Query execution failed');
+				responseSize = 0;
 			} else {
-				Logger.info('Execution successful');
+				Logger.info('Execution successful', { executionTime });
 				executionResult = JSON.stringify(result.data, null, 2);
-				toast.success('Query executed successfully');
+				responseSize = calculateResponseSize(result.data);
+				toast.success(`Query executed in ${executionTime}ms`);
 			}
 		} catch (e) {
 			Logger.error('Execution error', e);
@@ -376,12 +396,8 @@
 				return;
 			}
 
-			const {
-				activeArgumentsDataGrouped_Store,
-				tableColsData_Store,
-				paginationState,
-				QMSName
-			} = qmsWraperCtx;
+			const { activeArgumentsDataGrouped_Store, tableColsData_Store, paginationState, QMSName } =
+				qmsWraperCtx;
 
 			const { endpointInfo, schemaData } = mainWraperCtx;
 
@@ -433,6 +449,13 @@
 			astPrinted = print(ast as ASTNode);
 		}
 	});
+
+	$effect(() => {
+		// Calculate complexity when query changes
+		if (value) {
+			queryComplexity = calculateComplexity(value);
+		}
+	});
 	$effect(() => {
 		if (getPreciseType(ast) == 'object') {
 			astAsString = JSON5.stringify(ast);
@@ -441,7 +464,14 @@
 </script>
 
 <div class="mockup-code bg-base text-content my-1 mx-2 px-2 relative group">
-	<div class="absolute top-3 right-40 flex space-x-2">
+	<div class="absolute top-3 right-40 flex space-x-2 items-center">
+		<div
+			class="badge badge-sm badge-ghost gap-1 mr-2 hidden xl:inline-flex cursor-help"
+			title="Query Complexity: Depth / Fields"
+		>
+			<i class="bi bi-diagram-2"></i>
+			{queryComplexity.depth}/{queryComplexity.fieldCount}
+		</div>
 		<button
 			class="btn btn-xs btn-ghost text-primary font-bold transition-opacity"
 			aria-label="Execute Query"
@@ -464,7 +494,9 @@
 			<i class="bi bi-clock-history"></i> History
 		</button>
 		<button
-			class="btn btn-xs btn-ghost transition-opacity {showVariables ? 'text-primary font-bold' : ''}"
+			class="btn btn-xs btn-ghost transition-opacity {showVariables
+				? 'text-primary font-bold'
+				: ''}"
 			aria-label="Variables"
 			title="Toggle Variables Editor"
 			onclick={() => (showVariables = !showVariables)}
@@ -497,7 +529,12 @@
 				if (mainWraperCtx?.endpointInfo) {
 					Logger.info('Copied query as cURL to clipboard');
 					const info = get(mainWraperCtx.endpointInfo);
-					const curl = generateCurlCommand(info.url, value, getParsedVariables(), info.headers || {});
+					const curl = generateCurlCommand(
+						info.url,
+						value,
+						getParsedVariables(),
+						info.headers || {}
+					);
 					navigator.clipboard.writeText(curl);
 					isCurlCopied = true;
 					setTimeout(() => (isCurlCopied = false), 2000);
@@ -600,8 +637,24 @@
 	<div class="max-h-[50vh] overflow-y-auto">
 		{#if showExecutionResult}
 			<div class="p-2">
-				<div class="flex justify-between items-center mb-2">
-					<h3 class="font-bold text-success"><i class="bi bi-play-circle"></i> Execution Result</h3>
+				<div class="flex flex-wrap justify-between items-center mb-2 gap-2">
+					<div class="flex items-center gap-2">
+						<h3 class="font-bold text-success">
+							<i class="bi bi-play-circle"></i> Execution Result
+						</h3>
+						{#if executionTime > 0}
+							<div class="badge badge-secondary badge-outline gap-1" title="Execution Time">
+								<i class="bi bi-stopwatch"></i>
+								{executionTime}ms
+							</div>
+						{/if}
+						{#if responseSize > 0}
+							<div class="badge badge-info badge-outline gap-1" title="Response Size">
+								<i class="bi bi-hdd-network"></i>
+								{formatBytes(responseSize)}
+							</div>
+						{/if}
+					</div>
 					<div class="flex gap-2">
 						<button
 							class="btn btn-xs btn-ghost"
@@ -612,7 +665,9 @@
 						>
 							<i class="bi bi-clipboard"></i> Copy
 						</button>
-						<button class="btn btn-xs btn-ghost" onclick={() => (showExecutionResult = false)}>✕ Close</button>
+						<button class="btn btn-xs btn-ghost" onclick={() => (showExecutionResult = false)}
+							>✕ Close</button
+						>
 					</div>
 				</div>
 				<CodeEditor rawValue={executionResult} language="json" readOnly={true} />
@@ -621,18 +676,20 @@
 			<div class="p-2">
 				<div class="flex justify-between items-center mb-2">
 					<h3 class="font-bold">Mock Data Result</h3>
-					<button class="btn btn-xs btn-ghost" onclick={() => (showMockData = false)}>✕ Close</button>
+					<button class="btn btn-xs btn-ghost" onclick={() => (showMockData = false)}
+						>✕ Close</button
+					>
 				</div>
 				<CodeEditor rawValue={mockDataResult} language="json" readOnly={true} />
 			</div>
 		{:else if showNonPrettifiedQMSBody}
 			<code class="px-10">{value}</code>
 			<div class="mt-4">
-				<code class="px-10 ">{astAsString}</code>
+				<code class="px-10">{astAsString}</code>
 			</div>
 		{:else}
-			<code class="language-graphql ">{@html safeHighlight(value)}</code>
-			<div class="mx-4 mt-2 ">
+			<code class="language-graphql">{@html safeHighlight(value)}</code>
+			<div class="mx-4 mt-2">
 				<CodeEditor
 					rawValue={value}
 					language="graphql"
@@ -669,7 +726,7 @@
 				</div>
 			{/if}
 			{#if astPrinted}
-				<div class="mx-4 mt-2 ">
+				<div class="mx-4 mt-2">
 					<!-- <CodeEditor rawValue={astPrinted as string} language="graphql" /> -->
 				</div>
 			{/if}
@@ -722,7 +779,11 @@
 				<label class="label" for="snippet-language-select">
 					<span class="label-text">Select Language/Client</span>
 				</label>
-				<select id="snippet-language-select" class="select select-bordered" bind:value={selectedSnippetLanguage}>
+				<select
+					id="snippet-language-select"
+					class="select select-bordered"
+					bind:value={selectedSnippetLanguage}
+				>
 					{#each SUPPORTED_LANGUAGES as lang}
 						<option value={lang.value}>{lang.label}</option>
 					{/each}
