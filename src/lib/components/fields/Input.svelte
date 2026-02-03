@@ -1,4 +1,9 @@
 <script lang="ts">
+	/**
+	 * Input Component
+	 *
+	 * A generic input component that handles different input types and value transformations.
+	 */
 	import {
 		string_transformer,
 		string_transformerREVERSE
@@ -42,7 +47,6 @@
 				rawValue = string_transformerREVERSE(dispatchValue, false);
 			}
 		}
-		Logger.debug('rawValue', rawValue, 'chd_dispatchValue', dispatchValue);
 	});
 
 	//let castAs //most of the times as string
