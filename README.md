@@ -236,6 +236,13 @@ Auto-GQL can generate mock response data for your queries based on the schema. T
 - **Usage:** In the code display view (where the query is shown), click the **Mock Data** button (<i class="bi bi-code-slash"></i> icon).
 - **Functionality:** It parses the current query and generates realistic random data (Strings, Ints, Lists, Objects) matching the schema types.
 
+## Format Query
+
+Auto-GQL allows you to format (prettify) your GraphQL query directly in the editor.
+
+- **Access:** In the code display view, click the **Prettify** button (<i class="bi bi-magic"></i>).
+- **Functionality:** Formats the query with proper indentation and line breaks using Prettier.
+
 ## Import from cURL
 
 Auto-GQL allows you to import a GraphQL query and headers from a cURL command (e.g., copied from Chrome DevTools).

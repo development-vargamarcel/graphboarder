@@ -1,4 +1,10 @@
 <script lang="ts">
+	/**
+	 * GraphqlCodeDisplay Component
+	 *
+	 * Displays a GraphQL query with syntax highlighting, editing capabilities,
+	 * and a toolbar for executing, formatting, and managing the query.
+	 */
 	import CodeEditor from './fields/CodeEditor.svelte';
 	import { format } from 'graphql-formatter';
 	import hljs from 'highlight.js/lib/core';
@@ -150,6 +156,34 @@
 	let snippetEditorLanguage = $derived(
 		selectedSnippetLanguage.startsWith('python') ? 'python' : 'javascript'
 	);
+
+	let codeEditorInstance = $state();
+
+	/**
+	 * Formats the query using the CodeEditor's prettify function or a fallback.
+	 */
+	const handlePrettify = async () => {
+		if (codeEditorInstance) {
+			try {
+				Logger.info('Formatting query...');
+				await codeEditorInstance.prettify();
+				toast.success('Query formatted');
+			} catch (e) {
+				Logger.warn('Prettify failed', e);
+				toast.error('Failed to format query');
+			}
+		} else {
+			try {
+				const formatted = format(value);
+				value = formatted;
+				valueModifiedManually = formatted;
+				toast.success('Query formatted');
+			} catch (e) {
+				Logger.warn('Prettify failed', e);
+				toast.error('Failed to format query');
+			}
+		}
+	};
 
 	const getParsedVariables = () => {
 		try {
@@ -505,6 +539,14 @@
 		</button>
 		<button
 			class="btn btn-xs btn-ghost transition-opacity"
+			aria-label="Prettify Query"
+			title="Format Query (Prettify)"
+			onclick={handlePrettify}
+		>
+			<i class="bi bi-magic"></i> Prettify
+		</button>
+		<button
+			class="btn btn-xs btn-ghost transition-opacity"
 			aria-label="Copy to Clipboard"
 			title="Copy Query to Clipboard"
 			onclick={() => {
@@ -691,6 +733,7 @@
 			<code class="language-graphql">{@html safeHighlight(value)}</code>
 			<div class="mx-4 mt-2">
 				<CodeEditor
+					bind:this={codeEditorInstance}
 					rawValue={value}
 					language="graphql"
 					onChanged={(detail) => {

@@ -130,7 +130,10 @@
 		);
 	});
 
-	const prettify = async () => {
+	/**
+	 * Formats the code in the editor using Prettier.
+	 */
+	export const prettify = async () => {
 		if (!editor) {
 			return;
 		}
