@@ -4,6 +4,7 @@
 	import TabButton from '$lib/components/TabButton.svelte';
 	import HeadersEditor from '$lib/components/UI/HeadersEditor.svelte';
 	import EndpointManager from '$lib/components/UI/EndpointManager.svelte';
+	import EnvironmentManager from '$lib/components/UI/EnvironmentManager.svelte';
 	import { getQMSLinks } from '$lib/utils/usefulFunctions';
 	import { getContext, onMount } from 'svelte';
 	import { Logger } from '$lib/utils/logger';
@@ -21,6 +22,7 @@
 
 	let showSettings = $state(false);
 	let showEndpoints = $state(false);
+	let showEnvironments = $state(false);
 
 	// Ensure prefix is defined or passed
 	let context = getContext<QMSMainWraperContext>(`${prefix}QMSMainWraperContext`);
@@ -129,6 +131,15 @@
 					}}
 				/>
 				<TabButton
+					title="Environments"
+					icon="bi bi-layers"
+					isActive={showEnvironments}
+					onclick={() => {
+						showEnvironments = true;
+						Logger.debug('Opening Environment Manager');
+					}}
+				/>
+				<TabButton
 					title="Headers"
 					icon="bi bi-gear"
 					isActive={showSettings}
@@ -143,6 +154,10 @@
 
 	{#if showEndpoints}
 		<EndpointManager onClose={() => (showEndpoints = false)} />
+	{/if}
+
+	{#if showEnvironments}
+		<EnvironmentManager onClose={() => (showEnvironments = false)} />
 	{/if}
 
 	{#if showSettings}
