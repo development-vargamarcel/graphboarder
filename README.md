@@ -193,6 +193,7 @@ Auto-GQL allows you to configure HTTP headers (e.g., Authorization tokens) for y
   - View, add, edit, and delete headers.
   - Headers are persisted in `localStorage`.
   - Supports both global headers and endpoint-specific headers (if the endpoint ID is available).
+  - **Presets:** Save sets of headers as named presets for quick switching between configurations (e.g., "Admin", "User", "Guest").
 
 ### Data Export
 

@@ -13,6 +13,9 @@
 	let keyInput = $state('');
 	let valueInput = $state('');
 
+	let presets = $state<{ name: string; headers: { key: string; value: string }[] }[]>([]);
+	let presetNameInput = $state('');
+
 	const storageKey = $derived(endpointInfo?.id ? `headers_${endpointInfo.id}` : 'headers');
 
 	onMount(() => {
@@ -23,6 +26,15 @@
 				headers = Object.entries(obj).map(([k, v]) => ({ key: k, value: String(v) }));
 			} catch (e) {
 				Logger.error('Failed to parse headers from localStorage', e);
+			}
+		}
+
+		const storedPresets = localStorage.getItem('header_presets');
+		if (storedPresets) {
+			try {
+				presets = JSON.parse(storedPresets);
+			} catch (e) {
+				Logger.error('Failed to parse header presets', e);
 			}
 		}
 	});
@@ -51,6 +63,27 @@
 		Logger.info('Headers saved', { storageKey, headers: obj });
 		onClose();
 	}
+
+	function savePreset() {
+		if (!presetNameInput) return;
+		// Clone headers to avoid reference issues
+		const newPreset = { name: presetNameInput, headers: headers.map((h) => ({ ...h })) };
+		presets = [...presets, newPreset];
+		localStorage.setItem('header_presets', JSON.stringify(presets));
+		Logger.info('Header preset saved', { name: presetNameInput });
+		presetNameInput = '';
+	}
+
+	function loadPreset(preset: { name: string; headers: { key: string; value: string }[] }) {
+		headers = preset.headers.map((h) => ({ ...h }));
+		Logger.info('Header preset loaded', { name: preset.name });
+	}
+
+	function deletePreset(index: number) {
+		presets = presets.filter((_, i) => i !== index);
+		localStorage.setItem('header_presets', JSON.stringify(presets));
+		Logger.info('Header preset deleted', { index });
+	}
 </script>
 
 <div
@@ -65,7 +98,7 @@
 			Edit Headers {endpointInfo?.id ? `for ${endpointInfo.id}` : '(Global)'}
 		</h3>
 
-		<div class="overflow-y-auto max-h-[60vh] mb-4">
+		<div class="overflow-y-auto max-h-[50vh] mb-4">
 			<table class="table w-full">
 				<thead>
 					<tr>
@@ -109,7 +142,7 @@
 			{/if}
 		</div>
 
-		<div class="flex gap-2 mb-6 p-4 bg-base-200 rounded">
+		<div class="flex gap-2 mb-4 p-4 bg-base-200 rounded">
 			<input
 				type="text"
 				placeholder="New Key"
@@ -127,7 +160,49 @@
 			>
 		</div>
 
-		<div class="modal-action">
+		<div class="divider">Presets</div>
+		<div class="flex flex-col gap-4 mb-4">
+			<div class="flex gap-2">
+				<input
+					type="text"
+					placeholder="Preset Name"
+					class="input input-bordered flex-1 input-sm"
+					bind:value={presetNameInput}
+				/>
+				<button
+					class="btn btn-sm btn-secondary"
+					onclick={savePreset}
+					disabled={!presetNameInput || headers.length === 0}>Save Current as Preset</button
+				>
+			</div>
+			{#if presets.length > 0}
+				<div class="flex flex-wrap gap-2">
+					{#each presets as preset, i}
+						<div class="badge badge-lg gap-2 p-4">
+							{preset.name}
+							<button
+								class="btn btn-xs btn-ghost"
+								onclick={() => loadPreset(preset)}
+								title="Load"
+								aria-label="Load preset"
+							>
+								<i class="bi bi-box-arrow-in-down"></i>
+							</button>
+							<button
+								class="btn btn-xs btn-ghost text-error"
+								onclick={() => deletePreset(i)}
+								title="Delete"
+								aria-label="Delete preset"
+							>
+								<i class="bi bi-trash"></i>
+							</button>
+						</div>
+					{/each}
+				</div>
+			{/if}
+		</div>
+
+		<div class="modal-action mt-auto">
 			<button class="btn" onclick={onClose}>Cancel</button>
 			<button class="btn btn-success" onclick={save}>Save</button>
 		</div>
