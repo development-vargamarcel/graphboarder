@@ -275,6 +275,17 @@ Auto-GQL allows you to define and manage variables for your GraphQL queries.
   - Validates JSON before execution.
   - Variables are included in query execution, sharing, cURL generation, and code snippets.
 
+## Extract Variables
+
+Auto-GQL can automatically extract variables from your query and generate a JSON skeleton with default values.
+
+- **Access:** In the code display view, click the **Extract Vars** button (<i class="bi bi-file-earmark-code"></i>).
+- **Functionality:**
+  - Parses the current query to find variable definitions.
+  - Generates default values based on types (e.g., `Int` -> `0`, `String` -> `""`).
+  - Merges with existing variables, preserving current values while adding missing ones and removing unused ones.
+  - Opens the Variables Editor with the result.
+
 ## Execute Query
 
 You can execute the current query directly from the `GraphqlCodeDisplay` component.
