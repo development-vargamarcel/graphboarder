@@ -3,6 +3,18 @@ import { Logger } from '../utils/logger';
 import { get } from 'svelte/store';
 
 /**
+ * Interface representing a user-created collection of queries.
+ */
+export interface QueryCollection {
+	/** Unique identifier for the collection */
+	id: string;
+	/** Name of the collection */
+	name: string;
+	/** Timestamp when the collection was created */
+	createdAt: number;
+}
+
+/**
  * Interface representing a saved GraphQL query in history.
  */
 export interface HistoryItem {
@@ -24,12 +36,19 @@ export interface HistoryItem {
 	name?: string;
 	/** Whether the query is marked as favorite */
 	isFavorite?: boolean;
+	/** The ID of the collection this item belongs to (optional) */
+	collectionId?: string | null;
 }
 
 /**
  * Persisted store for query history.
  */
 export const queryHistory = persisted<HistoryItem[]>('queryHistory', []);
+
+/**
+ * Persisted store for query collections.
+ */
+export const queryCollections = persisted<QueryCollection[]>('queryCollections', []);
 
 /**
  * Adds a new item to the history.
@@ -55,7 +74,8 @@ export const addToHistory = (item: Omit<HistoryItem, 'id' | 'timestamp'>) => {
 				timestamp: Date.now(),
 				// Ensure we keep existing custom fields if they aren't provided in the new item
 				name: existing.name,
-				isFavorite: existing.isFavorite
+				isFavorite: existing.isFavorite,
+				collectionId: existing.collectionId
 			};
 
 			const newHistory = [...history];
@@ -69,11 +89,67 @@ export const addToHistory = (item: Omit<HistoryItem, 'id' | 'timestamp'>) => {
 				...item,
 				id: crypto.randomUUID(),
 				timestamp: Date.now(),
-				isFavorite: false
+				isFavorite: false,
+				collectionId: null
 			},
 			...history
 		].slice(0, 50); // Keep last 50
 	});
+};
+
+/**
+ * Creates a new query collection.
+ * @param name - The name of the collection
+ * @returns The ID of the created collection
+ */
+export const createCollection = (name: string): string => {
+	const id = crypto.randomUUID();
+	const newCollection: QueryCollection = {
+		id,
+		name,
+		createdAt: Date.now()
+	};
+	Logger.debug('Creating collection', newCollection);
+	queryCollections.update((collections) => [...collections, newCollection]);
+	return id;
+};
+
+/**
+ * Deletes a collection and moves its items to "Unsorted" (null collectionId).
+ * @param id - The ID of the collection to delete
+ */
+export const deleteCollection = (id: string) => {
+	Logger.debug('Deleting collection', { id });
+	// Remove the collection
+	queryCollections.update((collections) => collections.filter((c) => c.id !== id));
+	// Remove collectionId from items that were in this collection
+	queryHistory.update((history) =>
+		history.map((item) => (item.collectionId === id ? { ...item, collectionId: null } : item))
+	);
+};
+
+/**
+ * Renames a collection.
+ * @param id - The ID of the collection
+ * @param name - The new name
+ */
+export const renameCollection = (id: string, name: string) => {
+	Logger.debug('Renaming collection', { id, name });
+	queryCollections.update((collections) =>
+		collections.map((c) => (c.id === id ? { ...c, name } : c))
+	);
+};
+
+/**
+ * Moves a history item to a collection (or removes it from one).
+ * @param itemId - The ID of the history item
+ * @param collectionId - The ID of the target collection, or null to remove from collection
+ */
+export const moveItemToCollection = (itemId: string, collectionId: string | null) => {
+	Logger.debug('Moving item to collection', { itemId, collectionId });
+	queryHistory.update((history) =>
+		history.map((item) => (item.id === itemId ? { ...item, collectionId } : item))
+	);
 };
 
 /**

@@ -184,6 +184,15 @@ Auto-GQL allows you to persist and restore executed queries.
 - **Renaming:** Click on a query name in the history to rename it for easier identification.
 - **Export/Import:** You can export your query history to a JSON file and import it on another device or for backup.
 
+## Query Collections
+
+Auto-GQL allows you to organize your saved queries into collections (folders).
+
+- **Create Collections:** Create named collections to group related queries.
+- **Move Queries:** Easily move saved queries into collections or back to the "Unsorted" list.
+- **Manage:** Rename or delete collections. Deleting a collection moves its queries to the "Unsorted" list.
+- **Filter:** View all queries, only favorites, or filter by specific collections.
+
 ## Headers Editor
 
 Auto-GQL allows you to configure HTTP headers (e.g., Authorization tokens) for your GraphQL requests directly from the UI.

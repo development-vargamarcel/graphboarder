@@ -157,7 +157,7 @@
 		selectedSnippetLanguage.startsWith('python') ? 'python' : 'javascript'
 	);
 
-	let codeEditorInstance = $state();
+	let codeEditorInstance = $state<any>();
 
 	/**
 	 * Formats the query using the CodeEditor's prettify function or a fallback.

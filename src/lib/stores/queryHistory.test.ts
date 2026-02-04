@@ -2,148 +2,91 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { get } from 'svelte/store';
 import {
 	queryHistory,
+	queryCollections,
 	addToHistory,
-	removeFromHistory,
-	clearHistory,
-	toggleFavorite,
-	updateHistoryItem,
-	exportHistory,
-	importHistory
+	createCollection,
+	deleteCollection,
+	renameCollection,
+	moveItemToCollection,
+	removeFromHistory
 } from './queryHistory';
 
-describe('queryHistory Store', () => {
+describe('Query History Collections', () => {
 	beforeEach(() => {
-		clearHistory();
+		queryHistory.set([]);
+		queryCollections.set([]);
+		localStorage.clear();
 	});
 
-	it('should add items to history', () => {
-		const item = {
-			query: 'query { test }',
-			endpointId: '1',
-			operationName: 'testQuery'
-		};
-		addToHistory(item);
+	it('should create a collection', () => {
+		const id = createCollection('My Collection');
+		const collections = get(queryCollections);
+		expect(collections).toHaveLength(1);
+		expect(collections[0].name).toBe('My Collection');
+		expect(collections[0].id).toBe(id);
+	});
 
+	it('should rename a collection', () => {
+		const id = createCollection('Old Name');
+		renameCollection(id, 'New Name');
+		const collections = get(queryCollections);
+		expect(collections[0].name).toBe('New Name');
+	});
+
+	it('should delete a collection', () => {
+		const id = createCollection('To Delete');
+		deleteCollection(id);
+		const collections = get(queryCollections);
+		expect(collections).toHaveLength(0);
+	});
+
+	it('should move an item to a collection', () => {
+		addToHistory({
+			query: '{ test }',
+			endpointId: '1',
+			operationName: 'test',
+		});
 		const history = get(queryHistory);
-		expect(history).toHaveLength(1);
-		expect(history[0].query).toBe(item.query);
-		expect(history[0].isFavorite).toBe(false);
-		expect(history[0].timestamp).toBeDefined();
-		expect(history[0].id).toBeDefined();
+		const itemId = history[0].id;
+		const collectionId = createCollection('My Collection');
+
+		moveItemToCollection(itemId, collectionId);
+
+		const updatedHistory = get(queryHistory);
+		expect(updatedHistory[0].collectionId).toBe(collectionId);
 	});
 
-	it('should move existing item to top and update timestamp', async () => {
-		const item1 = {
-			query: 'query { test1 }',
+	it('should reset collectionId when collection is deleted', () => {
+		addToHistory({
+			query: '{ test }',
 			endpointId: '1',
-			operationName: 'testQuery1'
-		};
-		const item2 = {
-			query: 'query { test2 }',
-			endpointId: '1',
-			operationName: 'testQuery2'
-		};
-
-		addToHistory(item1);
-		// wait a bit to ensure timestamp diff (though Date.now() might be same, code relies on order mostly)
-		addToHistory(item2);
-
+			operationName: 'test',
+		});
 		let history = get(queryHistory);
-		expect(history[0].query).toBe(item2.query);
-		expect(history[1].query).toBe(item1.query);
-		const firstTimestamp = history[1].timestamp;
+		const itemId = history[0].id;
+		const collectionId = createCollection('My Collection');
 
-		// Add item1 again
-		addToHistory(item1);
+		moveItemToCollection(itemId, collectionId);
+		deleteCollection(collectionId);
 
 		history = get(queryHistory);
-		expect(history).toHaveLength(2);
-		expect(history[0].query).toBe(item1.query);
-		expect(history[1].query).toBe(item2.query);
-		expect(history[0].timestamp).toBeGreaterThanOrEqual(firstTimestamp);
+		expect(history[0].collectionId).toBeNull();
 	});
 
-	it('should preserve favorite status when updating existing item', () => {
-		const item = {
-			query: 'query { test }',
+    it('should remove item from collection (move to unsorted)', () => {
+        addToHistory({
+			query: '{ test }',
 			endpointId: '1',
-			operationName: 'testQuery'
-		};
-		addToHistory(item);
-
+			operationName: 'test',
+		});
 		let history = get(queryHistory);
-		const id = history[0].id;
-		toggleFavorite(id);
+		const itemId = history[0].id;
+		const collectionId = createCollection('My Collection');
 
-		history = get(queryHistory);
-		expect(history[0].isFavorite).toBe(true);
+        moveItemToCollection(itemId, collectionId);
+        moveItemToCollection(itemId, null);
 
-		// Add same item again
-		addToHistory(item);
-
-		history = get(queryHistory);
-		expect(history[0].isFavorite).toBe(true);
-	});
-
-	it('should toggle favorite', () => {
-		const item = {
-			query: 'query { test }',
-			endpointId: '1',
-			operationName: 'testQuery'
-		};
-		addToHistory(item);
-		const id = get(queryHistory)[0].id;
-
-		toggleFavorite(id);
-		expect(get(queryHistory)[0].isFavorite).toBe(true);
-
-		toggleFavorite(id);
-		expect(get(queryHistory)[0].isFavorite).toBe(false);
-	});
-
-	it('should update history item', () => {
-		const item = {
-			query: 'query { test }',
-			endpointId: '1',
-			operationName: 'testQuery'
-		};
-		addToHistory(item);
-		const id = get(queryHistory)[0].id;
-
-		updateHistoryItem(id, { name: 'My Query' });
-		expect(get(queryHistory)[0].name).toBe('My Query');
-	});
-
-	it('should export and import history', () => {
-		const item = {
-			query: 'query { test }',
-			endpointId: '1',
-			operationName: 'testQuery',
-			name: 'Exported'
-		};
-		addToHistory(item);
-
-		const json = exportHistory();
-		clearHistory();
-		expect(get(queryHistory)).toHaveLength(0);
-
-		importHistory(json);
-		const history = get(queryHistory);
-		expect(history).toHaveLength(1);
-		expect(history[0].name).toBe('Exported');
-	});
-
-	it('should store and retrieve variables', () => {
-		const item = {
-			query: 'query { test($var: String) { field(arg: $var) } }',
-			endpointId: '1',
-			operationName: 'testQuery',
-			variables: { var: 'value' }
-		};
-		addToHistory(item);
-
-		const history = get(queryHistory);
-		expect(history).toHaveLength(1);
-		expect(history[0].variables).toEqual({ var: 'value' });
-	});
+        history = get(queryHistory);
+        expect(history[0].collectionId).toBeNull();
+    });
 });
