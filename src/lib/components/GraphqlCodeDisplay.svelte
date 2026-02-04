@@ -28,6 +28,7 @@
 	import LoadingSpinner from '$lib/components/UI/LoadingSpinner.svelte';
 	import { generateSnippet, SUPPORTED_LANGUAGES } from '$lib/utils/snippetGenerator';
 	import { compressQuery, decompressQuery } from '$lib/utils/shareUtils';
+	import { extractVariables } from '$lib/utils/variableExtractor';
 	import {
 		calculateComplexity,
 		calculateResponseSize,
@@ -191,6 +192,32 @@
 		} catch (e) {
 			Logger.warn('Failed to parse variables', e);
 			return {};
+		}
+	};
+
+	const handleExtractVariables = () => {
+		try {
+			Logger.info('Extracting variables from query...');
+			const extracted = extractVariables(value);
+			const currentVariables = getParsedVariables();
+
+			// Merge: Keep existing values if keys match, otherwise use default from extracted.
+			// Discard variables that are no longer in the query.
+			const finalVariables: Record<string, any> = {};
+			for (const key in extracted) {
+				if (Object.prototype.hasOwnProperty.call(currentVariables, key)) {
+					finalVariables[key] = currentVariables[key];
+				} else {
+					finalVariables[key] = extracted[key];
+				}
+			}
+
+			variablesString = JSON.stringify(finalVariables, null, 2);
+			showVariables = true;
+			toast.success('Variables extracted and updated');
+		} catch (e) {
+			Logger.error('Failed to extract variables', e);
+			toast.error('Failed to extract variables');
 		}
 	};
 
@@ -536,6 +563,14 @@
 			onclick={() => (showVariables = !showVariables)}
 		>
 			<i class="bi bi-braces"></i> Variables
+		</button>
+		<button
+			class="btn btn-xs btn-ghost transition-opacity"
+			aria-label="Extract Variables"
+			title="Extract Variables from Query"
+			onclick={handleExtractVariables}
+		>
+			<i class="bi bi-file-earmark-code"></i> Extract Vars
 		</button>
 		<button
 			class="btn btn-xs btn-ghost transition-opacity"
