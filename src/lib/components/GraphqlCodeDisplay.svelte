@@ -35,6 +35,8 @@
 		formatBytes,
 		type QueryComplexity
 	} from '$lib/utils/queryAnalyzer';
+	import { getActiveEnvironment } from '$lib/stores/environmentStore';
+	import { substituteVariables } from '$lib/utils/variableSubstitutor';
 
 	interface Props {
 		/**
@@ -224,12 +226,21 @@
 	let generatedSnippet = $derived.by(() => {
 		if (showSnippetsModal && mainWraperCtx?.endpointInfo) {
 			const info = get(mainWraperCtx.endpointInfo);
+			let headers = info.headers || {};
+			const env = getActiveEnvironment();
+			if (Object.keys(env.variables).length > 0) {
+				const substituted: Record<string, string> = {};
+				for (const [k, v] of Object.entries(headers)) {
+					substituted[k] = substituteVariables(v, env.variables);
+				}
+				headers = substituted;
+			}
 			return generateSnippet(
 				selectedSnippetLanguage,
 				info.url,
 				value,
 				getParsedVariables(),
-				info.headers || {}
+				headers
 			);
 		}
 		return '';
@@ -606,11 +617,21 @@
 				if (mainWraperCtx?.endpointInfo) {
 					Logger.info('Copied query as cURL to clipboard');
 					const info = get(mainWraperCtx.endpointInfo);
+					let headers = info.headers || {};
+					const env = getActiveEnvironment();
+					if (Object.keys(env.variables).length > 0) {
+						const substituted: Record<string, string> = {};
+						for (const [k, v] of Object.entries(headers)) {
+							substituted[k] = substituteVariables(v, env.variables);
+						}
+						headers = substituted;
+					}
+
 					const curl = generateCurlCommand(
 						info.url,
 						value,
 						getParsedVariables(),
-						info.headers || {}
+						headers
 					);
 					navigator.clipboard.writeText(curl);
 					isCurlCopied = true;
@@ -659,11 +680,21 @@
 				if (mainWraperCtx?.endpointInfo) {
 					Logger.info('Exporting to Postman');
 					const info = get(mainWraperCtx.endpointInfo);
+					let headers = info.headers || {};
+					const env = getActiveEnvironment();
+					if (Object.keys(env.variables).length > 0) {
+						const substituted: Record<string, string> = {};
+						for (const [k, v] of Object.entries(headers)) {
+							substituted[k] = substituteVariables(v, env.variables);
+						}
+						headers = substituted;
+					}
+
 					const json = generatePostmanCollectionForQuery(
 						qmsWraperCtx?.QMSName || 'Query',
 						info.url,
 						value,
-						info.headers || {},
+						headers,
 						getParsedVariables()
 					);
 					const blob = new Blob([json], { type: 'application/json' });

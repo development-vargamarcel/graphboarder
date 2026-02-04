@@ -4,8 +4,14 @@
 
 Forced re-optimization of dependencies
 
-  VITE v5.4.21  ready in 1390 ms
+  VITE v5.4.21  ready in 1334 ms
 
   ➜  Local:   http://localhost:5173/
   ➜  Network: use --host to expose
 /*! 🌼 daisyUI 5.5.14 */
+8:49:37 AM [vite-plugin-svelte] src/lib/components/UI/EnvironmentManager.svelte:115:6 Buttons and links should either contain text or have an `aria-label`, `aria-labelledby` or `title` attribute
+https://svelte.dev/e/a11y_consider_explicit_label
+8:49:37 AM [vite-plugin-svelte] src/lib/components/UI/EnvironmentManager.svelte:161:8 Buttons and links should either contain text or have an `aria-label`, `aria-labelledby` or `title` attribute
+https://svelte.dev/e/a11y_consider_explicit_label
+8:49:37 AM [vite-plugin-svelte] src/lib/components/UI/EnvironmentManager.svelte:227:11 Buttons and links should either contain text or have an `aria-label`, `aria-labelledby` or `title` attribute
+https://svelte.dev/e/a11y_consider_explicit_label

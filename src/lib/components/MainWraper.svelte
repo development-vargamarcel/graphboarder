@@ -17,6 +17,8 @@
 	import ToastContainer from './UI/ToastContainer.svelte';
 	import { commandPaletteStore } from '$lib/stores/commandPalette';
 	import { goto } from '$app/navigation';
+	import { getActiveEnvironment } from '$lib/stores/environmentStore';
+	import { substituteVariables } from '$lib/utils/variableSubstitutor';
 
 	/**
 	 * Props for the MainWraper component.
@@ -146,6 +148,20 @@
 						Logger.error(`MainWraper: Failed to parse specific headers for ${$endpointInfo.id}`, e);
 					}
 				}
+			}
+
+			// Apply environment variable substitution
+			const env = getActiveEnvironment();
+			if (Object.keys(env.variables).length > 0) {
+				const substitutedHeaders: Record<string, string> = {};
+				for (const [key, value] of Object.entries(headers)) {
+					const newValue = substituteVariables(value, env.variables);
+					if (newValue !== value) {
+						Logger.debug(`MainWraper: Substituted variable in header ${key}`);
+					}
+					substitutedHeaders[key] = newValue;
+				}
+				headers = substitutedHeaders;
 			}
 		}
 		return headers;

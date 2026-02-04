@@ -205,6 +205,25 @@ Auto-GQL allows you to configure HTTP headers (e.g., Authorization tokens) for y
   - Supports both global headers and endpoint-specific headers (if the endpoint ID is available).
   - **Presets:** Save sets of headers as named presets for quick switching between configurations (e.g., "Admin", "User", "Guest").
 
+## Environment Manager
+
+Auto-GQL includes an **Environment Manager** to handle sets of global variables (e.g., for different deployment environments like Dev, Staging, Prod).
+
+- **Access:** Click the **Environments** button (layers icon) in the bottom of the sidebar.
+- **Functionality:**
+  - **Create Environments:** Create named environments (e.g., "Production", "Local").
+  - **Manage Variables:** Define key-value pairs for each environment.
+  - **Active Environment:** Select which environment is currently active.
+  - **Variable Substitution:** Use variables in HTTP Headers and cURL commands using double curly braces: `{{variableName}}`.
+  - **Persistence:** Environments are saved in `localStorage`.
+  - **Global Environment:** A default "Global" environment is always available and cannot be deleted.
+
+**Example Usage:**
+1. Create an environment named "Production".
+2. Add a variable `token` with value `ey...`.
+3. In **Headers Editor**, add a header `Authorization` with value `Bearer {{token}}`.
+4. When you execute a query, `{{token}}` will be automatically replaced with the value from the active environment.
+
 ### Data Export
 
 The `Table` component supports exporting data to CSV and JSON formats.
