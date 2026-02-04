@@ -88,7 +88,9 @@
 			isMantained: true // Assume user maintained
 		};
 
+		Logger.info('Adding new endpoint', { id, name: newName, url: newUrl });
 		localStorageEndpoints.update((current: any[]) => [...current, newEndpoint]);
+		toast.success('Endpoint added successfully');
 
 		// Reset form
 		newName = '';
@@ -99,7 +101,9 @@
 
 	function deleteEndpoint(id: string) {
 		if (confirm('Are you sure you want to delete this endpoint?')) {
+			Logger.info('Deleting endpoint', { id });
 			localStorageEndpoints.update((current: any[]) => current.filter((e: any) => e.id !== id));
+			toast.success('Endpoint deleted');
 		}
 	}
 </script>

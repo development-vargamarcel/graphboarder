@@ -14,6 +14,7 @@ A powerful Svelte 5 library for auto-generating GraphQL UIs, handling complex qu
 - **Execute Queries:** Execute queries directly from the editor and view results.
 - **Code Snippets:** Generate code snippets for various clients (Fetch, URQL, Apollo, Python Requests).
 - **Toast Notifications:** Built-in toast notification system for user feedback.
+- **Command Palette:** Quick access to navigation and commands using `Ctrl+K` (or `Cmd+K`).
 
 ## Installation
 
@@ -333,6 +334,16 @@ Auto-GQL includes a built-in toast notification system for providing feedback to
 ## Theme Support
 
 GraphBoarder supports Light and Dark modes. The theme can be toggled using the button in the header. The preference is persisted in `localStorage`.
+
+## Command Palette
+
+Auto-GQL includes a **Command Palette** (Spotlight Search) to help you navigate and perform actions quickly without leaving your keyboard.
+
+- **Access:** Press `Ctrl+K` (Windows/Linux) or `Cmd+K` (Mac) anywhere in the application.
+- **Functionality:**
+  - **Navigation:** Quickly jump to Home, Endpoints Manager, Explorer, Schema, Queries, or Mutations.
+  - **Contextual Commands:** Commands can be registered dynamically by components.
+  - **Search:** Fuzzy search through available commands.
 
 ## Advanced Configuration
 
