@@ -15,6 +15,8 @@
 	import { Logger } from '$lib/utils/logger';
 	import type { QMSMainWraperContext } from '$lib/types/index';
 	import ToastContainer from './UI/ToastContainer.svelte';
+	import { commandPaletteStore } from '$lib/stores/commandPalette';
+	import { goto } from '$app/navigation';
 
 	/**
 	 * Props for the MainWraper component.
@@ -59,6 +61,50 @@
 				'MainWraper: No URL provided in endpoint info. Please check your configuration.',
 				{ endpointInfoProvided }
 			);
+		}
+	});
+
+	// Register Endpoint Commands
+	$effect(() => {
+		if (browser) {
+			if ($endpointInfo?.id) {
+				const id = $endpointInfo.id;
+				commandPaletteStore.registerCommand({
+					id: 'nav-explorer',
+					title: 'Schema Explorer',
+					category: 'Navigation',
+					description: 'Browse the GraphQL schema',
+					icon: 'bi bi-compass',
+					action: () => goto(`/endpoints/${id}/explorer`)
+				});
+
+				commandPaletteStore.registerCommand({
+					id: 'nav-schema',
+					title: 'Schema Details',
+					category: 'Navigation',
+					description: 'View schema types and details',
+					icon: 'bi bi-diagram-3',
+					action: () => goto(`/endpoints/${id}/schema`)
+				});
+
+				commandPaletteStore.registerCommand({
+					id: 'nav-queries',
+					title: 'All Queries',
+					category: 'Navigation',
+					description: 'List all available queries',
+					icon: 'bi bi-asterisk',
+					action: () => goto(`/endpoints/${id}/queries`)
+				});
+
+				commandPaletteStore.registerCommand({
+					id: 'nav-mutations',
+					title: 'All Mutations',
+					category: 'Navigation',
+					description: 'List all available mutations',
+					icon: 'bi bi-pen',
+					action: () => goto(`/endpoints/${id}/mutations`)
+				});
+			}
 		}
 	});
 
