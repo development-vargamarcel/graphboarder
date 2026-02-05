@@ -183,7 +183,7 @@ Auto-GQL allows you to persist and restore executed queries.
 - **Manual:** You can manually add queries to history using `addToHistory`.
 - **Favorites:** You can mark queries as favorites (star icon) to keep them at the top of the list.
 - **Renaming:** Click on a query name in the history to rename it for easier identification.
-- **Export/Import:** You can export your query history to a JSON file and import it on another device or for backup.
+- **Backup & Restore:** You can export your full backup (including history and collections) to a JSON file and import it on another device.
 
 ## Query Collections
 
