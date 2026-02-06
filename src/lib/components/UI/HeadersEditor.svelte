@@ -90,6 +90,10 @@
 	class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50"
 	role="dialog"
 	aria-modal="true"
+	tabindex="-1"
+	onkeydown={(e) => {
+		if (e.key === 'Escape') onClose();
+	}}
 >
 	<div
 		class="w-11/12 max-w-2xl bg-base-100 p-6 rounded-lg shadow-xl overflow-hidden flex flex-col max-h-[90vh]"

@@ -605,11 +605,7 @@ export const getTableCellData = (
 	return data;
 };
 
-export const formatData = (
-	data: unknown = '',
-	length: number,
-	alwaysStringyfy = true
-): string => {
+export const formatData = (data: unknown = '', length: number, alwaysStringyfy = true): string => {
 	let string = '';
 	let resultingString = '';
 

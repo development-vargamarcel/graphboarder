@@ -42,11 +42,15 @@
 		/**
 		 * Whether to show the raw, non-prettified query body.
 		 */
-		showNonPrettifiedQMSBody: any;
+		showNonPrettifiedQMSBody?: any;
 		/**
 		 * The GraphQL query string to display.
 		 */
 		value: any;
+		/**
+		 * The variables JSON string.
+		 */
+		variablesString?: any;
 		/**
 		 * Whether to enable syncing changes in the editor back to the UI stores.
 		 * Default: true
@@ -63,8 +67,9 @@
 	}
 
 	let {
-		showNonPrettifiedQMSBody = $bindable(),
-		value,
+		showNonPrettifiedQMSBody = $bindable(false),
+		value = $bindable(),
+		variablesString = $bindable('{}'),
 		enableSyncToUI = true,
 		prefix = '',
 		enableShareUrl = false
@@ -72,7 +77,6 @@
 
 	let valueModifiedManually = $state();
 	let lastSyncedValue = $state(untrack(() => value));
-	let variablesString = $state('{}');
 	let showVariables = $state(false);
 
 	// Try to get context if available
@@ -820,6 +824,7 @@
 					language="graphql"
 					onChanged={(detail) => {
 						valueModifiedManually = detail.chd_rawValue;
+						value = detail.chd_rawValue;
 					}}
 				/>
 			</div>
