@@ -194,29 +194,95 @@ export const updateHistoryItem = (id: string, updates: Partial<HistoryItem>) => 
 
 /**
  * Exports the current history as a JSON string.
- * @returns JSON string of history items
+ * Includes both history items and collections.
+ * @returns JSON string of the backup object
  */
 export const exportHistory = (): string => {
 	const history = get(queryHistory);
-	Logger.debug('Exporting history', { count: history.length });
-	return JSON.stringify(history, null, 2);
+	const collections = get(queryCollections);
+
+	Logger.info('Exporting history backup', {
+		historyCount: history.length,
+		collectionsCount: collections.length
+	});
+
+	const backup = {
+		version: 1,
+		timestamp: Date.now(),
+		history,
+		collections
+	};
+
+	return JSON.stringify(backup, null, 2);
 };
 
 /**
  * Imports history from a JSON string.
- * Replaces the current history.
+ * Supports legacy array format (merges history) and new versioned object format (merges history and collections).
  * @param json - The JSON string to import
+ * @returns Object indicating success status and message
  */
-export const importHistory = (json: string) => {
+export const importHistory = (json: string): { success: boolean; message: string } => {
 	try {
-		const items = JSON.parse(json);
-		if (Array.isArray(items)) {
-			Logger.debug('Importing history', { count: items.length });
-			queryHistory.set(items);
-		} else {
-			Logger.error('Import failed: invalid JSON format (not an array)');
+		const data = JSON.parse(json);
+
+		// Handle legacy format (Array of HistoryItem)
+		if (Array.isArray(data)) {
+			Logger.info('Importing legacy history', { count: data.length });
+			// Strategy: Merge legacy items. If ID exists, skip. If not, add.
+
+			let addedCount = 0;
+			queryHistory.update((currentHistory) => {
+				const newItems = data.filter((item) => !currentHistory.some((h) => h.id === item.id));
+				addedCount = newItems.length;
+				return [...currentHistory, ...newItems];
+			});
+
+			return { success: true, message: `Imported ${addedCount} items (legacy format).` };
 		}
+
+		// Handle new format (Object with version)
+		if (data.version && data.history) {
+			const importedHistory = data.history as HistoryItem[];
+			const importedCollections = (data.collections || []) as QueryCollection[];
+
+			Logger.info('Importing backup', {
+				version: data.version,
+				historyCount: importedHistory.length,
+				collectionsCount: importedCollections.length
+			});
+
+			let addedCollections = 0;
+			let addedHistory = 0;
+
+			// Merge Collections
+			queryCollections.update((currentCollections) => {
+				const newCollections = importedCollections.filter(
+					(col) => !currentCollections.some((c) => c.id === col.id)
+				);
+				addedCollections = newCollections.length;
+				return [...currentCollections, ...newCollections];
+			});
+
+			// Merge History
+			queryHistory.update((currentHistory) => {
+				const newItems = importedHistory.filter(
+					(item) => !currentHistory.some((h) => h.id === item.id)
+				);
+				addedHistory = newItems.length;
+				return [...currentHistory, ...newItems];
+			});
+
+			return {
+				success: true,
+				message: `Imported ${addedCollections} collections and ${addedHistory} queries.`
+			};
+		}
+
+		Logger.error('Import failed: invalid JSON format');
+		return { success: false, message: 'Invalid file format.' };
 	} catch (e) {
 		Logger.error('Import failed', e);
+		return { success: false, message: 'Failed to parse JSON file.' };
 	}
 };

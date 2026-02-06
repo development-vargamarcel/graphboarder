@@ -48,7 +48,7 @@
 		const url = URL.createObjectURL(blob);
 		const a = document.createElement('a');
 		a.href = url;
-		a.download = `query-history-${new Date().toISOString().slice(0, 10)}.json`;
+		a.download = `auto-gql-backup-${new Date().toISOString().slice(0, 10)}.json`;
 		document.body.appendChild(a);
 		a.click();
 		document.body.removeChild(a);
@@ -64,7 +64,12 @@
 				const result = e.target?.result as string;
 				if (result) {
 					Logger.info('Importing query history');
-					importHistory(result);
+					const outcome = importHistory(result);
+					if (outcome.success) {
+						toast.success(outcome.message);
+					} else {
+						toast.error(outcome.message);
+					}
 				}
 			};
 			reader.readAsText(file);
