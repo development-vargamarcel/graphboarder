@@ -6,18 +6,28 @@
 	import { browser } from '$app/environment';
 	import Page from '$lib/components/Page.svelte';
 	import { toast } from '$lib/stores/toastStore';
+	import {
+		addTab,
+		closeAllTabs,
+		closeOtherTabs,
+		closeTab,
+		createDefaultTab,
+		duplicateTab,
+		type Tab
+	} from '$lib/utils/playgroundUtils';
 
 	let endpointid = $derived($page.params.endpointid);
 
-	interface Tab {
-		id: string;
-		name: string;
-		query: string;
-		variables: string;
-	}
-
 	let tabs = $state<Tab[]>([]);
 	let activeTabId = $state<string>('');
+
+	// Context Menu State
+	let contextMenu = $state({
+		visible: false,
+		x: 0,
+		y: 0,
+		targetTabId: ''
+	});
 
 	// Load from localStorage
 	const storageKey = $derived(`playground_tabs_${endpointid}`);
@@ -32,27 +42,48 @@
 						tabs = data.tabs;
 						activeTabId = data.activeTabId || tabs[0].id;
 					} else {
-						createDefaultTab();
+						initDefault();
 					}
 				} catch (e) {
-					createDefaultTab();
+					initDefault();
 				}
 			} else {
-				createDefaultTab();
+				initDefault();
 			}
 		}
+
+		// Close context menu on click elsewhere
+		const handleGlobalClick = () => closeContextMenu();
+		document.addEventListener('click', handleGlobalClick);
+		return () => document.removeEventListener('click', handleGlobalClick);
 	});
 
-	function createDefaultTab() {
-		const newTab = {
-			id: crypto.randomUUID(),
-			name: 'New Tab',
-			query: '# Write your query here\nquery {\n  \n}',
-			variables: '{}'
+	function initDefault() {
+		const defaultTab = createDefaultTab();
+		tabs = [defaultTab];
+		activeTabId = defaultTab.id;
+		Logger.info('Playground: Created default tab', { id: defaultTab.id });
+	}
+
+	function closeContextMenu() {
+		contextMenu.visible = false;
+	}
+
+	/**
+	 * Handles the right-click context menu for tabs.
+	 * Prevents the default browser menu and positions the custom menu.
+	 * @param e - The mouse event
+	 * @param tabId - The ID of the tab that was right-clicked
+	 */
+	function handleContextMenu(e: MouseEvent, tabId: string) {
+		e.preventDefault();
+		e.stopPropagation(); // Prevent native browser menu
+		contextMenu = {
+			visible: true,
+			x: e.clientX,
+			y: e.clientY,
+			targetTabId: tabId
 		};
-		tabs = [newTab];
-		activeTabId = newTab.id;
-		Logger.info('Playground: Created default tab', { id: newTab.id });
 	}
 
 	// Save to localStorage
@@ -66,39 +97,49 @@
 		}
 	});
 
-	function addTab() {
-		const newTab = {
-			id: crypto.randomUUID(),
-			name: 'New Tab',
-			query: '',
-			variables: '{}'
-		};
-		tabs.push(newTab);
-		activeTabId = newTab.id;
-		Logger.info('Playground: Added new tab', { id: newTab.id });
+	function handleAddTab() {
+		const result = addTab(tabs);
+		tabs = result.tabs;
+		activeTabId = result.activeTabId;
 	}
 
-	function closeTab(id: string, e: Event) {
-		e.stopPropagation();
+	function handleCloseTab(id: string, e?: Event) {
+		if (e) e.stopPropagation();
 		if (tabs.length === 1) {
 			toast.warning('Cannot close the last tab.');
 			return;
 		}
-		const index = tabs.findIndex((t) => t.id === id);
-		if (index === -1) return;
+		const result = closeTab(tabs, activeTabId, id);
+		tabs = result.tabs;
+		activeTabId = result.activeTabId;
+	}
 
-		const isActive = id === activeTabId;
-		const newTabs = tabs.filter((t) => t.id !== id);
-		tabs = newTabs;
-		Logger.info('Playground: Closed tab', { id });
+	function handleDuplicateTab() {
+		const result = duplicateTab(tabs, contextMenu.targetTabId);
+		tabs = result.tabs;
+		activeTabId = result.activeTabId;
+		closeContextMenu();
+		toast.success('Tab duplicated');
+	}
 
-		if (isActive) {
-			// activate the one before, or the first one
-			const newIndex = index > 0 ? index - 1 : 0;
-			if (newTabs[newIndex]) {
-				activeTabId = newTabs[newIndex].id;
-			}
-		}
+	function handleCloseOtherTabs() {
+		const result = closeOtherTabs(tabs, contextMenu.targetTabId);
+		tabs = result.tabs;
+		activeTabId = result.activeTabId;
+		closeContextMenu();
+		toast.success('Other tabs closed');
+	}
+
+	function handleCloseAllTabs() {
+		if (
+			!confirm('Are you sure you want to close all tabs? This will reset the playground.')
+		)
+			return;
+		const result = closeAllTabs();
+		tabs = result.tabs;
+		activeTabId = result.activeTabId;
+		closeContextMenu();
+		toast.info('All tabs reset');
 	}
 
 	function renameTab(id: string, newName: string) {
@@ -114,7 +155,7 @@
 </script>
 
 <Page MenuItem={true}>
-	<div class="flex flex-col h-full w-full bg-base-100">
+	<div class="flex flex-col h-full w-full bg-base-100 relative">
 		<!-- Tab Bar -->
 		<div class="flex items-center bg-base-200 border-b border-base-300 overflow-x-auto">
 			{#each tabs as tab}
@@ -127,6 +168,7 @@
 						activeTabId = tab.id;
 						Logger.debug('Playground: Switched tab', { id: tab.id });
 					}}
+					oncontextmenu={(e) => handleContextMenu(e, tab.id)}
 				>
 					<!-- Editable Name -->
 					<span
@@ -150,9 +192,9 @@
 						role="button"
 						tabindex="0"
 						class="btn btn-ghost btn-xs opacity-0 group-hover:opacity-100 p-0 w-4 h-4 min-h-0 flex items-center justify-center"
-						onclick={(e) => closeTab(tab.id, e)}
+						onclick={(e) => handleCloseTab(tab.id, e)}
 						onkeydown={(e) => {
-							if (e.key === 'Enter') closeTab(tab.id, e);
+							if (e.key === 'Enter') handleCloseTab(tab.id, e);
 						}}
 						title="Close Tab"
 					>
@@ -160,7 +202,7 @@
 					</div>
 				</button>
 			{/each}
-			<button class="btn btn-ghost btn-sm rounded-none" onclick={addTab} title="New Tab">
+			<button class="btn btn-ghost btn-sm rounded-none" onclick={handleAddTab} title="New Tab">
 				<i class="bi bi-plus-lg"></i>
 			</button>
 		</div>
@@ -178,6 +220,38 @@
 				{/key}
 			{/if}
 		</div>
+
+		<!-- Context Menu -->
+		{#if contextMenu.visible}
+			<div
+				class="fixed z-50 bg-base-100 shadow-xl border border-base-300 rounded-lg py-1 min-w-[150px] flex flex-col"
+				style="top: {contextMenu.y}px; left: {contextMenu.x}px;"
+				onclick={(e) => e.stopPropagation()}
+				onkeydown={(e) => e.stopPropagation()}
+				role="menu"
+				tabindex="-1"
+			>
+				<button
+					class="btn btn-sm btn-ghost justify-start rounded-none font-normal"
+					onclick={handleDuplicateTab}
+				>
+					<i class="bi bi-files"></i> Duplicate Tab
+				</button>
+				<button
+					class="btn btn-sm btn-ghost justify-start rounded-none font-normal"
+					onclick={handleCloseOtherTabs}
+				>
+					<i class="bi bi-x-circle"></i> Close Other Tabs
+				</button>
+				<div class="divider my-0"></div>
+				<button
+					class="btn btn-sm btn-ghost justify-start rounded-none font-normal text-error"
+					onclick={handleCloseAllTabs}
+				>
+					<i class="bi bi-trash"></i> Close All Tabs
+				</button>
+			</div>
+		{/if}
 	</div>
 </Page>
 
