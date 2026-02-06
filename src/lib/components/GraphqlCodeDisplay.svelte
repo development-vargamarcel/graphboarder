@@ -37,6 +37,7 @@
 	} from '$lib/utils/queryAnalyzer';
 	import { getActiveEnvironment } from '$lib/stores/environmentStore';
 	import { substituteVariables } from '$lib/utils/variableSubstitutor';
+	import DiffViewer from '$lib/components/UI/DiffViewer.svelte';
 
 	interface Props {
 		/**
@@ -176,6 +177,8 @@
 	let snippetEditorLanguage = $derived(
 		selectedSnippetLanguage.startsWith('python') ? 'python' : 'javascript'
 	);
+	let showDiffViewer = $state(false);
+	let diffOriginal = $state('');
 
 	let codeEditorInstance = $state<any>();
 
@@ -317,6 +320,12 @@
 			variablesString = '{}';
 		}
 		showHistory = false;
+	};
+
+	const handleCompare = (item: HistoryItem) => {
+		diffOriginal = item.query;
+		showDiffViewer = true;
+		Logger.info('Opening diff viewer for history item', { id: item.id });
 	};
 
 	/**
@@ -873,7 +882,19 @@
 </div>
 
 {#if showHistory}
-	<QueryHistory onRestore={restoreQuery} onClose={() => (showHistory = false)} />
+	<QueryHistory
+		onRestore={restoreQuery}
+		onClose={() => (showHistory = false)}
+		onCompare={handleCompare}
+	/>
+{/if}
+
+{#if showDiffViewer}
+	<DiffViewer
+		original={diffOriginal}
+		modified={value}
+		onClose={() => (showDiffViewer = false)}
+	/>
 {/if}
 
 {#if showImportModal}

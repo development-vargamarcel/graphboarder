@@ -184,6 +184,14 @@ Auto-GQL allows you to persist and restore executed queries.
 - **Favorites:** You can mark queries as favorites (star icon) to keep them at the top of the list.
 - **Renaming:** Click on a query name in the history to rename it for easier identification.
 - **Backup & Restore:** You can export your full backup (including history and collections) to a JSON file and import it on another device.
+- **Compare:** Compare your current query with a saved version from history to see what has changed.
+
+### Compare with History
+
+You can compare your current query with a saved version from history to see what has changed.
+
+- **Access:** Open history, and click the **Compare** button (icon <i class="bi bi-file-diff"></i>) on any history item.
+- **Functionality:** Opens a side-by-side diff viewer showing the original (history) and modified (current editor) versions.
 
 ## Query Collections
 

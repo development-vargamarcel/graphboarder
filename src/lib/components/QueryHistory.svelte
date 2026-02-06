@@ -25,9 +25,11 @@
 		onRestore: (item: HistoryItem) => void;
 		/** Callback when the modal is closed */
 		onClose: () => void;
+		/** Callback when a history item is selected for comparison */
+		onCompare?: (item: HistoryItem) => void;
 	}
 
-	let { onRestore, onClose }: Props = $props();
+	let { onRestore, onClose, onCompare }: Props = $props();
 
 	let fileInput: HTMLInputElement;
 	let searchTerm = $state('');
@@ -459,6 +461,15 @@
 											>
 												<i class="bi {item.isFavorite ? 'bi-star-fill' : 'bi-star'}"></i>
 											</button>
+											{#if onCompare}
+												<button
+													class="btn btn-sm btn-ghost"
+													onclick={() => onCompare(item)}
+													title="Compare with Current"
+												>
+													<i class="bi bi-file-diff"></i>
+												</button>
+											{/if}
 											<button
 												class="btn btn-sm btn-primary"
 												onclick={() => {
