@@ -21,7 +21,7 @@ export const create_schemaData = (): SchemaDataStore => {
 		isReady: false
 	});
 	const { subscribe, set, update } = store;
-	let returnObject: SchemaDataStore = {
+	const returnObject: SchemaDataStore = {
 		subscribe,
 		set,
 		update,
@@ -40,14 +40,14 @@ export const create_schemaData = (): SchemaDataStore => {
 		 */
 		set_rootTypes: (
 			withDerivedData: boolean,
-			set_storeVal: boolean = true,
+			set_storeVal = true,
 			endpointInfo: EndpointInfoStore
 		) => {
-			let storeValue = get(store);
-			let { schema } = storeValue;
+			const storeValue = get(store);
+			const { schema } = storeValue;
 			if (!schema || !schema.types) return [];
 
-			let new_rootTypes = sortByName([...schema.types]) as RootType[];
+			const new_rootTypes = sortByName([...schema.types]) as RootType[];
 			if (withDerivedData) {
 				new_rootTypes.forEach((el) => {
 					Object.assign(
@@ -96,18 +96,18 @@ export const create_schemaData = (): SchemaDataStore => {
 		 */
 		set_QMSFields: (
 			withDerivedData: boolean,
-			set_storeVal: boolean = true,
+			set_storeVal = true,
 			QMS: string[] = ['query', 'mutation', 'subscription'],
 			endpointInfo: EndpointInfoStore
 		) => {
 			//QMS -> Query,Mutation,Subscription
-			let storeValue = get(store);
-			let { rootTypes, schema } = storeValue;
-			let result: any = {};
-			let isQMSField = true;
+			const storeValue = get(store);
+			const { rootTypes, schema } = storeValue;
+			const result: any = {};
+			const isQMSField = true;
 			QMS.forEach((_QMS_) => {
 				// _QMS_ -> current QMS (one of: Query,Mutation,Subscription)
-				let _QMS_Type_name = schema?.[`${_QMS_}Type`]?.name;
+				const _QMS_Type_name = schema?.[`${_QMS_}Type`]?.name;
 				let new_QMS_Fields;
 				if (_QMS_Type_name) {
 					new_QMS_Fields = sortByName(
@@ -170,8 +170,8 @@ export const create_schemaData = (): SchemaDataStore => {
 		 */
 		set_fields: (endpointInfo: EndpointInfoStore) => {
 			//set rootTypes,queryFields,mutationFields,subscriptionFields //fields or types?
-			let rootTypes = returnObject.set_rootTypes(true, true, endpointInfo);
-			let QMSFields = returnObject.set_QMSFields(
+			const rootTypes = returnObject.set_rootTypes(true, true, endpointInfo);
+			const QMSFields = returnObject.set_QMSFields(
 				true,
 				false,
 				['query', 'mutation', 'subscription'],

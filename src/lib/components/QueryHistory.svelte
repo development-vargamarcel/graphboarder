@@ -251,8 +251,11 @@
 							}}
 						/>
 						<div class="flex justify-end gap-1">
-							<button class="btn btn-xs btn-ghost" onclick={() => (isCreatingCollection = false)}>Cancel</button>
-							<button class="btn btn-xs btn-primary" onclick={handleCreateCollection}>Create</button>
+							<button class="btn btn-xs btn-ghost" onclick={() => (isCreatingCollection = false)}
+								>Cancel</button
+							>
+							<button class="btn btn-xs btn-primary" onclick={handleCreateCollection}>Create</button
+							>
 						</div>
 					</div>
 				{/if}
@@ -292,14 +295,17 @@
 								</div>
 							{:else}
 								<button
-									class="flex justify-between items-center pr-8 {selectedCollectionId === collection.id
+									class="flex justify-between items-center pr-8 {selectedCollectionId ===
+									collection.id
 										? 'active'
 										: ''}"
 									onclick={() => (selectedCollectionId = collection.id)}
 								>
 									<span class="truncate">{collection.name}</span>
 								</button>
-								<div class="absolute right-1 top-1 hidden group-hover/coll:flex bg-base-200 rounded">
+								<div
+									class="absolute right-1 top-1 hidden group-hover/coll:flex bg-base-200 rounded"
+								>
 									<button
 										class="btn btn-xs btn-ghost btn-square"
 										aria-label="Rename Collection"
@@ -384,16 +390,22 @@
 												{/if}
 											</div>
 
-											<div class="text-xs text-base-content/70 mt-1 flex flex-wrap items-center gap-2">
+											<div
+												class="text-xs text-base-content/70 mt-1 flex flex-wrap items-center gap-2"
+											>
 												<span>{formatDate(item.timestamp)}</span>
 												{#if item.endpointId}
 													<span class="badge badge-xs badge-outline">{item.endpointId}</span>
 												{/if}
 												{#if item.collectionId}
-													{@const col = $queryCollections.find(c => c.id === item.collectionId)}
+													{@const col = $queryCollections.find((c) => c.id === item.collectionId)}
 													{#if col}
-														<span class="badge badge-xs badge-secondary badge-outline" title="Collection">
-															<i class="bi bi-folder mr-1"></i> {col.name}
+														<span
+															class="badge badge-xs badge-secondary badge-outline"
+															title="Collection"
+														>
+															<i class="bi bi-folder mr-1"></i>
+															{col.name}
 														</span>
 													{/if}
 												{/if}
@@ -403,20 +415,34 @@
 										<!-- Actions -->
 										<div class="flex items-center space-x-1">
 											<div class="dropdown dropdown-end">
-												<div tabindex="0" role="button" class="btn btn-sm btn-ghost" title="Move to Collection">
+												<div
+													tabindex="0"
+													role="button"
+													class="btn btn-sm btn-ghost"
+													title="Move to Collection"
+												>
 													<i class="bi bi-folder-symlink"></i>
 												</div>
 												<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-												<ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-48">
+												<ul
+													tabindex="0"
+													class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-48"
+												>
 													<li class="menu-title">Move to...</li>
 													<li>
-														<button onclick={() => moveItem(item, null)} class={!item.collectionId ? 'active' : ''}>
+														<button
+															onclick={() => moveItem(item, null)}
+															class={!item.collectionId ? 'active' : ''}
+														>
 															(None)
 														</button>
 													</li>
 													{#each $queryCollections as col}
 														<li>
-															<button onclick={() => moveItem(item, col.id)} class={item.collectionId === col.id ? 'active' : ''}>
+															<button
+																onclick={() => moveItem(item, col.id)}
+																class={item.collectionId === col.id ? 'active' : ''}
+															>
 																{col.name}
 															</button>
 														</li>
@@ -445,7 +471,7 @@
 											<button
 												class="btn btn-sm btn-ghost text-error"
 												onclick={() => {
-													if(confirm('Delete this query from history?')) {
+													if (confirm('Delete this query from history?')) {
 														removeFromHistory(item.id);
 													}
 												}}

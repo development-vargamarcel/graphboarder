@@ -20,7 +20,7 @@ import type {
 
 export const Create_activeArgumentsDataGrouped_Store = (
 	initialValue: ActiveArgumentGroup[] = [],
-	rootGroupArgsVisible: boolean = true
+	rootGroupArgsVisible = true
 ): ActiveArgumentsDataGroupedStore => {
 	const store = writable<ActiveArgumentGroup[]>(initialValue);
 	const { subscribe, set, update } = store;
@@ -170,7 +170,7 @@ export const Create_activeArgumentsDataGrouped_Store = (
 		update_groups: (groupNewData: ActiveArgumentGroup) => {
 			Logger.debug({ groupNewData });
 			update((activeArgumentsDataGrouped) => {
-				let index = activeArgumentsDataGrouped.findIndex((group) => {
+				const index = activeArgumentsDataGrouped.findIndex((group) => {
 					return group.group_name == groupNewData.group_name;
 				});
 				activeArgumentsDataGrouped[index] = groupNewData;
@@ -208,7 +208,7 @@ export const Create_activeArgumentsDataGrouped_Store = (
 		},
 		delete_activeArgument: (activeArgumentData: ActiveArgumentData, groupName: string) => {
 			update((activeArgumentsDataGrouped) => {
-				let group = activeArgumentsDataGrouped?.find((group) => {
+				const group = activeArgumentsDataGrouped?.find((group) => {
 					return group.group_name == groupName;
 				});
 				if (!group) return activeArgumentsDataGrouped;
@@ -217,10 +217,10 @@ export const Create_activeArgumentsDataGrouped_Store = (
 					return arg.id == activeArgumentData.id;
 				});
 				if (group.group_argsNode) {
-					let containers = Object.values(group.group_argsNode).filter((container) => {
+					const containers = Object.values(group.group_argsNode).filter((container) => {
 						return container?.items;
 					});
-					let argumentParentContainer = containers.find((container) => {
+					const argumentParentContainer = containers.find((container) => {
 						return container.items.find((item) => {
 							return item.id == activeArgumentData.id;
 						});
@@ -243,7 +243,7 @@ export const Create_activeArgumentsDataGrouped_Store = (
 				return activeArgumentsDataGrouped;
 			});
 		},
-		get_activeArgument: (stepsOfFields: string[], group_name: string = 'root') => {
+		get_activeArgument: (stepsOfFields: string[], group_name = 'root') => {
 			const storeValue = get(store);
 			return storeValue
 				.find((group) => {
@@ -302,7 +302,7 @@ export const add_activeArgumentOrContainerTo_activeArgumentsDataGrouped = (
 		if (!endpointInfo) {
 			return;
 		}
-		let typeExtraData = endpointInfo.get_typeExtraData(newArgumentOrContainerData);
+		const typeExtraData = endpointInfo.get_typeExtraData(newArgumentOrContainerData);
 		if (!typeExtraData) {
 			return;
 		}

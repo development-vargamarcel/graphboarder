@@ -9,7 +9,7 @@ import Fuse from 'fuse.js';
  * @param threshold - Search threshold (0-1, default 0.8)
  * @returns Configured Fuse instance
  */
-export function createQMSSearchInstance(queryFields: any[], threshold: number = 0.8): Fuse<any> {
+export function createQMSSearchInstance(queryFields: any[], threshold = 0.8): Fuse<any> {
 	return new Fuse(queryFields, {
 		includeScore: false,
 		includeMatches: false,
@@ -31,16 +31,16 @@ export function getReturningFields(
 	type: { dd_rootName?: string },
 	matchingField: { dd_displayName?: string },
 	schemaData: any,
-	depth: number = 0,
-	maxDepth: number = 2
+	depth = 0,
+	maxDepth = 2
 ): any[] | null {
 	if (depth > maxDepth) {
 		return null;
 	}
 
 	depth++;
-	let rootType = schemaData.get_rootType(null, type.dd_rootName, schemaData);
-	let fields = rootType?.fields;
+	const rootType = schemaData.get_rootType(null, type.dd_rootName, schemaData);
+	const fields = rootType?.fields;
 
 	if (!fields) {
 		return null;

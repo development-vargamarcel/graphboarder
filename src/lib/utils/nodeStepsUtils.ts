@@ -44,7 +44,7 @@ export function getUpdatedStepsOfNodes(
 	stepsOfNodesParent: Array<[string | undefined, string | undefined, string | undefined]>,
 	node: { not?: boolean; dd_displayName?: string; operator?: string }
 ): Array<[string | undefined, string | undefined, string | undefined]> {
-	let stepsOfNodesCopy = JSON.parse(JSON.stringify(stepsOfNodesParent));
+	const stepsOfNodesCopy = JSON.parse(JSON.stringify(stepsOfNodesParent));
 	stepsOfNodesCopy.push([node?.not ? '_not' : undefined, node?.dd_displayName, node?.operator]);
 	return stepsOfNodesCopy;
 }

@@ -180,7 +180,7 @@ export const get_paginationTypes = (
 				const beforeName = paginationArgs.find((arg) => {
 					return arg.dd_standsFor == 'before';
 				})?.dd_displayName;
-				let _state = JSON.parse(JSON.stringify(state));
+				const _state = JSON.parse(JSON.stringify(state));
 				if (afterName) delete _state[afterName];
 				if (beforeName) delete _state[beforeName];
 				return _state;
@@ -194,7 +194,7 @@ export const get_paginationTypes = (
 				const dependencyColsData = [];
 				const endpointInfoVal = get(endpointInfo);
 				const pageInfoFieldsLocation = endpointInfoVal.pageInfoFieldsLocation;
-				let currentQMS_info = get_QMS_Field(QMS_name, QMS_type, schemaData);
+				const currentQMS_info = get_QMS_Field(QMS_name, QMS_type, schemaData);
 				if (!currentQMS_info) return [];
 				const rowsLocation = endpointInfo.get_rowsLocation(currentQMS_info, schemaData);
 
@@ -291,7 +291,7 @@ export const get_paginationTypes = (
 			},
 			get_nextPageState: (state, paginationArgs, returnedDataBatch_last, QMS_name, QMS_type) => {
 				const endpointInfoVal = get(endpointInfo);
-				let currentQMS_info = get_QMS_Field(QMS_name, QMS_type, schemaData);
+				const currentQMS_info = get_QMS_Field(QMS_name, QMS_type, schemaData);
 				if (!currentQMS_info) return state;
 				const pageInfoFieldsLocation = endpointInfoVal.pageInfoFieldsLocation;
 				const rowsLocationPossibilitiy = endpointInfoVal.rowsLocationPossibilities?.find(
@@ -326,7 +326,7 @@ export const get_paginationTypes = (
 				const stepsOfFieldsToEndCursor = [QMS_name, ...pageInfoFieldsLocation, namings.endCursor];
 				const _state = JSON.parse(JSON.stringify(state));
 				if (namings?.endCursor && returnedDataBatch_last) {
-					let endCursorValue = getDataGivenStepsOfFields(
+					const endCursorValue = getDataGivenStepsOfFields(
 						undefined,
 						returnedDataBatch_last,
 						stepsOfFieldsToEndCursor
@@ -336,11 +336,11 @@ export const get_paginationTypes = (
 					}
 					console.log({ _state }, { returnedDataBatch_last });
 				} else if (namings?.cursor) {
-					let rows = getDataGivenStepsOfFields(undefined, returnedDataBatch_last, [
+					const rows = getDataGivenStepsOfFields(undefined, returnedDataBatch_last, [
 						currentQMS_info.dd_displayName,
 						...rowsLocation
 					]) as any[];
-					let lastRow = rows[rows.length - 1];
+					const lastRow = rows[rows.length - 1];
 					console.log({ lastRow });
 					_state[afterName] = `'${getDataGivenStepsOfFields(
 						undefined,
@@ -433,7 +433,7 @@ export const get_paginationTypes = (
 				_paginationState_Store: PaginationStateStore,
 				paginationArgs: FieldWithDerivedData[]
 			) => {
-				let pageName = paginationArgs.find((arg) => {
+				const pageName = paginationArgs.find((arg) => {
 					return arg.dd_standsFor == 'page';
 				})?.dd_displayName;
 				return get(_paginationState_Store)?.[pageName] == 1;

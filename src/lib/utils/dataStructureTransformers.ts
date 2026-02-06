@@ -51,7 +51,7 @@ export const ISO8601_transformerGETDEFAULTVAl = (): string => {
 	return ISO8601_transformerREVERSE(string_transformer(new Date().toISOString()));
 };
 export const ISO8601_transformer = (value: string): string | unknown => {
-	let date_ISO8601 = new Date(value).toISOString();
+	const date_ISO8601 = new Date(value).toISOString();
 	return string_transformer(date_ISO8601);
 };
 export const ISO8601_transformerREVERSE = (value: unknown): string => {

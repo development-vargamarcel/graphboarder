@@ -36,13 +36,13 @@ describe('shareUtils', () => {
 		// LZString compresses empty string to empty string,
 		// but decompressFromEncodedURIComponent("") returns null.
 		// Our decompressQuery returns { query: null } if we pass it null?
-        // No, `decompressQuery` returns `null` if `lz-string` returns null.
-        // So we expect null here.
+		// No, `decompressQuery` returns `null` if `lz-string` returns null.
+		// So we expect null here.
 		expect(decompressed).toBeNull();
 	});
 
 	it('should return null or empty for invalid compressed string', () => {
 		const result = decompressQuery('not-compressed-string');
-        // Expecting it to not throw, result might be null or garbage object
+		// Expecting it to not throw, result might be null or garbage object
 	});
 });

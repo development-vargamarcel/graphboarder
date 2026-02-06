@@ -10,7 +10,7 @@
 export function getRowSelectionState(selectedRowsModel: {
 	rows?: Array<{ id: string }>;
 }): Record<string, boolean> {
-	let rowSelectionState: Record<string, boolean> = {};
+	const rowSelectionState: Record<string, boolean> = {};
 
 	if (!selectedRowsModel?.rows) {
 		return rowSelectionState;
@@ -46,8 +46,8 @@ export function processSelectedRowsColValues(
 	passAllObjectValuesThroughStringTransformerAndReturnNewObject: (obj: any) => any
 ): any[] {
 	return selectedRowsColValues?.map((row) => {
-		let idRaw = row[idColName];
-		let idDecoded = endpointInfo.get_decodedId(null, null, idRaw);
+		const idRaw = row[idColName];
+		const idDecoded = endpointInfo.get_decodedId(null, null, idRaw);
 
 		if (node.dd_kindEl == 'SCALAR') {
 			return { [node.dd_displayName]: idDecoded };

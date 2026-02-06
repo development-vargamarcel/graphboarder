@@ -112,7 +112,7 @@ export const endpointInfoDefaultValues = {
 
 				const tableNameLowercase = QMS_info.dd_displayName.toLowerCase().replaceAll('s', ''); //the last part handles plurar-singular problems
 
-				let possibleNames = [...(storeVal?.idFieldNamePossibilities || [])];
+				const possibleNames = [...(storeVal?.idFieldNamePossibilities || [])];
 				if (!possibleNames.includes('id')) possibleNames.push('id');
 				possibleNames.push(`${tableNameLowercase}_id`, `${tableNameLowercase}id`);
 
@@ -151,7 +151,7 @@ export const endpointInfoDefaultValues = {
 					return idField;
 				}
 
-				let idFields = nonNullScalarFields?.filter((field) => {
+				const idFields = nonNullScalarFields?.filter((field) => {
 					const fieldDisplayNameLowercase = field.dd_displayName.toLowerCase().replaceAll('s', ''); //the last part handles plurar-singular problems
 					return fieldDisplayNameLowercase.includes('id');
 				});
@@ -429,7 +429,7 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 				return [];
 			}
 
-			let inputColumnsLocationInArg = storeVal.inputColumnsPossibleLocationsInArg.find(
+			const inputColumnsLocationInArg = storeVal.inputColumnsPossibleLocationsInArg.find(
 				(currPossibility) => {
 					if (currPossibility.length == 0) {
 						return true;
@@ -457,7 +457,7 @@ export const create_endpointInfo_Store = (endpointConfiguration = {}) => {
 				return [];
 			}
 
-			let rowsLocationPossibilitiy = storeVal.rowsLocationPossibilities.find(
+			const rowsLocationPossibilitiy = storeVal.rowsLocationPossibilities.find(
 				(rowsLocationPossibilitiy) => {
 					return rowsLocationPossibilitiy.check(QMS_info, schemaData);
 				}
