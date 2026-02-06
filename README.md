@@ -249,6 +249,18 @@ addToHistory({
 
 To view and restore history, the `GraphqlCodeDisplay` component includes a "History" button that opens a modal with saved queries.
 
+## GraphQL Playground
+
+Auto-GQL includes a powerful multi-tab **GraphQL Playground** where you can write, execute, and debug arbitrary queries without being tied to a specific schema view.
+
+- **Access:** Click the **Playground** link in the sidebar (icon <i class="bi bi-collection-play"></i>).
+- **Features:**
+  - **Multi-Tab Support:** Create, rename, and manage multiple query tabs.
+  - **Persistence:** Tabs (including queries and variables) are automatically saved to `localStorage`, so you never lose your work.
+  - **Full Editor Features:** Includes all the features of the standard editor (Prettify, Minify, Import cURL, Snippets, Postman Export).
+  - **Execution:** Execute queries against your connected endpoint.
+  - **Variables:** Separate JSON editor for variables for each tab.
+
 ## Schema Visualizer
 
 Auto-GQL includes a **Schema Visualizer** to help you explore and understand the GraphQL schema.

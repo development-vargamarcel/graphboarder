@@ -79,6 +79,15 @@
 			isSelected: false,
 			hasFill: true,
 			items: []
+		},
+		{
+			title: 'Playground',
+			url: `/endpoints/${endpointid}/playground`,
+			urlIsRoute: false,
+			icon: 'bi bi-collection-play',
+			isSelected: false,
+			hasFill: true,
+			items: []
 		}
 	]);
 

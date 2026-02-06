@@ -9,6 +9,7 @@
 	import { create_schemaData } from '$lib/stores/endpointHandling/schemaData';
 
 	import { setContext, untrack } from 'svelte';
+	import { get } from 'svelte/store';
 	import { Client, fetchExchange, setContextClient } from '@urql/svelte';
 	import { browser } from '$app/environment';
 	import { Create_urqlCoreClient } from '$lib/utils/urqlCoreClient';
@@ -121,10 +122,11 @@
 	 */
 	let getHeaders = () => {
 		let headers: Record<string, string> = {};
+		const info = get(endpointInfo);
 
 		// Start with provided headers
-		if ($endpointInfo?.headers) {
-			headers = { ...$endpointInfo.headers };
+		if (info?.headers) {
+			headers = { ...info.headers };
 		}
 
 		if (browser) {
@@ -139,13 +141,13 @@
 			}
 
 			// Check for endpoint-specific headers (overrides global)
-			if ($endpointInfo?.id) {
-				const specificHeaders = localStorage.getItem(`headers_${$endpointInfo.id}`);
+			if (info?.id) {
+				const specificHeaders = localStorage.getItem(`headers_${info.id}`);
 				if (specificHeaders) {
 					try {
 						headers = { ...headers, ...JSON.parse(specificHeaders) };
 					} catch (e) {
-						Logger.error(`MainWraper: Failed to parse specific headers for ${$endpointInfo.id}`, e);
+						Logger.error(`MainWraper: Failed to parse specific headers for ${info.id}`, e);
 					}
 				}
 			}
