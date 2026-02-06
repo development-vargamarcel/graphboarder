@@ -17,7 +17,7 @@
 	import { generateCurlCommand } from '$lib/utils/curlUtils';
 	import { parseCurlCommand } from '$lib/utils/curlParser';
 	import { get } from 'svelte/store';
-	import { parse, print, type ASTNode } from 'graphql';
+	import { parse, print, stripIgnoredCharacters, type ASTNode } from 'graphql';
 	import JSON5 from 'json5';
 	import QueryHistory from '$lib/components/QueryHistory.svelte';
 	import { addToHistory, type HistoryItem } from '$lib/stores/queryHistory';
@@ -133,6 +133,19 @@
 			} catch (e2) {
 				return code;
 			}
+		}
+	};
+
+	const handleMinify = () => {
+		try {
+			Logger.info('Minifying query...');
+			const minified = stripIgnoredCharacters(value);
+			value = minified;
+			valueModifiedManually = minified;
+			toast.success('Query minified');
+		} catch (e) {
+			Logger.warn('Minify failed', e);
+			toast.error('Failed to minify query');
 		}
 	};
 
@@ -593,6 +606,14 @@
 		</button>
 		<button
 			class="btn btn-xs btn-ghost transition-opacity"
+			aria-label="Minify Query"
+			title="Minify Query (Remove Whitespace)"
+			onclick={handleMinify}
+		>
+			<i class="bi bi-arrows-collapse"></i> Minify
+		</button>
+		<button
+			class="btn btn-xs btn-ghost transition-opacity"
 			aria-label="Copy to Clipboard"
 			title="Copy Query to Clipboard"
 			onclick={() => {
@@ -627,12 +648,7 @@
 						headers = substituted;
 					}
 
-					const curl = generateCurlCommand(
-						info.url,
-						value,
-						getParsedVariables(),
-						headers
-					);
+					const curl = generateCurlCommand(info.url, value, getParsedVariables(), headers);
 					navigator.clipboard.writeText(curl);
 					isCurlCopied = true;
 					setTimeout(() => (isCurlCopied = false), 2000);

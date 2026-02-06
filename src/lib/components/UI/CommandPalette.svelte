@@ -140,9 +140,17 @@
 						>
 							<div class="flex items-center gap-3">
 								{#if command.icon}
-									<i class="{command.icon} text-lg {i === selectedIndex ? 'text-primary' : 'text-base-content/70'}"></i>
+									<i
+										class="{command.icon} text-lg {i === selectedIndex
+											? 'text-primary'
+											: 'text-base-content/70'}"
+									></i>
 								{:else}
-									<i class="bi bi-command text-lg {i === selectedIndex ? 'text-primary' : 'text-base-content/70'}"></i>
+									<i
+										class="bi bi-command text-lg {i === selectedIndex
+											? 'text-primary'
+											: 'text-base-content/70'}"
+									></i>
 								{/if}
 								<div>
 									<div class="font-medium">{command.title}</div>
@@ -164,7 +172,9 @@
 				{/if}
 			</div>
 
-			<div class="bg-base-200/50 p-2 px-4 text-xs text-base-content/50 flex justify-between border-t border-base-200">
+			<div
+				class="bg-base-200/50 p-2 px-4 text-xs text-base-content/50 flex justify-between border-t border-base-200"
+			>
 				<span><kbd class="kbd kbd-xs">↑</kbd> <kbd class="kbd kbd-xs">↓</kbd> to navigate</span>
 				<span><kbd class="kbd kbd-xs">↵</kbd> to select</span>
 			</div>

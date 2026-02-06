@@ -97,7 +97,7 @@
 		<!-- Header -->
 		<div class="p-4 border-b border-base-200 flex justify-between items-center bg-base-200">
 			<h3 class="font-bold text-lg"><i class="bi bi-layers"></i> Environment Manager</h3>
-			<button class="btn btn-sm btn-ghost" onclick={onClose}>✕</button>
+			<button class="btn btn-sm btn-ghost" onclick={onClose} aria-label="Close">✕</button>
 		</div>
 
 		<!-- Body -->
@@ -116,6 +116,7 @@
 							class="btn btn-sm btn-primary join-item"
 							onclick={handleAddEnvironment}
 							disabled={!newEnvName.trim()}
+							aria-label="Add Environment"
 						>
 							<i class="bi bi-plus"></i>
 						</button>
@@ -164,6 +165,7 @@
 										e.stopPropagation();
 										handleDeleteEnvironment(env.id);
 									}}
+									aria-label="Delete Environment"
 								>
 									<i class="bi bi-trash"></i>
 								</button>
@@ -219,7 +221,7 @@
 											<input
 												type="text"
 												class="input input-xs input-bordered w-full"
-												value={value}
+												{value}
 												onchange={(e) => handleUpdateVariable(key, key, e.currentTarget.value)}
 											/>
 										</td>
@@ -227,6 +229,7 @@
 											<button
 												class="btn btn-xs btn-square btn-ghost text-error"
 												onclick={() => handleRemoveVariable(key)}
+												aria-label="Delete Variable"
 											>
 												<i class="bi bi-trash"></i>
 											</button>

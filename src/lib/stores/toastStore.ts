@@ -27,7 +27,7 @@ function createToastStore() {
 	 * @param type The type of the toast (info, success, warning, error).
 	 * @param timeout Duration in milliseconds before auto-dismissal. Default is 3000ms.
 	 */
-	const add = (message: string, type: ToastType = 'info', timeout: number = 3000) => {
+	const add = (message: string, type: ToastType = 'info', timeout = 3000) => {
 		const id = Math.random().toString(36).substring(2, 9);
 		update((toasts) => [...toasts, { id, type, message, timeout }]);
 

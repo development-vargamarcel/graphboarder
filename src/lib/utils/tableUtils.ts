@@ -10,7 +10,7 @@
 export function getColumnVisibility(
 	columns: Array<{ title: string; hidden?: boolean }>
 ): Record<string, boolean> {
-	let columnVisibility: Record<string, boolean> = {};
+	const columnVisibility: Record<string, boolean> = {};
 
 	columns.forEach((col) => {
 		columnVisibility[col.title] = col.hidden ? false : true;

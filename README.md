@@ -219,6 +219,7 @@ Auto-GQL includes an **Environment Manager** to handle sets of global variables 
   - **Global Environment:** A default "Global" environment is always available and cannot be deleted.
 
 **Example Usage:**
+
 1. Create an environment named "Production".
 2. Add a variable `token` with value `ey...`.
 3. In **Headers Editor**, add a header `Authorization` with value `Bearer {{token}}`.
@@ -272,6 +273,13 @@ Auto-GQL allows you to format (prettify) your GraphQL query directly in the edit
 
 - **Access:** In the code display view, click the **Prettify** button (<i class="bi bi-magic"></i>).
 - **Functionality:** Formats the query with proper indentation and line breaks using Prettier.
+
+## Minify Query
+
+Auto-GQL allows you to minify (remove unnecessary whitespace) your GraphQL query directly in the editor.
+
+- **Access:** In the code display view, click the **Minify** button (<i class="bi bi-arrows-collapse"></i>).
+- **Functionality:** Removes all unnecessary whitespace and comments from the query, making it compact for copying to CLI tools or configuration files.
 
 ## Import from cURL
 

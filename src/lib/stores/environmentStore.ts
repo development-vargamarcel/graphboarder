@@ -72,9 +72,7 @@ export const deleteEnvironment = (id: string) => {
  */
 export const updateEnvironment = (id: string, updates: Partial<Omit<Environment, 'id'>>) => {
 	Logger.debug('Updating environment', { id, updates });
-	environmentStore.update((envs) =>
-		envs.map((e) => (e.id === id ? { ...e, ...updates } : e))
-	);
+	environmentStore.update((envs) => envs.map((e) => (e.id === id ? { ...e, ...updates } : e)));
 };
 
 /**

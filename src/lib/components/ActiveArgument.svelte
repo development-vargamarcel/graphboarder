@@ -88,7 +88,7 @@
 		'choosenDisplayInterface',
 		writable(activeArgumentData.chosenDisplayInterface || activeArgumentData.dd_displayInterface)
 	);
-	let showDescription: boolean = false;
+	let showDescription = false;
 	let labelEl: HTMLLabelElement | undefined = $state();
 	let shadowEl: HTMLDivElement | undefined = $state();
 	let shadowHeight: number = $state(20);

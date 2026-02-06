@@ -15,11 +15,11 @@ export function detectSwipe(node: HTMLElement): { destroy: () => void } {
 
 	let diffX: number | null = null;
 	let diffY: number | null = null;
-	let duration: number = 0;
-	let speedX: number = 0;
-	let speedY: number = 0;
+	let duration = 0;
+	let speedX = 0;
+	let speedY = 0;
 
-	const minSpeed: number = 0.1;
+	const minSpeed = 0.1;
 
 	function touchstart(e: TouchEvent): void {
 		initialTime = e.timeStamp;

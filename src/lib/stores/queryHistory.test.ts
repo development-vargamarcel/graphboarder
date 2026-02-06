@@ -46,7 +46,7 @@ describe('Query History Collections', () => {
 		addToHistory({
 			query: '{ test }',
 			endpointId: '1',
-			operationName: 'test',
+			operationName: 'test'
 		});
 		const history = get(queryHistory);
 		const itemId = history[0].id;
@@ -62,7 +62,7 @@ describe('Query History Collections', () => {
 		addToHistory({
 			query: '{ test }',
 			endpointId: '1',
-			operationName: 'test',
+			operationName: 'test'
 		});
 		let history = get(queryHistory);
 		const itemId = history[0].id;
@@ -75,22 +75,22 @@ describe('Query History Collections', () => {
 		expect(history[0].collectionId).toBeNull();
 	});
 
-    it('should remove item from collection (move to unsorted)', () => {
-        addToHistory({
+	it('should remove item from collection (move to unsorted)', () => {
+		addToHistory({
 			query: '{ test }',
 			endpointId: '1',
-			operationName: 'test',
+			operationName: 'test'
 		});
 		let history = get(queryHistory);
 		const itemId = history[0].id;
 		const collectionId = createCollection('My Collection');
 
-        moveItemToCollection(itemId, collectionId);
-        moveItemToCollection(itemId, null);
+		moveItemToCollection(itemId, collectionId);
+		moveItemToCollection(itemId, null);
 
-        history = get(queryHistory);
-        expect(history[0].collectionId).toBeNull();
-    });
+		history = get(queryHistory);
+		expect(history[0].collectionId).toBeNull();
+	});
 });
 
 describe('History Import/Export', () => {
