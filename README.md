@@ -264,6 +264,10 @@ Auto-GQL includes a powerful multi-tab **GraphQL Playground** where you can writ
 - **Access:** Click the **Playground** link in the sidebar (icon <i class="bi bi-collection-play"></i>).
 - **Features:**
   - **Multi-Tab Support:** Create, rename, and manage multiple query tabs.
+  - **Tab Management:** Right-click on any tab to access advanced options:
+    - **Duplicate Tab:** Create a copy of the current tab.
+    - **Close Other Tabs:** Close all tabs except the selected one.
+    - **Close All Tabs:** Reset the playground to a fresh state.
   - **Persistence:** Tabs (including queries and variables) are automatically saved to `localStorage`, so you never lose your work.
   - **Full Editor Features:** Includes all the features of the standard editor (Prettify, Minify, Import cURL, Snippets, Postman Export).
   - **Execution:** Execute queries against your connected endpoint.
