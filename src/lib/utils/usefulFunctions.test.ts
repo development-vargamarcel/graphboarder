@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { getDeepField } from './usefulFunctions';
+import { getDeepField, getPreciseType, getValueAtPath } from './usefulFunctions';
 import type { SchemaData } from '$lib/types';
 
 // Mock SchemaData
-const mockSchemaData: any = {
+const mockSchemaData: SchemaData = {
 	rootTypes: [
 		{
 			name: 'RootQuery',
@@ -82,11 +82,7 @@ const mockSchemaData: any = {
 	],
 	queryFields: [],
 	mutationFields: [],
-	subscriptionFields: [],
-	get_rootType: (rootTypes, rootTypeName, schemaData) => {
-		return schemaData.rootTypes.find((t) => t.name === rootTypeName);
-	},
-	get_QMS_Field: (qmsName, qmsType, schemaData) => undefined
+	subscriptionFields: []
 };
 
 describe('getDeepField', () => {
@@ -138,5 +134,25 @@ describe('getDeepField', () => {
 		// Address does not have a field 'address'
 		const result = getDeepField(addressField, ['address'], mockSchemaData);
 		expect(result).toBeNull();
+	});
+});
+
+describe('getValueAtPath', () => {
+	it('should return nested values for a valid path', () => {
+		const obj = { a: { b: { c: 42 } } };
+		expect(getValueAtPath(obj, ['a', 'b', 'c'])).toBe(42);
+	});
+
+	it('should return undefined when path is invalid', () => {
+		const obj = { a: { b: { c: 42 } } };
+		expect(getValueAtPath(obj, ['a', 'x', 'c'])).toBeUndefined();
+	});
+});
+
+describe('getPreciseType', () => {
+	it('should return lowercase type names', () => {
+		expect(getPreciseType('hello')).toBe('string');
+		expect(getPreciseType(123)).toBe('number');
+		expect(getPreciseType([1, 2, 3])).toBe('array');
 	});
 });

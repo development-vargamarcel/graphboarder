@@ -29,7 +29,7 @@
 		parentNode: ContainerData | ActiveArgumentData;
 		node: ActiveArgumentData | ContainerData;
 		prefix?: string;
-		isNot: boolean;
+		isNot?: boolean;
 		activeArgumentData: ActiveArgumentData;
 		group: ActiveArgumentGroup;
 		activeArgumentsDataGrouped: ActiveArgumentGroup[];
@@ -55,7 +55,7 @@
 		parentNode,
 		node,
 		prefix = '',
-		isNot = $bindable(),
+		isNot = $bindable(false),
 		activeArgumentData = $bindable(),
 		group,
 		activeArgumentsDataGrouped,
