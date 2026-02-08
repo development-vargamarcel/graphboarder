@@ -1,5 +1,5 @@
 # Auto-GQL (GraphBoarder)
-
+  
 A powerful Svelte 5 library for auto-generating GraphQL UIs, handling complex queries, filtering, sorting, and pagination with ease.
 
 ## Features
