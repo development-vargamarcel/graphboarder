@@ -54,7 +54,7 @@
 	});
 
 	// Helper functions for event handling
-	const handleMainDivClick = (e: Event) => {
+	const handleDismiss = (e: Event) => {
 		if (e.target === e.currentTarget) {
 			e.preventDefault();
 			e.stopPropagation();
@@ -62,11 +62,23 @@
 		}
 	};
 
-	const handlePaddingClick = (e: Event) => {
-		if (e.target === e.currentTarget) {
-			e.preventDefault();
-			e.stopPropagation();
-			onCancel?.({ modalIdetifier });
+	const handleMainDivClick = (e: MouseEvent) => {
+		handleDismiss(e);
+	};
+
+	const handlePaddingClick = (e: MouseEvent) => {
+		handleDismiss(e);
+	};
+
+	const handleMainDivKeydown = (e: KeyboardEvent) => {
+		if (e.key === 'Enter' || e.key === ' ') {
+			handleDismiss(e);
+		}
+	};
+
+	const handlePaddingKeydown = (e: KeyboardEvent) => {
+		if (e.key === 'Enter' || e.key === ' ') {
+			handleDismiss(e);
 		}
 	};
 </script>
@@ -84,9 +96,7 @@
 	onclick={handleMainDivClick}
 	role="button"
 	tabindex="0"
-	onkeydown={(e) => {
-		if (e.key === 'Enter' || e.key === ' ') handleMainDivClick(e);
-	}}
+	onkeydown={handleMainDivKeydown}
 >
 	{#if mainDivIntroEnd}
 		<div
@@ -94,9 +104,7 @@
 			onclick={handlePaddingClick}
 			role="button"
 			tabindex="0"
-			onkeydown={(e) => {
-				if (e.key === 'Enter' || e.key === ' ') handlePaddingClick(e);
-			}}
+			onkeydown={handlePaddingKeydown}
 		></div>
 
 		<div

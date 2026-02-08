@@ -117,11 +117,11 @@
 					{/if}
 					<th>#</th>
 					{#each headerGroup.headers as header}
-						{@const columnFlags = getColumnFlags(
-							header.column.columnDef.header as string,
-							idColName,
-							requiredColNames
-						)}
+						{@const columnHeader =
+							typeof header.column.columnDef.header === 'string'
+								? header.column.columnDef.header
+								: header.column.id}
+						{@const columnFlags = getColumnFlags(columnHeader, idColName, requiredColNames)}
 						<th class="normal-case">
 							<div class="dropdown dropdown-end">
 								<!-- svelte-ignore a11y_label_has_associated_control -->
@@ -161,10 +161,7 @@
 											<button
 												class="w-full pr-2 hover:text-primary cursor-pointer text-left bg-transparent border-0 p-0"
 												onclick={() => {
-													const headerVal = header.column.columnDef.header;
-													if (typeof headerVal === 'string') {
-														onHideColumn?.({ column: headerVal });
-													}
+													onHideColumn?.({ column: columnHeader });
 												}}
 											>
 												hide field
